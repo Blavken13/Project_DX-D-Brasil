@@ -1,0 +1,264 @@
+{
+	"default": {
+		"locale": {
+			"Type": "Locale"
+		},
+		"voice_locale": {
+			"Type": "Locale"
+		},
+		"sfx_volume": {
+			"Type": "Slider",
+			"Default": 1,
+			"Threshold": 0.1,
+			"Range": [ 0, 1 ]
+		},
+		"ambience_volume": {
+			"Type": "Slider",
+			"Default": 1,
+			"Threshold": 0.1,
+			"Range": [ 0, 1 ]
+		},
+		"bgm_volume": {
+			"Type": "Slider",
+			"Default": 1,
+			"Threshold": 0.1,
+			"Range": [ 0, 1 ]
+		},
+		"midi_volume": {
+			"Type": "Slider",
+			"Default": 1,
+			"Threshold": 0.1,
+			"Range": [ 0, 1 ]
+		},
+		"mouse_reversed": {
+			"Type": "CheckBox",
+			"Default": false,
+			"HideOnPrologue": true
+		},
+		"terms": {
+			"Type": "ButtonBox"
+		},
+		"category_chat": {
+			"Type": "Category",
+			"HideOnPrologue": true,
+			"HideOnOffline": true
+		},
+		"chat_grid_buttons": {
+			"Type": "Grid",
+			"HideOnPrologue": true,
+			"HideOnOffline": true,
+			"Number": 2
+		},
+		"permit_conversation": {
+			"Type": "CheckBox",
+			"HideOnPrologue": true,
+			"HideOnOffline": true,
+			"GridNumber": 2
+		},
+		"show_draw_line": {
+			"Type": "CheckBox",
+			"Default": true,
+			"HideOnPrologue": true,
+			"HideOnOffline": true,
+			"GridNumber": 2
+		},
+		"show_chat_bubble": {
+			"Type": "CheckBox",
+			"Default": true,
+			"HideOnPrologue": true,
+			"HideOnOffline": true,
+			"GridNumber": 2
+		}
+	},
+	"screen": {
+		"screen_mode": {
+			"Type": "Toggle",
+			"Options": [ "fullscreen", "window" ],
+			"Default": "fullscreen"
+		},
+		"resolution_pc": {
+			"Type": "Dropdown",
+			"ButtonClickClose": true,
+			"Custom": true
+		},
+		"v_sync": {
+			"Type": "CheckBox",
+			"Default": false
+		},
+		"max_frame_rate": {
+			"Type": "Slider",
+			"Default": 60,
+			"Threshold": 1,
+			"Range": [ 30, 144 ],
+			"ShowText" : true 
+		},
+		"anti_aliasing": {
+			"Type": "Dropdown",
+			"Options": [ "0", "2", "4", "8" ],
+			"Default": "0",
+			"ButtonClickClose": true
+		},
+		"ui_size": {
+			"Type": "Dropdown",
+			"Options": [ "1280", "1420", "1600" ],
+			"Default": "1280"
+		},
+		"shadow": {
+			"Type": "Toggle",
+			"Options": [ "low", "high" ],
+			"Default": "high",
+			"HideOnPrologue": true
+		},
+		"capture_filter": {
+			"Type": "Switch",
+			"Default": true,
+			"HideOnPrologue": true
+		},
+		"hide_debug_ui": {
+			"Type": "Switch",
+			"DebugBuild": true
+		},
+		"category_post_processing": {
+			"Type": "Category",
+			"HideOnPrologue": true
+		},
+		"post_processing_grid_buttons": {
+			"Type": "Grid",
+			"HideOnPrologue": true,
+			"Number": 1
+		},
+		"vignette": {
+			"Type": "CheckBox",
+			"Default": true,
+			"HideOnPrologue": true,
+			"GridNumber": 1
+		},
+		"visual_effect": {
+			"Type": "CheckBox",
+			"Default": true,
+			"HideOnPrologue": true,
+			"GridNumber": 1
+		}
+	},
+	"account": {
+		"character_name": {
+			"Type": "TextLabel",
+			"Value": "PlayerName",
+			"HideOnPrologue": true
+		},
+		"private_number": {
+			"Type": "TextLabel",
+			"Value": "NPA",
+			"HideOnPrologue": true
+		},
+		"account_grid_buttons": {
+			"Type": "Grid",
+			"Number": 1
+		},
+		"select_character": {
+			"Type": "ButtonBox",
+			"GridNumber": 1
+		},
+		"credit": {
+			"Type": "ButtonBox",
+			"HideOnPrologue": true,
+			"GridNumber": 1
+		},
+		"coupon": {
+			"Type": "ButtonBox",
+			"HideOnPrologue": true,
+			"GridNumber": 1
+		},
+		"balance_info": {
+			"Type": "ButtonBox",
+			"HideOnPrologue": true,
+			"GridNumber": 1,
+			"Countries": [ "Japan" ]
+		},
+		"leave": {
+			"Type": "ButtonBox",
+			"HideOnPrologue": true,
+			"GridNumber": 1
+		}
+	},
+	"customer_service":
+	{
+		"major_announcement": {
+			"Type": "Banner",
+			"Default": "major_announcement_sub",
+			"Value": {
+				"ko_KR": "https://m.nexon.com/notice/get/301?client_id=MzI0OTEzMjMy"
+			},
+			"HideOnPrologue": true,
+			"Locales": [ "ko_KR" ]
+		},
+		"cat_community": {
+			"Type": "Category",
+			"HideOnPrologue": true
+		},
+		"community_grid_buttons": {
+			"Type": "Grid",
+			"HideOnPrologue": true,
+			"Number": 1 
+		},
+		"announcement": {
+			"Type": "ButtonBox",
+			"Value": {
+				"default": "https://m.nexon.com/notice?client_id=MzI0OTEzMjMy"
+			},
+			"HideOnPrologue": true,
+			"GridNumber": 1 
+		},
+		"update_state": {
+			"Type": "ButtonBox",
+			"Value": {
+				"ko_KR": "https://trello.com/b/aIsqh0pl"
+			},
+			"HideOnPrologue": true, 
+			"Locales": [ "ko_KR" ],
+			"GridNumber": 1 
+		},
+		"official_archive": {
+			"Type": "ButtonBox",
+			"Value": {
+				"ko_KR": "http://durango.wiki/"
+			},
+			"HideOnPrologue": true, 
+			"Locales": ["ko_KR"],
+			"GridNumber": 1 
+		},
+		"official_community": {
+			"Type": "ButtonBox",
+			"Value": {
+				"default": "https://www.facebook.com/PlayDurangoWL",
+				"ko_KR": "https://www.facebook.com/PlayDurangoKorea"
+			},
+			"HideOnPrologue": true,
+			"GridNumber": 1 
+		},
+		"cat_customer_center": {
+			"Type": "Category",
+			"HideOnPrologue": true
+		},
+		"cs_grid_buttons": {
+			"Type": "Grid",
+			"HideOnPrologue": true,
+			"Number": 1 
+		},
+		"user_forum": {
+			"Type": "ButtonBox",
+			"HideOnPrologue": true,
+			"Value": {
+				"en_US": "https://m.nexon.com/forum/405"
+			},
+			"Locales": ["en_US"],
+			"GridNumber": 1 
+		},
+		"coupon": {
+			"Type": "ButtonBox",
+			"HideOnPrologue": true,
+			"Platform": ["Android"],
+			"GridNumber": 1
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "V17VcTbLnro=",
+  "success": true,
+  "projectFilePath": "C:\\code\\Project_DX-D_Brasil\\Durango-OffServer-Client-v2.9\\Durango-OffServer\\_client_src\\Assembly-CSharp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ander\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
+    "C:\\Users\\Ander\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net35\\1.0.3\\microsoft.netframework.referenceassemblies.net35.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

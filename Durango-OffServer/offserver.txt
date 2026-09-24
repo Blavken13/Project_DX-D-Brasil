@@ -1,0 +1,7 @@
+# Durango-OffServer link — ลบไฟล์นี้ = กลับไปเล่น offline ปกติ
+
+account=a5cdcc6d-c1a7-4d9c-aac7-30f085a0a456
+
+gateway=http://127.0.0.1:8190
+name=Durango Brasil
+server=Durango Brasil|http://127.0.0.1:8190

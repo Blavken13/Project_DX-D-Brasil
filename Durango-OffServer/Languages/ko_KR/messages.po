@@ -1,0 +1,8 @@
+# Durango: Wild Lands - ko_KR (override เฉพาะข้อความที่ต่างจากในเกม · msgid ที่ไม่มีในไฟล์นี้ = ใช้ข้อความในเกม)
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+# OffServer: ปุ่ม «ลบบัญชี» ในตั้งค่า ▸ บัญชี (override/config_menu_pc.bytes เปลี่ยน leave เป็น ButtonBox → label #config_leave)
+msgid "#config_leave"
+msgstr "계정 삭제"
