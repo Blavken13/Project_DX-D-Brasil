@@ -1,6 +1,6 @@
 is_global = true
 build_property.RootNamespace = Assembly-CSharp
-build_property.ProjectDir = C:\code\Project_DX-D_Brasil\Durango-OffServer-Client-v2.9\Durango-OffServer\_client_src\
+build_property.ProjectDir = C:\code\ProjectDX\Project_DX-D-Brasil\Durango-OffServer\_client_src\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.CsWinRTUseWindowsUIXamlProjections = false

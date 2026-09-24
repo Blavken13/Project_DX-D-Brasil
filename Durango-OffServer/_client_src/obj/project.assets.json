@@ -190,11 +190,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\code\\Project_DX-D_Brasil\\Durango-OffServer-Client-v2.9\\Durango-OffServer\\_client_src\\Assembly-CSharp.csproj",
+      "projectUniqueName": "C:\\code\\ProjectDX\\Project_DX-D-Brasil\\Durango-OffServer\\_client_src\\Assembly-CSharp.csproj",
       "projectName": "Assembly-CSharp",
-      "projectPath": "C:\\code\\Project_DX-D_Brasil\\Durango-OffServer-Client-v2.9\\Durango-OffServer\\_client_src\\Assembly-CSharp.csproj",
+      "projectPath": "C:\\code\\ProjectDX\\Project_DX-D-Brasil\\Durango-OffServer\\_client_src\\Assembly-CSharp.csproj",
       "packagesPath": "C:\\Users\\Ander\\.nuget\\packages\\",
-      "outputPath": "C:\\code\\Project_DX-D_Brasil\\Durango-OffServer-Client-v2.9\\Durango-OffServer\\_client_src\\obj\\",
+      "outputPath": "C:\\code\\ProjectDX\\Project_DX-D-Brasil\\Durango-OffServer\\_client_src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Ander\\AppData\\Roaming\\NuGet\\NuGet.Config"
