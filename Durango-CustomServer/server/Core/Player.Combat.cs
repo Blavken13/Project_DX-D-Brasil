@@ -71,6 +71,13 @@ public static class CombatTuning
     /// ตายเกินกว่านั้นใช้แถวสุดท้าย
     /// </summary>
     public const int MaxDeathCountRow = 3;
+
+    /// <summary>
+    /// TEMP ALPHA SECURITY CAP — alcance máximo aceito pelo servidor enquanto a unidade exata
+    /// de meta.use_range ainda não foi certificada contra o servidor original.
+    /// 16 tiles = 3200 unidades de mundo: largo para gameplay normal, mas bloqueia ataque remoto.
+    /// </summary>
+    public const int MaxServerAttackRangeTiles = 16;
 }
 
 // ── ตัวข้อมูลของไฟล์เกม (โหลดเองในไฟล์นี้ เพราะคลาสใน Support/ พอร์ตมาเท่าที่ระบบอื่นใช้) ──
@@ -297,6 +304,10 @@ public partial class Player
     /// <summary>เป้าหมายล่าสุดที่ client เล็งไว้ (SelectBattleTarget) — ใช้ตอน UseBattleAction ไม่ส่ง target มา</summary>
     private string _battleTargetId;
 
+    /// <summary>คูลดาวน์ authoritative ต่อ action id — client UI ไม่ใช่แหล่งความจริง</summary>
+    private readonly Dictionary<string, double> _battleActionReadyAt =
+        new(StringComparer.Ordinal);
+
     /// <summary>กำลังอยู่ในโหมดต่อสู้ไหม — กันส่ง BattleBegun ซ้ำทุกครั้งที่กดโจมตี</summary>
     private bool _inBattle;
 
@@ -433,8 +444,31 @@ public partial class Player
             Console.WriteLine($"[combat] ไม่รู้จักท่า '{msg.ActionId}'");
             return;
         }
+        if (_sentActionIds == null || !_sentActionIds.Contains(msg.ActionId))
+        {
+            Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: ท่า '{msg.ActionId}' ไม่ได้ถูกปลดให้ผู้เล่น");
+            return;
+        }
+
+        double now = Gauge.CurrentTime;
+        if (_battleActionReadyAt.TryGetValue(msg.ActionId, out double readyAt) &&
+            now < readyAt)
+        {
+            Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: '{msg.ActionId}' ยังติดคูลดาวน์");
+            return;
+        }
+
+        if (action.meta.stamina > 0 &&
+            _survival.ValueAt(SurvivalState.KeyStamina, now) + 0.001f < action.meta.stamina)
+        {
+            Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: stamina ไม่พอสำหรับ '{msg.ActionId}'");
+            return;
+        }
+
+        _battleActionReadyAt[msg.ActionId] =
+            now + Math.Max(0f, action.meta.cooltime);
+
         // ค่าความอึดที่ท่าใช้ — ตัวเลขจริงจาก player_battle_actions.json → meta.stamina
-        // client กันการกดตอนความอึดไม่พออยู่แล้ว (CombatSystem.cs:453-460) เซิร์ฟหักตามจริง
         if (action.meta.stamina > 0)
         {
             _survival.Add(SurvivalState.KeyStamina, -action.meta.stamina);
@@ -474,7 +508,11 @@ public partial class Player
         }
         // คนละเกาะตีกันไม่ได้ (แต่ละเกาะเป็นคนละ World — ดู Core/GameServer.cs:42-43 WorldOf)
         if (other == null || !ReferenceEquals(other._world, _world)) return null;
-        return other._context.AppearPlayer.IsAlive ? other : null;
+
+        // TEMP ALPHA: PvP ยังไม่มี Savage/SafeZone/Clan/Party rules authoritative.
+        // ปลอดภัยกว่าปล่อย player damage global จนกว่า A8 จะเปิด PvP เฉพาะพื้นที่ที่ถูกต้อง.
+        Console.WriteLine($"[combat] ปฏิเสธ PvP {Short(EntityId)} → {Short(other.EntityId)}: PvP ยังไม่เปิด");
+        return null;
     }
 
     // ── ความเสียหาย ────────────────────────────────────────────────────────────────

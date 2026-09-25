@@ -211,15 +211,18 @@ public static class RegionCatalog
                 TerrainId = id,
                 TemplateId = templateId,
                 Role = template.Role,
-                Name = id,
+                // null faz o client resolver o nome localizado a partir do TemplateId.
+                // Enviar o id técnico aqui fazia a UI mostrar "ri35de", "ri45sa" etc.
+                Name = null,
                 CreatedAt = 0.0
             };
             _byId[id] = region;
 
-            // Regiões Tutorial precisam ser reconhecidas por TryGet/GetOrCreate,
-            // mas não devem aparecer na lista pública de destinos de navegação.
+            // Tutorial, Safehouse e templates de Personal Region precisam ser reconhecidos
+            // por TryGet/GetOrCreate, mas não devem aparecer na lista pública de navegação.
             if (template.Role != Role.Tutorial &&
-                template.Role != Role.Safehouse)
+                template.Role != Role.Safehouse &&
+                template.Role != Role.Personal)
             {
                 _regions.Add(region);
             }
@@ -234,6 +237,18 @@ public static class RegionCatalog
 
     public static TemplateInfo GetTemplate(string templateId) =>
         templateId != null && _templates.TryGetValue(templateId, out TemplateInfo info) ? info : null;
+
+    /// <summary>
+    /// Primeiro template de Personal Region que possui terrain real instalado.
+    /// Usado somente como fallback de migração para personagens antigos que chegaram ao
+    /// pós-tutorial antes de existir persistência de PersonalRegionId.
+    /// </summary>
+    public static string DefaultPersonalTemplateId =>
+        _byId.Values
+            .Where(region => GetTemplate(region.TemplateId)?.Role == Role.Personal)
+            .Select(region => region.TemplateId)
+            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
+            .FirstOrDefault();
 
     /// <summary>เกาะอื่นทั้งหมดที่ไม่ใช่เกาะที่ยืนอยู่ตอนนี้ — ปลายทางของเส้นทางเดินเรือ</summary>
     public static IEnumerable<Region> Others(string currentRegionId) =>

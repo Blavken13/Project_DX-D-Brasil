@@ -24,17 +24,14 @@ public static class TerrainLoader
         LoadZip(terrainId, terrainData);
         if (terrainData.Info == null)
         {
-            terrainData.Info = new TerrainInfoJson
-            {
-                tile_count = new[] { 256, 256 },
-                lake_biome = "grassland",
-                ocean_biome = "warm_ocean",
-                river_biome = "temperate_forest",
-                color_set = "grassland",
-                region_template = "pe10gr_1",
-                tile_set = "grassland",
-                entry_points = new[] { new[] { 63, 71 } }
-            };
+            throw new InvalidDataException($"Terrain '{terrainId}' does not contain a valid info.yml.");
+        }
+        if (terrainData.Info.tile_count == null ||
+            terrainData.Info.tile_count.Length < 2 ||
+            terrainData.Info.tile_count[0] <= 0 ||
+            terrainData.Info.tile_count[1] <= 0)
+        {
+            throw new InvalidDataException($"Terrain '{terrainId}' has an invalid tile_count.");
         }
         terrainData.Width = terrainData.Info.tile_count[0];
         terrainData.Height = terrainData.Info.tile_count[1];
@@ -56,7 +53,10 @@ public static class TerrainLoader
         data.Pois = null;
         data.Herds = null;
         string path = ResolvePath(terrainId);
-        if (path == null) return;
+        if (path == null)
+        {
+            throw new FileNotFoundException($"Terrain '{terrainId}' was not found in '{TerrainDir}'.");
+        }
         try
         {
             using var stream = File.OpenRead(path);
@@ -81,7 +81,7 @@ public static class TerrainLoader
         }
         catch (Exception e)
         {
-            Console.WriteLine($"[terrain] อ่าน {path} ไม่สำเร็จ: {e.Message}");
+            throw new InvalidDataException($"Failed to load terrain '{terrainId}' from '{path}'.", e);
         }
     }
 
@@ -129,12 +129,17 @@ public static class TerrainLoader
 
     private static string ResolvePath(string terrainId)
     {
-        foreach (string candidate in new[] { terrainId, DefaultTerrainFile })
+        string candidate = string.IsNullOrEmpty(terrainId) ||
+                           string.Equals(terrainId, "1", StringComparison.OrdinalIgnoreCase)
+            ? DefaultTerrainFile
+            : terrainId;
+
+        if (!string.IsNullOrEmpty(candidate))
         {
-            if (string.IsNullOrEmpty(candidate)) continue;
-            string p = Path.Combine(TerrainDir, candidate + ".zip");
-            if (File.Exists(p)) return p;
+            string path = Path.Combine(TerrainDir, candidate + ".zip");
+            if (File.Exists(path)) return path;
         }
+
         Console.WriteLine($"[terrain] ⚠️ ไม่พบ terrain '{terrainId}' ใน {TerrainDir}");
         return null;
     }

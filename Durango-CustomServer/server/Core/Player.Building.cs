@@ -175,6 +175,39 @@ public partial class Player
             return;
         }
 
+        bool foreignPersonalRegion =
+            _world.Registry?.IsPersonalRegion(_context.RegionId) == true &&
+            !string.Equals(_context.RegionId, _context.PersonalRegionId, StringComparison.OrdinalIgnoreCase);
+        if (foreignPersonalRegion)
+        {
+            Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: พยายามสร้างบนเกาะส่วนตัวของผู้อื่น");
+            Send(new Abort { Text = "สร้างบนเกาะส่วนตัวของผู้อื่นไม่ได้" }, seq);
+            return;
+        }
+
+        var checkedEstates = new HashSet<string>(StringComparer.Ordinal);
+        for (int dx = 0; dx < Math.Max(1, size.x); dx++)
+        {
+            for (int dy = 0; dy < Math.Max(1, size.y); dy++)
+            {
+                Point2 cell = World.CellFromTile(new Point2(msg.Tile.x + dx, msg.Tile.y + dy));
+                if (!_world.TryGetEstateIdAtCell(cell, out string estateId) ||
+                    !checkedEstates.Add(estateId))
+                {
+                    continue;
+                }
+
+                EstateRecord estate = _world.GetEstate(estateId);
+                if (estate == null ||
+                    !string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal))
+                {
+                    Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: footprint แตะที่ดิน {estateId} ของผู้อื่น");
+                    Send(new Abort { Text = "พื้นที่ก่อสร้างทับที่ดินของผู้อื่น" }, seq);
+                    return;
+                }
+            }
+        }
+
         // สูตรทั้งสองมาจาก constants.json → build → site_selection ตรง ๆ (ดู Support/BuildTuning.cs)
         float duration = (float)Math.Clamp(
             BuildTuning.EvalByArea(BuildTuning.SiteDuration, area, 2 + area), 0.0, MaxBuildSeconds);

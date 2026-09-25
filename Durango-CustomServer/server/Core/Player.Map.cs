@@ -140,6 +140,21 @@ public partial class Player
 
     private void HandleExplorePOIMsg(ExplorePOI msg, uint seq)
     {
+        var poiType = (Shared.System.PointOfInterest)msg.Type;
+        if (poiType is Shared.System.PointOfInterest.Port or
+                       Shared.System.PointOfInterest.Warphole or
+                       Shared.System.PointOfInterest.CargoWarphole or
+                       Shared.System.PointOfInterest.Rift or
+                       Shared.System.PointOfInterest.Crater or
+                       Shared.System.PointOfInterest.Crack)
+        {
+            if (!_world.EnsureTerrainLandmarkArtifact(msg.Tile, poiType))
+            {
+                Send(new Abort { Text = "จุดสำคัญนี้ไม่ตรงกับข้อมูลภูมิประเทศ" }, seq);
+                return;
+            }
+        }
+
         Dictionary<string, ExploredPoint> found = _context.ExploredPOIs ??= new Dictionary<string, ExploredPoint>();
         // ต้องใช้ LogicalRegionId ให้ตรงกับที่ client ส่งมาใน GetExploredPOIs (Region.Id)
         // เดิมเซฟด้วย TerrainId ⇒ บนเกาะส่วนตัวขอ personal_* แล้วได้ลิสต์ว่าง

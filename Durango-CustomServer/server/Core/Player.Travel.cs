@@ -328,10 +328,15 @@ public partial class Player
                 real.Add(TileKey(tile.x, tile.y));
             }
         }
+        foreach (AppearArtifact artifact in _world.ArtifactManager.Enumerable(a =>
+                     a.IsAlive && a.EntityType == 9450))
+        {
+            real.Add(TileKey(artifact.Tile.x, artifact.Tile.y));
+        }
 
         foreach (ExploredPoint point in _context.ExploredPOIs.Values)
         {
-            if (point.RegionId != _world.TerrainId)
+            if (!string.Equals(point.RegionId, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
@@ -394,7 +399,21 @@ public partial class Player
     {
         if (_world.ArtifactManager.Get(msg.EntityId) is not { } artifact)
         {
-            Send(new Abort { Text = "ไม่พบรูวาร์ปนี้" }, seq);
+            if (!_world.EnsureTerrainLandmarkArtifact(
+                    msg.Tile, Shared.System.PointOfInterest.Warphole))
+            {
+                Send(new Abort { Text = "ไม่พบรูวาร์ปนี้" }, seq);
+                return;
+            }
+
+            int fallbackReach = ArtifactReachTiles + 6;
+            if (!IsWithinTiles(msg.Tile, fallbackReach))
+            {
+                Send(new Abort { Text = "อยู่ไกลรูวาร์ปเกินไป" }, seq);
+                return;
+            }
+
+            Send(default(OK), seq);
             return;
         }
 
@@ -432,6 +451,20 @@ public partial class Player
     /// </summary>
     private void BeginTravelWarp(Point2 tile, uint seq, string what, TeleportType type)
     {
+        if (!_context.AppearPlayer.IsAlive)
+        {
+            Send(new Abort { Text = "ตอนนี้วาร์ปไม่ได้" }, seq);
+            return;
+        }
+        lock (_warpTimers)
+        {
+            if (_warpTimers.Count >= MaxConcurrentWarps)
+            {
+                Send(new Abort { Text = "กำลังวาร์ปอยู่แล้ว" }, seq);
+                return;
+            }
+        }
+
         float duration = Math.Max(0f, WarpTuning.WarpTime);
 
         // ⚠️ Timer ต้องเป็นคำตอบแรกและตัวเดียวที่ seq นี้ (กับดัก ① ที่ Player.Warp.cs:38-42)
@@ -492,11 +525,12 @@ public partial class Player
     private void HandleGetRegionMapInfoMsg(GetRegionMapInfo msg, uint seq)
     {
         string regionId = RegionKey(msg.RegionId);
+        string terrainFile = TerrainFileForRegion(regionId);
         int tilesX;
         int tilesY;
         DefoggedChunks chunks;
 
-        if (string.Equals(regionId, _world.TerrainId, StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(regionId, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
         {
             tilesX = _world.NumTilesX;
             tilesY = _world.NumTilesY;
@@ -508,7 +542,7 @@ public partial class Player
             TerrainData data;
             try
             {
-                data = TerrainLoader.Load(regionId);
+                data = TerrainLoader.Load(terrainFile);
             }
             catch (Exception e)
             {
@@ -530,7 +564,7 @@ public partial class Player
         Send(new RegionMapInfo
         {
             RegionId = msg.RegionId,   // ต้องสะท้อนตัวอักษรเดิม ไม่งั้นฝั่งเกมทิ้งคำตอบ
-            TerrainId = regionId,
+            TerrainId = terrainFile,
             TileCount = new Point2(tilesX, tilesY),
             DefoggedChunks = chunks
         }, seq);
@@ -548,13 +582,20 @@ public partial class Player
     private static bool IsStableRole(Shared.Region.Role role) =>
         role is Shared.Region.Role.Rural or Shared.Region.Role.Outpost or Shared.Region.Role.Urban;
 
+    /// <summary>
+    /// TEMP ALPHA gate: sem quests restauradas, o level do personagem controla o acesso naval.
+    /// Nunca confie apenas na UI: este mesmo gate também é aplicado no handler de Travel.
+    /// </summary>
+    private bool CanAccessSailingTemplate(RegionCatalog.TemplateInfo template) =>
+        template != null && (template.Level <= 0 || _skillLevel >= template.Level);
+
     private void HandleRecommendStableRegionsMsg(uint seq)
     {
         var routes = new List<Route>();
         foreach (Messages.Region region in RegionCatalog.Others(_world.TerrainId))
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template == null || !IsStableRole(template.Role))
+            if (!CanAccessSailingTemplate(template) || !IsStableRole(template.Role))
             {
                 continue;
             }
@@ -578,7 +619,7 @@ public partial class Player
         foreach (Messages.Region region in RegionCatalog.Others(_world.TerrainId))
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template == null)
+            if (!CanAccessSailingTemplate(template))
             {
                 continue;
             }
@@ -619,7 +660,9 @@ public partial class Player
         foreach (Messages.Region region in RegionCatalog.All)
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template == null || template.Level != msg.Level || template.Biome != msg.Biome)
+            if (!CanAccessSailingTemplate(template) ||
+                template.Level != msg.Level ||
+                template.Biome != msg.Biome)
             {
                 continue;
             }
@@ -655,14 +698,16 @@ public partial class Player
             current = RegionCatalog.GetTemplate(here.TemplateId);
         }
 
-        if (current != null)
+        if (CanAccessSailingTemplate(current) &&
+            current.Role == Shared.Region.Role.Risky)
         {
             string archipelagoId = RegionCatalog.ArchipelagoIdOf(current);
             var included = new List<Route>();
             foreach (Messages.Region region in RegionCatalog.Others(_world.TerrainId))
             {
                 RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-                if (template == null || RegionCatalog.ArchipelagoIdOf(template) != archipelagoId)
+                if (!CanAccessSailingTemplate(template) ||
+                    RegionCatalog.ArchipelagoIdOf(template) != archipelagoId)
                 {
                     continue;
                 }
@@ -690,15 +735,9 @@ public partial class Player
 
     private void HandleTravelToRandomPersonalRegionMsg(uint seq)
     {
-        var candidates = new List<Messages.Region>();
-        foreach (Messages.Region region in RegionCatalog.Others(_world.TerrainId))
-        {
-            RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template != null && template.Role == Shared.Region.Role.Personal)
-            {
-                candidates.Add(region);
-            }
-        }
+        List<string> candidates = _world.Registry?.PersonalRegionIds
+            .Where(id => !string.Equals(id, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
+            .ToList() ?? new List<string>();
 
         if (candidates.Count == 0)
         {
@@ -706,8 +745,8 @@ public partial class Player
             return;
         }
 
-        Messages.Region picked = candidates[System.Random.Shared.Next(candidates.Count)];
-        Console.WriteLine($"[เดินทาง] {Short(EntityId)} ออกเรือสุ่มไปเกาะส่วนตัว {picked.Id}");
-        HandleTravelMsg(picked.Id, seq);
+        string picked = candidates[System.Random.Shared.Next(candidates.Count)];
+        Console.WriteLine($"[เดินทาง] {Short(EntityId)} ออกเรือสุ่มไปเกาะส่วนตัว {picked}");
+        HandleTravelMsg(picked, seq);
     }
 }

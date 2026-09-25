@@ -67,6 +67,50 @@ public static class SurvivalTuning
 
     /// <summary>rest → health = 0.18 + 0.02 * level ที่ level 1</summary>
     public const float RestHealthVelocity = 0.18f + 0.02f * 1f;
+
+    /// <summary>
+    /// TEMP ALPHA TEST EVENT — acelera somente a recuperacao de fatigue durante descanso
+    /// em um Shelter valido. O multiplicador e aplicado sobre a formula original do level
+    /// do abrigo, portanto a diferenca relativa entre abrigos continua preservada.
+    ///
+    /// rest lv1 = -0.1515/s; x66 = -9.999/s, aproximadamente 100 -> 0 em 10 segundos.
+    /// Voltar para 1f quando o evento de teste terminar.
+    /// </summary>
+    public const float AlphaTestRestFatigueMultiplier = 66f;
+
+    public static Dictionary<string, float> RestVelocities(int level, bool acceleratedFatigue)
+    {
+        StatusEffectCatalog.Template template = StatusEffectCatalog.Get("rest", level);
+        int effectLevel = template == null
+            ? 1
+            : Math.Clamp(level, template.MinLevel, Math.Max(template.MinLevel, template.MaxLevel));
+
+        Dictionary<string, float> velocities = template?.GetType1Velocities(effectLevel)
+            ?? new Dictionary<string, float>();
+
+        if (!velocities.ContainsKey(SurvivalState.KeyFatigue))
+        {
+            velocities[SurvivalState.KeyFatigue] = RestFatigueVelocity;
+        }
+        if (!velocities.ContainsKey(SurvivalState.KeyLife))
+        {
+            velocities[SurvivalState.KeyLife] = RestLifeVelocity;
+        }
+        if (!velocities.ContainsKey(SurvivalState.KeyHealth))
+        {
+            velocities[SurvivalState.KeyHealth] = RestHealthVelocity;
+        }
+
+        if (acceleratedFatigue &&
+            velocities.TryGetValue(SurvivalState.KeyFatigue, out float fatigue) &&
+            fatigue < 0f)
+        {
+            velocities[SurvivalState.KeyFatigue] =
+                fatigue * AlphaTestRestFatigueMultiplier;
+        }
+
+        return velocities;
+    }
 }
 
 /// <summary>
@@ -218,19 +262,14 @@ public sealed class SurvivalState
     }
 
     /// <summary>พักอยู่ไหม (RestOn) — ค่าจาก status_effects.json → "rest" ดู SurvivalTuning</summary>
-    public void SetResting(bool resting)
+    public void SetResting(bool resting, int level = 1, bool acceleratedFatigue = false)
     {
         if (!resting)
         {
             SetMomentum(SourceResting, null);
             return;
         }
-        SetMomentum(SourceResting, new Dictionary<string, float>
-        {
-            { KeyFatigue, SurvivalTuning.RestFatigueVelocity },
-            { KeyLife, SurvivalTuning.RestLifeVelocity },
-            { KeyHealth, SurvivalTuning.RestHealthVelocity }
-        });
+        SetMomentum(SourceResting, SurvivalTuning.RestVelocities(level, acceleratedFatigue));
     }
 
     /// <summary>ตั้ง/ลบแรงของแหล่งหนึ่ง — คืน true ถ้าค่าเปลี่ยนจริง (ต้องส่งเส้นใหม่)</summary>

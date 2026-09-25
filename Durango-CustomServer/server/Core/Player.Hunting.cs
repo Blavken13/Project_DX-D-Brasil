@@ -425,6 +425,12 @@ public partial class Player
         AnimalManager.Animal animal = _world.AnimalManager?.Get(entityId);
         if (animal == null || !animal.IsAlive) return false;
 
+        if (!IsWithinTiles(animal.Tile, CombatTuning.MaxServerAttackRangeTiles))
+        {
+            Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: สัตว์ {entityId} อยู่ไกลเกินไป");
+            return true;
+        }
+
         float bonus = attack.damage_bonus > 0f ? attack.damage_bonus : 1f;
         // [7 ก.ย. 2026] สกิลหมวดต่อสู้เพิ่มดาเมจ (ดู Player.SkillEffects.cs) — ทางเดียวกับตีผู้เล่น
         float raw = CurrentAttackPower() * bonus * OutgoingDamageScale();
@@ -552,6 +558,11 @@ public partial class Player
         if (animal == null || !animal.IsAlive)
         {
             RejectTaming(seq, "ไม่เจอสัตว์ตัวนี้ หรือมันตายไปแล้ว");
+            return;
+        }
+        if (!IsWithinTiles(animal.Tile, NaturalReachTiles))
+        {
+            RejectTaming(seq, "อยู่ไกลจากสัตว์เกินไป");
             return;
         }
 

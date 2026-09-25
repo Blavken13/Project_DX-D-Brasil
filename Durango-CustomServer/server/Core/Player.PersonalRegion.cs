@@ -39,7 +39,7 @@ public partial class Player
             TerrainId = templateId,
             TemplateId = templateId,
             Role = Role.Personal,
-            Name = null,
+            Name = "Ilha Domada",
             CreatedAt = 0
         };
 
@@ -189,6 +189,11 @@ public partial class Player
             Send(new Abort { Text = "ไม่ทราบเกาะส่วนตัวปลายทาง" }, seq);
             return;
         }
+        if (_world.Registry?.IsPersonalRegion(dest) != true)
+        {
+            Send(new Abort { Text = "ไม่พบเกาะส่วนตัวปลายทาง" }, seq);
+            return;
+        }
         float duration = 1f;
         Send(new Messages.Timer { Duration = duration }, seq);
         Console.WriteLine($"[เกาะส่วนตัว] {Short(EntityId)} เยี่ยม {dest}");
@@ -297,6 +302,23 @@ public partial class Player
             Send(new Abort { Text = "ประกาศที่ดินชนิดนี้ยังไม่รองรับ" }, seq);
             return;
         }
+        Point2 estateTile = World.TileFromCell(msg.Cell);
+        int maxTileX = _world.NumChunksX * 16;
+        int maxTileY = _world.NumChunksY * 16;
+        if (estateTile.x < 0 ||
+            estateTile.y < 0 ||
+            estateTile.x + World.EstateGridSize > maxTileX ||
+            estateTile.y + World.EstateGridSize > maxTileY)
+        {
+            Send(new Abort { Text = "พื้นที่นี้อยู่นอกขอบเขตเกาะ" }, seq);
+            return;
+        }
+        if (!IsWithinTiles(estateTile, ArtifactReachTiles + World.EstateGridSize))
+        {
+            Send(new Abort { Text = "ต้องอยู่ใกล้พื้นที่ก่อนประกาศที่ดิน" }, seq);
+            return;
+        }
+
         if (msg.OwnerType == OwnerType.PersonalPlayer)
         {
             if (string.IsNullOrEmpty(_context.PersonalRegionId))

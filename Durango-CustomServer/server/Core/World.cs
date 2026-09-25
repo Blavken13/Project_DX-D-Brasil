@@ -393,6 +393,117 @@ public class World
     }
 
     /// <summary>
+    /// TEMP ALPHA: materializa um landmark do terrain como artifact de sistema.
+    ///
+    /// O client recebe <c>whole.landmarks</c> e consegue descobrir alguns POIs que não aparecem
+    /// em <c>pois.yml</c>. Sem um AppearArtifact correspondente, o marcador existe no mapa mas
+    /// a interação não chega a lugar nenhum. Para não confiar cegamente no client, só aceitamos
+    /// coordenadas que existam no blob autoritativo <c>whole.landmarks</c> do terrain atual.
+    ///
+    /// O tipo ainda vem do ExplorePOI do client porque o formato dos 12 bytes restantes de cada
+    /// entrada de landmark ainda não foi reconstruído. Isso limita uma falsificação a converter
+    /// um landmark real em outro tipo de POI; não permite inventar coordenadas arbitrárias.
+    /// </summary>
+    public bool EnsureTerrainLandmarkArtifact(Point2 tile, Shared.System.PointOfInterest type)
+    {
+        ushort entityType;
+        int fallbackSize;
+
+        switch (type)
+        {
+            case Shared.System.PointOfInterest.Port:
+                entityType = 7001;
+                fallbackSize = 3;
+                break;
+            case Shared.System.PointOfInterest.Warphole:
+            case Shared.System.PointOfInterest.CargoWarphole:
+                entityType = 9450;
+                fallbackSize = 6;
+                break;
+            case Shared.System.PointOfInterest.Rift:
+                entityType = 6282;
+                fallbackSize = 4;
+                break;
+            case Shared.System.PointOfInterest.Crater:
+            case Shared.System.PointOfInterest.Crack:
+                entityType = 7037;
+                fallbackSize = 4;
+                break;
+            default:
+                return true;
+        }
+
+        if (ArtifactManager.Enumerable(a =>
+                a.IsAlive &&
+                a.EntityType == entityType &&
+                a.Tile.x == tile.x &&
+                a.Tile.y == tile.y).Any())
+        {
+            return true;
+        }
+
+        if (!IsTerrainLandmarkAt(tile))
+        {
+            Console.WriteLine($"[world] rejeitou landmark {type} em [{tile.x},{tile.y}]: coordenada nao existe em whole.landmarks");
+            return false;
+        }
+
+        string id = $"terrain_landmark_{entityType}_{tile.x}_{tile.y}";
+        Point2 size = SizeOf(entityType, fallbackSize);
+        AppearArtifact? made = Cheats.MakeAppearArtifact(
+            new[] { "prop", entityType.ToString(), $"position:{tile.x},{tile.y}", $"size:{size.x},{size.y}" },
+            out AddOns? addons);
+        if (!made.HasValue)
+        {
+            Console.WriteLine($"[world] nao conseguiu materializar landmark {type} em [{tile.x},{tile.y}]");
+            return false;
+        }
+
+        AppearArtifact artifact = made.Value;
+        artifact.EntityId = id;
+        artifact.Display.EntityId = id;
+        artifact.States.EntityId = id;
+        artifact.IsAlive = true;
+        artifact.Height = HeightOf(entityType);
+
+        if (entityType == 9450) artifact.States.Level = 1;
+        if (entityType == 7037) artifact.States.Crack = MakeClosedCrack(RegionLevel);
+
+        ArtifactManager.AddArtifact(artifact);
+        if (addons.HasValue)
+        {
+            AppearArtifact? withAddOns = ArtifactManager.PlaceAddOns(id, addons.Value._AddOns);
+            if (withAddOns.HasValue) artifact = withAddOns.Value;
+        }
+
+        OnArtifactAppeared(artifact);
+        Save();
+        Console.WriteLine($"[world] materializou landmark {type} em [{tile.x},{tile.y}] como artifact {entityType}");
+        return true;
+    }
+
+    private bool IsTerrainLandmarkAt(Point2 tile)
+    {
+        byte[] landmarks = _terrainData.Landmarks;
+        const int stride = 16;
+        if (landmarks == null || landmarks.Length < stride || landmarks.Length % stride != 0)
+        {
+            return false;
+        }
+
+        for (int offset = 0; offset < landmarks.Length; offset += stride)
+        {
+            int x = BitConverter.ToUInt16(landmarks, offset);
+            int y = BitConverter.ToUInt16(landmarks, offset + 2);
+            if (x == tile.x && y == tile.y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
     /// ลบจุดสำคัญค้างที่ไม่ตรงกับ pois.yml อีกต่อไป
     ///
     /// ═══ ทำไมต้องมี ═══

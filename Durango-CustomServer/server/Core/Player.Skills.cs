@@ -84,6 +84,13 @@ public static class SkillTuning
     public const int ActionsPerLevel = 40;
 
     /// <summary>
+    /// TEMP ALPHA TEST EVENT — multiplicador de EXP de personagem recebido por acoes.
+    /// 1 = balance normal. 20 = evento acelerado para desbloquear rapidamente os testes de World/Travel.
+    /// EXP de categoria de skill continua normal para nao distorcer a progressao das profissoes.
+    /// </summary>
+    public const int AlphaTestPlayerExpMultiplier = 20;
+
+    /// <summary>
     /// **ค่าของเรา** — exp หมวดสกิลที่ได้ต่อ 1 ครั้ง
     ///
     /// เพดาน 3 มาจากของจริง (<c>constants.json</c> → <c>skill.exp_increase_limit</c>)
@@ -822,6 +829,14 @@ public partial class Player
     {
         if (amount <= 0 || _skills == null) return;
 
+        if (!string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase))
+        {
+            amount = (int)Math.Min(
+                (long)amount * SkillTuning.AlphaTestPlayerExpMultiplier,
+                int.MaxValue);
+            reason = $"{reason} [ALPHA XP x{SkillTuning.AlphaTestPlayerExpMultiplier}]";
+        }
+
         int before = _skillLevel;
         int cap = ExpCap();
         _skills.Exp = (int)Math.Min((long)_skills.Exp + amount, cap);
@@ -874,7 +889,7 @@ public partial class Player
     public int PreviewActionExp(int weight)
     {
         if (weight <= 0 || _skills == null) return 0;
-        return ExpPerAction(_skillLevel) * weight;
+        return ExpPerAction(_skillLevel) * weight * SkillTuning.AlphaTestPlayerExpMultiplier;
     }
 
     /// <summary>เพดาน exp — ค้างที่เลเวลสูงสุดแต่ยังให้แถบเดินจนเต็มช่องสุดท้าย</summary>
@@ -942,7 +957,53 @@ public partial class Player
         _skillLevel = level;
         _context.PlayerInfo.PlayerLevel = level;   // 1) หน้าเลือกตัวละคร
         _context.AppearPlayer.Level = level;       // 2) เลเวลลอยเหนือหัว (คนที่เห็นเราใหม่)
-        if (sendStats) SendFullStatistics();       // 3) เลเวลที่เกมใช้ทุกอย่าง
+
+        // Survival é uma categoria especial no Durango original:
+        // ela acompanha automaticamente o level do personagem em vez de ganhar category EXP.
+        // Isso também migra saves antigos onde Survival ficou preso no lv1.
+        SkillCategorySave survival = CategoryState((int)SkillCat.Survival);
+        int previousSurvivalLevel = survival.Level;
+        int survivalLevel = Math.Clamp(level, 1, SkillDataStore.MaxPlayerLevel);
+        bool survivalChanged =
+            survival.Level != survivalLevel ||
+            survival.Exp != 0 ||
+            survival.ResearchStart != 0.0 ||
+            survival.ResearchEnd != 0.0 ||
+            survival.ResearchSaved != 0f;
+
+        if (survivalChanged)
+        {
+            survival.Level = survivalLevel;
+            survival.Exp = 0;
+            survival.ResearchStart = 0.0;
+            survival.ResearchEnd = 0.0;
+            survival.ResearchSaved = 0f;
+        }
+
+        if (sendStats)
+        {
+            if (survivalLevel > previousSurvivalLevel)
+            {
+                NotifyCategoryLevelUp(SkillCat.Survival, survivalLevel);
+            }
+
+            if (survivalChanged)
+            {
+                // Os nós gratuitos de Survival ("Surviving Durango") dependem do
+                // category level e devem ser liberados junto com o player level.
+                GrantFreeSkills(save: false);
+                SendSkills();
+            }
+
+            SendFullStatistics();                  // 3) เลเวลที่เกมใช้ทุกอย่าง
+        }
+
+        // No login, ApplyLevel roda antes do fluxo normal que salva novamente.
+        // Persistimos a migração imediatamente para o save não continuar com Survival lv1.
+        if (survivalChanged && !sendStats)
+        {
+            SaveSkillState();
+        }
     }
 
     // ───────────────────────────────────────────────────────────────────────────────

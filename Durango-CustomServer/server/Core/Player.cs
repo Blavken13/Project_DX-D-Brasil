@@ -182,9 +182,11 @@ public partial class Player
             // นั่งพัก = ความชันของ fatigue/life/health เปลี่ยน ⇒ ต้องส่งเส้นชุดใหม่ทันที
             // ไม่ใช่รอรอบตรวจ (ค่าจาก status_effects.json → "rest" ดู SurvivalTuning)
             // เลิกพักเองตอนขยับ ตามแท็ก "clear_on_move" ของสถานะนั้น — ดู HandleMoveMsg
-            _survival.SetResting(true);
+            bool resolvedRestLevel = TryGetNearbyRestLevel(out int restLevel);
+            _survival.SetResting(true, restLevel, acceleratedFatigue: true);
+            Console.WriteLine($"[rest] {Short(EntityId)} ALPHA boost x{SurvivalTuning.AlphaTestRestFatigueMultiplier:0.##} · level={restLevel} · shelter-resolved={resolvedRestLevel}");
             // [7 ก.ย. 2026] ใส่ไอคอน rest ด้วย — Until=0 จนกว่าจะเดิน (ตรงแท็ก clear_on_move)
-            ApplyTimedStatusEffect("rest", 1, durationOverride: 0);
+            ApplyTimedStatusEffect("rest", restLevel, durationOverride: 0);
             SendStatusEffects();
             FlushSurvival();
             OnContextChanged();
@@ -196,7 +198,7 @@ public partial class Player
         });
         _connection.Recv(delegate(PlantSeed msg, PacketHeader header)
         {
-            HandlePlantSeedMsg(msg);
+            HandlePlantSeedMsg(msg, header.Seq);
         });
         _connection.Recv(delegate(ChargeEffect msg, PacketHeader header)
         {
@@ -1486,6 +1488,51 @@ public partial class Player
     }
 
     /// <summary>
+    /// Procura o Shelter valido mais proximo do jogador.
+    ///
+    /// RestOn nao carrega o entity id do objeto usado para descansar, portanto reconstruimos
+    /// o alvo com a mesma fonte autoritativa usada para montar o menu de interacao:
+    /// Blueprint component "Shelter" + distancia valida.
+    ///
+    /// O level retornado alimenta diretamente a formula original do status effect "rest".
+    /// Retorna false quando o jogador esta apenas descansando sem um abrigo/fogueira valido;
+    /// nesse caso o descanso normal continua funcionando, mas sem o bonus acelerado do Alpha.
+    /// </summary>
+    private bool TryGetNearbyRestLevel(out int level)
+    {
+        level = 1;
+        Point2 playerTile = LifeTileOf(this);
+        AppearArtifact? nearest = null;
+        int nearestDistanceSquared = int.MaxValue;
+
+        foreach (AppearArtifact artifact in _world.ArtifactManager.Enumerable(a => a.IsAlive))
+        {
+            MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
+            if (blueprint?.Components == null ||
+                !blueprint.Components.Contains("Shelter"))
+            {
+                continue;
+            }
+
+            int reach = ArtifactReachTiles + Math.Max(artifact.Size.x, artifact.Size.y);
+            if (!IsWithinTiles(artifact.Tile, reach)) continue;
+
+            int dx = artifact.Tile.x - playerTile.x;
+            int dy = artifact.Tile.y - playerTile.y;
+            int distanceSquared = dx * dx + dy * dy;
+            if (nearest.HasValue && distanceSquared >= nearestDistanceSquared) continue;
+
+            nearest = artifact;
+            nearestDistanceSquared = distanceSquared;
+        }
+
+        if (!nearest.HasValue) return false;
+
+        level = Math.Max(1, (int)nearest.Value.States.Level);
+        return true;
+    }
+
+    /// <summary>
     /// ระยะไกลสุด (ช่อง) ที่ยังยุ่งกับสิ่งปลูกสร้างได้ — บวกขนาดของหลังนั้นเข้าไปอีกที
     ///
     /// **ค่าของเรา** — ข้อมูลเกมไม่มีตัวเลขนี้ ตั้ง 6 ช่องเพราะฝั่งเกมเดินเข้าไปหาก่อนเสมอ
@@ -1800,24 +1847,65 @@ public partial class Player
         }
     }
 
-    private void HandlePlantSeedMsg(PlantSeed msg)
+    private void HandlePlantSeedMsg(PlantSeed msg, uint seq)
     {
-        foreach (Item inventoryItem in _context.InventoryItems)
+        if (!MayTouchArtifact(msg.EntityId, "plant"))
         {
-            if (inventoryItem.Id != msg.SeedItemId) continue;
-
-            // เลเวลของเมล็ดคุมเวลาปลูก (crops.json → grows_until เป็นสูตรของ level)
-            // และไบโอมของช่องคุมความเหมาะสมของภูมิอากาศบนป้ายข้อมูล
-            Point2 tile = _world.ArtifactManager.Get(msg.EntityId)?.Tile ?? default;
-            _world.ArtifactManager.SeedPlant(msg.EntityId, inventoryItem.Prototype,
-                inventoryItem.Level, _world.BiomeAt(tile));
-
-            // [7 ก.ย. 2026] exp หมวดเกษตร — ⚠️ ก่อนหน้านี้ไม่มีจุดไหนให้ exp หมวดนี้เลย
-            // ⇒ ปลูกทั้งวันหมวด Farming ค้างที่เลเวล 1 ตลอดกาล และไม่ได้ exp ตัวละครด้วย
-            AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "ปลูกพืช");
-            NoteQuestEvent(Shared.Quest.QuestEventType.Farmed);
-            break;
+            Send(new Abort { Text = "ไม่มีสิทธิ์ปลูกในแปลงนี้" }, seq);
+            return;
         }
+
+        AppearArtifact? plot = _world.ArtifactManager.Get(msg.EntityId);
+        if (!plot.HasValue)
+        {
+            Send(new Abort { Text = "ไม่พบแปลงปลูก" }, seq);
+            return;
+        }
+
+        if (plot.Value.States.Farming.HasValue ||
+            !string.IsNullOrEmpty(_world.ArtifactManager.PlantedSeed(msg.EntityId)))
+        {
+            Send(new Abort { Text = "แปลงนี้มีพืชอยู่แล้ว" }, seq);
+            return;
+        }
+
+        int seedIndex = _context.InventoryItems.FindIndex(item => item.Id == msg.SeedItemId);
+        if (seedIndex < 0)
+        {
+            Send(new Abort { Text = "ไม่พบเมล็ดในกระเป๋า" }, seq);
+            return;
+        }
+
+        Item seed = _context.InventoryItems[seedIndex];
+        if (CropYaml.Get(seed.Prototype) == null)
+        {
+            Send(new Abort { Text = "ไอเทมนี้ปลูกไม่ได้" }, seq);
+            return;
+        }
+
+        Point2 tile = plot.Value.Tile;
+        _world.ArtifactManager.SeedPlant(msg.EntityId, seed.Prototype,
+            seed.Level, _world.BiomeAt(tile));
+
+        if (!string.Equals(
+                _world.ArtifactManager.PlantedSeed(msg.EntityId),
+                seed.Prototype,
+                StringComparison.Ordinal))
+        {
+            Send(new Abort { Text = "ปลูกเมล็ดไม่สำเร็จ" }, seq);
+            return;
+        }
+
+        _context.InventoryItems.RemoveAt(seedIndex);
+        Send(new InventoryUpdated
+        {
+            EntityId = EntityId,
+            RemovedItemIds = new[] { seed.Id }
+        });
+
+        AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "ปลูกพืช");
+        NoteQuestEvent(Shared.Quest.QuestEventType.Farmed);
+        OnContextChanged();
     }
 
     private void HandleChargeEffectMsg(ChargeEffect msg, uint seq)
@@ -2204,7 +2292,7 @@ public partial class Player
         foreach (Messages.Region region in RegionCatalog.Others(_world.TerrainId))
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template == null)
+            if (!CanAccessSailingTemplate(template))
             {
                 continue;
             }
@@ -2222,16 +2310,19 @@ public partial class Player
             }
             list.Add(route);
 
-            // หมู่เกาะ = กลุ่มของเกาะที่ระดับ+ไบโอมเดียวกัน
-            // เกาะแบบ Risky ต้องมี ArchipelagoRoute ที่ Level/Biome ตรงกับ template ไม่งั้นขึ้นเป็น
-            // "ดินแดนที่ยังไม่รู้จัก" กดเข้าไม่ได้ (client/ExploreSystem.cs:123-126 GetArchipelagoRoutes)
-            string archId = RegionCatalog.ArchipelagoIdOf(template);
-            if (!byArchipelago.TryGetValue(archId, out var bucket))
+            // หมู่เกาะ = กลุ่มของเกาะ Risky ที่ระดับ+ไบโอมเดียวกัน.
+            // Stable/Civilized/Savage possuem fluxo próprio e não devem ser anunciados como
+            // Unstable Archipelago só porque também possuem um template de região.
+            if (template.Role == Role.Risky)
             {
-                bucket = (template, new List<Route>());
-                byArchipelago[archId] = bucket;
+                string archId = RegionCatalog.ArchipelagoIdOf(template);
+                if (!byArchipelago.TryGetValue(archId, out var bucket))
+                {
+                    bucket = (template, new List<Route>());
+                    byArchipelago[archId] = bucket;
+                }
+                bucket.Routes.Add(route);
             }
-            bucket.Routes.Add(route);
         }
 
         var routes = new Routes
@@ -2273,7 +2364,9 @@ public partial class Player
         foreach (Messages.Region region in RegionCatalog.All)
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template != null && RegionCatalog.ArchipelagoIdOf(template) == msg.ArchipelagoId)
+            if (CanAccessSailingTemplate(template) &&
+                template.Role == Role.Risky &&
+                RegionCatalog.ArchipelagoIdOf(template) == msg.ArchipelagoId)
             {
                 included.Add(new ArchipelagoRegionInfo
                 {
@@ -2305,6 +2398,19 @@ public partial class Player
             Send(region, seq);
             return;
         }
+        if (_world.Registry?.TryGetPersonalTemplate(msg.RegionId, out string personalTemplateId) == true)
+        {
+            Send(new Messages.Region
+            {
+                Id = msg.RegionId,
+                TerrainId = personalTemplateId,
+                TemplateId = personalTemplateId,
+                Role = Shared.Region.Role.Personal,
+                Name = "Ilha Domada",
+                CreatedAt = 0.0
+            }, seq);
+            return;
+        }
         // เกาะที่เราไม่รู้จัก — ตอบ Error ให้เกมเลิกรอ (client/MapSystem.cs:650 มี .On<Error> รออยู่)
         Console.WriteLine($"[sail] ไม่รู้จักเกาะ '{msg.RegionId}'");
         // Error มีสอง string: TypeName ต้นฉบับกัน null ให้แล้ว แต่ Text ไม่ได้กัน
@@ -2328,13 +2434,27 @@ public partial class Player
     private void HandleTravelMsg(string regionId, uint seq)
     {
         string target = regionId;
-        bool knownCatalog = !string.IsNullOrEmpty(target) && RegionCatalog.TryGet(target, out _);
-        bool knownPersonal = !string.IsNullOrEmpty(target) && (string.Equals(target, _context.PersonalRegionId, StringComparison.OrdinalIgnoreCase) || target.StartsWith("personal_", StringComparison.OrdinalIgnoreCase));
+        Messages.Region catalogRegion = default;
+        bool knownCatalog = !string.IsNullOrEmpty(target) &&
+                            RegionCatalog.TryGet(target, out catalogRegion) &&
+                            RegionCatalog.GetTemplate(catalogRegion.TemplateId)?.Role is not Shared.Region.Role.Personal;
+        bool knownPersonal = !string.IsNullOrEmpty(target) &&
+                             (_world.Registry?.IsPersonalRegion(target) ?? false);
         if (!string.IsNullOrEmpty(target) && !knownCatalog && !knownPersonal)
         {
             Console.WriteLine($"[sail] ปฏิเสธ: ไม่รู้จักเกาะ '{target}'");
             Send(new Abort { Text = "ไม่พบเกาะปลายทาง" }, seq);
             return;
+        }
+        if (knownCatalog)
+        {
+            RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(catalogRegion.TemplateId);
+            if (!CanAccessSailingTemplate(template))
+            {
+                Console.WriteLine($"[sail] ปฏิเสธ: {Short(EntityId)} lv{_skillLevel} พยายามไป {target} lv{template?.Level}");
+                Send(new Abort { Text = "เลเวลยังไม่ถึงเกาะนี้" }, seq);
+                return;
+            }
         }
 
         _context.RegionId = target;                       // null = กลับเกาะตั้งต้น

@@ -57,8 +57,31 @@
         public WorldRegistry Worlds { get; set; }
 
         /// <summary>โลกที่ผู้เล่นคนนี้อยู่ — ตกไปที่โลกตั้งต้นถ้ายังไม่มีระบบหลายเกาะ</summary>
-        public World WorldOf(PlayerContext context) =>
-            Worlds == null ? World : Worlds.GetOrCreate(context?.RegionId);
+        public World WorldOf(PlayerContext context)
+        {
+            if (Worlds == null)
+            {
+                return World;
+            }
+
+            string regionId = context?.RegionId;
+            if (string.IsNullOrEmpty(regionId) ||
+                RegionCatalog.TryGet(regionId, out _) ||
+                Worlds.IsPersonalRegion(regionId))
+            {
+                return Worlds.GetOrCreate(regionId);
+            }
+
+            Console.WriteLine($"[world] invalid saved region '{regionId}' for {context?.EntityId ?? "(unknown)"}; recovering to default region");
+            if (context != null)
+            {
+                context.RegionId = null;
+                context.AppearPlayer.Move.Movements = null;
+                context.Save();
+            }
+
+            return Worlds.GetOrCreate(null);
+        }
 
         public int Port { get; private set; }
 
@@ -502,6 +525,46 @@
             // ตัวเกมเอาค่านี้ไปประกอบ URL ขอแผนที่ /terrains/<TerrainId>/… ซึ่ง Gateway เสิร์ฟที่เส้น
             // "/terrains/1" ให้ตามโลกของผู้เล่นที่ขออยู่แล้ว ⇒ ไม่ต้องแตะฝั่ง client
             World playerWorld = WorldOf(playerContext);
+
+            // ALPHA migration:
+            // saves criados antes da restauração de Personal Region podem chegar ao pós-tutorial
+            // sem PersonalRegionId. O client depende desse id já no Welcome para habilitar a
+            // viagem à Tamed Island; sem ele o botão pode simplesmente não gerar viagem alguma.
+            RegionCatalog.TemplateInfo currentRegionTemplate =
+                RegionCatalog.GetTemplate(playerWorld.TerrainInfo.region_template);
+            if (string.IsNullOrEmpty(playerContext.PersonalRegionId) &&
+                currentRegionTemplate != null &&
+                currentRegionTemplate.Role != Role.Tutorial)
+            {
+                string personalTemplateId = RegionCatalog.DefaultPersonalTemplateId;
+                if (!string.IsNullOrEmpty(personalTemplateId))
+                {
+                    string shortEntityId = entityId.Length <= 8 ? entityId : entityId[..8];
+                    playerContext.PersonalRegionId = "personal_" + shortEntityId;
+                    playerContext.PersonalRegionTemplateId = personalTemplateId;
+                    playerContext.PersonalRegionAdmission ??= new List<int>();
+
+                    Worlds?.RegisterPersonalRegion(
+                        playerContext.PersonalRegionId,
+                        playerContext.PersonalRegionTemplateId);
+
+                    if (!string.IsNullOrEmpty(playerContext.Path))
+                    {
+                        playerContext.Save();
+                    }
+
+                    Console.WriteLine(
+                        $"[personal] ALPHA provisionou {playerContext.PersonalRegionId} " +
+                        $"para {shortEntityId} usando {personalTemplateId}");
+                }
+                else
+                {
+                    Console.WriteLine(
+                        $"[personal] não foi possível provisionar ilha pessoal para {entityId}: " +
+                        "nenhum terrain Personal instalado");
+                }
+            }
+
             msg.Region.CreatedAt = 0.0;
             // Region.Id/Role ต้องบอก client ว่าตอนนี้อยู่เกาะส่วนตัวหรือไม่
             // UI ที่ดินเทียบ GameManager.Region.Role/Id กับ PersonalRegion.Region.Id
@@ -512,7 +575,7 @@
             msg.Region.Id = onPersonal
                 ? regionId
                 : (string.IsNullOrEmpty(regionId) ? (playerWorld.TerrainId ?? "1") : regionId);
-            msg.Region.Name = null;
+            msg.Region.Name = onPersonal ? "Ilha Domada" : null;
             msg.Region.TemplateId = onPersonal
                 ? (playerContext.PersonalRegionTemplateId ?? playerWorld.TerrainInfo.region_template)
                 : playerWorld.TerrainInfo.region_template;

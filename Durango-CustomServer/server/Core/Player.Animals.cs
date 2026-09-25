@@ -665,7 +665,17 @@ public partial class Player
     {
         PetStore.Entry entry = PetStore.Of(EntityId).FirstOrDefault(e => e.Pet.IsSpawned);
         if (entry == null) return;
-        if (boarding && !PetIsAlive(entry)) return;      // client กันไว้แล้ว แต่กันซ้ำที่เซิร์ฟด้วย
+        if (boarding)
+        {
+            if (!PetIsAlive(entry)) return;
+
+            PetTables.PetDef definition = PetTables.PetOf(entry.Pet.EntityType);
+            if (definition == null || !definition.IsRidable)
+            {
+                Console.WriteLine($"[pet] ปฏิเสธ mount {Short(EntityId)}: pet {entry.Pet.EntityType} ขี่ไม่ได้");
+                return;
+            }
+        }
         entry.Pet.IsBoarding = boarding;
         _world.BroadCast(entry.Pet);
     }

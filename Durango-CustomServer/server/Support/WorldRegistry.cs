@@ -62,6 +62,8 @@ public class WorldRegistry
     public bool IsPersonalRegion(string regionId) =>
         !string.IsNullOrEmpty(regionId) && _personalTemplates.ContainsKey(regionId);
 
+    public IEnumerable<string> PersonalRegionIds => _personalTemplates.Keys;
+
     public World GetOrCreate(string regionId)
     {
         string terrainFile = null;
@@ -79,8 +81,7 @@ public class WorldRegistry
         }
         else
         {
-            // ไม่รู้จักและไม่ใช่เกาะส่วนตัวที่ลงทะเบียนไว้ — ถอยไปเกาะตั้งต้น
-            regionId = DefaultRegionId;
+            throw new InvalidOperationException($"Unknown region '{regionId}'.");
         }
 
         if (_worlds.TryGetValue(regionId, out World existing))
@@ -115,25 +116,27 @@ public class WorldRegistry
 
     public void ProcessAll()
     {
-        foreach (KeyValuePair<string, World> kv in _worlds)
+        // Process() pode materializar uma nova Personal Region e modificar _worlds.
+        // Iteramos sobre um snapshot para não invalidar o enumerador do Dictionary.
+        foreach (World world in new List<World>(_worlds.Values))
         {
-            kv.Value.Process();
+            world.Process();
         }
     }
 
     public void SaveAll()
     {
-        foreach (KeyValuePair<string, World> kv in _worlds)
+        foreach (World world in new List<World>(_worlds.Values))
         {
-            kv.Value.Save();
+            world.Save();
         }
     }
 
     public void StopAll()
     {
-        foreach (KeyValuePair<string, World> kv in _worlds)
+        foreach (World world in new List<World>(_worlds.Values))
         {
-            kv.Value.Stop();
+            world.Stop();
         }
     }
 

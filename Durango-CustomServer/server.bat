@@ -84,3 +84,6 @@ dotnet run --project .\server\DurangoServer.csproj -c Release --no-build -- `
 Faça backup do offserver.txt e gere um novo ID:
 
 [guid]::NewGuid().ToString()
+
+
+dotnet run --project ".\Durango-CustomServer\server\DurangoServer.csproj" -c Debug --no-build -- --name "Durango Brasil" --data ".\Durango-CustomServer\server\data" --terrains ".\Durango-CustomServer\server\data\terrains"

@@ -109,6 +109,10 @@ public partial class Player
 
         foreach (TimedStatusEffect se in _timedStatusEffects.Values)
         {
+            // "rest" pertence ao SurvivalState. Nao duplicar a mesma velocidade aqui:
+            // SetResting usa o level real do abrigo e aplica o bonus temporario do Alpha.
+            if (string.Equals(se.Id, "rest", StringComparison.OrdinalIgnoreCase)) continue;
+
             StatusEffectCatalog.Template t = StatusEffectCatalog.Get(se.Id, se.Level);
             if (t?.Type1Velocities == null || t.Type1Velocities.Count == 0) continue;
             // แปลงชื่อหลอดจาก JSON → คีย์ SurvivalState
