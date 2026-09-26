@@ -173,6 +173,52 @@ public class Gateway
             }.ToString());
         };
 
+        // ── Auth Parte 1: cadastro local ─────────────────────────────────────────
+        // Ainda não altera /sessions nem personagens. Nesta fase apenas cria a conta
+        // persistente que será usada pelo login nas etapas seguintes.
+        _webServer.PostRoute["/auth/register"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
+        {
+            string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
+
+            // Reaproveita o rate-limit existente do gateway nesta primeira fase.
+            if (!AllowSessionRequest(remoteIp))
+            {
+                return new WebServer.JsonResponse(
+                    new JObject { ["ok"] = false, ["error"] = "too_many_requests" }.ToString(),
+                    HttpStatusCode.TooManyRequests);
+            }
+
+            AccountStore.RegisterResult result = AccountStore.Register(
+                postData.Get("username"),
+                postData.Get("password"),
+                postData.Get("password_confirm"));
+
+            if (!result.Ok)
+            {
+                HttpStatusCode status = result.Error switch
+                {
+                    "username_taken" => HttpStatusCode.Conflict,
+                    "storage_error" => HttpStatusCode.InternalServerError,
+                    "account_store_not_loaded" => HttpStatusCode.ServiceUnavailable,
+                    _ => HttpStatusCode.BadRequest
+                };
+
+                Console.WriteLine($"[auth] cadastro recusado {remoteIp}: {result.Error}");
+                return new WebServer.JsonResponse(
+                    new JObject { ["ok"] = false, ["error"] = result.Error }.ToString(),
+                    status);
+            }
+
+            return new WebServer.JsonResponse(
+                new JObject
+                {
+                    ["ok"] = true,
+                    ["account_id"] = result.AccountId,
+                    ["username"] = result.Username
+                }.ToString(),
+                HttpStatusCode.Created);
+        };
+
         _webServer.PostRoute["/sessions"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
             string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";

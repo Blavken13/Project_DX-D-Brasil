@@ -236,6 +236,9 @@ public class Host
         Console.WriteLine($"[host] cluster '{_clusterKey}': ผู้เล่น {_contexts.Count} สล็อต โหลดจาก {AppData.CombinePath(basePath)}");
         // รายชื่อที่ถูกแบน — เก็บข้างไฟล์เซฟของ cluster นี้ (คนละ cluster คนละรายชื่อ)
         BanList.Load(System.IO.Path.Combine(AppData.CombinePath(basePath), "bans.json"));
+
+        // Auth local: contas persistem ao lado dos saves do cluster.
+        AccountStore.Load(System.IO.Path.Combine(AppData.CombinePath(basePath), "accounts.json"));
     }
 
     public void Start(int gamePort, int gatewayPort, string publicHost, string androidBundlesDir, string assetsDir, string dataDir = null)
