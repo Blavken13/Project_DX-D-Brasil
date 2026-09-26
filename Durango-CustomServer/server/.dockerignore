@@ -1,0 +1,13 @@
+bin/
+obj/
+AppData-nx/
+
+.vs/
+.vscode/
+
+*.user
+*.suo
+*.pdb
+
+Dockerfile*
+docker-compose*

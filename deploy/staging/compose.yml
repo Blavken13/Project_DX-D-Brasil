@@ -1,0 +1,55 @@
+name: durango-brasil-staging
+
+services:
+  durango-server:
+    build:
+      context: ../../Durango-CustomServer/server
+      dockerfile: Dockerfile
+
+    image: durango-brasil-server:${DURANGO_IMAGE_TAG:-staging}
+    container_name: durango-brasil-staging
+
+    restart: unless-stopped
+    init: true
+
+    ports:
+      - "${DURANGO_GATEWAY_PORT:-8190}:8190/tcp"
+      - "${DURANGO_GAME_PORT:-8191}:8191/tcp"
+
+    volumes:
+      - durango-staging-state:/app/AppData-nx
+
+    command:
+      - "--name"
+      - "${DURANGO_CLUSTER_NAME}"
+      - "--data"
+      - "/app/data"
+      - "--terrains"
+      - "/app/data/terrains"
+      - "--public-host"
+      - "${DURANGO_PUBLIC_HOST}"
+      - "--max-players"
+      - "${DURANGO_MAX_PLAYERS:-20}"
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://127.0.0.1:8190/status >/dev/null || exit 1"
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+      start_period: 30s
+
+    stop_grace_period: 45s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+volumes:
+  durango-staging-state:
+    name: durango-brasil-staging-state
