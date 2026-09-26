@@ -282,16 +282,22 @@ public class Gateway
                     HttpStatusCode.TooManyRequests);
             }
 
-            // [5 ก.ย. 2026] กุญแจบัญชี — ตัวเกมส่งมาในช่อง account_id อยู่แล้วทุกคำขอ
-            // (client/Durango.System/Platform.cs:118 BuildSessionForm) แต่ต้นฉบับคืนค่าว่างเสมอ
-            // จึงแพตช์ฝั่งเกมให้คืนกุญแจประจำเครื่อง (ดูเหตุผลเต็มที่ Support/AccountKeys)
-            // ⚠️ ไม่มีกุญแจ = ปฏิเสธ ไม่ใช่ปล่อยผ่านแบบเดิม — ตัวเกมรุ่นเก่าที่ยังไม่แพตช์ต้องเข้าไม่ได้
-            string ownerKey = AccountKeys.Normalize(postData.Get("account_id"));
-            if (ownerKey == null)
+            // Auth Parte 3:
+            // 1) se houver token, ele e a fonte de verdade e resolve account_id no servidor;
+            // 2) sem token, aceita account_id legado SOMENTE durante a transicao para o cliente novo;
+            // 3) token enviado e invalido nunca cai no fallback legado.
+            if (!TryResolveRequestOwner(postData, out string ownerKey, out bool authenticated, out string authError))
             {
-                Console.WriteLine($"[gateway] /sessions ปฏิเสธ {remoteIp} — ไม่มีกุญแจบัญชี (ตัวเกมเก่า?)");
+                Console.WriteLine($"[auth] /sessions recusado {remoteIp}: {authError}");
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "no_account_key" }.ToString(), HttpStatusCode.Unauthorized);
+                    new JObject { ["error"] = authError }.ToString(),
+                    HttpStatusCode.Unauthorized);
+            }
+
+            if (authenticated)
+            {
+                Console.WriteLine(
+                    $"[auth] /sessions autenticado {remoteIp}: account={AccountKeys.ForLog(ownerKey)}");
             }
 
             if (BanList.IsBanned(ownerKey))
@@ -476,23 +482,27 @@ public class Gateway
             return new WebServer.JsonResponse(new JObject { ["entity_id"] = context.EntityId }.ToString());
         };
 
-        // [5 ก.ย. 2026] รายชื่อตัวละคร — **ของบัญชีที่ถามเท่านั้น**
+        // Lista de personagens da conta.
         //
-        // ⚠️ เดิมคืนตัวละครทุกตัวบนเซิร์ฟให้ใครก็ได้ แล้วหน้าเลือกตัวละครในเกมเอามาทำเป็นปุ่ม
-        // (client/Durango.UI/TitlePlayerSelectionGroupBase.cs:94,120) ⇒ ผู้เล่นคนที่ 2 เปิดเกม
-        // เห็นตัวละครของคนที่ 1 ในสล็อตตัวเอง กดเข้าเล่นได้เลยโดยไม่ต้องแฮกอะไร
-        // แถม client ยังตั้งตัวที่ "เพิ่งออกจากเกมล่าสุดของทั้งเซิร์ฟ" เป็นตัวแนะนำให้อัตโนมัติ
-        // (client/Durango.Logic.Clusters/Account.cs:34 MaxBy(DisconnectedAt)) ⇒ กด Confirm รวดเดียวก็ติด
-        //
-        // ตัวเกมส่ง account_id มากับคำขอนี้อยู่แล้ว (Clusters.RequestAccounts ใช้ BuildSessionForm)
+        // Durante a transicao:
+        // - token valido: resolve o account_id no servidor e ignora account_id enviado pelo cliente;
+        // - token presente e invalido: 401, sem fallback;
+        // - token ausente: aceita account_id legado temporariamente ate a Parte 4.
         _webServer.PostRoute["/accounts"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
-            string key = AccountKeys.Normalize(postData.Get("account_id"));
-            if (key == null)
+            if (!TryResolveRequestOwner(postData, out string key, out bool authenticated, out string authError))
             {
-                // ไม่มีกุญแจ = ไม่มีบัญชี ⇒ ไม่มีตัวละคร (ไม่ใช่ "เห็นทุกตัว" แบบเดิม)
+                if (authenticated)
+                {
+                    return new WebServer.JsonResponse(
+                        new JObject { ["error"] = authError }.ToString(),
+                        HttpStatusCode.Unauthorized);
+                }
+
+                // Compatibilidade temporaria com o cliente antigo.
                 return new WebServer.JsonResponse(Json.Write(Host.EmptyAccount()));
             }
+
             return new WebServer.JsonResponse(Json.Write(_host.BuildAccount(key)));
         };
 
@@ -925,6 +935,54 @@ public class Gateway
             }
             return new WebServer.BinaryReponse { Content = ms.ToArray() };
         };
+    }
+
+    /// <summary>
+    /// Resolve a identidade usada por /sessions e /accounts.
+    ///
+    /// Campo "token" ja existe em Platform.BuildSessionForm().
+    /// Se o cliente enviar token, ele obrigatoriamente precisa ser um auth_token valido.
+    /// Somente quando token estiver ausente/vazio usamos account_id legado durante a migracao.
+    /// </summary>
+    private static bool TryResolveRequestOwner(
+        Dictionary<string, string> postData,
+        out string ownerKey,
+        out bool authenticated,
+        out string error)
+    {
+        ownerKey = null;
+        authenticated = false;
+        error = null;
+
+        string authToken = postData?.Get("token");
+        if (!string.IsNullOrWhiteSpace(authToken))
+        {
+            authenticated = true;
+
+            if (!AuthTokenStore.TryResolve(authToken, out string accountId, out _))
+            {
+                error = "invalid_auth_token";
+                return false;
+            }
+
+            ownerKey = AccountKeys.Normalize(accountId);
+            if (ownerKey == null)
+            {
+                error = "invalid_account_id";
+                return false;
+            }
+
+            return true;
+        }
+
+        ownerKey = AccountKeys.Normalize(postData?.Get("account_id"));
+        if (ownerKey == null)
+        {
+            error = "no_account_key";
+            return false;
+        }
+
+        return true;
     }
 
     private bool AllowSessionRequest(string remoteIp)
