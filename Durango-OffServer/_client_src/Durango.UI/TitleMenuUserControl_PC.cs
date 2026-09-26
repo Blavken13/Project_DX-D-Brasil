@@ -73,6 +73,7 @@ public class TitleMenuUserControl_PC : TitleMenuUserControlBase
 	protected override void UpdateButtonLayout(bool showPlayerButton)
 	{
 		base.UpdateButtonLayout(showPlayerButton);
+		_showPlayerButton = showPlayerButton;
 		_showClusterButton = Clusters.Count >= 1;
 		_playerSelectionLabel.gameObject.SetActive(showPlayerButton);
 		_serverSelectionLabel.gameObject.SetActive(_showClusterButton);

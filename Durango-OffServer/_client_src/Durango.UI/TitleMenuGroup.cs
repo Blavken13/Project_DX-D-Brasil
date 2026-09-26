@@ -610,7 +610,7 @@ public class TitleMenuGroup : MonoBehaviour
 		_authInProgress = true;
 		_authGateway = gateway;
 		_authCompleted = completed;
-		UserControl.SetContentActive(isActive: false);
+		UnityEngine.Debug.Log("[Auth] iniciando autenticação para gateway=" + gateway);
 		ShowAuthChoice();
 	}
 
@@ -817,7 +817,7 @@ public class TitleMenuGroup : MonoBehaviour
 		_authCompleted = null;
 		_authGateway = null;
 		_authInProgress = false;
-		UserControl.SetContentActive(isActive: true);
+		UnityEngine.Debug.Log("[Auth] autenticação finalizada success=" + success);
 		completed?.Invoke(success);
 	}
 
