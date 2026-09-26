@@ -69,14 +69,14 @@ public static class SurvivalTuning
     public const float RestHealthVelocity = 0.18f + 0.02f * 1f;
 
     /// <summary>
-    /// TEMP ALPHA TEST EVENT — acelera os efeitos normais de descanso em 10x
+    /// TEMP ALPHA TEST EVENT — acelera os efeitos normais de descanso em 9x
     /// em um Shelter valido. O multiplicador e aplicado sobre a formula original do level
     /// do abrigo, portanto a diferenca relativa entre abrigos continua preservada.
     ///
-    /// O bonus x10 favorece estruturas baixas; caps preservam o controle em estruturas altas.
+    /// O bonus x9 favorece estruturas baixas; caps preservam o controle em estruturas altas.
     /// Voltar para 1f quando o evento de teste terminar.
     /// </summary>
-    public const float AlphaTestRestMultiplier = 10f;
+    public const float AlphaTestRestMultiplier = 9f;
 
     // Limites do boost de Alpha. Evitam que templates especiais de nivel alto,
     // como rest lv80 (-8 fatigue/s antes do boost), virem valores extremos em x10.
@@ -109,7 +109,7 @@ public static class SurvivalTuning
 
         if (acceleratedFatigue)
         {
-            // ALPHA_REST_X3_ALL_ORIGINAL_EFFECTS: o evento acelera os efeitos originais do descanso em conjunto.
+            // ALPHA_REST_X9_ALL_ORIGINAL_EFFECTS: o evento acelera os efeitos originais do descanso em conjunto.
             // Stamina preserva sua regeneracao base propria; o status rest define fatigue/life/health.
             if (velocities.TryGetValue(SurvivalState.KeyFatigue, out float fatigue) && fatigue < 0f)
             {
