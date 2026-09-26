@@ -35,6 +35,14 @@ public static class AccountStore
         public string Username { get; init; }
     }
 
+    public sealed class LoginResult
+    {
+        public bool Ok { get; init; }
+        public string Error { get; init; }
+        public string AccountId { get; init; }
+        public string Username { get; init; }
+    }
+
     private const int UsernameMinLength = 3;
     private const int UsernameMaxLength = 32;
     private const int PasswordMinLength = 8;
@@ -153,6 +161,73 @@ public static class AccountStore
         }
     }
 
+    public static LoginResult Authenticate(string rawUsername, string password)
+    {
+        if (!TryNormalizeUsername(rawUsername, out _, out string usernameKey, out _))
+            return LoginFail();
+
+        if (password == null || password.Length == 0 || password.Length > PasswordMaxLength)
+            return LoginFail();
+
+        lock (Sync)
+        {
+            if (string.IsNullOrEmpty(_path))
+            {
+                return new LoginResult
+                {
+                    Ok = false,
+                    Error = "account_store_not_loaded"
+                };
+            }
+
+            if (!ByUsername.TryGetValue(usernameKey, out Entry entry))
+                return LoginFail();
+
+            try
+            {
+                if (!string.Equals(entry.PasswordAlgorithm, PasswordAlgorithm, StringComparison.Ordinal) ||
+                    entry.PasswordIterations <= 0 ||
+                    string.IsNullOrEmpty(entry.PasswordSalt) ||
+                    string.IsNullOrEmpty(entry.PasswordHash))
+                {
+                    Console.WriteLine($"[auth] conta '{entry.Username}' possui credencial invalida/corrompida");
+                    return LoginFail();
+                }
+
+                byte[] salt = Convert.FromBase64String(entry.PasswordSalt);
+                byte[] expected = Convert.FromBase64String(entry.PasswordHash);
+
+                if (expected.Length == 0)
+                    return LoginFail();
+
+                byte[] actual = Rfc2898DeriveBytes.Pbkdf2(
+                    password,
+                    salt,
+                    entry.PasswordIterations,
+                    HashAlgorithmName.SHA256,
+                    expected.Length);
+
+                if (actual.Length != expected.Length ||
+                    !CryptographicOperations.FixedTimeEquals(actual, expected))
+                {
+                    return LoginFail();
+                }
+
+                return new LoginResult
+                {
+                    Ok = true,
+                    AccountId = entry.AccountId,
+                    Username = entry.Username
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"[auth] falha ao verificar credencial de '{entry.Username}': {e.Message}");
+                return LoginFail();
+            }
+        }
+    }
+
     public static int Count
     {
         get { lock (Sync) return ByUsername.Count; }
@@ -199,6 +274,12 @@ public static class AccountStore
     }
 
     private static RegisterResult Fail(string error) => new() { Ok = false, Error = error };
+
+    private static LoginResult LoginFail() => new()
+    {
+        Ok = false,
+        Error = "invalid_credentials"
+    };
 
     private static bool SaveLocked()
     {

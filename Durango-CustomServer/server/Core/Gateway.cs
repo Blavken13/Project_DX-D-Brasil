@@ -219,6 +219,58 @@ public class Gateway
                 HttpStatusCode.Created);
         };
 
+        // Auth Parte 2: login local.
+        // /sessions ainda nao usa este token; a integracao entra na Parte 3.
+        _webServer.PostRoute["/auth/login"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
+        {
+            string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
+
+            if (!AllowSessionRequest(remoteIp))
+            {
+                return new WebServer.JsonResponse(
+                    new JObject { ["ok"] = false, ["error"] = "too_many_requests" }.ToString(),
+                    HttpStatusCode.TooManyRequests);
+            }
+
+            AccountStore.LoginResult login = AccountStore.Authenticate(
+                postData.Get("username"),
+                postData.Get("password"));
+
+            if (!login.Ok)
+            {
+                HttpStatusCode status = login.Error == "account_store_not_loaded"
+                    ? HttpStatusCode.ServiceUnavailable
+                    : HttpStatusCode.Unauthorized;
+
+                Console.WriteLine($"[auth] login recusado {remoteIp}: {login.Error}");
+
+                return new WebServer.JsonResponse(
+                    new JObject
+                    {
+                        ["ok"] = false,
+                        ["error"] = login.Error
+                    }.ToString(),
+                    status);
+            }
+
+            AuthTokenStore.IssuedToken issued =
+                AuthTokenStore.Issue(login.AccountId, login.Username);
+
+            Console.WriteLine(
+                $"[auth] login ok {remoteIp}: user='{login.Username}' " +
+                $"id={AccountKeys.ForLog(login.AccountId)}");
+
+            return new WebServer.JsonResponse(
+                new JObject
+                {
+                    ["ok"] = true,
+                    ["account_id"] = issued.AccountId,
+                    ["username"] = issued.Username,
+                    ["auth_token"] = issued.Token,
+                    ["expires_in"] = issued.ExpiresInSeconds
+                }.ToString());
+        };
+
         _webServer.PostRoute["/sessions"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
             string remoteIp = request?.RemoteEndPoint?.Address?.ToString() ?? "?";
