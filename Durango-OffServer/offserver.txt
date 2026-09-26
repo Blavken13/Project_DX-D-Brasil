@@ -1,7 +1,13 @@
 # Durango-OffServer link — ลบไฟล์นี้ = กลับไปเล่น offline ปกติ
 
-account=a5cdcc6d-c1a7-4d9c-aac7-30f085a0a456
+account=3286860f-3af6-44dc-af1f-7d2d2df8f90d
 
 gateway=http://127.0.0.1:8190
 name=Durango Brasil
 server=Durango Brasil|http://127.0.0.1:8190
+
+
+
+gateway=http://devand.tailf7a8f8.ts.net:18190
+name=Durango Brasil-CAT
+server=Durango Brasil-CAT|http://devand.tailf7a8f8.ts.net:18190

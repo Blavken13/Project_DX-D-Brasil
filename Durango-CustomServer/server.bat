@@ -71,13 +71,7 @@ Histórico/detalhes anteriores: docs/ROADMAP.md
 Mapa do sistema de itens/nível/atributos/buff: docs/ITEM-SYSTEM-MAP.md
 
 para iniciar o servidor:
-dotnet run --project .\server\DurangoServer.csproj -c Release --no-build -- `
-  --data ".\server\data" `
-  --terrains ".\server\data\terrains" `
-  --name "Durango Brasil" `
-  --gateway-port 8190 `
-  --game-port 8191 `
-  --public-host 127.0.0.1
+
 
 .
 
@@ -87,3 +81,12 @@ Faça backup do offserver.txt e gere um novo ID:
 
 
 dotnet run --project ".\Durango-CustomServer\server\DurangoServer.csproj" -c Debug --no-build -- --name "Durango Brasil" --data ".\Durango-CustomServer\server\data" --terrains ".\Durango-CustomServer\server\data\terrains"
+
+
+
+PARA INICIAR COM TAILSCALE:
+
+$env:DURANGO_ADMIN_TOKEN = [guid]::NewGuid().ToString("N") + [guid]::NewGuid().ToString("N")
+
+
+dotnet run --project ".\Durango-CustomServer\server\DurangoServer.csproj" -c Debug --no-build -- --name "Durango Brasil" --data ".\Durango-CustomServer\server\data" --terrains ".\Durango-CustomServer\server\data\terrains" --public-host "100.73.253.106" --max-players 2

@@ -613,13 +613,20 @@ public partial class Player
         AppearArtifact? artifact = _world.ArtifactManager.Get(workbench.Value.EntityId);
         if (!artifact.HasValue)
         {
-            error = "ไม่พบโต๊ะที่อ้างถึง";
+            error = "A bancada informada não existe.";
             return false;
         }
+
+        if (!MayTouchArtifact(workbench.Value.EntityId, "usar bancada"))
+        {
+            error = "Você não tem permissão para usar esta bancada.";
+            return false;
+        }
+
         MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.Value.EntityType);
         if (blueprint?.Components == null || !blueprint.Components.Contains("Workbench"))
         {
-            error = "สิ่งปลูกสร้างนี้ไม่ใช่โต๊ะคราฟต์";
+            error = "Esta estrutura não é uma bancada de fabricação.";
             return false;
         }
         return true;
@@ -1161,6 +1168,12 @@ public partial class Player
     /// </summary>
     private void HandleGetWorkbenchMsg(GetWorkbench msg, uint seq)
     {
+        if (!MayTouchArtifact(msg.EntityId, "abrir bancada"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para usar esta bancada." }, seq);
+            return;
+        }
+
         Send(new Workbench
         {
             EntityId = msg.EntityId,

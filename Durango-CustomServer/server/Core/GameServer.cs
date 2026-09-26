@@ -67,7 +67,7 @@
             string regionId = context?.RegionId;
             if (string.IsNullOrEmpty(regionId) ||
                 RegionCatalog.TryGet(regionId, out _) ||
-                Worlds.IsPersonalRegion(regionId))
+                Worlds.IsSettlementRegion(regionId))
             {
                 return Worlds.GetOrCreate(regionId);
             }
@@ -523,16 +523,49 @@
             // [5 ก.ย. 2026] บอกเกาะที่ผู้เล่นอยู่จริง — ต้นฉบับ hardcode "1" ได้เพราะมีโลกเดียว
             // Id ใช้ระบุเกาะในระบบล่องเรือ (ตรงกับ RegionCatalog) ส่วน TerrainId ยังเป็น "1" เพราะ
             // ตัวเกมเอาค่านี้ไปประกอบ URL ขอแผนที่ /terrains/<TerrainId>/… ซึ่ง Gateway เสิร์ฟที่เส้น
-            // "/terrains/1" ให้ตามโลกของผู้เล่นที่ขออยู่แล้ว ⇒ ไม่ต้องแตะฝั่ง client
+            // O Gateway continuará servindo o terrain real; RegionId pode ser uma instância lógica.
+            Worlds?.EnsureDefaultSharedTamedRegion();
+
+            if (!string.IsNullOrEmpty(playerContext.PersonalRegionId))
+            {
+                if (!playerContext.PrivateRegionEntitled)
+                {
+                    playerContext.PrivateRegionEntitled = true;
+                    if (!string.IsNullOrEmpty(playerContext.Path))
+                    {
+                        playerContext.Save();
+                    }
+                }
+
+                string privateTemplateId =
+                    playerContext.PersonalRegionTemplateId ?? RegionCatalog.DefaultSettlementTemplateId;
+                Worlds?.RegisterPersonalRegion(
+                    playerContext.PersonalRegionId,
+                    privateTemplateId,
+                    entityId);
+            }
+
+            // Reidrata a associação ao clã antes de enviar AppearPlayer ao cliente.
+            // Isso também corrige saves antigos ou alterações feitas enquanto o personagem estava offline.
+            ClanStore.EnsureLoaded(playerContext.Path);
+            ClanStore.SyncContext(playerContext);
+
+            string clanId = playerContext.AppearPlayer.Member.ClanId;
+            if (!string.IsNullOrEmpty(clanId))
+            {
+                Worlds?.RegisterClanRegion(clanId);
+            }
+
             World playerWorld = WorldOf(playerContext);
 
-            // ALPHA migration:
+            // Migração Alpha/Beta: somente contas com direito explícito recebem Ilha Particular.
             // saves criados antes da restauração de Personal Region podem chegar ao pós-tutorial
             // sem PersonalRegionId. O client depende desse id já no Welcome para habilitar a
             // viagem à Tamed Island; sem ele o botão pode simplesmente não gerar viagem alguma.
             RegionCatalog.TemplateInfo currentRegionTemplate =
                 RegionCatalog.GetTemplate(playerWorld.TerrainInfo.region_template);
-            if (string.IsNullOrEmpty(playerContext.PersonalRegionId) &&
+            if (playerContext.PrivateRegionEntitled &&
+                string.IsNullOrEmpty(playerContext.PersonalRegionId) &&
                 currentRegionTemplate != null &&
                 currentRegionTemplate.Role != Role.Tutorial)
             {
@@ -546,7 +579,8 @@
 
                     Worlds?.RegisterPersonalRegion(
                         playerContext.PersonalRegionId,
-                        playerContext.PersonalRegionTemplateId);
+                        playerContext.PersonalRegionTemplateId,
+                        entityId);
 
                     if (!string.IsNullOrEmpty(playerContext.Path))
                     {
@@ -566,27 +600,37 @@
             }
 
             msg.Region.CreatedAt = 0.0;
-            // Region.Id/Role ต้องบอก client ว่าตอนนี้อยู่เกาะส่วนตัวหรือไม่
-            // UI ที่ดินเทียบ GameManager.Region.Role/Id กับ PersonalRegion.Region.Id
-            // เควส MoveToRegionToDo(Personal) ก็เช็ค Role() == Personal
+            // Region.Id/Role informa ao client quando estamos em uma instância de assentamento.
+            // SharedTamed, PrivatePlayer e Clan reutilizam terrain, mas possuem RegionId e save próprios.
             string regionId = playerContext.RegionId;
-            bool onPersonal = !string.IsNullOrEmpty(regionId) &&
-                            regionId.StartsWith("personal_", StringComparison.OrdinalIgnoreCase);
-            msg.Region.Id = onPersonal
+            SettlementRegionInstance settlementRegion = null;
+            bool onSettlement = !string.IsNullOrEmpty(regionId) &&
+                                Worlds?.TryGetSettlementRegion(regionId, out settlementRegion) == true;
+            msg.Region.Id = onSettlement
                 ? regionId
                 : (string.IsNullOrEmpty(regionId) ? (playerWorld.TerrainId ?? "1") : regionId);
-            msg.Region.Name = onPersonal ? "Ilha Domada" : null;
-            msg.Region.TemplateId = onPersonal
-                ? (playerContext.PersonalRegionTemplateId ?? playerWorld.TerrainInfo.region_template)
+            msg.Region.Name = settlementRegion?.Kind switch
+            {
+                SettlementRegionKind.SharedTamed => "Ilha Domada",
+                SettlementRegionKind.PrivatePlayer => "Ilha Particular",
+                SettlementRegionKind.Clan => "Ilha de Clã",
+                _ => null
+            };
+            msg.Region.TemplateId = onSettlement
+                ? settlementRegion.TemplateId
                 : playerWorld.TerrainInfo.region_template;
-            // TerrainId = ชื่อไฟล์ terrain จริง สำหรับโหลดแผนที่/chunk
+            // TerrainId é o arquivo de terrain real usado para carregar mapa/chunks.
             msg.Region.TerrainId = playerWorld.TerrainId ?? "1";
             RegionCatalog.TemplateInfo regionTemplate = RegionCatalog.GetTemplate(msg.Region.TemplateId);
-            msg.Region.Role = onPersonal ? Role.Personal : (regionTemplate?.Role ?? Role.Rural);
-            // เกาะส่วนตัวของผู้เล่น (ว่างได้ถ้ายังไม่สร้าง)
-            msg.PersonalRegionId = string.IsNullOrEmpty(playerContext.PersonalRegionId)
-                ? null
-                : playerContext.PersonalRegionId;
+            msg.Region.Role = onSettlement ? Role.Personal : (regionTemplate?.Role ?? Role.Rural);
+
+            // Enquanto o jogador não possuir Ilha Particular, o atalho "Ilha Domada"
+            // aponta para a instância pública compartilhada.
+            msg.PersonalRegionId = !string.IsNullOrEmpty(playerContext.PersonalRegionId)
+                ? playerContext.PersonalRegionId
+                : (Worlds?.EnsureDefaultSharedTamedRegion() == true
+                    ? WorldRegistry.DefaultSharedTamedRegionId
+                    : null);
             Console.WriteLine(
                 $"[welcome] {entityId[..Math.Min(8, entityId.Length)]} Region.Id={msg.Region.Id} Role={msg.Region.Role} TerrainId={msg.Region.TerrainId} TemplateId={msg.Region.TemplateId} PersonalRegionId={msg.PersonalRegionId ?? "(ว่าง)"}");
             msg.Options.Bool = new[]

@@ -152,6 +152,7 @@ public partial class Player
         });
         _connection.Recv(delegate(SetSectionItemOrder msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "reordenar itens do depósito")) return;
             WarehouseStore.SetItemOrder(msg.EntityId, msg.SectionName, msg.ItemOrder);
         });
         // สร้างแท็บใหม่ในคลัง — client/InventorySystem.cs:700-711 ใช้ .All() ⇒ รับคำตอบชนิดใดก็ได้
@@ -200,8 +201,17 @@ public partial class Player
     {
         if (msg.TargetArtifact.HasValue)
         {
-            WarehouseStore.SetItemOrder(msg.TargetArtifact.Value.EntityId,
-                WarehouseStore.ContainerSection, msg.ItemOrder);
+            if (!MayTouchArtifact(
+                    msg.TargetArtifact.Value.EntityId,
+                    "reordenar itens do recipiente"))
+            {
+                return;
+            }
+
+            WarehouseStore.SetItemOrder(
+                msg.TargetArtifact.Value.EntityId,
+                WarehouseStore.ContainerSection,
+                msg.ItemOrder);
             return;
         }
         if (ReorderInPlace(_context.InventoryItems, msg.ItemOrder))
@@ -804,6 +814,12 @@ public partial class Player
     /// </summary>
     private void HandleAddItemsToWarehouseMsg(AddItemsToWarehouse msg)
     {
+        if (!MayTouchArtifact(msg.EntityId, "guardar itens no depósito"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para usar este depósito." });
+            return;
+        }
+
         List<Item> section = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         if (section == null)
         {
@@ -887,6 +903,12 @@ public partial class Player
     /// </summary>
     private void HandleMoveItemsInWarehouseMsg(MoveItemsInWarehouse msg)
     {
+        if (!MayTouchArtifact(msg.EntityId, "mover itens no depósito"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para usar este depósito." });
+            return;
+        }
+
         List<Item> from = WarehouseStore.Items(msg.EntityId, msg.SourceSectionName, create: false);
         List<Item> to = WarehouseStore.Items(msg.EntityId, msg.TargetSectionName, create: false);
         if (from == null || to == null || ReferenceEquals(from, to)) return;

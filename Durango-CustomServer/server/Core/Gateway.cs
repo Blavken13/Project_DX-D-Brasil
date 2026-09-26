@@ -309,6 +309,22 @@ public class Gateway
                     new JObject { ["error"] = "unauthorized" }.ToString(), HttpStatusCode.Unauthorized);
             }
 
+            var account = _host.BuildAccount(ownerKey);
+            if (account.Players.Count >= Host.MaxCharactersPerAccount)
+            {
+                Console.WriteLine(
+                    $"[gateway] /players ปฏิเสธ — บัญชี {AccountKeys.ForLog(ownerKey)} " +
+                    $"มีตัวละครครบ {Host.MaxCharactersPerAccount} ตัวแล้ว");
+                return new WebServer.JsonResponse(
+                    new JObject
+                    {
+                        ["error"] = "character_limit",
+                        ["character_count"] = account.PlayerSlotCount,
+                        ["max_characters"] = Host.MaxCharactersPerAccount
+                    }.ToString(),
+                    HttpStatusCode.Conflict);
+            }
+
             // ⚠️ เส้นนี้มีไว้ "สร้างตัวใหม่" เท่านั้น — ตัวที่มี Path แล้วคือตัวที่สร้างเสร็จไปแล้ว
             // ห้ามให้เขียนทับ (ของเราเองก็ตาม) ไม่งั้นยิงซ้ำ = ตัวละครเดิมโดนรีเซ็ต
             if (!string.IsNullOrEmpty(context.Path) || string.IsNullOrEmpty(context.PlayerInfo.PlayerEntityId))
@@ -380,6 +396,26 @@ public class Gateway
                 return new WebServer.JsonResponse(Json.Write(Host.EmptyAccount()));
             }
             return new WebServer.JsonResponse(Json.Write(_host.BuildAccount(key)));
+        };
+
+        // Consulta pública de clãs usada pelo ClanSystem do cliente.
+        _webServer.GetRoute["/clans"] = delegate(HttpListenerRequest request, Dictionary<string, string> _)
+        {
+            ClanStore.EnsureLoaded(_playerCtx?.Path);
+
+            string keyword = request?.QueryString?["keyword"];
+            var clans = new JArray();
+
+            foreach (ClanRecord clan in ClanStore.Search(keyword))
+            {
+                clans.Add(ClanStore.ToGatewayJson(clan, detail: false));
+            }
+
+            return new WebServer.JsonResponse(
+                new JObject
+                {
+                    ["clans"] = clans
+                }.ToString());
         };
 
         // [5 ก.ย. 2026] /health — ตัวเลขสุขภาพเซิร์ฟสำหรับคนดูแล (ตัวเกมไม่ได้เรียกเส้นนี้)
@@ -991,6 +1027,33 @@ public class Gateway
     {
         // ชื่อ/หน้าตาตัวละคร — EstateOwnerWidget กับป็อปอัปอื่นยิง GET /players/<entityId>
         // (client/PlayerInfoManager.cs RequestFunc) ถ้าไม่มีเส้นนี้ชื่อเจ้าของที่ดินไม่ขึ้น
+        if (url.StartsWith("/clans/", StringComparison.OrdinalIgnoreCase))
+        {
+            string rest = url.Substring("/clans/".Length);
+            int qIdx = rest.IndexOf('?');
+            if (qIdx >= 0) rest = rest.Substring(0, qIdx);
+
+            if (rest.Length > 0 && rest.IndexOf('/') < 0)
+            {
+                string clanId = rest;
+
+                return (HttpListenerRequest request, Dictionary<string, string> _) =>
+                {
+                    if (!string.Equals(request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new WebServer.NotFountResponse();
+                    }
+
+                    ClanStore.EnsureLoaded(_playerCtx?.Path);
+                    ClanRecord clan = ClanStore.Find(clanId);
+
+                    // O cliente interpreta id vazio como clã inexistente.
+                    return new WebServer.JsonResponse(
+                        ClanStore.ToGatewayJson(clan, detail: true).ToString());
+                };
+            }
+        }
+
         if (url.StartsWith("/players/", StringComparison.OrdinalIgnoreCase))
         {
             string rest = url.Substring("/players/".Length);

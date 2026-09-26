@@ -123,6 +123,13 @@ public class Host
     /// ของเซิร์ฟใช้จริง — ส่งค่าที่ไม่มีใน enum ของ client จะถูก fallback ทิ้ง</summary>
     public static Mode ClusterMode = Mode.Online;
 
+    /// <summary>
+    /// Quantidade máxima de personagens persistentes por conta.
+    /// O client usa MaxPlayerSlotCount de /accounts para montar a tela de seleção,
+    /// mas o mesmo limite também é validado no POST /players pelo servidor.
+    /// </summary>
+    public const int MaxCharactersPerAccount = 3;
+
     private readonly string _clusterKey;
 
     private readonly List<Context> _contexts = new();
@@ -638,7 +645,11 @@ public class Host
     }
 
     /// <summary>บัญชีเปล่า — ใช้ตอบคำขอที่ไม่มีกุญแจบัญชี</summary>
-    public static Account EmptyAccount() => new() { PlayerSlotCount = 0, MaxPlayerSlotCount = 2 };
+    public static Account EmptyAccount() => new()
+    {
+        PlayerSlotCount = MaxCharactersPerAccount,
+        MaxPlayerSlotCount = MaxCharactersPerAccount
+    };
 
     /// <summary>
     /// รายชื่อตัวละคร **ของบัญชีนี้เท่านั้น** (เทียบเท่า Cluster.OnRequestAccount ต้นฉบับ)
@@ -672,9 +683,11 @@ public class Host
             account.Players.Add(player.PlayerInfo);
         }
 
-        account.PlayerSlotCount = account.Players.Count;
-        // +1 เสมอเพื่อให้มีช่องว่างให้กดสร้างตัวใหม่ (ขั้นต่ำ 2 ตามเดิม)
-        account.MaxPlayerSlotCount = Math.Max(2, account.Players.Count + 1);
+        // ALPHA/BETA: os 3 slots são gratuitos e permanecem desbloqueados.
+        // PlayerSlotCount significa slots adquiridos/desbloqueados, não personagens existentes.
+        int unlockedSlots = Math.Max(MaxCharactersPerAccount, account.Players.Count);
+        account.PlayerSlotCount = unlockedSlots;
+        account.MaxPlayerSlotCount = unlockedSlots;
         return account;
     }
 }

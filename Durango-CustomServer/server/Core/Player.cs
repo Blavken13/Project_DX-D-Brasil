@@ -206,7 +206,7 @@ public partial class Player
         });
         _connection.Recv(delegate(Scribble msg, PacketHeader header)
         {
-            HandleScribbleMsg(msg);
+            HandleScribbleMsg(msg, header.Seq);
         });
         _connection.Recv(delegate(DumpItems msg, PacketHeader header)
         {
@@ -222,7 +222,7 @@ public partial class Player
         });
         _connection.Recv(delegate(Messages.Display msg, PacketHeader header)
         {
-            HandleChangeDecorationMsg(msg);
+            HandleChangeDecorationMsg(msg, header.Seq);
         });
         _connection.Recv(delegate(Equip msg, PacketHeader header)
         {
@@ -461,6 +461,8 @@ public partial class Player
         });
         _connection.Recv(delegate(OpenGate msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "abrir portão")) return;
+
             _world.ArtifactManager.OpenGate(new PropKey
             {
                 EntityId = msg.EntityId,
@@ -469,6 +471,8 @@ public partial class Player
         });
         _connection.Recv(delegate(CloseGate msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "fechar portão")) return;
+
             _world.ArtifactManager.OpenGate(new PropKey
             {
                 EntityId = msg.EntityId,
@@ -481,14 +485,22 @@ public partial class Player
         });
         _connection.Recv(delegate(TurnOnMusic msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "ligar música")) return;
             _world.ArtifactManager.TurnOnMusic(msg.EntityId);
         });
         _connection.Recv(delegate(TurnOffMusic msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "desligar música")) return;
             _world.ArtifactManager.TurnOffMusic(msg.EntityId);
         });
         _connection.Recv(delegate(ChangeMannequinDisplay msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "alterar manequim"))
+            {
+                Send(new Abort { Text = "Você não tem permissão para alterar este manequim." }, header.ReplyOf);
+                return;
+            }
+
             List<Item> inventoryItems = _context.InventoryItems;
             int num = inventoryItems.FindIndex(it => it.Id == msg.ItemId);
             if (num != -1)
@@ -500,22 +512,27 @@ public partial class Player
                     return;
                 }
             }
-            // ⚠️ ห้ามส่ง default(Abort) — Text เป็น null แล้ว **ฝั่งเกมแครช**
-            // nil → UnpackGettextFromMsgPack คืน null (client/LocalizeSystem.cs:548)
-            // → LimitText(null).Length → NRE (client/GameManager.cs:292)
-            // ไม่ใช่บั๊กของโปรโตคอล ⇒ แก้ที่ต้นทาง ห้ามแตะ GameCode/Messages
-            Send(new Abort { Text = "ทำรายการนี้ไม่ได้" }, header.ReplyOf);
+
+            // Nunca envie default(Abort): Text seria null e o cliente pode falhar
+            // ao tentar exibir a mensagem de erro.
+            Send(new Abort { Text = "Não foi possível alterar este manequim." }, header.ReplyOf);
         });
         _connection.Recv(delegate(TakeOutItem msg, PacketHeader header)
         {
+            if (!MayTouchArtifact(msg.EntityId, "retirar itens"))
+            {
+                Send(new Abort { Text = "Você não tem permissão para retirar itens deste objeto." }, header.ReplyOf);
+                return;
+            }
+
             if (_world.ArtifactManager.TakeOutItems(msg.EntityId, msg.ItemIds))
             {
                 Send(default(OK), header.ReplyOf);
             }
             else
             {
-                // เหตุผลเดียวกับข้างบน — ห้ามส่ง Abort ที่ไม่มีข้อความ
-                Send(new Abort { Text = "ทำรายการนี้ไม่ได้" }, header.ReplyOf);
+                // Nunca envie Abort sem texto: o cliente espera uma mensagem válida.
+                Send(new Abort { Text = "Não foi possível retirar os itens." }, header.ReplyOf);
             }
         });
         _connection.Recv(delegate(GetGrazedPets msg, PacketHeader header)
@@ -1242,25 +1259,30 @@ public partial class Player
                 bool completed = !touched.HasValue
                                  || touched.Value.States.BuildingState == Shared.Building.BuildingState.Completed;
 
-                // เจ้าของเท่านั้นที่รื้อ/เก็บ/เขียนป้ายได้ — ตัวจริงที่บังคับคือ MayTouchArtifact ตอนรับคำสั่ง
-                // ตรงนี้แค่ไม่โชว์ปุ่มที่กดไปก็โดนปฏิเสธ (ของคนอื่นจะไม่มีปุ่มพวกนี้เลย)
-                //
-                // [7 ก.ย. 2026] ย้ายออกมานอกบล็อก `touched` เพราะเมนูที่มาจาก component
-                // (ป้าย/ประตู/หุ่น) อยู่ข้างล่างและต้องใช้ค่านี้ด้วย
-                bool mine = string.Equals(_world.ArtifactManager.OwnerOf(touch.EntityId),
-                                          EntityId, StringComparison.Ordinal);
+                // A interface só deve exibir ações administrativas quando o jogador realmente
+                // possui autoridade sobre a estrutura. Em Ilha Domada vale o domínio do jogador;
+                // em Ilha de Clã vale o domínio do clã; em Ilha Particular vale o proprietário.
+                string artifactOwner = _world.ArtifactManager.OwnerOf(touch.EntityId);
+                bool authorized = touched.HasValue &&
+                                  CanUseArtifactInCurrentSettlement(touched.Value, artifactOwner);
 
                 if (touched is { } building)
                 {
                     switch (building.States.BuildingState)
                     {
                         case Shared.Building.BuildingState.Occupied:
-                            // "건설" — เปิดหน้าต่างใส่วัสดุ (client/BuildSystem.cs InteractionBuildArtifact)
-                            list.Add(Shared.System.Interaction.BuildArtifact);
+                            // Estruturas em construção só podem receber materiais de quem possui
+                            // autoridade sobre o domínio, salvo no modo Editable.
+                            if (authorized || flag)
+                            {
+                                list.Add(Shared.System.Interaction.BuildArtifact);
+                            }
                             break;
+
                         case Shared.Building.BuildingState.Built:
-                            // "완성" — โผล่เฉพาะตอนมาร์มูรีครบแล้ว ฝั่งเกมเดินหลอดเองจาก Postprocess.EndsAt
-                            if (building.States.Postprocess is not { } pp || Gauge.CurrentTime >= pp.EndsAt)
+                            // A finalização segue a mesma autoridade da construção.
+                            if ((authorized || flag) &&
+                                (building.States.Postprocess is not { } pp || Gauge.CurrentTime >= pp.EndsAt))
                             {
                                 list.Add(Shared.System.Interaction.CompleteArtifact);
                             }
@@ -1268,7 +1290,7 @@ public partial class Player
                         case Shared.Building.BuildingState.Completed:
                             // "포장" — เก็บใส่กระเป๋าแล้วเอาไปวางที่ใหม่ (Player.Building.cs)
                             // ของถาวร (ท่าเรือ/รูวาร์ป) เก็บไม่ได้ตามข้อมูลเกมเอง
-                            if (mine && !blueprint.Permanent)
+                            if (authorized && !blueprint.Permanent)
                             {
                                 list.Add(Shared.System.Interaction.Capsulate);
                             }
@@ -1281,7 +1303,7 @@ public partial class Player
                     // ซึ่งเป็นค่าจริงใน data/config.json **ไม่มีปุ่มรื้อเลยสักหลัง** ผู้เล่นสร้างผิดที่
                     // แล้วแก้ไม่ได้ ต้องเรียกแอดมินมาลบให้ (เจอตอนเทสด้วย bot — เมนูมีแค่ Rest)
                     // ⇒ ผูกกับ "เป็นเจ้าของ" แทน ซึ่งตรงกับด่านจริงที่ HandleDestructMsg ใช้อยู่แล้ว
-                    if (mine || flag) list.Add(Shared.System.Interaction.DestructArtifact);
+                    if (authorized || flag) list.Add(Shared.System.Interaction.DestructArtifact);
                 }
                 if (!completed)
                 {
@@ -1367,11 +1389,11 @@ public partial class Player
                     Farming? farming = touched?.States.Farming;
                     bool occupied = farming.HasValue;
                     bool mature = occupied && FarmHarvest.IsMature(farming.Value, Gauge.CurrentTime);
-                    if (!occupied && (mine || flag))
+                    if (!occupied && (authorized || flag))
                     {
                         list.Add(Shared.System.Interaction.Plant);
                     }
-                    if (mature && (mine || flag))
+                    if (mature && (authorized || flag))
                     {
                         string seed = _world.ArtifactManager.PlantedSeed(touch.EntityId);
                         Crop harvestCrop = CropYaml.Get(seed);
@@ -1388,7 +1410,7 @@ public partial class Player
                 // สถานะความจุกรงเติมให้ตอนสร้าง/โหลดโลกแล้วที่ Support/CageTypes.cs
                 if (blueprint.Components.Contains("GrowCage")) list.Add(Shared.System.Interaction.Cage);
                 if (blueprint.Components.Contains("DomesticCage")) list.Add(Shared.System.Interaction.OpenDomesticCage);
-                if (blueprint.Components.Contains("Modular") && flag)
+                if (blueprint.Components.Contains("Modular") && (authorized || flag))
                 {
                     list.Add(Shared.System.Interaction.AddOnManage);
                     list.Add(Shared.System.Interaction.RemodelArtifact);
@@ -1404,12 +1426,12 @@ public partial class Player
                 // (표지판 7020 · 칠판 7081 · 화이트보드 7098 ฯลฯ) ทั้งหมดเป็นป้าย/กระดานที่ผู้เล่นสร้างเอง
                 //
                 // ผูกกับ "เป็นเจ้าของ" แทน ให้ตรงกับปุ่มรื้อ — คนอื่นเดินมาลบข้อความป้ายเราไม่ได้
-                if (blueprint.Components.Contains("Scribble") && (mine || flag))
+                if (blueprint.Components.Contains("Scribble") && (authorized || flag))
                 {
                     list.Add(Shared.System.Interaction.ScribbleDrawing);
                     list.Add(Shared.System.Interaction.ScribbleText);
                 }
-                if (blueprint.Components.Contains("Gate") && flag)
+                if (blueprint.Components.Contains("Gate") && (authorized || flag))
                 {
                     AppearArtifact? appearArtifact = _world.ArtifactManager.Get(touch.EntityId);
                     if (appearArtifact.HasValue)
@@ -1419,12 +1441,12 @@ public partial class Player
                             : Shared.System.Interaction.CloseGate);
                     }
                 }
-                if (blueprint.Components.Contains("Mannequin") && flag)
+                if (blueprint.Components.Contains("Mannequin") && (authorized || flag))
                 {
                     list.Add(Shared.System.Interaction.ChangeMannequinHead);
                     list.Add(Shared.System.Interaction.ChangeMannequinBody);
                 }
-                if (KUtility.GetSize(blueprint.Musics) > 0 && flag)
+                if (KUtility.GetSize(blueprint.Musics) > 0 && (authorized || flag))
                 {
                     AppearArtifact? appearArtifact2 = _world.ArtifactManager.Get(touch.EntityId);
                     if (appearArtifact2.HasValue)
@@ -1434,7 +1456,7 @@ public partial class Player
                             : Shared.System.Interaction.TurnOffMusic);
                     }
                 }
-                if (RecipeDict.HasDecoration(blueprint.Id) && flag)
+                if (RecipeDict.HasDecoration(blueprint.Id) && (authorized || flag))
                 {
                     // 10267 = Interaction.ChangeDecoration (GameCode enum ไม่มีตัวนี้ — ค่าจาก InteractionData ต้นฉบับ)
                     list.Add((Shared.System.Interaction)10267);
@@ -1550,40 +1572,48 @@ public partial class Player
     private const int NaturalReachTiles = 8;
 
     /// <summary>
-    /// ผู้เล่นคนนี้มีสิทธิ์ยุ่งกับสิ่งปลูกสร้างหลังนี้ไหม (เจ้าของ + อยู่ใกล้พอ)
+    /// Verifica se o jogador possui autoridade para alterar uma estrutura e se está
+    /// fisicamente próximo o bastante para realizar a ação.
     ///
-    /// ⚠️ ไม่มีด่านนี้ = ผู้เล่นคนเดียวเขียนสคริปต์วน entity id ที่ได้ฟรีจากแพ็กเก็ต AppearArtifact
-    /// แล้วรื้อสิ่งปลูกสร้างทั้งเกาะ/ขนของออกจากตู้คนอื่นได้จากทั่วเกาะ
+    /// A autoridade depende do assentamento atual:
+    /// Ilha Domada pública → domínio do jogador;
+    /// Ilha Particular → proprietário;
+    /// Ilha de Clã → membros do clã dentro do domínio do clã.
     ///
-    /// ของที่ไม่มีเจ้าของ (ท่าเรือ/รูวาร์ปที่เซิร์ฟวางเอง · ของเก่าก่อนมีระบบเจ้าของ)
-    /// **ยุ่งไม่ได้ทั้งคู่** — ปลอดภัยกว่าปล่อยให้ใครก็รื้อ
+    /// Estruturas sem proprietário e sem domínio válido continuam protegidas por padrão.
     /// </summary>
     private bool MayTouchArtifact(string artifactEntityId, string what)
     {
         AppearArtifact? found = _world.ArtifactManager.Get(artifactEntityId);
         if (!found.HasValue)
         {
-            Console.WriteLine($"[สิทธิ์] {Short(EntityId)} {what}: ไม่มีสิ่งปลูกสร้าง {artifactEntityId}");
+            Console.WriteLine(
+                $"[permissão] {Short(EntityId)} {what}: estrutura {artifactEntityId} não encontrada");
             return false;
         }
 
-        string owner = _world.ArtifactManager.OwnerOf(artifactEntityId);
-        if (!string.Equals(owner, EntityId, StringComparison.Ordinal))
-        {
-            Console.WriteLine($"[สิทธิ์] {Short(EntityId)} {what} {artifactEntityId} ไม่ได้ — " +
-                              (string.IsNullOrEmpty(owner) ? "ของนี้ไม่มีเจ้าของ" : $"เจ้าของคือ {Short(owner)}"));
-            return false;
-        }
-
-        // ใช้ตัวเดียวกับที่ระบบล่าสัตว์ใช้ (Player.Hunting.cs) — พิสูจน์แล้วว่าอ่านตำแหน่งถูก
-        // วัดจากมุมของ footprint แล้วบวกขนาดหลังเข้าไป เพื่อไม่ให้บ้านหลังใหญ่โดนตัดสิทธิ์
         AppearArtifact artifact = found.Value;
+        string owner = _world.ArtifactManager.OwnerOf(artifactEntityId);
+
+        if (!CanUseArtifactInCurrentSettlement(artifact, owner))
+        {
+            Console.WriteLine(
+                $"[permissão] {Short(EntityId)} não pode {what} {artifactEntityId} — " +
+                (string.IsNullOrEmpty(owner)
+                    ? "sem autoridade territorial"
+                    : $"proprietário registrado {Short(owner)}"));
+            return false;
+        }
+
+        // A distância é validada no servidor para impedir ações remotas por clientes modificados.
         int reach = ArtifactReachTiles + Math.Max(artifact.Size.x, artifact.Size.y);
         if (!IsWithinTiles(artifact.Tile, reach))
         {
-            Console.WriteLine($"[สิทธิ์] {Short(EntityId)} {what} {artifactEntityId} ไม่ได้ — อยู่ไกลเกินไป");
+            Console.WriteLine(
+                $"[permissão] {Short(EntityId)} não pode {what} {artifactEntityId} — longe demais");
             return false;
         }
+
         return true;
     }
 
@@ -1812,6 +1842,12 @@ public partial class Player
 
     private void HandlePlaceAddOnsMsg(PlaceAddOns msg, uint seq)
     {
+        if (!MayTouchArtifact(msg.EntityId, "alterar módulos"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para alterar esta estrutura." }, seq);
+            return;
+        }
+
         var dictionary = new Dictionary<int, Item>();
         AddOns addons = _world.ArtifactManager.GetAddons(msg.EntityId);
         foreach (var pair in msg.AddOnPlacements)
@@ -1914,13 +1950,25 @@ public partial class Player
         Send(default(OK), seq);
     }
 
-    private void HandleScribbleMsg(Scribble msg)
+    private void HandleScribbleMsg(Scribble msg, uint seq)
     {
+        if (!MayTouchArtifact(msg.EntityId, "editar placa"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para editar esta placa." }, seq);
+            return;
+        }
+
         _world.ArtifactManager.Scribble(msg);
     }
 
-    private void HandleChangeDecorationMsg(Messages.Display msg)
+    private void HandleChangeDecorationMsg(Messages.Display msg, uint seq)
     {
+        if (!MayTouchArtifact(msg.EntityId, "alterar decoração"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para alterar esta decoração." }, seq);
+            return;
+        }
+
         _world.ArtifactManager.ChangeDecoration(msg.EntityId);
     }
 
@@ -2325,6 +2373,49 @@ public partial class Player
             }
         }
 
+        // A Ilha Domada pública é uma instância persistente e não pertence ao RegionCatalog.
+        // Ela precisa ser adicionada explicitamente às rotas usando seu template real,
+        // que o cliente já conhece através de region_templates.json.
+        if (_world.Registry?.EnsureDefaultSharedTamedRegion() == true &&
+            _world.Registry.TryGetSettlementRegion(
+                WorldRegistry.DefaultSharedTamedRegionId,
+                out SettlementRegionInstance sharedTamed) &&
+            !string.Equals(
+                LogicalRegionId(),
+                sharedTamed.RegionId,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            RegionCatalog.TemplateInfo tamedTemplate =
+                RegionCatalog.GetTemplate(sharedTamed.TemplateId);
+
+            if (CanAccessSailingTemplate(tamedTemplate))
+            {
+                var tamedRoute = new Route
+                {
+                    RegionId = sharedTamed.RegionId,
+                    Price = null
+                };
+
+                if (!byRole.TryGetValue(
+                        tamedTemplate.Role,
+                        out Dictionary<string, List<Route>> tamedByTemplate))
+                {
+                    tamedByTemplate = new Dictionary<string, List<Route>>();
+                    byRole[tamedTemplate.Role] = tamedByTemplate;
+                }
+
+                if (!tamedByTemplate.TryGetValue(
+                        sharedTamed.TemplateId,
+                        out List<Route> tamedRoutes))
+                {
+                    tamedRoutes = new List<Route>();
+                    tamedByTemplate[sharedTamed.TemplateId] = tamedRoutes;
+                }
+
+                tamedRoutes.Add(tamedRoute);
+            }
+        }
+
         var routes = new Routes
         {
             _Routes = byRole.ToDictionary(
@@ -2398,15 +2489,23 @@ public partial class Player
             Send(region, seq);
             return;
         }
-        if (_world.Registry?.TryGetPersonalTemplate(msg.RegionId, out string personalTemplateId) == true)
+        if (_world.Registry?.TryGetSettlementRegion(
+                msg.RegionId,
+                out SettlementRegionInstance settlement) == true)
         {
             Send(new Messages.Region
             {
-                Id = msg.RegionId,
-                TerrainId = personalTemplateId,
-                TemplateId = personalTemplateId,
+                Id = settlement.RegionId,
+                TerrainId = settlement.TemplateId,
+                TemplateId = settlement.TemplateId,
                 Role = Shared.Region.Role.Personal,
-                Name = "Ilha Domada",
+                Name = settlement.Kind switch
+                {
+                    SettlementRegionKind.SharedTamed => "Ilha Domada",
+                    SettlementRegionKind.PrivatePlayer => "Ilha Particular",
+                    SettlementRegionKind.Clan => "Ilha de Clã",
+                    _ => null
+                },
                 CreatedAt = 0.0
             }, seq);
             return;
@@ -2434,18 +2533,80 @@ public partial class Player
     private void HandleTravelMsg(string regionId, uint seq)
     {
         string target = regionId;
+
+        if (string.Equals(
+                target,
+                WorldRegistry.DefaultSharedTamedRegionId,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            _world.Registry?.EnsureDefaultSharedTamedRegion();
+        }
+
         Messages.Region catalogRegion = default;
         bool knownCatalog = !string.IsNullOrEmpty(target) &&
                             RegionCatalog.TryGet(target, out catalogRegion) &&
-                            RegionCatalog.GetTemplate(catalogRegion.TemplateId)?.Role is not Shared.Region.Role.Personal;
-        bool knownPersonal = !string.IsNullOrEmpty(target) &&
-                             (_world.Registry?.IsPersonalRegion(target) ?? false);
-        if (!string.IsNullOrEmpty(target) && !knownCatalog && !knownPersonal)
+                            RegionCatalog.GetTemplate(catalogRegion.TemplateId)?.Role
+                                is not Shared.Region.Role.Personal;
+
+        SettlementRegionInstance settlement = null;
+        bool knownSettlement = !string.IsNullOrEmpty(target) &&
+                               _world.Registry?.TryGetSettlementRegion(
+                                   target,
+                                   out settlement) == true;
+
+        if (!string.IsNullOrEmpty(target) && !knownCatalog && !knownSettlement)
         {
-            Console.WriteLine($"[sail] ปฏิเสธ: ไม่รู้จักเกาะ '{target}'");
-            Send(new Abort { Text = "ไม่พบเกาะปลายทาง" }, seq);
+            Console.WriteLine($"[sail] recusado: ilha desconhecida '{target}'");
+            Send(new Abort { Text = "Ilha de destino não encontrada." }, seq);
             return;
         }
+
+        if (knownSettlement)
+        {
+            switch (settlement.Kind)
+            {
+                case SettlementRegionKind.SharedTamed:
+                    // Ilha Domada pública: qualquer jogador pode viajar para ela.
+                    break;
+
+                case SettlementRegionKind.PrivatePlayer:
+                    if (!string.Equals(
+                            target,
+                            _context.PersonalRegionId,
+                            StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine(
+                            $"[sail] recusado: {Short(EntityId)} tentou entrar diretamente " +
+                            $"na Ilha Particular '{target}'");
+                        Send(new Abort
+                        {
+                            Text = "Ilhas Particulares de outros jogadores exigem uma visita autorizada."
+                        }, seq);
+                        return;
+                    }
+                    break;
+
+                case SettlementRegionKind.Clan:
+                    string clanId = CurrentClanId();
+                    if (string.IsNullOrEmpty(clanId) ||
+                        !string.Equals(
+                            clanId,
+                            settlement.OwnerId,
+                            StringComparison.Ordinal))
+                    {
+                        Console.WriteLine(
+                            $"[sail] recusado: {Short(EntityId)} tentou entrar " +
+                            $"na Ilha de Clã '{target}' sem pertencer ao clã");
+                        Send(new Abort
+                        {
+                            Text = "Você não pertence ao clã proprietário desta ilha."
+                        }, seq);
+                        return;
+                    }
+                    break;
+            }
+        }
+
         if (knownCatalog)
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(catalogRegion.TemplateId);

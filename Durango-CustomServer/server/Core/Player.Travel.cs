@@ -735,18 +735,11 @@ public partial class Player
 
     private void HandleTravelToRandomPersonalRegionMsg(uint seq)
     {
-        List<string> candidates = _world.Registry?.PersonalRegionIds
-            .Where(id => !string.Equals(id, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
-            .ToList() ?? new List<string>();
-
-        if (candidates.Count == 0)
+        // Ilhas Particulares não são destinos públicos aleatórios.
+        // Outro jogador só poderá entrar através do fluxo explícito de visita/autorização.
+        Send(new Abort
         {
-            Send(new Abort { Text = "ยังไม่มีเกาะส่วนตัวให้ไปเยี่ยม" }, seq);
-            return;
-        }
-
-        string picked = candidates[System.Random.Shared.Next(candidates.Count)];
-        Console.WriteLine($"[เดินทาง] {Short(EntityId)} ออกเรือสุ่มไปเกาะส่วนตัว {picked}");
-        HandleTravelMsg(picked, seq);
+            Text = "Ilhas Particulares só podem ser acessadas por visita autorizada."
+        }, seq);
     }
 }

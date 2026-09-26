@@ -239,16 +239,18 @@ public static class RegionCatalog
         templateId != null && _templates.TryGetValue(templateId, out TemplateInfo info) ? info : null;
 
     /// <summary>
-    /// Primeiro template de Personal Region que possui terrain real instalado.
-    /// Usado somente como fallback de migração para personagens antigos que chegaram ao
-    /// pós-tutorial antes de existir persistência de PersonalRegionId.
+    /// Primeiro template de assentamento que possui terrain real instalado.
+    /// As instâncias públicas, particulares e de clã reutilizam esse terrain como base,
+    /// mas persistem em arquivos .world separados.
     /// </summary>
-    public static string DefaultPersonalTemplateId =>
+    public static string DefaultSettlementTemplateId =>
         _byId.Values
             .Where(region => GetTemplate(region.TemplateId)?.Role == Role.Personal)
             .Select(region => region.TemplateId)
             .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
             .FirstOrDefault();
+
+    public static string DefaultPersonalTemplateId => DefaultSettlementTemplateId;
 
     /// <summary>เกาะอื่นทั้งหมดที่ไม่ใช่เกาะที่ยืนอยู่ตอนนี้ — ปลายทางของเส้นทางเดินเรือ</summary>
     public static IEnumerable<Region> Others(string currentRegionId) =>

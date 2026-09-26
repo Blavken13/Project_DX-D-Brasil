@@ -165,47 +165,20 @@ public partial class Player
         Point2 size = ResolveSize(blueprint, msg.Size, msg.Rotation);
         int area = Math.Max(1, size.x * size.y);
 
-        // ⚠️ ด่านระยะ — เหตุผลเดียวกับ MayTouchArtifact: ฝั่งเกมเดินเข้าไปหาก่อนยิงคำสั่งเสมอ
-        // (client/BuildSystem.cs:530 MoveToPosition(..., 141f)) ⇒ ผู้เล่นปกติอยู่ใกล้กว่านี้มาก
-        // ไม่มีด่านนี้ = เขียนสคริปต์โรยสิ่งปลูกสร้างทั้งเกาะจากที่เดียวได้
+        // Validação server-side de alcance: o cliente normal já se aproxima antes de construir,
+        // mas um cliente modificado não pode posicionar estruturas remotamente.
         if (!IsWithinTiles(msg.Tile, ArtifactReachTiles + Math.Max(size.x, size.y)))
         {
-            Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: ช่อง [{msg.Tile.x},{msg.Tile.y}] อยู่ไกลเกินไป");
-            Send(new Abort { Text = "อยู่ไกลเกินไป" }, seq);
+            Console.WriteLine($"[construção] recusado {Short(EntityId)}: [{msg.Tile.x},{msg.Tile.y}] longe demais");
+            Send(new Abort { Text = "Você está longe demais do local de construção." }, seq);
             return;
         }
 
-        bool foreignPersonalRegion =
-            _world.Registry?.IsPersonalRegion(_context.RegionId) == true &&
-            !string.Equals(_context.RegionId, _context.PersonalRegionId, StringComparison.OrdinalIgnoreCase);
-        if (foreignPersonalRegion)
+        if (!CanBuildInCurrentSettlement(msg.Tile, size, out string settlementError))
         {
-            Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: พยายามสร้างบนเกาะส่วนตัวของผู้อื่น");
-            Send(new Abort { Text = "สร้างบนเกาะส่วนตัวของผู้อื่นไม่ได้" }, seq);
+            Console.WriteLine($"[construção] recusado {Short(EntityId)}: {settlementError}");
+            Send(new Abort { Text = settlementError }, seq);
             return;
-        }
-
-        var checkedEstates = new HashSet<string>(StringComparer.Ordinal);
-        for (int dx = 0; dx < Math.Max(1, size.x); dx++)
-        {
-            for (int dy = 0; dy < Math.Max(1, size.y); dy++)
-            {
-                Point2 cell = World.CellFromTile(new Point2(msg.Tile.x + dx, msg.Tile.y + dy));
-                if (!_world.TryGetEstateIdAtCell(cell, out string estateId) ||
-                    !checkedEstates.Add(estateId))
-                {
-                    continue;
-                }
-
-                EstateRecord estate = _world.GetEstate(estateId);
-                if (estate == null ||
-                    !string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal))
-                {
-                    Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: footprint แตะที่ดิน {estateId} ของผู้อื่น");
-                    Send(new Abort { Text = "พื้นที่ก่อสร้างทับที่ดินของผู้อื่น" }, seq);
-                    return;
-                }
-            }
         }
 
         // สูตรทั้งสองมาจาก constants.json → build → site_selection ตรง ๆ (ดู Support/BuildTuning.cs)
@@ -847,12 +820,18 @@ public partial class Player
         Point2 size = capsule.OccupySize ?? blueprint.Size;
         if (!IsWithinTiles(msg.Tile, ArtifactReachTiles + Math.Max(size.x, size.y)))
         {
-            Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: วางที่ [{msg.Tile.x},{msg.Tile.y}] ไกลเกินไป");
-            Send(new Abort { Text = "อยู่ไกลเกินไป" }, seq);
+            Console.WriteLine($"[construção] recusado {Short(EntityId)}: [{msg.Tile.x},{msg.Tile.y}] longe demais");
+            Send(new Abort { Text = "Você está longe demais do local de construção." }, seq);
+            return;
+        }
+        if (!CanBuildInCurrentSettlement(msg.Tile, size, out string settlementError))
+        {
+            Console.WriteLine($"[construção] recusado {Short(EntityId)}: {settlementError}");
+            Send(new Abort { Text = settlementError }, seq);
             return;
         }
 
-        // ทับของเดิมไม่ได้ (เหตุผลเดียวกับตอนจองพื้นที่)
+        // Não permite sobrepor uma estrutura já existente.
         if (_world.ArtifactManager.FindOverlapping(msg.Tile, size, msg.Floor) is { } blocking)
         {
             Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: วางทับ {blocking[..Math.Min(8, blocking.Length)]}");
@@ -908,11 +887,9 @@ public partial class Player
     // ── ตัวช่วย ─────────────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// หาหลังเป้าหมาย + แบบแปลน พร้อมด่านสิทธิ์
-    ///
-    /// ใช้ <see cref="MayTouchArtifact"/> ตัวเดียวกับการรื้อ/เปิดตู้ ⇒ **เจ้าของเท่านั้น**
-    /// ของจริงคนอื่นมาช่วยสร้างได้ แต่ระบบเจ้าของที่เพิ่งปิดช่องโหว่ไปยังไม่มีแนวคิด "อนุญาตเป็นราย ๆ"
-    /// ⇒ เลือกฝั่งปลอดภัยไว้ก่อน (คนอื่นสร้างของเราไม่ได้ ดีกว่าใครก็ยัดของลงหลังใครก็ได้)
+    /// Resolve a estrutura alvo e aplica a autoridade do assentamento.
+    /// Em Ilha Domada pública vale o domínio do jogador; em Ilha de Clã vale o domínio do clã;
+    /// em Ilha Particular somente o proprietário pode modificar as próprias estruturas.
     /// </summary>
     private bool TryGetBuildTarget(string entityId, string what, out AppearArtifact artifact,
                                    out MergedBlueprint blueprint, out string error)
@@ -921,16 +898,26 @@ public partial class Player
         blueprint = null;
         error = null;
 
-        if (!MayTouchArtifact(entityId, what))
-        {
-            error = "ทำกับสิ่งปลูกสร้างนี้ไม่ได้";
-            return false;
-        }
         if (_world.ArtifactManager.Get(entityId) is not { } found)
         {
-            error = "ไม่พบสิ่งปลูกสร้างนี้";
+            error = "Estrutura não encontrada.";
             return false;
         }
+
+        int reach = ArtifactReachTiles + Math.Max(found.Size.x, found.Size.y);
+        if (!IsWithinTiles(found.Tile, reach))
+        {
+            error = "Você está longe demais da estrutura.";
+            return false;
+        }
+
+        string artifactOwner = _world.ArtifactManager.OwnerOf(entityId);
+        if (!CanUseArtifactInCurrentSettlement(found, artifactOwner))
+        {
+            error = "Você não tem permissão para modificar esta estrutura.";
+            return false;
+        }
+
         artifact = found;
         blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
         if (blueprint == null)

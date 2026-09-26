@@ -5,6 +5,26 @@ using Durango.Utils;
 
 namespace Durango.Online;
 
+/// <summary>Tipo de uma instância persistente de assentamento.</summary>
+public enum SettlementRegionKind
+{
+    SharedTamed,
+    PrivatePlayer,
+    Clan
+}
+
+/// <summary>
+/// Mapeia um RegionId lógico para o terrain/template que ele reutiliza.
+/// Cada instância possui seu próprio arquivo .world mesmo quando compartilha o mesmo terrain.
+/// </summary>
+public sealed class SettlementRegionInstance
+{
+    public string RegionId;
+    public string TemplateId;
+    public SettlementRegionKind Kind;
+    public string OwnerId;
+}
+
 /// <summary>
 /// โลกของแต่ละเกาะ — เกาะ 1 ลูก = World 1 ตัว = ไฟล์เซฟ 1 ไฟล์
 ///
@@ -41,28 +61,128 @@ public class WorldRegistry
     public IEnumerable<KeyValuePair<string, World>> Loaded => _worlds;
 
     /// <summary>
-    /// โลกของเกาะที่ระบุ — สร้างขึ้นถ้ายังไม่เคยเปิด
-    /// คืนโลกตั้งต้นเมื่อ regionId ว่างหรือไม่มีเกาะนั้นในสารบัญ
+    /// Instâncias de assentamento que reutilizam um terrain real, mas possuem mundo/save próprios.
+    /// Ex.: tamed_01 (pública), personal_xxx (particular) e clan_xxx (clã).
     /// </summary>
-    /// <summary>
-    /// แผนที่ region id ของเกาะส่วนตัว → template terrain จริง (pe10gr_1 ฯลฯ)
-    /// ต้องมีเพราะ GetOrCreate เดิมรับเฉพาะ id ที่อยู่ใน RegionCatalog
-    /// </summary>
-    private readonly Dictionary<string, string> _personalTemplates = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, SettlementRegionInstance> _settlementRegions =
+        new(StringComparer.OrdinalIgnoreCase);
 
-    public void RegisterPersonalRegion(string regionId, string templateId)
+    public const string DefaultSharedTamedRegionId = "tamed_01";
+
+    private void RegisterSettlementRegion(
+        string regionId,
+        string templateId,
+        SettlementRegionKind kind,
+        string ownerId)
     {
         if (string.IsNullOrEmpty(regionId) || string.IsNullOrEmpty(templateId)) return;
-        _personalTemplates[regionId] = templateId;
+
+        if (_settlementRegions.TryGetValue(regionId, out SettlementRegionInstance existing))
+        {
+            existing.TemplateId = templateId;
+            existing.Kind = kind;
+            if (!string.IsNullOrEmpty(ownerId))
+            {
+                existing.OwnerId = ownerId;
+            }
+            return;
+        }
+
+        _settlementRegions[regionId] = new SettlementRegionInstance
+        {
+            RegionId = regionId,
+            TemplateId = templateId,
+            Kind = kind,
+            OwnerId = ownerId
+        };
     }
 
-    public bool TryGetPersonalTemplate(string regionId, out string templateId) =>
-        _personalTemplates.TryGetValue(regionId ?? "", out templateId);
+    public bool EnsureDefaultSharedTamedRegion()
+    {
+        if (_settlementRegions.ContainsKey(DefaultSharedTamedRegionId))
+        {
+            return true;
+        }
+
+        string templateId = RegionCatalog.DefaultSettlementTemplateId;
+        if (string.IsNullOrEmpty(templateId))
+        {
+            return false;
+        }
+
+        RegisterSettlementRegion(
+            DefaultSharedTamedRegionId,
+            templateId,
+            SettlementRegionKind.SharedTamed,
+            ownerId: null);
+        return true;
+    }
+
+    public void RegisterPersonalRegion(string regionId, string templateId) =>
+        RegisterPersonalRegion(regionId, templateId, ownerId: null);
+
+    public void RegisterPersonalRegion(string regionId, string templateId, string ownerId) =>
+        RegisterSettlementRegion(regionId, templateId, SettlementRegionKind.PrivatePlayer, ownerId);
+
+    public string RegisterClanRegion(string clanId, string templateId = null)
+    {
+        if (string.IsNullOrWhiteSpace(clanId)) return null;
+
+        templateId ??= RegionCatalog.DefaultSettlementTemplateId;
+        if (string.IsNullOrEmpty(templateId)) return null;
+
+        string regionId = ClanRegionIdFor(clanId);
+        RegisterSettlementRegion(regionId, templateId, SettlementRegionKind.Clan, clanId);
+        return regionId;
+    }
+
+    public static string ClanRegionIdFor(string clanId) =>
+        string.IsNullOrWhiteSpace(clanId) ? null : "clan_" + clanId;
+
+    public bool TryGetSettlementRegion(string regionId, out SettlementRegionInstance instance) =>
+        _settlementRegions.TryGetValue(regionId ?? "", out instance);
+
+    public bool TryGetPersonalTemplate(string regionId, out string templateId)
+    {
+        templateId = null;
+        if (!TryGetSettlementRegion(regionId, out SettlementRegionInstance instance) ||
+            instance.Kind != SettlementRegionKind.PrivatePlayer)
+        {
+            return false;
+        }
+
+        templateId = instance.TemplateId;
+        return true;
+    }
+
+    public bool IsSettlementRegion(string regionId) =>
+        !string.IsNullOrEmpty(regionId) && _settlementRegions.ContainsKey(regionId);
 
     public bool IsPersonalRegion(string regionId) =>
-        !string.IsNullOrEmpty(regionId) && _personalTemplates.ContainsKey(regionId);
+        TryGetSettlementRegion(regionId, out SettlementRegionInstance instance) &&
+        instance.Kind == SettlementRegionKind.PrivatePlayer;
 
-    public IEnumerable<string> PersonalRegionIds => _personalTemplates.Keys;
+    public bool IsSharedTamedRegion(string regionId) =>
+        TryGetSettlementRegion(regionId, out SettlementRegionInstance instance) &&
+        instance.Kind == SettlementRegionKind.SharedTamed;
+
+    public bool IsClanRegion(string regionId) =>
+        TryGetSettlementRegion(regionId, out SettlementRegionInstance instance) &&
+        instance.Kind == SettlementRegionKind.Clan;
+
+    public IEnumerable<string> PersonalRegionIds
+    {
+        get
+        {
+            foreach (SettlementRegionInstance instance in _settlementRegions.Values)
+            {
+                if (instance.Kind == SettlementRegionKind.PrivatePlayer)
+                {
+                    yield return instance.RegionId;
+                }
+            }
+        }
+    }
 
     public World GetOrCreate(string regionId)
     {
@@ -75,13 +195,21 @@ public class WorldRegistry
         {
             terrainFile = regionId; // catalog ใช้ชื่อไฟล์ terrain เป็น region id
         }
-        else if (_personalTemplates.TryGetValue(regionId, out string personalTemplate))
-        {
-            terrainFile = personalTemplate;
-        }
         else
         {
-            throw new InvalidOperationException($"Unknown region '{regionId}'.");
+            if (string.Equals(regionId, DefaultSharedTamedRegionId, StringComparison.OrdinalIgnoreCase))
+            {
+                EnsureDefaultSharedTamedRegion();
+            }
+
+            if (_settlementRegions.TryGetValue(regionId, out SettlementRegionInstance settlement))
+            {
+                terrainFile = settlement.TemplateId;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unknown region '{regionId}'.");
+            }
         }
 
         if (_worlds.TryGetValue(regionId, out World existing))

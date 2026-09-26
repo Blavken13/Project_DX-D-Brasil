@@ -232,9 +232,9 @@ public partial class Player
         }
 
         string owner = _world.ArtifactManager.OwnerOf(msg.EntityId);
-        if (!string.IsNullOrEmpty(owner) && !string.Equals(owner, EntityId, StringComparison.Ordinal))
+        if (!CanUseArtifactInCurrentSettlement(artifact, owner))
         {
-            RejectCollect(seq, "ไม่ใช่แปลงของคุณ", msg);
+            RejectCollect(seq, "Você não tem permissão para colher neste canteiro.", msg);
             return true;
         }
 

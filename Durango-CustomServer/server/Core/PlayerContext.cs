@@ -73,11 +73,18 @@ public class PlayerContext
     [JsonProperty("personal_region_id", NullValueHandling = NullValueHandling.Ignore)]
     public string PersonalRegionId;
 
-    /// <summary>template ที่ใช้สร้างเกาะส่วนตัว (pe10gr_1 …) — เก็บไว้สร้างโลกซ้ำหลังรีสตาร์ต</summary>
+    /// <summary>Template usado pela Ilha Particular (pe10gr_1 etc.) para recriar o mundo após restart.</summary>
     [JsonProperty("personal_region_template_id", NullValueHandling = NullValueHandling.Ignore)]
     public string PersonalRegionTemplateId;
 
-    /// <summary>กลุ่มที่อนุญาตให้เข้าเกาะส่วนตัว · null/ว่าง = ปิดรับ</summary>
+    /// <summary>
+    /// Direito de possuir uma Ilha Particular. No Alpha/Beta, saves antigos que já possuem
+    /// PersonalRegionId são migrados automaticamente para true. Novos personagens começam false.
+    /// </summary>
+    [JsonProperty("private_region_entitled")]
+    public bool PrivateRegionEntitled;
+
+    /// <summary>Grupos autorizados a visitar a Ilha Particular; null/vazio = fechada.</summary>
     [JsonProperty("personal_region_admission", NullValueHandling = NullValueHandling.Ignore)]
     public List<int> PersonalRegionAdmission;
 

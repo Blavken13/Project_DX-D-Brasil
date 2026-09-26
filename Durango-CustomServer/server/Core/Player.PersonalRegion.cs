@@ -11,15 +11,44 @@ using Yaml.Util;
 
 namespace Durango.Online;
 
-// เกาะส่วนตัวของผู้เล่น — สร้าง/เข้า/ตั้งสิทธิ์เข้า
+// Assentamentos especiais do jogador: Ilha Domada pública, Ilha Particular e Ilha de Clã.
 public partial class Player
 {
-    /// <summary>ประกอบ PersonalRegionInfo จากเซฟผู้เล่น — PersonalEstate ใส่ทีหลังเมื่อมีระบบที่ดิน</summary>
+    /// <summary>Monta PersonalRegionInfo da Ilha Particular persistida no save do jogador.</summary>
     private PersonalRegionInfo BuildPersonalRegionInfo()
     {
         if (string.IsNullOrEmpty(_context.PersonalRegionId))
         {
-            return default;
+            WorldRegistry registry = _world.Registry;
+            if (registry?.EnsureDefaultSharedTamedRegion() != true ||
+                !registry.TryGetSettlementRegion(
+                    WorldRegistry.DefaultSharedTamedRegionId,
+                    out SettlementRegionInstance sharedTamed))
+            {
+                return default;
+            }
+
+            var sharedRegion = new Region
+            {
+                Id = sharedTamed.RegionId,
+                TerrainId = sharedTamed.TemplateId,
+                TemplateId = sharedTamed.TemplateId,
+                Role = Role.Personal,
+                Name = "Ilha Domada",
+                CreatedAt = 0
+            };
+
+            return new PersonalRegionInfo
+            {
+                PersonalRegion = new Messages.PersonalRegion
+                {
+                    Region = sharedRegion,
+                    OwnerId = string.Empty,
+                    PioneerExp = 0,
+                    AdmissionCategories = Array.Empty<LicenseCategory>()
+                },
+                PersonalEstate = FindOwnedEstateLicense(OwnerType.Player)
+            };
         }
 
         EnsurePersonalWorldRegistered();
@@ -39,7 +68,7 @@ public partial class Player
             TerrainId = templateId,
             TemplateId = templateId,
             Role = Role.Personal,
-            Name = "Ilha Domada",
+            Name = "Ilha Particular",
             CreatedAt = 0
         };
 
@@ -75,8 +104,23 @@ public partial class Player
         {
             return;
         }
-        registry.RegisterPersonalRegion(_context.PersonalRegionId, _context.PersonalRegionTemplateId);
+        registry.RegisterPersonalRegion(
+            _context.PersonalRegionId,
+            _context.PersonalRegionTemplateId,
+            EntityId);
         registry.GetOrCreate(_context.PersonalRegionId);
+    }
+
+    private string CurrentClanId()
+    {
+        string clanId = _context.AppearPlayer.Member.ClanId;
+        return string.IsNullOrWhiteSpace(clanId) ? null : clanId;
+    }
+
+    private string EnsureClanWorldRegistered()
+    {
+        string clanId = CurrentClanId();
+        return string.IsNullOrEmpty(clanId) ? null : _world.Registry?.RegisterClanRegion(clanId);
     }
 
     private static bool IsAllowedPersonalTemplate(string templateId)
@@ -91,7 +135,7 @@ public partial class Player
 
     private string MakePersonalRegionId()
     {
-        // **ค่าของเรา** — id คงที่ต่อตัวละคร รีสตาร์ตแล้วยังชี้โลกเดิมได้
+        // ID estável por personagem: restart continua apontando para a mesma Ilha Particular.
         string shortId = EntityId.Length <= 8 ? EntityId : EntityId[..8];
         return "personal_" + shortId;
     }
@@ -112,6 +156,7 @@ public partial class Player
 
         if (!string.IsNullOrEmpty(_context.PersonalRegionId))
         {
+            _context.PrivateRegionEntitled = true;
             if (string.IsNullOrEmpty(_context.PersonalRegionTemplateId))
             {
                 _context.PersonalRegionTemplateId = templateId;
@@ -119,6 +164,12 @@ public partial class Player
             EnsurePersonalWorldRegistered();
             Send(BuildPersonalRegionMessage(), seq);
             Console.WriteLine($"[เกาะส่วนตัว] {Short(EntityId)} มีเกาะแล้ว {_context.PersonalRegionId}");
+            return;
+        }
+
+        if (!_context.PrivateRegionEntitled)
+        {
+            Send(new Abort { Text = "A Ilha Particular precisa ser adquirida antes da criação." }, seq);
             return;
         }
 
@@ -137,21 +188,45 @@ public partial class Player
 
     private void HandleReturnToEstate(ReturnToEstate msg, uint seq)
     {
-        if (msg.OwnerType != OwnerType.PersonalPlayer)
+        string dest = null;
+
+        switch (msg.OwnerType)
         {
-            Send(new Abort { Text = "ยังไม่มีที่ดินชนิดนี้ให้กลับไป" }, seq);
+            case OwnerType.PersonalPlayer:
+                if (!string.IsNullOrEmpty(_context.PersonalRegionId))
+                {
+                    EnsurePersonalWorldRegistered();
+                    dest = _context.PersonalRegionId;
+                }
+                else if (_world.Registry?.EnsureDefaultSharedTamedRegion() == true)
+                {
+                    // Sem Ilha Particular adquirida, o atalho de Ilha Domada leva ao mundo público.
+                    dest = WorldRegistry.DefaultSharedTamedRegionId;
+                }
+                break;
+
+            case OwnerType.Player:
+                if (_world.Registry?.EnsureDefaultSharedTamedRegion() == true)
+                {
+                    dest = WorldRegistry.DefaultSharedTamedRegionId;
+                }
+                break;
+
+            case OwnerType.ClanEstate:
+            case OwnerType.ClanWarphole:
+                dest = EnsureClanWorldRegistered();
+                break;
+        }
+
+        if (string.IsNullOrEmpty(dest))
+        {
+            Send(new Abort { Text = "Não há um assentamento desse tipo disponível para retorno." }, seq);
             return;
         }
-        if (string.IsNullOrEmpty(_context.PersonalRegionId))
-        {
-            Send(new Abort { Text = "ยังไม่มีเกาะส่วนตัว — สร้างจากหน้าที่ดินส่วนตัวก่อน" }, seq);
-            return;
-        }
-        EnsurePersonalWorldRegistered();
-        float duration = 1f; // **ค่าของเรา**
+
+        const float duration = 1f; // Valor temporário do Alpha/Beta.
         Send(new Messages.Timer { Duration = duration }, seq);
-        Console.WriteLine($"[เกาะส่วนตัว] {Short(EntityId)} กลับเกาะ {_context.PersonalRegionId}");
-        string dest = _context.PersonalRegionId;
+        Console.WriteLine($"[assentamento] {Short(EntityId)} retornando para {dest}");
         System.Threading.Timer timer = null;
         timer = new System.Threading.Timer(_ =>
         {
@@ -167,7 +242,7 @@ public partial class Player
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[เกาะส่วนตัว] ย้ายเกาะไม่สำเร็จ: {e.Message}");
+                Console.WriteLine($"[assentamento] falha ao retornar para {dest}: {e.Message}");
             }
             finally
             {
@@ -178,25 +253,48 @@ public partial class Player
 
     private void HandleVisitEstate(VisitEstate msg, uint seq)
     {
-        if (msg.OwnerType != OwnerType.PersonalPlayer)
-        {
-            Send(new Abort { Text = "ยังเดินทางไปที่ดินชนิดนี้ไม่ได้" }, seq);
-            return;
-        }
         string dest = msg.RegionId;
-        if (string.IsNullOrEmpty(dest) || !dest.StartsWith("personal_", StringComparison.OrdinalIgnoreCase))
+
+        switch (msg.OwnerType)
         {
-            Send(new Abort { Text = "ไม่ทราบเกาะส่วนตัวปลายทาง" }, seq);
-            return;
+            case OwnerType.Player:
+                if (_world.Registry?.EnsureDefaultSharedTamedRegion() != true)
+                {
+                    Send(new Abort { Text = "A Ilha Domada pública não está disponível." }, seq);
+                    return;
+                }
+                dest = WorldRegistry.DefaultSharedTamedRegionId;
+                break;
+
+            case OwnerType.PersonalPlayer:
+                if (string.IsNullOrEmpty(dest) || _world.Registry?.IsPersonalRegion(dest) != true)
+                {
+                    Send(new Abort { Text = "A Ilha Particular de destino não existe." }, seq);
+                    return;
+                }
+                break;
+
+            case OwnerType.ClanEstate:
+            case OwnerType.ClanWarphole:
+                string ownClanRegion = EnsureClanWorldRegistered();
+                if (string.IsNullOrEmpty(ownClanRegion) ||
+                    (!string.IsNullOrEmpty(dest) &&
+                     !string.Equals(dest, ownClanRegion, StringComparison.OrdinalIgnoreCase)))
+                {
+                    Send(new Abort { Text = "Você não pertence ao clã dessa ilha." }, seq);
+                    return;
+                }
+                dest = ownClanRegion;
+                break;
+
+            default:
+                Send(new Abort { Text = "Esse tipo de assentamento ainda não pode ser visitado." }, seq);
+                return;
         }
-        if (_world.Registry?.IsPersonalRegion(dest) != true)
-        {
-            Send(new Abort { Text = "ไม่พบเกาะส่วนตัวปลายทาง" }, seq);
-            return;
-        }
-        float duration = 1f;
+
+        const float duration = 1f;
         Send(new Messages.Timer { Duration = duration }, seq);
-        Console.WriteLine($"[เกาะส่วนตัว] {Short(EntityId)} เยี่ยม {dest}");
+        Console.WriteLine($"[assentamento] {Short(EntityId)} visitando {dest}");
         System.Threading.Timer timer = null;
         timer = new System.Threading.Timer(_ =>
         {
@@ -212,7 +310,7 @@ public partial class Player
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[เกาะส่วนตัว] เยี่ยมเกาะไม่สำเร็จ: {e.Message}");
+                Console.WriteLine($"[assentamento] falha ao visitar {dest}: {e.Message}");
             }
             finally
             {
@@ -280,6 +378,207 @@ public partial class Player
         return _world.TerrainId ?? "1";
     }
 
+    private bool TryResolveEstateDeclaration(
+        OwnerType requestedType,
+        out OwnerType actualType,
+        out string ownerId,
+        out string error)
+    {
+        actualType = requestedType;
+        ownerId = EntityId;
+        error = null;
+
+        SettlementRegionInstance settlement = null;
+        if (_world.Registry != null &&
+            _world.Registry.TryGetSettlementRegion(_context.RegionId, out settlement))
+        {
+            switch (settlement.Kind)
+            {
+                case SettlementRegionKind.SharedTamed:
+                    actualType = OwnerType.Player;
+                    ownerId = EntityId;
+                    return true;
+
+                case SettlementRegionKind.PrivatePlayer:
+                    if (!string.Equals(_context.RegionId, _context.PersonalRegionId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        error = "Só o proprietário pode reivindicar domínio na Ilha Particular.";
+                        return false;
+                    }
+                    actualType = OwnerType.PersonalPlayer;
+                    ownerId = EntityId;
+                    return true;
+
+                case SettlementRegionKind.Clan:
+                    string clanId = CurrentClanId();
+                    if (string.IsNullOrEmpty(clanId) ||
+                        !string.Equals(clanId, settlement.OwnerId, StringComparison.Ordinal))
+                    {
+                        error = "Você não pertence ao clã proprietário desta ilha.";
+                        return false;
+                    }
+
+                    if (!ClanStore.CanManageEstate(EntityId, clanId))
+                    {
+                        error = "Somente Líder ou Oficial pode declarar o domínio do clã.";
+                        return false;
+                    }
+
+                    actualType = OwnerType.ClanEstate;
+                    ownerId = clanId;
+                    return true;
+            }
+        }
+
+        if (requestedType != OwnerType.Player)
+        {
+            error = "Esse tipo de domínio só pode ser declarado em uma ilha de assentamento compatível.";
+            return false;
+        }
+
+        return true;
+    }
+
+    private string EstateAuthorityOwner(EstateRecord estate)
+    {
+        if (estate == null) return null;
+
+        if (estate.Type == (int)OwnerType.ClanEstate ||
+            estate.Type == (int)OwnerType.ClanWarphole)
+        {
+            string clanId = CurrentClanId();
+
+            return !string.IsNullOrEmpty(clanId) &&
+                   string.Equals(estate.OwnerId, clanId, StringComparison.Ordinal) &&
+                   ClanStore.CanManageEstate(EntityId, clanId)
+                ? clanId
+                : null;
+        }
+
+        return string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal)
+            ? EntityId
+            : null;
+    }
+
+    private bool CanBuildInCurrentSettlement(Point2 tile, Point2 size, out string error)
+    {
+        error = null;
+        SettlementRegionInstance settlement = null;
+        bool isSettlement = _world.Registry?.TryGetSettlementRegion(
+            _context.RegionId,
+            out settlement) == true;
+
+        string requiredOwner = EntityId;
+        OwnerType? requiredType = null;
+        bool requireEstate = false;
+
+        if (isSettlement)
+        {
+            switch (settlement.Kind)
+            {
+                case SettlementRegionKind.PrivatePlayer:
+                    if (!string.Equals(_context.RegionId, _context.PersonalRegionId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        error = "Não é permitido construir na Ilha Particular de outro jogador.";
+                        return false;
+                    }
+                    requiredType = OwnerType.PersonalPlayer;
+                    break;
+
+                case SettlementRegionKind.SharedTamed:
+                    requiredType = OwnerType.Player;
+                    requireEstate = true;
+                    break;
+
+                case SettlementRegionKind.Clan:
+                    string clanId = CurrentClanId();
+                    if (string.IsNullOrEmpty(clanId) ||
+                        !string.Equals(clanId, settlement.OwnerId, StringComparison.Ordinal))
+                    {
+                        error = "Você não pertence ao clã proprietário desta ilha.";
+                        return false;
+                    }
+                    requiredOwner = clanId;
+                    requiredType = OwnerType.ClanEstate;
+                    requireEstate = true;
+                    break;
+            }
+        }
+
+        int width = Math.Max(1, size.x);
+        int height = Math.Max(1, size.y);
+        for (int dx = 0; dx < width; dx++)
+        {
+            for (int dy = 0; dy < height; dy++)
+            {
+                Point2 cell = World.CellFromTile(new Point2(tile.x + dx, tile.y + dy));
+                if (!_world.TryGetEstateIdAtCell(cell, out string estateId))
+                {
+                    if (requireEstate)
+                    {
+                        error = settlement.Kind == SettlementRegionKind.Clan
+                            ? "Construa dentro do domínio do clã."
+                            : "Reivindique um domínio antes de construir nesta Ilha Domada.";
+                        return false;
+                    }
+                    continue;
+                }
+
+                EstateRecord estate = _world.GetEstate(estateId);
+                if (estate == null ||
+                    !string.Equals(estate.OwnerId, requiredOwner, StringComparison.Ordinal) ||
+                    (requiredType.HasValue && estate.Type != (int)requiredType.Value))
+                {
+                    error = "A área de construção invade um domínio sem permissão.";
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private bool CanUseArtifactInCurrentSettlement(AppearArtifact artifact, string artifactOwner)
+    {
+        if (string.Equals(artifactOwner, EntityId, StringComparison.Ordinal))
+        {
+            return true;
+        }
+
+        SettlementRegionInstance settlement = null;
+        if (_world.Registry == null ||
+            !_world.Registry.TryGetSettlementRegion(_context.RegionId, out settlement))
+        {
+            return false;
+        }
+
+        Point2 cell = World.CellFromTile(artifact.Tile);
+        if (!_world.TryGetEstateIdAtCell(cell, out string estateId))
+        {
+            return false;
+        }
+
+        EstateRecord estate = _world.GetEstate(estateId);
+        if (estate == null) return false;
+
+        if (settlement.Kind == SettlementRegionKind.SharedTamed)
+        {
+            return estate.Type == (int)OwnerType.Player &&
+                   string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal);
+        }
+
+        if (settlement.Kind == SettlementRegionKind.Clan)
+        {
+            string clanId = CurrentClanId();
+            return !string.IsNullOrEmpty(clanId) &&
+                   string.Equals(clanId, settlement.OwnerId, StringComparison.Ordinal) &&
+                   estate.Type == (int)OwnerType.ClanEstate &&
+                   string.Equals(estate.OwnerId, clanId, StringComparison.Ordinal);
+        }
+
+        return false;
+    }
+
     private void BroadcastEstateGridsAround(Point2 cell)
     {
         int tileX = cell.x * World.EstateGridSize;
@@ -297,11 +596,16 @@ public partial class Player
 
     private void HandleDeclareEstate(DeclareEstate msg, uint seq)
     {
-        if (msg.OwnerType != OwnerType.PersonalPlayer && msg.OwnerType != OwnerType.Player)
+        if (!TryResolveEstateDeclaration(
+                msg.OwnerType,
+                out OwnerType actualType,
+                out string ownerId,
+                out string declarationError))
         {
-            Send(new Abort { Text = "ประกาศที่ดินชนิดนี้ยังไม่รองรับ" }, seq);
+            Send(new Abort { Text = declarationError }, seq);
             return;
         }
+
         Point2 estateTile = World.TileFromCell(msg.Cell);
         int maxTileX = _world.NumChunksX * 16;
         int maxTileY = _world.NumChunksY * 16;
@@ -319,20 +623,11 @@ public partial class Player
             return;
         }
 
-        if (msg.OwnerType == OwnerType.PersonalPlayer)
-        {
-            if (string.IsNullOrEmpty(_context.PersonalRegionId))
-            {
-                Send(new Abort { Text = "ต้องมีเกาะส่วนตัวก่อนจึงจะประกาศที่ดินได้" }, seq);
-                return;
-            }
-            if (!string.Equals(_context.RegionId, _context.PersonalRegionId, StringComparison.OrdinalIgnoreCase))
-            {
-                Send(new Abort { Text = "ต้องอยู่บนเกาะส่วนตัวของตัวเองก่อนประกาศที่ดิน" }, seq);
-                return;
-            }
-        }
-        EstateLicense? license = _world.DeclareEstate(EntityId, msg.OwnerType, msg.Cell, CurrentRegionIdForEstate());
+        EstateLicense? license = _world.DeclareEstate(
+            ownerId,
+            actualType,
+            msg.Cell,
+            CurrentRegionIdForEstate());
         if (!license.HasValue)
         {
             Send(new Abort { Text = "ประกาศที่ดินไม่ได้ — ช่องถูกจองแล้วหรือมีที่ดินชนิดนี้อยู่แล้ว" }, seq);
@@ -340,13 +635,17 @@ public partial class Player
         }
         Send(license.Value, seq);
         BroadcastEstateGridsAround(msg.Cell);
-        Console.WriteLine($"[ที่ดิน] {Short(EntityId)} ประกาศ {msg.OwnerType} cell [{msg.Cell.x},{msg.Cell.y}] → {license.Value.EstateId}");
+        Console.WriteLine($"[domínio] {Short(EntityId)} declarou {actualType} em [{msg.Cell.x},{msg.Cell.y}] → {license.Value.EstateId}");
         OnContextChanged();
     }
 
     private void HandleExpandEstate(ExpandEstate msg, uint seq)
     {
-        EstateLicense? license = _world.ExpandEstate(msg.EstateId, EntityId, msg.Cell, PersonalEstateMaxSize);
+        EstateRecord estate = _world.GetEstate(msg.EstateId);
+        string authorityOwner = EstateAuthorityOwner(estate);
+        EstateLicense? license = string.IsNullOrEmpty(authorityOwner)
+            ? null
+            : _world.ExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize);
         if (!license.HasValue)
         {
             Send(new Abort { Text = "ขยายที่ดินไม่ได้" }, seq);
@@ -359,7 +658,11 @@ public partial class Player
 
     private void HandleShrinkEstate(ShrinkEstate msg, uint seq)
     {
-        EstateLicense? license = _world.ShrinkEstate(msg.EstateId, EntityId, msg.Cell);
+        EstateRecord estate = _world.GetEstate(msg.EstateId);
+        string authorityOwner = EstateAuthorityOwner(estate);
+        EstateLicense? license = string.IsNullOrEmpty(authorityOwner)
+            ? null
+            : _world.ShrinkEstate(msg.EstateId, authorityOwner, msg.Cell);
         if (!license.HasValue)
         {
             Send(new Abort { Text = "ลดขนาดที่ดินไม่ได้" }, seq);
@@ -379,7 +682,9 @@ public partial class Player
             string[] parts = rec.Cells[0].Split(',');
             cell = new Point2(int.Parse(parts[0]), int.Parse(parts[1]));
         }
-        if (_world.RemoveEstate(msg.EstateId, EntityId))
+        string authorityOwner = EstateAuthorityOwner(rec);
+        if (!string.IsNullOrEmpty(authorityOwner) &&
+            _world.RemoveEstate(msg.EstateId, authorityOwner))
         {
             if (rec != null) BroadcastEstateGridsAround(cell);
             Console.WriteLine($"[ที่ดิน] {Short(EntityId)} รื้อ {msg.EstateId}");
@@ -390,9 +695,9 @@ public partial class Player
     private void HandleSetEstateLicense(SetEstateLicense msg, uint seq)
     {
         EstateRecord rec = _world.GetEstate(msg.EstateId);
-        if (rec == null || rec.OwnerId != EntityId)
+        if (string.IsNullOrEmpty(EstateAuthorityOwner(rec)))
         {
-            Send(new Abort { Text = "ไม่พบที่ดินหรือไม่ใช่ของตน" }, seq);
+            Send(new Abort { Text = "Domínio não encontrado ou sem permissão administrativa." }, seq);
             return;
         }
         rec.AccessForOthers = (int)msg.AccessRights.ForOthers;
@@ -409,12 +714,12 @@ public partial class Player
     private void HandleExtendEstate(ExtendEstateActivation msg, uint seq)
     {
         EstateRecord rec = _world.GetEstate(msg.EstateId);
-        if (rec == null || rec.OwnerId != EntityId)
+        if (string.IsNullOrEmpty(EstateAuthorityOwner(rec)))
         {
-            Send(new Abort { Text = "ไม่พบที่ดินหรือไม่ใช่ของตน" }, seq);
+            Send(new Abort { Text = "Domínio não encontrado ou sem permissão administrativa." }, seq);
             return;
         }
-        // **ค่าของเรา** — ต่ออายุฟรี 7 วัน
+        // Regra temporária do Alpha/Beta: renovação gratuita por 7 dias.
         double now = Times.UnixTimeNow();
         double baseTime = rec.ExpiresAt.HasValue && rec.ExpiresAt.Value > now ? rec.ExpiresAt.Value : now;
         rec.ExpiresAt = baseTime + 7 * 24 * 3600;
@@ -432,7 +737,8 @@ public partial class Player
     {
         foreach (var kv in _world.EnumerateEstates())
         {
-            if (kv.Value.OwnerId == EntityId && kv.Value.Type == (int)type)
+            if (kv.Value.Type != (int)type) continue;
+            if (!string.IsNullOrEmpty(EstateAuthorityOwner(kv.Value)))
             {
                 return _world.ToLicense(kv.Key, kv.Value);
             }
