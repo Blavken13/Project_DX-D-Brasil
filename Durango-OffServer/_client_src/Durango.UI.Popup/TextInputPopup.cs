@@ -9,6 +9,8 @@ public class TextInputPopup : TooltipBase
 {
 	private Action<string> _onSubmit;
 
+	private Action _onCancel;
+
 	[SerializeField]
 	private UIInput _input;
 
@@ -90,17 +92,20 @@ public class TextInputPopup : TooltipBase
 
 	private void OnSubmit()
 	{
-		if (_onSubmit != null)
-		{
-			_onSubmit(_input.value);
-		}
+		string value = _input.value;
+		Action<string> callback = _onSubmit;
+		_onSubmit = null;
+		_onCancel = null;
 		Hide();
+		callback?.Invoke(value);
 	}
 
-	public void Show(Action<string> onSubmit, string comment = null, string defaultValue = null, bool isMultiline = false, string buttonText = null, int limitTextCount = 140)
+	public void Show(Action<string> onSubmit, string comment = null, string defaultValue = null, bool isMultiline = false, string buttonText = null, int limitTextCount = 140, bool isPassword = false, Action onCancel = null)
 	{
 		_onSubmit = onSubmit;
+		_onCancel = onCancel;
 		_comment = ((comment == null) ? string.Empty : comment);
+		_input.inputType = isPassword ? UIInput.InputType.Password : UIInput.InputType.Standard;
 		_input.onReturnKey = ((!isMultiline) ? UIInput.OnReturnKey.Submit : UIInput.OnReturnKey.NewLine);
 		_input.label.multiLine = isMultiline;
 		_input.label.overflowMethod = ((!isMultiline) ? UILabel.Overflow.ClampContent : UILabel.Overflow.ResizeHeight);
@@ -111,7 +116,23 @@ public class TextInputPopup : TooltipBase
 		}
 		_input.value = defaultValue;
 		_buttonText = buttonText;
+		HideWhenTouch = onCancel == null;
+		HideWhenTouchModalBg = onCancel == null;
 		Show();
+	}
+
+	protected override void OnTryCancelOnModal()
+	{
+		if (_onCancel != null)
+		{
+			Action callback = _onCancel;
+			_onSubmit = null;
+			_onCancel = null;
+			Hide();
+			callback();
+			return;
+		}
+		base.OnTryCancelOnModal();
 	}
 
 	protected override void OnTryConfirmOnModal()

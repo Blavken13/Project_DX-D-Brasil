@@ -82,6 +82,8 @@ public class TitleMenuUserControlBase : MonoBehaviour
 
 	public virtual bool RetryConnect { get; set; }
 
+	public Action<string, Action<bool>> AuthenticateForGateway { get; set; }
+
 	private string LastSelectedClusterKey
 	{
 		get
@@ -296,19 +298,43 @@ public class TitleMenuUserControlBase : MonoBehaviour
 		IsAccountReady = false;
 		SetExplainLabel(ManualTranslator.LoadingUserInfo);
 		_nextMaintenanceCheckTime = 0f;
+		if (OffServerLink.Active && AuthenticateForGateway != null && !OffServerLink.IsAuthenticatedFor(cluster.GatewayUrlRoot))
+		{
+			SetExplainLabel("Entre na sua conta Durango Brasil para continuar.", important: true);
+			AuthenticateForGateway(cluster.GatewayUrlRoot, delegate(bool success)
+			{
+				if (success && lastSelectedClusterKey == LastSelectedClusterKey)
+				{
+					UpdateServerAndPlayerInfo(forceUpdate: true);
+				}
+			});
+			return;
+		}
 		Clusters.GetOrRequestAccounts(lastSelectedClusterKey, OnClusterAccountUpdated, forceUpdate);
 	}
 
 	protected virtual void OnClusterAccountUpdated(Account account)
 	{
 		Cluster selectedCluster = GetSelectedCluster();
+		if (account == null && OffServerLink.Active && AuthenticateForGateway != null && !OffServerLink.IsAuthenticatedFor(selectedCluster.GatewayUrlRoot))
+		{
+			UpdateServerAndPlayerInfo(forceUpdate: true);
+			return;
+		}
 		if (account == null && selectedCluster.IsInMaintenance())
 		{
 			_nextMaintenanceCheckTime = Time.realtimeSinceStartup + 60f;
 			SetExplainLabel(selectedCluster.GetMaintenanceText(LocalizeSystem.Locale), important: true);
 			return;
 		}
-		bool flag = account != null && account.MaxPlayerSlotCount > 1 && account.PlayerSlotCount >= 1;
+		if (account == null)
+		{
+			UpdateButtonLayout(showPlayerButton: false);
+			IsAccountReady = false;
+			SetExplainLabel("Não foi possível carregar os personagens. Selecione o servidor novamente para tentar outra vez.", important: true);
+			return;
+		}
+		bool flag = account.MaxPlayerSlotCount > 1 && account.PlayerSlotCount >= 1;
 		UpdateButtonLayout(flag);
 		if (flag)
 		{

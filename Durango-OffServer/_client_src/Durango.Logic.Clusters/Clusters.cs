@@ -245,14 +245,23 @@ public class Clusters
 		string url = gatewayUrl + "/accounts";
 		Action<byte[], HTTPResponse> callback2 = delegate(byte[] result, HTTPResponse response)
 		{
-			if (!(capturedNpsn != Platform.Instance.NPSN))
+			if (response != null && response.StatusCode == 401)
 			{
-				Account obj = Json.Read<Account>(result);
-				if (callback != null)
-				{
-					callback(obj);
-				}
+				OffServerLink.ClearAuthentication(gatewayUrl);
+				callback?.Invoke(null);
+				return;
 			}
+			if (response == null || !response.IsSuccess || result == null)
+			{
+				callback?.Invoke(null);
+				return;
+			}
+			if (capturedNpsn != Platform.Instance.NPSN)
+			{
+				return;
+			}
+			Account obj = Json.Read<Account>(result);
+			callback?.Invoke(obj);
 		};
 		bool disableCache = true;
 		Dictionary<string, string> fields = Platform.Instance.BuildSessionForm();

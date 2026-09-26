@@ -30,6 +30,14 @@ public static class OffServerLink
 		public List<RemoteServerEntry> Servers;
 	}
 
+	private sealed class AuthSession
+	{
+		public string AccountId;
+		public string Username;
+		public string Token;
+		public DateTime ExpiresAtUtc;
+	}
+
 	public const string FileName = "offserver.txt";
 
 	private static bool _loaded;
@@ -45,6 +53,9 @@ public static class OffServerLink
 	private static readonly List<string[]> _multiServers = new List<string[]>();
 
 	private static readonly List<string[]> _localServers = new List<string[]>();
+
+	// Auth Parte 4: tokens existem somente em memória e pertencem ao gateway que os emitiu.
+	private static readonly Dictionary<string, AuthSession> _authSessions = new Dictionary<string, AuthSession>(StringComparer.OrdinalIgnoreCase);
 
 	public const string DefaultServersUrl = "https://raw.githubusercontent.com/ShuuuuShi/Durango-OffServer-Client/main/servers.json";
 
@@ -203,6 +214,78 @@ public static class OffServerLink
 				return _account;
 			}
 			return Sanitize(SystemInfo.deviceUniqueIdentifier);
+		}
+	}
+
+	public static void SetAuthentication(string gateway, string accountId, string username, string token, long expiresInSeconds)
+	{
+		string key = NormalizeUrl(gateway);
+		if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(token) || token.Trim().Length == 0)
+		{
+			return;
+		}
+		if (expiresInSeconds <= 0)
+		{
+			expiresInSeconds = 43200L;
+		}
+		_authSessions[key] = new AuthSession
+		{
+			AccountId = accountId ?? string.Empty,
+			Username = username ?? string.Empty,
+			Token = token.Trim(),
+			ExpiresAtUtc = DateTime.UtcNow.AddSeconds(expiresInSeconds)
+		};
+		UnityEngine.Debug.Log("[Auth] sessão local criada para " + key + " user=" + (username ?? string.Empty));
+	}
+
+	private static AuthSession GetAuthSession(string gateway)
+	{
+		string key = NormalizeUrl(gateway);
+		if (string.IsNullOrEmpty(key))
+		{
+			return null;
+		}
+		if (!_authSessions.TryGetValue(key, out AuthSession session))
+		{
+			return null;
+		}
+		if (session.ExpiresAtUtc <= DateTime.UtcNow)
+		{
+			_authSessions.Remove(key);
+			return null;
+		}
+		return session;
+	}
+
+	public static bool IsAuthenticatedFor(string gateway)
+	{
+		return GetAuthSession(gateway) != null;
+	}
+
+	public static string GetAuthToken(string gateway)
+	{
+		AuthSession session = GetAuthSession(gateway);
+		return session?.Token ?? string.Empty;
+	}
+
+	public static string GetAuthenticatedAccountId(string gateway)
+	{
+		AuthSession session = GetAuthSession(gateway);
+		return session?.AccountId ?? string.Empty;
+	}
+
+	public static string GetAuthenticatedUsername(string gateway)
+	{
+		AuthSession session = GetAuthSession(gateway);
+		return session?.Username ?? string.Empty;
+	}
+
+	public static void ClearAuthentication(string gateway)
+	{
+		string key = NormalizeUrl(gateway);
+		if (!string.IsNullOrEmpty(key))
+		{
+			_authSessions.Remove(key);
 		}
 	}
 

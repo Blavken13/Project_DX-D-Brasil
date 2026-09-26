@@ -10,6 +10,7 @@ using Durango.Logic.Encyclopedia;
 using Durango.Network;
 using Durango.System;
 using Durango.UI.Control;
+using Durango.UI.Popup;
 using Durango.Utils;
 using Durango.Utils.Extensions;
 using L10N;
@@ -132,6 +133,12 @@ public class TitleMenuGroup : MonoBehaviour
 	private uint _soundInstanceId;
 
 	private TitleLoadingGroup _loadingCurtain;
+
+	private string _authGateway;
+
+	private Action<bool> _authCompleted;
+
+	private bool _authInProgress;
 
 	private static bool IsLoginProcess
 	{
@@ -553,6 +560,7 @@ public class TitleMenuGroup : MonoBehaviour
 	public void StartGame()
 	{
 		base.gameObject.SetActive(value: true);
+		UserControl.AuthenticateForGateway = EnsureGatewayAuthentication;
 		StartCoroutine(CoPollServerStatus());
 		SoundManager.SetSfxVolume(SoundManager.VolumeForSfx);
 		SoundManager.SetAmbienceVolume(SoundManager.VolumeForAmbience);
@@ -576,6 +584,273 @@ public class TitleMenuGroup : MonoBehaviour
 		{
 			CurState = State.Initial;
 		}, delay);
+	}
+
+	private void EnsureGatewayAuthentication(string gateway, Action<bool> completed)
+	{
+		if (!OffServerLink.Active)
+		{
+			completed?.Invoke(true);
+			return;
+		}
+		if (OffServerLink.IsAuthenticatedFor(gateway))
+		{
+			completed?.Invoke(true);
+			return;
+		}
+		if (string.IsNullOrEmpty(gateway))
+		{
+			completed?.Invoke(false);
+			return;
+		}
+		if (_authInProgress)
+		{
+			return;
+		}
+		_authInProgress = true;
+		_authGateway = gateway;
+		_authCompleted = completed;
+		UserControl.SetContentActive(isActive: false);
+		ShowAuthChoice();
+	}
+
+	private void ShowAuthChoice()
+	{
+		if (!_authInProgress)
+		{
+			return;
+		}
+		UserControl.ShowMessageBox(
+			"Conta Durango Brasil",
+			"Entre com sua conta ou crie uma nova para continuar.",
+			BeginLogin,
+			BeginRegister,
+			"Entrar",
+			"Criar conta");
+	}
+
+	private void BeginLogin()
+	{
+		UserControl.CloseMessageBox();
+		ShowAuthInput("Digite seu usuário", isPassword: false, limit: 32, delegate(string username)
+		{
+			username = (username ?? string.Empty).Trim();
+			if (username.Length == 0)
+			{
+				ShowAuthError("Digite seu usuário.");
+				return;
+			}
+			ShowAuthInput("Digite sua senha", isPassword: true, limit: 128, delegate(string password)
+			{
+				RequestLogin(username, password ?? string.Empty);
+			});
+		});
+	}
+
+	private void BeginRegister()
+	{
+		UserControl.CloseMessageBox();
+		ShowAuthInput("Escolha um usuário", isPassword: false, limit: 32, delegate(string username)
+		{
+			username = (username ?? string.Empty).Trim();
+			if (username.Length == 0)
+			{
+				ShowAuthError("Digite um usuário.");
+				return;
+			}
+			ShowAuthInput("Crie uma senha (mínimo de 8 caracteres)", isPassword: true, limit: 128, delegate(string password)
+			{
+				password = password ?? string.Empty;
+				ShowAuthInput("Repita a senha", isPassword: true, limit: 128, delegate(string confirmation)
+				{
+					confirmation = confirmation ?? string.Empty;
+					if (password != confirmation)
+					{
+						ShowAuthError("As senhas não coincidem.");
+						return;
+					}
+					RequestRegister(username, password, confirmation);
+				});
+			});
+		});
+	}
+
+	private void ShowAuthInput(string comment, bool isPassword, int limit, Action<string> submitted)
+	{
+		UIManager.Popup.Tooltip<TextInputPopup>().Show(
+			submitted,
+			comment,
+			null,
+			isMultiline: false,
+			buttonText: "Continuar",
+			limitTextCount: limit,
+			isPassword: isPassword,
+			onCancel: ShowAuthChoice);
+	}
+
+	private void RequestRegister(string username, string password, string confirmation)
+	{
+		if (!_authInProgress || string.IsNullOrEmpty(_authGateway))
+		{
+			FinishAuthentication(success: false);
+			return;
+		}
+		UserControl.SetExplainLabel("Criando conta...", important: true);
+		Dictionary<string, string> fields = new Dictionary<string, string>
+		{
+			{ "username", username },
+			{ "password", password },
+			{ "password_confirm", confirmation }
+		};
+		string gateway = _authGateway;
+		HTTPRequest request = Http.Request(
+			gateway.TrimEnd('/') + "/auth/register",
+			delegate(byte[] result, HTTPResponse response)
+			{
+				JObject json = ReadAuthResponse(response);
+				if (response == null || !response.IsSuccess || json == null || !json.Get("ok", defaultVal: false))
+				{
+					ShowAuthError(GetAuthError(json));
+					return;
+				}
+				RequestLogin(username, password);
+			},
+			disableCache: true,
+			addSession: false,
+			fields,
+			HTTPMethods.Post);
+		if (request != null)
+		{
+			request.Timeout = TimeSpan.FromSeconds(10.0);
+		}
+	}
+
+	private void RequestLogin(string username, string password)
+	{
+		if (!_authInProgress || string.IsNullOrEmpty(_authGateway))
+		{
+			FinishAuthentication(success: false);
+			return;
+		}
+		UserControl.SetExplainLabel("Entrando na conta...", important: true);
+		Dictionary<string, string> fields = new Dictionary<string, string>
+		{
+			{ "username", username },
+			{ "password", password }
+		};
+		string gateway = _authGateway;
+		HTTPRequest request = Http.Request(
+			gateway.TrimEnd('/') + "/auth/login",
+			delegate(byte[] result, HTTPResponse response)
+			{
+				JObject json = ReadAuthResponse(response);
+				if (response == null || !response.IsSuccess || json == null || !json.Get("ok", defaultVal: false))
+				{
+					ShowAuthError(GetAuthError(json));
+					return;
+				}
+				string token = json.Get<string>("auth_token");
+				string accountId = json.Get<string>("account_id");
+				string returnedUsername = json.Get<string>("username");
+				long expiresIn = 43200L;
+				JToken expiresToken = json["expires_in"];
+				if (expiresToken != null)
+				{
+					long parsed;
+					if (long.TryParse(expiresToken.ToString(), out parsed) && parsed > 0)
+					{
+						expiresIn = parsed;
+					}
+				}
+				if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(accountId))
+				{
+					ShowAuthError("O servidor devolveu uma resposta de login inválida.");
+					return;
+				}
+				OffServerLink.SetAuthentication(gateway, accountId, returnedUsername, token, expiresIn);
+				FinishAuthentication(success: true);
+			},
+			disableCache: true,
+			addSession: false,
+			fields,
+			HTTPMethods.Post);
+		if (request != null)
+		{
+			request.Timeout = TimeSpan.FromSeconds(10.0);
+		}
+	}
+
+	private static JObject ReadAuthResponse(HTTPResponse response)
+	{
+		if (response == null || string.IsNullOrEmpty(response.DataAsText))
+		{
+			return null;
+		}
+		try
+		{
+			return Json.Read<JObject>(response.DataAsText);
+		}
+		catch
+		{
+			return null;
+		}
+	}
+
+	private void ShowAuthError(string message)
+	{
+		UserControl.ShowMessageBox(
+			"Conta Durango Brasil",
+			message,
+			delegate
+			{
+				UserControl.CloseMessageBox();
+				ShowAuthChoice();
+			},
+			null,
+			"Voltar");
+	}
+
+	private void FinishAuthentication(bool success)
+	{
+		UserControl.CloseMessageBox();
+		Action<bool> completed = _authCompleted;
+		_authCompleted = null;
+		_authGateway = null;
+		_authInProgress = false;
+		UserControl.SetContentActive(isActive: true);
+		completed?.Invoke(success);
+	}
+
+	private static string GetAuthError(JObject json)
+	{
+		string error = json?.Get<string>("error");
+		switch (error)
+		{
+		case "invalid_credentials":
+			return "Usuário ou senha inválidos.";
+		case "username_taken":
+			return "Esse usuário já está em uso.";
+		case "username_too_short":
+			return "O usuário precisa ter pelo menos 3 caracteres.";
+		case "username_too_long":
+			return "O usuário pode ter no máximo 32 caracteres.";
+		case "username_invalid_characters":
+			return "Use somente letras, números, ponto, hífen ou underline no usuário.";
+		case "password_too_short":
+			return "A senha precisa ter pelo menos 8 caracteres.";
+		case "password_too_long":
+			return "A senha pode ter no máximo 128 caracteres.";
+		case "password_mismatch":
+			return "As senhas não coincidem.";
+		case "too_many_requests":
+			return "Muitas tentativas. Aguarde um pouco e tente novamente.";
+		case "account_store_not_loaded":
+			return "O serviço de contas ainda não está disponível.";
+		case "storage_error":
+			return "O servidor não conseguiu salvar a conta.";
+		default:
+			return "Não foi possível comunicar com o serviço de contas.";
+		}
 	}
 
 	private void ApplyEmigrationMode()
@@ -827,6 +1102,13 @@ public class TitleMenuGroup : MonoBehaviour
 		}
 		else
 		{
+			if (CurState == State.NPAGetUser && _request.Response != null && _request.Response.StatusCode == 401)
+			{
+				OffServerLink.ClearAuthentication(GameManager.GatewayUrl);
+				_request = null;
+				CurState = State.Initial;
+				return;
+			}
 			CheckError(_request.Response);
 			_request = null;
 			if (WebResponsed != null)
