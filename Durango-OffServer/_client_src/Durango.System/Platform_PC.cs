@@ -16,12 +16,7 @@ public class Platform_PC : Platform
 		{
 			if (OffServerLink.Active)
 			{
-				string authenticatedAccountId = OffServerLink.GetAuthenticatedAccountId(GameManager.GatewayUrl);
-				if (!string.IsNullOrEmpty(authenticatedAccountId))
-				{
-					return authenticatedAccountId;
-				}
-				return OffServerLink.AccountId;
+				return OffServerLink.GetAuthenticatedAccountId(GameManager.GatewayUrl) ?? string.Empty;
 			}
 			return string.Empty;
 		}

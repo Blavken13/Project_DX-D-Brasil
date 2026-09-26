@@ -282,10 +282,9 @@ public class Gateway
                     HttpStatusCode.TooManyRequests);
             }
 
-            // Auth Parte 3:
-            // 1) se houver token, ele e a fonte de verdade e resolve account_id no servidor;
-            // 2) sem token, aceita account_id legado SOMENTE durante a transicao para o cliente novo;
-            // 3) token enviado e invalido nunca cai no fallback legado.
+            // Auth Parte 4:
+            // auth_token e obrigatorio. account_id enviado pelo cliente nunca e
+            // usado como fonte de identidade; a conta sempre vem do token.
             if (!TryResolveRequestOwner(postData, out string ownerKey, out bool authenticated, out string authError))
             {
                 Console.WriteLine($"[auth] /sessions recusado {remoteIp}: {authError}");
@@ -483,24 +482,14 @@ public class Gateway
         };
 
         // Lista de personagens da conta.
-        //
-        // Durante a transicao:
-        // - token valido: resolve o account_id no servidor e ignora account_id enviado pelo cliente;
-        // - token presente e invalido: 401, sem fallback;
-        // - token ausente: aceita account_id legado temporariamente ate a Parte 4.
+        // A identidade vem exclusivamente do auth_token emitido por /auth/login.
         _webServer.PostRoute["/accounts"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
-            if (!TryResolveRequestOwner(postData, out string key, out bool authenticated, out string authError))
+            if (!TryResolveRequestOwner(postData, out string key, out _, out string authError))
             {
-                if (authenticated)
-                {
-                    return new WebServer.JsonResponse(
-                        new JObject { ["error"] = authError }.ToString(),
-                        HttpStatusCode.Unauthorized);
-                }
-
-                // Compatibilidade temporaria com o cliente antigo.
-                return new WebServer.JsonResponse(Json.Write(Host.EmptyAccount()));
+                return new WebServer.JsonResponse(
+                    new JObject { ["error"] = authError }.ToString(),
+                    HttpStatusCode.Unauthorized);
             }
 
             return new WebServer.JsonResponse(Json.Write(_host.BuildAccount(key)));
@@ -955,30 +944,24 @@ public class Gateway
         error = null;
 
         string authToken = postData?.Get("token");
-        if (!string.IsNullOrWhiteSpace(authToken))
+        if (string.IsNullOrWhiteSpace(authToken))
         {
-            authenticated = true;
-
-            if (!AuthTokenStore.TryResolve(authToken, out string accountId, out _))
-            {
-                error = "invalid_auth_token";
-                return false;
-            }
-
-            ownerKey = AccountKeys.Normalize(accountId);
-            if (ownerKey == null)
-            {
-                error = "invalid_account_id";
-                return false;
-            }
-
-            return true;
+            error = "missing_auth_token";
+            return false;
         }
 
-        ownerKey = AccountKeys.Normalize(postData?.Get("account_id"));
+        authenticated = true;
+
+        if (!AuthTokenStore.TryResolve(authToken, out string accountId, out _))
+        {
+            error = "invalid_auth_token";
+            return false;
+        }
+
+        ownerKey = AccountKeys.Normalize(accountId);
         if (ownerKey == null)
         {
-            error = "no_account_key";
+            error = "invalid_account_id";
             return false;
         }
 

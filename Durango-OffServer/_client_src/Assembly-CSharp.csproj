@@ -93,4 +93,14 @@
       <HintPath>../DurangoV2_Data/Managed/UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Name="DeployAssemblyCSharpToClient" AfterTargets="Build">
+    <Copy
+      SourceFiles="$(TargetPath)"
+      DestinationFiles="$(MSBuildProjectDirectory)/../DurangoV2_Data/Managed/Assembly-CSharp.dll"
+      SkipUnchangedFiles="true" />
+    <Message
+      Text="Assembly-CSharp.dll deployed to DurangoV2_Data/Managed"
+      Importance="high" />
+  </Target>
 </Project>

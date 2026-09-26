@@ -579,7 +579,10 @@ public class TitleMenuGroup : MonoBehaviour
 		{
 			_fontSetting.Init();
 		}
-		float delay = -1f;
+		// Aguarda um frame para que os Start() dos controles da Title UI terminem.
+		// Sem isso, TitleMenuUserControlBase.Start() pode fechar a message box
+		// imediatamente depois de ShowAuthChoice() abri-la.
+		float delay = 0f;
 		KUtility.DelayedCall(this, delegate
 		{
 			CurState = State.Initial;
