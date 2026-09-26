@@ -77,6 +77,7 @@ public static class SurvivalTuning
     /// Voltar para 1f quando o evento de teste terminar.
     /// </summary>
     public const float AlphaTestRestMultiplier = 9f;
+    public const float AlphaTestRestLifeMultiplier = 20f;
 
     // Limites do boost de Alpha. Evitam que templates especiais de nivel alto,
     // como rest lv80 (-8 fatigue/s antes do boost), virem valores extremos em x10.
@@ -120,7 +121,7 @@ public static class SurvivalTuning
             if (velocities.TryGetValue(SurvivalState.KeyLife, out float life) && life > 0f)
             {
                 velocities[SurvivalState.KeyLife] =
-                    Mathf.Min(life * AlphaTestRestMultiplier, AlphaTestRestLifeRecoveryCap);
+                    Mathf.Min(life * AlphaTestRestLifeMultiplier, AlphaTestRestLifeRecoveryCap);
             }
             if (velocities.TryGetValue(SurvivalState.KeyHealth, out float health) && health > 0f)
             {
