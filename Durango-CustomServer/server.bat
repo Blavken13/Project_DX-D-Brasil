@@ -90,3 +90,23 @@ $env:DURANGO_ADMIN_TOKEN = [guid]::NewGuid().ToString("N") + [guid]::NewGuid().T
 
 
 dotnet run --project ".\Durango-CustomServer\server\DurangoServer.csproj" -c Debug --no-build -- --name "Durango Brasil" --data ".\Durango-CustomServer\server\data" --terrains ".\Durango-CustomServer\server\data\terrains" --public-host "100.73.253.106" --max-players 2
+
+
+No servidor, use:
+
+
+cd /opt/durango/app
+
+docker compose \
+  --env-file deploy/staging/.env \
+  -f deploy/staging/compose.yml \
+  up -d
+
+Para confirmar que iniciou:
+docker compose \
+  --env-file deploy/staging/.env \
+  -f deploy/staging/compose.yml \
+  ps
+
+E para ver os logs:
+docker logs -f durango-brasil-staging
