@@ -6,6 +6,7 @@ using Durango.Utils;
 using Durango.Utils.Extensions;
 using Messages;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Shared.Ability;
 using Yaml.Util;
 using SkillCat = Shared.Skill.Category;
@@ -85,10 +86,10 @@ public static class SkillTuning
 
     /// <summary>
     /// TEMP ALPHA TEST EVENT — multiplicador de EXP de personagem recebido por acoes.
-    /// 1 = balance normal. 20 = evento acelerado para desbloquear rapidamente os testes de World/Travel.
+    /// 1 = balance normal. 3 = evento acelerado para agilizar os testes de Alpha.
     /// EXP de categoria de skill continua normal para nao distorcer a progressao das profissoes.
     /// </summary>
-    public const int AlphaTestPlayerExpMultiplier = 20;
+    public const int AlphaTestPlayerExpMultiplier = 3;
 
     /// <summary>
     /// **ค่าของเรา** — exp หมวดสกิลที่ได้ต่อ 1 ครั้ง
@@ -292,7 +293,7 @@ internal class SkillConstantsJson
 
     [JsonProperty("skill_points")] public Dictionary<string, int> SkillPoints;
 
-    [JsonProperty("skill")] public Dictionary<string, float> Skill;
+    [JsonProperty("skill")] public Dictionary<string, JToken> Skill;
 }
 
 #pragma warning restore CS0649
@@ -395,6 +396,28 @@ internal static class SkillDataStore
 
     /// <summary>เพดานสัดส่วนที่ย่นเวลาวิจัยได้ — constants.json → skill.research_reduce_time_limit (0.25)</summary>
     public static float ResearchReduceLimit { get; private set; } = 0.25f;
+    /// <summary>
+    /// constants.json -> skill contem tanto numeros quanto formulas em texto.
+    /// Os consumidores numericos leem apenas tokens numericos; formulas continuam
+    /// disponiveis no JSON para os sistemas que as avaliam separadamente.
+    /// </summary>
+    private static bool TryReadSkillFloat(string key, out float value)
+    {
+        value = 0f;
+        if (Constants?.Skill == null ||
+            !Constants.Skill.TryGetValue(key, out JToken token) ||
+            token == null)
+        {
+            return false;
+        }
+        if (token.Type != JTokenType.Integer && token.Type != JTokenType.Float)
+        {
+            return false;
+        }
+        value = token.Value<float>();
+        return true;
+    }
+
 
     public static void EnsureLoaded()
     {
@@ -426,8 +449,8 @@ internal static class SkillDataStore
         }
         if (Constants.Skill != null)
         {
-            if (Constants.Skill.TryGetValue("exp_increase_limit", out float lim)) CategoryExpLimit = lim;
-            if (Constants.Skill.TryGetValue("research_reduce_time_limit", out float rl)) ResearchReduceLimit = rl;
+            if (TryReadSkillFloat("exp_increase_limit", out float lim)) CategoryExpLimit = lim;
+            if (TryReadSkillFloat("research_reduce_time_limit", out float rl)) ResearchReduceLimit = rl;
         }
 
         foreach (var (cat, bundles) in Skills)

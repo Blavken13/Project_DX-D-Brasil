@@ -175,6 +175,21 @@ public partial class Player
     // ── ตอน Touch: บอกเกมว่าของชิ้นนี้เก็บอะไรได้บ้าง ────────────────────────────────
 
     /// <summary>
+    /// Nivel efetivo dos recursos naturais na regiao atual. Usa o mesmo RegionCatalog
+    /// autoritativo de travel/fauna. O valor e calculado por requisicao para nao vazar
+    /// level entre ilhas atraves dos caches estaticos de generator.
+    /// </summary>
+    private int CurrentGatheringLevel()
+    {
+        if (RegionCatalog.TryGet(_world.TerrainId, out Messages.Region region))
+        {
+            RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
+            if (template != null && template.Level > 0) return template.Level;
+        }
+        return 1;
+    }
+
+    /// <summary>
     /// สร้าง <see cref="Collectible"/> ของของธรรมชาติหนึ่งชิ้น + จำไว้ใช้ตอน Collect
     ///
     /// เรียกจาก <c>HandleTouchMsg</c> (Core/Player.cs) — จุดเดียวที่ระบบนี้แตะไฟล์นั้น
@@ -192,7 +207,7 @@ public partial class Player
 
         return CollectibleTable.Build(entityId, entityType,
                                       _world.HarvestedGenerators(HarvestKeyOf(entityId, tile)),
-                                      animalLevel, UnlockedCollectibleCategories());
+                                      animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel());
     }
 
     /// <summary>
@@ -215,7 +230,7 @@ public partial class Player
 
         Send(CollectibleTable.Build(msg.EntityId, entityType,
                                     _world.HarvestedGenerators(HarvestKeyOf(msg.EntityId, msg.Tile)),
-                                    animalLevel, UnlockedCollectibleCategories()), seq);
+                                    animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel()), seq);
     }
 
     // ── ตอน Collect: ตรวจ → ตอบ Timer → ครบเวลาส่ง Collected ────────────────────────
@@ -256,6 +271,8 @@ public partial class Player
             RejectCollect(seq, $"ไม่มี generator '{msg.GeneratorId}' ของชนิด {entityType}", msg);
             return;
         }
+
+        spec = CollectibleTable.AtLevel(spec, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel());
 
         // [7 ก.ย. 2026] ปลดสกิลของหมวดนี้แล้วหรือยัง
         //
@@ -334,9 +351,11 @@ public partial class Player
         int total = 0;
         foreach (CollectibleTable.GeneratorSpec s in CollectibleTable.AllSpecs(entityType))
         {
+            CollectibleTable.GeneratorSpec live = CollectibleTable.AtLevel(
+                s, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel());
             total += carcass != null
-                ? CollectibleTable.AmountForCarcass(s, carcass.CombatLevel)
-                : s.Amount;
+                ? CollectibleTable.AmountForCarcass(live, carcass.CombatLevel)
+                : live.Amount;
         }
         bool ranOut = total > 0 && taken >= total;
 
@@ -716,7 +735,7 @@ internal static class CollectibleTable
     /// </param>
     public static Collectible Build(string entityId, ushort entityType,
                                     IReadOnlyList<string> harvested = null, int animalLevel = 0,
-                                    Dictionary<string, int> unlockedCategories = null)
+                                    Dictionary<string, int> unlockedCategories = null, int resourceLevel = 0)
     {
         if (!_cache.TryGetValue(entityType, out Collectible template))
         {
@@ -724,6 +743,20 @@ internal static class CollectibleTable
             _cache[entityType] = template;
         }
         template.EntityId = entityId;
+
+        // GATHER_LEVEL_PROJECTED_PER_REQUEST: nunca mutar SpecsFor/_cache com level de uma ilha.
+        int requestedLevel = animalLevel > 0 ? animalLevel : resourceLevel;
+        if (requestedLevel > 0 && template.Generators != null)
+        {
+            List<GeneratorSpec> baseSpecs = SpecsFor(entityType);
+            var leveled = new Generator[template.Generators.Length];
+            for (int i = 0; i < template.Generators.Length; i++)
+            {
+                GeneratorSpec live = i < baseSpecs.Count ? AtLevel(baseSpecs[i], requestedLevel) : null;
+                leveled[i] = live != null ? ToMessage(live) : template.Generators[i];
+            }
+            template.Generators = leveled;
+        }
 
         // ซาก: จำนวนครั้งที่แล่ได้คิดจากเลเวลตัวสัตว์ ไม่ใช่เลเวลไอเทม (ดู AmountForCarcass)
         // ⚠️ ต้องสร้างอาเรย์ใหม่ ห้ามแก้ของเดิม — template ที่แคชไว้ใช้ร่วมกันทุกผู้เล่น
@@ -1054,6 +1087,44 @@ internal static class CollectibleTable
         return Array.Empty<string>();
     }
 
+    public static int ClampLevel(GeneratorSpec spec, int requestedLevel)
+    {
+        if (spec == null) return Math.Max(1, requestedLevel);
+        Prototype proto = PrototypeYaml.GetItemPrototype(spec.PrototypeId);
+        if (proto == null) return Math.Max(1, requestedLevel);
+        int min = Math.Max(1, proto.MinLevel);
+        int max = proto.MaxLevel > 0 ? Math.Max(min, proto.MaxLevel) : Math.Max(min, requestedLevel);
+        return Math.Clamp(Math.Max(1, requestedLevel), min, max);
+    }
+
+    /// <summary>
+    /// Projeta um GeneratorSpec para o level da regiao/carcaca sem alterar o spec cacheado.
+    /// Mantem amount/effort/duration/tool requirements coerentes com o level efetivo.
+    /// </summary>
+    public static GeneratorSpec AtLevel(GeneratorSpec spec, int requestedLevel)
+    {
+        if (spec == null) return null;
+        int level = ClampLevel(spec, requestedLevel);
+        if (level == spec.Level) return spec;
+
+        Prototype proto = PrototypeYaml.GetItemPrototype(spec.PrototypeId);
+        float effort = Effort(level);
+        return new GeneratorSpec
+        {
+            Id = spec.Id,
+            CollectibleId = spec.CollectibleId,
+            PrototypeId = spec.PrototypeId,
+            Name = spec.Name,
+            Icon = spec.Icon,
+            Level = level,
+            Amount = GatheringTuning.AmountFor(spec.Order, level),
+            Order = spec.Order,
+            Effort = effort,
+            Duration = Duration(effort),
+            ToolRequirements = proto != null ? ToolsFor(proto, level) : spec.ToolRequirements
+        };
+    }
+
     /// <summary>
     /// เลเวลเครื่องมือขั้นต่ำของ generator = <see cref="GeneratorSpec.Level"/>
     /// (min_level ของไอเทมที่จะได้ — ข้อมูลจริง)
@@ -1226,6 +1297,15 @@ internal static class CollectibleTable
             PrototypeYaml.GetItemPrototype("fruit_tropical") != null)
         {
             return "fruit_tropical";
+        }
+
+        // recipes.json usa generator id "rock" para o slot de pedra grande (chunk_big).
+        // O id de protocolo continua "rock" via _generatorIdByCollectiblePrototype;
+        // o item real entregue ao inventario e o prototype stone_big.
+        if (string.Equals(generatorId, "rock", StringComparison.Ordinal) &&
+            PrototypeYaml.GetItemPrototype("stone_big") != null)
+        {
+            return "stone_big";
         }
 
         // 2) ชื่อที่แสดงตรงกัน (ข้อมูลจริงทั้งสองฝั่ง)

@@ -69,14 +69,14 @@ public static class SurvivalTuning
     public const float RestHealthVelocity = 0.18f + 0.02f * 1f;
 
     /// <summary>
-    /// TEMP ALPHA TEST EVENT — acelera somente a recuperacao de fatigue durante descanso
+    /// TEMP ALPHA TEST EVENT — acelera os efeitos normais de descanso em 3x
     /// em um Shelter valido. O multiplicador e aplicado sobre a formula original do level
     /// do abrigo, portanto a diferenca relativa entre abrigos continua preservada.
     ///
-    /// rest lv1 = -0.1515/s; x66 = -9.999/s, aproximadamente 100 -> 0 em 10 segundos.
+    /// O bonus x3 preserva as formulas originais de fatigue, life e health do abrigo.
     /// Voltar para 1f quando o evento de teste terminar.
     /// </summary>
-    public const float AlphaTestRestFatigueMultiplier = 66f;
+    public const float AlphaTestRestMultiplier = 3f;
 
     public static Dictionary<string, float> RestVelocities(int level, bool acceleratedFatigue)
     {
@@ -101,12 +101,16 @@ public static class SurvivalTuning
             velocities[SurvivalState.KeyHealth] = RestHealthVelocity;
         }
 
-        if (acceleratedFatigue &&
-            velocities.TryGetValue(SurvivalState.KeyFatigue, out float fatigue) &&
-            fatigue < 0f)
+        if (acceleratedFatigue)
         {
-            velocities[SurvivalState.KeyFatigue] =
-                fatigue * AlphaTestRestFatigueMultiplier;
+            // ALPHA_REST_X3_ALL_ORIGINAL_EFFECTS: o evento acelera os efeitos originais do descanso em conjunto.
+            // Stamina preserva sua regeneracao base propria; o status rest define fatigue/life/health.
+            if (velocities.TryGetValue(SurvivalState.KeyFatigue, out float fatigue) && fatigue < 0f)
+                velocities[SurvivalState.KeyFatigue] = fatigue * AlphaTestRestMultiplier;
+            if (velocities.TryGetValue(SurvivalState.KeyLife, out float life) && life > 0f)
+                velocities[SurvivalState.KeyLife] = life * AlphaTestRestMultiplier;
+            if (velocities.TryGetValue(SurvivalState.KeyHealth, out float health) && health > 0f)
+                velocities[SurvivalState.KeyHealth] = health * AlphaTestRestMultiplier;
         }
 
         return velocities;

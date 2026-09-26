@@ -184,7 +184,7 @@ public partial class Player
             // เลิกพักเองตอนขยับ ตามแท็ก "clear_on_move" ของสถานะนั้น — ดู HandleMoveMsg
             bool resolvedRestLevel = TryGetNearbyRestLevel(out int restLevel);
             _survival.SetResting(true, restLevel, acceleratedFatigue: true);
-            Console.WriteLine($"[rest] {Short(EntityId)} ALPHA boost x{SurvivalTuning.AlphaTestRestFatigueMultiplier:0.##} · level={restLevel} · shelter-resolved={resolvedRestLevel}");
+            Console.WriteLine($"[rest] {Short(EntityId)} ALPHA rest x{SurvivalTuning.AlphaTestRestMultiplier:0.##} · level={restLevel} · shelter-resolved={resolvedRestLevel}");
             // [7 ก.ย. 2026] ใส่ไอคอน rest ด้วย — Until=0 จนกว่าจะเดิน (ตรงแท็ก clear_on_move)
             ApplyTimedStatusEffect("rest", restLevel, durationOverride: 0);
             SendStatusEffects();
