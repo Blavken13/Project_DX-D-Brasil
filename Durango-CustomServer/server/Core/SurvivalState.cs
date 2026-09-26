@@ -69,14 +69,20 @@ public static class SurvivalTuning
     public const float RestHealthVelocity = 0.18f + 0.02f * 1f;
 
     /// <summary>
-    /// TEMP ALPHA TEST EVENT — acelera os efeitos normais de descanso em 3x
+    /// TEMP ALPHA TEST EVENT — acelera os efeitos normais de descanso em 10x
     /// em um Shelter valido. O multiplicador e aplicado sobre a formula original do level
     /// do abrigo, portanto a diferenca relativa entre abrigos continua preservada.
     ///
-    /// O bonus x3 preserva as formulas originais de fatigue, life e health do abrigo.
+    /// O bonus x10 favorece estruturas baixas; caps preservam o controle em estruturas altas.
     /// Voltar para 1f quando o evento de teste terminar.
     /// </summary>
-    public const float AlphaTestRestMultiplier = 3f;
+    public const float AlphaTestRestMultiplier = 10f;
+
+    // Limites do boost de Alpha. Evitam que templates especiais de nivel alto,
+    // como rest lv80 (-8 fatigue/s antes do boost), virem valores extremos em x10.
+    public const float AlphaTestRestFatigueRecoveryCap = 8f;
+    public const float AlphaTestRestLifeRecoveryCap = 20f;
+    public const float AlphaTestRestHealthRecoveryCap = 8f;
 
     public static Dictionary<string, float> RestVelocities(int level, bool acceleratedFatigue)
     {
@@ -106,11 +112,21 @@ public static class SurvivalTuning
             // ALPHA_REST_X3_ALL_ORIGINAL_EFFECTS: o evento acelera os efeitos originais do descanso em conjunto.
             // Stamina preserva sua regeneracao base propria; o status rest define fatigue/life/health.
             if (velocities.TryGetValue(SurvivalState.KeyFatigue, out float fatigue) && fatigue < 0f)
-                velocities[SurvivalState.KeyFatigue] = fatigue * AlphaTestRestMultiplier;
+            {
+                float boosted = fatigue * AlphaTestRestMultiplier;
+                velocities[SurvivalState.KeyFatigue] =
+                    Mathf.Max(boosted, -AlphaTestRestFatigueRecoveryCap);
+            }
             if (velocities.TryGetValue(SurvivalState.KeyLife, out float life) && life > 0f)
-                velocities[SurvivalState.KeyLife] = life * AlphaTestRestMultiplier;
+            {
+                velocities[SurvivalState.KeyLife] =
+                    Mathf.Min(life * AlphaTestRestMultiplier, AlphaTestRestLifeRecoveryCap);
+            }
             if (velocities.TryGetValue(SurvivalState.KeyHealth, out float health) && health > 0f)
-                velocities[SurvivalState.KeyHealth] = health * AlphaTestRestMultiplier;
+            {
+                velocities[SurvivalState.KeyHealth] =
+                    Mathf.Min(health * AlphaTestRestMultiplier, AlphaTestRestHealthRecoveryCap);
+            }
         }
 
         return velocities;
@@ -173,6 +189,12 @@ public sealed class SurvivalState
     /// ⇒ หลอดเดินเฉพาะตอนออนไลน์ ซึ่งตรงกับความหมายของ online_momenta ในไฟล์ data อยู่แล้ว
     /// </summary>
     private bool _live;
+
+    /// <summary>
+    /// True enquanto o jogador esta em RestOn. Durante descanso forçamos refresh
+    /// de SurvivalUpdated para o cliente materializar a cura continuamente.
+    /// </summary>
+    private bool _resting;
 
     public SurvivalState(PlayerContext context, bool live)
     {
@@ -268,6 +290,7 @@ public sealed class SurvivalState
     /// <summary>พักอยู่ไหม (RestOn) — ค่าจาก status_effects.json → "rest" ดู SurvivalTuning</summary>
     public void SetResting(bool resting, int level = 1, bool acceleratedFatigue = false)
     {
+        _resting = resting;
         if (!resting)
         {
             SetMomentum(SourceResting, null);
@@ -341,6 +364,22 @@ public sealed class SurvivalState
     public bool Tick(double now, out SurvivalUpdated msg)
     {
         msg = default;
+
+        // ALPHA_REST_FORCED_SYNC:
+        // Durante RestOn materializamos e reenviamos a linha uma vez por segundo.
+        // Isto nao adiciona uma segunda cura: usa as mesmas velocities do Gauge.
+        if (_resting && !_dirty && now >= _nextTickAt)
+        {
+            Rebuild(now);
+            msg = BuildUpdatedMessage();
+            float lifeNow = ValueAt(KeyLife, now);
+            float lifeMax = MaxOf(KeyLife, now);
+            float fatigueNow = ValueAt(KeyFatigue, now);
+            Console.WriteLine(
+                $"[rest] {_context.EntityId} sync life={lifeNow:0.0}/{lifeMax:0.0} fatigue={fatigueNow:0.0}");
+            return true;
+        }
+
         if (!_dirty)
         {
             // ไม่มีอะไรเปลี่ยน — เช็คแค่ว่าเส้นเดิมใกล้หมดหรือยัง และเช็คไม่ถี่

@@ -86,10 +86,10 @@ public static class SkillTuning
 
     /// <summary>
     /// TEMP ALPHA TEST EVENT — multiplicador de EXP de personagem recebido por acoes.
-    /// 1 = balance normal. 3 = evento acelerado para agilizar os testes de Alpha.
+    /// 1 = balance normal. Evento acelerado removido após validação do Alpha.
     /// EXP de categoria de skill continua normal para nao distorcer a progressao das profissoes.
     /// </summary>
-    public const int AlphaTestPlayerExpMultiplier = 3;
+    public const int AlphaTestPlayerExpMultiplier = 1;
 
     /// <summary>
     /// **ค่าของเรา** — exp หมวดสกิลที่ได้ต่อ 1 ครั้ง
@@ -848,7 +848,7 @@ public partial class Player
     /// </summary>
     /// <param name="amount">exp ดิบ (0 หรือติดลบ = ไม่ทำอะไร)</param>
     /// <param name="reason">เขียนลง log ให้ไล่ที่มาได้ตอนสมดุลเพี้ยน</param>
-    public void AddExp(int amount, string reason)
+    public void AddExp(int amount, string reason, int? indicatorAmount = null)
     {
         if (amount <= 0 || _skills == null) return;
 
@@ -864,8 +864,12 @@ public partial class Player
         int cap = ExpCap();
         _skills.Exp = (int)Math.Min((long)_skills.Exp + amount, cap);
 
-        // แจ้ง client ให้ขึ้นตัวเลข "+exp" ลอย ๆ (client/Durango.UI/IndicatorGroup.cs:48-56)
-        Send(new ExpGained { EntityId = EntityId, Exp = amount, BonusExp = 0, ResistanceExp = 0 });
+        // O cliente usa ExpGained apenas para o indicador visual do canto esquerdo.
+        // A progressao real vem de Statistics.Exp, portanto nao precisamos exibir o valor bruto
+        // da tabela de thresholds (que cresce muito conforme o nivel do personagem).
+        int displayExp = Math.Max(0, indicatorAmount ?? amount);
+        Console.WriteLine($"[xp] {ShortId()} +{amount} raw · indicator={displayExp} · total={_skills.Exp}/{cap} · {reason}");
+        Send(new ExpGained { EntityId = EntityId, Exp = displayExp, BonusExp = 0, ResistanceExp = 0 });
 
         int after = LevelFromExp(_skills.Exp);
         if (after != before)
@@ -905,7 +909,7 @@ public partial class Player
         // save: false เพราะ AddExp ข้างล่างเซฟให้อยู่แล้ว — OnContextChanged เขียนไฟล์ .player
         // ทั้งไฟล์ทุกครั้ง (Core/GameServer.cs:186-194) ⇒ อย่าเขียนสองรอบต่อการกระทำหนึ่งครั้ง
         if (category.HasValue) AddCategoryExp(category.Value, SkillTuning.CategoryExpPerAction, save: false);
-        AddExp(ExpPerAction(_skillLevel) * weight, reason);
+        AddExp(ExpPerAction(_skillLevel) * weight, reason, indicatorAmount: weight);
     }
 
     /// <summary>จำนวน exp ดิบที่จะได้จากน้ำหนักนี้ที่เลเวลปัจจุบัน — ใช้โชว์บนใบเสร็จเควส</summary>
