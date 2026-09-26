@@ -202,9 +202,9 @@ public static class PetUtil
 			{
 				return false;
 			}
-			foreach (string item in domesticationParameters)
+			foreach (string parameter in domesticationParameters)
 			{
-				if (performanceReference.TryGetValue(item, out var value) && value.Any((string id) => item.GetFloatAttribute(id) > 0f))
+				if (performanceReference.TryGetValue(parameter, out var value) && value.Any((string id) => item.GetFloatAttribute(id) > 0f))
 				{
 					return true;
 				}

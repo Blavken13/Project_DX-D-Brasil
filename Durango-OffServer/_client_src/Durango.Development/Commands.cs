@@ -133,7 +133,7 @@ public class Commands : Singleton<Commands>
 			Connections.Frontend.Send(new GetQuestState
 			{
 				QuestIds = list.ToArray()
-			}).On(delegate(Messages.QuestState msg, PacketHeader _)
+			}).On(delegate(Messages.QuestState msg, PacketHeader packetHeader)
 			{
 				foreach (KeyValuePair<string, Shared.Quest.QuestState> state in msg.States)
 				{

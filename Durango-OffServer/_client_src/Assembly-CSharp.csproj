@@ -12,82 +12,85 @@
   <ItemGroup />
   <ItemGroup>
     <Reference Include="System.Core">
-      <HintPath>DurangoV2_Data/Managed/System.Core.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="ExternalLibrary">
-      <HintPath>DurangoV2_Data/Managed/ExternalLibrary.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/ExternalLibrary.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="MsgPack">
-      <HintPath>DurangoV2_Data/Managed/MsgPack.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/MsgPack.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="Wwise">
-      <HintPath>DurangoV2_Data/Managed/Wwise.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/Wwise.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>DurangoV2_Data/Managed/ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="Vectrosity">
-      <HintPath>DurangoV2_Data/Managed/Vectrosity.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/Vectrosity.dll</HintPath>
     </Reference>
     <Reference Include="NCalc">
-      <HintPath>DurangoV2_Data/Managed/NCalc.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/NCalc.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>DurangoV2_Data/Managed/Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml">
-      <HintPath>DurangoV2_Data/Managed/System.Xml.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="Debug">
-      <HintPath>DurangoV2_Data/Managed/Debug.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/Debug.dll</HintPath>
     </Reference>
     <Reference Include="Durango.Localization.Overrides">
-      <HintPath>DurangoV2_Data/Managed/Durango.Localization.Overrides.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/Durango.Localization.Overrides.dll</HintPath>
     </Reference>
     <Reference Include="snappy.net">
-      <HintPath>DurangoV2_Data/Managed/snappy.net.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/snappy.net.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.UI.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>DurangoV2_Data/Managed/UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>../DurangoV2_Data/Managed/UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
