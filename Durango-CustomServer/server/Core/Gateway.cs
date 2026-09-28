@@ -387,8 +387,10 @@ public class Gateway
             // GetClanNotificationEnabled(4027) · ResubscribeClanChannel(24) ที่ลงทะเบียนไว้
             // ใน Player.Clan.cs ไม่มีทางถูกเรียกถึง
             //
-            // เซิร์ฟนี้มี Connection เดียวต่อผู้เล่น (ไม่ได้แยกโปรเซส radiotower แบบ NEXON)
-            // ⇒ ชี้มาพอร์ตเกมเดียวกัน handler ชุดเดิมรับได้เลย ไม่ต้องเปิดพอร์ตใหม่
+            // FACILDIGITAL_STAGE2_SHARED_LISTENER:
+            // ใช้ TCP listener/port เดียวกัน แต่ client เปิดคนละ socket:
+            // Frontend = Auth → Welcome → Ready · Radiotower = Tune → Conversations.
+            // จึงไม่ต้องเปิดพอร์ตใหม่ แต่ handler/lifecycle ของสองสายต้องแยกจากกัน
             return new WebServer.JsonResponse(new JObject
             {
                 ["frontend_addresses"] = new JArray($"{tcpHost}:{_gameServer.Port}"),

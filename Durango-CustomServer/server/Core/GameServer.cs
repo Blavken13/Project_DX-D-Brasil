@@ -412,6 +412,71 @@
         /// <summary>Consulta usada por GET /online_statuses.</summary>
         public bool IsPlayerOnline(string entityId) => FindOnlinePlayer(entityId) != null;
 
+        // FACILDIGITAL_STAGE2_CHAT_ROUTING
+        /// <summary>
+        /// Envia chat exclusivamente pelos sockets Radiotower autenticados.
+        ///
+        /// Region/PersonalRegions: somente jogadores no mesmo World.
+        /// Clan/ClanWar: somente jogadores do mesmo clã, mesmo em outra ilha.
+        /// Party ainda não possui backend persistente e não é roteado aqui.
+        /// </summary>
+        private int BroadcastRadiotower(SayInExclusiveChannel msg, PlayerContext senderContext)
+        {
+            if (senderContext == null) return 0;
+
+            World senderWorld = WorldOf(senderContext);
+            string senderClanId = senderContext.AppearPlayer.Member.ClanId ?? string.Empty;
+
+            var recipients = new List<Connection>();
+            foreach (KeyValuePair<Connection, string> pair in _radiotowerConnections)
+            {
+                Connection targetConnection = pair.Key;
+                string targetEntityId = pair.Value;
+                if (targetConnection == null || string.IsNullOrEmpty(targetEntityId)) continue;
+
+                PlayerContext targetContext = GetPlayerContext(targetEntityId);
+                if (targetContext == null) continue;
+
+                bool allowed;
+                switch (msg.ChannelType)
+                {
+                    case Shared.Chat.ChannelType.Region:
+                    case Shared.Chat.ChannelType.PersonalRegions:
+                        allowed = ReferenceEquals(WorldOf(targetContext), senderWorld);
+                        break;
+
+                    case Shared.Chat.ChannelType.Clan:
+                    case Shared.Chat.ChannelType.ClanWar:
+                        allowed =
+                            !string.IsNullOrEmpty(senderClanId) &&
+                            string.Equals(
+                                targetContext.AppearPlayer.Member.ClanId,
+                                senderClanId,
+                                StringComparison.Ordinal);
+                        break;
+
+                    default:
+                        allowed = false;
+                        break;
+                }
+
+                if (allowed) recipients.Add(targetConnection);
+            }
+
+            foreach (Connection target in recipients)
+            {
+                target.Send(msg);
+            }
+
+            return recipients.Count;
+        }
+
+        private static string ShortRadiotowerEntityId(string entityId)
+        {
+            if (string.IsNullOrEmpty(entityId)) return "(vazio)";
+            return entityId.Length <= 8 ? entityId : entityId[..8];
+        }
+
         /// <summary>
         /// FACILDIGITAL+: sessão Radiotower leve.
         /// Não cria um segundo Player; o socket social continua em GameServer._connections.
@@ -453,17 +518,67 @@
 
             connection.Recv(delegate(SayInExclusiveChannel msg, PacketHeader header)
             {
+                // O socket precisa continuar vinculado ao mesmo personagem que fez Tune.
+                if (!_radiotowerConnections.TryGetValue(connection, out string boundEntityId) ||
+                    !string.Equals(boundEntityId, entityId, StringComparison.Ordinal))
+                {
+                    Console.WriteLine(
+                        $"[radiotower] chat ignorado em socket sem vínculo: {entityId}");
+                    return;
+                }
+
+                switch (msg.ChannelType)
+                {
+                    case Shared.Chat.ChannelType.Region:
+                    case Shared.Chat.ChannelType.PersonalRegions:
+                        break;
+
+                    case Shared.Chat.ChannelType.Clan:
+                    case Shared.Chat.ChannelType.ClanWar:
+                        if (string.IsNullOrEmpty(context.AppearPlayer.Member.ClanId))
+                        {
+                            connection.Send(new Abort
+                            {
+                                Text = "Você não pertence a um clã."
+                            }, header.Seq);
+                            return;
+                        }
+                        break;
+
+                    case Shared.Chat.ChannelType.Party:
+                        // Player.Party.cs ainda não mantém uma party real.
+                        // Nunca transformar chat de party em broadcast de região.
+                        connection.Send(new Abort
+                        {
+                            Text = "O chat de grupo ainda não está disponível."
+                        }, header.Seq);
+                        return;
+
+                    default:
+                        connection.Send(new Abort
+                        {
+                            Text = "Canal de chat inválido."
+                        }, header.Seq);
+                        return;
+                }
+
+                // Nunca confiar em identidade/hora/speaker enviados pelo client.
                 Message_ message = msg.Message;
                 message.EntityId = entityId;
                 message.Time = Times.UnixTimeNow();
                 message.Speaker = new RadioId
                 {
-                    Name = context.AppearPlayer.Name ?? context.PlayerInfo?.PlayerName ?? string.Empty,
+                    Name = context.AppearPlayer.Name ??
+                           context.PlayerInfo?.PlayerName ??
+                           string.Empty,
                     Freq = context.AppearPlayer.Freq
                 };
                 msg.Message = message;
-                World world = WorldOf(context);
-                world?.BroadCast(msg);
+
+                int recipients = BroadcastRadiotower(msg, context);
+                Console.WriteLine(
+                    $"[chat] {ShortRadiotowerEntityId(entityId)} " +
+                    $"channel={msg.ChannelType} recipients={recipients}");
             });
         }
 
@@ -484,10 +599,32 @@
                 msg.ServerTime = Times.UnixTimeNow();
                 connection.Send(msg, header.Seq);
             });
+
+            // FACILDIGITAL_STAGE2_KEEPALIVE
+            // Connections.Radiotower.MaybeSendKeepalive() envia TypeCode 254
+            // a cada 30 s. Não existe reply esperado; basta consumir o pacote.
+            connection.Recv(delegate(Keepalive msg, PacketHeader header)
+            {
+            });
             // FACILDIGITAL+: Tune é o handshake do socket Radiotower.
             // O client não envia Auth/Ready nesta segunda conexão; espera Conversations como reply.
             connection.Recv(delegate(Tune tune, PacketHeader header)
             {
+                // FACILDIGITAL_STAGE2_TUNE_GUARD
+                // O listener é compartilhado, o socket não:
+                // um socket que começou como Frontend não pode virar Radiotower.
+                if (_connectionDict.ContainsKey(connection))
+                {
+                    Console.WriteLine(
+                        "[radiotower] Tune recusado em socket Frontend já autenticado");
+                    connection.Send(new Abort
+                    {
+                        Text = "Conexão de chat inválida."
+                    }, header.Seq);
+                    connection.Close();
+                    return;
+                }
+
                 if (!TryGetSessionEntityId(tune.SessionToken, out string sessionEntityId)
                     || !string.Equals(sessionEntityId, tune.EntityId, StringComparison.Ordinal))
                 {
@@ -514,6 +651,19 @@
 
             connection.Recv(delegate(Auth auth, PacketHeader header)
             {
+                // FACILDIGITAL_STAGE2_AUTH_GUARD
+                // Depois de Tune este socket pertence exclusivamente ao Radiotower.
+                if (_radiotowerConnections.ContainsKey(connection))
+                {
+                    Console.WriteLine("[auth] Auth recusado em socket Radiotower");
+                    connection.Send(new Abort
+                    {
+                        Text = "Conexão de jogo inválida."
+                    }, header.Seq);
+                    connection.Close();
+                    return;
+                }
+
                 // [4 ก.ย. 2026] ก่อนหน้านี้เชื่อ auth.EntityId ตรง ๆ — ใครก็ยิง Auth อ้างเป็น entity id ใครก็ได้
                 // สวมรอยตัวละครคนอื่นได้ทันที ⇒ ต้องผูกกับ token ที่ /sessions ออกให้เท่านั้น (เหมือน server/ หลัก)
                 if (!TryGetSessionEntityId(auth.SessionToken, out string sessionEntityId)
