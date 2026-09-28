@@ -239,6 +239,13 @@ public class Host
 
         // Auth local: contas persistem ao lado dos saves do cluster.
         AccountStore.Load(System.IO.Path.Combine(AppData.CombinePath(basePath), "accounts.json"));
+
+        // FACILDIGITAL_STAGE5_FRIEND_STORE
+        // Relações sociais ficam fora do save individual para permitir mutações
+        // atômicas que envolvem dois personagens.
+        FriendStore.Load(
+            System.IO.Path.Combine(AppData.CombinePath(basePath), "friends.json"),
+            _contexts.Select(c => c.EntityId));
     }
 
     public void Start(int gamePort, int gatewayPort, string publicHost, string androidBundlesDir, string assetsDir, string dataDir = null)
@@ -448,6 +455,7 @@ public class Host
         context.Initialize(PlayerContext.MakePath(slot, _clusterKey));
         context.Save();
         _contexts.Add(new Context(_worldCtx, context));
+        FriendStore.RegisterKnownPlayer(context.EntityId);
         Console.WriteLine($"[host] ผู้เล่น '{context.PlayerInfo.PlayerName}' ({context.EntityId}) → สล็อต {slot}");
         return context;
     }

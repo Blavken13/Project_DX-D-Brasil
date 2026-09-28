@@ -24,19 +24,12 @@ public partial class Player
         {
         });
 
-        // GetSocial (2402) — รายชื่อเพื่อน/คำขอเป็นเพื่อน/บล็อก — client รอ .On<Social>
-        // (nexonSRC/SocialSystem.cs:908) ⇒ ตอบ Social ว่างทุกชุด (ยังไม่มีระบบเพื่อน)
+        // FACILDIGITAL_STAGE5_GET_SOCIAL
+        // Amigos e solicitações vêm do FriendStore persistente.
+        // Follow/block/favoritos continuam com seus backends separados.
         _connection.Recv(delegate(GetSocial msg, PacketHeader header)
         {
-            Send(new Social
-            {
-                FollowingEntityIds = Array.Empty<string>(),
-                FriendEntities = new(),
-                ReceivedFriendRequests = Array.Empty<string>(),
-                SentFriendRequests = Array.Empty<string>(),
-                BlockedEntityIds = Array.Empty<string>(),
-                FavoriteRegionOwners = Array.Empty<string>()
-            }, header.Seq);
+            Send(FriendStore.BuildSocial(EntityId), header.Seq);
         });
 
         // GetMemos (2439) — บันทึก (สัตว์/พืช/แร่ ที่เคยเจอ) — client รอ .On<Memos>

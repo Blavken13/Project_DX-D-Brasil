@@ -399,58 +399,136 @@ public class Gateway
             }.ToString());
         };
 
-        // FACILDIGITAL+: busca pública de jogadores por nome.
-        // PlayerInfoManager.SearchPlayerInfos usa GET /players?name=...&freq=...
+        // FACILDIGITAL_STAGE3_PLAYER_SEARCH
+        // PlayerInfoManager.SearchPlayerInfos:
+        //   GET /players?name=<texto>&freq=<texto>
+        //
+        // O client usa frequência como texto parcial:
+        //   playerInfo.Freq.ToString("D4").Contains(freq)
+        // Portanto NÃO converter freq para int + igualdade exata.
         _webServer.GetRoute["/players"] = delegate(HttpListenerRequest request, Dictionary<string, string> _)
         {
             string search = (request.QueryString.Get("name") ?? string.Empty).Trim();
             string freqText = (request.QueryString.Get("freq") ?? string.Empty).Trim();
-            var players = new JArray();
-            if (search.Length == 0)
-                return new WebServer.JsonResponse(new JObject { ["players"] = players }.ToString());
-            if (search.Length > 64) search = search.Substring(0, 64);
 
-            bool filterFreq = int.TryParse(freqText, out int requestedFreq);
-            int emitted = 0;
+            var players = new JArray();
+
+            // O próprio PlayerInfoManager só dispara esta rota com nome preenchido.
+            if (search.Length == 0)
+            {
+                return new WebServer.JsonResponse(
+                    new JObject { ["players"] = players }.ToString());
+            }
+
+            if (search.Length > 64) search = search.Substring(0, 64);
+            if (freqText.Length > 4) freqText = freqText.Substring(0, 4);
+
+            if (freqText.Length > 0 && freqText.Any(c => c < '0' || c > '9'))
+            {
+                return new WebServer.JsonResponse(
+                    new JObject { ["players"] = players }.ToString());
+            }
+
+            var matches = new List<(PlayerContext Player, string Name, int Freq, int Rank)>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+
             foreach (var hostContext in _host.Contexts)
             {
                 PlayerContext player = hostContext?.Player;
                 if (player == null || string.IsNullOrEmpty(player.EntityId)) continue;
-                string name = player.PlayerInfo?.PlayerName ?? player.AppearPlayer.Name ?? string.Empty;
-                if (name.IndexOf(search, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                int freq = player.AppearPlayer.Freq;
-                if (filterFreq && freq != requestedFreq) continue;
+                if (!seen.Add(player.EntityId)) continue;
 
+                string name =
+                    player.PlayerInfo?.PlayerName ??
+                    player.AppearPlayer.Name ??
+                    string.Empty;
+
+                if (name.IndexOf(search, StringComparison.OrdinalIgnoreCase) < 0) continue;
+
+                int freq = player.AppearPlayer.Freq;
+                string formattedFreq = freq.ToString("D4");
+
+                if (freqText.Length > 0 &&
+                    formattedFreq.IndexOf(freqText, StringComparison.Ordinal) < 0)
+                {
+                    continue;
+                }
+
+                int rank = string.Equals(name, search, StringComparison.OrdinalIgnoreCase)
+                    ? 0
+                    : name.StartsWith(search, StringComparison.OrdinalIgnoreCase)
+                        ? 1
+                        : 2;
+
+                matches.Add((player, name, freq, rank));
+            }
+
+            foreach (var match in matches
+                         .OrderBy(x => x.Rank)
+                         .ThenBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
+                         .ThenBy(x => x.Freq)
+                         .ThenBy(x => x.Player.EntityId, StringComparer.Ordinal)
+                         .Take(50))
+            {
                 players.Add(new JObject
                 {
-                    ["entity_id"] = player.EntityId,
-                    ["freq"] = freq,
-                    ["name"] = name
+                    ["entity_id"] = match.Player.EntityId,
+                    ["freq"] = match.Freq,
+                    ["name"] = match.Name
                 });
-                if (++emitted >= 20) break;
             }
-            return new WebServer.JsonResponse(new JObject { ["players"] = players }.ToString());
+
+            Console.WriteLine(
+                $"[player-search] name='{search}' freq='{freqText}' results={players.Count}");
+
+            return new WebServer.JsonResponse(
+                new JObject { ["players"] = players }.ToString());
         };
 
-        // FACILDIGITAL+: status online em lote para PlayerInfoManager.RequestPlayersConnected.
+        // FACILDIGITAL_STAGE4_ONLINE_STATUSES
+        // PlayerInfoManager envia vários entity_id e espera:
+        // entity_id -> { online, disconnected_at }.
         _webServer.GetRoute["/online_statuses"] = delegate(HttpListenerRequest request, Dictionary<string, string> _)
         {
-            string[] entityIds = request.QueryString.GetValues("entity_id") ?? Array.Empty<string>();
+            string[] entityIds =
+                request.QueryString.GetValues("entity_id") ??
+                Array.Empty<string>();
+
             var result = new JObject();
             var seen = new HashSet<string>(StringComparer.Ordinal);
+
+            int accepted = 0;
             foreach (string rawId in entityIds)
             {
+                if (accepted >= 100) break;
+
                 string entityId = (rawId ?? string.Empty).Trim();
-                if (entityId.Length == 0 || !seen.Add(entityId)) continue;
-                PlayerContext player = _host.FindContextByEntityId(entityId) ?? _gameServer.GetPlayerContext(entityId);
+                if (entityId.Length == 0 ||
+                    entityId.Length > 128 ||
+                    !seen.Add(entityId))
+                {
+                    continue;
+                }
+
+                accepted++;
+
+                PlayerContext player =
+                    _host.FindContextByEntityId(entityId) ??
+                    _gameServer.GetPlayerContext(entityId);
+
                 bool online = _gameServer.IsPlayerOnline(entityId);
                 double? disconnectedAt = player?.PlayerInfo?.DisconnectedAt;
-                var status = new JObject { ["online"] = online };
-                status["disconnected_at"] = disconnectedAt.HasValue && disconnectedAt.Value > 0
-                    ? new JValue(disconnectedAt.Value)
-                    : JValue.CreateNull();
-                result[entityId] = status;
+
+                result[entityId] = new JObject
+                {
+                    ["online"] = online,
+                    ["disconnected_at"] =
+                        disconnectedAt.HasValue && disconnectedAt.Value > 0
+                            ? new JValue(disconnectedAt.Value)
+                            : JValue.CreateNull()
+                };
             }
+
             return new WebServer.JsonResponse(result.ToString());
         };
 
