@@ -525,15 +525,14 @@ public partial class Player
                 return;
             }
 
+            // TakeOutItem é compartilhado por manequins e recipientes Inventory.
             if (_world.ArtifactManager.TakeOutItems(msg.EntityId, msg.ItemIds))
             {
                 Send(default(OK), header.ReplyOf);
+                return;
             }
-            else
-            {
-                // Nunca envie Abort sem texto: o cliente espera uma mensagem válida.
-                Send(new Abort { Text = "Não foi possível retirar os itens." }, header.ReplyOf);
-            }
+
+            HandleTakeOutFromArtifactInventory(msg, header.ReplyOf);
         });
         _connection.Recv(delegate(GetGrazedPets msg, PacketHeader header)
         {
@@ -1163,6 +1162,8 @@ public partial class Player
 
     private void HandleTouchMsg(Messages.Touch touch, uint seq)
     {
+        Console.WriteLine(
+            $"[touch-entry-v3] entity={touch.EntityId} type={touch.EntityType} seq={seq}");
         if (touch.EntityType == 0)
         {
             return;
@@ -1236,6 +1237,10 @@ public partial class Player
         if (touch.EntityType < 10000)
         {
             MergedBlueprint blueprint = BlueprintStore.GetBlueprint(touch.EntityType);
+            Console.WriteLine(
+                $"[touch-blueprint-v3] type={touch.EntityType} found={blueprint != null} " +
+                $"name={(blueprint == null ? "<null>" : blueprint.Name)} " +
+                $"components={(blueprint == null ? "<null>" : string.Join(",", blueprint.Components))}");
             if (blueprint != null)
             {
                 msg.EntityName = blueprint.Name;
@@ -1313,6 +1318,9 @@ public partial class Player
                 {
                     // ยังสร้างไม่เสร็จ — มีได้แค่เมนูของงานก่อสร้างข้างบน (สร้าง/สำเร็จ/รื้อ)
                     msg.Interactions = list.Select(o => (int)o).ToArray();
+                Console.WriteLine(
+                    $"[touch-list-v3] entity={touch.EntityId} type={touch.EntityType} " +
+                    $"interactions=[{string.Join(",", msg.Interactions)}]");
                     msg.Mannequin = _world.ArtifactManager.GetMannequin(touch.EntityId);
                     Send(msg, seq);
                     OnContextChanged();
@@ -1333,6 +1341,13 @@ public partial class Player
                 if (blueprint.Components.Contains("Workbench")) list.Add(Shared.System.Interaction.Craft);
                 if (blueprint.Components.Contains("Washable")) list.Add(Shared.System.Interaction.Wash);
                 if (blueprint.Components.Contains("Shelter")) list.Add(Shared.System.Interaction.Rest);
+
+                // Storage: o cliente só abre estas telas quando o servidor
+                // anuncia explicitamente a interação em Touched.Interactions.
+                if (blueprint.Components.Contains("Inventory"))
+                    list.Add(Shared.System.Interaction.Inventory);
+                if (blueprint.Components.Contains("Warehouse"))
+                    list.Add(Shared.System.Interaction.UseWarehouse);
 
                 // [7 ก.ย. 2026] "불 붙이기 / 불 끄기" — จุดไฟและดับไฟกองไฟ เตาเผา เตาอบ
                 //
@@ -1466,6 +1481,15 @@ public partial class Player
                     list.Add((Shared.System.Interaction)10267);
                 }
                 msg.Interactions = list.Select(o => (int)o).ToArray();
+                Console.WriteLine(
+                    $"[touch-list-v3] entity={touch.EntityId} type={touch.EntityType} " +
+                    $"interactions=[{string.Join(",", msg.Interactions)}]");
+
+                Console.WriteLine(
+                    $"[touch-storage] entity={touch.EntityId} type={touch.EntityType} " +
+                    $"name={blueprint.Name} completed={completed} authorized={authorized} " +
+                    $"components=[{string.Join(",", blueprint.Components)}] " +
+                    $"interactions=[{string.Join(",", msg.Interactions)}]");
             }
             msg.Mannequin = _world.ArtifactManager.GetMannequin(touch.EntityId);
         }

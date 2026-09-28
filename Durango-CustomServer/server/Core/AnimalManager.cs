@@ -634,6 +634,35 @@ public class AnimalManager
             return;
         }
 
+        // Personal/Tutorial/Safehouse não recebem fauna selvagem.
+        if (template.Role == Shared.Region.Role.Personal ||
+            template.Role == Shared.Region.Role.Tutorial ||
+            template.Role == Shared.Region.Role.Safehouse)
+        {
+            Console.WriteLine(
+                $"[สัตว์] skip wild fauna template={template.Id} role={template.Role}");
+            return;
+        }
+
+        // Unstable Islands são Role.Risky neste dataset.
+        // Regra histórica baseline: fauna comum = nível da ilha - 2.
+        int resolvedWildLevel = template.Role == Shared.Region.Role.Risky
+            ? Math.Max(1, template.Level - 2)
+            : 0;
+
+        if (template.Role == Shared.Region.Role.Risky)
+        {
+            Console.WriteLine(
+                $"[สัตว์] template={template.Id} role={template.Role} islandLv={template.Level} " +
+                $"wildLv={resolvedWildLevel}");
+        }
+        else
+        {
+            Console.WriteLine(
+                $"[สัตว์] template={template.Id} role={template.Role}: " +
+                "regra histórica específica ainda não definida; preservando fallback legado fora de Risky");
+        }
+
         // กระจายโควตาให้ทุกกลุ่มตามสัดส่วนที่แม่แบบสั่ง แทนที่จะเติมกลุ่มแรกจนเต็มแล้วกลุ่มหลังไม่ได้เลย
         int wanted = 0;
         foreach (KeyValuePair<string, List<RegionCatalog.HerdSpawn>> group in template.Herds)
@@ -657,7 +686,11 @@ public class AnimalManager
             for (int n = 0; n < quota; n++)
             {
                 int i = Math.Min(available - 1, (int)(n * stride));
-                Animal animal = Create($"herd_{group.Key}_{i}", group.Value[i], points[i]);
+                Animal animal = Create(
+                    $"herd_{group.Key}_{i}",
+                    group.Value[i],
+                    points[i],
+                    resolvedWildLevel);
                 if (animal == null) continue;
                 _animals.Add(animal);
                 _byId[animal.EntityId] = animal;
@@ -666,15 +699,24 @@ public class AnimalManager
 
         if (_animals.Count > 0)
         {
-            Console.WriteLine($"[สัตว์] เกาะ {terrain.Info?.region_template ?? "?"} เกิดสัตว์ {_animals.Count} ตัว " +
-                              $"(แม่แบบสั่งไว้ {wanted} ฝูง · เพดานตอนนี้ {MaxAnimalsPerRegion})");
+            int minLevel = _animals.Min(a => a.CombatLevel);
+            int maxLevel = _animals.Max(a => a.CombatLevel);
+
+            Console.WriteLine(
+                $"[สัตว์] เกาะ {terrain.Info?.region_template ?? "?"} เกิดสัตว์ {_animals.Count} ตัว " +
+                $"(แม่แบบสั่งไว้ {wanted} ฝูง · เพดานตอนนี้ {MaxAnimalsPerRegion}) " +
+                $"levels={minLevel}-{maxLevel}");
         }
     }
 
     /// <summary>สุ่มทิศตอนเกิด — แยกจาก _rng เพราะ Create เป็น static</summary>
     private static readonly Random SpawnYawRng = new();
 
-    private static Animal Create(string entityId, RegionCatalog.HerdSpawn spawn, Point2 tile)
+    private static Animal Create(
+        string entityId,
+        RegionCatalog.HerdSpawn spawn,
+        Point2 tile,
+        int resolvedCombatLevel = 0)
     {
         AnimalTypes.Info info = AnimalTypes.Get(spawn.EntityType);
         if (info == null)
@@ -682,8 +724,33 @@ public class AnimalManager
             return null;    // ชนิดที่ไม่มีในข้อมูล — ส่งไปเกมก็โหลดโมเดลไม่ได้ (AnimalLoadFailed)
         }
 
-        // ~7% ของเลขในไฟล์ถอดแล้วเลเวลหลุดช่วงของสัตว์ตัวนั้น ⇒ หนีบเข้าช่วง ไม่ทิ้งทั้งฝูง
-        int level = Math.Clamp(spawn.CombatLevel, info.MinCombatLevel, info.MaxCombatLevel);
+        int requestedLevel;
+
+        if (resolvedCombatLevel > 0)
+        {
+            // Herd normal de ilha: nível vem do contexto da região/template.
+            requestedLevel = resolvedCombatLevel;
+        }
+        else if (spawn.CombatLevelExplicit > 0)
+        {
+            // Spawn explícito por código/cheat mantém o nível solicitado pelo chamador.
+            requestedLevel = spawn.CombatLevelExplicit;
+        }
+        else
+        {
+            // Fallback temporário somente para roles não-Risky cuja regra histórica
+            // ainda não foi reconstruída. O sufixo continua preservado como metadata.
+            requestedLevel = Math.Max(1, spawn.PackedSuffix);
+        }
+
+        int level = Math.Clamp(requestedLevel, info.MinCombatLevel, info.MaxCombatLevel);
+
+        if (level != requestedLevel)
+        {
+            Console.WriteLine(
+                $"[สัตว์] clamp entity={spawn.EntityType} requestedLv={requestedLevel} " +
+                $"range={info.MinCombatLevel}-{info.MaxCombatLevel} -> lv{level}");
+        }
 
         var vars = new Dictionary<string, double>
         {

@@ -53,31 +53,37 @@ public static class RegionCatalog
     }
 
     /// <summary>
-    /// ฝูงหนึ่งฝูงที่แม่แบบสั่งให้เกิด — ถอดจากตัวเลขก้อนเดียวใน <c>region_templates.json</c>
+    /// Uma entrada de herd de region_templates.json.
     ///
-    /// ในไฟล์ <c>herds.land.spawns</c> เป็นลิสต์ของเลข 6 หลัก เช่น <c>204220</c> โดย
-    /// **จำนวนสมาชิกในลิสต์เท่ากับ <c>total_count</c> เป๊ะทั้ง 310 กลุ่มในไฟล์** ⇒ หนึ่งเลข = หนึ่งฝูง
+    /// O quociente packed / 100 continua sendo usado como EntityType.
+    /// O sufixo packed % 100 é preservado como metadata (PackedSuffix), mas NÃO é
+    /// tratado como nível de combate da fauna selvagem.
     ///
-    /// การถอดเลข <c>204220</c> → ชนิดสัตว์ <c>2042</c> + เลเวลต่อสู้ <c>20</c> ยืนยันด้วยข้อมูลจริง:
-    /// • <c>เลข/100</c> เป็นชนิดที่มีจริงใน <c>entity_types/animal.json</c> **10,606 จาก 10,616 ครั้ง**
-    ///   (ชนิดสัตว์มี 214 ตัวกระจายในช่วง 2000-2999 ⇒ ถ้าถอดผิดจะพลาดเกือบหมด ไม่ใช่ 99.9%)
-    /// • <c>เลข%100</c> ตกอยู่ในช่วง <c>combat_level_ranges</c> ของสัตว์ชนิดนั้นเอง **127 จาก 136 คู่**
-    /// • และมันไม่ใช่เลเวลของเกาะ (เกาะ lv5 มีสัตว์ lv10/20 · เกาะ lv40 มีตั้งแต่ lv1 ถึง 21)
-    ///
-    /// ⚠️ ที่เหลือ ~7% ถอดแล้วหลุดช่วง — เราหนีบเข้าช่วงของสัตว์ตัวนั้นแทนที่จะทิ้ง (ดู AnimalManager)
+    /// CombatLevelExplicit existe apenas para spawns criados por código/cheat,
+    /// onde o chamador fornece deliberadamente um nível.
     /// </summary>
     public readonly struct HerdSpawn
     {
         public readonly ushort EntityType;
-        public readonly int CombatLevel;
+        public readonly int PackedSuffix;
+        public readonly int CombatLevelExplicit;
 
         public HerdSpawn(ushort entityType, int combatLevel)
         {
             EntityType = entityType;
-            CombatLevel = combatLevel;
+            PackedSuffix = 0;
+            CombatLevelExplicit = combatLevel;
         }
 
-        public static HerdSpawn FromPacked(int packed) => new((ushort)(packed / 100), packed % 100);
+        private HerdSpawn(ushort entityType, int packedSuffix, bool fromPacked)
+        {
+            EntityType = entityType;
+            PackedSuffix = packedSuffix;
+            CombatLevelExplicit = 0;
+        }
+
+        public static HerdSpawn FromPacked(int packed) =>
+            new((ushort)(packed / 100), packed % 100, fromPacked: true);
     }
 
     private static readonly List<Region> _regions = new();

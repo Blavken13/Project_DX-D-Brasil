@@ -154,6 +154,7 @@ public partial class Player
         {
             if (!MayTouchArtifact(msg.EntityId, "reordenar itens do depósito")) return;
             WarehouseStore.SetItemOrder(msg.EntityId, msg.SectionName, msg.ItemOrder);
+            _world.Save();
         });
         // สร้างแท็บใหม่ในคลัง — client/InventorySystem.cs:700-711 ใช้ .All() ⇒ รับคำตอบชนิดใดก็ได้
         // แล้วตัดสินสำเร็จ/ไม่สำเร็จจาก Packet.IsSuccess ⇒ ตอบ OK พอ
@@ -212,6 +213,7 @@ public partial class Player
                 msg.TargetArtifact.Value.EntityId,
                 WarehouseStore.ContainerSection,
                 msg.ItemOrder);
+            _world.Save();
             return;
         }
         if (ReorderInPlace(_context.InventoryItems, msg.ItemOrder))
@@ -754,8 +756,156 @@ public partial class Player
     /// </summary>
     private void HandlePutInItemMsg(PutInItem msg, uint seq)
     {
-        Console.WriteLine($"[item] ปฏิเสธ PutInItem เข้า {msg.EntityId} — ยังไม่มีทางเอาของออก (TakeOutItem ถูกจองให้หุ่นโชว์เสื้อ)");
-        Send(new Abort { Text = "ยังเก็บของเข้าตู้ไม่ได้ ใช้คลังสินค้าแทน" }, seq);
+        if (!MayTouchArtifact(msg.EntityId, "guardar itens no recipiente"))
+        {
+            Send(new Abort { Text = "Você não tem permissão para usar este recipiente." }, seq);
+            return;
+        }
+
+        AppearArtifact? artifact = _world.ArtifactManager.Get(msg.EntityId);
+        if (!artifact.HasValue)
+        {
+            Send(new Abort { Text = "Recipiente não encontrado." }, seq);
+            return;
+        }
+
+        MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.Value.EntityType);
+        if (blueprint == null ||
+            !blueprint.Components.Contains("Inventory") ||
+            artifact.Value.States.BuildingState != Shared.Building.BuildingState.Completed)
+        {
+            Send(new Abort { Text = "Este objeto não é um recipiente disponível." }, seq);
+            return;
+        }
+
+        int maxSize = ContainerSizeLimit(msg.EntityId);
+        if (maxSize <= 0)
+        {
+            Send(new Abort { Text = "Capacidade deste recipiente não foi encontrada." }, seq);
+            return;
+        }
+
+        List<Item> container = WarehouseStore.Items(
+            msg.EntityId, WarehouseStore.ContainerSection, create: true);
+        int free = maxSize - WarehouseStore.UsedSize(
+            msg.EntityId, WarehouseStore.ContainerSection);
+
+        var moved = new List<Item>();
+        foreach (string id in msg.ItemIds ?? Array.Empty<string>())
+        {
+            if (string.IsNullOrEmpty(id) || _lockedItemIds.Contains(id)) continue;
+
+            int idx = _context.InventoryItems.FindIndex(it => it.Id == id);
+            if (idx < 0) continue;
+
+            Item item = _context.InventoryItems[idx];
+            int size = Math.Max(1, item.Size);
+            if (size > free) break;
+
+            free -= size;
+            _context.InventoryItems.RemoveAt(idx);
+            container.Add(item);
+            moved.Add(item);
+        }
+
+        if (moved.Count == 0)
+        {
+            Send(new Abort { Text = "Nenhum item pôde ser guardado; verifique espaço e itens bloqueados." }, seq);
+            return;
+        }
+
+        Send(default(OK), seq);
+        Send(new InventoryUpdated
+        {
+            EntityId = EntityId,
+            RemovedItemIds = moved.Select(it => it.Id).ToArray()
+        });
+        Send(new InventoryUpdated
+        {
+            EntityId = msg.EntityId,
+            Items = moved.ToArray()
+        });
+
+        _world.Save();
+        OnContextChanged();
+
+        Console.WriteLine(
+            $"[storage] {Short(EntityId)} guardou {moved.Count} item(ns) em " +
+            $"{msg.EntityId[..Math.Min(8, msg.EntityId.Length)]} " +
+            $"({WarehouseStore.UsedSize(msg.EntityId, WarehouseStore.ContainerSection)}/{maxSize})");
+    }
+
+    private void HandleTakeOutFromArtifactInventory(TakeOutItem msg, uint seq)
+    {
+        AppearArtifact? artifact = _world.ArtifactManager.Get(msg.EntityId);
+        if (!artifact.HasValue)
+        {
+            Send(new Abort { Text = "Recipiente não encontrado." }, seq);
+            return;
+        }
+
+        MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.Value.EntityType);
+        if (blueprint == null ||
+            !blueprint.Components.Contains("Inventory") ||
+            artifact.Value.States.BuildingState != Shared.Building.BuildingState.Completed)
+        {
+            Send(new Abort { Text = "Não foi possível retirar os itens deste objeto." }, seq);
+            return;
+        }
+
+        List<Item> container = WarehouseStore.Items(
+            msg.EntityId, WarehouseStore.ContainerSection, create: false);
+        if (container == null || container.Count == 0)
+        {
+            Send(new Abort { Text = "O recipiente está vazio." }, seq);
+            return;
+        }
+
+        int free = InventoryMaxSizeMirroredFromPlayerCs
+                   - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
+        var moved = new List<Item>();
+
+        foreach (string id in msg.ItemIds ?? Array.Empty<string>())
+        {
+            if (string.IsNullOrEmpty(id)) continue;
+
+            int idx = container.FindIndex(it => it.Id == id);
+            if (idx < 0) continue;
+
+            Item item = container[idx];
+            int size = Math.Max(1, item.Size);
+            if (size > free) break;
+
+            free -= size;
+            container.RemoveAt(idx);
+            _context.InventoryItems.Add(item);
+            moved.Add(item);
+        }
+
+        if (moved.Count == 0)
+        {
+            Send(new Abort { Text = "A mochila está cheia ou os itens não foram encontrados." }, seq);
+            return;
+        }
+
+        Send(default(OK), seq);
+        Send(new InventoryUpdated
+        {
+            EntityId = EntityId,
+            Items = moved.ToArray()
+        });
+        Send(new InventoryUpdated
+        {
+            EntityId = msg.EntityId,
+            RemovedItemIds = moved.Select(it => it.Id).ToArray()
+        });
+
+        _world.Save();
+        OnContextChanged();
+
+        Console.WriteLine(
+            $"[storage] {Short(EntityId)} retirou {moved.Count} item(ns) de " +
+            $"{msg.EntityId[..Math.Min(8, msg.EntityId.Length)]}");
     }
 
     // ══════════════════════════════════════════════════════════════════════════════════
@@ -852,6 +1002,7 @@ public partial class Player
             RemovedItemIds = moved.Select(it => it.Id).ToArray()
         });
         SendWarehouseUpdated(msg.EntityId, msg.SectionName, moved.ToArray(), null);
+        _world.Save();
         OnContextChanged();
     }
 
@@ -893,6 +1044,7 @@ public partial class Player
             Items = moved.ToArray()
         });
         SendWarehouseUpdated(msg.EntityId, msg.SectionName, null, moved.Select(it => it.Id).ToArray());
+        _world.Save();
         OnContextChanged();
     }
 
@@ -934,6 +1086,7 @@ public partial class Player
         }
         SendWarehouseUpdated(msg.EntityId, msg.SourceSectionName, null, moved.Select(it => it.Id).ToArray());
         SendWarehouseUpdated(msg.EntityId, msg.TargetSectionName, moved.ToArray(), null);
+        _world.Save();
     }
 
     private void SendWarehouseUpdated(string entityId, string section, Item[] added, string[] removedIds)
