@@ -368,6 +368,12 @@
         /// <summary>สายที่ยังไม่ผ่าน Auth → เวลาที่ต่อเข้ามา (ใช้ตัดสายที่จองบัฟเฟอร์ทิ้งไว้เฉย ๆ)</summary>
         private readonly Dictionary<Connection, double> _pendingAuth = new();
 
+        /// <summary>
+        /// FACILDIGITAL+: sockets Radiotower autenticados.
+        /// O client abre uma segunda conexão TCP e autentica com Tune, não com Auth/Ready.
+        /// </summary>
+        private readonly Dictionary<Connection, string> _radiotowerConnections = new();
+
         private int PlayersOnline()
         {
             if (Worlds == null) return World?.PlayerCount ?? 0;
@@ -403,6 +409,64 @@
             return null;
         }
 
+        /// <summary>Consulta usada por GET /online_statuses.</summary>
+        public bool IsPlayerOnline(string entityId) => FindOnlinePlayer(entityId) != null;
+
+        /// <summary>
+        /// FACILDIGITAL+: sessão Radiotower leve.
+        /// Não cria um segundo Player; o socket social continua em GameServer._connections.
+        /// </summary>
+        private void RegisterRadiotowerHandlers(Connection connection, string entityId, PlayerContext context)
+        {
+            connection.Recv(delegate(GetLatestChatLog msg, PacketHeader header)
+            {
+                connection.Send(new ChatLogs { Logs = Array.Empty<Message_>() }, header.Seq);
+            });
+
+            connection.Recv(delegate(GetClanNotificationEnabled msg, PacketHeader header)
+            {
+                var enabled = new Dictionary<Shared.Chat.ChannelType, bool>();
+                if (context.ClanChannelNotifications != null)
+                {
+                    foreach (KeyValuePair<int, bool> pair in context.ClanChannelNotifications)
+                        enabled[(Shared.Chat.ChannelType)pair.Key] = pair.Value;
+                }
+                connection.Send(new ToggleClanNotification
+                {
+                    ChannelNotificationsEnabled = enabled
+                }, header.Seq);
+            });
+
+            connection.Recv(delegate(ToggleClanNotification msg, PacketHeader header)
+            {
+                var saved = new Dictionary<int, bool>();
+                if (msg.ChannelNotificationsEnabled != null)
+                {
+                    foreach (KeyValuePair<Shared.Chat.ChannelType, bool> pair in msg.ChannelNotificationsEnabled)
+                        saved[(int)pair.Key] = pair.Value;
+                }
+                context.ClanChannelNotifications = saved;
+                if (!string.IsNullOrEmpty(context.Path)) context.Save();
+            });
+
+            connection.Recv(delegate(ResubscribeClanChannel msg, PacketHeader header) { });
+
+            connection.Recv(delegate(SayInExclusiveChannel msg, PacketHeader header)
+            {
+                Message_ message = msg.Message;
+                message.EntityId = entityId;
+                message.Time = Times.UnixTimeNow();
+                message.Speaker = new RadioId
+                {
+                    Name = context.AppearPlayer.Name ?? context.PlayerInfo?.PlayerName ?? string.Empty,
+                    Freq = context.AppearPlayer.Freq
+                };
+                msg.Message = message;
+                World world = WorldOf(context);
+                world?.BroadCast(msg);
+            });
+        }
+
         private void Listener_ClientAccepted(Socket socket)
         {
             if (_connections.Count >= MaxConnections)
@@ -420,6 +484,34 @@
                 msg.ServerTime = Times.UnixTimeNow();
                 connection.Send(msg, header.Seq);
             });
+            // FACILDIGITAL+: Tune é o handshake do socket Radiotower.
+            // O client não envia Auth/Ready nesta segunda conexão; espera Conversations como reply.
+            connection.Recv(delegate(Tune tune, PacketHeader header)
+            {
+                if (!TryGetSessionEntityId(tune.SessionToken, out string sessionEntityId)
+                    || !string.Equals(sessionEntityId, tune.EntityId, StringComparison.Ordinal))
+                {
+                    Console.WriteLine($"[radiotower] Tune recusado: token/entity inválido ({tune.EntityId})");
+                    connection.Send(new Abort { Text = "Falha ao autenticar o servidor de chat." }, header.Seq);
+                    connection.Close();
+                    return;
+                }
+
+                PlayerContext context = GetPlayerContext(tune.EntityId);
+                if (context == null)
+                {
+                    connection.Send(new Abort { Text = "Personagem não encontrado no servidor de chat." }, header.Seq);
+                    connection.Close();
+                    return;
+                }
+
+                _pendingAuth.Remove(connection);
+                _radiotowerConnections[connection] = tune.EntityId;
+                RegisterRadiotowerHandlers(connection, tune.EntityId, context);
+                connection.Send(new Conversations { _Conversations = Array.Empty<Conversation>() }, header.Seq);
+                Console.WriteLine($"[radiotower] conectado {tune.EntityId}");
+            });
+
             connection.Recv(delegate(Auth auth, PacketHeader header)
             {
                 // [4 ก.ย. 2026] ก่อนหน้านี้เชื่อ auth.EntityId ตรง ๆ — ใครก็ยิง Auth อ้างเป็น entity id ใครก็ได้
@@ -505,6 +597,7 @@
                 _connections.Remove(connection);
                 _connectionDict.Remove(connection);
                 _pendingAuth.Remove(connection);
+                _radiotowerConnections.Remove(connection);
             };
             connection.StartReceive();
             _connections.Add(connection);

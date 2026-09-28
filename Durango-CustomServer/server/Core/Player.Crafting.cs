@@ -603,31 +603,76 @@ public partial class Player
     /// </summary>
     private bool CheckWorkbench(CraftRecipeData recipe, PropKey? workbench, out string error)
     {
+        // FACILDIGITAL+: valida as mesmas workbench_tags usadas pelo client.
         error = null;
         if (recipe.workbench_tags == null || recipe.workbench_tags.Count == 0) return true;
+
         if (!workbench.HasValue || string.IsNullOrEmpty(workbench.Value.EntityId))
         {
-            error = "สูตรนี้ต้องทำที่โต๊ะ";
+            error = "Esta receita precisa de uma bancada específica.";
             return false;
         }
+
         AppearArtifact? artifact = _world.ArtifactManager.Get(workbench.Value.EntityId);
         if (!artifact.HasValue)
         {
             error = "A bancada informada não existe.";
             return false;
         }
-
         if (!MayTouchArtifact(workbench.Value.EntityId, "usar bancada"))
         {
             error = "Você não tem permissão para usar esta bancada.";
             return false;
         }
 
-        MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.Value.EntityType);
+        AppearArtifact bench = artifact.Value;
+        MergedBlueprint blueprint = BlueprintStore.GetBlueprint(bench.EntityType);
         if (blueprint?.Components == null || !blueprint.Components.Contains("Workbench"))
         {
             error = "Esta estrutura não é uma bancada de fabricação.";
             return false;
+        }
+        if (bench.States.BuildingState != Shared.Building.BuildingState.Completed)
+        {
+            error = "A bancada ainda não está concluída.";
+            return false;
+        }
+
+        Gauge durability = bench.States.Durability;
+        if (durability != null)
+        {
+            bool unusable = durability.Determination == null || durability.Determination.Length == 0;
+            if (!unusable)
+            {
+                try { unusable = durability.Get() <= durability.Min(); }
+                catch (Exception) { unusable = true; }
+            }
+            if (unusable)
+            {
+                error = "A bancada está sem durabilidade.";
+                Console.WriteLine($"[craft] bancada inválida {Short(bench.EntityId)}: durability");
+                return false;
+            }
+        }
+
+        Messages.Tag[] actualTags = bench.Tags._Tags ?? Array.Empty<Messages.Tag>();
+        foreach (KeyValuePair<string, int> required in recipe.workbench_tags)
+        {
+            bool matched = false;
+            int actualLevel = 0;
+            foreach (Messages.Tag tag in actualTags)
+            {
+                if (!string.Equals(tag.Id, required.Key, StringComparison.Ordinal)) continue;
+                actualLevel = Math.Max(actualLevel, tag.Level);
+                if (tag.Level >= required.Value) { matched = true; break; }
+            }
+            if (!matched)
+            {
+                error = $"A bancada não possui a capacidade necessária: {required.Key} Nv.{required.Value}.";
+                Console.WriteLine($"[craft] bancada {Short(bench.EntityId)} rejeitada: " +
+                                  $"{required.Key} precisa={required.Value} atual={actualLevel}");
+                return false;
+            }
         }
         return true;
     }

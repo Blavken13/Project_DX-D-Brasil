@@ -397,6 +397,61 @@ public class Gateway
             }.ToString());
         };
 
+        // FACILDIGITAL+: busca pública de jogadores por nome.
+        // PlayerInfoManager.SearchPlayerInfos usa GET /players?name=...&freq=...
+        _webServer.GetRoute["/players"] = delegate(HttpListenerRequest request, Dictionary<string, string> _)
+        {
+            string search = (request.QueryString.Get("name") ?? string.Empty).Trim();
+            string freqText = (request.QueryString.Get("freq") ?? string.Empty).Trim();
+            var players = new JArray();
+            if (search.Length == 0)
+                return new WebServer.JsonResponse(new JObject { ["players"] = players }.ToString());
+            if (search.Length > 64) search = search.Substring(0, 64);
+
+            bool filterFreq = int.TryParse(freqText, out int requestedFreq);
+            int emitted = 0;
+            foreach (var hostContext in _host.Contexts)
+            {
+                PlayerContext player = hostContext?.Player;
+                if (player == null || string.IsNullOrEmpty(player.EntityId)) continue;
+                string name = player.PlayerInfo?.PlayerName ?? player.AppearPlayer.Name ?? string.Empty;
+                if (name.IndexOf(search, StringComparison.OrdinalIgnoreCase) < 0) continue;
+                int freq = player.AppearPlayer.Freq;
+                if (filterFreq && freq != requestedFreq) continue;
+
+                players.Add(new JObject
+                {
+                    ["entity_id"] = player.EntityId,
+                    ["freq"] = freq,
+                    ["name"] = name
+                });
+                if (++emitted >= 20) break;
+            }
+            return new WebServer.JsonResponse(new JObject { ["players"] = players }.ToString());
+        };
+
+        // FACILDIGITAL+: status online em lote para PlayerInfoManager.RequestPlayersConnected.
+        _webServer.GetRoute["/online_statuses"] = delegate(HttpListenerRequest request, Dictionary<string, string> _)
+        {
+            string[] entityIds = request.QueryString.GetValues("entity_id") ?? Array.Empty<string>();
+            var result = new JObject();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (string rawId in entityIds)
+            {
+                string entityId = (rawId ?? string.Empty).Trim();
+                if (entityId.Length == 0 || !seen.Add(entityId)) continue;
+                PlayerContext player = _host.FindContextByEntityId(entityId) ?? _gameServer.GetPlayerContext(entityId);
+                bool online = _gameServer.IsPlayerOnline(entityId);
+                double? disconnectedAt = player?.PlayerInfo?.DisconnectedAt;
+                var status = new JObject { ["online"] = online };
+                status["disconnected_at"] = disconnectedAt.HasValue && disconnectedAt.Value > 0
+                    ? new JValue(disconnectedAt.Value)
+                    : JValue.CreateNull();
+                result[entityId] = status;
+            }
+            return new WebServer.JsonResponse(result.ToString());
+        };
+
         _webServer.PostRoute["/players"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
             // ต้นฉบับ (prologue สร้างตัวละคร): name/region/job/gender/model_info → อัปเดต context + ใส่ชุดตามอาชีพ

@@ -563,6 +563,10 @@ public partial class Player
         });
         _connection.ConnetionClosed += delegate
         {
+            // FACILDIGITAL+: grava o instante real da desconexão para /online_statuses.
+            _context.PlayerInfo.DisconnectedAt = Times.UnixTimeNow();
+            OnContextChanged();
+
             // แช่หลอดไว้ที่ค่าปัจจุบันก่อนปล่อย context — ไม่งั้นเส้นแนวโน้มที่ส่งไปแล้วจะเดินต่อ
             // อีกจนสุด horizon แล้วรอบเซฟอัตโนมัติจะเขียนค่าที่เดินไปแล้วลงไฟล์ (ดู SurvivalState._live)
             _survival.Freeze(Gauge.CurrentTime);

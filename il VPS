@@ -1,0 +1,55 @@
+[1mdiff --git a/Durango-OffServer/_client_src/Durango.UI/TitleMenuGroup.cs b/Durango-OffServer/_client_src/Durango.UI/TitleMenuGroup.cs[m
+[1mindex 8476051..d5600c0 100644[m
+[1m--- a/Durango-OffServer/_client_src/Durango.UI/TitleMenuGroup.cs[m
+[1m+++ b/Durango-OffServer/_client_src/Durango.UI/TitleMenuGroup.cs[m
+[36m@@ -610,7 +610,7 @@[m [mpublic class TitleMenuGroup : MonoBehaviour[m
+ 		_authInProgress = true;[m
+ 		_authGateway = gateway;[m
+ 		_authCompleted = completed;[m
+[31m-		UserControl.SetContentActive(isActive: false);[m
+[32m+[m		[32mUnityEngine.Debug.Log("[Auth] iniciando autenticação para gateway=" + gateway);[m[41m[m
+ 		ShowAuthChoice();[m
+ 	}[m
+ [m
+[36m@@ -817,7 +817,7 @@[m [mpublic class TitleMenuGroup : MonoBehaviour[m
+ 		_authCompleted = null;[m
+ 		_authGateway = null;[m
+ 		_authInProgress = false;[m
+[31m-		UserControl.SetContentActive(isActive: true);[m
+[32m+[m		[32mUnityEngine.Debug.Log("[Auth] autenticação finalizada success=" + success);[m[41m[m
+ 		completed?.Invoke(success);[m
+ 	}[m
+ [m
+[1mdiff --git a/Durango-OffServer/_client_src/Durango.UI/TitleMenuUserControl_PC.cs b/Durango-OffServer/_client_src/Durango.UI/TitleMenuUserControl_PC.cs[m
+[1mindex 7e8f23a..92b6dcf 100644[m
+[1m--- a/Durango-OffServer/_client_src/Durango.UI/TitleMenuUserControl_PC.cs[m
+[1m+++ b/Durango-OffServer/_client_src/Durango.UI/TitleMenuUserControl_PC.cs[m
+[36m@@ -73,6 +73,7 @@[m [mpublic class TitleMenuUserControl_PC : TitleMenuUserControlBase[m
+ 	protected override void UpdateButtonLayout(bool showPlayerButton)[m
+ 	{[m
+ 		base.UpdateButtonLayout(showPlayerButton);[m
+[32m+[m		[32m_showPlayerButton = showPlayerButton;[m[41m[m
+ 		_showClusterButton = Clusters.Count >= 1;[m
+ 		_playerSelectionLabel.gameObject.SetActive(showPlayerButton);[m
+ 		_serverSelectionLabel.gameObject.SetActive(_showClusterButton);[m
+[1mdiff --git a/Durango-OffServer/offserver.txt b/Durango-OffServer/offserver.txt[m
+[1mindex e6176ee..7635205 100644[m
+[1m--- a/Durango-OffServer/offserver.txt[m
+[1m+++ b/Durango-OffServer/offserver.txt[m
+[36m@@ -1,13 +1,7 @@[m
+ # Durango-OffServer link — ลบไฟล์นี้ = กลับไปเล่น offline ปกติ[m
+ [m
+[31m-account=3286860f-3af6-44dc-af1f-7d2d2df8f90d[m
+[31m-[m
+[31m-gateway=http://127.0.0.1:8190[m
+[32m+[m[32mgateway=http://179.197.72.129:8190[m[41m[m
+ name=Durango Brasil[m
+[31m-server=Durango Brasil|http://127.0.0.1:8190[m
+[31m-[m
+[32m+[m[32mserver=Durango Brasil|http://179.197.72.129:8190[m[41m[m
+ [m
+ [m
+[31m-gateway=http://devand.tailf7a8f8.ts.net:18190[m
+[31m-name=Durango Brasil-CAT[m
+[31m-server=Durango Brasil-CAT|http://devand.tailf7a8f8.ts.net:18190[m
+\ No newline at end of file[m

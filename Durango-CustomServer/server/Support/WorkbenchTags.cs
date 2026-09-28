@@ -47,16 +47,48 @@ public static class WorkbenchTags
     }
 
     /// <summary>
-    /// เติมแท็กลงใน AppearArtifact ถ้ายังไม่มี — คืน true เมื่อมีการเปลี่ยนแปลง
+    /// เติม/ผสานแท็กโต๊ะคราฟต์ลงใน AppearArtifact — คืน true เมื่อมีการเปลี่ยนแปลง
     ///
-    /// เขียนทับเฉพาะตอนที่ยังว่าง เผื่อวันหนึ่งมีที่อื่นตั้งแท็กเองแล้วจะได้ไม่ถูกลบ
+    /// FACILDIGITAL+: merge tags derivadas de bancada.
+    /// ของเดิมหยุดทันทีเมื่อ artifact มีแท็กอะไรก็ได้อยู่แล้ว ทำให้โต๊ะบางหลังขาด cook/workbench/kitchen.
+    /// ตอนนี้เก็บแท็กเดิมไว้ และเติมเฉพาะแท็กที่ขาดหรือมีระดับต่ำกว่าค่า derived.
     /// </summary>
     public static bool Apply(ref AppearArtifact artifact)
     {
-        if (artifact.Tags._Tags is { Length: > 0 }) return false;
-        Tag[] tags = Of(artifact.EntityType);
-        if (tags == null || tags.Length == 0) return false;
-        artifact.Tags = new Tags { EntityId = artifact.EntityId, _Tags = tags };
+        Tag[] derived = Of(artifact.EntityType);
+        if (derived == null || derived.Length == 0) return false;
+
+        var merged = new Dictionary<string, Tag>(StringComparer.Ordinal);
+        if (artifact.Tags._Tags != null)
+        {
+            foreach (Tag tag in artifact.Tags._Tags)
+            {
+                if (string.IsNullOrEmpty(tag.Id)) continue;
+                if (!merged.TryGetValue(tag.Id, out Tag previous) || tag.Level > previous.Level)
+                    merged[tag.Id] = tag;
+            }
+        }
+
+        bool changed = false;
+        foreach (Tag tag in derived)
+        {
+            if (string.IsNullOrEmpty(tag.Id)) continue;
+            if (!merged.TryGetValue(tag.Id, out Tag current) || current.Level < tag.Level)
+            {
+                merged[tag.Id] = tag;
+                changed = true;
+            }
+        }
+
+        if (!string.Equals(artifact.Tags.EntityId, artifact.EntityId, StringComparison.Ordinal))
+            changed = true;
+        if (!changed) return false;
+
+        artifact.Tags = new Tags
+        {
+            EntityId = artifact.EntityId,
+            _Tags = new List<Tag>(merged.Values).ToArray()
+        };
         return true;
     }
 

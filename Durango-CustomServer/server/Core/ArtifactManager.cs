@@ -59,6 +59,30 @@ public class ArtifactManager
                 bool changed = WorkbenchTags.Apply(ref artifact);
                 changed |= CageTypes.Apply(ref artifact);
 
+                // FACILDIGITAL+: normaliza durability de bancadas antigas.
+                // Recipe.IsValidWorkbench no client rejeita a bancada quando Durability.Get() <= Min().
+                if (WorkbenchTags.Of(artifact.EntityType) is { Length: > 0 })
+                {
+                    Gauge durability = artifact.States.Durability;
+                    bool invalidDurability = durability == null ||
+                                             durability.Determination == null ||
+                                             durability.Determination.Length == 0;
+                    if (!invalidDurability)
+                    {
+                        try { invalidDurability = durability.Get() <= durability.Min(); }
+                        catch (Exception) { invalidDurability = true; }
+                    }
+                    if (invalidDurability)
+                    {
+                        artifact.States.Durability = new Gauge(1f, 0f, new[]
+                        {
+                            new GaugeNode { Time = 0.0, Value = 1f }
+                        });
+                        changed = true;
+                        Console.WriteLine($"[โต๊ะคราฟต์] ซ่อม durability ของโต๊ะเก่า {artifact.EntityId}");
+                    }
+                }
+
                 // เติมฟิลด์ที่เซฟรุ่นเก่าไม่มี — ไม่เติมแล้วของเดิมบนเกาะจะยัง "Lv.0" และ
                 // ข้อความอัปเดตสถานะถูกทิ้งเงียบตลอดไป (ดูเหตุผลเต็มที่ Cheats.MakeAppearArtifact)
                 if (string.IsNullOrEmpty(artifact.States.EntityId))

@@ -89,8 +89,16 @@ PARA INICIAR COM TAILSCALE:
 $env:DURANGO_ADMIN_TOKEN = [guid]::NewGuid().ToString("N") + [guid]::NewGuid().ToString("N")
 
 
-dotnet run --project ".\Durango-CustomServer\server\DurangoServer.csproj" -c Debug --no-build -- --name "Durango Brasil" --data ".\Durango-CustomServer\server\data" --terrains ".\Durango-CustomServer\server\data\terrains" --public-host "100.73.253.106" --max-players 2
-
+dotnet run `
+  --project ".\Durango-CustomServer\server\DurangoServer.csproj" `
+  -c Debug `
+  --no-build `
+  -- `
+  --name "Durango Brasil" `
+  --data ".\Durango-CustomServer\server\data" `
+  --terrains ".\Durango-CustomServer\server\data\terrains" `
+  --public-host "127.0.0.1" `
+  --max-players 2
 
 No servidor, use:
 
