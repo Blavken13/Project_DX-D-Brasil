@@ -447,6 +447,29 @@ public class TitleMenuUserControlBase : MonoBehaviour
 		_messageBox.Show(title, explain, okAction, cancelAction, okButtonLabel, cancelButtonLabel);
 	}
 
+	// AUTH_UX_V2_INPUT_API
+	public virtual void ShowInputBox(
+		string title,
+		string instruction,
+		string placeholder,
+		bool isPassword,
+		int limit,
+		Action<string> submitAction,
+		Action cancelAction = null,
+		string okButtonLabel = "Continuar")
+	{
+		_messageBox.ShowInput(
+			title,
+			instruction,
+			placeholder,
+			isPassword,
+			limit,
+			submitAction,
+			cancelAction,
+			okButtonLabel,
+			"Voltar");
+	}
+
 	public virtual void CloseMessageBox()
 	{
 		_messageBox.Close();

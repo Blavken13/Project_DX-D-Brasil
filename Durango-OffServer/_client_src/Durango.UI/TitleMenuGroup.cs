@@ -10,7 +10,7 @@ using Durango.Logic.Encyclopedia;
 using Durango.Network;
 using Durango.System;
 using Durango.UI.Control;
-using Durango.UI.Popup;
+
 using Durango.Utils;
 using Durango.Utils.Extensions;
 using L10N;
@@ -625,70 +625,215 @@ public class TitleMenuGroup : MonoBehaviour
 		}
 		UserControl.ShowMessageBox(
 			"Conta Durango Brasil",
-			"Entre com sua conta ou crie uma nova para continuar.",
+			"Entre com seu nickname e senha para continuar.\n\n"
+				+ "Ainda não tem conta? Escolha Criar conta. "
+				+ "O cadastro pedirá nickname, senha e confirmação da senha.",
 			BeginLogin,
 			BeginRegister,
 			"Entrar",
 			"Criar conta");
 	}
 
+	// AUTH_UX_V2_TITLE_FLOW
 	private void BeginLogin()
 	{
-		UserControl.CloseMessageBox();
-		ShowAuthInput("Digite seu usuário", isPassword: false, limit: 32, delegate(string username)
-		{
-			username = (username ?? string.Empty).Trim();
-			if (username.Length == 0)
+		ShowLoginNicknameStep();
+	}
+
+	private void ShowLoginNicknameStep()
+	{
+		ShowAuthInput(
+			"Entrar • etapa 1 de 2\nInforme o nickname usado na sua conta.",
+			"Nickname",
+			isPassword: false,
+			limit: 32,
+			buttonText: "Próximo",
+			delegate(string username)
 			{
-				ShowAuthError("Digite seu usuário.");
-				return;
-			}
-			ShowAuthInput("Digite sua senha", isPassword: true, limit: 128, delegate(string password)
-			{
-				RequestLogin(username, password ?? string.Empty);
+				username = (username ?? string.Empty).Trim();
+
+				if (username.Length < 3)
+				{
+					ShowAuthValidationError(
+						"O nickname precisa ter pelo menos 3 caracteres.",
+						ShowLoginNicknameStep);
+					return;
+				}
+
+				if (!Regex.IsMatch(username, "^[A-Za-z0-9._-]+$"))
+				{
+					ShowAuthValidationError(
+						"Use somente letras, números, ponto, hífen ou underline no nickname.",
+						ShowLoginNicknameStep);
+					return;
+				}
+
+				ShowLoginPasswordStep(username);
 			});
-		});
+	}
+
+	private void ShowLoginPasswordStep(string username)
+	{
+		ShowAuthInput(
+			"Entrar • etapa 2 de 2\nDigite a senha da conta \"" + username + "\".",
+			"Senha",
+			isPassword: true,
+			limit: 128,
+			buttonText: "Entrar",
+			delegate(string password)
+			{
+				password = password ?? string.Empty;
+
+				if (password.Length == 0)
+				{
+					ShowAuthValidationError(
+						"Digite a senha da sua conta.",
+						delegate
+						{
+							ShowLoginPasswordStep(username);
+						});
+					return;
+				}
+
+				RequestLogin(username, password);
+			});
 	}
 
 	private void BeginRegister()
 	{
-		UserControl.CloseMessageBox();
-		ShowAuthInput("Escolha um usuário", isPassword: false, limit: 32, delegate(string username)
-		{
-			username = (username ?? string.Empty).Trim();
-			if (username.Length == 0)
-			{
-				ShowAuthError("Digite um usuário.");
-				return;
-			}
-			ShowAuthInput("Crie uma senha (mínimo de 8 caracteres)", isPassword: true, limit: 128, delegate(string password)
-			{
-				password = password ?? string.Empty;
-				ShowAuthInput("Repita a senha", isPassword: true, limit: 128, delegate(string confirmation)
-				{
-					confirmation = confirmation ?? string.Empty;
-					if (password != confirmation)
-					{
-						ShowAuthError("As senhas não coincidem.");
-						return;
-					}
-					RequestRegister(username, password, confirmation);
-				});
-			});
-		});
+		ShowRegisterNicknameStep();
 	}
 
-	private void ShowAuthInput(string comment, bool isPassword, int limit, Action<string> submitted)
+	private void ShowRegisterNicknameStep()
 	{
-		UIManager.Popup.Tooltip<TextInputPopup>().Show(
+		ShowAuthInput(
+			"Cadastro • etapa 1 de 3\nEscolha o nickname que você usará para entrar.",
+			"Nickname",
+			isPassword: false,
+			limit: 32,
+			buttonText: "Próximo",
+			delegate(string username)
+			{
+				username = (username ?? string.Empty).Trim();
+
+				if (username.Length < 3)
+				{
+					ShowAuthValidationError(
+						"O nickname precisa ter pelo menos 3 caracteres.",
+						ShowRegisterNicknameStep);
+					return;
+				}
+
+				if (!Regex.IsMatch(username, "^[A-Za-z0-9._-]+$"))
+				{
+					ShowAuthValidationError(
+						"Use somente letras, números, ponto, hífen ou underline no nickname.",
+						ShowRegisterNicknameStep);
+					return;
+				}
+
+				ShowRegisterPasswordStep(username);
+			});
+	}
+
+	private void ShowRegisterPasswordStep(string username)
+	{
+		ShowAuthInput(
+			"Cadastro • etapa 2 de 3\nCrie uma senha com pelo menos 8 caracteres.",
+			"Senha (mínimo 8 caracteres)",
+			isPassword: true,
+			limit: 128,
+			buttonText: "Próximo",
+			delegate(string password)
+			{
+				password = password ?? string.Empty;
+
+				if (password.Length < 8)
+				{
+					ShowAuthValidationError(
+						"A senha precisa ter pelo menos 8 caracteres.",
+						delegate
+						{
+							ShowRegisterPasswordStep(username);
+						});
+					return;
+				}
+
+				ShowRegisterConfirmationStep(username, password);
+			});
+	}
+
+	private void ShowRegisterConfirmationStep(string username, string password)
+	{
+		ShowAuthInput(
+			"Cadastro • etapa 3 de 3\nDigite novamente a mesma senha para confirmar.",
+			"Confirmar senha",
+			isPassword: true,
+			limit: 128,
+			buttonText: "Criar conta",
+			delegate(string confirmation)
+			{
+				confirmation = confirmation ?? string.Empty;
+
+				if (confirmation.Length == 0)
+				{
+					ShowAuthValidationError(
+						"Confirme a senha antes de criar a conta.",
+						delegate
+						{
+							ShowRegisterConfirmationStep(username, password);
+						});
+					return;
+				}
+
+				if (password != confirmation)
+				{
+					ShowAuthValidationError(
+						"As senhas não coincidem. Digite novamente a confirmação.",
+						delegate
+						{
+							ShowRegisterConfirmationStep(username, password);
+						});
+					return;
+				}
+
+				RequestRegister(username, password, confirmation);
+			});
+	}
+
+	private void ShowAuthInput(
+		string instruction,
+		string placeholder,
+		bool isPassword,
+		int limit,
+		string buttonText,
+		Action<string> submitted)
+	{
+		UserControl.ShowInputBox(
+			"Conta Durango Brasil",
+			instruction,
+			placeholder,
+			isPassword,
+			limit,
 			submitted,
-			comment,
+			ShowAuthChoice,
+			buttonText);
+	}
+
+	private void ShowAuthValidationError(string message, Action retry)
+	{
+		UserControl.ShowMessageBox(
+			"Revise os dados",
+			message,
+			delegate
+			{
+				if (_authInProgress && retry != null)
+				{
+					retry();
+				}
+			},
 			null,
-			isMultiline: false,
-			buttonText: "Continuar",
-			limitTextCount: limit,
-			isPassword: isPassword,
-			onCancel: ShowAuthChoice);
+			"Corrigir");
 	}
 
 	private void RequestRegister(string username, string password, string confirmation)
@@ -806,8 +951,10 @@ public class TitleMenuGroup : MonoBehaviour
 			message,
 			delegate
 			{
-				UserControl.CloseMessageBox();
-				ShowAuthChoice();
+				if (_authInProgress)
+				{
+					ShowAuthChoice();
+				}
 			},
 			null,
 			"Voltar");
@@ -830,15 +977,15 @@ public class TitleMenuGroup : MonoBehaviour
 		switch (error)
 		{
 		case "invalid_credentials":
-			return "Usuário ou senha inválidos.";
+			return "Nickname ou senha inválidos.";
 		case "username_taken":
-			return "Esse usuário já está em uso.";
+			return "Esse nickname já está em uso.";
 		case "username_too_short":
-			return "O usuário precisa ter pelo menos 3 caracteres.";
+			return "O nickname precisa ter pelo menos 3 caracteres.";
 		case "username_too_long":
-			return "O usuário pode ter no máximo 32 caracteres.";
+			return "O nickname pode ter no máximo 32 caracteres.";
 		case "username_invalid_characters":
-			return "Use somente letras, números, ponto, hífen ou underline no usuário.";
+			return "Use somente letras, números, ponto, hífen ou underline no nickname.";
 		case "password_too_short":
 			return "A senha precisa ter pelo menos 8 caracteres.";
 		case "password_too_long":
