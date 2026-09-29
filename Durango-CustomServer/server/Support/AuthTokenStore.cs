@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 namespace Durango.Online;
 
 /// <summary>
-/// Tokens de autenticacao emitidos depois de username+senha validos.
-/// Ficam somente em memoria: restart do servidor encerra todas as sessoes de login.
-/// Na Parte 3 estes tokens serao a fonte confiavel para resolver o account_id.
+/// Tokens de autenticação emitidos após usuário+senha válidos.
+/// Permanecem somente em memória: reiniciar o servidor encerra as sessões de login.
+/// /sessions e /accounts usam estes tokens como fonte autoritativa do account_id.
 /// </summary>
 public static class AuthTokenStore
 {

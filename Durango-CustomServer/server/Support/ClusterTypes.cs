@@ -36,6 +36,11 @@ public class PlayerInfo
 
 public class Account
 {
+    // Identificador estável da conta autenticada. O cliente usa este campo para
+    // confirmar que /accounts pertence à sessão atual, inclusive em outro dispositivo.
+    [JsonProperty("account_id")]
+    public string AccountId;
+
     [JsonProperty("players")]
     public List<PlayerInfo> Players = new();
 

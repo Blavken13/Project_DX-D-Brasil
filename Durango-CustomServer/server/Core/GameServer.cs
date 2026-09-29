@@ -669,8 +669,8 @@
                 if (!TryGetSessionEntityId(auth.SessionToken, out string sessionEntityId)
                     || !string.Equals(sessionEntityId, auth.EntityId, StringComparison.Ordinal))
                 {
-                    Console.WriteLine($"[auth] ปฏิเสธ: token ไม่ตรงกับ entity ที่อ้าง ({auth.EntityId})");
-                    connection.Send(new Abort { Text = "การยืนยันตัวตนไม่ผ่าน" }, header.Seq);
+                    Console.WriteLine($"[auth] recusado: token não pertence ao personagem informado ({auth.EntityId})");
+                    connection.Send(new Abort { Text = "Falha na autenticação da sessão." }, header.Seq);
                     connection.Close();
                     return;
                 }
@@ -679,23 +679,23 @@
                 Player existingPlayer = FindOnlinePlayer(entityId);
                 if (existingPlayer == null && MaxPlayersHint > 0 && PlayersOnline() >= MaxPlayersHint)
                 {
-                    Console.WriteLine($"[auth] ปฏิเสธ: เซิร์ฟเต็ม ({PlayersOnline()}/{MaxPlayersHint})");
-                    connection.Send(new Abort { Text = "เซิร์ฟเวอร์เต็ม กรุณาลองใหม่ภายหลัง" }, header.Seq);
+                    Console.WriteLine($"[auth] recusado: servidor lotado ({PlayersOnline()}/{MaxPlayersHint})");
+                    connection.Send(new Abort { Text = "Servidor lotado. Tente novamente em instantes." }, header.Seq);
                     connection.Close();
                     return;
                 }
                 if (existingPlayer != null)
                 {
-                    Console.WriteLine($"[auth] {entityId} เข้าซ้ำ — ตัด session เก่าก่อนรับ session ใหม่");
-                    existingPlayer.KickWith("ตัวละครนี้ถูกเชื่อมต่อจาก session ใหม่");
+                    Console.WriteLine($"[auth] {entityId} entrou novamente — encerrando a sessão anterior");
+                    existingPlayer.KickWith("Este personagem foi conectado por uma nova sessão.");
                 }
 
                 PlayerContext playerContext = GetPlayerContext(entityId);
                 if (playerContext == null)
                 {
                     // เดิมตรงนี้ถอยไปใช้ตัวละครสล็อตแรกให้เลย (ดู GetPlayerContext) ⇒ ใส่ id มั่วก็เข้าเล่นได้
-                    Console.WriteLine($"[auth] ปฏิเสธ: ไม่รู้จักตัวละคร {entityId}");
-                    connection.Send(new Abort { Text = "ไม่พบตัวละครนี้" }, header.Seq);
+                    Console.WriteLine($"[auth] recusado: personagem desconhecido {entityId}");
+                    connection.Send(new Abort { Text = "Personagem não encontrado." }, header.Seq);
                     connection.Close();
                     return;
                 }
@@ -717,7 +717,7 @@
                     {
                         // ปกติไม่ควรเกิด (Auth กรองไปแล้ว) — กันไว้เพราะเดิมจุดนี้ NullReference ไม่ได้
                         // เพราะมี fallback อยู่ ตอนตัด fallback ออกจึงต้องมีด่านตรงนี้ด้วย
-                        Console.WriteLine($"[auth] Ready: ไม่รู้จักตัวละคร {text} — ตัดสาย");
+                        Console.WriteLine($"[auth] Ready: personagem desconhecido {text} — desconectando");
                         connection.Close();
                         return;
                     }

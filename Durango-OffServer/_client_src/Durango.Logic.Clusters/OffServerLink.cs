@@ -287,6 +287,10 @@ public static class OffServerLink
 		{
 			_authSessions.Remove(key);
 		}
+
+		// Evita que a próxima conta reutilize metadados da conta anterior na UI.
+		ServerAccountId = string.Empty;
+		DiscordName = string.Empty;
 	}
 
 	public static string ConfigPath => Path.Combine(Path.GetDirectoryName(Application.dataPath) ?? ".", "offserver.txt");

@@ -19,6 +19,8 @@ namespace DurangoServerNx;
 //                   [--max-players N] [--cluster-mode Offline|Online|Editable]
 internal static class Program
 {
+    // FACILDIGITAL_ETAPA01_ACCOUNT_CROSS_DEVICE
+    private const string DefaultStorageKey = "Durango Brasil";
     private static int _ticksPerSecond = 120;
 
     /// <summary>host ที่กำลังรัน — ให้ตัวจัดการปิดเครื่องเซฟได้ก่อนออก</summary>
@@ -73,6 +75,8 @@ internal static class Program
 
         // ---- CLI ----
         string name = "nx";
+        // A chave de storage é independente do nome exibido do servidor.
+        string storageKey = Environment.GetEnvironmentVariable("DURANGO_STORAGE_KEY");
         int gatewayPort = Gateway.DefaultPort;   // 8190 — ค่าแท้ที่ client มือถือฝังมาในตัว
         int gamePort = GameServer.DefaultPort;   // 8191
         string dataDir = Path.Combine(AppContext.BaseDirectory, "data");
@@ -187,6 +191,7 @@ internal static class Program
                     return DataCheck.Run();
                 }
                 case "--name": name = args[++i]; break;
+                case "--storage-key": storageKey = args[++i]; break;
                 case "--gateway-port": gatewayPort = int.Parse(args[++i]); break;
                 case "--game-port": gamePort = int.Parse(args[++i]); break;
                 case "--data": dataDir = args[++i]; break;
@@ -227,7 +232,9 @@ internal static class Program
                     Console.WriteLine("  --fx-check [--data <dir>]     ตรวจแพ็กเก็ต Rewarded ของเลเวลขึ้น / หมวดขึ้น");
                     Console.WriteLine("  --se-check [--data <dir>]     ตรวจกติกาบัพโลก (ฝน/น้ำ → wet)");
                     Console.WriteLine("  --farm-check [--data <dir>]   ตรวจวงจรเก็บเกี่ยวแปลง (grows_to → ของในกระเป๋า)");
-                    Console.WriteLine("  --name, --gateway-port, --game-port, --data, --terrains, --terrain,");
+                    Console.WriteLine("  --name <nome público>      nome exibido do servidor");
+                    Console.WriteLine("  --storage-key <chave>      namespace persistente dos saves (ou env DURANGO_STORAGE_KEY)");
+                    Console.WriteLine("  --gateway-port, --game-port, --data, --terrains, --terrain,");
                     Console.WriteLine("  --assetbundles-android, --public-host, --url-prefix, --max-players, --tps, --cluster-mode,");
                     Console.WriteLine("  --admin-token <t>   token ของ /health (หรือ env DURANGO_ADMIN_TOKEN) — ไม่ตั้ง = เรียกได้เฉพาะเครื่องตัวเอง");
                     Console.WriteLine("  --adopt-orphans     ให้บัญชีแรกที่เข้ามารับตัวละครที่ยังไม่มีเจ้าของ (ใช้ตอนย้ายข้อมูลครั้งเดียว ห้ามเปิดค้าง)");
@@ -237,6 +244,17 @@ internal static class Program
                     return 0;
             }
         }
+
+        // Nunca use o nome público como namespace de save. Assim podemos renomear o servidor
+        // sem fazer contas/personagens parecerem desaparecer. O padrão preserva o caminho atual
+        // AppData-nx/offline/Durango Brasil/ usado pelo staging brasileiro.
+        storageKey = string.IsNullOrWhiteSpace(storageKey) ? DefaultStorageKey : storageKey.Trim();
+        if (!TryNormalizeStorageKey(storageKey, out string normalizedStorageKey))
+        {
+            Console.WriteLine($"[boot] ❌ chave de storage inválida: '{storageKey}'. Use 1–64 caracteres: letras, números, espaço, '-', '_' ou '.'.");
+            return 2;
+        }
+        storageKey = normalizedStorageKey;
 
         foreach (string id in (admins ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
@@ -252,6 +270,7 @@ internal static class Program
             Console.WriteLine("[boot] ⚠️⚠️ --adopt-orphans เปิดอยู่ — บัญชีแรกที่ต่อเข้ามาจะได้ตัวละครที่ยังไม่มีเจ้าของไปทั้งหมด");
             Console.WriteLine("[boot]      ใช้ตอนย้ายข้อมูลครั้งเดียวเท่านั้น **ปิดก่อนเปิดให้คนนอกเล่น**");
         }
+        Console.WriteLine($"[boot] servidor='{name}' · storage-key='{storageKey}'");
         Console.WriteLine($"[boot] data={dataDir} terrains={TerrainLoader.TerrainDir}");
 
         // ---- game data (เทียบเท่า Loader ของ client) ----
@@ -268,7 +287,7 @@ internal static class Program
         // AppData (เซฟ .player/.world) อยู่ข้าง ๆ data เหมือนเกมเก็บ AppData ของมันเอง
         AppData.BasePath = Path.GetFullPath(Path.Combine(dataDir, "..", "AppData-nx"));
         DurangoServer.Core.ServerKnock.HostName = name;
-        var host = new Host(name);
+        var host = new Host(storageKey);
         _host = host;
         // [5 ก.ย. 2026] ค่าพวกนี้ต้องตั้ง **ก่อน** host.Start() เพราะ Start เป็นคนสร้าง Gateway
         // แล้วส่ง AdminToken ต่อให้ตอนนั้น (เดิม --max-players ถูกพิมพ์ออกจอเฉย ๆ ไม่มีใครใช้)
@@ -358,6 +377,24 @@ internal static class Program
             }
             ServerMetrics.RecordTick(System.Diagnostics.Stopwatch.GetTimestamp() - tickBegin, workEnd - tickBegin);
         }
+    }
+
+
+    /// <summary>Valida a chave usada como nome de diretório de persistência.</summary>
+    private static bool TryNormalizeStorageKey(string raw, out string normalized)
+    {
+        normalized = (raw ?? string.Empty).Trim();
+        if (normalized.Length < 1 || normalized.Length > 64 || normalized == "." || normalized == "..")
+            return false;
+
+        foreach (char c in normalized)
+        {
+            bool asciiLetter = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+            bool digit = c >= '0' && c <= '9';
+            if (!asciiLetter && !digit && c != ' ' && c != '-' && c != '_' && c != '.')
+                return false;
+        }
+        return true;
     }
 
     private static Durango.Logic.Clusters.Mode ToEnum(this string s, Durango.Logic.Clusters.Mode def) =>

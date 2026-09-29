@@ -38,11 +38,16 @@ public class Platform_PC : Platform
 	{
 		get
 		{
+			string username = OffServerLink.GetAuthenticatedUsername(GameManager.GatewayUrl);
+			if (!string.IsNullOrEmpty(username))
+			{
+				return "Conta: " + username;
+			}
 			if (!string.IsNullOrEmpty(OffServerLink.DiscordName))
 			{
 				return "Discord: " + OffServerLink.DiscordName;
 			}
-			return "ย\u0e31งไม\u0e48ได\u0e49ผ\u0e39กรห\u0e31ส";
+			return "Conta Durango Brasil";
 		}
 	}
 
@@ -70,31 +75,21 @@ public class Platform_PC : Platform
 
 	public override string PrologueMovieUrl => "https://d1skbslnewf3os.cloudfront.net/prologue_movie_pc.mp4";
 
+	public override void Logout(global::System.Action<bool> onResult)
+	{
+		OffServerLink.ClearAuthentication(GameManager.GatewayUrl);
+		GameManager.SessionToken = string.Empty;
+		GameManager.PlayerId = string.Empty;
+		UnityEngine.Debug.Log("[Auth] sessão local encerrada; uma nova conta poderá ser autenticada na tela inicial");
+		onResult?.Invoke(true);
+	}
+
 	public override void ShowAccountMenu()
 	{
-		UnityEngine.Debug.Log("[OffServer] ShowAccountMenu — เป\u0e34ดหน\u0e49าย\u0e49ายบ\u0e31ญช\u0e35 (ก\u0e38ญแจเคร\u0e37\u0e48องน\u0e35\u0e49=" + OffServerLink.AccountId + " · ผ\u0e39กด\u0e34ส=" + OffServerLink.DiscordName + ")");
-		UIManager.Popup.Tooltip<TextInputPopup>().Show(delegate(string step1)
-		{
-			step1 = (step1 ?? string.Empty).Trim();
-			if (step1.Length != 0)
-			{
-				UIManager.Popup.Tooltip<TextInputPopup>().Show(delegate(string text2)
-				{
-					string text = (text2 ?? string.Empty).Trim();
-					if (text.Length != 0)
-					{
-						Connections.Frontend.Send(new AcceptTENCoupon
-						{
-							CouponNum = step1 + " " + text,
-							ToyToken = OffServerLink.AccountId
-						}).On<OK>(delegate
-						{
-							UIManager.Alarm.ShowNotify("สำเร\u0e47จ — กล\u0e31บหน\u0e49า Title แล\u0e49วเข\u0e49าใหม\u0e48เพ\u0e37\u0e48อโหลดต\u0e31วละครของบ\u0e31ญช\u0e35น\u0e35\u0e49", "icon_mainhud_shop", major: false);
-						});
-					}
-				}, "รอบ 2/2 — ใส\u0e48รห\u0e31สผ\u0e48านบ\u0e31ญช\u0e35 (8 ต\u0e31วข\u0e36\u0e49นไป · ถ\u0e49าย\u0e31งไม\u0e48เคยต\u0e31\u0e49ง = ต\u0e31\u0e49งใหม\u0e48)");
-			}
-		}, "รอบ 1/2 — ใส\u0e48โค\u0e49ด 6 ต\u0e31วจากบอท หร\u0e37อ Account Number เต\u0e47มของบ\u0e31ญช\u0e35เด\u0e34ม");
+		UIManager.Alarm.ShowNotify(
+			"Para trocar de conta, volte à tela inicial e use a opção Sair. Depois entre com a outra conta.",
+			"icon_mainhud_shop",
+			major: false);
 	}
 
 	public override bool GetScreenResolution(bool isPortrait, out int width, out int height)

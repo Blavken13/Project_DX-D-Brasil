@@ -27,13 +27,11 @@ namespace DurangoServerNx;
 //   ตัดการเชื่อมต่อ      = ข้อความนี้ทำ session ตาย (เซิร์ฟปิด connection หลังรับ) — ต้องไล่แก้
 //
 // รัน: DurangoServerNx --probe [--gateway-port N] [--game-port N] — เซิร์ฟต้องกำลังรันอยู่
-//      ใช้บัญชี selftest-local เดียวกับ --selftest ⇒ ผลข้างเคียงจาก payload ว่างลงบัญชีทดสอบ ไม่กระทบผู้เล่นจริง
+//      usa a mesma conta técnica do --selftest; efeitos de payload vazio ficam isolados dos jogadores
 //
 // ตัวแปรดีบั๊ก: PROBE_LIMIT=N (ยิงแค่ N ตัวแรก) · PROBE_VERBOSE=1 (พ่นทุก message ที่รับ)
 internal static class SelfTestPackages
 {
-    private const string AccountKey = "selftest-local";
-
     // ห้ามยิงกลาง session — default(Auth) token ว่าง ⇒ เซิร์ฟปฏิเสธแล้วปิด connection ทิ้ง
     // (GetClock/Ready ใช้เองตอน handshake ยิงซ้ำก็ไม่มีประโยชน์)
     private static readonly HashSet<string> NeverSend = new HashSet<string> { "Auth", "GetClock", "Ready" };
@@ -154,8 +152,9 @@ internal static class SelfTestPackages
     {
         try
         {
+            string authToken = SelfTest.EnsureTestAuthToken(_gatewayPort);
             string body = HttpPost($"http://127.0.0.1:{_gatewayPort}/sessions",
-                                   $"platform=Android&account_id={AccountKey}");
+                                   "platform=Android&token=" + Uri.EscapeDataString(authToken));
             var json = Newtonsoft.Json.Linq.JObject.Parse(body);
             string entityId = (string)json["user_id"];
             string token = (string)json["session_token"];

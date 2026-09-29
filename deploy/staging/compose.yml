@@ -22,6 +22,8 @@ services:
     command:
       - "--name"
       - "${DURANGO_CLUSTER_NAME}"
+      - "--storage-key"
+      - "${DURANGO_STORAGE_KEY:-Durango Brasil}"
       - "--data"
       - "/app/data"
       - "--terrains"

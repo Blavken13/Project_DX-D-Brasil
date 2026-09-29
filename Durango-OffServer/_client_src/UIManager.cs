@@ -247,6 +247,10 @@ public class UIManager : Singleton<UIManager>, IUriInvokable
 	{
 		UIRoot.gameObject.AddComponent<UIRootAnchor>();
 		InitUIGroups();
+		if (GetComponent<WalletHudRuntime>() == null)
+		{
+			gameObject.AddComponent<WalletHudRuntime>();
+		}
 		OnScreenResize();
 		Singleton<PlayerController>.Instance().MoveStarted += UIBase.OnPlayerMoveStart;
 		Connections.Frontend.On(delegate(Announce msg, PacketHeader header)

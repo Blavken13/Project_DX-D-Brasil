@@ -9,9 +9,9 @@ using Newtonsoft.Json;
 namespace Durango.Online;
 
 /// <summary>
-/// Persistencia das contas locais do Durango Brasil.
-/// Fase 1: cadastro por username + senha + confirmacao.
-/// Login/sessoes entram nas fases seguintes.
+/// Persistência local de contas do Durango Brasil.
+/// Cada username possui um account_id estável; personagens persistem esse mesmo ID em owner_key.
+/// Login em outro dispositivo, portanto, recupera a mesma lista de personagens da conta.
 /// </summary>
 public static class AccountStore
 {
@@ -55,6 +55,7 @@ public static class AccountStore
 
     private static readonly object Sync = new();
     private static readonly Dictionary<string, Entry> ByUsername = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, Entry> ByAccountId = new(StringComparer.Ordinal);
     private static string _path;
 
     public static void Load(string path)
@@ -63,6 +64,7 @@ public static class AccountStore
         {
             _path = path;
             ByUsername.Clear();
+            ByAccountId.Clear();
 
             Entry[] loaded = SafeSave.ReadWithBackup<Entry[]>(
                 path,
@@ -92,9 +94,23 @@ public static class AccountStore
                     continue;
                 }
 
+                string accountId = AccountKeys.Normalize(entry.AccountId);
+                if (accountId == null)
+                {
+                    Console.WriteLine($"[auth] ignorando account_id inválido da conta '{display}'");
+                    continue;
+                }
+                if (ByAccountId.ContainsKey(accountId))
+                {
+                    Console.WriteLine($"[auth] ignorando account_id duplicado na base: {AccountKeys.ForLog(accountId)}");
+                    continue;
+                }
+
+                entry.AccountId = accountId;
                 entry.Username = display;
                 entry.UsernameKey = key;
                 ByUsername[key] = entry;
+                ByAccountId[accountId] = entry;
             }
 
             Console.WriteLine($"[auth] contas carregadas: {ByUsername.Count}");
@@ -144,9 +160,11 @@ public static class AccountStore
             };
 
             ByUsername[usernameKey] = entry;
+            ByAccountId[entry.AccountId] = entry;
             if (!SaveLocked())
             {
                 ByUsername.Remove(usernameKey);
+                ByAccountId.Remove(entry.AccountId);
                 return Fail("storage_error");
             }
 
