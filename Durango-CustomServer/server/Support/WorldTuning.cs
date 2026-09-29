@@ -25,8 +25,12 @@ public static class WorldTuning
     /// respawn/regrow ของธรรมชาติเลย) ⇒ ตั้งเป็นค่าปรับได้ใน config.json แทนที่จะฝังในโค้ด
     /// ค่าเริ่มต้น 1200 วิ (20 นาที) ≈ ครึ่งรอบกลางวัน-กลางคืนของเซิร์ฟนี้ (รอบละ 48 นาที)
     /// </summary>
-    public static double NaturalRegrowSeconds => GetDouble("NaturalRegrowSeconds", 1200.0);
+    // FACILDIGITAL_ECOLOGY_FINAL
+    public static double NaturalRegrowSeconds =>
+        GetDouble("NaturalRegrowSeconds", 300.0);
 
+    public static double TutorialNaturalRegrowSeconds =>
+        GetDouble("TutorialNaturalRegrowSeconds", 120.0);
     public static void Reload() => _world = null;
 
     private static double GetDouble(string key, double fallback)

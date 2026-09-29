@@ -737,14 +737,80 @@ public class World
             garden = _context.Garden;
         }
         if (garden == null) return;
-        var list = (from g in NaturalInfo.FromBytes(garden)
-            where _removedNatural.All(t => t.x != g.X || t.y != g.Y)
-            select g).ToList();
+
+        // FACILDIGITAL_FISH_OCEAN_ONLY
+        int fishingSeen = 0;
+        int fishingKept = 0;
+        int fishingFiltered = 0;
+
+        var list = new List<NaturalInfo>();
+
+        foreach (
+            NaturalInfo natural
+            in NaturalInfo.FromBytes(garden))
+        {
+            if (_removedNatural.Any(
+                    t => t.x == natural.X &&
+                         t.y == natural.Y))
+            {
+                continue;
+            }
+
+            if (IsFishingNatural(natural.EntityType))
+            {
+                fishingSeen++;
+
+                Point2 fishingTile =
+                    new Point2(natural.X, natural.Y);
+
+                if (!IsOceanFishingNatural(natural.EntityType) ||
+                    !IsOceanFishingTile(fishingTile))
+                {
+                    fishingFiltered++;
+                    continue;
+                }
+
+                fishingKept++;
+            }
+
+            list.Add(natural);
+        }
+
         foreach (NaturalInfo natural in _addedNatural)
         {
-            NaturalInfo naturalInfo = list.Find(t => t.X == natural.X && t.Y == natural.Y);
-            if (naturalInfo != null) naturalInfo.EntityType = natural.EntityType;
-            else list.Add(natural);
+            if (IsFishingNatural(natural.EntityType))
+            {
+                Point2 fishingTile =
+                    new Point2(natural.X, natural.Y);
+
+                if (!IsOceanFishingNatural(natural.EntityType) ||
+                    !IsOceanFishingTile(fishingTile))
+                {
+                    fishingFiltered++;
+                    continue;
+                }
+            }
+
+            NaturalInfo current =
+                list.Find(
+                    t => t.X == natural.X &&
+                         t.Y == natural.Y);
+
+            if (current != null)
+            {
+                current.EntityType = natural.EntityType;
+            }
+            else
+            {
+                list.Add(natural);
+            }
+        }
+
+        if (fishingSeen > 0 || fishingFiltered > 0)
+        {
+            Console.WriteLine(
+                $"[ecologia] {TerrainId}: pesca total={fishingSeen} " +
+                $"mar={fishingKept} filtrada={fishingFiltered}");
         }
         var array2 = CreateByteMap(NaturalInfo.ToBytes(list), 6);
         if (array2 != null)
@@ -893,7 +959,14 @@ public class World
     private void ScheduleRegrow(Point2 tile, ushort entityType)
     {
         if (entityType == 0) return;                       // ไม่รู้ว่าเดิมเป็นอะไร — งอกกลับไม่ได้
-        double seconds = WorldTuning.NaturalRegrowSeconds; // ปรับได้ที่ config.json → World
+        RegionCatalog.TemplateInfo template =
+            RegionCatalog.GetTemplate(
+                _terrainData.Info?.region_template);
+
+        double seconds =
+            template?.Role == Shared.Region.Role.Tutorial
+                ? WorldTuning.TutorialNaturalRegrowSeconds
+                : WorldTuning.NaturalRegrowSeconds;
         if (seconds <= 0) return;                          // ตั้ง 0 = ปิดระบบงอกกลับ
 
         List<NaturalRegrowEntry> queue = _context.NaturalRegrow;
@@ -931,6 +1004,15 @@ public class World
 
     public void AddNatural(Point2 tile, ushort entityType)
     {
+        if (IsFishingNatural(entityType) &&
+            (!IsOceanFishingNatural(entityType) ||
+             !IsOceanFishingTile(tile)))
+        {
+            Console.WriteLine(
+                $"[ecologia] pesca interior bloqueada " +
+                $"({tile.x},{tile.y}) tipo={entityType}");
+            return;
+        }
         if (AddNaturalToGarden(tile, entityType))
         {
             _removedNatural.Remove(tile);
@@ -973,6 +1055,95 @@ public class World
         }
         _chunkData[point.x, point.y].Garden = NaturalInfo.ToBytes(list);
         return true;
+    }
+
+    private static bool IsFishingNatural(ushort entityType)
+    {
+        string collectibleId =
+            DataHelper.GetBiomeSpriteInfo(entityType)?.CollectibleId;
+
+        if (string.IsNullOrEmpty(collectibleId))
+        {
+            return false;
+        }
+
+        return
+            collectibleId.StartsWith(
+                "harpoon_fishing_point_",
+                StringComparison.OrdinalIgnoreCase) ||
+            collectibleId.StartsWith(
+                "harpoon_shrimp_point_",
+                StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsOceanFishingNatural(ushort entityType)
+    {
+        string collectibleId =
+            DataHelper.GetBiomeSpriteInfo(entityType)?.CollectibleId;
+
+        if (string.IsNullOrEmpty(collectibleId))
+        {
+            return false;
+        }
+
+        return
+            collectibleId.StartsWith(
+                "harpoon_fishing_point_ocean",
+                StringComparison.OrdinalIgnoreCase) ||
+            collectibleId.StartsWith(
+                "harpoon_shrimp_point_ocean",
+                StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// whole.ocean:
+    /// 0 = sem agua;
+    /// 1..127 = oceano;
+    /// 128..255 = lago.
+    /// </summary>
+    private static bool IsOceanDepthByte(byte value)
+        => value > 0 && value < 128;
+
+    /// <summary>
+    /// Confirma que pelo menos um dos quatro vertices do tile
+    /// pertence ao oceano real. A orientacao correta do buffer e yx:
+    /// index = y * (width + 1) + x.
+    /// </summary>
+    private bool IsOceanFishingTile(Point2 tile)
+    {
+        byte[] ocean = _terrainData.Ocean;
+        int width = _terrainData.Width;
+        int height = _terrainData.Height;
+
+        if (ocean == null ||
+            width <= 0 ||
+            height <= 0 ||
+            tile.x < 0 ||
+            tile.x >= width ||
+            tile.y < 0 ||
+            tile.y >= height)
+        {
+            return false;
+        }
+
+        int stride = width + 1;
+        int expected = stride * (height + 1);
+
+        if (ocean.Length < expected)
+        {
+            return false;
+        }
+
+        int i00 = tile.y * stride + tile.x;
+        int i10 = i00 + 1;
+        int i01 = i00 + stride;
+        int i11 = i01 + 1;
+
+        return
+            IsOceanDepthByte(ocean[i00]) ||
+            IsOceanDepthByte(ocean[i10]) ||
+            IsOceanDepthByte(ocean[i01]) ||
+            IsOceanDepthByte(ocean[i11]);
     }
 
     private static readonly List<string> NoHarvest = new();

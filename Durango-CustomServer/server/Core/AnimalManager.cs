@@ -46,8 +46,8 @@ public class AnimalManager
     /// ส่งเฉพาะตัวที่อยู่ใกล้ แต่เรายังส่งทั้งเกาะ (ดูหัวข้อ "ที่ยังไม่ได้ทำ") ⇒ ต้องจำกัดไว้ก่อน
     /// พอทำ chunk culling แล้วให้ยกเพดานนี้ขึ้นเป็นค่าตามแม่แบบได้เลย
     /// </summary>
-    public const int MaxAnimalsPerRegion = 60;
-
+    // FACILDIGITAL_FAUNA_SCALE_FINAL
+    public static int MaxAnimalsPerRegion => AnimalTuning.MaxAnimalsPerRegion;
     /// <summary>
     /// ตัวคูณความไม่เสถียรในสูตรค่าสถานะ — **เราตั้งเป็น 1.0**
     ///
@@ -696,6 +696,70 @@ public class AnimalManager
                 _byId[animal.EntityId] = animal;
             }
         }
+
+        // Aumenta a densidade real; somente elevar o teto nao basta,
+        // porque os templates instalados normalmente possuem menos de 60 herds.
+        int targetAnimalCount = Math.Min(
+            MaxAnimalsPerRegion,
+            Math.Max(
+                _animals.Count,
+                (int)Math.Round(
+                    wanted * AnimalTuning.SpawnScale)));
+
+        int extraRound = 1;
+        int extrasCreated = 0;
+
+        while (_animals.Count < targetAnimalCount)
+        {
+            int countBeforeRound = _animals.Count;
+
+            foreach (
+                KeyValuePair<string, List<RegionCatalog.HerdSpawn>> group
+                in template.Herds)
+            {
+                IReadOnlyList<Point2> points =
+                    terrain.Herds.Of(group.Key);
+
+                int available = Math.Min(
+                    group.Value.Count,
+                    points.Count);
+
+                for (
+                    int i = 0;
+                    i < available &&
+                    _animals.Count < targetAnimalCount;
+                    i++)
+                {
+                    Animal extra = Create(
+                        $"herd_{group.Key}_{i}_extra_{extraRound}",
+                        group.Value[i],
+                        points[i],
+                        resolvedWildLevel);
+
+                    if (extra == null)
+                    {
+                        continue;
+                    }
+
+                    _animals.Add(extra);
+                    _byId[extra.EntityId] = extra;
+                    extrasCreated++;
+                }
+            }
+
+            if (_animals.Count == countBeforeRound)
+            {
+                break;
+            }
+
+            extraRound++;
+        }
+
+        Console.WriteLine(
+            $"[fauna] densidade template={terrain.Info?.region_template ?? "?"} " +
+            $"base={wanted} escala={AnimalTuning.SpawnScale:0.##} " +
+            $"extras={extrasCreated} total={_animals.Count} " +
+            $"teto={MaxAnimalsPerRegion}");
 
         if (_animals.Count > 0)
         {

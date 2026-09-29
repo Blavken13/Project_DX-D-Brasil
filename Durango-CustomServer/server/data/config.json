@@ -49,7 +49,9 @@
     "Defense": {
       "Enabled": true,
       "Scale": 1
-    }
+    },
+    "SpawnScale": 1.5,
+    "MaxAnimalsPerRegion": 120
   },
   "Exp": {
     "KillBase": 4,
@@ -320,13 +322,14 @@
   ],
   "World": {
     "ChunkSendRange": 2,
-    "NaturalRegrowSeconds": 1200,
+    "NaturalRegrowSeconds": 300,
     "ClientChunkRetainRange": 2,
     "ViewRangeTiles": 16,
     "ViewMarginTiles": 4,
     "ViewCheckSeconds": 0.4,
     "ViewCulling": true,
-    "ResourceLevel": 0
+    "ResourceLevel": 0,
+    "TutorialNaturalRegrowSeconds": 120
   },
   "Tools": {
     "Enabled": true,
