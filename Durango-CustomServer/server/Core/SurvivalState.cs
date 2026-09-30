@@ -196,6 +196,7 @@ public sealed class SurvivalState
     /// de SurvivalUpdated para o cliente materializar a cura continuamente.
     /// </summary>
     private bool _resting;
+    public bool IsResting => _resting;
 
     public SurvivalState(PlayerContext context, bool live)
     {

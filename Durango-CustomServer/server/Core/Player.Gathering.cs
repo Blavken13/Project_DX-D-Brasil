@@ -144,17 +144,12 @@ public partial class Player
     private readonly Dictionary<Point2, ushort> _touchedNaturals = new();
 
     /// <summary>
-    /// นาฬิกาที่นัดส่ง <see cref="Collected"/> เมื่อครบเวลา
-    ///
-    /// เหตุผลเดียวกับ <see cref="_craftTimers"/> ของระบบคราฟต์: จุดเสียบงานรายเฟรมคือ
-    /// <c>Player.Process()</c> ซึ่งอยู่ใน Core/Player.cs — ไฟล์ที่ระบบนี้แตะได้เฉพาะ HandleTouchMsg
-    /// **callback ทำแค่ <c>Send</c>** ซึ่งปลอดภัยข้ามเธรด (GameCode/Durango.Online/Connection.cs:146
-    /// ล็อก _sendLock ทั้งก้อนแล้วเขียนลงบัฟเฟอร์เฉย ๆ ส่วนการยิงออก socket ยังเป็นงานของลูปหลัก)
-    /// การแก้ inventory/โลก/หลอด ทำเสร็จตั้งแต่ตอนรับ Collect บนเธรดหลักแล้ว
-    ///
-    /// ⚠️ ผลข้างเคียงที่ยอมรับไว้: ของธรรมชาติหายจากจอ **ตอนเริ่มเก็บ** ไม่ใช่ตอนเก็บเสร็จ
-    ///    เพราะ World.DestroyNatural แก้ chunk data + Save() ⇒ เรียกจากเธรดนาฬิกาไม่ได้
+    /// Coletas concluem em Player.Process, no mesmo thread que renova os recursos.
+    /// A geração do spot impede que uma coleta anterior ao wipe remova ou premie o recurso novo.
     /// </summary>
+    private sealed record PendingCollect(double DueAt, Action Complete, Action Cancel);
+    private readonly List<PendingCollect> _pendingCollects = new();
+    // Mantido para os timers de agricultura, que compartilham a rotina de encerramento.
     private readonly List<System.Threading.Timer> _collectTimers = new();
 
     private void RegisterGatheringHandlers()
@@ -203,6 +198,8 @@ public partial class Player
 
         // ซากสัตว์แล่ได้กี่ครั้งขึ้นกับเลเวลตัวมัน — ตัวใหญ่/เลเวลสูงให้ของมากกว่า
         AnimalManager.Animal animal = _world.AnimalManager?.Get(entityId);
+        if (animal?.Captured == true) return new Collectible { EntityId = entityId, Generators = Array.Empty<Generator>() };
+        if (animal == null) _world.ObserveTutorialNatural(tile, entityType);
         int animalLevel = animal != null && !animal.IsAlive ? animal.CombatLevel : 0;
 
         return CollectibleTable.Build(entityId, entityType,
@@ -222,6 +219,8 @@ public partial class Player
     private void HandleGetCollectibleMsg(GetCollectible msg, uint seq)
     {
         if (TrySendFarmCollectible(msg.EntityId, seq)) return;
+        if (_world.AnimalManager?.Get(msg.EntityId)?.Captured == true)
+        { Send(new Collectible { EntityId = msg.EntityId, Generators = Array.Empty<Generator>() }, seq); return; }
 
         _touchedNaturals.TryGetValue(msg.Tile, out ushort entityType);
         AnimalManager.Animal animal = _world.AnimalManager?.Get(msg.EntityId);
@@ -243,6 +242,8 @@ public partial class Player
         // ซากสัตว์: ฝั่งเกมส่ง Tile มาเป็น (-1,-1) เพราะสัตว์ไม่ได้อยู่กลางช่องเหมือนต้นไม้
         // ⇒ ถ้าหาด้วย tile ไม่เจอ ให้ลองหาด้วย EntityId (สัตว์มี id จริง ต่างจากของธรรมชาติ)
         AnimalManager.Animal carcass = _world.AnimalManager?.Get(msg.EntityId);
+        if (carcass != null && (carcass.IsAlive || carcass.Captured || carcass.Butchered))
+        { RejectCollect(seq, "Este animal nao possui um cadaver disponivel para coleta.", msg); return; }
         if (carcass != null && carcass.IsAlive) carcass = null;         // ยังไม่ตาย = ชำแหละไม่ได้
         if (carcass != null && carcass.Butchered) carcass = null;       // ชำแหละไปแล้ว = ไม่มีอะไรเหลือ
 
@@ -414,7 +415,7 @@ public partial class Player
         string entityId = msg.EntityId;
         bool isCarcass = carcass != null;
         ScheduleCollectFinish(collected, items, seq, gatherDuration, harvestKey, tile, entityId, isCarcass,
-                              ranOut, msg.ToolItemId);
+                              ranOut, msg.ToolItemId, spec.Id);
         OnContextChanged();
     }
 
@@ -447,6 +448,7 @@ public partial class Player
         {
             _world.MarkGeneratorHarvested(harvestKey, id);
         }
+        _world.Save();
     }
 
     /// <summary>
@@ -518,7 +520,7 @@ public partial class Player
     private void ScheduleCollectFinish(
         Collected collected, List<Item> items, uint seq, float duration,
         string harvestKey, Point2 tile, string entityId, bool isCarcass, bool ranOut,
-        string toolItemId)
+        string toolItemId, string generatorId)
     {
         if (duration <= 0f || duration > GatheringTuning.MaxCollectSeconds)
         {
@@ -527,53 +529,50 @@ public partial class Player
             return;
         }
 
-        // จับค่าไว้ใน local กัน timer ปิดทับ
-        Collected collectedCopy = collected;
-        List<Item> itemsCopy = items;
-        string harvestKeyCopy = harvestKey;
-        Point2 tileCopy = tile;
-        string entityIdCopy = entityId;
-        bool isCarcassCopy = isCarcass;
-        bool ranOutCopy = ranOut;
-        uint seqCopy = seq;
-        string toolCopy = toolItemId;
-
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(delegate
+        long generation = _world.NaturalGeneration(tile);
+        double deathAt = isCarcass ? _world.AnimalManager.Get(entityId)?.DiedAt ?? 0 : 0;
+        bool IsCurrent()
         {
-            try
-            {
-                // ส่ง packet + แตะ inventory/โลก — รูปแบบเดียวกับ craft/build ของเรา
-                // (Send ปลอดภัยข้ามเธรด; AddItems/DestroyNatural ใช้บน timer ตามแพทเทิร์นเดิมของโปรเจกต์นี้)
-                CompleteCollectAfterDelay(collectedCopy, itemsCopy, seqCopy, harvestKeyCopy, tileCopy,
-                                          entityIdCopy, isCarcassCopy, ranOutCopy, toolCopy);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[gather] จบการเก็บไม่สำเร็จ: {e.Message}");
-                try { FinishCollect(collectedCopy, seqCopy); } catch { /* ignore */ }
-            }
-            finally
-            {
-                lock (_collectTimers)
-                {
-                    _collectTimers.Remove(timer);
-                }
-                timer?.Dispose();
-            }
-        }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-        lock (_collectTimers)
-        {
-            _collectTimers.Add(timer);
+            if (!isCarcass) return _world.NaturalGeneration(tile) == generation;
+            var carcass = _world.AnimalManager.Get(entityId);
+            return carcass != null && !carcass.IsAlive && !carcass.Captured && !carcass.Butchered && carcass.DiedAt == deathAt;
         }
-        timer.Change((int)(duration * 1000f), System.Threading.Timeout.Infinite);
+        void Cancel()
+        {
+            if (IsCurrent()) UnreserveGenerator(harvestKey, generatorId);
+            Send(new Abort { Text = "Coleta interrompida ou recurso renovado. Selecione o spot novamente." }, seq);
+            Send(default(ReplySequenceMark), seq);
+        }
+        _pendingCollects.Add(new PendingCollect(Gauge.CurrentTime + duration, () =>
+        {
+            if (!IsCurrent() || !_context.AppearPlayer.IsAlive || !IsWithinCollectRange(tile))
+            {
+                Cancel();
+                return;
+            }
+            CompleteCollectAfterDelay(collected, items, seq, harvestKey, tile, entityId, isCarcass, ranOut, toolItemId);
+        }, Cancel));
+    }
+
+    private void UpdatePendingCollects(double now)
+    {
+        for (int i = _pendingCollects.Count - 1; i >= 0; i--)
+        {
+            var pending = _pendingCollects[i];
+            if (now < pending.DueAt) continue;
+            _pendingCollects.RemoveAt(i);
+            try { pending.Complete(); }
+            catch (Exception ex) { Console.WriteLine($"[gather] Falha ao concluir coleta de {EntityId}: {ex}"); }
+        }
     }
 
     private void ClearCollectTimers()
     {
+        foreach (var pending in _pendingCollects) pending.Cancel();
+        _pendingCollects.Clear();
         lock (_collectTimers)
         {
-            foreach (System.Threading.Timer timer in _collectTimers) timer.Dispose();
+            foreach (var timer in _collectTimers) timer.Dispose();
             _collectTimers.Clear();
         }
     }

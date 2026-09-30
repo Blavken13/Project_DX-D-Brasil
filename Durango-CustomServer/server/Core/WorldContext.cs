@@ -90,6 +90,9 @@ public class WorldContext
     [JsonProperty("warehouses", NullValueHandling = NullValueHandling.Ignore)]
     public Dictionary<string, Player.WarehouseStore.Box> Warehouses;
 
+    [JsonProperty("market_tradability_version")]
+    public int MarketTradabilityVersion;
+
     /// <summary>
     /// [6 ก.ย. 2026] เป้าเก็บของไหนถูกเก็บ generator อะไรไปแล้ว
     /// คีย์ = "x,y" ของช่อง (ของธรรมชาติ) หรือ entity id (ซากสัตว์) → รายการ generator id
@@ -148,6 +151,7 @@ public class WorldContext
         RemovedNatural ??= new List<Point2>();
         GrazedPetList ??= new List<Pet>();
         Path = path;
+        ItemTradeRules.Migrate(this);
         Player.WarehouseStore.Import(Warehouses);
         // ⚠️ ต้องทำก่อนที่ artifact จะถูกส่งออกไปหาใคร — ดูเหตุผลเต็มที่ CageTypes.NormalizeLoaded
         CageTypes.NormalizeLoaded(Artifacts);

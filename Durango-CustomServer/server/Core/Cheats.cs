@@ -32,6 +32,7 @@ public static class Cheats
             Durability = new Gauge(1f, 0f, new[] { new GaugeNode(0.0, 1f) }),
             Size = itemPrototype.Size,
             Unstable = false,
+            Tradable = ItemTradeRules.PrototypeCanTrade(prototypeId),
             ModifiableCount = 0,
             ModifiedCount = 0
         };

@@ -35,7 +35,9 @@ public partial class Player
                 { Currency.TStone, TStone },
                 { Currency.Gem, WarpGem },
                 { Currency.MobileCoin, coin },
-                { Currency.PcCoin, coin }
+                { Currency.PcCoin, coin },
+                { Currency.CashshopMileage, _context?.ShopMileage ?? 0 },
+                { Currency.WarpMatter, _context?.WarpMatter ?? 0 }
             },
             Vouchers = Array.Empty<VoucherInfo>()
         };
@@ -47,7 +49,9 @@ public partial class Player
         {
             WalletCurrency.TStone => TStone,
             WalletCurrency.WarpGem => WarpGem,
-            WalletCurrency.DurangoCoin => DurangoCoin,
+            WalletCurrency.DurangoCoin => DurangoCoin,
+            WalletCurrency.ShopMileage => _context?.ShopMileage ?? 0,
+            WalletCurrency.WarpMatter => _context?.WarpMatter ?? 0,
             _ => 0L
         };
     }
@@ -116,7 +120,9 @@ public partial class Player
         Unsupported = 0,
         TStone = 1,
         WarpGem = 2,
-        DurangoCoin = 3
+        DurangoCoin = 3,
+        ShopMileage = 4,
+        WarpMatter = 5
     }
 
     private static WalletCurrency NormalizeCurrency(Currency currency)
@@ -127,7 +133,9 @@ public partial class Player
             Currency.Gem => WalletCurrency.WarpGem,
             Currency.Coin => WalletCurrency.DurangoCoin,
             Currency.MobileCoin => WalletCurrency.DurangoCoin,
-            Currency.PcCoin => WalletCurrency.DurangoCoin,
+            Currency.PcCoin => WalletCurrency.DurangoCoin,
+            Currency.CashshopMileage => WalletCurrency.ShopMileage,
+            Currency.WarpMatter => WalletCurrency.WarpMatter,
             _ => WalletCurrency.Unsupported
         };
     }
@@ -138,7 +146,9 @@ public partial class Player
         {
             WalletCurrency.TStone => _context.TStone,
             WalletCurrency.WarpGem => _context.WarpGem,
-            WalletCurrency.DurangoCoin => _context.DurangoCoin,
+            WalletCurrency.DurangoCoin => _context.DurangoCoin,
+            WalletCurrency.ShopMileage => _context.ShopMileage,
+            WalletCurrency.WarpMatter => _context.WarpMatter,
             _ => 0L
         };
     }
@@ -156,7 +166,9 @@ public partial class Player
                 break;
             case WalletCurrency.DurangoCoin:
                 _context.DurangoCoin = value;
-                break;
+                break;
+            case WalletCurrency.ShopMileage: _context.ShopMileage = value; break;
+            case WalletCurrency.WarpMatter: _context.WarpMatter = value; break;
         }
     }
 
@@ -166,7 +178,9 @@ public partial class Player
         {
             WalletCurrency.TStone => "T-Stone",
             WalletCurrency.WarpGem => "Warp Gem",
-            WalletCurrency.DurangoCoin => "Durango Coin",
+            WalletCurrency.DurangoCoin => "Durango Coin",
+            WalletCurrency.ShopMileage => "Pontos da loja",
+            WalletCurrency.WarpMatter => "Warp Matter",
             _ => "moeda desconhecida"
         };
     }

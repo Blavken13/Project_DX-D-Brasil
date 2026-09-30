@@ -1,120 +1,56 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Durango.Logic;
-using Durango.Utils.Extensions;
 using Messages;
-using Shared.Economy;
 using Shared.Market;
 using Yaml;
-using Yaml.Util;
 
 namespace Durango.Online;
 
-// พอร์ตจาก nexonSRC/Durango.Online/MarketManager.cs (shim ตลาดของเซิร์ฟออฟไลน์ต้นฉบับ)
-public class MarketManager
+// Filtros usados pelo cliente original. Somente anúncios reais entram na busca.
+public static class MarketManager
 {
-    private Product[] _products;
-
-    private static readonly string[] Tags = { "door", "window", "wall_deco", "empty_door", "plantable", "armor", "weapon", "instrument" };
-
-    public Product[] Products
+    public static Product[] Search(IEnumerable<Product> products, SearchProducts search)
     {
-        get
-        {
-            if (_products == null)
-            {
-                var list = new List<Product>();
-                list.AddRange(
-                    from pair in SingletonDict<string, List<Prototype>>.Instance
-                    where pair.Value != null && Tags.Any(tag => pair.Value.Any(x => x.Tags.ContainsKey(tag)))
-                    select MakeProduct(pair.Key));
-                list.AddRange(
-                    from pair in SingletonDict<string, List<Prototype>>.Instance
-                    where IsCraftRein(pair.Key)
-                    select MakeProduct(pair.Key));
-                _products = list.ToArray();
-            }
-            return _products;
-        }
+        products = products.Where(p => p.Items?.Length > 0 &&
+            (!search.Price.HasValue || (p.Currency == search.Price.Value.Currency &&
+                (!search.Price.Value.Min.HasValue || p.Price >= search.Price.Value.Min.Value) &&
+                (!search.Price.Value.Max.HasValue || p.Price <= search.Price.Value.Max.Value))) &&
+            (!search.Level.HasValue ||
+                ((!search.Level.Value.Min.HasValue || p.Level >= search.Level.Value.Min.Value) &&
+                 (!search.Level.Value.Max.HasValue || p.Level <= search.Level.Value.Max.Value))) &&
+            p.Items.Any(i => Matches(i, search)));
+        return Page(products, search.Sort, search.Skip);
     }
 
-    private static bool IsCraftRein(string prototypeId)
+    private static bool Matches(Item item, SearchProducts search)
     {
-        PerformanceYaml.Rein rein = PerformanceYaml.GetRein(prototypeId);
-        return rein != null && SingletonDict<int, Yaml.Pet>.TryGetValue(rein.PetEntityType, out var value) && value.IsCraft;
+        var prototype = PrototypeYaml.GetItemPrototype(item.Prototype);
+        if (prototype == null) return false;
+        if (!string.IsNullOrWhiteSpace(search.ItemName) &&
+            (item.Name ?? "").IndexOf(search.ItemName, StringComparison.OrdinalIgnoreCase) < 0) return false;
+        if (!string.IsNullOrEmpty(search.PrototypeId) && item.Prototype != search.PrototypeId) return false;
+        if (!string.IsNullOrEmpty(search.Category) && prototype.Category != search.Category) return false;
+        if (search.SubCategories?.Length > 0 && !search.SubCategories.Any(s => prototype.SubCategories?.Contains(s) == true)) return false;
+        if (search.NestedTags?.Length > 0 && !search.NestedTags.All(group => group?.Length > 0 &&
+            group.Any(tag => item.Tags?.Any(t => t.Id == tag) == true))) return false;
+        return true;
     }
 
-    private Product MakeProduct(string prototypeId)
+    public static Product[] Page(IEnumerable<Product> products, SortCondition? condition, int skip, int limit = 20)
     {
-        Product result = new()
+        var sort = condition ?? new SortCondition { Field = ProductSortField.RegisteredAt, Ascending = false };
+        Func<Product, IComparable> key = sort.Field switch
         {
-            Id = Guid.NewGuid().ToString(),
-            RegionId = "1",
-            ListedAt = 0.0,
-            ExpiresAt = 0.0,
-            DeletesAt = 0.0,
-            PurchasedAt = null,
-            Price = 0L,
-            Fee = 0L,
-            Currency = Currency.TStone,
-            State = ProductState.Registered,
-            Level = 60,
-            Durability = 10000f
+            ProductSortField.Price => p => p.Price,
+            ProductSortField.ExpiresAt => p => p.ExpiresAt,
+            ProductSortField.PurchasedAt => p => p.PurchasedAt ?? 0,
+            ProductSortField.Level => p => p.Level,
+            ProductSortField.Durability => p => p.Durability,
+            ProductSortField.State => p => (int)p.State,
+            _ => p => p.ListedAt
         };
-        Item? item = Cheats.MakeItem(prototypeId, result.Level);
-        if (item.HasValue)
-        {
-            result.Items = new[] { item.Value };
-        }
-        return result;
-    }
-
-    public Item[] BuyProduct(string productId, out long price)
-    {
-        price = 0L;
-        Product value = Products.FirstOrDefault(p => p.Id == productId);
-        if (string.IsNullOrEmpty(value.Id)) return null;
-        price = value.Price;
-        Item item = value.Items.FirstOrDefault();
-        if (string.IsNullOrEmpty(item.Prototype)) return null;
-        int num = Array.IndexOf(Products, value);
-        Item? item2 = Cheats.MakeItem(item.Prototype, item.Level);
-        if (item2.HasValue)
-        {
-            Products[num].Items = new[] { item2.Value };
-        }
-        return value.Items;
-    }
-
-    public Products SearchProduct(SearchProducts option)
-    {
-        IEnumerable<Product> products = Products;
-        products = products
-            .Where(p =>
-            {
-                if (p.Items == null) return false;
-                string id = p.Items.FirstOrDefault(item =>
-                {
-                    if (!string.IsNullOrEmpty(option.ItemName) && !string.IsNullOrEmpty(item.Name) &&
-                        !item.Name.Contains(option.ItemName))
-                    {
-                        return false;
-                    }
-                    Prototype prototype = PrototypeYaml.GetItemPrototype(item.Prototype);
-                    if (prototype == null) return false;
-                    if (KUtility.GetSize(option.SubCategories) > 0 &&
-                        option.SubCategories.All(subCategory => !prototype.SubCategories.Any(s => s == subCategory)))
-                    {
-                        return false;
-                    }
-                    return string.IsNullOrEmpty(option.Category) || string.IsNullOrEmpty(prototype.Category) ||
-                           prototype.Category == option.Category;
-                }).Id;
-                return !string.IsNullOrEmpty(id);
-            })
-            .Skip(option.Skip)
-            .Take(OptionSystem.GetMarketSearchLimit());
-        return new Products { _Products = products.ToArray() };
+        var ordered = sort.Ascending ? products.OrderBy(key) : products.OrderByDescending(key);
+        return ordered.ThenBy(p => p.Id, StringComparer.Ordinal).Skip(Math.Max(0, skip)).Take(Math.Clamp(limit, 1, 100)).ToArray();
     }
 }

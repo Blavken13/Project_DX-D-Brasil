@@ -85,6 +85,11 @@ public class AnimalManager
         public float Attack;
         public float Defense;
         public bool IsAlive = true;
+        public bool Captured;
+        public string CaptureOwnerId;
+        public double AttackAt;
+        public double AttackHitAt;
+        public WorldPosition AttackTargetPosition;
 
         /// <summary>
         /// ซากนี้ถูกชำแหละไปแล้วหรือยัง
@@ -397,7 +402,7 @@ public class AnimalManager
                     ReviveAtHome(animal);
                     onCorpseGone?.Invoke(animal);
                 }
-                else if (animal.DiedAt > 0.0 && now - animal.LastCorpseLogAt >= CorpseLogInterval)
+                else if (!animal.Captured && animal.DiedAt > 0.0 && now - animal.LastCorpseLogAt >= CorpseLogInterval)
                 {
                     animal.LastCorpseLogAt = now;
                     double left = animal.DiedAt + CorpseDisposeDelay - now;
@@ -419,6 +424,7 @@ public class AnimalManager
                 continue;
             }
             if (animal.StandAt > 0.0) continue;      // ท่าโจมตียังเล่นไม่จบ อย่าสั่งอะไรทับ
+            if (animal.AttackAt > 0.0 || animal.AttackHitAt > 0.0) continue;
 
             // ถึงเวลาหยุดเดินแล้ว — กลับไปท่ายืน
             if (animal.StopWalkingAt > 0.0 && now >= animal.StopWalkingAt)
@@ -588,6 +594,10 @@ public class AnimalManager
     private void ReviveAtHome(Animal animal)
     {
         animal.IsAlive = true;
+        animal.Captured = false;
+        animal.CaptureOwnerId = null;
+        animal.AttackAt = animal.AttackHitAt = 0;
+        animal.NextAttackAt = 0;
         animal.Life = animal.LifeMax;
         animal.DiedAt = 0.0;
         animal.LastCorpseLogAt = 0.0;

@@ -16,6 +16,7 @@ public class Prototype
     [JsonProperty("category")] public string Category;
     [JsonProperty("sub_categories")] public string[] SubCategories;
     [JsonProperty("dump_locked")] public bool DumpLocked;
+    [JsonProperty("trade_locked")] public bool TradeLocked;
     [JsonProperty("dyeables")] public List<ColorChannel> Dyeables;
     [JsonProperty("help")] public Gettext Help;
     [JsonProperty("color_r")] public string ColorR;

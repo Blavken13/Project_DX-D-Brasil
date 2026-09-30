@@ -33,7 +33,6 @@ public class World
 
     public readonly ArtifactManager ArtifactManager;
 
-    public readonly MarketManager MarketManager;
 
     /// <summary>สัตว์ป่าบนเกาะนี้ — เกิดจาก herds.yml + แม่แบบภูมิภาค (ดู AnimalManager)</summary>
     public readonly AnimalManager AnimalManager;
@@ -53,6 +52,10 @@ public class World
     private readonly List<Point2> _removedNatural;
 
     private readonly List<Player> _players = new();
+    private readonly Dictionary<string, long> _naturalGenerations = new();
+    private readonly Dictionary<string, ushort> _observedTutorialNaturals = new();
+    public bool IsTutorialIsland => RegionCatalog.GetTemplate(_terrainData.Info?.region_template)?.Role == Shared.Region.Role.Tutorial;
+    public long NaturalGeneration(Point2 tile) => _naturalGenerations.GetValueOrDefault($"{tile.x},{tile.y}");
 
     public int PlayerCount => _players.Count;
 
@@ -113,7 +116,6 @@ public class World
         _addedNatural = _context.AddedNatural;
         _removedNatural = _context.RemovedNatural;
         _terrainData = TerrainLoader.Load(context.TerrainId);
-        MarketManager = new MarketManager();
         _terrainData.Info.global_landmarks = null;
         NumChunksX = _terrainData.Width / 16;
         NumChunksY = _terrainData.Height / 16;
@@ -124,6 +126,8 @@ public class World
         PlaceSafehouseSceneArtifacts();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
         AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
+        // Saves antigos podem conter spots parcialmente coletados sem fila de renovação.
+        foreach (var key in _context.NaturalHarvests.Keys.ToArray()) ScheduleTutorialRefresh(key);
     }
 
     /// <summary>
@@ -613,7 +617,15 @@ public class World
             player.SyncAnimalVisibility();
         }
 
-        // รื้อสิ่งปลูกสร้างที่ครบเวลาแล้ว — นอกลูปผู้เล่น + ไม่ผูกกับ players.Count เพื่อให้จบแม้คนสุดท้ายออกไป
+        // Resolver ataques uma vez por tick, sem depender do intervalo de visibilidade.
+        foreach (var animal in AnimalManager.All)
+        {
+            if (animal.AttackAt <= 0 && animal.AttackHitAt <= 0) continue;
+            var target = _players.Find(p => p.EntityId == animal.AggroTargetId);
+            if (target != null) target.ResolveAnimalAttack(animal, Gauge.CurrentTime);
+            else { animal.AttackAt = animal.AttackHitAt = 0; animal.AggroTargetId = null; }
+        }
+        // Demolições pendentes terminam mesmo depois de sair o último jogador.
         ProcessDestructs(Gauge.CurrentTime);
 
         // สัตว์เดินเล่น — ต้องอยู่นอกลูปผู้เล่น เพราะเป็นเรื่องของสัตว์ ไม่ใช่ของใครคนใดคนหนึ่ง
@@ -979,7 +991,8 @@ public class World
             queue.Add(entry);
         }
         entry.EntityType = entityType;
-        entry.DueAt = Gauge.CurrentTime + seconds;
+        double due = Gauge.CurrentTime + seconds;
+        entry.DueAt = entry.DueAt > 0 ? Math.Min(entry.DueAt, due) : due;
     }
 
     /// <summary>
@@ -997,6 +1010,10 @@ public class World
             if (now < entry.DueAt) continue;
             queue.RemoveAt(i);
             var tile = new Point2(entry.X, entry.Y);
+            string key = $"{entry.X},{entry.Y}";
+            _context.NaturalHarvests.Remove(key);
+            _naturalGenerations[key] = NaturalGeneration(tile) + 1;
+            NaturalDestroyed?.Invoke(tile);
             AddNatural(tile, entry.EntityType);   // broadcast GardenDiff ให้เอง + Save()
             Console.WriteLine($"[นิเวศ] ของธรรมชาติชนิด {entry.EntityType} งอกกลับที่ ({entry.X},{entry.Y})");
         }
@@ -1169,6 +1186,39 @@ public class World
             _context.NaturalHarvests[targetKey] = list;
         }
         list.Add(generatorId);
+        ScheduleTutorialRefresh(targetKey);
+    }
+
+    private void ScheduleTutorialRefresh(string key)
+    {
+        if (!IsTutorialIsland) return;
+        var coordinates = key.Split(',');
+        if (coordinates.Length != 2 || !int.TryParse(coordinates[0], out int x) || !int.TryParse(coordinates[1], out int y)) return;
+        if (_context.NaturalRegrow.Exists(e => e != null && e.X == x && e.Y == y)) return;
+        var tile = new Point2(x, y);
+        ushort type = NaturalTypeAt(tile);
+        if (type == 0) return;
+        ScheduleRegrow(tile, type);
+        Save();
+    }
+
+    public ushort NaturalTypeAt(Point2 tile)
+    {
+        var chunk = Util.TilePositionToChunkCoords(tile);
+        if (chunk.x < 0 || chunk.y < 0 || chunk.x >= NumChunksX || chunk.y >= NumChunksY) return 0;
+        var bytes = _chunkData[chunk.x, chunk.y].Garden;
+        ushort type = bytes == null ? (ushort)0 : NaturalInfo.FromBytes(bytes).FirstOrDefault(n => n.X == tile.x && n.Y == tile.y)?.EntityType ?? 0;
+        return type != 0 ? type : _observedTutorialNaturals.GetValueOrDefault($"{tile.x},{tile.y}");
+    }
+
+    // Alguns recursos são desenhados pelo cliente e não constam em whole.garden.
+    // O Touch já valida tipo e proximidade; lembrar esses spots também para renová-los.
+    public void ObserveTutorialNatural(Point2 tile, ushort type)
+    {
+        if (!IsTutorialIsland || !DataHelper.IsNaturalObject(type)) return;
+        string key = $"{tile.x},{tile.y}";
+        _observedTutorialNaturals.TryAdd(key, type);
+        if (HarvestedGenerators(key).Count > 0) ScheduleTutorialRefresh(key);
     }
 
     public void ForgetHarvests(string targetKey) => _context.NaturalHarvests.Remove(targetKey);

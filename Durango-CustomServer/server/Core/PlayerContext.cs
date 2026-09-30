@@ -157,7 +157,12 @@ public class PlayerContext
     /// mas ambos representam este mesmo saldo. Não há compra com dinheiro real no Alpha.
     /// </summary>
     [JsonProperty("durango_coin", NullValueHandling = NullValueHandling.Ignore)]
-    public long DurangoCoin;
+    public long DurangoCoin;
+    [JsonProperty("shop_mileage")] public long ShopMileage;
+    [JsonProperty("warp_matter")] public long WarpMatter;
+    [JsonProperty("economy_sequence")] public long EconomySequence;
+    [JsonProperty("market_tradability_version")] public int MarketTradabilityVersion;
+    [JsonProperty("market_favorites")] public HashSet<string> MarketFavorites = new();
 
     [JsonProperty("death_count")]
     public int DeathCount;
@@ -259,7 +264,11 @@ public class PlayerContext
         // de saves editados/corrompidos são normalizados antes de chegar ao cliente.
         TStone = Math.Max(0L, TStone);
         WarpGem = Math.Max(0L, WarpGem);
-        DurangoCoin = Math.Max(0L, DurangoCoin);
+        DurangoCoin = Math.Max(0L, DurangoCoin);
+        ShopMileage = Math.Max(0L, ShopMileage);
+        WarpMatter = Math.Max(0L, WarpMatter);
+        MarketFavorites ??= new HashSet<string>();
+        ItemTradeRules.Migrate(this);
 
         // ⚠️ ซ่อม Item.Ext ที่โหลดกลับมาเป็น JObject **ก่อน** ที่ใครจะเอาไอเทมไปแพ็กลงแพ็กเก็ต
         // (เหตุผลเต็ม ๆ ดูที่หัวคลาส ItemExtRepair ท้ายไฟล์ — ไม่ทำ = ไอเทมทั้งชิ้นเลื่อนช่อง)

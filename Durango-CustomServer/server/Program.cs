@@ -93,6 +93,14 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--gameplay-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return GameplayRegressionCheck.Run(dataDir);
+                case "--economy-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return EconomyCheck.Run(dataDir);
                 case "--quest-check":
                 {
                     string checkData = Path.Combine(AppContext.BaseDirectory, "data");
@@ -229,6 +237,8 @@ internal static class Program
                 case "-h":
                     Console.WriteLine("DurangoServerNx — เซิร์ฟแท้พอร์ตตรง · มือถือก่อน");
                     Console.WriteLine("  --quest-check [--data <dir>]  ตรวจแคตตาล็อก Daily เฟส 1 (ไม่ต้องเปิดเซิร์ฟ)");
+                    Console.WriteLine("  --economy-check [--data <dir>]  Valida mercado, loja, persistencia e protocolo TCP em saves temporarios");
+                    Console.WriteLine("  --gameplay-check [--data <dir>]  Valida avisos de ataque, captura, descanso e renovacao do tutorial");
                     Console.WriteLine("  --fx-check [--data <dir>]     ตรวจแพ็กเก็ต Rewarded ของเลเวลขึ้น / หมวดขึ้น");
                     Console.WriteLine("  --se-check [--data <dir>]     ตรวจกติกาบัพโลก (ฝน/น้ำ → wet)");
                     Console.WriteLine("  --farm-check [--data <dir>]   ตรวจวงจรเก็บเกี่ยวแปลง (grows_to → ของในกระเป๋า)");

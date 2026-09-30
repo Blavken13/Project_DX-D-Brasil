@@ -34,6 +34,8 @@ public partial class Player
     private readonly World _world;
 
     private readonly PlayerContext _context;
+    private readonly EconomyStore _economy;
+    public static int InventoryMaxSize => PetTuning.PlayerInventoryMaxSize;
 
     private int _centerX;
 
@@ -62,12 +64,14 @@ public partial class Player
 
     public event Action ContextChanged;
 
-    public Player(string entityId, Connection connection, World world, PlayerContext context, bool isLocalPlayer)
+    public Player(string entityId, Connection connection, World world, PlayerContext context, bool isLocalPlayer, EconomyStore economy = null)
     {
         EntityId = entityId;
         _connection = connection;
         _world = world;
         _context = context;
+        _economy = economy;
+        _economy?.Recover(context);
         IsLocalPlayer = isLocalPlayer;
         if (_context.AppearPlayer.Move.Movements == null || !IsLocalPlayer)
         {
@@ -178,18 +182,7 @@ public partial class Player
         });
         _connection.Recv(delegate(RestOn msg, PacketHeader header)
         {
-            Send(default(OK), header.Seq);
-            // นั่งพัก = ความชันของ fatigue/life/health เปลี่ยน ⇒ ต้องส่งเส้นชุดใหม่ทันที
-            // ไม่ใช่รอรอบตรวจ (ค่าจาก status_effects.json → "rest" ดู SurvivalTuning)
-            // เลิกพักเองตอนขยับ ตามแท็ก "clear_on_move" ของสถานะนั้น — ดู HandleMoveMsg
-            bool resolvedRestLevel = TryGetNearbyRestLevel(out int restLevel);
-            _survival.SetResting(true, restLevel, acceleratedFatigue: true);
-            Console.WriteLine($"[rest] {Short(EntityId)} ALPHA rest x{SurvivalTuning.AlphaTestRestMultiplier:0.##} · level={restLevel} · shelter-resolved={resolvedRestLevel}");
-            // [7 ก.ย. 2026] ใส่ไอคอน rest ด้วย — Until=0 จนกว่าจะเดิน (ตรงแท็ก clear_on_move)
-            ApplyTimedStatusEffect("rest", restLevel, durationOverride: 0);
-            SendStatusEffects();
-            FlushSurvival();
-            OnContextChanged();
+            HandleRestOn(msg, header.Seq);
         });
         _connection.Recv(delegate(Wash msg, PacketHeader header)
         {
@@ -234,7 +227,7 @@ public partial class Player
         });
         _connection.Recv(delegate(GetFavoriteProducts msg, PacketHeader header)
         {
-            Send(default(Products), header.Seq);
+            Send(BuildFavoriteProducts(), header.Seq);
         });
         _connection.Recv(delegate(BuyProduct msg, PacketHeader header)
         {
@@ -909,7 +902,9 @@ public partial class Player
                 _lastMovedAt = Gauge.CurrentTime;
                 // สถานะ "rest" ติดแท็ก clear_on_move ในไฟล์ data (survival/status_effects.json)
                 bool wasResting = _timedStatusEffects.ContainsKey("rest");
+                if (PreserveRestDuringAttachment(movement, after)) return;
                 _survival.SetResting(false);
+                _restArtifactId = null;
                 if (wasResting && ClearTimedStatusEffect("rest"))
                 {
                     SendStatusEffects();
@@ -1540,8 +1535,7 @@ public partial class Player
     /// <summary>
     /// Procura o Shelter valido mais proximo do jogador.
     ///
-    /// RestOn nao carrega o entity id do objeto usado para descansar, portanto reconstruimos
-    /// o alvo com a mesma fonte autoritativa usada para montar o menu de interacao:
+    /// Fallback para pedidos antigos sem entity id, usando a fonte autoritativa do menu:
     /// Blueprint component "Shelter" + distancia valida.
     ///
     /// O level retornado alimenta diretamente a formula original do status effect "rest".
@@ -1555,7 +1549,7 @@ public partial class Player
         AppearArtifact? nearest = null;
         int nearestDistanceSquared = int.MaxValue;
 
-        foreach (AppearArtifact artifact in _world.ArtifactManager.Enumerable(a => a.IsAlive))
+        foreach (AppearArtifact artifact in _world.ArtifactManager.Enumerable(a => a.States.BuildingState == Shared.Building.BuildingState.Completed))
         {
             MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
             if (blueprint?.Components == null ||
@@ -2019,36 +2013,12 @@ public partial class Player
 
     private void HandleSearchProductsMsg(SearchProducts msg, uint seq)
     {
-        Products msg2 = _world.MarketManager.SearchProduct(msg);
-        Send(msg2, seq);
+        Send(new Products { _Products = _economy?.Search(msg) ?? Array.Empty<Product>() }, seq);
     }
 
     private void HandleBuyProductMsg(BuyProduct msg, uint seq)
     {
-        Item[] array = _world.MarketManager.BuyProduct(msg.ProductId, out long price);
-        if (array == null)
-        {
-            Send(new Messages.Error { Text = "ไม่พบสินค้านี้" }, seq);
-            return;
-        }
-        if (price <= 0)
-        {
-            Send(new Messages.Error { Text = "ตลาดกลางยังไม่เปิดการซื้อ จนกว่าจะกำหนดราคา" }, seq);
-            return;
-        }
-        if (!TrySpendTStone(price, $"ตลาดกลาง {msg.ProductId}"))
-        {
-            Send(new Messages.Error { Text = "T Stone ไม่พอ" }, seq);
-            return;
-        }
-        InventoryUpdated msg2 = new()
-        {
-            EntityId = EntityId,
-            Items = array
-        };
-        AddItems(array);
-        Send(msg2);
-        Send(default(OK), seq);
+        BuyMarketProduct(msg.ProductId, seq);
     }
 
     private void HandleGetArtifactBlueprintsMsg(GetArtifactBlueprints msg, uint seq)
@@ -2298,6 +2268,8 @@ public partial class Player
     public void Process()
     {
         _connection.Process();
+        UpdateTaming(Gauge.CurrentTime);
+        UpdatePendingCollects(Gauge.CurrentTime);
         // หมดอายุก่อน แล้วค่อยใส่คืนจากฝน/น้ำที่ยังอยู่ — ส่งชุดเดียว จะได้ไม่กระพริบไอคอน
         bool statusChanged = ExpireTimedStatusEffects();
         statusChanged |= SyncWorldDrivenStatusEffects();
@@ -2322,7 +2294,7 @@ public partial class Player
     {
         double now = Gauge.CurrentTime;
         // เกมไม่มี message "หยุดเดิน" ⇒ ถือว่าหยุดเมื่อไม่ขยับนานเกิน MoveIdleTimeout
-        _survival.SetMoving(now - _lastMovedAt < SurvivalTuning.MoveIdleTimeout);
+        _survival.SetMoving(!_survival.IsResting && now - _lastMovedAt < SurvivalTuning.MoveIdleTimeout);
         if (_survival.Tick(now, out SurvivalUpdated msg))
         {
             // ⚠️ ต้องกระจายให้ทุกคนบนเกาะ ไม่ใช่ส่งให้เจ้าตัวคนเดียว

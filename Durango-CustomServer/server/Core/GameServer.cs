@@ -55,6 +55,7 @@
         /// ผู้เล่นแต่ละคนเข้าโลกตาม PlayerContext.RegionId ไม่ใช่โลกเดียวร่วมกันแบบต้นฉบับ
         /// </summary>
         public WorldRegistry Worlds { get; set; }
+        public EconomyStore Economy { get; set; }
 
         /// <summary>โลกที่ผู้เล่นคนนี้อยู่ — ตกไปที่โลกตั้งต้นถ้ายังไม่มีระบบหลายเกาะ</summary>
         public World WorldOf(PlayerContext context)
@@ -411,6 +412,7 @@
 
         /// <summary>Consulta usada por GET /online_statuses.</summary>
         public bool IsPlayerOnline(string entityId) => FindOnlinePlayer(entityId) != null;
+        public void NotifyMarketSale(EconomyStore.MarketListing listing) => FindOnlinePlayer(listing.SellerId)?.NotifyMarketSale(listing);
 
         // FACILDIGITAL_STAGE2_CHAT_ROUTING
         /// <summary>
@@ -724,7 +726,7 @@
                     connection.Send(default(OK), readyHeader.Seq);
                     bool flag = playerContext.EntityId == text;
                     World playerWorld = WorldOf(playerContext);
-                    Player player = new(text, connection, playerWorld, playerContext, flag);
+                    Player player = new(text, connection, playerWorld, playerContext, flag, Economy);
                     if (flag)
                     {
                         player.ContextChanged += delegate
@@ -878,7 +880,8 @@
                 $"[welcome] {entityId[..Math.Min(8, entityId.Length)]} Region.Id={msg.Region.Id} Role={msg.Region.Role} TerrainId={msg.Region.TerrainId} TemplateId={msg.Region.TemplateId} PersonalRegionId={msg.PersonalRegionId ?? "(ว่าง)"}");
             msg.Options.Bool = new[]
             {
-                new BoolOption { Key = "market.ui_enabled", Value = true }
+                new BoolOption { Key = "market.ui_enabled", Value = true },
+                new BoolOption { Key = "cashshop.ui_enabled", Value = true }
             };
             msg.Options.Int = new[]
             {

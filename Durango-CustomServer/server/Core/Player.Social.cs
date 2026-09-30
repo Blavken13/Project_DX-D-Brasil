@@ -71,13 +71,7 @@ public partial class Player
             Send(new ReturnerInfo { IsReturner = false, Since = 0.0, Until = 0.0, ReturnerCount = 0 });
         });
 
-        // GetExpiredProducts (5015) — ประกาศขายของตัวเองที่หมดเวลา (ตลาด: มุม "ของที่หมดประกาศ")
-        // client ยิงทันทีตอน AddOnReady (nexonSRC/MarketSystem.cs:81-89 OnReady → GetExpiredProduct)
-        // และรอ .On<Products> ⇒ ตอบ Products ว่าง (เราไม่มีระบบประกาศขายของผู้เล่นจริง)
-        _connection.Recv(delegate(GetExpiredProducts msg, PacketHeader header)
-        {
-            Send(new Products { _Products = Array.Empty<Product>() }, header.Seq);
-        });
+        // GetExpiredProducts é registrado junto aos outros fluxos em Player.Market.cs.
 
         // EngagementAgreementChanged (1444250) — client ส่งสถานะยินยอม (สัญญา/ข้อตกลง) แบบ
         // **ไม่ผูกรอ** (nexonSRC/EngagementSystem.cs:55 UpdateEngagement) ⇒ รับเงียบ ๆ กัน log

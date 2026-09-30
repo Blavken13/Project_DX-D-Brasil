@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Durango.Network;
 using Durango.Utils;
 using Messages;
@@ -88,6 +89,7 @@ public partial class Player
 
         foreach (AnimalManager.Animal animal in manager.All)
         {
+            if (animal.Captured) continue;
             bool inRange = animal.Tile.x >= minX && animal.Tile.x < maxX
                         && animal.Tile.y >= minY && animal.Tile.y < maxY;
 
@@ -128,6 +130,13 @@ public partial class Player
         AnimalTypes.Info info = AnimalTypes.Get(animal.EntityType);
         if (info == null) return;
         if (!_context.AppearPlayer.IsAlive) return;             // ตายแล้วไม่ต้องรุมซ้ำ
+        if (animal.AttackAt > 0 || animal.AttackHitAt > 0) return;
+        if (!string.IsNullOrEmpty(animal.AggroTargetId) && animal.AggroTargetId != EntityId)
+        {
+            // Não substituir o alvo de outro jogador a cada atualização de visibilidade.
+            if (_world.PlayersSnapshot().Exists(p => p.EntityId == animal.AggroTargetId)) return;
+            animal.AggroTargetId = null;
+        }
 
         bool hunting = animal.AggroTargetId == EntityId;
         if (!hunting && !info.IsAggressive) return;             // สัตว์กินพืชไม่แตะคนก่อน
@@ -194,23 +203,44 @@ public partial class Player
         }
 
         if (now < animal.NextAttackAt) return;
-        animal.NextAttackAt = now + Math.Max(0.5f, info.AttackCooltime);
-
-        // [7 ก.ย. 2026] ส่งท่าโจมตีให้เห็นบนจอ — เดิมส่งแต่ Damaged ⇒ สัตว์ยืนนิ่งแต่เลือดลด
-        //
-        // ⚠️ ต้องหันหน้าเข้าหาเหยื่อด้วย ไม่งั้นตัวค้างหันไปทางที่เดินมาล่าสุด = ดูเหมือนกัดลม
-        // และต้องนัดกลับท่ายืน เพราะคลิปโจมตีลาก root bone ไปข้างหน้า ถ้าไม่ดึงกลับ
-        // ตัวจะค้างหน้าตำแหน่งจริงแล้ว packet ถัดไปกระชากกลับ = เห็นเป็นวาร์ป
-        Move attackMotion = animal.ToAttackMotionMessage(PlayerWorldPosition(), now, AttackMotionRng);
-        if (attackMotion.Movements != null)
-        {
-            _world.BroadCast(attackMotion);
-            animal.StandAt = now + AnimalManager.Animal.AttackClipSeconds;
-        }
-
-        // วงแหวนเตือน "กำลังจะฟาด" ก่อนดาเมจเข้า
-        // client/ObjectManager.cs:138 หารด้วย 1000 เอง ⇒ ต้องส่งเป็น **มิลลิวินาที**
+        if (animal.StopWalkingAt > now || animal.StandAt > now) return;
+        animal.AttackAt = now + AnimalAttackWarningSeconds;
+        animal.AttackTargetPosition = PlayerWorldPosition();
+        animal.NextAttackAt = animal.AttackAt + Math.Max(0.5f, info.AttackCooltime);
+        // O cliente agenda o brilho em notice_attack - 2 segundos.
         _world.BroadCast(CombatStatus(animal, AnimalStatus.Battle, lookAt: true, noticeAttack: true));
+    }
+
+    // Executado a cada tick do mundo, independentemente do intervalo de visibilidade.
+    public void ResolveAnimalAttack(AnimalManager.Animal animal, double now)
+    {
+        if (!animal.IsAlive || animal.Captured || !_context.AppearPlayer.IsAlive || animal.AggroTargetId != EntityId)
+        { animal.AttackAt = animal.AttackHitAt = 0; return; }
+        var info = AnimalTypes.Get(animal.EntityType);
+        if (info == null) { animal.AttackAt = animal.AttackHitAt = 0; return; }
+        if (animal.AttackAt > 0)
+        {
+            if (now < animal.AttackAt) return;
+            animal.AttackAt = 0;
+            animal.AttackHitAt = now + AnimalAttackImpactSeconds;
+
+            // A animação começa depois do aviso, voltada para a posição anunciada.
+            Move attackMotion = animal.ToAttackMotionMessage(animal.AttackTargetPosition, now, AttackMotionRng);
+            if (attackMotion.Movements != null)
+            {
+                _world.BroadCast(attackMotion);
+                animal.StandAt = now + AnimalManager.Animal.AttackClipSeconds;
+            }
+            return;
+        }
+        if (animal.AttackHitAt <= 0 || now < animal.AttackHitAt) return;
+        animal.AttackHitAt = 0;
+        var position = PlayerWorldPosition();
+        float aimDx = position.x - animal.AttackTargetPosition.x;
+        float aimDy = position.y - animal.AttackTargetPosition.y;
+        // O golpe não segue o jogador depois do aviso: sair do alcance/alvo permite desviar.
+        if (!IsWithinTiles(animal.Tile, AnimalAttackTiles) ||
+            aimDx * aimDx + aimDy * aimDy > AnimalAttackAimRadius * AnimalAttackAimRadius) return;
 
         // ป้องกันของผู้เล่น — ใช้ค่า Derived หลังรวมสกิล (players.json → player.defense ฐานเป็น 0)
         // [7 ก.ย. 2026] แล้วคูณตัวลดดาเมจจากสกิลหมวดป้องกัน (ดู Player.SkillEffects.cs)
@@ -269,6 +299,9 @@ public partial class Player
     /// 1 ช่อง = 200 หน่วย ≈ ระยะที่ตัวสัตว์กับผู้เล่นเกือบชนกันบนจอ
     /// </summary>
     private const int AnimalAttackTiles = 1;
+    public const double AnimalAttackWarningSeconds = 2.0;
+    public const double AnimalAttackImpactSeconds = 0.35;
+    private const float AnimalAttackAimRadius = 150f;
 
     /// <summary>**ค่าของเรา** — สัตว์หยุดห่างจากผู้เล่นกี่หน่วยตอนวิ่งเข้าหา (ไม่ให้เดินทับตัว)</summary>
     private const float AttackStopDistance = 150f;
@@ -341,7 +374,7 @@ public partial class Player
             ["look_at"] = lookAt ? 1L : 0L
         };
         // notice_attack เป็นเวลาแบบจำนวนเต็ม (มิลลิวินาที) — Times.UnixTimeNow() คืน double
-        if (noticeAttack) details["notice_attack"] = (long)(Times.UnixTimeNow() * 1000.0);
+        if (noticeAttack) details["notice_attack"] = (long)(animal.AttackAt * 1000.0);
         return new CombatInteraction
         {
             EntityId = animal.EntityId,
@@ -382,6 +415,7 @@ public partial class Player
     {
         AnimalManager.Animal animal = _world.AnimalManager?.Get(touch.EntityId);
         if (animal == null) return false;
+        if (animal.Captured) { msg.Interactions = Array.Empty<int>(); return true; }
 
         AnimalTypes.Info info = AnimalTypes.Get(animal.EntityType);
         string label = info?.DisplayName ?? info?.Name;
@@ -540,6 +574,8 @@ public partial class Player
 
     /// <summary>เวลาที่เริ่มจับครั้งล่าสุด — ใช้กับ taming_cooltime</summary>
     private double _lastTamingAt;
+    private sealed record PendingTaming(string AnimalId, string ToolId, double DueAt);
+    private PendingTaming _pendingTaming;
 
     /// <summary>ตัวสุ่มของระบบจับสัตว์ — main loop เส้นเดียว ไม่ต้องล็อก</summary>
     private static readonly Random TamingRng = new();
@@ -550,16 +586,20 @@ public partial class Player
         {
             HandleUseTamingActionMsg(msg, header.Seq);
         });
+        _connection.ConnetionClosed += CancelPendingTaming;
     }
 
     private void HandleUseTamingActionMsg(UseTamingAction msg, uint seq)
     {
         AnimalManager.Animal animal = _world.AnimalManager?.Get(msg.EntityId);
-        if (animal == null || !animal.IsAlive)
+        if (animal == null || !animal.IsAlive || animal.Captured)
         {
             RejectTaming(seq, "ไม่เจอสัตว์ตัวนี้ หรือมันตายไปแล้ว");
             return;
         }
+        if (_pendingTaming != null || animal.CaptureOwnerId != null)
+        { RejectTaming(seq, "Ja existe uma captura em andamento."); return; }
+        if (!_context.AppearPlayer.IsAlive) { RejectTaming(seq, "Voce nao pode capturar enquanto esta morto."); return; }
         if (!IsWithinTiles(animal.Tile, NaturalReachTiles))
         {
             RejectTaming(seq, "อยู่ไกลจากสัตว์เกินไป");
@@ -597,7 +637,34 @@ public partial class Player
         }
 
         _lastTamingAt = now;
+        animal.CaptureOwnerId = EntityId;
+        _pendingTaming = new PendingTaming(animal.EntityId, msg.ToolItemId, now + TamingTuning.TamingTime);
         Send(new Messages.Timer { Duration = TamingTuning.TamingTime }, seq);
+    }
+
+    private void CancelPendingTaming()
+    {
+        if (_pendingTaming == null) return;
+        var animal = _world.AnimalManager?.Get(_pendingTaming?.AnimalId);
+        if (animal?.CaptureOwnerId == EntityId) animal.CaptureOwnerId = null;
+        _pendingTaming = null;
+    }
+
+    private void UpdateTaming(double now)
+    {
+        var pending = _pendingTaming;
+        if (pending == null || now < pending.DueAt) return;
+        var animal = _world.AnimalManager?.Get(pending.AnimalId);
+        CancelPendingTaming();
+        if (animal == null || !animal.IsAlive || animal.Captured || !_context.AppearPlayer.IsAlive ||
+            !IsWithinTiles(animal.Tile, NaturalReachTiles) ||
+            !_context.InventoryItems.Exists(i => i.Id == pending.ToolId && HasItemTag(i, "capturable")))
+        { Send(new Info { Text = "Captura interrompida: alvo ou ferramenta indisponivel." }); return; }
+        var info = AnimalTypes.Get(animal.EntityType);
+        if (info == null) return;
+        float lifeRatio = animal.LifeMax > 0 ? animal.Life / animal.LifeMax : 1;
+        if (lifeRatio > TamingTuning.TamableHpRate)
+        { Send(new Info { Text = "O animal nao esta mais enfraquecido o suficiente para capturar." }); return; }
 
         float chance = TamingChance(animal, lifeRatio);
         bool success = TamingRng.NextDouble() < chance;
@@ -610,6 +677,7 @@ public partial class Player
             // ล้มเหลว: สัตว์ยังอยู่ เครื่องมือยังอยู่ ลองใหม่ได้เมื่อพ้น cooltime
             // **การตีความของเรา** — ข้อมูลไม่ได้บอกว่าจับพลาดแล้วเสียอะไรไหม
             // เลือกทางที่ผู้เล่นไม่เสียของ เพราะถ้าเราตีความผิดแล้วของหาย กู้คืนไม่ได้
+            Send(new Info { Text = "A captura falhou. O animal continua vivo; tente novamente." });
             return;
         }
 
@@ -620,11 +688,20 @@ public partial class Player
             return;
         }
 
-        // สัตว์หายจากโลก แล้วบังเหียนเข้ากระเป๋า
+        if (_context.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + Math.Max(1, rein.Value.Size) > InventoryMaxSize)
+        { Send(new Info { Text = "Inventario cheio. O animal nao foi removido." }); return; }
+
+        // Captura é remoção do mundo, nunca morte ou geração de carcaça.
         animal.IsAlive = false;
+        animal.Captured = true;
+        animal.Butchered = true;
         animal.DiedAt = now;
-        _world.BroadCast(new EntityDied { EntityId = animal.EntityId, At = now });
-        _world.BroadCast(animal.ToMotionMessage());
+        animal.AggroTargetId = null;
+        animal.AttackAt = animal.AttackHitAt = animal.StandAt = animal.StopWalkingAt = 0;
+        _world.ForgetHarvests(animal.EntityId);
+        _world.BroadCast(new DisappearEntity { EntityId = animal.EntityId });
+        foreach (var player in _world.PlayersSnapshot()) player.LeaveBattleWith(animal.EntityId);
+        if (_battleTargetId == animal.EntityId) { _battleTargetId = null; SetBattleMode(false); }
 
         var items = new List<Item> { rein.Value };
         AddItems(items);
