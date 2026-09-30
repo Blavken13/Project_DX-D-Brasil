@@ -108,6 +108,12 @@ public class WorldContext
     [JsonProperty("natural_harvests", NullValueHandling = NullValueHandling.Ignore)]
     public Dictionary<string, List<string>> NaturalHarvests;
 
+    [JsonProperty("safehouse_ecology_version")]
+    public int SafehouseEcologyVersion;
+
+    [JsonProperty("crater_resources")]
+    public Dictionary<string, List<NaturalInfo>> CraterResources = new();
+
     /// <summary>
     /// [7 ก.ย. 2026] ที่ดินบนเกาะนี้ — estateId → ข้อมูลใบอนุญาต+cells
     /// เก็บแยกเพราะ Messages.EstateLicense ไม่ใช่ state ของโลกโดยตรง (แก้ GameCode ไม่ได้)
@@ -145,6 +151,7 @@ public class WorldContext
         BuildMaterials ??= new Dictionary<string, Dictionary<string, List<Item>>>();
         NaturalHarvests ??= new Dictionary<string, List<string>>();
         NaturalRegrow ??= new List<NaturalRegrowEntry>();
+        CraterResources ??= new();
         Estates ??= new Dictionary<string, EstateRecord>();
         EstateCells ??= new Dictionary<string, string>();
         AddedNatural ??= new List<NaturalInfo>();

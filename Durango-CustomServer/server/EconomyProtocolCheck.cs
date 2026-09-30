@@ -124,6 +124,9 @@ internal static class EconomyProtocolCheck
             Receive<BattleBegun>(); Receive<BattleEnded>(); Receive<AppearAnimal>(); Receive<Weather>();
             Receive<GardenDiff>(); Receive<DisappearEntityOnTile>();
             Receive<Collected>(); Receive<CollectibleChanged>(); Receive<ReplySequenceMark>();
+            Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
+            Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
+            Receive<Messages.Region>(); Receive<Routes>();
             Server.StartReceive(); Client.StartReceive();
             Player = new Player(context.EntityId, Server, world, context, false, store);
             if (simulatePlayer) world.AddPlayer(Player);

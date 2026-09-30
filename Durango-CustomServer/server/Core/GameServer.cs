@@ -844,7 +844,7 @@
                 }
             }
 
-            msg.Region.CreatedAt = 0.0;
+            msg.Region.CreatedAt = Times.UnixTimeNow();
             // Region.Id/Role informa ao client quando estamos em uma instância de assentamento.
             // SharedTamed, PrivatePlayer e Clan reutilizam terrain, mas possuem RegionId e save próprios.
             string regionId = playerContext.RegionId;
@@ -859,7 +859,7 @@
                 SettlementRegionKind.SharedTamed => "Ilha Domada",
                 SettlementRegionKind.PrivatePlayer => "Ilha Particular",
                 SettlementRegionKind.Clan => "Ilha de Clã",
-                _ => null
+                _ => RegionCatalog.DisplayName(RegionCatalog.GetTemplate(playerWorld.TerrainInfo.region_template))
             };
             msg.Region.TemplateId = onSettlement
                 ? settlementRegion.TemplateId

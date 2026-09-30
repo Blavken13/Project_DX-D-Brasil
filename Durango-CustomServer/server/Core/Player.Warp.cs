@@ -280,7 +280,7 @@ public partial class Player
         // เพดานจำนวนคิววาร์ปที่ค้างพร้อมกัน — **ค่าของเรา** กันยิงรัวจนจอง timer ไม่จำกัด
         lock (_warpTimers)
         {
-            if (_warpTimers.Count >= MaxConcurrentWarps)
+            if (_pendingTravelWarp != null || _warpTimers.Count >= MaxConcurrentWarps)
             {
                 Send(new Abort { Text = "กำลังวาร์ปอยู่แล้ว" }, seq);
                 return;

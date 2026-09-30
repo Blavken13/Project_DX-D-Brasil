@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Durango.Network;
 using Messages;
 
@@ -86,6 +87,7 @@ public class AnimalManager
         public float Defense;
         public bool IsAlive = true;
         public bool Captured;
+        public bool DefensiveOnly;
         public string CaptureOwnerId;
         public double AttackAt;
         public double AttackHitAt;
@@ -639,6 +641,24 @@ public class AnimalManager
     /// </summary>
     private void Spawn(TerrainData terrain, RegionCatalog.TemplateInfo template)
     {
+        if (template?.Role == Shared.Region.Role.Safehouse)
+        {
+            var species = template.Herds.Values.SelectMany(spawns => spawns)
+                .Where(spawn => AnimalTypes.Get(spawn.EntityType) is { BaseScale: <= 1f })
+                .Select(spawn => spawn.EntityType).Distinct().ToArray();
+            if (species.Length == 0) return;
+            int placed = 0;
+            foreach (var tile in TerrainEcology.LandGrid(terrain, 24, 24))
+            {
+                if (tile.x is >= 88 and <= 145 && tile.y is >= 70 and <= 138) continue;
+                var animal = SpawnAt(species[placed % species.Length], Math.Max(1, template.Level - 2), tile);
+                if (animal == null) continue;
+                animal.DefensiveOnly = true;
+                if (++placed >= 10) break;
+            }
+            Console.WriteLine($"[safehouse] fauna pequena restaurada: {placed} animais de espécies nativas.");
+            return;
+        }
         if (terrain?.Herds == null || template == null || template.Herds.Count == 0)
         {
             return;

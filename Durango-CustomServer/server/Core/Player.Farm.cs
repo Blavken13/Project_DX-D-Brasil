@@ -170,22 +170,8 @@ public partial class Player
             Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบรับผลจากสิ่งปลูกสร้าง" }, header.Seq);
         });
 
-        // InvestToCrack (3663) — หย่อน "หินนำทางทรัพยากร" ลงหลุมอุกกาบาตเพื่อเปิดหลุม
-        // ArtifactInteractions.cs:1080-1130 Invest(): เช็คหินในกระเป๋าฝั่งเกมก่อน (:1108)
-        // แล้วเดินไปหาหลุม → ยิงตัวนี้ รอ .On<Timer>(:1121, หลอด 4 วิ) แล้ว .On<OK>(:1124)
-        // ค่าที่จะใช้ถ้าทำได้อ่านไว้แล้วครบใน server/Support/CrackTuning.cs
-        // (required_investment · activated_time 600 · investment_duration 4)
-        //
-        // ทำไมยังทำไม่ได้ (สองชั้น):
-        //   1. หักหินนำทางไม่ได้ — มันเป็น "บัตรกำนัล" ในกระเป๋าเงิน แต่เซิร์ฟส่ง
-        //      Wallet = null เสมอ (Core/Player.Inventory.cs:666) ⇒ ไม่มีของให้หัก
-        //      เปิดหลุมให้ฟรี = แจกทรัพยากรวาร์ปโดยไม่มีต้นทุน
-        //   2. ต้องตั้ง Crack.ActivatedSince/Until ซึ่งแก้ไม่ได้ — Core/World.cs:269-285
-        //      สร้าง Crack ตอนเปิดโลกได้ทางเดียว ไม่มี API แก้ทีหลัง
-        _connection.Recv(delegate(InvestToCrack msg, PacketHeader header)
-        {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบเปิดหลุมอุกกาบาต" }, header.Seq);
-        });
+        // InvestToCrack: pagamento em pedras, espera e ativação (Player.Craters.cs).
+        RegisterCraterHandlers();
 
         // SkipPostprocess (2450) — จ่ายเพชรข้ามช่วง "마무리" (มาร์มูรี) หลังสร้างเสร็จ
         // client/BuildSystem.cs:445 ใส่ปุ่มลงเมนู · ArtifactInteractions.cs:82 ผูก handler

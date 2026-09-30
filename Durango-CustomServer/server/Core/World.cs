@@ -13,7 +13,7 @@ using Durango.Utils.Extensions;
 namespace Durango.Online;
 
 // พอร์ตจาก nexonSRC/Durango.Online/World.cs
-public class World
+public partial class World
 {
     public enum ChunkVisit
     {
@@ -124,6 +124,7 @@ public class World
         PlaceTerrainPois();
         PlaceTutorialSceneArtifacts();
         PlaceSafehouseSceneArtifacts();
+        PopulateSafehouseResources();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
         AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
         // Saves antigos podem conter spots parcialmente coletados sem fila de renovação.
@@ -324,6 +325,19 @@ public class World
         }
 
         RemoveStaleTerrainPois(wanted);
+
+        // Materializar os POIs do garden como artifacts interativos, sem desenhar
+        // duas versões no mesmo lugar nem deixar o regrow recriar a versão natural.
+        foreach (var natural in NaturalInfo.FromBytes(_terrainData.Garden ?? Array.Empty<byte>()))
+        {
+            if (natural.EntityType is not (15001 or 15002 or 15004 or 15006)) continue;
+            var tile = new Point2(natural.X, natural.Y);
+            if (!wanted.Any(p => p.Tile.x == tile.x && p.Tile.y == tile.y)) continue;
+            RemoveNaturalFromGarden(tile, out _);
+            if (!_removedNatural.Contains(tile)) _removedNatural.Add(tile);
+            _addedNatural.RemoveAll(n => n.X == tile.x && n.Y == tile.y);
+            _context.NaturalRegrow.RemoveAll(n => n.X == tile.x && n.Y == tile.y);
+        }
 
         // POIs criados por versões anteriores podem ter sido persistidos com
         // Height=0 e neutral_warphole no MaxLevel do blueprint (80).
@@ -627,6 +641,7 @@ public class World
         }
         // Demolições pendentes terminam mesmo depois de sair o último jogador.
         ProcessDestructs(Gauge.CurrentTime);
+        ProcessCraterStates(Gauge.CurrentTime);
 
         // สัตว์เดินเล่น — ต้องอยู่นอกลูปผู้เล่น เพราะเป็นเรื่องของสัตว์ ไม่ใช่ของใครคนใดคนหนึ่ง
         // (ถ้าไม่มีใครอยู่บนเกาะก็ไม่ต้องเดิน จะได้ไม่เปลืองแรงเปล่า)
@@ -750,7 +765,7 @@ public class World
         }
         if (garden == null) return;
 
-        // FACILDIGITAL_FISH_OCEAN_ONLY
+        // Preservar pesca nativa de rio/lago; validar a água dos pontos marinhos.
         int fishingSeen = 0;
         int fishingKept = 0;
         int fishingFiltered = 0;
@@ -775,8 +790,7 @@ public class World
                 Point2 fishingTile =
                     new Point2(natural.X, natural.Y);
 
-                if (!IsOceanFishingNatural(natural.EntityType) ||
-                    !IsOceanFishingTile(fishingTile))
+                if (IsOceanFishingNatural(natural.EntityType) && !IsOceanFishingTile(fishingTile))
                 {
                     fishingFiltered++;
                     continue;
@@ -795,8 +809,7 @@ public class World
                 Point2 fishingTile =
                     new Point2(natural.X, natural.Y);
 
-                if (!IsOceanFishingNatural(natural.EntityType) ||
-                    !IsOceanFishingTile(fishingTile))
+                if (IsOceanFishingNatural(natural.EntityType) && !IsOceanFishingTile(fishingTile))
                 {
                     fishingFiltered++;
                     continue;
@@ -822,7 +835,7 @@ public class World
         {
             Console.WriteLine(
                 $"[ecologia] {TerrainId}: pesca total={fishingSeen} " +
-                $"mar={fishingKept} filtrada={fishingFiltered}");
+                $"mantida={fishingKept} filtrada={fishingFiltered}");
         }
         var array2 = CreateByteMap(NaturalInfo.ToBytes(list), 6);
         if (array2 != null)
@@ -1022,11 +1035,10 @@ public class World
     public void AddNatural(Point2 tile, ushort entityType)
     {
         if (IsFishingNatural(entityType) &&
-            (!IsOceanFishingNatural(entityType) ||
-             !IsOceanFishingTile(tile)))
+            IsOceanFishingNatural(entityType) && !IsOceanFishingTile(tile))
         {
             Console.WriteLine(
-                $"[ecologia] pesca interior bloqueada " +
+                $"[ecologia] pesca marinha fora do oceano bloqueada " +
                 $"({tile.x},{tile.y}) tipo={entityType}");
             return;
         }

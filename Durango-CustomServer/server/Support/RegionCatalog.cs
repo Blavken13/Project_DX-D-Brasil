@@ -32,6 +32,8 @@ public static class RegionCatalog
         public int Level;
         public Role Role = Role.Rural;
         public Biome Biome = Biome.Invalid;
+        public double ExpiresIn;
+        public Dictionary<ushort, int> CollectibleLevels = new();
 
         /// <summary>ฝูงสัตว์ที่เกิดบนเกาะแบบนี้ · ชื่อกลุ่ม (land/beach/…) → รายการฝูง</summary>
         public Dictionary<string, List<HerdSpawn>> Herds = new(StringComparer.OrdinalIgnoreCase);
@@ -121,6 +123,11 @@ public static class RegionCatalog
                 if (kv.Value is JObject o)
                 {
                     info.Level = (int?)o["level"] ?? 0;
+                    info.ExpiresIn = (double?)o["expires_in"] ?? 0;
+                    if (o["collectible_levels"] is JObject levels)
+                        foreach (var level in levels.Properties())
+                            if (ushort.TryParse(level.Name, out var type) && (int?)level.Value > 0)
+                                info.CollectibleLevels[type] = (int)level.Value;
                     info.Weather = (string)o["weather"];
                     if ((int?)o["role"] is { } roleValue && Enum.IsDefined(typeof(Role), roleValue))
                     {
@@ -128,7 +135,8 @@ public static class RegionCatalog
                     }
                     if (o["biome_effects"] is JObject effects)
                     {
-                        info.Biome = ParseBiome(effects.Properties().FirstOrDefault()?.Name);
+                        info.Biome = effects.Properties().Select(p => ParseBiome(p.Name))
+                            .FirstOrDefault(b => b is >= Biome.TemperateForest and <= Biome.Volcanic, Biome.Invalid);
                         foreach (JProperty be in effects.Properties())
                         {
                             Biome biome = ParseBiome(be.Name);
@@ -217,10 +225,8 @@ public static class RegionCatalog
                 TerrainId = id,
                 TemplateId = templateId,
                 Role = template.Role,
-                // null faz o client resolver o nome localizado a partir do TemplateId.
-                // Enviar o id técnico aqui fazia a UI mostrar "ri35de", "ri45sa" etc.
-                Name = null,
-                CreatedAt = 0.0
+                Name = DisplayName(template),
+                CreatedAt = Durango.Utils.Times.UnixTimeNow()
             };
             _byId[id] = region;
 
@@ -238,8 +244,28 @@ public static class RegionCatalog
                           string.Join(", ", _regions.Select(r => $"{r.Id}(lv{GetTemplate(r.TemplateId)?.Level})")));
     }
 
-    public static bool TryGet(string regionId, out Region region) =>
-        _byId.TryGetValue(regionId ?? "", out region);
+    public static bool TryGet(string regionId, out Region region)
+    {
+        if (!_byId.TryGetValue(regionId ?? "", out region)) return false;
+        // As ilhas instaladas são persistentes. Não anunciar um prazo vencido desde 1970.
+        region.CreatedAt = Durango.Utils.Times.UnixTimeNow();
+        return true;
+    }
+
+    public static string DisplayName(TemplateInfo template)
+    {
+        if (template?.Role == Role.Safehouse) return "Refúgio Tropical";
+        if (template?.Role == Role.Tutorial) return "Ilha de Ancora";
+        if (template?.Role == Role.Personal) return "Ilha Domada";
+        string biome = template?.Biome switch
+        {
+            Biome.TemperateForest => "Floresta Temperada", Biome.TropicalForest => "Floresta Tropical",
+            Biome.Desert => "Deserto", Biome.Tundra => "Tundra", Biome.SnowField => "Campos Nevados",
+            Biome.Grassland => "Savana", Biome.SwampMud => "Pântano", Biome.Volcanic => "Ilha Vulcânica",
+            _ => "Ilha"
+        };
+        return template?.Level > 0 ? $"{biome} — Nível {template.Level}" : biome;
+    }
 
     public static TemplateInfo GetTemplate(string templateId) =>
         templateId != null && _templates.TryGetValue(templateId, out TemplateInfo info) ? info : null;

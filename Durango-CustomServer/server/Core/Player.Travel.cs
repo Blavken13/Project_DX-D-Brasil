@@ -83,10 +83,13 @@ public partial class Player
     /// เป็นของที่ผู้เล่นสร้างเอง — เผื่อไว้ให้ครบตามที่ฝั่งเกมรู้จัก
     /// </summary>
     private static readonly HashSet<string> WarpholeBlueprints =
-        new(StringComparer.Ordinal) { "neutral_warphole", "cargo_warphole_in" };
+        new(StringComparer.Ordinal) { "neutral_warphole", "cargo_warphole_in", "camp_warphole" };
+    private sealed record PendingTravelWarp(Point2 Tile, TeleportType Type, double DueAt);
+    private PendingTravelWarp _pendingTravelWarp;
 
     private void RegisterTravelHandlers()
     {
+        _connection.ConnetionClosed += () => _pendingTravelWarp = null;
         // ── กลุ่มที่ 1: วาร์ปในเกาะเดียวกัน — **ทำของจริงได้** ──────────────────────────────
 
         // GetWarpCosts (2106) — ราคาวาร์ปของรูวาร์ปแต่ละแห่งบนเกาะนี้
@@ -329,7 +332,8 @@ public partial class Player
             }
         }
         foreach (AppearArtifact artifact in _world.ArtifactManager.Enumerable(a =>
-                     a.IsAlive && a.EntityType == 9450))
+                     a.States.BuildingState == Shared.Building.BuildingState.Completed &&
+                     BlueprintStore.GetBlueprint(a.EntityType)?.Components?.Contains("Warphole") == true))
         {
             real.Add(TileKey(artifact.Tile.x, artifact.Tile.y));
         }
@@ -390,9 +394,8 @@ public partial class Player
             return;
         }
 
-        // ลงตรงช่องของรูวาร์ปเลย เหมือนที่ Player.Warp.cs:179 ทำกับท่าเรือ — ไม่เลี่ยง footprint
-        // เพราะฝั่งเกมดันตัวละครออกจากสิ่งกีดขวางเองอยู่แล้ว และการเลี่ยงเองอาจไปโผล่ในน้ำ
-        BeginTravelWarp(msg.Tile, seq, "วาร์ปผ่านรูวาร์ป", TeleportType.Warp);
+        // Escolher terra livre ao lado do portal para evitar chegar preso na estrutura.
+        BeginTravelWarp(_world.PortalLanding(msg.Tile), seq, "วาร์ปผ่านรูวาร์ป", TeleportType.Warp);
     }
 
     private void HandleIsWarpholeAvailableMsg(IsWarpholeAvailable msg, uint seq)
@@ -413,6 +416,9 @@ public partial class Player
                 return;
             }
 
+            var materialized = _world.ArtifactManager.Enumerable(a => a.Tile.x == msg.Tile.x && a.Tile.y == msg.Tile.y &&
+                BlueprintStore.GetBlueprint(a.EntityType)?.Components?.Contains("Warphole") == true).FirstOrDefault();
+            if (materialized.EntityId != null) RememberPortal(materialized);
             Send(default(OK), seq);
             return;
         }
@@ -434,7 +440,21 @@ public partial class Player
             return;
         }
 
+        RememberPortal(artifact);
         Send(default(OK), seq);
+    }
+
+    private void RememberPortal(AppearArtifact artifact)
+    {
+        string region = LogicalRegionId();
+        _context.ExploredPOIs ??= new Dictionary<string, ExploredPoint>();
+        _context.ExploredPOIs[$"{region}|{artifact.Tile.x},{artifact.Tile.y}"] = new ExploredPoint
+        {
+            RegionId = region, X = artifact.Tile.x, Y = artifact.Tile.y,
+            Type = (int)Shared.System.PointOfInterest.CargoWarphole, EntityType = artifact.EntityType
+        };
+        OnContextChanged();
+        SendExploredPOIs(region, 0);
     }
 
     // ── ตัวเดินเวลาวาร์ปของไฟล์นี้ ───────────────────────────────────────────────────
@@ -446,8 +466,7 @@ public partial class Player
     /// ซึ่งตรึง <c>TeleportType.Returning</c> ไว้ตายตัว (ถูกแล้วสำหรับ "กลับบ้าน") แต่การวาร์ป
     /// ผ่านรูวาร์ปต้องเป็น <c>Warp</c> ไม่งั้นบทไกด์นับภารกิจวาร์ปไม่ขึ้น (กับดัก ④ หัวไฟล์)
     ///
-    /// นาฬิกาที่สร้างที่นี่ฝากไว้ในลิสต์ <c>_warpTimers</c> ตัวเดียวกับ Player.Warp.cs
-    /// เพื่อให้ <c>ClearWarpTimers</c> ที่ผูกกับ ConnetionClosed ไว้แล้วเก็บกวาดให้ครบตอนหลุด
+    /// A viagem termina no loop do mundo e é cancelada quando a conexão fecha.
     /// </summary>
     private void BeginTravelWarp(Point2 tile, uint seq, string what, TeleportType type)
     {
@@ -458,7 +477,7 @@ public partial class Player
         }
         lock (_warpTimers)
         {
-            if (_warpTimers.Count >= MaxConcurrentWarps)
+            if (_pendingTravelWarp != null || _warpTimers.Count >= MaxConcurrentWarps)
             {
                 Send(new Abort { Text = "กำลังวาร์ปอยู่แล้ว" }, seq);
                 return;
@@ -477,26 +496,15 @@ public partial class Player
             return;
         }
 
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(delegate
-        {
-            try
-            {
-                FinishTravelWarp(tile, type);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[เดินทาง] ย้ายตัวไม่สำเร็จ: {e.Message}");
-            }
-            finally
-            {
-                lock (_warpTimers) { _warpTimers.Remove(timer); }
-                timer?.Dispose();
-            }
-        }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+        _pendingTravelWarp = new PendingTravelWarp(tile, type, Gauge.CurrentTime + duration);
+    }
 
-        lock (_warpTimers) { _warpTimers.Add(timer); }
-        timer.Change((int)(duration * 1000f), System.Threading.Timeout.Infinite);
+    private void UpdateTravelWarp(double now)
+    {
+        if (_pendingTravelWarp == null || now < _pendingTravelWarp.DueAt) return;
+        var pending = _pendingTravelWarp;
+        _pendingTravelWarp = null;
+        if (_context.AppearPlayer.IsAlive) FinishTravelWarp(pending.Tile, pending.Type);
     }
 
     /// <summary>
@@ -556,9 +564,11 @@ public partial class Player
             }
             tilesX = data.Width;
             tilesY = data.Height;
-            // เกาะที่ยังไม่เคยไป = ยังไม่เปิดหมอกสักชังก์ (ต้องเป็นอาร์เรย์ว่าง ไม่ใช่ null —
-            // client/Durango.UI/SharedMapContext.cs:150 วน .Chunks.Length ทันทีโดยไม่เช็ค null)
-            chunks = new DefoggedChunks { Chunks = Array.Empty<Point2>() };
+            // O preview usa o mesmo mapa completo enviado ao entrar na ilha.
+            var preview = new List<Point2>();
+            for (int y = 0; y < tilesY / 16; y++)
+            for (int x = 0; x < tilesX / 16; x++) preview.Add(new Point2(x, y));
+            chunks = new DefoggedChunks { Chunks = preview.ToArray() };
         }
 
         Send(new RegionMapInfo

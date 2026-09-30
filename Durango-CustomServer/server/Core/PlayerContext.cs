@@ -160,6 +160,8 @@ public class PlayerContext
     public long DurangoCoin;
     [JsonProperty("shop_mileage")] public long ShopMileage;
     [JsonProperty("warp_matter")] public long WarpMatter;
+
+    [JsonProperty("vouchers")] public Dictionary<string, int> Vouchers = new();
     [JsonProperty("economy_sequence")] public long EconomySequence;
     [JsonProperty("market_tradability_version")] public int MarketTradabilityVersion;
     [JsonProperty("market_favorites")] public HashSet<string> MarketFavorites = new();

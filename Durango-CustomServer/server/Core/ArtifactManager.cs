@@ -287,6 +287,16 @@ public class ArtifactManager
         return true;
     }
 
+    public bool UpdateCrack(string entityId, Func<Crack, Crack> mutate)
+    {
+        if (entityId == null || mutate == null || !_artifacts.TryGetValue(entityId, out var artifact) ||
+            artifact.States.Crack is not Crack crack) return false;
+        artifact.States.Crack = mutate(crack);
+        _artifacts[entityId] = artifact;
+        RaiseStateUpdated(entityId, artifact.States);
+        return true;
+    }
+
     private void RaiseStateUpdated(string entityId, ArtifactState state)
     {
         state.EntityId = entityId;

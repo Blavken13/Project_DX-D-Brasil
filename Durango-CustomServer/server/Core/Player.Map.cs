@@ -135,6 +135,7 @@ public partial class Player
         {
             return _context.PersonalRegionTemplateId;
         }
+        if (RegionCatalog.TryGet(regionId, out var region)) return region.TerrainId;
         return regionId;
     }
 
@@ -238,7 +239,14 @@ public partial class Player
             Icon = type is Shared.System.PointOfInterest.Crater or Shared.System.PointOfInterest.Crack
                 ? "icon_map_poi_crack"
                 : null,
-            Title = null,   // tooltip เท่านั้น (MapSystem.cs:370-373 ข้ามไปถ้าว่าง)
+            Title = type switch
+            {
+                Shared.System.PointOfInterest.Port => "Porto",
+                Shared.System.PointOfInterest.Warphole or Shared.System.PointOfInterest.CargoWarphole => "Portal",
+                Shared.System.PointOfInterest.Crater or Shared.System.PointOfInterest.Crack => "Cratera de recursos",
+                Shared.System.PointOfInterest.Rift => "Fenda",
+                _ => null
+            },
             EntityType = point.EntityType,
             IsExplored = true
         };

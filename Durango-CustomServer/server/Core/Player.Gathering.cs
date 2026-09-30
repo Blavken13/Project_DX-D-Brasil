@@ -174,11 +174,12 @@ public partial class Player
     /// autoritativo de travel/fauna. O valor e calculado por requisicao para nao vazar
     /// level entre ilhas atraves dos caches estaticos de generator.
     /// </summary>
-    private int CurrentGatheringLevel()
+    private int CurrentGatheringLevel(ushort entityType = 0)
     {
         if (RegionCatalog.TryGet(_world.TerrainId, out Messages.Region region))
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
+            if (template?.CollectibleLevels.TryGetValue(entityType, out int nativeLevel) == true) return nativeLevel;
             if (template != null && template.Level > 0) return template.Level;
         }
         return 1;
@@ -191,6 +192,8 @@ public partial class Player
     /// </summary>
     internal Collectible BuildCollectibleFor(string entityId, ushort entityType, Point2 tile)
     {
+        if (entityType is 15001 or 15002 or 15004 or 15006)
+            return new Collectible { EntityId = entityId, Generators = Array.Empty<Generator>() };
         // กันโตไม่รู้จบตอนเล่นยาว ๆ — ของที่แตะแล้วไม่ได้เก็บไม่มีความหมายอีกต่อไป
         // (client แตะใหม่ทุกครั้งก่อนกดเก็บอยู่แล้ว) 256 = เผื่อไว้เยอะกว่าที่หน้าจอเดียวจะมีได้
         if (_touchedNaturals.Count > 256) _touchedNaturals.Clear();
@@ -204,7 +207,7 @@ public partial class Player
 
         return CollectibleTable.Build(entityId, entityType,
                                       _world.HarvestedGenerators(HarvestKeyOf(entityId, tile)),
-                                      animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel());
+                                      animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel(entityType));
     }
 
     /// <summary>
@@ -229,7 +232,7 @@ public partial class Player
 
         Send(CollectibleTable.Build(msg.EntityId, entityType,
                                     _world.HarvestedGenerators(HarvestKeyOf(msg.EntityId, msg.Tile)),
-                                    animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel()), seq);
+                                    animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel(entityType)), seq);
     }
 
     // ── ตอน Collect: ตรวจ → ตอบ Timer → ครบเวลาส่ง Collected ────────────────────────
@@ -273,7 +276,7 @@ public partial class Player
             return;
         }
 
-        spec = CollectibleTable.AtLevel(spec, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel());
+        spec = CollectibleTable.AtLevel(spec, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType));
 
         // [7 ก.ย. 2026] ปลดสกิลของหมวดนี้แล้วหรือยัง
         //
@@ -353,7 +356,7 @@ public partial class Player
         foreach (CollectibleTable.GeneratorSpec s in CollectibleTable.AllSpecs(entityType))
         {
             CollectibleTable.GeneratorSpec live = CollectibleTable.AtLevel(
-                s, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel());
+                s, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType));
             total += carcass != null
                 ? CollectibleTable.AmountForCarcass(live, carcass.CombatLevel)
                 : live.Amount;
@@ -853,7 +856,7 @@ internal static class CollectibleTable
     public static string CategoryOfGenerator(GeneratorSpec spec)
     {
         if (spec == null) return null;
-        if (_categoryOfPrototype.TryGetValue(spec.PrototypeId, out string cached)) return cached;
+        if (_categoryOfPrototype.TryGetValue(spec.PrototypeId, out string cached)) return FishingCategory(spec, cached);
 
         string found = null;
         Prototype proto = PrototypeYaml.GetItemPrototype(spec.PrototypeId);
@@ -865,7 +868,19 @@ internal static class CollectibleTable
             }
         }
         _categoryOfPrototype[spec.PrototypeId] = found;
-        return found;
+        return FishingCategory(spec, found);
+    }
+
+    private static bool? _fishSkillExists;
+    private static string FishingCategory(GeneratorSpec spec, string category)
+    {
+        if (category != "fish" || !TerrainEcology.IsFishing(spec.CollectibleId)) return category;
+        // fish_01 existe em rewards.json, mas nenhum nó da árvore o concede.
+        // Não bloquear a pesca atrás de uma habilidade impossível de aprender.
+        _fishSkillExists ??= SkillDataStore.Skills.Values.SelectMany(b => b.Values).SelectMany(s => s.Values)
+            .SelectMany(nodes => nodes).Any(n => n.Rewards?.Any(id =>
+                SkillDataStore.Rewards.TryGetValue(id, out var reward) && reward.Type == 0 && reward.Category == "fish") == true);
+        return _fishSkillExists.Value ? category : null;
     }
 
     private static readonly Dictionary<string, string> _categoryOfPrototype = new(StringComparer.Ordinal);
@@ -1022,7 +1037,7 @@ internal static class CollectibleTable
             Order = order,
             Effort = effort,
             Duration = Duration(effort),
-            ToolRequirements = ToolsFor(proto, level)
+            ToolRequirements = ToolsFor(proto, level, collectibleId)
         };
     }
 
@@ -1065,6 +1080,8 @@ internal static class CollectibleTable
     private static string[] FamilyFallback(string collectibleId)
     {
         string id = collectibleId.ToLowerInvariant();
+        if (id.StartsWith("harpoon_shrimp_point_")) return new[] { "shrimp", "shrimp_big" };
+        if (id.StartsWith("harpoon_fishing_point_")) return new[] { "fish", "fish_big" };
         if (id.StartsWith("tree") || id.Contains("tree") || id.StartsWith("timber") || id.StartsWith("dead"))
             return new[] { "wood_log", "wood_bough" };
         if (id.StartsWith("bush") || id.StartsWith("vine"))
@@ -1120,7 +1137,7 @@ internal static class CollectibleTable
             Order = spec.Order,
             Effort = effort,
             Duration = Duration(effort),
-            ToolRequirements = proto != null ? ToolsFor(proto, level) : spec.ToolRequirements
+            ToolRequirements = proto != null ? ToolsFor(proto, level, spec.CollectibleId) : spec.ToolRequirements
         };
     }
 
@@ -1144,9 +1161,10 @@ internal static class CollectibleTable
     /// ⇒ ผู้เล่นเกิดใหม่มือเปล่าเก็บหญ้า/กิ่งไม้/หินก้อนเล็กได้ทันที เอาไปทำขวานกับพลั่วต่อ
     ///   ส่วนต้นไม้ใหญ่กับสายแร่ต้องมีเครื่องมือก่อน (= ทางที่ ToolNeeded ถูกใช้จริง)
     /// </summary>
-    private static Dictionary<string, int> ToolsFor(Prototype proto, int generatorLevel)
+    private static Dictionary<string, int> ToolsFor(Prototype proto, int generatorLevel, string collectibleId)
     {
         int lv = Mathf.Max(1, generatorLevel);
+        if (TerrainEcology.IsFishing(collectibleId)) return new Dictionary<string, int> { { "harpoon", lv } };
         bool Has(string tag) => proto.Tags != null && proto.Tags.ContainsKey(tag);
 
         // สายแร่/อัญมณี — ต้องมีพลั่วหรือค้อน

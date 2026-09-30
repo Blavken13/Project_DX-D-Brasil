@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using Durango.Network;
 using Messages;
 using Shared.Economy;
@@ -39,7 +40,7 @@ public partial class Player
                 { Currency.CashshopMileage, _context?.ShopMileage ?? 0 },
                 { Currency.WarpMatter, _context?.WarpMatter ?? 0 }
             },
-            Vouchers = Array.Empty<VoucherInfo>()
+            Vouchers = (_context?.Vouchers ?? new Dictionary<string, int>()).Select(v => new VoucherInfo { VoucherId = v.Key, Count = Math.Max(0, v.Value) }).ToArray()
         };
     }
 

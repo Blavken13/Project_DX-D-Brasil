@@ -93,6 +93,10 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--world-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return WorldInteractionCheck.Run(dataDir);
                 case "--gameplay-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

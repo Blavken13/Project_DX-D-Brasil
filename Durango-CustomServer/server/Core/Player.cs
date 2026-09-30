@@ -957,6 +957,18 @@ public partial class Player
         }
         switch (array[0])
         {
+            case "voucher":
+                if (array.Length is 3 or 4 && array[1] == CrackTuning.VoucherId &&
+                    int.TryParse(array[2], out int stones) && stones > 0)
+                {
+                    var target = array.Length == 3 ? this :
+                        (_world.Registry?.Loaded.SelectMany(w => w.Value.PlayersSnapshot()) ?? _world.PlayersSnapshot())
+                        .FirstOrDefault(p => p.EntityId == array[3]);
+                    if (target == null) Send(new Abort { Text = "Jogador não está conectado." }, seq);
+                    else { target.AddInductionStones(stones); Send(default(OK), seq); }
+                }
+                else Send(new Abort { Text = "Uso: voucher voucher_resource_induced_stone quantidade [id_do_jogador]" }, seq);
+                break;
             case "m":
             {
                 if (array.Length >= 3)
@@ -1387,6 +1399,10 @@ public partial class Player
                 //  → Open(entityId, tile, RouteType.Normal) → ยิง GetRoutes มาที่เซิร์ฟ)
                 // เกมไม่ได้ดู components เอง มันเชื่อรายการที่เซิร์ฟส่งมาใน Touched.Interactions ล้วน ๆ
                 if (blueprint.Components.Contains("Port")) list.Add(Shared.System.Interaction.SailingRoutes);
+                if (blueprint.Components.Contains("Warphole")) list.Add(Shared.System.Interaction.Warp);
+                if (touched?.States.Crack is { } crack &&
+                    (!crack.ActivatedUntil.HasValue || crack.ActivatedUntil.Value <= Gauge.CurrentTime))
+                    list.Add(Shared.System.Interaction.Invest);
                 // [8 ก.ย. 2026] แปลงเพาะปลูก — ปลูกเมื่อว่าง · เก็บเกี่ยวเมื่อต้นโต (Collect + Collectible)
                 //
                 // ⚠️ เดิมผูก Plant กับ `flag` (Mode.Editable) ⇒ เซิร์ฟที่รันโหมด Online
@@ -2270,6 +2286,8 @@ public partial class Player
         _connection.Process();
         UpdateTaming(Gauge.CurrentTime);
         UpdatePendingCollects(Gauge.CurrentTime);
+        UpdateCraterInvestment(Gauge.CurrentTime);
+        UpdateTravelWarp(Gauge.CurrentTime);
         // หมดอายุก่อน แล้วค่อยใส่คืนจากฝน/น้ำที่ยังอยู่ — ส่งชุดเดียว จะได้ไม่กระพริบไอคอน
         bool statusChanged = ExpireTimedStatusEffects();
         statusChanged |= SyncWorldDrivenStatusEffects();
@@ -2472,7 +2490,8 @@ public partial class Player
             Id = msg.ArchipelagoId,
             TemplateId = null,          // ไม่ผูกกับ ArchipelagoMission ที่ยังไม่ได้ทำ
             UnstableFactor = 1,
-            Name = null,
+            Name = included.Count > 0 && RegionCatalog.TryGet(included[0].Id, out var firstIsland)
+                ? RegionCatalog.DisplayName(RegionCatalog.GetTemplate(firstIsland.TemplateId)) : "Arquipélago",
             ExpiresAt = 0.0,            // client ไม่ได้ใช้ฟิลด์นี้เลย
             IncludedRegions = included.ToArray()
         }, seq);

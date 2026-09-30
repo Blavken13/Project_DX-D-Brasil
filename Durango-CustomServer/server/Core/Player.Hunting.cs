@@ -139,7 +139,7 @@ public partial class Player
         }
 
         bool hunting = animal.AggroTargetId == EntityId;
-        if (!hunting && !info.IsAggressive) return;             // สัตว์กินพืชไม่แตะคนก่อน
+        if (!hunting && (animal.DefensiveOnly || !info.IsAggressive)) return;
 
         // นอกระยะเห็นเหยื่อ = ไม่สนใจ
         if (!IsWithinTiles(animal.Tile, AnimalAggroTiles))
