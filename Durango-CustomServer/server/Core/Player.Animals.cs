@@ -344,8 +344,8 @@ public partial class Player
     /// </summary>
     private void RegisterCageHandlersAsUnavailable()
     {
-        const string cageMsg = "ยังไม่มีระบบกรงสัตว์";
-        const string tameMsg = "ยังไม่มีระบบทำให้เชื่อง";
+        const string cageMsg = "O sistema de jaulas ainda não está disponível.";
+        const string tameMsg = "O sistema de domesticação ainda não está disponível.";
 
         _connection.Recv(delegate(PutInCage msg, PacketHeader header)
         {
@@ -418,7 +418,7 @@ public partial class Player
         // (ต่างจาก ReleasePet ที่ผู้เล่นตั้งใจทิ้งและมีกล่องยืนยันของเกมเอง จึงทำให้จริง)
         _connection.Recv(delegate(ReinifyPet msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังแปลงสัตว์เป็นบังเหียนไม่ได้ (ยังไม่มีทางเอากลับคืน)" }, header.Seq);
+            Send(new Abort { Text = "Ainda não é possível transformar o animal em um arreio, pois não há como recuperá-lo." }, header.Seq);
         });
     }
 
@@ -460,7 +460,7 @@ public partial class Player
         Messages.Pet? pet = PetFactory.Build(msg.PetEntityType, msg.Rank, Math.Max(1, msg.Level), EntityId);
         if (!pet.HasValue)
         {
-            Send(new Abort { Text = "ไม่รู้จักสัตว์ชนิดนี้" }, seq);
+            Send(new Abort { Text = "Este tipo de animal não foi reconhecido." }, seq);
             return;
         }
         Send(pet.Value, seq);
@@ -551,7 +551,7 @@ public partial class Player
         if (msg.EncyclopediaCategory != EncyclopediaType.Farming)
         {
             // enum มีค่าเดียวคือ Farming (Shared.Encyclopedia/EncyclopediaType.cs) — ตัวอื่นคือของผิด
-            Send(new Abort { Text = "ไม่รู้จักสารานุกรมหมวดนี้" }, seq);
+            Send(new Abort { Text = "Esta categoria da enciclopédia não foi reconhecida." }, seq);
             return;
         }
         Send(new FarmingEncyclopedia
@@ -579,12 +579,12 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         if (entry.Grazing)
         {
-            Send(new Abort { Text = "สัตว์ที่ปล่อยเล็มหญ้าอยู่เรียกออกมาไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível convocar um animal que está pastando." }, seq);
             return;
         }
         // เรียกตัวใหม่ = เก็บตัวเก่าก่อน (เกมให้มีสัตว์ข้างตัวได้ตัวเดียว — PetManager._playerPetId)
@@ -628,7 +628,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null || !entry.Pet.IsSpawned)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ไม่ได้อยู่ข้างตัว" }, seq);
+            Send(new Abort { Text = "Este animal não está ao seu lado." }, seq);
             return;
         }
         DespawnPet(entry);
@@ -686,12 +686,12 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         if (string.IsNullOrWhiteSpace(msg.Name))
         {
-            Send(new Abort { Text = "ชื่อว่างไม่ได้" }, seq);
+            Send(new Abort { Text = "O nome não pode ficar vazio." }, seq);
             return;
         }
         entry.Pet.Name = msg.Name.Trim();
@@ -717,7 +717,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" });
+            Send(new Abort { Text = "Este animal não foi encontrado." });
             return;
         }
         int free = PetCapacityOf(entry) - entry.Bag.Sum(it => Math.Max(1, it.Size));
@@ -737,7 +737,7 @@ public partial class Player
         }
         if (moved.Count == 0)
         {
-            Send(new Abort { Text = "กระเป๋าสัตว์เต็ม" });
+            Send(new Abort { Text = "A mochila do animal está cheia." });
             return;
         }
         Send(new InventoryUpdated
@@ -755,7 +755,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" });
+            Send(new Abort { Text = "Este animal não foi encontrado." });
             return;
         }
         int free = PetTuning.PlayerInventoryMaxSize - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
@@ -775,7 +775,7 @@ public partial class Player
         }
         if (moved.Count == 0)
         {
-            Send(new Abort { Text = "กระเป๋าเต็ม" });
+            Send(new Abort { Text = "A mochila está cheia." });
             return;
         }
         Send(new InventoryUpdated
@@ -812,7 +812,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         float gained = 0f;
@@ -831,7 +831,7 @@ public partial class Player
         }
         if (eaten.Count == 0)
         {
-            Send(new Abort { Text = "ไอเทมนี้ให้สัตว์กินไม่ได้" }, seq);
+            Send(new Abort { Text = "Este item não pode ser dado como alimento ao animal." }, seq);
             return;
         }
         FillHungry(entry, gained);
@@ -858,7 +858,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         if (entry.Pet.IsSpawned) DespawnPet(entry);
@@ -872,7 +872,7 @@ public partial class Player
         }
         if (entry.Bag.Count > 0)
         {
-            Send(new Abort { Text = $"ของในกระเป๋าสัตว์ {entry.Bag.Count} ชิ้นหายไปเพราะกระเป๋าเต็ม" });
+            Send(new Abort { Text = $"Itens na mochila do animal: {entry.Bag.Count} unidades perdidas porque a mochila está cheia" });
         }
         OnContextChanged();
     }
@@ -893,18 +893,18 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         if (PetIsAlive(entry))
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ยังไม่ตาย" }, seq);
+            Send(new Abort { Text = "Este animal não está morto." }, seq);
             return;
         }
         int idx = _context.InventoryItems.FindIndex(it => ItemHasAnyTag(it, PetTables.Constants.ResurrectionTags));
         if (idx < 0)
         {
-            Send(new Abort { Text = "ต้องใช้ยาสัตว์ (medicine_animal) ในการชุบชีวิต" }, seq);
+            Send(new Abort { Text = "Use remédio para animais (medicine_animal) para reviver o animal." }, seq);
             return;
         }
         string usedId = _context.InventoryItems[idx].Id;
@@ -936,7 +936,7 @@ public partial class Player
         List<PetStore.Entry> mine = PetStore.Of(EntityId);
         if (wanted.Count > PetTables.Constants.GrazableCount)
         {
-            Send(new Abort { Text = "ช่องปล่อยเล็มหญ้าไม่พอ" }, seq);
+            Send(new Abort { Text = "Não há espaços suficientes para pastagem." }, seq);
             return;
         }
         bool changed = false;
@@ -992,7 +992,7 @@ public partial class Player
     {
         if (string.IsNullOrEmpty(msg.EntityId))
         {
-            Send(new Abort { Text = "ไม่รู้ว่าเป็นสัตว์ตัวไหน" }, seq);
+            Send(new Abort { Text = "Não foi possível identificar o animal." }, seq);
             return;
         }
         // เก็บในหน่วยความจำต่อ connection — ยังไม่มีที่เซฟ (ต้องต่อกับ DiscoveryInfo ก่อน ดูรายงาน)
@@ -1020,7 +1020,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         // สุ่มหยิบมาโชว์ N ตัวจากพูลจริง — ความน่าจะเป็นที่ส่งไปเท่ากันทุกตัว (1/จำนวนแท็กทั้งหมด)
@@ -1049,13 +1049,13 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, petId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         int slot = CurrentMilestoneSlot(entry);
         if (slot < 0)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ยังไม่มีช่องคุณสมบัติให้หมุน" }, seq);
+            Send(new Abort { Text = "Este animal ainda não possui espaços de atributos para sortear." }, seq);
             return;
         }
         if (reroll) entry.MilestoneRedrawCount++;
@@ -1094,7 +1094,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null || string.IsNullOrEmpty(entry.PendingMilestoneTag))
         {
-            Send(new Abort { Text = "ยังไม่ได้หมุนคุณสมบัติ" }, seq);
+            Send(new Abort { Text = "Nenhum atributo foi sorteado." }, seq);
             return;
         }
         Dictionary<Derived, float> before = new(entry.Pet.Statistics.DerivedAbilities);
@@ -1145,13 +1145,13 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, petId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         Messages.PetActiveSkill? rolled = RollActiveSkill(entry);
         if (!rolled.HasValue)
         {
-            Send(new Abort { Text = "สัตว์ชนิดนี้ไม่มีสกิลพิเศษ" }, seq);
+            Send(new Abort { Text = "Este tipo de animal não possui habilidade especial." }, seq);
             return;
         }
         if (current.HasValue) entry.SkillRedrawCount++;
@@ -1176,13 +1176,13 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         PetRank[] pool = PetTables.AvailableRanks(entry.Pet.EntityType);
         if (pool.Length == 0)
         {
-            Send(new Abort { Text = "สัตว์ชนิดนี้เปลี่ยนแรงก์ไม่ได้" }, seq);
+            Send(new Abort { Text = "Este tipo de animal não pode mudar de classificação." }, seq);
             return;
         }
         int pick = PetTuning.PickWeighted(pool.Select(PetTuning.RankWeight).ToArray());
@@ -1200,7 +1200,7 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null || !entry.PendingRank.HasValue)
         {
-            Send(new Abort { Text = "ยังไม่ได้สุ่มแรงก์ใหม่" }, seq);
+            Send(new Abort { Text = "Nenhuma classificação foi sorteada." }, seq);
             return;
         }
         entry.Pet.Rank = entry.PendingRank.Value;
@@ -1226,14 +1226,14 @@ public partial class Player
         PetStore.Entry entry = PetStore.Of(EntityId).FirstOrDefault(e => e.Pet.IsSpawned);
         if (entry == null)
         {
-            Send(new Abort { Text = "ยังไม่ได้เรียกสัตว์ออกมา" }, seq);
+            Send(new Abort { Text = "Nenhum animal foi convocado." }, seq);
             return;
         }
         Messages.PetActiveSkill[] skills = entry.Pet.Statistics.AvailableActiveSkill ?? Array.Empty<Messages.PetActiveSkill>();
         int idx = Array.FindIndex(skills, s => s.SkillId == msg.SkillId);
         if (idx < 0)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ไม่มีสกิลนั้น" }, seq);
+            Send(new Abort { Text = "Este animal não possui essa habilidade." }, seq);
             return;
         }
         string clip = PetTables.ActiveSkillClip(msg.SkillId, skills[idx].Rank);

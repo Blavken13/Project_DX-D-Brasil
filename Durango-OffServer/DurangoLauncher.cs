@@ -24,7 +24,7 @@ internal static class Program
             {
                 MessageBox.Show(
                     "DurangoV2.exe não foi encontrado.\n\n" + gameExe,
-                    "Durango Launcher",
+                    "Durango Brasil",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -67,7 +67,7 @@ internal static class Program
         {
             MessageBox.Show(
                 "Erro ao iniciar Durango:\n\n" + ex.Message,
-                "Durango Launcher",
+                "Durango Brasil",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
             );

@@ -132,10 +132,10 @@ public class GameManager : Singleton<GameManager>
 			{
 				stringBuilder.Append("(");
 			}
-			int num2 = lastError.IndexOf("오류코드: ", StringComparison.Ordinal);
+			int num2 = lastError.IndexOf("Código de erro: ", StringComparison.Ordinal);
 			if (num2 != -1)
 			{
-				string value = lastError.Substring(num2 + "오류코드: ".Length, 6);
+				string value = lastError.Substring(num2 + "Código de erro: ".Length, 6);
 				stringBuilder.Append(value);
 				stringBuilder.Append((num != count - 1) ? ", " : ")\n");
 				num++;

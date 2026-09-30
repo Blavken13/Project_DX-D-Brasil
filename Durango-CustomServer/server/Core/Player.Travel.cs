@@ -207,7 +207,7 @@ public partial class Player
         //   (Points.LastReturnPoint เซิร์ฟส่ง null อยู่แล้ว — Player.Warp.cs:355)
         _connection.Recv(delegate(GetWarpBackCost msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการวาร์ปกลับเกาะเดิม" }, header.Seq);
+            Send(new Abort { Text = "O teleporte para a ilha anterior ainda não está disponível." }, header.Seq);
         });
 
         // WarpBack (2110) — วาร์ปกลับเกาะที่สำรวจค้างไว้
@@ -215,7 +215,7 @@ public partial class Player
         // เซิร์ฟไม่ได้เก็บ "เกาะก่อนหน้า" และไม่เคยส่ง Points.LastReturnPoint ⇒ ไม่มีปลายทาง
         _connection.Recv(delegate(WarpBack msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีเกาะที่วาร์ปกลับได้ — ใช้ท่าเรือเดินทางแทน" }, header.Seq);
+            Send(new Abort { Text = "Não há uma ilha de retorno disponível. Viaje pelo porto." }, header.Seq);
         });
 
         // OpenMap (915) {VoucherId} — "ซื้อแผนที่" เปิดหมุดทั้งเกาะรวดเดียว
@@ -225,7 +225,7 @@ public partial class Player
         //    ตอบหมุดเดิม = ผู้เล่นนึกว่าจ่ายแล้วแต่ไม่ได้อะไร ⇒ ปฏิเสธตรง ๆ ชัดเจนกว่า
         _connection.Recv(delegate(OpenMap msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการซื้อแผนที่" }, header.Seq);
+            Send(new Abort { Text = "A compra de mapas ainda não está disponível." }, header.Seq);
         });
 
         // ActivePersonalRegionWarphole (3022) {EntityId, Tile} — เปิดใช้รูวาร์ปส่วนตัว
@@ -234,7 +234,7 @@ public partial class Player
         // ผู้เล่นเป็นคนกดเมนูนี้เอง ⇒ ตอบ Abort ได้ตามข้อ ⑤ (ไม่ใช่ข้อความที่เกมยิงเอง)
         _connection.Recv(delegate(ActivePersonalRegionWarphole msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบเกาะส่วนตัว" }, header.Seq);
+            Send(new Abort { Text = "O sistema de ilhas particulares ainda não está disponível." }, header.Seq);
         });
 
         // WarpToPersonalRegion (3023) — วาร์ปไปที่ดินบนเกาะส่วนตัวของตัวเอง
@@ -250,7 +250,7 @@ public partial class Player
         // จุดยิง: client/Durango.Logic.Interactions/ArtifactInteractions.cs:133-140 → TryWarp
         _connection.Recv(delegate(WarpToUrbanRegion msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบที่ดินบนเกาะเมือง" }, header.Seq);
+            Send(new Abort { Text = "Os territórios em ilhas civilizadas ainda não estão disponíveis." }, header.Seq);
         });
 
         // WarpToNextArchipelagoRegion (2035) — วาร์ปข้ามไปเกาะถัดไปของภารกิจหมู่เกาะ
@@ -260,7 +260,7 @@ public partial class Player
         // ตายตัวอยู่) ⇒ ไม่รู้ว่า "เกาะถัดไป" คือลูกไหนจริง ๆ — บอกทางที่ใช้ได้จริงแทน
         _connection.Recv(delegate(WarpToNextArchipelagoRegion msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานภารกิจหมู่เกาะ — ใช้ท่าเรือเดินทางแทน" }, header.Seq);
+            Send(new Abort { Text = "As missões de arquipélago ainda não estão disponíveis. Viaje pelo porto." }, header.Seq);
         });
 
         // GetWarpCostToNextRegion (12033) — ราคาวาร์ปไปเกาะถัดไปของภารกิจหมู่เกาะ
@@ -269,7 +269,7 @@ public partial class Player
         // แต่ตอบว่าง = ปุ่มกดแล้วเงียบสนิท ⇒ ตอบ Abort ให้ผู้เล่นรู้เหตุผลตั้งแต่ขั้นถามราคา
         _connection.Recv(delegate(GetWarpCostToNextRegion msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานภารกิจหมู่เกาะ" }, header.Seq);
+            Send(new Abort { Text = "As missões de arquipélago ainda não estão disponíveis." }, header.Seq);
         });
 
         // GetWarpAcceleratorCost (21112519) — ค่าเข้าร่วมกิจกรรม "เร่งวาร์ป"
@@ -279,7 +279,7 @@ public partial class Player
         // ⇒ ตอบราคา 0 จะพาไปหน้าต่างที่กดยืนยันแล้วไม่มีอะไรรับต่อ — ปฏิเสธตรงนี้ชัดกว่า
         _connection.Recv(delegate(GetWarpAcceleratorCost msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานกิจกรรมเร่งวาร์ป" }, header.Seq);
+            Send(new Abort { Text = "Os eventos de aceleração de teleporte ainda não estão disponíveis." }, header.Seq);
         });
 
         // RecommendPersonalRegion (3002) {TemplateId} — สร้าง/เลือกภูมิประเทศเกาะส่วนตัวของตัวเอง
@@ -297,7 +297,7 @@ public partial class Player
         // ซึ่งเซิร์ฟส่ง null อยู่ (Player.Warp.cs:356) — แต่บทไกด์เรียกตรงได้ จึงต้องรับไว้
         _connection.Recv(delegate(ReturnToCamp msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบแคมป์" }, header.Seq);
+            Send(new Abort { Text = "O sistema de acampamentos ainda não está disponível." }, header.Seq);
         });
     }
 
@@ -390,12 +390,12 @@ public partial class Player
         {
             Console.WriteLine($"[เดินทาง] ปฏิเสธวาร์ป {Short(EntityId)} → " +
                               $"[{msg.Tile.x},{msg.Tile.y}] — ไม่ใช่รูวาร์ปที่เจอแล้วบนเกาะนี้");
-            Send(new Abort { Text = "ที่นั่นไม่ใช่รูวาร์ปที่เคยพบ" }, seq);
+            Send(new Abort { Text = "Este portal ainda não foi descoberto." }, seq);
             return;
         }
 
         // Escolher terra livre ao lado do portal para evitar chegar preso na estrutura.
-        BeginTravelWarp(_world.PortalLanding(msg.Tile), seq, "วาร์ปผ่านรูวาร์ป", TeleportType.Warp);
+        BeginTravelWarp(_world.PortalLanding(msg.Tile), seq, "Teleportar pelo portal", TeleportType.Warp);
     }
 
     private void HandleIsWarpholeAvailableMsg(IsWarpholeAvailable msg, uint seq)
@@ -405,14 +405,14 @@ public partial class Player
             if (!_world.EnsureTerrainLandmarkArtifact(
                     msg.Tile, Shared.System.PointOfInterest.Warphole))
             {
-                Send(new Abort { Text = "ไม่พบรูวาร์ปนี้" }, seq);
+                Send(new Abort { Text = "Este portal não foi encontrado." }, seq);
                 return;
             }
 
             int fallbackReach = ArtifactReachTiles + 6;
             if (!IsWithinTiles(msg.Tile, fallbackReach))
             {
-                Send(new Abort { Text = "อยู่ไกลรูวาร์ปเกินไป" }, seq);
+                Send(new Abort { Text = "Você está longe demais do portal." }, seq);
                 return;
             }
 
@@ -426,7 +426,7 @@ public partial class Player
         MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
         if (blueprint?.Id == null || !WarpholeBlueprints.Contains(blueprint.Id))
         {
-            Send(new Abort { Text = "ที่นี่ใช้วาร์ปไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível se teleportar aqui." }, seq);
             return;
         }
 
@@ -436,7 +436,7 @@ public partial class Player
         int reach = ArtifactReachTiles + Math.Max(artifact.Size.x, artifact.Size.y);
         if (!IsWithinTiles(artifact.Tile, reach))
         {
-            Send(new Abort { Text = "อยู่ไกลรูวาร์ปเกินไป" }, seq);
+            Send(new Abort { Text = "Você está longe demais do portal." }, seq);
             return;
         }
 
@@ -472,14 +472,14 @@ public partial class Player
     {
         if (!_context.AppearPlayer.IsAlive)
         {
-            Send(new Abort { Text = "ตอนนี้วาร์ปไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível se teleportar agora." }, seq);
             return;
         }
         lock (_warpTimers)
         {
             if (_pendingTravelWarp != null || _warpTimers.Count >= MaxConcurrentWarps)
             {
-                Send(new Abort { Text = "กำลังวาร์ปอยู่แล้ว" }, seq);
+                Send(new Abort { Text = "Você já está se teleportando." }, seq);
                 return;
             }
         }
@@ -559,7 +559,7 @@ public partial class Player
             }
             if (data == null)
             {
-                Send(new Abort { Text = "ไม่พบข้อมูลแผนที่ของเกาะนี้" }, seq);
+                Send(new Abort { Text = "O mapa desta ilha não foi encontrado." }, seq);
                 return;
             }
             tilesX = data.Width;
@@ -650,7 +650,7 @@ public partial class Player
             // ฝั่งเกมมี .On<Error> รออยู่ (client/ExploreSystem.cs:238-242) แล้วปิดวงกลมโหลดให้
             // ⚠️ Error.Text ก็ต้องไม่เป็น null ด้วยเหตุผลเดียวกับ Abort (Player.cs:1985-1987)
             Console.WriteLine($"[เดินทาง] ไม่มีเกาะที่ตรงคำขอ role={msg.Role} template='{msg.TemplateId}'");
-            Send(new Error { Text = "ยังไม่มีเกาะแบบนี้ในเซิร์ฟนี้" }, seq);
+            Send(new Error { Text = "Este tipo de ilha ainda não está disponível no servidor." }, seq);
             return;
         }
 
@@ -683,7 +683,7 @@ public partial class Player
         if (archipelagoId == null)
         {
             Console.WriteLine($"[เดินทาง] ไม่มีหมู่เกาะระดับ {msg.Level} ไบโอม {msg.Biome}");
-            Send(new Abort { Text = "ยังไม่มีหมู่เกาะแบบนี้ในเซิร์ฟนี้" }, seq);
+            Send(new Abort { Text = "Este tipo de arquipélago ainda não está disponível no servidor." }, seq);
             return;
         }
 

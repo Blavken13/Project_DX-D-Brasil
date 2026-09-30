@@ -58,7 +58,7 @@ public class AnimalCheatWidget : MonoBehaviour
 		_intSelector.Set(60, 1, 60);
 		_animalInfoScrollView.Nodes.BeginLoad();
 		GameObject next = _animalInfoScrollView.Nodes.GetNext();
-		next.GetComponent<KeyValueLabel>().SetKey("허드 ID");
+		next.GetComponent<KeyValueLabel>().SetKey("ID do rebanho");
 		_herdIdToggle = next.GetComponent<ToggleWidget>();
 		_herdIdToggle.SetOptions(new string[7] { "Single", "01", "02", "05", "10", "20", "30" });
 		_animalInfoScrollView.Nodes.EndLoad();

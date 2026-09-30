@@ -90,6 +90,19 @@ public sealed partial class EconomyStore
         Effects = new List<EconomyEffect>(_state.Effects)
     };
 
+    public bool Spend(PlayerContext context, Currency currency, long amount, out string error)
+    {
+        lock (_sync)
+        {
+            error = null;
+            if (amount < 0 || !SupportsCurrency(currency)) { error = "Custo inválido."; return false; }
+            long balance = Balance(context, currency);
+            if (balance < amount) { error = "Saldo insuficiente para expandir o acampamento."; return false; }
+            if (amount == 0) return true;
+            return Commit(Next(), context, new EconomyEffect { Balances = new() { [currency] = balance - amount } }, out error);
+        }
+    }
+
     private static void Apply(PlayerContext context, EconomyEffect effect)
     {
         if (context.EconomySequence >= effect.Sequence) return;

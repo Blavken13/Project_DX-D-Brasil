@@ -274,22 +274,22 @@ public class PlayerContext
 
         // ⚠️ ซ่อม Item.Ext ที่โหลดกลับมาเป็น JObject **ก่อน** ที่ใครจะเอาไอเทมไปแพ็กลงแพ็กเก็ต
         // (เหตุผลเต็ม ๆ ดูที่หัวคลาส ItemExtRepair ท้ายไฟล์ — ไม่ทำ = ไอเทมทั้งชิ้นเลื่อนช่อง)
-        ItemExtRepair.Normalize(InventoryItems, "กระเป๋าผู้เล่น");
+        ItemExtRepair.Normalize(InventoryItems, "Mochila do jogador");
         // [7 ก.ย. 2026] ของที่ถูกเซฟตอนที่ตารางสียังอ่านไม่ได้ จะขาวไปหมด — คำนวณสีให้ใหม่
         // (เหตุผลเต็มที่ Support/ItemColorRepair.cs · แตะเฉพาะชิ้นที่ยังขาวล้วน)
-        ItemColorRepair.Normalize(InventoryItems, "กระเป๋าผู้เล่น");
-        ItemColorRepair.EnsureFoodModifiable(InventoryItems, "กระเป๋าผู้เล่น");
+        ItemColorRepair.Normalize(InventoryItems, "Mochila do jogador");
+        ItemDurability.Normalize(InventoryItems);        ItemColorRepair.EnsureFoodModifiable(InventoryItems, "Mochila do jogador");
         // [6 ก.ย. 2026] ไอเทมที่เซฟไว้ก่อนมีระบบคำแปล เก็บ "ชื่อ" เป็นข้อความเกาหลีลงไฟล์ไปแล้ว
         // ⇒ โหลดกลับมาก็ยังเกาหลี ทั้งที่ของใหม่เป็นไทยหมดแล้ว (ดู Support/MoCatalog.cs)
         // แปลตอนโหลดครั้งเดียว แล้วรอบเซฟถัดไปจะเขียนทับเป็นไทยเอง
-        ItemNames.Localize(InventoryItems, "กระเป๋าผู้เล่น");
+        ItemNames.Localize(InventoryItems, "Mochila do jogador");
         foreach (PetSaveData pet in Pets)
         {
             if (pet != null)
             {
-                ItemExtRepair.Normalize(pet.Bag, "กระเป๋าสัตว์");
-                ItemColorRepair.Normalize(pet.Bag, "กระเป๋าสัตว์");
-                ItemNames.Localize(pet.Bag, "กระเป๋าสัตว์");
+                ItemExtRepair.Normalize(pet.Bag, "Mochila do animal");
+                ItemColorRepair.Normalize(pet.Bag, "Mochila do animal");
+                ItemDurability.Normalize(pet.Bag);                ItemNames.Localize(pet.Bag, "Mochila do animal");
             }
         }
         // [5 ก.ย. 2026] สร้าง/ซ่อมหลอดสถานะจากข้อมูลจริงทุกครั้งที่เปิด context ไม่ใช่แค่ตอนสร้างใหม่
@@ -494,6 +494,7 @@ internal static class ItemExtRepair
 {
     public static void Normalize([CanBeNull] List<Item> items, string where)
     {
+        ItemDurability.Normalize(items);
         if (items == null || items.Count == 0) return;
         int repaired = 0;
         int dropped = 0;
@@ -525,6 +526,7 @@ internal static class ItemExtRepair
     /// </summary>
     public static Item Fix(Item item, string where)
     {
+        ItemDurability.Normalize(ref item);
         if (item.Ext is not JObject node) return item;
         object rebuilt = Rebuild(node);
         Console.WriteLine(rebuilt != null

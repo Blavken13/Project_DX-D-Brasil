@@ -31,6 +31,8 @@ public static class WorldTuning
 
     public static double TutorialNaturalRegrowSeconds =>
         GetDouble("TutorialNaturalRegrowSeconds", 120.0);
+    public static double WildStructureLifetimeSeconds => GetDouble("WildStructureLifetimeSeconds", 86400.0);
+    public static int SafehouseAnimalCount => (int)Math.Clamp(GetDouble("SafehouseAnimalCount", 40), 1, 100);
     public static void Reload() => _world = null;
 
     private static double GetDouble(string key, double fallback)

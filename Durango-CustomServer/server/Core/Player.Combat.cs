@@ -584,6 +584,7 @@ public partial class Player
             }
         };
         _world.BroadCast(damaged);
+        attacker.WearEquippedWeapon();
         SetBattleMode(true, attacker.EntityId);
         if (dodged) return;
 
@@ -637,6 +638,7 @@ public partial class Player
             int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
             if (index < 0) continue;
             Item item2 = _context.InventoryItems[index];
+            if (item2.Durability?.Get() <= 0) continue;
             float attack = BattleDataStore.WeaponAttack(item2.Prototype, item2.Level);
             if (attack > best) best = attack;      // ถือได้หลายช่อง เอาชิ้นที่แรงสุด
         }
@@ -673,6 +675,7 @@ public partial class Player
         {
             int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
             if (index < 0) continue;
+            if (_context.InventoryItems[index].Durability?.Get() <= 0) continue;
             string type = BattleDataStore.WeaponAttackType(_context.InventoryItems[index].Prototype);
             if (!string.IsNullOrEmpty(type)) return ParseAttackType(type);
         }

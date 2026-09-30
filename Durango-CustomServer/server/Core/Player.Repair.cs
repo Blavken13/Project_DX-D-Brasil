@@ -82,7 +82,7 @@ public partial class Player
         // ⚠️ ห้ามหักเงินตาม msg.Cost เด็ดขาด — เราไม่ได้ทำให้การซ่อมเสร็จจริง
         _connection.Recv(delegate(RepairImmediate msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการเร่งซ่อมด้วยวาร์ปเจม (ไม่ได้หักวาร์ปเจมของคุณ)" },
+            Send(new Abort { Text = "Acelerar reparos com gemas de teleporte ainda não está disponível. Suas gemas foram preservadas." },
                 header.Seq);
         });
 
@@ -123,7 +123,7 @@ public partial class Player
         // ⇒ แต่งค่าเอง = ผู้เล่นเห็นผลประเมินที่ไม่มีวันเกิดขึ้นจริง — ห้ามเด็ดขาด
         _connection.Recv(delegate(RequestTechSupportEstimate msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการประเมินผลเสริมเทค" }, header.Seq);
+            Send(new Abort { Text = "A avaliação de apoio tecnológico ainda não está disponível." }, header.Seq);
         });
 
         // ── RequestResetReformSlot (59145) ───────────────────────────────────────────
@@ -138,7 +138,7 @@ public partial class Player
         // ทำจริงไม่ได้เพราะไอเทมของเซิร์ฟนี้ไม่มี ReformSlots สักชิ้น (ดูหัวไฟล์ ข้อ 3)
         _connection.Recv(delegate(RequestResetReformSlot msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการถอดของประดับออกจากช่องปรับปรุง" }, header.Seq);
+            Send(new Abort { Text = "Ainda não é possível remover acessórios do espaço de melhoria." }, header.Seq);
         });
     }
 
@@ -171,7 +171,7 @@ public partial class Player
         // หาแบบเดียวกับ HandleGetArtifactMsg (Core/Player.Building.cs:350)
         if (_world.ArtifactManager.Get(msg.EntityId) is not { } artifact)
         {
-            Send(new Abort { Text = "ไม่พบสิ่งปลูกสร้างที่จะซ่อม" }, seq);
+            Send(new Abort { Text = "A construção a reparar não foi encontrada." }, seq);
             return;
         }
 
@@ -182,12 +182,12 @@ public partial class Player
         Gauge durability = artifact.States.Durability;
         if (durability == null || durability.Get() >= durability.Max())
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างหลังนี้ยังไม่ผุ ไม่ต้องซ่อม (ไม่ได้ใช้ชุดซ่อมของคุณ)" }, seq);
+            Send(new Abort { Text = "Esta construção não está danificada. Seu kit de reparo foi preservado." }, seq);
             return;
         }
 
         // ทางนี้ยังไปไม่ถึงในเซิร์ฟปัจจุบัน (ความทนทานไม่เคยลด — หัวไฟล์ ข้อ 1)
         // เขียนไว้เพื่อว่าถ้าวันหนึ่งมีระบบความผุแล้วยังไม่มี API เขียนกลับ ผู้เล่นจะได้คำตอบที่ตรง
-        Send(new Abort { Text = "ยังไม่รองรับการซ่อมสิ่งปลูกสร้าง (ไม่ได้ใช้ชุดซ่อมของคุณ)" }, seq);
+        Send(new Abort { Text = "O reparo de construções ainda não está disponível. Seu kit de reparo foi preservado." }, seq);
     }
 }

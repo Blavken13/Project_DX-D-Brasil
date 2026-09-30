@@ -159,15 +159,15 @@ public static class QuestCatalog
         if (!string.Equals(category, DailyCategory, StringComparison.Ordinal) || type != QuestType.Daily)
         {
             unknown = type == QuestType.Once
-                ? "Once อยู่นอกหมวด daily — ส่วนใหญ่เป็น advisor/เลเวล/อีเวนต์ ไม่ใช่ตัวนับเหตุการณ์"
-                : "นอกหมวด daily (อีเวนต์/คริสต์มาส/เมือง ฯลฯ) — ยังไม่เปิดในเฟส 1";
+                ? "Missão única fora da categoria diária; geralmente envolve conselheiros, níveis ou eventos, sem contador de eventos"
+                : "Fora da categoria diária (eventos, Natal, cidades etc.); indisponível nesta fase";
             return;
         }
 
         if (id.StartsWith("mission_finish", StringComparison.Ordinal))
         {
             ev = QuestEventType.MissionUpdated;
-            unknown = "ต้องการระบบภารกิจฝ่าย (Faction Missions) — นอกขอบเขตเฟส 1";
+            unknown = "Requer o sistema de missões de facção, ainda indisponível nesta fase";
             return;
         }
 
@@ -183,7 +183,7 @@ public static class QuestCatalog
         if (id.StartsWith("daily_hunting_", StringComparison.Ordinal))
         {
             ev = QuestEventType.Hunted;
-            unknown = "ล่าบนเกาะไบโอมเฉพาะ — เซิร์ฟยังไม่กรองเกาะ/ไบโอมของเควสนี้";
+            unknown = "Requer caça em um bioma específico; o servidor ainda não filtra o bioma desta missão";
             return;
         }
 
@@ -219,7 +219,7 @@ public static class QuestCatalog
             live = true;
             if (id.StartsWith("daily_cooking_b", StringComparison.Ordinal))
             {
-                unknown = "คำอธิบายคือ 'แปรรูปวัตถุดิบ' แต่ไฟล์สูตรไม่มีหมวดแยก — นับเป็น cook ไปด้วย";
+                unknown = "A descrição indica processamento de materiais, mas a receita não tem categoria própria; contabilizada como culinária";
             }
             return;
         }
@@ -238,7 +238,7 @@ public static class QuestCatalog
             live = true;
             if (id.StartsWith("daily_process_b", StringComparison.Ordinal))
             {
-                unknown = "คำอธิบายคือ '다듬기/แต่งวัสดุ' แต่ใช้หมวด material_process เดียวกับ process_a";
+                unknown = "A descrição indica acabamento de materiais, mas usa a mesma categoria material_process de process_a";
             }
             return;
         }
@@ -266,7 +266,7 @@ public static class QuestCatalog
             return;
         }
 
-        unknown = "Daily ในหมวด daily แต่ยังไม่มีตัวจับคู่ QuestEventType";
+        unknown = "Missão diária sem correspondência de QuestEventType";
         _ = description;
         _ = goal;
     }

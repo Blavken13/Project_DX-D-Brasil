@@ -193,13 +193,13 @@ public partial class Player
         if (entry == null || entry.State != QuestStateEnum.ReachTheGoal)
         {
             Console.WriteLine($"[เควส] {Short(EntityId)} ขอรับ '{questId}' แต่ยังไม่ถึงเป้า");
-            Send(new Abort { Text = "เควสนี้ยังรับรางวัลไม่ได้" }, seq);
+            Send(new Abort { Text = "A recompensa desta missão ainda não está disponível." }, seq);
             return true;
         }
 
         int exp = PreviewActionExp(SkillTuning.QuestClaimWeight);
         SkillCat? skill = SkillForQuest(def);
-        AddExpForAction(SkillTuning.QuestClaimWeight, skill, $"เควส {questId}");
+        AddExpForAction(SkillTuning.QuestClaimWeight, skill, $"Missão {questId}");
 
         QuestStore.Set(EntityId, questId, QuestStateEnum.Finished, Math.Max(entry.GoalCount, entry.Progress),
             Math.Max(1, entry.GoalCount));

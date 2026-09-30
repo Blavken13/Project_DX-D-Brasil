@@ -110,7 +110,7 @@ public class MenuListGroupBase : UIBase
 		{
 			if (!string.IsNullOrEmpty(ip))
 			{
-				UIManager.SystemMsg("OffServer", T._("โหมด Online ไม\u0e48รองร\u0e31บการต\u0e48อเกาะเพ\u0e37\u0e48อนแบบ LAN"));
+				UIManager.SystemMsg("OffServer", T._("O modo online não permite conectar à ilha de um amigo pela rede local."));
 			}
 		}
 	}

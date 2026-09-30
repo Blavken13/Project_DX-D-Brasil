@@ -73,22 +73,22 @@ public static class LocalizeSystem
 
 	private static readonly LocaleItem[] Locales = new LocaleItem[10]
 	{
-		new LocaleItem("en", "en_US", "English", lengthy: true, usingSpace: true),
-		new LocaleItem("ko", "ko_KR", "한국어", lengthy: false, usingSpace: true),
-		new LocaleItem("es", "es_MX", "Español", lengthy: true, usingSpace: true),
-		new LocaleItem("pt", "pt_BR", "Português", lengthy: true, usingSpace: true),
-		new LocaleItem("id", "id_ID", "Bahasa Indonesia", lengthy: true, usingSpace: true),
-		new LocaleItem("ru", "ru_RU", "русский", lengthy: true, usingSpace: true),
-		new LocaleItem("th", "th_TH", "ภาษาไทย", lengthy: false, usingSpace: false),
-		new LocaleItem("de", "de_DE", "Deutsch", lengthy: true, usingSpace: true),
-		new LocaleItem("fr", "fr_FR", "Français", lengthy: true, usingSpace: true),
-		new LocaleItem("zh_Hant", "zh_TW", "中文(繁體)", lengthy: false, usingSpace: false)
+		new LocaleItem("en", "en_US", "Inglês", lengthy: true, usingSpace: true),
+		new LocaleItem("ko", "ko_KR", "Coreano", lengthy: false, usingSpace: true),
+		new LocaleItem("es", "es_MX", "Espanhol", lengthy: true, usingSpace: true),
+		new LocaleItem("pt", "pt_BR", "Português (Brasil)", lengthy: true, usingSpace: true),
+		new LocaleItem("id", "id_ID", "Indonésio", lengthy: true, usingSpace: true),
+		new LocaleItem("ru", "ru_RU", "Russo", lengthy: true, usingSpace: true),
+		new LocaleItem("th", "th_TH", "Tailandês", lengthy: false, usingSpace: false),
+		new LocaleItem("de", "de_DE", "Alemão", lengthy: true, usingSpace: true),
+		new LocaleItem("fr", "fr_FR", "Francês", lengthy: true, usingSpace: true),
+		new LocaleItem("zh_Hant", "zh_TW", "Chinês (tradicional)", lengthy: false, usingSpace: false)
 	};
 
 	private static readonly VoiceLocaleItem[] VoiceLocales = new VoiceLocaleItem[2]
 	{
-		new VoiceLocaleItem("en_US", "English"),
-		new VoiceLocaleItem("ko_KR", "한국어")
+		new VoiceLocaleItem("en_US", "Inglês"),
+		new VoiceLocaleItem("ko_KR", "Coreano")
 	};
 
 	private static string[] _availableLocales;
@@ -446,6 +446,15 @@ public static class LocalizeSystem
 		}
 		TextBuilder.WrapBySeperatorOnly = IsUsingSpace(locale);
 		return locale;
+	}
+
+	public static void EnsureBrazilianLocale()
+	{
+		const string marker = "durango-br:locale-profile-v1";
+		if (UnityEngine.PlayerPrefs.GetInt(marker, 0) == 1) return;
+		UnityEngine.PlayerPrefs.SetString("option:locale", "pt_BR");
+		UnityEngine.PlayerPrefs.SetInt(marker, 1);
+		UnityEngine.PlayerPrefs.Save();
 	}
 
 	[NotNull]

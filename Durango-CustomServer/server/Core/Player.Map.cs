@@ -151,7 +151,7 @@ public partial class Player
         {
             if (!_world.EnsureTerrainLandmarkArtifact(msg.Tile, poiType))
             {
-                Send(new Abort { Text = "จุดสำคัญนี้ไม่ตรงกับข้อมูลภูมิประเทศ" }, seq);
+                Send(new Abort { Text = "Este ponto de interesse não corresponde ao terreno." }, seq);
                 return;
             }
         }

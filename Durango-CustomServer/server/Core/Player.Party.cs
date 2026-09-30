@@ -58,7 +58,7 @@ public partial class Player
         // ในเมธอดเป็นของเฉพาะเมธอดนี้ ชนกับไฟล์อื่นไม่ได้
         // (แพตเทิร์นเดียวกับ server/Core/Player.Ally.cs:52 AllyNotAvailableText ซึ่งอธิบายเหตุผล
         //  เดียวกันไว้ที่ Player.Ally.cs:53-55)
-        const string PartyNotAvailableText = "ยังไม่เปิดใช้งานระบบปาร์ตี้บนเซิร์ฟเวอร์นี้";
+        const string PartyNotAvailableText = "O sistema de grupos ainda não está disponível neste servidor.";
 
         // ── กลุ่ม (ก) คำสั่งที่ต้องมีระบบปาร์ตี้จริง → Abort พร้อมข้อความ ────────────────
 
@@ -69,7 +69,7 @@ public partial class Player
         // :6 [StructLayout(Size=1)]) ⇒ ไม่มีอะไรให้อ่าน
         _connection.Recv(delegate(MakeParty msg, PacketHeader header)
         {
-            Send(new Abort { Text = PartyNotAvailableText + " — ยังตั้งปาร์ตี้ไม่ได้" }, header.Seq);
+            Send(new Abort { Text = PartyNotAvailableText + " — ainda não é possível criar um grupo" }, header.Seq);
         });
 
         // InviteIntoParty (20004) — ชวนผู้เล่นเข้าปาร์ตี้ · ฟิลด์เดียว InviteeEntityId (string)
@@ -80,7 +80,7 @@ public partial class Player
         // ⇒ ชวนจริงไม่ได้ (ไม่มีทางส่งคำเชิญข้าม Player instance) ต้องบอก ไม่ใช่เงียบ
         _connection.Recv(delegate(InviteIntoParty msg, PacketHeader header)
         {
-            Send(new Abort { Text = PartyNotAvailableText + " — ยังชวนเข้าปาร์ตี้ไม่ได้" }, header.Seq);
+            Send(new Abort { Text = PartyNotAvailableText + " — ainda não é possível convidar para o grupo" }, header.Seq);
         });
 
         // JoinIntoParty (20006) — ปุ่ม "ตอบรับคำเชิญ" (client/Durango.UI/PartyGroup.cs:114 →
@@ -90,7 +90,7 @@ public partial class Player
         // ลงทะเบียนไว้กัน log "ไม่มี handler" และกันสถานะค้างฝั่งเกม
         _connection.Recv(delegate(JoinIntoParty msg, PacketHeader header)
         {
-            Send(new Abort { Text = PartyNotAvailableText + " — ยังเข้าร่วมปาร์ตี้ไม่ได้" }, header.Seq);
+            Send(new Abort { Text = PartyNotAvailableText + " — ainda não é possível entrar em um grupo" }, header.Seq);
         });
 
         // ElectPartyLeader (20010) — โอนตำแหน่งหัวหน้าให้สมาชิกคนอื่น
@@ -98,7 +98,7 @@ public partial class Player
         // ยิงจาก client/Durango.UI/PartyGroup.cs:218 → PartySystem.cs:264-270 (ไม่ผูก .On)
         _connection.Recv(delegate(ElectPartyLeader msg, PacketHeader header)
         {
-            Send(new Abort { Text = PartyNotAvailableText + " — ยังโอนตำแหน่งหัวหน้าไม่ได้" }, header.Seq);
+            Send(new Abort { Text = PartyNotAvailableText + " — ainda não é possível transferir a liderança" }, header.Seq);
         });
 
         // ── กลุ่ม (ข) คำสั่งที่ปลายทาง = "ไม่อยู่ปาร์ตี้" ซึ่งเป็นจริงอยู่แล้ว → push Party ว่าง ──

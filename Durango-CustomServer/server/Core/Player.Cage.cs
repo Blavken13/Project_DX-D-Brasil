@@ -149,7 +149,7 @@ public partial class Player
         GrowCage? found = _world.ArtifactManager.GetGrowCage(msg.EntityId);
         if (!found.HasValue)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้ไม่ใช่โรงเลี้ยงสัตว์" }, seq);
+            Send(new Abort { Text = "Esta construção não é um abrigo de animais." }, seq);
             return;
         }
         GrowCage cage = found.Value;
@@ -157,26 +157,26 @@ public partial class Player
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
         if (IsInCage(entry.Pet) || FindCagePet(cage, msg.PetId).HasValue)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้อยู่ในโรงเลี้ยงอยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Este animal já está em um abrigo." }, seq);
             return;
         }
         if (entry.Grazing)
         {
             // ปล่อยเล็มหญ้าอยู่ = อยู่ในทุ่งของโลก ไม่ใช่ในมือผู้เล่น ⇒ ต้องเก็บกลับก่อน
             // (ฝั่งเกมกันไว้แล้วที่ PetGroup.cs:587 แต่กันซ้ำที่เซิร์ฟ ของจะได้ไม่ไปอยู่สองที่)
-            Send(new Abort { Text = "ต้องเก็บสัตว์กลับจากทุ่งเล็มหญ้าก่อน" }, seq);
+            Send(new Abort { Text = "Recolha o animal da pastagem primeiro." }, seq);
             return;
         }
 
         int size = PetSizeOf(entry.Pet);
         if (cage.RemainSize < size)
         {
-            Send(new Abort { Text = $"พื้นที่ในโรงเลี้ยงไม่พอ (ต้องการ {size} เหลือ {cage.RemainSize})" }, seq);
+            Send(new Abort { Text = $"Não há espaço suficiente no abrigo de animais (necessário: {size} restantes: {cage.RemainSize})" }, seq);
             return;
         }
 
@@ -198,7 +198,7 @@ public partial class Player
         if (!ok)
         {
             entry.Pet.CageInfo = PetStore.NotInCage;         // ย้อนกลับ — กรงหายไประหว่างทาง
-            Send(new Abort { Text = "โรงเลี้ยงหลังนี้หายไปแล้ว" }, seq);
+            Send(new Abort { Text = "Este abrigo de animais não existe mais." }, seq);
             return;
         }
 
@@ -220,7 +220,7 @@ public partial class Player
         GrowCage? found = _world.ArtifactManager.GetGrowCage(msg.EntityId);
         if (!found.HasValue)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้ไม่ใช่โรงเลี้ยงสัตว์" }, seq);
+            Send(new Abort { Text = "Esta construção não é um abrigo de animais." }, seq);
             return;
         }
         GrowCage cage = found.Value;
@@ -228,17 +228,17 @@ public partial class Player
         Messages.Pet? inCage = FindCagePet(cage, msg.PetId);
         if (!inCage.HasValue)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้ในโรงเลี้ยง" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado no abrigo." }, seq);
             return;
         }
         if (inCage.Value.TamerEntityId != EntityId)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้เป็นของคนอื่น" }, seq);
+            Send(new Abort { Text = "Este animal pertence a outro jogador." }, seq);
             return;
         }
         if (TaskOf(cage, msg.PetId).HasValue)
         {
-            Send(new Abort { Text = "ต้องหยุดงานหรือเก็บผลงานให้เสร็จก่อนถึงจะเอาสัตว์ออกได้" }, seq);
+            Send(new Abort { Text = "Interrompa a tarefa ou recolha os resultados antes de retirar o animal." }, seq);
             return;
         }
 
@@ -253,7 +253,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "โรงเลี้ยงหลังนี้หายไปแล้ว" }, seq);
+            Send(new Abort { Text = "Este abrigo de animais não existe mais." }, seq);
             return;
         }
 
@@ -304,7 +304,7 @@ public partial class Player
         GrowCage? found = _world.ArtifactManager.GetGrowCage(msg.EntityId);
         if (!found.HasValue)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้ไม่ใช่โรงเลี้ยงสัตว์" }, seq);
+            Send(new Abort { Text = "Esta construção não é um abrigo de animais." }, seq);
             return;
         }
         GrowCage cage = found.Value;
@@ -312,12 +312,12 @@ public partial class Player
         Messages.Pet? inCage = FindCagePet(cage, msg.PetId);
         if (!inCage.HasValue)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้ในโรงเลี้ยง" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado no abrigo." }, seq);
             return;
         }
         if (inCage.Value.TamerEntityId != EntityId)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้เป็นของคนอื่น" }, seq);
+            Send(new Abort { Text = "Este animal pertence a outro jogador." }, seq);
             return;
         }
         PetStore.Entry entry = CagePetEntry(inCage.Value);
@@ -349,7 +349,7 @@ public partial class Player
         }
         if (eaten.Count == 0)
         {
-            Send(new Abort { Text = "ไอเทมนี้ให้สัตว์กินไม่ได้" }, seq);
+            Send(new Abort { Text = "Este item não pode ser dado como alimento ao animal." }, seq);
             return;
         }
 
@@ -395,7 +395,7 @@ public partial class Player
             // กรงหายไประหว่างทาง — **ต้องคืนอาหารที่ลบไปแล้ว** ไม่งั้นของหายทั้งที่ไม่ได้ให้สัตว์กิน
             _context.InventoryItems.AddRange(eaten);
             FillHungry(entry, -gained);
-            Send(new Abort { Text = "โรงเลี้ยงหลังนี้หายไปแล้ว" }, seq);
+            Send(new Abort { Text = "Este abrigo de animais não existe mais." }, seq);
             return;
         }
 
@@ -421,7 +421,7 @@ public partial class Player
         GrowCage? found = _world.ArtifactManager.GetGrowCage(msg.EntityId);
         if (!found.HasValue)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้ไม่ใช่โรงเลี้ยงสัตว์" }, seq);
+            Send(new Abort { Text = "Esta construção não é um abrigo de animais." }, seq);
             return;
         }
         GrowCage cage = found.Value;
@@ -429,42 +429,42 @@ public partial class Player
         Messages.Pet? inCage = FindCagePet(cage, msg.PetId);
         if (!inCage.HasValue)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้ในโรงเลี้ยง" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado no abrigo." }, seq);
             return;
         }
         if (inCage.Value.TamerEntityId != EntityId)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้เป็นของคนอื่น" }, seq);
+            Send(new Abort { Text = "Este animal pertence a outro jogador." }, seq);
             return;
         }
         PetStore.Entry entry = CagePetEntry(inCage.Value);
         if (TaskOf(cage, msg.PetId).HasValue)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้มีงานค้างอยู่" }, seq);
+            Send(new Abort { Text = "Este animal tem uma tarefa pendente." }, seq);
             return;
         }
         if (!PetIsAlive(entry))
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ตายอยู่ ต้องชุบชีวิตก่อน" }, seq);
+            Send(new Abort { Text = "Este animal está morto. Reviva-o primeiro." }, seq);
             return;
         }
 
         CageTables.TaskInfo def = CageTables.TaskOf(msg.TaskId);
         if (def == null)
         {
-            Send(new Abort { Text = "ไม่รู้จักงานนี้" }, seq);
+            Send(new Abort { Text = "Esta tarefa não foi reconhecida." }, seq);
             return;
         }
         if (entry.Pet.Statistics.Level < def.UnlockLevel)
         {
-            Send(new Abort { Text = $"ต้องเลเวล {def.UnlockLevel} ขึ้นไป" }, seq);
+            Send(new Abort { Text = $"Requer nível {def.UnlockLevel} ou superior" }, seq);
             return;
         }
         // งานผลิตผูกกับชนิดผลผลิตของสัตว์ (by_product) — งานฝึก (ByProduct = null) ทำได้ทุกตัว
         string byProduct = CageTables.ByProductOf(entry.Pet.EntityType);
         if (def.ByProduct != null && def.ByProduct != byProduct)
         {
-            Send(new Abort { Text = "สัตว์ชนิดนี้ทำงานนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Este tipo de animal não pode executar esta tarefa." }, seq);
             return;
         }
 
@@ -473,7 +473,7 @@ public partial class Player
         float hungry = entry.Pet.Stat.Hungry?.Get(now) ?? 0f;
         if (hungry < def.HungryRequired)
         {
-            Send(new Abort { Text = $"ความอิ่มไม่พอ (ต้องการ {def.HungryRequired:0} มี {hungry:0})" }, seq);
+            Send(new Abort { Text = $"Saciedade insuficiente (necessário: {def.HungryRequired:0} tem {hungry:0})" }, seq);
             return;
         }
 
@@ -497,7 +497,7 @@ public partial class Player
         if (!ok)
         {
             FillHungry(entry, def.HungryRequired);           // ย้อนค่าอิ่มคืน — งานไม่ได้เริ่มจริง
-            Send(new Abort { Text = "โรงเลี้ยงหลังนี้หายไปแล้ว" }, seq);
+            Send(new Abort { Text = "Este abrigo de animais não existe mais." }, seq);
             return;
         }
 
@@ -518,18 +518,18 @@ public partial class Player
         GrowCage? found = _world.ArtifactManager.GetGrowCage(msg.EntityId);
         if (!found.HasValue)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้ไม่ใช่โรงเลี้ยงสัตว์" }, seq);
+            Send(new Abort { Text = "Esta construção não é um abrigo de animais." }, seq);
             return;
         }
         Messages.Pet? inCage = FindCagePet(found.Value, msg.PetId);
         if (!inCage.HasValue || inCage.Value.TamerEntityId != EntityId)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้ในโรงเลี้ยง" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado no abrigo." }, seq);
             return;
         }
         if (!TaskOf(found.Value, msg.PetId).HasValue)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ไม่ได้ทำงานอยู่" }, seq);
+            Send(new Abort { Text = "Este animal não está trabalhando." }, seq);
             return;
         }
 
@@ -540,7 +540,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "โรงเลี้ยงหลังนี้หายไปแล้ว" }, seq);
+            Send(new Abort { Text = "Este abrigo de animais não existe mais." }, seq);
             return;
         }
         Console.WriteLine($"[กรง] {ShortId()} ยกเลิกงานของ {inCage.Value.Name}");
@@ -566,7 +566,7 @@ public partial class Player
         GrowCage? found = _world.ArtifactManager.GetGrowCage(msg.EntityId);
         if (!found.HasValue)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้ไม่ใช่โรงเลี้ยงสัตว์" }, seq);
+            Send(new Abort { Text = "Esta construção não é um abrigo de animais." }, seq);
             return;
         }
         GrowCage cage = found.Value;
@@ -574,19 +574,19 @@ public partial class Player
         Messages.Pet? inCage = FindCagePet(cage, msg.PetId);
         if (!inCage.HasValue || inCage.Value.TamerEntityId != EntityId)
         {
-            Send(new Abort { Text = "ไม่พบสัตว์ตัวนี้ในโรงเลี้ยง" }, seq);
+            Send(new Abort { Text = "Este animal não foi encontrado no abrigo." }, seq);
             return;
         }
         Messages.TaskStatus? running = TaskOf(cage, msg.PetId);
         if (!running.HasValue)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้ไม่ได้ทำงานอยู่" }, seq);
+            Send(new Abort { Text = "Este animal não está trabalhando." }, seq);
             return;
         }
         double now = Times.UnixTimeNow();
         if (now < running.Value.Until)
         {
-            Send(new Abort { Text = $"งานยังไม่เสร็จ (เหลืออีก {running.Value.Until - now:0} วินาที)" }, seq);
+            Send(new Abort { Text = $"A tarefa ainda não terminou (restam {running.Value.Until - now:0} segundos)" }, seq);
             return;
         }
         CageTables.TaskInfo def = CageTables.TaskOf(running.Value.TaskId);
@@ -594,7 +594,7 @@ public partial class Player
         {
             // ไฟล์ข้อมูลเปลี่ยนไประหว่างที่งานค้างอยู่ — ปล่อยงานทิ้งดีกว่าค้างถาวร แต่ต้องบอกผู้เล่น
             WriteCage(msg.EntityId, c => { c.Tasks?.Remove(msg.PetId); return c; });
-            Send(new Abort { Text = "ข้อมูลงานนี้หายไปจากไฟล์เกม — ยกเลิกงานให้แล้ว" }, seq);
+            Send(new Abort { Text = "Os dados desta tarefa não estão disponíveis. A tarefa foi cancelada." }, seq);
             return;
         }
 
@@ -609,7 +609,7 @@ public partial class Player
         if (need > free)
         {
             // ไม่แตะ Tasks เลย ⇒ ผู้เล่นเก็บของแล้วกดใหม่ได้ ผลงานไม่หาย
-            Send(new Abort { Text = $"กระเป๋าไม่พอ (ต้องการ {need} ว่าง {free}) — เก็บของแล้วลองใหม่" }, seq);
+            Send(new Abort { Text = $"Não há espaço suficiente na mochila (necessário: {need} espaços livres: {free}) — libere espaço e tente novamente" }, seq);
             return;
         }
 
@@ -628,7 +628,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "โรงเลี้ยงหลังนี้หายไปแล้ว" }, seq);
+            Send(new Abort { Text = "Este abrigo de animais não existe mais." }, seq);
             return;
         }
 

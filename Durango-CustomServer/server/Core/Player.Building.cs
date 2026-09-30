@@ -158,7 +158,7 @@ public partial class Player
         if (blueprint == null)
         {
             Console.WriteLine($"[สร้าง] {Short(EntityId)} ขอจองพื้นที่ด้วยแบบแปลนที่ไม่รู้จัก: {msg.BlueprintId}");
-            Send(new Abort { Text = "ไม่รู้จักแบบแปลนนี้" }, seq);
+            Send(new Abort { Text = "Esta planta de construção não foi reconhecida." }, seq);
             return;
         }
 
@@ -193,7 +193,7 @@ public partial class Player
         {
             Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: ช่อง [{msg.Tile.x},{msg.Tile.y}] " +
                               $"ทับ {blocking[..Math.Min(8, blocking.Length)]}");
-            Send(new Abort { Text = "ตรงนี้มีของวางอยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Este local já está ocupado." }, seq);
             return;
         }
 
@@ -202,7 +202,7 @@ public partial class Player
         // ⇒ ไฟล์เกาะบวมด้วยขยะ และ .bak ของผู้เล่นจริงถูกไล่ทับจนไม่เหลือจุดย้อนกลับ
         if (CountMyOccupiedSites() >= MaxOccupiedSitesPerPlayer)
         {
-            Send(new Abort { Text = $"มีพื้นที่ที่จองค้างไว้ครบ {MaxOccupiedSitesPerPlayer} จุดแล้ว — สร้างให้เสร็จหรือรื้อทิ้งก่อน" }, seq);
+            Send(new Abort { Text = $"Você já tem {MaxOccupiedSitesPerPlayer} locais reservados. Conclua ou desmonte uma construção antes de continuar." }, seq);
             return;
         }
 
@@ -210,6 +210,8 @@ public partial class Player
 
         // แก้โลกให้เสร็จตรงนี้ บนเธรดหลัก — callback ของนาฬิกาจะได้เหลือแค่ Send
         _world.ConstructArtifact(site, null, EntityId);
+        if (_world.HasTemporaryPlayerStructures)
+            Send(new Info { Text = "Nesta ilha selvagem, sua construção e seu conteúdo serão removidos após 24 horas. Ilhas domadas e particulares são permanentes." });
         SpendBuildEnergy(energy);
 
         Console.WriteLine($"[สร้าง] {Short(EntityId)} จองพื้นที่ {blueprint.Id} " +
@@ -231,7 +233,7 @@ public partial class Player
             FinishOccupy(occupied, seq);
             return;
         }
-        ScheduleBuildReply(() => FinishOccupy(occupied, seq), duration, "จองพื้นที่");
+        ScheduleBuildReply(() => FinishOccupy(occupied, seq), duration, "Reservar local");
     }
 
     private void FinishOccupy(Occupied occupied, uint seq)
@@ -359,7 +361,7 @@ public partial class Player
             // (client/BuildSystem.cs:376 .On<ArtifactMaterials> ไม่โดน ⇒ ม่านโหลดหายเฉย ไม่มี error)
             Console.WriteLine($"[สร้าง] {Short(EntityId)} ขอสถานะหลุม {Short(msg.EntityId)} " +
                               $"ที่ [{msg.Tile.x},{msg.Tile.y}] — ไม่พบในโลกนี้ (id ไม่ตรง/ข้ามเกาะ)");
-            Send(new Abort { Text = "ไม่พบสิ่งปลูกสร้างนี้" }, seq);
+            Send(new Abort { Text = "Esta construção não foi encontrada." }, seq);
             return;
         }
 
@@ -392,7 +394,7 @@ public partial class Player
 
     private void HandlePutMaterialsIntoArtifactMsg(PutMaterialsIntoArtifact msg, uint seq)
     {
-        if (!TryGetBuildTarget(msg.EntityId, "ใส่วัสดุ", out AppearArtifact artifact,
+        if (!TryGetBuildTarget(msg.EntityId, "Adicionar materiais", out AppearArtifact artifact,
                                out MergedBlueprint blueprint, out string error))
         {
             Send(new Abort { Text = error }, seq);
@@ -441,13 +443,13 @@ public partial class Player
     {
         if (_world.ArtifactManager.Get(msg.EntityId) is not { } artifact)
         {
-            Send(new Abort { Text = "ไม่พบสิ่งปลูกสร้างนี้" }, seq);
+            Send(new Abort { Text = "Esta construção não foi encontrada." }, seq);
             return;
         }
         MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
         if (blueprint == null)
         {
-            Send(new Abort { Text = "ไม่รู้จักแบบแปลนของหลังนี้" }, seq);
+            Send(new Abort { Text = "A planta desta construção não foi reconhecida." }, seq);
             return;
         }
 
@@ -511,7 +513,7 @@ public partial class Player
 
     private void HandleBuildArtifactMsg(BuildArtifact msg, uint seq)
     {
-        if (!TryGetBuildTarget(msg.EntityId, "สร้าง", out AppearArtifact artifact,
+        if (!TryGetBuildTarget(msg.EntityId, "Construir", out AppearArtifact artifact,
                                out MergedBlueprint blueprint, out string error))
         {
             Send(new Abort { Text = error }, seq);
@@ -520,7 +522,7 @@ public partial class Player
 
         if (artifact.States.BuildingState != BuildingState.Occupied)
         {
-            Send(new Abort { Text = "หลังนี้สร้างไปแล้ว" }, seq);
+            Send(new Abort { Text = "Esta construção já foi concluída." }, seq);
             return;
         }
         if (!CheckBuildTool(blueprint, msg.ToolItemId, out error))
@@ -573,7 +575,7 @@ public partial class Player
             FinishBuild(built, seq);
             return;
         }
-        ScheduleBuildReply(() => FinishBuild(built, seq), duration, "สร้าง");
+        ScheduleBuildReply(() => FinishBuild(built, seq), duration, "Construir");
     }
 
     private void FinishBuild(ArtifactBuilt built, uint seq)
@@ -588,7 +590,7 @@ public partial class Player
 
     private void HandleCompleteArtifactMsg(CompleteArtifact msg, uint seq)
     {
-        if (!TryGetBuildTarget(msg.EntityId, "ทำให้สมบูรณ์", out AppearArtifact artifact,
+        if (!TryGetBuildTarget(msg.EntityId, "Concluir", out AppearArtifact artifact,
                                out MergedBlueprint blueprint, out string error))
         {
             Send(new Abort { Text = error }, seq);
@@ -597,7 +599,7 @@ public partial class Player
 
         if (artifact.States.BuildingState != BuildingState.Built)
         {
-            Send(new Abort { Text = "หลังนี้ยังสร้างไม่เสร็จ" }, seq);
+            Send(new Abort { Text = "Esta construção ainda não foi concluída." }, seq);
             return;
         }
 
@@ -606,7 +608,7 @@ public partial class Player
         // แต่ client ที่ถูกแก้ยิงมาก่อนได้ ⇒ ต้องเช็คฝั่งเซิร์ฟด้วย
         if (artifact.States.Postprocess is { } pp && Gauge.CurrentTime < pp.EndsAt)
         {
-            Send(new Abort { Text = $"ยังต้องรออีก {pp.EndsAt - Gauge.CurrentTime:0} วินาที" }, seq);
+            Send(new Abort { Text = $"Ainda é necessário aguardar {pp.EndsAt - Gauge.CurrentTime:0} segundos" }, seq);
             return;
         }
 
@@ -617,7 +619,7 @@ public partial class Player
 
         // [7 ก.ย. 2026] ให้ exp ตอนกด "สำเร็จ" จริง — ไม่ให้ตอนจองหลุม/ใส่วัสดุ
         AddExpForAction(SkillTuning.BuildWeight, Shared.Skill.Category.Constructing,
-                        $"สร้าง {blueprint.Id}");
+                        $"Construir {blueprint.Id}");
         NoteQuestEvent(Shared.Quest.QuestEventType.Built);
 
         Console.WriteLine($"[สร้าง] {Short(EntityId)} ทำให้ {blueprint.Id} สมบูรณ์แล้ว");
@@ -664,7 +666,7 @@ public partial class Player
     /// </summary>
     private void HandleGetCapsulatingCostMsg(GetCapsulatingCost msg, uint seq)
     {
-        if (!TryGetBuildTarget(msg.EntityId, "ถามค่าเก็บ", out AppearArtifact artifact,
+        if (!TryGetBuildTarget(msg.EntityId, "Consultar custo de coleta", out AppearArtifact artifact,
                                out MergedBlueprint _, out string error))
         {
             Send(new Abort { Text = error }, seq);
@@ -700,7 +702,7 @@ public partial class Player
 
     private void HandleCapsulateArtifactMsg(CapsulateArtifact msg, uint seq)
     {
-        if (!TryGetBuildTarget(msg.EntityId, "เก็บ", out AppearArtifact artifact,
+        if (!TryGetBuildTarget(msg.EntityId, "Coletar", out AppearArtifact artifact,
                                out MergedBlueprint blueprint, out string error))
         {
             Send(new Abort { Text = error }, seq);
@@ -711,34 +713,34 @@ public partial class Player
         // ถ้าเก็บได้จะได้ของคืนฟรีโดยไม่เสียอะไร (การยกเลิกงานก่อสร้างเป็นคนละเส้นทาง)
         if (artifact.States.BuildingState != BuildingState.Completed)
         {
-            Send(new Abort { Text = "เก็บได้เฉพาะสิ่งปลูกสร้างที่สร้างเสร็จแล้ว" }, seq);
+            Send(new Abort { Text = "Somente construções concluídas podem ser recolhidas." }, seq);
             return;
         }
         // ข้อมูลเกมบอกเองว่าชนิดไหนเก็บไม่ได้ — เช็คแค่ Permanent ไม่พอ
         // (capsulizable = false อยู่ 101 จาก 560 ชนิด เช่น สระว่ายน้ำ · ห้องเรียนโมดูลาร์)
         if (blueprint.Permanent || !blueprint.Capsulizable)
         {
-            Send(new Abort { Text = "สิ่งปลูกสร้างนี้เก็บไม่ได้" }, seq);
+            Send(new Abort { Text = "Esta construção não pode ser recolhida." }, seq);
             return;
         }
         // ของบนหุ่นโชว์เก็บอยู่คนละตารางกับ AppearArtifact — เก็บหลังไปแล้วของจะค้างไร้เจ้าของ
         if (_world.ArtifactManager.GetMannequin(artifact.EntityId).HasValue)
         {
-            Send(new Abort { Text = "ต้องเอาของออกจากหุ่นโชว์ก่อน" }, seq);
+            Send(new Abort { Text = "Retire os itens do manequim primeiro." }, seq);
             return;
         }
         // ⚠️ [6 ก.ย. 2026] ของในตู้/คลังก็อยู่คนละตารางเหมือนกัน และ **หายถาวร** ถ้าเก็บหลังไป
         // (เหตุผลเต็มที่ Player.Inventory.HasStoredItems) — เจอตอนตรวจความพร้อม deploy
         if (HasStoredItems(artifact.EntityId))
         {
-            Send(new Abort { Text = "ต้องเอาของออกจากตู้ก่อน" }, seq);
+            Send(new Abort { Text = "Retire os itens do armário primeiro." }, seq);
             return;
         }
 
         Item? made = Cheats.MakeItem(CapsuleProtoId, Math.Max(1, (int)artifact.States.Level));
         if (!made.HasValue)
         {
-            Send(new Abort { Text = "สร้างไอเทมห่อไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível criar o item da construção embalada." }, seq);
             return;
         }
 
@@ -761,7 +763,7 @@ public partial class Player
         int usedSize = _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
         if (usedSize + Math.Max(1, capsuleItem.Size) > PetTuning.PlayerInventoryMaxSize)
         {
-            Send(new Abort { Text = "กระเป๋าเต็ม" }, seq);
+            Send(new Abort { Text = "A mochila está cheia." }, seq);
             return;
         }
 
@@ -769,9 +771,9 @@ public partial class Player
         // บนที่ดิน = 0 จริง · นอกที่ดินที่คิดสูตรไม่ได้ = 0 (STUB) ⇒ ไม่หัก
         // ถ้าวันหนึ่งมี t_stone_reference จริง เส้นนี้จะหักจำนวนเดียวกับที่โชว์ในกล่องยืนยัน
         long cost = ResolveCapsulatingCostAmount(artifact);
-        if (cost > 0 && !TrySpendTStone(cost, "เก็บสิ่งปลูกสร้าง"))
+        if (cost > 0 && !TrySpendTStone(cost, "Recolher construção"))
         {
-            Send(new Abort { Text = "T Stone ไม่พอ" }, seq);
+            Send(new Abort { Text = "Pedras T insuficientes" }, seq);
             return;
         }
 
@@ -800,20 +802,20 @@ public partial class Player
         int index = _context.InventoryItems.FindIndex(it => it.Id == msg.ItemId);
         if (index < 0)
         {
-            Send(new Abort { Text = "ไม่พบไอเทมในกระเป๋า" }, seq);
+            Send(new Abort { Text = "O item não foi encontrado na mochila." }, seq);
             return;
         }
         Item item = _context.InventoryItems[index];
         if (item.Ext is not ArtifactCapsule capsule)
         {
-            Send(new Abort { Text = "ไอเทมนี้ไม่ใช่สิ่งปลูกสร้างที่ห่อไว้" }, seq);
+            Send(new Abort { Text = "Este item não é uma construção embalada." }, seq);
             return;
         }
 
         MergedBlueprint blueprint = BlueprintStore.GetBlueprint(capsule.BlueprintId);
         if (blueprint == null)
         {
-            Send(new Abort { Text = "ไม่รู้จักแบบแปลนของสิ่งปลูกสร้างนี้" }, seq);
+            Send(new Abort { Text = "A planta desta construção não foi reconhecida." }, seq);
             return;
         }
 
@@ -835,7 +837,7 @@ public partial class Player
         if (_world.ArtifactManager.FindOverlapping(msg.Tile, size, msg.Floor) is { } blocking)
         {
             Console.WriteLine($"[สร้าง] ปฏิเสธ {Short(EntityId)}: วางทับ {blocking[..Math.Min(8, blocking.Length)]}");
-            Send(new Abort { Text = "ตรงนี้มีของวางอยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Este local já está ocupado." }, seq);
             return;
         }
 
@@ -922,7 +924,7 @@ public partial class Player
         blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
         if (blueprint == null)
         {
-            error = "ไม่รู้จักแบบแปลนของหลังนี้";
+            error = "A planta desta construção não foi reconhecida.";
             return false;
         }
         return true;
@@ -947,12 +949,12 @@ public partial class Player
 
         if (sent == null || sent.Count == 0)
         {
-            error = "ไม่ได้เลือกวัสดุ";
+            error = "Nenhum material foi selecionado.";
             return false;
         }
         if (blueprint.Slots == null || blueprint.Slots.Length == 0)
         {
-            error = "แบบแปลนนี้ไม่มีช่องวัสดุ";
+            error = "Esta planta de construção não possui espaços de materiais.";
             return false;
         }
 
@@ -968,7 +970,7 @@ public partial class Player
             Yaml.BlueprintSlot slot = blueprint.Slots.FirstOrDefault(s => s?.slot_id == slotId);
             if (slot == null)
             {
-                error = $"แบบแปลนนี้ไม่มีช่อง {slotId}";
+                error = $"Esta planta de construção não possui o espaço {slotId}";
                 return false;
             }
 
@@ -976,7 +978,7 @@ public partial class Player
             int have = already.TryGetValue(slotId, out List<Item> list) ? list?.Count ?? 0 : 0;
             if (have + ids.Length > capacity)
             {
-                error = $"ช่อง {slotId} ใส่ได้อีกแค่ {Math.Max(0, capacity - have)} ชิ้น";
+                error = $" espaços{slotId} pode receber apenas mais {Math.Max(0, capacity - have)} unidades";
                 return false;
             }
 
@@ -986,18 +988,18 @@ public partial class Player
                 // ห้ามใช้ไอเทมชิ้นเดียวกันซ้ำสองช่อง — เหตุผลเดียวกับระบบคราฟต์
                 if (string.IsNullOrEmpty(itemId) || !used.Add(itemId))
                 {
-                    error = "วัสดุซ้ำหรือไม่ถูกต้อง";
+                    error = "Materiais repetidos ou inválidos.";
                     return false;
                 }
                 Item? item = FindInventoryItem(itemId);
                 if (!item.HasValue)
                 {
-                    error = "ไม่พบวัสดุในกระเป๋า";
+                    error = "Os materiais não foram encontrados na mochila.";
                     return false;
                 }
                 if (!MatchesBuildSlot(item.Value, slot))
                 {
-                    error = $"วัสดุไม่ตรงเงื่อนไขช่อง {slotId}";
+                    error = $"Os materiais não atendem aos requisitos do espaço {slotId}";
                     return false;
                 }
                 items.Add(item.Value);
@@ -1007,7 +1009,7 @@ public partial class Player
 
         if (picked.Count == 0)
         {
-            error = "ไม่ได้เลือกวัสดุ";
+            error = "Nenhum material foi selecionado.";
             return false;
         }
         return true;
@@ -1062,7 +1064,7 @@ public partial class Player
             int have = stored.TryGetValue(slot.slot_id, out List<Item> list) ? list?.Count ?? 0 : 0;
             if (have < need)
             {
-                error = $"ช่อง {slot.slot_id} ยังขาดวัสดุอีก {need - have} ชิ้น";
+                error = $" espaços{slot.slot_id} ainda precisa de {need - have} unidades";
                 return false;
             }
         }
@@ -1080,13 +1082,13 @@ public partial class Player
 
         if (string.IsNullOrEmpty(toolItemId))
         {
-            error = "ต้องใช้เครื่องมือ";
+            error = "Requer uma ferramenta";
             return false;
         }
         Item? tool = FindInventoryItem(toolItemId);
         if (!tool.HasValue || !MatchesAnyTag(tool.Value, blueprint.ToolTags))
         {
-            error = "เครื่องมือใช้สร้างหลังนี้ไม่ได้";
+            error = "Esta ferramenta não pode ser usada nesta construção.";
             return false;
         }
         return true;

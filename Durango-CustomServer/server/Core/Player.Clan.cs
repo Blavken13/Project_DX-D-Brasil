@@ -1509,7 +1509,7 @@ public partial class Player
         //   (เงินในกระเป๋าฝั่งเซิร์ฟไม่ถูกหัก เพราะเราไม่ได้แตะ Wallet เลย — ถูกต้องแล้ว)
         _connection.Recv(delegate(DonateToClanFund msg, PacketHeader header)
         {
-            Send(new Abort { Text = "เซิร์ฟเวอร์นี้ยังไม่เปิดระบบเผ่า จึงยังบริจาคเข้าคลังเผ่าไม่ได้" }, header.Seq);
+            Send(new Abort { Text = "As doações ao armazém do clã ainda não estão disponíveis neste servidor." }, header.Seq);
         });
 
         // ── กลุ่มที่ 3: ของรางวัล/บัฟของเผ่า (ยิงมาแบบไม่รอคำตอบ) ─────────────────────

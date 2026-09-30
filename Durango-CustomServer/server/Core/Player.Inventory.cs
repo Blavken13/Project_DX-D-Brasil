@@ -57,7 +57,7 @@ public partial class Player
     /// ผ่าน MakeSection) แต่ MakeSection (3686) อยู่คนละหมวดในเอกสาร ⇒ ถ้าไม่มีแท็บสักอันตั้งแต่แรก
     /// ผู้เล่นจะเปิดคลังมาเจอหน้าว่างและสร้างแท็บไม่ได้ จึงแจกให้หนึ่งแท็บ
     /// </summary>
-    private const string DefaultWarehouseSection = "창고";
+    private const string DefaultWarehouseSection = "Armazém";
 
     /// <summary>
     /// **ค่าของเรา** — ไอเทมที่ถูก "ล็อก" ของผู้เล่นคนนี้ เก็บในหน่วยความจำต่อ connection
@@ -362,19 +362,19 @@ public partial class Player
 
     private void HandleMakeSectionMsg(MakeSection msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "สร้างแท็บคลัง"))
+        if (!MayTouchArtifact(msg.EntityId, "Criar aba do armazém"))
         {
-            Send(new Abort { Text = "ทำกับสิ่งปลูกสร้างนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível realizar esta ação nesta construção." }, seq);
             return;
         }
         if (string.IsNullOrWhiteSpace(msg.SectionName))
         {
-            Send(new Abort { Text = "ต้องตั้งชื่อแท็บ" }, seq);
+            Send(new Abort { Text = "Defina um nome para a aba." }, seq);
             return;
         }
         if (!WarehouseStore.MakeSection(msg.EntityId, msg.SectionName))
         {
-            Send(new Abort { Text = "มีแท็บชื่อนี้อยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Já existe uma aba com este nome." }, seq);
             return;
         }
         Console.WriteLine($"[คลัง] {Short(EntityId)} เพิ่มแท็บ '{msg.SectionName}' ใน {msg.EntityId[..Math.Min(8, msg.EntityId.Length)]}");
@@ -387,13 +387,13 @@ public partial class Player
         int idx = _context.InventoryItems.FindIndex(it => it.Id == msg.ItemId);
         if (idx < 0)
         {
-            Send(new Abort { Text = "ไม่พบไอเทมในกระเป๋า" }, seq);
+            Send(new Abort { Text = "O item não foi encontrado na mochila." }, seq);
             return;
         }
         Item item = _context.InventoryItems[idx];
         if (_lockedItemIds.Contains(item.Id))
         {
-            Send(new Abort { Text = "ไอเทมถูกล็อกอยู่" }, seq);
+            Send(new Abort { Text = "Este item está bloqueado." }, seq);
             return;
         }
         // ── [6 ก.ย. 2026] บังเหียนที่มีสัตว์เชื่องแล้วอยู่ข้างใน = "ผูกพัน" (귀속) ──────────
@@ -409,7 +409,7 @@ public partial class Player
         {
             if (!TryImprintRein(item, out string imprintError))
             {
-                Send(new Abort { Text = imprintError ?? "ใช้บังเหียนนี้ไม่ได้" }, seq);
+                Send(new Abort { Text = imprintError ?? "Não é possível usar este arreio." }, seq);
                 return;
             }
             _context.InventoryItems.RemoveAt(idx);
@@ -433,7 +433,7 @@ public partial class Player
             // ไม่ใช่ของกิน — ของใช้ชนิดอื่น (ยา/กล่องสุ่ม/หนังสือสูตร) ยังไม่มีระบบรองรับ
             // ตอบ Abort เพื่อให้ข้อความขึ้นบนจอ ดีกว่าเงียบแล้วผู้เล่นกดซ้ำไปเรื่อย ๆ
             // (client/GameManager.cs:303-306 DefaultAbortHandler → UIManager.SystemMsg)
-            Send(new Abort { Text = "ยังใช้ไอเทมชนิดนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Este tipo de item ainda não pode ser usado." }, seq);
             return;
         }
 
@@ -526,7 +526,7 @@ public partial class Player
         int idx = _context.InventoryItems.FindIndex(it => it.Id == msg.ItemId);
         if (idx < 0)
         {
-            Send(new Abort { Text = "ไม่พบไอเทมที่จะซ่อม" }, seq);
+            Send(new Abort { Text = "O item a reparar não foi encontrado." }, seq);
             return;
         }
         // ต้องมีชุดซ่อมอยู่ในกระเป๋าจริงทุกชิ้น ไม่งั้นซ่อมฟรี
@@ -543,14 +543,16 @@ public partial class Player
         }
         if (kits.Count == 0)
         {
-            Send(new Abort { Text = "ไม่มีชุดซ่อม" }, seq);
+            Send(new Abort { Text = "Nenhum kit de reparo disponível." }, seq);
             return;
         }
 
         Item item = _context.InventoryItems[idx];
         // Durability ของไอเทมเป็นสัดส่วน 0..1 (Core/Cheats.cs:31 สร้างด้วย Gauge(1f, 0f, node(0,1)))
         // ⇒ "เต็มหลอด" คือเส้นแบนที่ค่า max ไม่ใช่ตัวเลขดิบของ prototype
-        item.Durability = new Gauge(1f, 0f, new[] { new GaugeNode(0.0, 1f) });
+        ItemDurability.Normalize(ref item);
+        float maximum = item.Durability?.Max() ?? ItemDurability.Maximum(item.Prototype, item.Level);
+        item.Durability = new Gauge(maximum, 0f, new[] { new GaugeNode(0.0, maximum) });
         _context.InventoryItems[idx] = item;
         _context.InventoryItems.RemoveAll(it => kits.Contains(it.Id));
         foreach (string kitId in kits) _lockedItemIds.Remove(kitId);
@@ -587,7 +589,7 @@ public partial class Player
     {
         if (msg.Channel == ColorChannel.Invalid || msg.Materials == null || msg.Materials.Count == 0)
         {
-            Send(new Abort { Text = "ข้อมูลย้อมสีไม่ครบ" }, seq);
+            Send(new Abort { Text = "Os dados de tingimento estão incompletos." }, seq);
             return;
         }
         var ids = msg.Materials.Values
@@ -611,7 +613,7 @@ public partial class Player
         }
         if (targetIdx < 0 || dyeIdx < 0)
         {
-            Send(new Abort { Text = "ย้อมสีชิ้นนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível tingir este item." }, seq);
             return;
         }
 
@@ -673,7 +675,7 @@ public partial class Player
             SendEquipments();
             return;
         }
-        Send(new Abort { Text = "ยังมีชุดสวมใส่ชุดเดียว" }, seq);
+        Send(new Abort { Text = "Você só possui um conjunto de equipamentos." }, seq);
     }
 
     // ══════════════════════════════════════════════════════════════════════════════════
@@ -923,7 +925,7 @@ public partial class Player
     {
         // ⚠️ ตู้/คลังผูกกับสิ่งปลูกสร้าง ⇒ ต้องเป็นเจ้าของและอยู่ใกล้ ไม่งั้นเดินผ่านบ้านคนอื่น
         // จำ entity id จากแพ็กเก็ต แล้วขนของทั้งคลังเข้ากระเป๋าตัวเองได้โดยเจ้าของไม่รู้ตัว
-        if (!MayTouchArtifact(msg.EntityId, "เปิดตู้")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Abrir armário")) return;
         WarehouseStore.EnsureDefaultSection(msg.EntityId, DefaultWarehouseSection);
         Send(new Messages.Warehouse
         {
@@ -947,7 +949,7 @@ public partial class Player
     {
         // ⚠️ ตู้/คลังผูกกับสิ่งปลูกสร้าง ⇒ ต้องเป็นเจ้าของและอยู่ใกล้ ไม่งั้นเดินผ่านบ้านคนอื่น
         // จำ entity id จากแพ็กเก็ต แล้วขนของทั้งคลังเข้ากระเป๋าตัวเองได้โดยเจ้าของไม่รู้ตัว
-        if (!MayTouchArtifact(msg.EntityId, "ดูของในตู้")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Ver conteúdo do armário")) return;
         List<Item> items = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         Send(new SectionItems
         {
@@ -973,7 +975,7 @@ public partial class Player
         List<Item> section = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         if (section == null)
         {
-            Send(new Abort { Text = "ไม่พบแท็บคลังนี้" });
+            Send(new Abort { Text = "Esta aba do armazém não foi encontrada." });
             return;
         }
         int free = ItemConstants.WarehouseSectionSize - WarehouseStore.UsedSize(msg.EntityId, msg.SectionName);
@@ -993,7 +995,7 @@ public partial class Player
         }
         if (moved.Count == 0)
         {
-            Send(new Abort { Text = "คลังเต็ม" });
+            Send(new Abort { Text = "O armazém está cheio." });
             return;
         }
         Send(new InventoryUpdated
@@ -1014,7 +1016,7 @@ public partial class Player
     {
         // ⚠️ ตู้/คลังผูกกับสิ่งปลูกสร้าง ⇒ ต้องเป็นเจ้าของและอยู่ใกล้ ไม่งั้นเดินผ่านบ้านคนอื่น
         // จำ entity id จากแพ็กเก็ต แล้วขนของทั้งคลังเข้ากระเป๋าตัวเองได้โดยเจ้าของไม่รู้ตัว
-        if (!MayTouchArtifact(msg.EntityId, "เอาของออกจากตู้")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Retirar itens do armário")) return;
         List<Item> section = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         if (section == null) return;
         int free = InventoryMaxSizeMirroredFromPlayerCs
@@ -1035,7 +1037,7 @@ public partial class Player
         }
         if (moved.Count == 0)
         {
-            Send(new Abort { Text = "กระเป๋าเต็ม" });
+            Send(new Abort { Text = "A mochila está cheia." });
             return;
         }
         Send(new InventoryUpdated
@@ -1081,7 +1083,7 @@ public partial class Player
         }
         if (moved.Count == 0)
         {
-            Send(new Abort { Text = "แท็บปลายทางเต็ม" });
+            Send(new Abort { Text = "A aba de destino está cheia." });
             return;
         }
         SendWarehouseUpdated(msg.EntityId, msg.SourceSectionName, null, moved.Select(it => it.Id).ToArray());
@@ -1169,44 +1171,44 @@ public partial class Player
         // ⚠️ ห้ามตอบ CargoReceiver ปลอม เพราะของที่ส่งไปจะหายจริง ๆ (ไม่มีที่เก็บปลายทาง)
         _connection.Recv(delegate(SendCargo msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีระบบส่งของข้ามเกาะ" }, header.Seq);
+            Send(new Abort { Text = "O envio de itens entre ilhas ainda não está disponível." }, header.Seq);
         });
         // ยิงทิ้งอัตโนมัติตอนเปิดหน้าต่าง — เงียบไว้
         _connection.Recv(delegate(ActivateCargoReceiver msg, PacketHeader header) { });
         // ผู้เล่นกดปุ่มยึดครองเอง (client/Durango.UI/CargoWarpholeGroup.cs:125-132 ไม่รอ reply)
         _connection.Recv(delegate(OccupyCargoWarphole msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีระบบยึดครองตู้ขนส่ง" });
+            Send(new Abort { Text = "O sistema de captura de contêineres ainda não está disponível." });
         });
         // ตั้งค่าภาษี/โอนเข้ากองทุนแคลน — ยังไม่มีระบบแคลนและเงิน
         _connection.Recv(delegate(SetCargoWarpholeTaxRate msg, PacketHeader header) { });
         // client/EstateSystem.cs:620-627 รอ ClanCargoWarphole — ไม่มีแคลน จึงตอบ Abort ให้เลิกรอ
         _connection.Recv(delegate(CargoWarpholeTaxToClanFund msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีระบบแคลน" }, header.Seq);
+            Send(new Abort { Text = "O sistema de clãs ainda não está disponível." }, header.Seq);
         });
         // ── กรงสัตว์ ────────────────────────────────────────────────────────────────────
         // client/PetManager.cs:890-905 และ :1117-1132 ใช้ .All(Packet.IsSuccess) ⇒ Abort = onResult(false)
         _connection.Recv(delegate(TakeOutFromCage msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีระบบกรงสัตว์" }, header.Seq);
+            Send(new Abort { Text = "O sistema de jaulas ainda não está disponível." }, header.Seq);
         });
         _connection.Recv(delegate(TakeOutReinFromCage msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีระบบกรงสัตว์" }, header.Seq);
+            Send(new Abort { Text = "O sistema de jaulas ainda não está disponível." }, header.Seq);
         });
         // ── ที่ดิน/สมาคม ────────────────────────────────────────────────────────────────
         // client/EstateSystem.cs:678-692 .All(Packet.IsSuccess) — ยังไม่มีระบบแต้มบุกเบิก
         // ⚠️ ห้ามตอบ OK เด็ดขาด เพราะ client จะถือว่าไอเทมถูกใช้ไปแล้ว
         _connection.Recv(delegate(UseItemsForPioneerPoint msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่มีระบบแต้มบุกเบิก" }, header.Seq);
+            Send(new Abort { Text = "O sistema de pontos de pioneirismo ainda não está disponível." }, header.Seq);
         });
         // client/FactionSystem.cs:397-406 ยิงทิ้งไม่รอ reply — ผู้เล่นเป็นคนกดส่งของให้สมาคม
         _connection.Recv(delegate(DeliverItems msg, PacketHeader header)
         {
             Console.WriteLine($"[item] DeliverItems ({msg.FactionType}) {msg.ItemIds?.Length ?? 0} ชิ้น — ยังไม่มีระบบสมาคม");
-            Send(new Abort { Text = "ยังไม่มีระบบสมาคม" });
+            Send(new Abort { Text = "O sistema de associações ainda não está disponível." });
         });
     }
 
@@ -1239,6 +1241,7 @@ public partial class Player
         }
 
         private static readonly Dictionary<string, Store> Stores = new();
+        public static void Remove(string entityId) => Stores.Remove(entityId);
 
         private static Store Of(string entityId, bool create)
         {
@@ -1351,7 +1354,7 @@ public partial class Player
                     if (!pair.Value.Sections.TryGetValue(section, out List<Item> items)) continue;
                     // ⚠️ ของในตู้ก็ผ่าน JSON มาเหมือนกระเป๋าผู้เล่น ⇒ Item.Ext เป็น JObject
                     // ไม่ซ่อมก่อน = แพ็กเก็ตตู้ทั้งใบเลื่อนช่อง (เหตุผลเต็มที่ ItemExtRepair)
-                    ItemExtRepair.Normalize(items, $"ตู้ {pair.Key[..Math.Min(8, pair.Key.Length)]}");
+                    ItemExtRepair.Normalize(items, $"Armário {pair.Key[..Math.Min(8, pair.Key.Length)]}");
                     store.Sections[section] = items ?? new List<Item>();
                     store.Order.Add(section);
                 }

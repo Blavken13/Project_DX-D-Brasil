@@ -32,6 +32,7 @@ internal static class ItemColorRepair
     public static void Normalize([CanBeNull] List<Item> items, string where)
     {
         if (items == null || items.Count == 0) return;
+        ItemDurability.Normalize(items);
         int repaired = 0;
         for (int i = 0; i < items.Count; i++)
         {

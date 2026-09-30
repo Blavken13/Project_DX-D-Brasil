@@ -323,7 +323,7 @@ public partial class Player
         if (string.IsNullOrEmpty(ownerId)) ownerId = house.FounderEntityId;
         string ownerName = ResolvePlayerName(ownerId);
         if (string.IsNullOrEmpty(ownerName)) return null;
-        string fmt = MoCatalog.Translate("{0} 님의 집");
+        string fmt = MoCatalog.Translate("Casa de {0}");
         return string.Format(fmt, ownerName);
     }
 

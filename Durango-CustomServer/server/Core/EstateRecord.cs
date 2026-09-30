@@ -21,6 +21,9 @@ public class EstateRecord
 	[JsonProperty("size")]
 	public int Size;
 
+	[JsonProperty("largest_size")]
+	public int LargestSize;
+
 	[JsonProperty("region_id")]
 	public string RegionId;
 

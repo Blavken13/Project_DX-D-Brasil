@@ -65,9 +65,9 @@ public partial class Player
     {
         // ข้อความ Abort ต้องมี Text เสมอ — default(Abort) ทำให้ Text เป็น null แล้วฝั่งเกมแครช
         // ที่ client/GameManager.cs:309-312 DefaultAbortHandler → LimitText(null).Length
-        const string catapultMsg = "ยังไม่เปิดใช้งานเครื่องยิงหิน";
-        const string balloonMsg = "ยังไม่เปิดใช้งานบอลลูน";
-        const string acceleratorMsg = "ยังไม่เปิดใช้งานเครื่องเร่งวาร์ป";
+        const string catapultMsg = "As catapultas ainda não estão disponíveis.";
+        const string balloonMsg = "Os balões ainda não estão disponíveis.";
+        const string acceleratorMsg = "Os aceleradores de teleporte ainda não estão disponíveis.";
 
         // ── MountVehicle (327918) — ขึ้นขี่พาหนะที่เป็นสิ่งปลูกสร้าง (ตอนนี้มีแค่เครื่องยิงหิน) ──
         // จุดยิง: client/PetManager.cs:579-591 Interaction.MountVehicle → ส่ง {EntityId, Tile}

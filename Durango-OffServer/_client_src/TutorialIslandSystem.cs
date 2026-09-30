@@ -104,12 +104,12 @@ public class TutorialIslandSystem : GameSystem<TutorialIslandSystem>
 	{
 		if (_tutorialBoat == null)
 		{
-			return "ย\u0e31งไม\u0e48เห\u0e47นแพ (AppearTutorialBoat)";
+			return "A jangada ainda não foi encontrada (AppearTutorialBoat).";
 		}
 		if (!_hasSession)
 		{
 			SendParticipateTutorialBoat(_tutorialBoat.EntityId, _tutorialBoat.WorldTile);
-			return "ย\u0e31งไม\u0e48ม\u0e35เซสช\u0e31น — ส\u0e48ง Participate แล\u0e49ว ลองใหม\u0e48";
+			return "Nenhuma sessão ativa. A solicitação Participate foi enviada; tente novamente.";
 		}
 		if (!_boatSlots.IsInit)
 		{
@@ -128,7 +128,7 @@ public class TutorialIslandSystem : GameSystem<TutorialIslandSystem>
 		}
 		if (num == 0)
 		{
-			return "ไม\u0e48ม\u0e35ว\u0e31ตถ\u0e38ด\u0e34บในกระเป\u0e4bาท\u0e35\u0e48ใส\u0e48แพได\u0e49";
+			return "Não há materiais na mochila que possam ser colocados na jangada.";
 		}
 		SendPutTutorialBoatMaterials();
 		return null;
@@ -138,7 +138,7 @@ public class TutorialIslandSystem : GameSystem<TutorialIslandSystem>
 	{
 		if (_tutorialBoat == null)
 		{
-			return "ย\u0e31งไม\u0e48เห\u0e47นแพ (AppearTutorialBoat)";
+			return "A jangada ainda não foi encontrada (AppearTutorialBoat).";
 		}
 		SendDepartTutorial(_tutorialBoat);
 		return null;

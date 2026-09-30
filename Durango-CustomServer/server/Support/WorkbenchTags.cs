@@ -108,7 +108,7 @@ public static class WorkbenchTags
         try
         {
             var root = JObject.Parse(File.ReadAllText(path));
-            if (root["โต๊ะ"] is not JObject benches)
+            if (root["Bancada"] is not JObject benches)
             {
                 Console.WriteLine($"[โต๊ะคราฟต์] ⚠️ {path} ไม่มีคีย์ \"โต๊ะ\"");
                 return;

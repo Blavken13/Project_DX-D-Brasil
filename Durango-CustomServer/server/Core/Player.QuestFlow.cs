@@ -68,7 +68,7 @@ public partial class Player
         {
             if (TryClaimPlayableQuestReward(msg.QuestId, header.Seq)) return;
             Console.WriteLine($"[เควส] {Short(EntityId)} ขอรับรางวัลเควส '{msg.QuestId}' — นอกเส้น Daily/Once เฟส 1");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการรับรางวัลเควส" }, header.Seq);
+            Send(new Abort { Text = "O resgate de recompensas de missões ainda não está disponível." }, header.Seq);
         });
 
         // ── RequestQuestScoreReward (237925) — กดรับรางวัลตามคะแนนเควส ─────────────
@@ -92,7 +92,7 @@ public partial class Player
             Console.WriteLine($"[เควส] {Short(EntityId)} ขอรับรางวัลคะแนน {msg.Score} หมวด '{msg.Category}' — เซิร์ฟยังไม่มีตารางรางวัลคะแนน");
 
             Send(default(ReplySequenceMark), header.Seq);   // เปิดชุดคำตอบต่อเนื่อง
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานรางวัลคะแนนเควส" }, header.Seq);
+            Send(new Abort { Text = "As recompensas por pontos de missão ainda não estão disponíveis." }, header.Seq);
             SendEmptyQuestScoreInfos(msg.Category, header.Seq);
             Send(default(ReplySequenceMark), header.Seq);   // ปิดชุด — ไม่ปิด handler ฝั่งเกมค้าง
         });
@@ -123,7 +123,7 @@ public partial class Player
         {
             int itemCount = msg.ItemIds?.Length ?? 0;
             Console.WriteLine($"[เควส] {Short(EntityId)} คุยกับ NPC เนื้อเรื่อง {msg.Npc} (ยื่นของ {itemCount} ชิ้น) — ยังไม่มีเอนจินเควส · ไม่กินของ");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานเนื้อเรื่องกับ NPC นี้" }, header.Seq);
+            Send(new Abort { Text = "A história deste NPC ainda não está disponível." }, header.Seq);
         });
 
         // ── RequestEpicWarp (77777) — วาร์ปตามเนื้อเรื่องหลังจบหนังบท ──────────────
@@ -138,7 +138,7 @@ public partial class Player
         _connection.Recv(delegate(RequestEpicWarp msg, PacketHeader header)
         {
             Console.WriteLine($"[เควส] {Short(EntityId)} ขอวาร์ปตามเนื้อเรื่อง — เซิร์ฟยังไม่มีเกาะของบทเนื้อเรื่อง");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการเดินทางตามเนื้อเรื่อง" }, header.Seq);
+            Send(new Abort { Text = "As viagens da história ainda não estão disponíveis." }, header.Seq);
         });
 
         // ── RequestReturnerGuideAction (3450984) — ปุ่มพิเศษของไกด์ "ผู้กลับ" ───────
@@ -153,7 +153,7 @@ public partial class Player
         _connection.Recv(delegate(RequestReturnerGuideAction msg, PacketHeader header)
         {
             Console.WriteLine($"[ผู้กลับ] {Short(EntityId)} ขอทำ {msg.Action} — เซิร์ฟยังไม่มีระบบผู้กลับ");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานสิทธิพิเศษของผู้กลับ" }, header.Seq);
+            Send(new Abort { Text = "Os benefícios de retorno ainda não estão disponíveis." }, header.Seq);
         });
 
         // ── RequestArchipelagoRegionClear (240002) — กด "รายงานภารกิจบุกเบิก" ───────
@@ -168,7 +168,7 @@ public partial class Player
         _connection.Recv(delegate(RequestArchipelagoRegionClear msg, PacketHeader header)
         {
             Console.WriteLine($"[หมู่เกาะ] {Short(EntityId)} รายงานภารกิจบุกเบิกจบ — เซิร์ฟยังไม่มีระบบภารกิจหมู่เกาะ");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานภารกิจบุกเบิกหมู่เกาะ" }, header.Seq);
+            Send(new Abort { Text = "As missões de pioneirismo dos arquipélagos ainda não estão disponíveis." }, header.Seq);
         });
 
         // ── ReissueArchipelagoTodos (240005) — กด "รับภารกิจบุกเบิกใหม่" ────────────
@@ -180,7 +180,7 @@ public partial class Player
         _connection.Recv(delegate(ReissueArchipelagoTodos msg, PacketHeader header)
         {
             Console.WriteLine($"[หมู่เกาะ] {Short(EntityId)} ขอภารกิจบุกเบิกชุดใหม่ — เซิร์ฟยังไม่มีระบบภารกิจหมู่เกาะ");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานภารกิจบุกเบิกหมู่เกาะ" }, header.Seq);
+            Send(new Abort { Text = "As missões de pioneirismo dos arquipélagos ainda não estão disponíveis." }, header.Seq);
         });
 
         // ── RequestFullCountPOIsReward (9031) — รางวัล "สำรวจจุดสำคัญครบทั้งเกาะ" ───
@@ -196,7 +196,7 @@ public partial class Player
         _connection.Recv(delegate(RequestFullCountPOIsReward msg, PacketHeader header)
         {
             Console.WriteLine($"[แผนที่] {Short(EntityId)} ขอรางวัลสำรวจครบของเกาะ '{msg.RegionId}' — เซิร์ฟยังไม่มีตารางรางวัลสำรวจ");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานรางวัลสำรวจจุดสำคัญครบ" }, header.Seq);
+            Send(new Abort { Text = "As recompensas por explorar todos os pontos de interesse ainda não estão disponíveis." }, header.Seq);
         });
 
         // ── RequestDumpedPersonalIsland (381922) — ดัมป์เกาะส่วนตัวออกมาเป็นไฟล์ ────
@@ -214,7 +214,7 @@ public partial class Player
         _connection.Recv(delegate(RequestDumpedPersonalIsland msg, PacketHeader header)
         {
             Console.WriteLine($"[debug] {Short(EntityId)} ขอดัมป์เกาะส่วนตัวของ {Short(msg.PlayerEntityId)} — ยังไม่รองรับ");
-            Send(new Abort { Text = "ยังไม่รองรับการดัมป์เกาะส่วนตัว" }, header.Seq);
+            Send(new Abort { Text = "A exportação de ilhas particulares ainda não está disponível." }, header.Seq);
         });
     }
 

@@ -51,7 +51,7 @@ namespace Durango.Online;
 public partial class Player
 {
     // ข้อความกลางของทุก Abort ในไฟล์นี้ — ต่อท้ายด้วยรายละเอียดของแต่ละคำสั่ง
-    private const string FactionNotAvailableText = "ยังไม่เปิดใช้งานระบบกลุ่ม/ภารกิจกลุ่มบนเซิร์ฟเวอร์นี้";
+    private const string FactionNotAvailableText = "O sistema de grupos e missões de grupo ainda não está disponível neste servidor.";
 
     private void RegisterFactionHandlers()
     {
@@ -111,7 +111,7 @@ public partial class Player
         // เราให้แต้มไม่ได้ ⇒ ตอบ Abort เพื่อให้ผู้เล่นที่เพิ่งกดรู้ว่าทำไมไม่มีอะไรเกิดขึ้น
         _connection.Recv(delegate(ReportFactionProp msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังแจ้งพิกัดให้กลุ่มไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível informar coordenadas ao grupo" }, header.Seq);
         });
 
         // ── GetFactionDeliveryCondition (3612) — เงื่อนไขของ "คลังส่งของ" ประจำค่ายกลุ่ม ───
@@ -152,7 +152,7 @@ public partial class Player
         // นั่งรอภารกิจที่ไม่มีวันมา ส่วน "ป้ายล้มเหลว" สื่อความจริงตรงกว่า
         _connection.Recv(delegate(RecommendMissions msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังขอรับภารกิจไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível solicitar missões" }, header.Seq);
         });
 
         // ── AcceptMission (3623) — กดรับภารกิจที่เลือกไว้ ─────────────────────────────────
@@ -164,7 +164,7 @@ public partial class Player
         // ⇒ ตอบ Abort ให้ผู้เล่นเห็นเหตุผล ดีกว่าเงียบแล้วปุ่มเหมือนกดไม่ติด
         _connection.Recv(delegate(AcceptMission msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังรับภารกิจไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível aceitar missões" }, header.Seq);
         });
 
         // ── CancelMission (3624) — ยกเลิกภารกิจที่ทำค้างอยู่ ──────────────────────────────
@@ -209,7 +209,7 @@ public partial class Player
         // เติมสำเร็จทั้งที่ไม่มีอะไรเกิดขึ้น = โกหกผู้เล่นตรง ๆ ⇒ ตอบ Abort เท่านั้น
         _connection.Recv(delegate(RechargeMissionShuffleCount msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังเติมจำนวนสุ่มภารกิจไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível repor as tentativas de sorteio de missões" }, header.Seq);
         });
 
         // ── ShuffleMission (3627) — "ขอภารกิจอื่นแทนอันนี้" (ใช้โควตาสุ่ม) ─────────────────
@@ -219,7 +219,7 @@ public partial class Player
         // เหตุผลเดียวกับ 3626: ตอบสำเร็จทั้งที่ไม่ได้สุ่มอะไร = หลอกผู้เล่น ⇒ Abort
         _connection.Recv(delegate(ShuffleMission msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังสุ่มภารกิจใหม่ไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível sortear novas missões" }, header.Seq);
         });
 
         // ── GetRecommendMissionCost (3628) — ถามราคา "รับภารกิจถัดไปทันที" (ข้ามคูลไทม์) ──
@@ -238,7 +238,7 @@ public partial class Player
         // ผู้เล่นเพิ่งกด "จ่าย" ไป ต้องรู้ว่าไม่มีอะไรเกิดขึ้นและไม่ได้ถูกหักอะไร)
         _connection.Recv(delegate(RecommendMissionImmediately msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังรับภารกิจถัดไปทันทีไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível receber a próxima missão imediatamente" }, header.Seq);
         });
 
         // ── CheckSequenceMissionCleared (3631) — ถามว่าภารกิจตามลำดับอันนี้ผ่านแล้วหรือยัง ──
@@ -267,7 +267,7 @@ public partial class Player
         // ⇒ Abort (ผู้เล่นกดปุ่มเอง ต้องได้คำตอบ ไม่ใช่ปุ่มด้าน)
         _connection.Recv(delegate(SkipTutorialMission msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังข้ามภารกิจบทเรียนไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível pular missões do tutorial" }, header.Seq);
         });
 
         // ── SendFactionSupportRequest (725982) — ส่งของช่วยเหลือตาม "คำขอสนับสนุน" ของกลุ่ม ─
@@ -280,7 +280,7 @@ public partial class Player
         // และการตอบ AcceptedSupportRewards = ต้องแต่งรางวัลปลอมขึ้นมา ซึ่งห้ามเด็ดขาด ⇒ Abort
         _connection.Recv(delegate(SendFactionSupportRequest msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ยังส่งของสนับสนุนให้กลุ่มไม่ได้" }, header.Seq);
+            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível enviar suprimentos ao grupo" }, header.Seq);
         });
     }
 

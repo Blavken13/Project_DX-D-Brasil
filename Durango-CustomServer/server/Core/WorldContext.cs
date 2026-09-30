@@ -18,6 +18,9 @@ public class WorldContext
     [JsonProperty("terrain_id")]
     public string TerrainId;
 
+    [JsonProperty("is_settlement_island")]
+    public bool IsSettlementIsland;
+
     [JsonProperty("artifacts")]
     public Dictionary<string, AppearArtifact> Artifacts;
 
@@ -111,6 +114,9 @@ public class WorldContext
     [JsonProperty("safehouse_ecology_version")]
     public int SafehouseEcologyVersion;
 
+    [JsonProperty("wild_structure_expirations")]
+    public Dictionary<string, double> WildStructureExpirations = new();
+
     [JsonProperty("crater_resources")]
     public Dictionary<string, List<NaturalInfo>> CraterResources = new();
 
@@ -185,7 +191,7 @@ public class WorldContext
                 if (addons._AddOns == null) continue;
                 foreach (int slot in new List<int>(addons._AddOns.Keys))
                 {
-                    addons._AddOns[slot] = ItemExtRepair.Fix(addons._AddOns[slot], "ของติดบ้าน");
+                    addons._AddOns[slot] = ItemExtRepair.Fix(addons._AddOns[slot], "Itens da casa");
                 }
                 ArtifactAddOns[entityId] = addons;
             }
@@ -205,7 +211,7 @@ public class WorldContext
                     if (items == null) continue;
                     for (int i = 0; i < items.Count; i++)
                     {
-                        items[i] = ItemExtRepair.Fix(items[i], "วัสดุก่อสร้าง");
+                        items[i] = ItemExtRepair.Fix(items[i], "Material de construção");
                     }
                 }
             }
@@ -215,8 +221,8 @@ public class WorldContext
         foreach (string entityId in new List<string>(ArtifactMannequins.Keys))
         {
             Messages.Mannequin mannequin = ArtifactMannequins[entityId];
-            if (mannequin.Head.HasValue) mannequin.Head = ItemExtRepair.Fix(mannequin.Head.Value, "หุ่นโชว์");
-            if (mannequin.Body.HasValue) mannequin.Body = ItemExtRepair.Fix(mannequin.Body.Value, "หุ่นโชว์");
+            if (mannequin.Head.HasValue) mannequin.Head = ItemExtRepair.Fix(mannequin.Head.Value, "Manequim");
+            if (mannequin.Body.HasValue) mannequin.Body = ItemExtRepair.Fix(mannequin.Body.Value, "Manequim");
             ArtifactMannequins[entityId] = mannequin;
         }
     }

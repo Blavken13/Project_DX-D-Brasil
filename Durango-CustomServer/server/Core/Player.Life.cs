@@ -192,7 +192,7 @@ public partial class Player
         _connection.Recv(delegate(ReceiveAdvisorReward msg, PacketHeader header)
         {
             Console.WriteLine($"[ไกด์] {Short(EntityId)} ขอรับรางวัลที่ปรึกษา '{msg.TitleId}' — ยังไม่มีระบบรางวัล");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบรางวัลที่ปรึกษา" }, header.Seq);
+            Send(new Abort { Text = "As recompensas de conselheiros ainda não estão disponíveis." }, header.Seq);
         });
 
         // ══════════════════════════════════════════════════════════════════════════
@@ -209,7 +209,7 @@ public partial class Player
         _connection.Recv(delegate(AttachAccessory msg, PacketHeader header)
         {
             Console.WriteLine($"[เครื่องประดับ] {Short(EntityId)} ขอติด '{msg.AccessoryId}' — ยังไม่มีสิทธิ์ (ต้องมีระบบแคลน)");
-            Send(new Abort { Text = "ยังไม่มีเครื่องประดับที่ติดได้" }, header.Seq);
+            Send(new Abort { Text = "Nenhum acessório disponível para equipar." }, header.Seq);
         });
 
         // ResetAccessory (9823460) — client/EquipSystem.cs:267-271 (ส่งเมื่อเลือก "ไม่ติดอะไร")
@@ -258,7 +258,7 @@ public partial class Player
         _connection.Recv(delegate(ContactReactingProp msg, PacketHeader header)
         {
             Console.WriteLine($"[prop] {Short(EntityId)} แตะ reacting prop {Short(msg.EntityId)} — เซิร์ฟยังไม่มีระบบนี้");
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบนี้" }, header.Seq);
+            Send(new Abort { Text = "Este sistema ainda não está disponível." }, header.Seq);
         });
 
         // FindTargetEntityPosition (3950) — ไกด์สั่ง "ไปหาของชนิดนี้" แล้วขอพิกัดมาปักลูกศร
@@ -365,7 +365,7 @@ public partial class Player
         if (string.IsNullOrEmpty(_lifeRescuerId))
         {
             Console.WriteLine($"[ช่วยชีวิต] {Short(EntityId)} ยืนยันการชุบชีวิต แต่ไม่มีใครเสนอไว้");
-            Send(new Abort { Text = "ไม่มีใครกำลังช่วยชีวิตคุณอยู่" });
+            Send(new Abort { Text = "Ninguém está tentando salvar você." });
             return;
         }
         // เทียบชื่อคนช่วยด้วย — กัน client ยืนยันข้อเสนอเก่าที่ถูกทับไปแล้ว
@@ -374,7 +374,7 @@ public partial class Player
         {
             Console.WriteLine($"[ช่วยชีวิต] {Short(EntityId)} ยืนยันช้าเกินไป/ไม่ตรงคน — ยกเลิก");
             _lifeRescuerId = null;
-            Send(new Abort { Text = "หมดเวลาช่วยชีวิตแล้ว" });
+            Send(new Abort { Text = "O tempo para receber ajuda acabou." });
             return;
         }
 
@@ -462,26 +462,26 @@ public partial class Player
 
     private void HandleRenameWarehouseSectionMsg(RenameWarehouseSection msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "เปลี่ยนชื่อแท็บคลัง"))
+        if (!MayTouchArtifact(msg.EntityId, "Renomear aba do armazém"))
         {
-            Send(new Abort { Text = "ทำกับสิ่งปลูกสร้างนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível realizar esta ação nesta construção." }, seq);
             return;
         }
         if (string.IsNullOrWhiteSpace(msg.NewName))
         {
-            Send(new Abort { Text = "ต้องตั้งชื่อแท็บ" }, seq);
+            Send(new Abort { Text = "Defina um nome para a aba." }, seq);
             return;
         }
 
         List<string> order = LifeSectionOrder(msg.EntityId);
         if (order == null || !order.Contains(msg.SectionName))
         {
-            Send(new Abort { Text = "ไม่พบแท็บนี้" }, seq);
+            Send(new Abort { Text = "Esta aba não foi encontrada." }, seq);
             return;
         }
         if (order.Contains(msg.NewName))
         {
-            Send(new Abort { Text = "มีแท็บชื่อนี้อยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Já existe uma aba com este nome." }, seq);
             return;
         }
 
@@ -490,14 +490,14 @@ public partial class Player
         List<Item> destination = WarehouseStore.Items(msg.EntityId, msg.NewName, create: true);
         if (destination == null)
         {
-            Send(new Abort { Text = "เปลี่ยนชื่อแท็บไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível renomear a aba." }, seq);
             return;
         }
         if (destination.Count > 0)
         {
             // ไม่ควรเกิด (ชื่อนี้ไม่อยู่ใน Order แต่กลับมีของ) — หยุดไว้ก่อนดีกว่าเอาของไปปนกัน
             Console.WriteLine($"[คลัง] ชื่อ '{msg.NewName}' มีของค้างอยู่แต่ไม่อยู่ในลำดับแท็บ — ไม่เปลี่ยนชื่อ");
-            Send(new Abort { Text = "ชื่อนี้ใช้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Este nome não é permitido." }, seq);
             return;
         }
 
@@ -528,16 +528,16 @@ public partial class Player
 
     private void HandleRemoveSectionMsg(RemoveSection msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "ลบแท็บคลัง"))
+        if (!MayTouchArtifact(msg.EntityId, "Excluir aba do armazém"))
         {
-            Send(new Abort { Text = "ทำกับสิ่งปลูกสร้างนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível realizar esta ação nesta construção." }, seq);
             return;
         }
 
         List<string> order = LifeSectionOrder(msg.EntityId);
         if (order == null || !order.Contains(msg.SectionName))
         {
-            Send(new Abort { Text = "ไม่พบแท็บนี้" }, seq);
+            Send(new Abort { Text = "Esta aba não foi encontrada." }, seq);
             return;
         }
 
@@ -546,7 +546,7 @@ public partial class Player
         List<Item> items = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         if (items != null && items.Count > 0)
         {
-            Send(new Abort { Text = "ต้องขนของออกจากแท็บให้หมดก่อน" }, seq);
+            Send(new Abort { Text = "Retire todos os itens da aba antes de continuar." }, seq);
             return;
         }
 
@@ -568,9 +568,9 @@ public partial class Player
     /// </summary>
     private void HandleSetSectionOrderMsg(SetSectionOrder msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "จัดลำดับแท็บคลัง"))
+        if (!MayTouchArtifact(msg.EntityId, "Reordenar abas do armazém"))
         {
-            Send(new Abort { Text = "ทำกับสิ่งปลูกสร้างนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível realizar esta ação nesta construção." }, seq);
             return;
         }
 
@@ -606,7 +606,7 @@ public partial class Player
         {
             // ไม่มีฉายาไหนที่เซิร์ฟเคยมอบให้ (GetTitles ตอบชุดว่าง) ⇒ ใส่ได้เท่ากับแจกฟรี
             Console.WriteLine($"[ฉายา] {Short(EntityId)} ขอใส่ฉายา '{msg.TitleId}' — ยังไม่ได้รับฉายานี้");
-            Send(new Abort { Text = "ยังไม่ได้รับฉายานี้" }, seq);
+            Send(new Abort { Text = "Você ainda não recebeu este título." }, seq);
             return;
         }
 
@@ -658,13 +658,13 @@ public partial class Player
     {
         // ตรวจสิทธิ์ก่อนเสมอ ถึงจะยังทำไม่ได้ — จะได้ไม่มีวันหลุดเป็นช่องให้ตั้งชื่อของคนอื่น
         // ตอนมีคนมาต่อโค้ดส่วนที่เหลือ
-        if (!MayTouchArtifact(msg.EntityId, "ตั้งชื่อสิ่งปลูกสร้าง"))
+        if (!MayTouchArtifact(msg.EntityId, "Nomear construção"))
         {
-            Send(new Abort { Text = "ทำกับสิ่งปลูกสร้างนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível realizar esta ação nesta construção." }, seq);
             return;
         }
         Console.WriteLine($"[สิ่งปลูกสร้าง] {Short(EntityId)} ขอตั้งชื่อ {Short(msg.EntityId)} เป็น '{msg.Name}' — ยังเก็บชื่อไม่ได้");
-        Send(new Abort { Text = "ยังไม่เปิดใช้งานการตั้งชื่อสิ่งปลูกสร้าง" }, seq);
+        Send(new Abort { Text = "A nomeação de construções ainda não está disponível." }, seq);
     }
 
     // ══════════════════════════════════════════════════════════════════════════════════

@@ -643,8 +643,8 @@ public class TitleMenuGroup : MonoBehaviour
 	private void ShowLoginNicknameStep()
 	{
 		ShowAuthInput(
-			"Entrar • etapa 1 de 2\nInforme o nickname usado na sua conta.",
-			"Nickname",
+			"Entrar • etapa 1 de 2\nInforme o nome de usuário da sua conta.",
+			"Nome de usuário",
 			isPassword: false,
 			limit: 32,
 			buttonText: "Próximo",
@@ -655,7 +655,7 @@ public class TitleMenuGroup : MonoBehaviour
 				if (username.Length < 3)
 				{
 					ShowAuthValidationError(
-						"O nickname precisa ter pelo menos 3 caracteres.",
+						"O nome de usuário precisa ter pelo menos 3 caracteres.",
 						ShowLoginNicknameStep);
 					return;
 				}
@@ -663,7 +663,7 @@ public class TitleMenuGroup : MonoBehaviour
 				if (!Regex.IsMatch(username, "^[A-Za-z0-9._-]+$"))
 				{
 					ShowAuthValidationError(
-						"Use somente letras, números, ponto, hífen ou underline no nickname.",
+						"Use somente letras, números, ponto, hífen ou sublinhado no nome de usuário.",
 						ShowLoginNicknameStep);
 					return;
 				}
@@ -707,8 +707,8 @@ public class TitleMenuGroup : MonoBehaviour
 	private void ShowRegisterNicknameStep()
 	{
 		ShowAuthInput(
-			"Cadastro • etapa 1 de 3\nEscolha o nickname que você usará para entrar.",
-			"Nickname",
+			"Cadastro • etapa 1 de 3\nEscolha o nome de usuário que você usará para entrar.",
+			"Nome de usuário",
 			isPassword: false,
 			limit: 32,
 			buttonText: "Próximo",
@@ -719,7 +719,7 @@ public class TitleMenuGroup : MonoBehaviour
 				if (username.Length < 3)
 				{
 					ShowAuthValidationError(
-						"O nickname precisa ter pelo menos 3 caracteres.",
+						"O nome de usuário precisa ter pelo menos 3 caracteres.",
 						ShowRegisterNicknameStep);
 					return;
 				}
@@ -727,7 +727,7 @@ public class TitleMenuGroup : MonoBehaviour
 				if (!Regex.IsMatch(username, "^[A-Za-z0-9._-]+$"))
 				{
 					ShowAuthValidationError(
-						"Use somente letras, números, ponto, hífen ou underline no nickname.",
+						"Use somente letras, números, ponto, hífen ou sublinhado no nome de usuário.",
 						ShowRegisterNicknameStep);
 					return;
 				}
@@ -977,15 +977,15 @@ public class TitleMenuGroup : MonoBehaviour
 		switch (error)
 		{
 		case "invalid_credentials":
-			return "Nickname ou senha inválidos.";
+			return "Nome de usuário ou senha inválidos.";
 		case "username_taken":
-			return "Esse nickname já está em uso.";
+			return "Esse nome de usuário já está em uso.";
 		case "username_too_short":
-			return "O nickname precisa ter pelo menos 3 caracteres.";
+			return "O nome de usuário precisa ter pelo menos 3 caracteres.";
 		case "username_too_long":
-			return "O nickname pode ter no máximo 32 caracteres.";
+			return "O nome de usuário pode ter no máximo 32 caracteres.";
 		case "username_invalid_characters":
-			return "Use somente letras, números, ponto, hífen ou underline no nickname.";
+			return "Use somente letras, números, ponto, hífen ou sublinhado no nome de usuário.";
 		case "password_too_short":
 			return "A senha precisa ter pelo menos 8 caracteres.";
 		case "password_too_long":
@@ -1632,7 +1632,7 @@ public class TitleMenuGroup : MonoBehaviour
 		}
 		else
 		{
-			LogError("No download url");
+			LogError("Endereço de download não encontrado");
 			CurState = State.Error;
 		}
 	}

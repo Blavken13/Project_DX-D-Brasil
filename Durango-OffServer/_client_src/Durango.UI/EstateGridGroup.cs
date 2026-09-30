@@ -199,6 +199,8 @@ public class EstateGridGroup : UIBase
 		_areaList.Clear();
 		string buttonText = ((size >= _largestSize) ? Durango.Logic.Item.Inventory.CurrencyFormat(Yaml.Util.Singleton<CostsYaml>.Instance.Estate.GetExpandingCost(license.Type, license.Size), text) : T._("확장 {0}무료!", "[c][ffffff][icon=" + text + "][-][/c]"));
 		Color buttonColor = Color.white;
+		if (license.Type == OwnerType.Player && GameManager.Region.Level <= 10)
+			buttonText = "Expandir grátis";
 		PresetButton.Style buttonStyle = PresetButton.Style.Solid;
 		if (_expandEstate.License.Type == OwnerType.PersonalPlayer)
 		{
@@ -360,6 +362,11 @@ public class EstateGridGroup : UIBase
 
 	private void OnExpandEstateClick(Point2 pos)
 	{
+		if (_expandEstate.License.Type == OwnerType.Player)
+		{
+			EstateSystem.ExpandEstate(_expandEstate.Id, pos / 4, OnSuccess);
+			return;
+		}
 		if (_expandEstate.License.Type == OwnerType.PersonalPlayer)
 		{
 			ExpandPersonalEstate(pos);

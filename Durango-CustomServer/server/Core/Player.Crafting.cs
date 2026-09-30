@@ -360,11 +360,11 @@ public partial class Player
         // Abort ทำให้ Packet.IsSuccess = false ⇒ client รู้ว่าไม่สำเร็จ (GameCode/.../Packet.cs:116-127)
         _connection.Recv(delegate(CancelCrafting msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการฝากคราฟต์ไว้ที่โต๊ะ" }, header.Seq);
+            Send(new Abort { Text = "Ainda não é possível deixar uma fabricação na bancada." }, header.Seq);
         });
         _connection.Recv(delegate(SkipEntrustedCraft msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการฝากคราฟต์ไว้ที่โต๊ะ" }, header.Seq);
+            Send(new Abort { Text = "Ainda não é possível deixar uma fabricação na bancada." }, header.Seq);
         });
         // ย้อมสี/ฟอกสี — ใช้ท่อเดียวกับการคราฟต์ (client/CraftSystem.cs:258-284 Dyeing เรียก
         // RegisterPostCraftEvents ตัวเดียวกัน) ⇒ **ไม่ตอบ = หลอดคราฟต์ค้างจนเต็มแล้วไม่มีอะไรเกิด**
@@ -372,17 +372,17 @@ public partial class Player
         // (Support/ItemIconTex.cs พอร์ตมาแบบย่อ) ⇒ ตอบ Abort ให้ .Rest หยุดหลอดสะอาด ๆ
         RecvFallback(delegate(Dye msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการย้อมสี" }, header.Seq);
+            Send(new Abort { Text = "O tingimento ainda não está disponível." }, header.Seq);
         });
         RecvFallback(delegate(Bleach msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการฟอกสี" }, header.Seq);
+            Send(new Abort { Text = "O clareamento de itens ainda não está disponível." }, header.Seq);
         });
         // ปรับปรุงอุปกรณ์ (reform) — client รอเฉพาะ OK (client/CraftSystem.cs:110) ไม่มี .Rest
         // ตอบ Abort = ปุ่มไม่ทำอะไร ซึ่งตรงกับสภาพจริง ดีกว่าปล่อยเงียบให้ดูเหมือนเซิร์ฟแฮงก์
         RecvFallback(delegate(RequestTechSupport msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่รองรับการปรับปรุงอุปกรณ์" }, header.Seq);
+            Send(new Abort { Text = "A melhoria de equipamentos ainda não está disponível." }, header.Seq);
         });
 
         _connection.ConnetionClosed += ClearCraftTimers;
@@ -455,7 +455,7 @@ public partial class Player
         CraftRecipeData recipe = CraftRecipeStore.Get(msg.RecipeId);
         if (recipe == null)
         {
-            Send(new Abort { Text = "ไม่รู้จักสูตรนี้" }, seq);
+            Send(new Abort { Text = "Esta receita não foi reconhecida." }, seq);
             return;
         }
         // Modify(1)/Reform(2) ไม่ได้ "สร้างของใหม่" แต่ไปแก้ของเดิม (เพิ่ม tag/ช่องปรับปรุง)
@@ -465,7 +465,7 @@ public partial class Player
         bool isCook = recipe.type == CraftType.Modify && recipe.category == "cook";
         if (recipe.type != CraftType.Craft && !isCook)
         {
-            Send(new Abort { Text = "ยังไม่รองรับสูตรประเภทดัดแปลง/ปรับปรุง" }, seq);
+            Send(new Abort { Text = "Receitas de modificação e melhoria ainda não estão disponíveis." }, seq);
             return;
         }
         if (!CheckWorkbench(recipe, msg.Workbench, out string workbenchError))
@@ -493,7 +493,7 @@ public partial class Player
         Item[] products = MakeProducts(recipe, msg.Materials, materials, finalLevel);
         if (products.Length == 0)
         {
-            Send(new Abort { Text = "สูตรนี้ไม่มีของที่ผลิตได้" }, seq);
+            Send(new Abort { Text = "Esta receita não possui um produto definido." }, seq);
             return;
         }
 
@@ -507,12 +507,12 @@ public partial class Player
         Send(new InventoryUpdated { EntityId = EntityId, Items = products });
 
         // เครื่องมือที่ใช้คราฟต์สึก (ขวาน/มีด/ค้อน ฯลฯ) — เส้นเดียวกับเก็บของ · stick ไม่สึก (ไม่ใช่ tool)
-        WearTool(msg.ToolItemId);
+        WearTool(msg.ToolItemId, "craft");
 
         // [7 ก.ย. 2026] ให้ exp ตอนหักของ+เติมของแล้ว — ไม่รอ Timer/FinishCraft
         // (inventory เปลี่ยนตั้งแต่ตรงนี้แล้ว ถ้าให้ตอนส่ง Crafted จะซ้ำ/ช้าโดยใช่เหตุ)
         AddExpForAction(SkillTuning.CraftWeight, MapRecipeSkillCategory(recipe.category),
-                        $"คราฟต์ {msg.RecipeId}");
+                        $"Fabricar {msg.RecipeId}");
         NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, recipe.category);
 
         SpendCraftEnergy(recipe);
@@ -689,13 +689,13 @@ public partial class Player
         if (IsEmptyTagFilter(recipe.tool_tags)) return true;
         if (string.IsNullOrEmpty(toolItemId))
         {
-            error = "สูตรนี้ต้องใช้เครื่องมือ";
+            error = "Esta receita exige uma ferramenta.";
             return false;
         }
         Item? tool = FindInventoryItem(toolItemId);
-        if (!tool.HasValue || !MatchesAnyTag(tool.Value, recipe.tool_tags))
+        if (!tool.HasValue || tool.Value.Durability?.Get() <= 0 || !MatchesAnyTag(tool.Value, recipe.tool_tags))
         {
-            error = "เครื่องมือใช้กับสูตรนี้ไม่ได้";
+            error = "Esta ferramenta não pode ser usada nesta receita.";
             return false;
         }
         return true;
@@ -727,7 +727,7 @@ public partial class Player
             int given = ids?.Length ?? 0;
             if (given < slot.count_min || (slot.count_max > 0 && given > slot.count_max))
             {
-                error = $"จำนวนวัตถุดิบช่อง {slot.slot_id} ไม่ถูกต้อง";
+                error = $"A quantidade de materiais no espaço {slot.slot_id} inválido";
                 return false;
             }
             for (int j = 0; j < given; j++)
@@ -736,18 +736,18 @@ public partial class Player
                 // ห้ามใช้ไอเทมชิ้นเดียวกันซ้ำสองช่อง — ไม่งั้นคราฟต์ได้โดยแทบไม่เสียของ
                 if (string.IsNullOrEmpty(itemId) || !used.Add(itemId))
                 {
-                    error = "วัตถุดิบซ้ำหรือไม่ถูกต้อง";
+                    error = "Materiais repetidos ou inválidos.";
                     return false;
                 }
                 Item? item = FindInventoryItem(itemId);
                 if (!item.HasValue)
                 {
-                    error = "ไม่พบวัตถุดิบในกระเป๋า";
+                    error = "Os materiais não foram encontrados na mochila.";
                     return false;
                 }
                 if (!MatchesSlot(item.Value, slot))
                 {
-                    error = $"วัตถุดิบไม่ตรงเงื่อนไขช่อง {slot.slot_id}";
+                    error = $"Os materiais não atendem aos requisitos do espaço {slot.slot_id}";
                     return false;
                 }
                 materials.Add(item.Value);
@@ -1018,13 +1018,13 @@ public partial class Player
         int baseIndex = string.IsNullOrEmpty(baseId) ? -1 : _context.InventoryItems.FindIndex(it => it.Id == baseId);
         if (baseIndex < 0)
         {
-            Send(new Abort { Text = "ไม่พบวัตถุดิบหลักในกระเป๋า" }, seq);
+            Send(new Abort { Text = "O material principal não foi encontrado na mochila." }, seq);
             return;
         }
         Item cooked = _context.InventoryItems[baseIndex];
         if (recipe.deduct_modifiable_count && cooked.ModifiableCount <= 0)
         {
-            Send(new Abort { Text = "ของชิ้นนี้ปรุงต่อไม่ได้แล้ว" }, seq);
+            Send(new Abort { Text = "Não é possível continuar preparando este item." }, seq);
             return;
         }
         string[] consumedIds = materials
@@ -1044,8 +1044,8 @@ public partial class Player
         if (consumedIds.Length > 0)
             Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = consumedIds });
         Send(new InventoryUpdated { EntityId = EntityId, Items = new[] { cooked } });
-        WearTool(msg.ToolItemId);   // เครื่องมือทำอาหารสึก (ถ้าเป็น tool — stick ไม่สึก)
-        AddExpForAction(SkillTuning.CraftWeight, MapRecipeSkillCategory(recipe.category), $"ทำอาหาร {msg.RecipeId}");
+        WearTool(msg.ToolItemId, "craft");   // เครื่องมือทำอาหารสึก (ถ้าเป็น tool — stick ไม่สึก)
+        AddExpForAction(SkillTuning.CraftWeight, MapRecipeSkillCategory(recipe.category), $"Cozinhar {msg.RecipeId}");
         NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, recipe.category);
         SpendCraftEnergy(recipe);
         var crafted = new Crafted
@@ -1101,7 +1101,7 @@ public partial class Player
         Item? bi = string.IsNullOrEmpty(baseId) ? null : FindInventoryItem(baseId);
         if (!bi.HasValue)
         {
-            Send(new Abort { Text = "ใส่วัตถุดิบหลักก่อน" }, seq);
+            Send(new Abort { Text = "Adicione o material principal primeiro." }, seq);
             return;
         }
         Item item = bi.Value;
@@ -1118,7 +1118,8 @@ public partial class Player
                 PrototypeId = item.Prototype,
                 Level = item.Level,
                 Name = prototype?.Name,
-                Durability = new Vector2(1f, 1f),
+                Durability = new Vector2(item.Durability?.Get() ?? ItemDurability.Maximum(item.Prototype, item.Level),
+                    item.Durability?.Max() ?? ItemDurability.Maximum(item.Prototype, item.Level)),
                 Tags = tags,
                 UnrevealedRareTagCount = 0,
                 ModifiableCount = modAfter,
@@ -1134,7 +1135,7 @@ public partial class Player
         CraftRecipeData recipe = CraftRecipeStore.Get(msg.RecipeId);
         if (recipe == null)
         {
-            Send(new Abort { Text = "ประเมินผลสูตรนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não foi possível avaliar esta receita." }, seq);
             return;
         }
         if (recipe.type == CraftType.Modify && recipe.category == "cook")
@@ -1145,7 +1146,7 @@ public partial class Player
         if (recipe.type != CraftType.Craft)
         {
             // มี .Rest รออยู่ (client/CraftSystem.cs:225-231) ⇒ ตอบ Abort แล้วช่องผลลัพธ์ขึ้น "-"
-            Send(new Abort { Text = "ประเมินผลสูตรนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não foi possível avaliar esta receita." }, seq);
             return;
         }
         // ประเมินจากของที่ใส่ไว้ "เท่าที่ใส่แล้ว" — ตอนกำลังเลือกวัตถุดิบยังไม่ครบก็ถามมาแล้ว
@@ -1167,7 +1168,7 @@ public partial class Player
         Prototype prototype = string.IsNullOrEmpty(prototypeId) ? null : PrototypeYaml.GetItemPrototype(prototypeId);
         if (prototype == null)
         {
-            Send(new Abort { Text = "ไม่รู้จักของที่สูตรนี้ผลิต" }, seq);
+            Send(new Abort { Text = "O produto desta receita não foi reconhecido." }, seq);
             return;
         }
         int level = ProductLevel(recipe, picked);
@@ -1186,7 +1187,7 @@ public partial class Player
                 Name = prototype.Name,
                 // (ค่าปัจจุบัน, ค่าสูงสุด) — ของที่เพิ่งคราฟต์เต็มหลอดเสมอ ตรงกับ Cheats.MakeItem
                 // ที่ตั้ง Durability = Gauge(1, 0, [node(0,1)]) (Core/Cheats.cs:31)
-                Durability = new Vector2(1f, 1f),
+                Durability = new Vector2(ItemDurability.Maximum(prototypeId, level), ItemDurability.Maximum(prototypeId, level)),
                 Tags = tags,
                 UnrevealedRareTagCount = 0,
                 ModifiableCount = 0,

@@ -286,11 +286,11 @@ public partial class Player
     /// <summary>สรุปโบนัสของตัวเอง — ใช้ตอบ cheat "skills" ให้ตรวจได้ว่าที่เรียนมีผลจริง</summary>
     private string DescribeSkillBonuses()
     {
-        return $"เก็บของ เร็วขึ้น {1f - GatherDurationScale():P0} · โบนัส " +
+        return $"Coleta mais rápida: {1f - GatherDurationScale():P0} · Bônus " +
                $"{SkillRatio(Shared.Skill.Category.Gathering) * SkillEffectTuning.GatherBonus:P0} | " +
-               $"แล่เนื้อ เร็วขึ้น {1f - ButcheryDurationScale():P0} | " +
-               $"คราฟต์ เร็วขึ้น {1f - CraftDurationScale():P0} | " +
-               $"ตี +{MeleeDamageScale() - 1f:P0} · รับ -{1f - DamageTakenScale():P0} | " +
-               $"พลังงาน -{1f - EnergyCostScale():P0}";
+               $"Esfolamento mais rápido: {1f - ButcheryDurationScale():P0} | " +
+               $"Fabricação mais rápida: {1f - CraftDurationScale():P0} | " +
+               $"Ataque +{MeleeDamageScale() - 1f:P0} · Recebe -{1f - DamageTakenScale():P0} | " +
+               $"Energia -{1f - EnergyCostScale():P0}";
     }
 }

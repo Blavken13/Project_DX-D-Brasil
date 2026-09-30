@@ -648,13 +648,21 @@ public class AnimalManager
                 .Select(spawn => spawn.EntityType).Distinct().ToArray();
             if (species.Length == 0) return;
             int placed = 0;
-            foreach (var tile in TerrainEcology.LandGrid(terrain, 24, 24))
+            var candidates = TerrainEcology.LandGrid(terrain, 12, 12)
+                .Where(tile => !(tile.x is >= 88 and <= 145 && tile.y is >= 70 and <= 138)).ToList();
+            // Distribuir por toda a ilha: a ordem da grade concentra animais numa só borda.
+            for (int i = candidates.Count - 1; i > 0; i--)
+            {
+                int j = _rng.Next(i + 1);
+                (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
+            }
+            foreach (var tile in candidates)
             {
                 if (tile.x is >= 88 and <= 145 && tile.y is >= 70 and <= 138) continue;
                 var animal = SpawnAt(species[placed % species.Length], Math.Max(1, template.Level - 2), tile);
                 if (animal == null) continue;
                 animal.DefensiveOnly = true;
-                if (++placed >= 10) break;
+                if (++placed >= WorldTuning.SafehouseAnimalCount) break;
             }
             Console.WriteLine($"[safehouse] fauna pequena restaurada: {placed} animais de espécies nativas.");
             return;

@@ -55,8 +55,10 @@ internal static class WorldInteractionCheck
             Check(wc.SafehouseEcologyVersion == 1 && wc.AddedNatural.Count >= 180, "safehouse recebe 180 novos spots");
             Check(wc.AddedNatural.Select(n => n.EntityType).Distinct().Count() >= 15, "recursos variados do template nativo");
             Check(wc.AddedNatural.All(n => world.CanPlaceSystemContent(new Point2(n.X, n.Y))), "spots preservam edificios e entrada");
-            Check(world.AnimalManager.All.Count() == 10 && world.AnimalManager.All.All(a => a.DefensiveOnly &&
-                AnimalTypes.Get(a.EntityType).BaseScale <= 1 && a.CombatLevel <= 5), "dez dinos pequenos de baixo nivel no refugio");
+            Check(world.AnimalManager.All.Count() == WorldTuning.SafehouseAnimalCount && world.AnimalManager.All.All(a => a.DefensiveOnly &&
+                AnimalTypes.Get(a.EntityType).BaseScale <= 1 && a.CombatLevel <= 5), "quarenta dinos pequenos de baixo nivel no refugio");
+            Check(world.AnimalManager.All.All(a => !(a.HomeTile.x is >= 88 and <= 145 && a.HomeTile.y is >= 70 and <= 138)),
+                "fauna distribuida fora da area central da safehouse");
             var context = Player(root, "tester");
             Place(context, world.EntryPoint);
             using var link = new EconomyProtocolCheck.Link(context, world, null, true);

@@ -630,7 +630,7 @@ public partial class Player
             if (!IsAdmin)
             {
                 Console.WriteLine($"[โกง] ปฏิเสธคำสั่งจาก {Short(EntityId)}: {msg._Cheat}");
-                Send(new Abort { Text = "ไม่มีสิทธิ์ใช้คำสั่งนี้" }, header.Seq);
+                Send(new Abort { Text = "Você não tem permissão para usar este comando." }, header.Seq);
                 return;
             }
             if (TryHandleSkillCheat(msg._Cheat)) return;

@@ -29,7 +29,7 @@ public static class Cheats
             Id = Guid.NewGuid().ToString(),
             FounderId = null,
             FounderCategory = string.Empty,
-            Durability = new Gauge(1f, 0f, new[] { new GaugeNode(0.0, 1f) }),
+            Durability = ItemDurability.Full(prototypeId, level),
             Size = itemPrototype.Size,
             Unstable = false,
             Tradable = ItemTradeRules.PrototypeCanTrade(prototypeId),

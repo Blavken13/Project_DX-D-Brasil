@@ -135,7 +135,7 @@ public class ShopCommodityInfoView : UIWidget, RectLayout.ICompatible
 			StringBuilder value = reusable.Value;
 			if (commodity.IsProduct && Platform.Instance.Country == NPCountry.Korea)
 			{
-				value.AppendLine("구매 후 미사용 상품  7일 내 청약철회 가능 /  보호자의 동의 없는 미성년자의 결제는 취소할 수 있습니다.");
+				value.AppendLine("Produtos não utilizados podem ter a compra cancelada em até 7 dias. Pagamentos feitos por menores sem autorização do responsável podem ser cancelados.");
 				detailUri = "http://m.nexon.com/terms/60";
 			}
 			if (commodity.Contents.HasRandomContents())

@@ -108,7 +108,7 @@ public partial class Player
         // ⇒ ครึ่ง ๆ กลาง ๆ แบบนั้นแย่กว่าไม่ทำ
         _connection.Recv(delegate(UprootPlant msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบถอนต้นพืช" }, header.Seq);
+            Send(new Abort { Text = "A remoção de plantas ainda não está disponível." }, header.Seq);
         });
 
         // GrowRapidly (3712) — "즉시 성장" จ่ายเพชรเร่งให้พืชโตทันที
@@ -122,7 +122,7 @@ public partial class Player
         //   2. ต่อให้ยิงมาได้ ก็ต้องเลื่อน Farming.GrowsUntil ซึ่งแก้ไม่ได้ (เหตุผลเดียวกับ UprootPlant)
         _connection.Recv(delegate(GrowRapidly msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบเร่งการเติบโต" }, header.Seq);
+            Send(new Abort { Text = "A aceleração do crescimento ainda não está disponível." }, header.Seq);
         });
 
         // Sprinkle (37121) — "물뿌리개" เครื่องรดน้ำอัตโนมัติรดแปลงรอบตัวมันทีเดียว
@@ -139,7 +139,7 @@ public partial class Player
         // {duration: 3, energy: 5} และ fertilizer_tags: ["fertilizer_liquid"]
         _connection.Recv(delegate(Sprinkle msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานเครื่องรดน้ำ" }, header.Seq);
+            Send(new Abort { Text = "Os irrigadores ainda não estão disponíveis." }, header.Seq);
         });
 
         // ChangeFarmingEncyclopediaMastery (37128) — เลือก/สลับ "ความชำนาญ" ในสารานุกรมเพาะปลูก
@@ -154,7 +154,7 @@ public partial class Player
         // เท่ากับแต่งความคืบหน้าปลอมให้ผู้เล่นเห็น
         _connection.Recv(delegate(ChangeFarmingEncyclopediaMastery msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานสารานุกรมการเพาะปลูก" }, header.Seq);
+            Send(new Abort { Text = "A enciclopédia de cultivo ainda não está disponível." }, header.Seq);
         });
 
         // TakeEffect (821) — "효과 받기" มารับบัฟจากของที่จุดไว้ (กระถางธูปแคลน ฯลฯ)
@@ -167,7 +167,7 @@ public partial class Player
         //      (372 รายการ) = ไม่เจอสักตัว ⇒ ไม่รู้ว่าจะให้บัฟอะไร การเดา id บัฟคือการแต่งของ
         _connection.Recv(delegate(TakeEffect msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบรับผลจากสิ่งปลูกสร้าง" }, header.Seq);
+            Send(new Abort { Text = "A coleta dos resultados de construções ainda não está disponível." }, header.Seq);
         });
 
         // InvestToCrack: pagamento em pedras, espera e ativação (Player.Craters.cs).
@@ -185,7 +185,7 @@ public partial class Player
         // ถ้าวันไหนมีระบบเพชรแล้ว เปลี่ยนตรงนี้เป็น SetBuildingState ได้ทันที
         _connection.Recv(delegate(SkipPostprocess msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบข้ามเวลาด้วยเพชร" }, header.Seq);
+            Send(new Abort { Text = "A aceleração de tempo com diamantes ainda não está disponível." }, header.Seq);
         });
     }
 
@@ -207,13 +207,13 @@ public partial class Player
         double now = Gauge.CurrentTime;
         if (!_world.ArtifactManager.TryGetMatureCrop(msg.EntityId, now, out string seed, out Crop crop))
         {
-            RejectCollect(seq, "พืชยังไม่โตเต็มที่", msg);
+            RejectCollect(seq, "A planta ainda não está madura.", msg);
             return true;
         }
 
         if (!string.Equals(msg.GeneratorId, FarmHarvest.GeneratorId(crop), StringComparison.Ordinal))
         {
-            RejectCollect(seq, $"ไม่มี generator '{msg.GeneratorId}' ของแปลงนี้", msg);
+            RejectCollect(seq, $"Gerador não encontrado: '{msg.GeneratorId}' deste canteiro", msg);
             return true;
         }
 
@@ -226,7 +226,7 @@ public partial class Player
 
         if (!IsWithinCollectRange(artifact.Tile))
         {
-            RejectCollect(seq, "อยู่ไกลเกินไป", msg);
+            RejectCollect(seq, "Você está longe demais.", msg);
             return true;
         }
 
@@ -242,13 +242,13 @@ public partial class Player
         }
         if (items.Count == 0)
         {
-            RejectCollect(seq, "ไม่พบไอเทมผลผลิต", msg);
+            RejectCollect(seq, "O item produzido não foi encontrado.", msg);
             return true;
         }
 
         if (!_world.ArtifactManager.ClearFarming(msg.EntityId))
         {
-            RejectCollect(seq, "ล้างแปลงไม่สำเร็จ", msg);
+            RejectCollect(seq, "Não foi possível limpar o canteiro.", msg);
             return true;
         }
 
@@ -341,7 +341,7 @@ public partial class Player
     {
         AddItems(items);
         Send(new InventoryUpdated { EntityId = EntityId, Items = items.ToArray() });
-        AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "เก็บเกี่ยวพืช");
+        AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "Colher planta");
         FinishCollect(collected, seq);
         OnContextChanged();
         Console.WriteLine($"[ปลูก] {Short(EntityId)} จบเก็บเกี่ยว · ของ {items.Count} ชิ้น");
@@ -367,7 +367,7 @@ public partial class Player
     {
         if (_world.ArtifactManager.Get(entityId) is not { } artifact)
         {
-            Send(new Abort { Text = "ไม่พบสิ่งปลูกสร้างหลังนี้" }, seq);
+            Send(new Abort { Text = "Esta construção não foi encontrada." }, seq);
             return;
         }
 
@@ -377,20 +377,20 @@ public partial class Player
             || Array.IndexOf(blueprint.Components, "Burnable") < 0
             || string.IsNullOrEmpty(blueprint.DefaultLook))
         {
-            Send(new Abort { Text = "ของชิ้นนี้จุดไฟไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível acender este objeto." }, seq);
             return;
         }
 
         if (artifact.States.BuildingState != Shared.Building.BuildingState.Completed)
         {
-            Send(new Abort { Text = "ยังสร้างไม่เสร็จ" }, seq);
+            Send(new Abort { Text = "A construção ainda não foi concluída." }, seq);
             return;
         }
 
         int reach = ArtifactReachTiles + Math.Max(artifact.Size.x, artifact.Size.y);
         if (!IsWithinTiles(artifact.Tile, reach))
         {
-            Send(new Abort { Text = "อยู่ไกลเกินไป" }, seq);
+            Send(new Abort { Text = "Você está longe demais." }, seq);
             return;
         }
 

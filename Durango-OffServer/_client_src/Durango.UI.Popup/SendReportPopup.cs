@@ -264,14 +264,14 @@ public class SendReportPopup : TooltipBase
 		switch (_reportType)
 		{
 		case SendReportSystem.ReportType.ServerStatus:
-			GameSystem<SendReportSystem>.Instance().SendServerStatus(value, "서버상황제보", delegate(bool result)
+			GameSystem<SendReportSystem>.Instance().SendServerStatus(value, "Relatar situação do servidor", delegate(bool result)
 			{
 				string resultText = ((!result) ? null : T._("제보해 주셔서 감사합니다.\n서버 상황 제보 외 문의(결제, 플레이 등)는 게임 내 고객센터 1:1 문의를 통해 접수해 주세요."));
 				HideWithResultMsg(resultText);
 			});
 			break;
 		case SendReportSystem.ReportType.Suggestion:
-			GameSystem<SendReportSystem>.Instance().SendServerStatus(value, "건의/신고하기", delegate(bool result)
+			GameSystem<SendReportSystem>.Instance().SendServerStatus(value, "Enviar sugestão ou denúncia", delegate(bool result)
 			{
 				string resultText = ((!result) ? null : T._("제보해 주셔서 감사합니다."));
 				HideWithResultMsg(resultText);

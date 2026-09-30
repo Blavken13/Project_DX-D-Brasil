@@ -74,7 +74,7 @@ public partial class Player
         // เป็น "การกระทำ" ที่ทำจริงไม่ได้ (ไม่มีปฏิทิน/ไม่มีรางวัลผูกไว้) ⇒ Abort พร้อมข้อความ
         _connection.Recv(delegate(GiveAttendanceReward msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบรางวัลเช็คอิน" }, header.Seq);
+            Send(new Abort { Text = "As recompensas de presença ainda não estão disponíveis." }, header.Seq);
         });
 
         // GiveAttendanceAppendix (1097855) — "กดรับรางวัลพิเศษท้ายปฏิทิน"
@@ -83,7 +83,7 @@ public partial class Player
         // และ Calendar.cs:146-167 จะมาร์ก _appendices ต่อเมื่อ ok เท่านั้น ⇒ Abort ปลอดภัย
         _connection.Recv(delegate(GiveAttendanceAppendix msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบรางวัลพิเศษ" }, header.Seq);
+            Send(new Abort { Text = "As recompensas especiais ainda não estão disponíveis." }, header.Seq);
         });
 
         // ── ฤดูกาล (Season) ─────────────────────────────────────────────────────────
@@ -110,7 +110,7 @@ public partial class Player
         //   ตอบ Abort (1024) ให้ตกเข้า .Rest = ปฏิเสธอย่างชัดเจน ไม่มีอะไรถูกลบ
         _connection.Recv(delegate(DeregisterUser msg, PacketHeader header)
         {
-            Send(new Abort { Text = "เซิร์ฟเวอร์นี้ไม่รองรับการลบบัญชี — ข้อมูลของคุณไม่ถูกลบ" }, header.Seq);
+            Send(new Abort { Text = "Este servidor não permite excluir contas. Seus dados foram preservados." }, header.Seq);
         });
 
         // DeleteEngagementData (1444251) — ผู้เล่นปิดสวิตช์ยินยอมในป็อปอัปข้อตกลง

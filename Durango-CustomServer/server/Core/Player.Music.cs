@@ -63,7 +63,7 @@ public partial class Player
             // ถ้าเป็น id คนอื่น เราไม่มีทางอ่านช่องเพลงของผู้เล่นคนอื่น ⇒ ปฏิเสธตรง ๆ
             if (!string.IsNullOrEmpty(msg.EntityId) && msg.EntityId != EntityId)
             {
-                Send(new Abort { Text = "อ่านโน้ตเพลงของผู้เล่นคนอื่นไม่ได้" }, header.Seq);
+                Send(new Abort { Text = "Não é possível ler a partitura de outro jogador." }, header.Seq);
                 return;
             }
 
@@ -75,7 +75,7 @@ public partial class Player
             }
 
             // ไม่มีโน้ตในช่องนี้ — ฝั่งเกมจะเข้า .Rest แล้วเรียก callback(null) เอง
-            Send(new Abort { Text = "ไม่พบโน้ตเพลงในช่องนี้" }, header.Seq);
+            Send(new Abort { Text = "A partitura não foi encontrada neste espaço." }, header.Seq);
         });
 
         // GetSharedMusic (47852457) — ขอ "โน้ตที่ถูกแชร์" ตาม SheetId พร้อมจำนวนคนที่เอาไปใช้
@@ -108,7 +108,7 @@ public partial class Player
         //   ก็ได้แต่ผู้เล่นจะโดนหลอกว่า "แชร์สำเร็จ" ทั้งที่ไม่มีใครโหลดได้ ⇒ ปฏิเสธตรงไปตรงมา
         _connection.Recv(delegate(PublishMusic msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการแชร์โน้ตเพลง" }, header.Seq);
+            Send(new Abort { Text = "O compartilhamento de partituras ainda não está disponível." }, header.Seq);
         });
 
         // ChangeFollowMusic (47852459) — กด "นำเข้า/ลบ" โน้ตที่คนอื่นแชร์ (WantFollow true/false)
@@ -120,7 +120,7 @@ public partial class Player
         // ⇒ ไม่มีคลังโน้ตสาธารณะให้ติดตาม ⇒ Abort พร้อมข้อความ
         _connection.Recv(delegate(ChangeFollowMusic msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการแชร์โน้ตเพลง" }, header.Seq);
+            Send(new Abort { Text = "O compartilhamento de partituras ainda não está disponível." }, header.Seq);
         });
 
         // PlaySharedMusic (47852451) — เล่นโน้ตที่แชร์ด้วยเครื่องดนตรีชิ้นหนึ่ง
@@ -131,7 +131,7 @@ public partial class Player
         //   (ห้ามกระจาย Musician ที่ Music ว่าง เพราะคนรอบข้างจะเห็นตัวละครเล่นดนตรีแบบไม่มีเสียง)
         _connection.Recv(delegate(PlaySharedMusic msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานการเล่นโน้ตที่แชร์" }, header.Seq);
+            Send(new Abort { Text = "Ainda não é possível tocar partituras compartilhadas." }, header.Seq);
         });
 
         // ───────────────────────── ก้อนที่ 2 : คอนเสิร์ต ─────────────────────────
@@ -145,7 +145,7 @@ public partial class Player
         //         → client/MusicManager.cs:711-718
         _connection.Recv(delegate(HostConcert msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบคอนเสิร์ต" }, header.Seq);
+            Send(new Abort { Text = "O sistema de concertos ainda não está disponível." }, header.Seq);
         });
 
         // RegisterConcert (63459082) — เข้าร่วม/ถอนตัวจากวง (Order+InstrumentItemId มีค่า = เข้า,
@@ -153,7 +153,7 @@ public partial class Player
         // จุดยิง: client/Durango.UI.Popup/ConcertPopup.cs:276, 292, 324
         _connection.Recv(delegate(RegisterConcert msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบคอนเสิร์ต" }, header.Seq);
+            Send(new Abort { Text = "O sistema de concertos ainda não está disponível." }, header.Seq);
         });
 
         // SetConcertMusic (63459080) — หัวหน้าวงเลือกโน้ตของตัวเอง (Slot) ให้ราง Order
@@ -161,28 +161,28 @@ public partial class Player
         // จุดยิง: client/Durango.UI.Popup/ConcertPopup.cs:375 → client/MusicManager.cs:740-753
         _connection.Recv(delegate(SetConcertMusic msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบคอนเสิร์ต" }, header.Seq);
+            Send(new Abort { Text = "O sistema de concertos ainda não está disponível." }, header.Seq);
         });
 
         // SetSharedConcertMusic (63459180) — เหมือนตัวบน แต่เลือกโน้ตที่ "แชร์" (SharedSheetId)
         // จุดยิง: client/MusicManager.cs:753-765 (สาขา else ของ SetConcertMusic)
         _connection.Recv(delegate(SetSharedConcertMusic msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบคอนเสิร์ต" }, header.Seq);
+            Send(new Abort { Text = "O sistema de concertos ainda não está disponível." }, header.Seq);
         });
 
         // PlayConcert (63459081) — หัวหน้าวงกด "เริ่มบรรเลง"
         // จุดยิง: client/Durango.UI.Popup/ConcertPopup.cs:110 → client/MusicManager.cs:693-700
         _connection.Recv(delegate(PlayConcert msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบคอนเสิร์ต" }, header.Seq);
+            Send(new Abort { Text = "O sistema de concertos ainda não está disponível." }, header.Seq);
         });
 
         // FinishConcert (63459101) — หัวหน้าวงกด "เลิกรวบรวมวง"
         // จุดยิง: client/Durango.UI.Popup/ConcertPopup.cs:80 → client/MusicManager.cs:702-709
         _connection.Recv(delegate(FinishConcert msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานระบบคอนเสิร์ต" }, header.Seq);
+            Send(new Abort { Text = "O sistema de concertos ainda não está disponível." }, header.Seq);
         });
     }
 }

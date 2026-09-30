@@ -34,6 +34,7 @@ public static class ConfigInstance
 
 	public static void Initialize()
 	{
+		LocalizeSystem.EnsureBrazilianLocale();
 		LoadFromJson();
 		LoadConfigValue();
 		GameManager.Reset += delegate
@@ -146,7 +147,7 @@ public static class ConfigInstance
 			toggleSetting.Type = SettingType.Toggle;
 			toggleSetting.Options = new string[2] { "PC", "Mobile" };
 			toggleSetting.Default = "PC";
-			toggleSetting.PrepareLabelText = "UI Mode (PC / Mobile)";
+			toggleSetting.PrepareLabelText = "Modo da interface (PC / Celular)";
 			ToggleSetting item = toggleSetting;
 			int num = list.FindIndex((Setting s) => s.Key == "screen_mode");
 			if (num >= 0)
@@ -727,7 +728,7 @@ public static class ConfigInstance
 		MessageBox.Button[] items = (Application.isEditor ? new MessageBox.Button[3]
 		{
 			new MessageBox.Button(T._("확인")),
-			"변경 후 재시작 하지 않음",
+			"Alterar sem reiniciar",
 			T._("취소")
 		} : new MessageBox.Button[2]
 		{
@@ -978,7 +979,7 @@ public static class ConfigInstance
 		string locale = LocalizeSystem.Locale;
 		if (locale != null && locale == "ko_KR")
 		{
-			simpleTextListPopup.Set("저작권 관련 제반 사항", new string[3] { "저작권의 귀속\n주식회사 넥슨코리아(이하 \"회사\"라 함)가 제공하는 \"야생의 땅: 듀랑고\"(이하 \"본 게임물\"이라 함)의 저작권 등 지적재산권 및 소유권을 포함한 모든 권리는 \"회사\"에게 있습니다.", "본 게임물의 이용 및 제한\n1.  이용자는 \"본 게임물\"을 게임 플레이 목적으로 무상 이용할 수 있습니다.\n2.  이용자는 \"본 게임물\"을 제1항의 목적을 넘어 영리 목적으로 이용하거나 \"회사\"의 사전 승낙 없이 복제, 전송, 출판, 배포, 방송, 기타 방법에 의하여 이용하거나 타인에게 이용하게 하여서는 안 됩니다.\n3.  이용자는 사설 서버 운영, 리버스 엔지니어링 기타 불법적인 목적이나 관련 법령을 위반하는 방법으로 \"본 게임물\"을 이용하거나 타인에게 이용하게 하여서는 안 됩니다.", "면책조항\n\"본 게임물\"은 \"회사\"가 무료로 일시적으로 배포하는 형태로, \"회사\"는 \"본 게임물\"과 관련하여 발생하는 손해에 대해서 어떠한 책임도 지지 않습니다." });
+			simpleTextListPopup.Set("Informações sobre direitos autorais", new string[3] { "Titularidade dos direitos autorais\nTodos os direitos, incluindo direitos autorais, propriedade intelectual e propriedade sobre Durango: Wild Lands (doravante denominado \"Jogo\"), fornecido pela Nexon Korea Corporation (doravante denominada \"Empresa\"), pertencem à Empresa.", "Uso do Jogo e restrições\n1. O usuário pode utilizar o Jogo gratuitamente para jogar.\n2. O usuário não pode utilizar o Jogo para fins lucrativos além da finalidade descrita no item 1, nem copiar, transmitir, publicar, distribuir, divulgar ou disponibilizar o Jogo a terceiros sem autorização prévia da Empresa.\n3. O usuário não pode utilizar ou disponibilizar o Jogo para operar servidores privados, realizar engenharia reversa ou outras atividades ilegais, nem de forma que viole a legislação aplicável.", "Isenção de responsabilidade\nO Jogo é distribuído temporariamente e gratuitamente pela Empresa, que não assume responsabilidade por danos relacionados ao Jogo." });
 		}
 		else
 		{

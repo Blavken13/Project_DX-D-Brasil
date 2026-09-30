@@ -117,21 +117,21 @@ public partial class Player
     /// </summary>
     private void HandleSetAsHomeMsg(SetAsHome msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "ตั้งเป็นจุดกลับ"))
+        if (!MayTouchArtifact(msg.EntityId, "Definir ponto de retorno"))
         {
-            Send(new Abort { Text = "ตั้งจุดกลับที่นี่ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível definir um ponto de retorno aqui." }, seq);
             return;
         }
         if (_world.ArtifactManager.Get(msg.EntityId) is not { } artifact)
         {
-            Send(new Abort { Text = "ไม่พบสิ่งปลูกสร้างนี้" }, seq);
+            Send(new Abort { Text = "Esta construção não foi encontrada." }, seq);
             return;
         }
 
         MergedBlueprint blueprint = BlueprintStore.GetBlueprint(artifact.EntityType);
         if (blueprint?.Components == null || !blueprint.Components.Contains("Home"))
         {
-            Send(new Abort { Text = "ตั้งจุดกลับได้เฉพาะที่นอนเท่านั้น" }, seq);
+            Send(new Abort { Text = "O ponto de retorno só pode ser definido em uma cama." }, seq);
             return;
         }
 
@@ -153,7 +153,7 @@ public partial class Player
         // ตั้งจุดกลับนอกเกาะแล้ววาร์ปกลับไปจะหลุดออกนอกโลก
         if (!IsTileInsideWorld(msg.Tile))
         {
-            Send(new Abort { Text = "จุดกลับอยู่นอกเกาะ" }, seq);
+            Send(new Abort { Text = "O ponto de retorno está fora da ilha." }, seq);
             return;
         }
         _context.ReturningX = msg.Tile.x;
@@ -184,7 +184,7 @@ public partial class Player
             Send(new Abort { Text = error }, seq);
             return;
         }
-        BeginWarp(tile, seq, "กลับจุดกลับ");
+        BeginWarp(tile, seq, "Voltar ao ponto de retorno");
     }
 
     private void HandleWarpToPortMsg(uint seq)
@@ -193,10 +193,10 @@ public partial class Player
         List<Point2> ports = pois?.PortPoints;
         if (ports == null || ports.Count == 0)
         {
-            Send(new Abort { Text = "เกาะนี้ไม่มีท่าเรือ" }, seq);
+            Send(new Abort { Text = "Esta ilha não possui um porto." }, seq);
             return;
         }
-        BeginWarp(NearestTo(ports), seq, "ไปท่าเรือ");
+        BeginWarp(NearestTo(ports), seq, "Ir ao porto");
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ public partial class Player
             _context.HomeArtifactId = null;
             OnContextChanged();
             SendPoints();
-            error = "ที่นอนที่ตั้งไว้หายไปแล้ว — ตั้งจุดกลับใหม่ก่อน";
+            error = "A cama do ponto de retorno não existe mais. Defina um novo ponto.";
             return false;
         }
 
@@ -274,7 +274,7 @@ public partial class Player
         // [7 ก.ย. 2026] ตายแล้ววาร์ปไม่ได้ — เดิมกดจากหน้าจอตายแล้วย้ายตัวได้จริง
         if (!_context.AppearPlayer.IsAlive)
         {
-            Send(new Abort { Text = "ตอนนี้วาร์ปไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível se teleportar agora." }, seq);
             return;
         }
         // เพดานจำนวนคิววาร์ปที่ค้างพร้อมกัน — **ค่าของเรา** กันยิงรัวจนจอง timer ไม่จำกัด
@@ -282,7 +282,7 @@ public partial class Player
         {
             if (_pendingTravelWarp != null || _warpTimers.Count >= MaxConcurrentWarps)
             {
-                Send(new Abort { Text = "กำลังวาร์ปอยู่แล้ว" }, seq);
+                Send(new Abort { Text = "Você já está se teleportando." }, seq);
                 return;
             }
         }

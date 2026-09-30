@@ -56,7 +56,7 @@ public partial class Player
     {
         // ── ข้อความเดียวที่บอกผู้เล่นว่าระบบยังไม่เปิด (ใช้ซ้ำทุก handler ที่เป็น "การกระทำ") ──
         // **ข้อความของเรา** — ต้นฉบับ NEXON ไม่มีเคสนี้ (ของเขามีระบบจดหมายจริง)
-        const string notReadyMsg = "ยังไม่เปิดใช้งานระบบจดหมาย";
+        const string notReadyMsg = "O correio ainda não está disponível.";
 
         // SendMail (2077) — ส่งจดหมายหาผู้เล่นคนอื่น (RecipientId + Text + ItemIds)
         // จุดยิง: client/MailSystem.cs:198-205 `Connections.Frontend.Send(new SendMail{...})`

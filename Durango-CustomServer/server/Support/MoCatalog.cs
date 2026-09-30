@@ -50,7 +50,7 @@ public static class MoCatalog
     /// หาไฟล์ตามลำดับ <c>locales/&lt;ภาษา&gt;/LC_MESSAGES/messages.mo</c>
     /// ไม่มีไฟล์ = ไม่พัง แค่ไม่แปล (เขียนเตือนออก log ครั้งเดียว)
     /// </summary>
-    public static void Load(string dataDir, string language = "th")
+    public static void Load(string dataDir, string language = "pt_BR")
     {
         if (_map != null) return;
         _map = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -88,13 +88,13 @@ public static class MoCatalog
 
     private static void Parse(byte[] data, Dictionary<string, string> into)
     {
-        if (data.Length < 20) throw new InvalidDataException("ไฟล์สั้นเกินกว่าจะเป็น .mo");
+        if (data.Length < 20) throw new InvalidDataException("O arquivo é pequeno demais para ser um catálogo .mo");
 
         uint magic = BitConverter.ToUInt32(data, 0);
         bool swap;
         if (magic == MagicLittleEndian) swap = !BitConverter.IsLittleEndian;
         else if (magic == MagicBigEndian) swap = BitConverter.IsLittleEndian;
-        else throw new InvalidDataException($"magic ไม่ตรงสเปก gettext ({magic:x8})");
+        else throw new InvalidDataException($"Assinatura do arquivo gettext inválida ({magic:x8})");
 
         int count = (int)ReadUInt(data, 8, swap);
         int originalTable = (int)ReadUInt(data, 12, swap);
@@ -132,7 +132,7 @@ public static class MoCatalog
 
     private static uint ReadUInt(byte[] data, int offset, bool swap)
     {
-        if (offset < 0 || offset + 4 > data.Length) throw new InvalidDataException("อ่านเลยขอบไฟล์");
+        if (offset < 0 || offset + 4 > data.Length) throw new InvalidDataException("Leitura fora dos limites do arquivo");
         uint value = BitConverter.ToUInt32(data, offset);
         return swap ? BinaryPrimitivesReverse(value) : value;
     }

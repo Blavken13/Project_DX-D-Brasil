@@ -93,6 +93,14 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--localization-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return LocalizationCheck.Run(dataDir);
+                case "--polish-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return GameplayPolishCheck.Run(dataDir);
                 case "--world-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
@@ -239,6 +247,8 @@ internal static class Program
                     break;
                 case "--help":
                 case "-h":
+                    Console.WriteLine("  --localization-check [--data <dir>] Valida textos brasileiros, nomes, descricoes e prioridade de idioma");
+                    Console.WriteLine("  --polish-check [--data <dir>] Valida pacotes, durabilidade, niveis, expansao e limpeza de construcoes");
                     Console.WriteLine("DurangoServerNx — เซิร์ฟแท้พอร์ตตรง · มือถือก่อน");
                     Console.WriteLine("  --quest-check [--data <dir>]  ตรวจแคตตาล็อก Daily เฟส 1 (ไม่ต้องเปิดเซิร์ฟ)");
                     Console.WriteLine("  --economy-check [--data <dir>]  Valida mercado, loja, persistencia e protocolo TCP em saves temporarios");

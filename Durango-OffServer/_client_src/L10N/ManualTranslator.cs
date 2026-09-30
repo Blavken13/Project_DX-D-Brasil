@@ -29,7 +29,7 @@ public static class ManualTranslator
 		"de_DE" => "Spielerdaten werden geladen.", 
 		"fr_FR" => "Chargement des informations du joueur.", 
 		"zh_TW" => "使用者資訊載入中。", 
-		"pt_BR" => "Verificando dados do jogo.", 
+		"pt_BR" => "Carregando informações do jogador.",
 		"id_ID" => "Memuat informasi pemain.", 
 		_ => "Loading player information.", 
 	};
@@ -44,7 +44,7 @@ public static class ManualTranslator
 		"de_DE" => "Spieldaten werden überprüft.", 
 		"fr_FR" => "Vérification des données de jeu.", 
 		"zh_TW" => "遊戲資料確認中。", 
-		"pt_BR" => "Carregando informações do jogador.", 
+		"pt_BR" => "Verificando dados do jogo.",
 		"id_ID" => "Memeriksa data game.", 
 		_ => "Checking game data.", 
 	};

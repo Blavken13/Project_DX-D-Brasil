@@ -363,14 +363,14 @@ public class ToDoListSystem : GameSystem<ToDoListSystem>
 			Durango.Logic.PlayGuide.ToDoCollection toDoCollection = new Durango.Logic.PlayGuide.ToDoCollection();
 			NPCType nPCType = (NPCType)i;
 			toDoCollection.Icon = nPCType.ToDoIcon();
-			toDoCollection.Title = "งานทดสอบ: " + i;
+			toDoCollection.Title = "Tarefa de teste: " + i;
 			toDoCollection.Key = nPCType.ToString();
 			int num2 = Math.Min(i, 4);
 			for (int j = 0; j < num2; j++)
 			{
 				GatherItemToDo item = new GatherItemToDo(1)
 				{
-					LocalText = "หาไอเทมให\u0e49หน\u0e48อย ฮ\u0e48าๆๆ " + j,
+					LocalText = "Encontre estes itens para mim! " + j,
 					Key = string.Concat(nPCType, ".gather_", j)
 				};
 				toDoCollection.ToDoList.Add(item);
@@ -387,14 +387,14 @@ public class ToDoListSystem : GameSystem<ToDoListSystem>
 			Durango.Logic.PlayGuide.ToDoCollection toDoCollection = new Durango.Logic.PlayGuide.ToDoCollection();
 			NPCType nPCType = (NPCType)i;
 			toDoCollection.Icon = nPCType.ToDoIcon();
-			toDoCollection.Title = "งานทดสอบ: " + i;
+			toDoCollection.Title = "Tarefa de teste: " + i;
 			toDoCollection.Key = nPCType.ToString();
 			int num = Math.Min(i, 4);
 			for (int j = 0; j < num; j++)
 			{
 				GatherItemToDo item = new GatherItemToDo(1)
 				{
-					LocalText = "หาไอเทมให\u0e49หน\u0e48อย ฮ\u0e48าๆๆ " + j,
+					LocalText = "Encontre estes itens para mim! " + j,
 					Key = string.Concat(nPCType, ".gather_", j)
 				};
 				toDoCollection.ToDoList.Add(item);

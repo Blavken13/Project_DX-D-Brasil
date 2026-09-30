@@ -675,7 +675,7 @@ public class Gateway
         {
             if (!IsAdminAllowed(request)) return Forbidden();
             string entityId = postData.Get("entity_id");
-            string reason = postData.Get("reason") ?? "ถูกเตะโดยผู้ดูแล";
+            string reason = postData.Get("reason") ?? "Você foi desconectado por um administrador.";
             bool done = _host.KickPlayer(entityId, reason);
             return new WebServer.JsonResponse(new JObject { ["kicked"] = done }.ToString());
         };
@@ -685,12 +685,12 @@ public class Gateway
         {
             if (!IsAdminAllowed(request)) return Forbidden();
             string entityId = postData.Get("entity_id");
-            string reason = postData.Get("reason") ?? "ถูกแบนโดยผู้ดูแล";
+            string reason = postData.Get("reason") ?? "Você foi banido por um administrador.";
             PlayerContext target = _host.FindContextByEntityId(entityId);
             if (target == null || string.IsNullOrEmpty(target.OwnerKey))
             {
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "ไม่พบตัวละคร หรือตัวละครยังไม่มีเจ้าของ" }.ToString(),
+                    new JObject { ["error"] = "Personagem não encontrado ou sem proprietário." }.ToString(),
                     HttpStatusCode.NotFound);
             }
             BanList.Add(target.OwnerKey, reason);
@@ -813,7 +813,7 @@ public class Gateway
             if (string.IsNullOrEmpty(text))
             {
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "ต้องมี text" }.ToString(), HttpStatusCode.BadRequest);
+                    new JObject { ["error"] = "O campo text é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             }
             int sent = _host.Announce(text);
             return new WebServer.JsonResponse(new JObject { ["sent"] = sent }.ToString());
@@ -839,7 +839,7 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string path = Path.Combine(DataDir ?? Json.DataDir, "config.json");
             if (!File.Exists(path))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ไม่พบ config.json" }.ToString(), HttpStatusCode.NotFound);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "Arquivo config.json não encontrado." }.ToString(), HttpStatusCode.NotFound);
             return new WebServer.JsonResponse(File.ReadAllText(path));
         };
 
@@ -849,13 +849,13 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string json = postData.Get("json");
             if (string.IsNullOrEmpty(json))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ต้องมี json" }.ToString(), HttpStatusCode.BadRequest);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "O campo json é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             // ตรวจว่า JSON ถูกต้องก่อนเขียน
             try { JObject.Parse(json); }
             catch (Exception e)
             {
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "JSON ผิดรูปแบบ: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
+                    new JObject { ["error"] = "JSON inválido: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
             }
             string path = Path.Combine(DataDir ?? Json.DataDir, "config.json");
             File.WriteAllText(path, json);
@@ -869,7 +869,7 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string path = Path.Combine(DataDir ?? Json.DataDir, "config-meta.json");
             if (!File.Exists(path))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ไม่พบ config-meta.json" }.ToString(), HttpStatusCode.NotFound);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "Arquivo config-meta.json não encontrado." }.ToString(), HttpStatusCode.NotFound);
             return new WebServer.JsonResponse(File.ReadAllText(path));
         };
 
@@ -879,7 +879,7 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string path = Path.Combine(DataDir ?? Json.DataDir, "islands.json");
             if (!File.Exists(path))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ไม่พบ islands.json" }.ToString(), HttpStatusCode.NotFound);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "Arquivo islands.json não encontrado." }.ToString(), HttpStatusCode.NotFound);
             return new WebServer.JsonResponse(File.ReadAllText(path));
         };
 
@@ -889,12 +889,12 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string json = postData.Get("json");
             if (string.IsNullOrEmpty(json))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ต้องมี json" }.ToString(), HttpStatusCode.BadRequest);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "O campo json é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             try { JObject.Parse(json); }
             catch (Exception e)
             {
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "JSON ผิดรูปแบบ: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
+                    new JObject { ["error"] = "JSON inválido: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
             }
             string path = Path.Combine(DataDir ?? Json.DataDir, "islands.json");
             File.WriteAllText(path, json);
@@ -908,7 +908,7 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string path = Path.Combine(DataDir ?? Json.DataDir, "whitelist.txt");
             if (!File.Exists(path))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ไม่พบ whitelist.txt" }.ToString(), HttpStatusCode.NotFound);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "Arquivo whitelist.txt não encontrado." }.ToString(), HttpStatusCode.NotFound);
             string[] lines = File.ReadAllLines(path);
             JArray arr = new();
             foreach (string line in lines)
@@ -926,9 +926,9 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string entries = postData.Get("entries");
             if (string.IsNullOrEmpty(entries))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ต้องมี entries" }.ToString(), HttpStatusCode.BadRequest);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "O campo entries é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             string path = Path.Combine(DataDir ?? Json.DataDir, "whitelist.txt");
-            File.WriteAllText(path, "# รายชื่อที่อนุญาตให้เข้าเซิร์ฟ (entity id หรือชื่อตัวละคร บรรทัดละ 1)\n" + entries);
+            File.WriteAllText(path, "# Lista de acesso ao servidor (ID ou nome do personagem, um por linha)\n" + entries);
             Console.WriteLine("[admin] whitelist.txt ถูกอัปเดตแล้ว");
             return new WebServer.JsonResponse(new JObject { ["saved"] = true }.ToString());
         };
@@ -939,13 +939,13 @@ public class Gateway
             if (!IsAdminAllowed(request)) return Forbidden();
             string islandId = request.QueryString.Get("id");
             if (string.IsNullOrEmpty(islandId))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ต้องมี ?id=" }.ToString(), HttpStatusCode.BadRequest);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "O parâmetro ?id= é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             // กัน path traversal
             if (islandId.Contains("..") || islandId.Contains('/') || islandId.Contains('\\'))
                 return new WebServer.BadRequestResponse();
             string path = Path.Combine(DataDir ?? Json.DataDir, "islands", islandId, "config.json");
             if (!File.Exists(path))
-                return new WebServer.JsonResponse(new JObject { ["error"] = $"ไม่พบ config ของ {islandId}" }.ToString(), HttpStatusCode.NotFound);
+                return new WebServer.JsonResponse(new JObject { ["error"] = $"Configuração não encontrada para {islandId}" }.ToString(), HttpStatusCode.NotFound);
             return new WebServer.JsonResponse(File.ReadAllText(path));
         };
 
@@ -956,14 +956,14 @@ public class Gateway
             string islandId = postData.Get("id");
             string json = postData.Get("json");
             if (string.IsNullOrEmpty(islandId) || string.IsNullOrEmpty(json))
-                return new WebServer.JsonResponse(new JObject { ["error"] = "ต้องมี id และ json" }.ToString(), HttpStatusCode.BadRequest);
+                return new WebServer.JsonResponse(new JObject { ["error"] = "Os campos id e json são obrigatórios." }.ToString(), HttpStatusCode.BadRequest);
             if (islandId.Contains("..") || islandId.Contains('/') || islandId.Contains('\\'))
                 return new WebServer.BadRequestResponse();
             try { JObject.Parse(json); }
             catch (Exception e)
             {
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "JSON ผิดรูปแบบ: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
+                    new JObject { ["error"] = "JSON inválido: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
             }
             string dir = Path.Combine(DataDir ?? Json.DataDir, "islands", islandId);
             Directory.CreateDirectory(dir);
@@ -986,7 +986,7 @@ public class Gateway
             catch (Exception e)
             {
                 return new WebServer.JsonResponse(
-                    new JObject { ["error"] = "Reload ไม่สำเร็จ: " + e.Message }.ToString(), HttpStatusCode.InternalServerError);
+                    new JObject { ["error"] = "Falha ao recarregar: " + e.Message }.ToString(), HttpStatusCode.InternalServerError);
             }
         };
 
@@ -1408,7 +1408,7 @@ public class Gateway
             if (!Directory.Exists(adminDir))
             {
                 return (HttpListenerRequest _, Dictionary<string, string> __) =>
-                    new WebServer.TextResponse("text/plain", "Admin UI ไม่พบ — วางไฟล์ admin/ ไว้ข้าง executable", HttpStatusCode.NotFound);
+                    new WebServer.TextResponse("text/plain", "Interface administrativa não encontrada. Coloque a pasta admin/ ao lado do executável.", HttpStatusCode.NotFound);
             }
 
             string adminFile = url.Split('?')[0];
@@ -1428,7 +1428,7 @@ public class Gateway
 
             if (!File.Exists(targetFile))
                 return (HttpListenerRequest _, Dictionary<string, string> __) =>
-                    new WebServer.TextResponse("text/plain", "ไม่พบไฟล์", HttpStatusCode.NotFound);
+                    new WebServer.TextResponse("text/plain", "Arquivo não encontrado", HttpStatusCode.NotFound);
 
             // ใช้ TextResponse แทน FileResponse เพื่อกำหนด Content-Type ถูกต้อง
             // (FileResponse ใช้ DirectLength ซึ่งข้าม Content-Type header → browser ดาวน์โหลดแทน render)

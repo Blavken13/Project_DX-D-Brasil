@@ -187,21 +187,21 @@ public partial class Player
     private void HandlePutInReinsToCageMsg(PutInReinsToCage msg, uint seq)
     {
         // ด่านเจ้าของ — ไม่มี = ยัดของลงกรงคนอื่นได้ (เหตุผลเต็มที่ TryFindRein)
-        if (!MayTouchArtifact(msg.EntityId, "ใส่บังเหียนลงกรงฝึก"))
+        if (!MayTouchArtifact(msg.EntityId, "Colocar arreio na jaula de domesticação"))
         {
-            Send(new Abort { Text = "กรงนี้ไม่ใช่ของคุณ" }, seq);
+            Send(new Abort { Text = "Esta jaula não pertence a você." }, seq);
             return;
         }
         DomesticCage? cageOpt = _world.ArtifactManager.GetDomesticCage(msg.EntityId);
         if (!cageOpt.HasValue)
         {
-            Send(new Abort { Text = "ที่นี่ไม่ใช่กรงฝึกให้เชื่อง" }, seq);
+            Send(new Abort { Text = "Este objeto não é uma jaula de domesticação." }, seq);
             return;
         }
         int idx = _context.InventoryItems.FindIndex(it => it.Id == msg.ItemId);
         if (idx < 0)
         {
-            Send(new Abort { Text = "ไม่พบบังเหียนในกระเป๋า" }, seq);
+            Send(new Abort { Text = "O arreio não foi encontrado na mochila." }, seq);
             return;
         }
         Item item = _context.InventoryItems[idx];
@@ -214,14 +214,14 @@ public partial class Player
         // จนได้แรงก์ที่ต้องการได้ไม่จำกัด (แรงก์เป็นตัวกำหนดมูลค่าสัตว์ทั้งหมด)
         if (item.Ext is Reins { Domesticated: true })
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้เชื่องแล้ว — ต้องกดผูกพันจากกระเป๋าเท่านั้น" }, seq);
+            Send(new Abort { Text = "Este animal já está domesticado. Crie o vínculo pela mochila." }, seq);
             return;
         }
 
         DomesticationTables.ReinInfo rein = DomesticationTables.ReinOf(item.Prototype);
         if (rein == null)
         {
-            Send(new Abort { Text = "ไอเทมชิ้นนี้ไม่ใช่บังเหียน" }, seq);
+            Send(new Abort { Text = "Este item não é um arreio." }, seq);
             return;
         }
 
@@ -229,12 +229,12 @@ public partial class Player
         DomesticationInfo[] reins = cage.Reins ?? Array.Empty<DomesticationInfo>();
         if (Array.FindIndex(reins, r => r.ItemId == msg.ItemId) >= 0)
         {
-            Send(new Abort { Text = "บังเหียนอันนี้อยู่ในกรงอยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Este arreio já está em uma jaula." }, seq);
             return;
         }
         if (rein.Size > cage.RemainSize)
         {
-            Send(new Abort { Text = "ที่ในกรงไม่พอสำหรับสัตว์ตัวนี้" }, seq);
+            Send(new Abort { Text = "Não há espaço na jaula para este animal." }, seq);
             return;
         }
 
@@ -248,7 +248,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "ใส่บังเหียนเข้ากรงไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível colocar o arreio na jaula." }, seq);
             return;
         }
 
@@ -313,12 +313,12 @@ public partial class Player
         }
         if (info.Domesticated)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้เชื่องแล้ว" }, seq);
+            Send(new Abort { Text = "Este animal já está domesticado." }, seq);
             return;
         }
         if (info.DomesticationInProgress)
         {
-            Send(new Abort { Text = "กำลังทำให้เชื่องอยู่แล้ว" }, seq);
+            Send(new Abort { Text = "A domesticação já está em andamento." }, seq);
             return;
         }
 
@@ -332,7 +332,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "เริ่มทำให้เชื่องไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível iniciar a domesticação." }, seq);
             return;
         }
         Send(default(OK), seq);
@@ -355,7 +355,7 @@ public partial class Player
         }
         if (info.Domesticated || !info.DomesticationInProgress)
         {
-            Send(new Abort { Text = "ตอนนี้ยังไม่ได้ทำให้เชื่องอยู่" }, seq);
+            Send(new Abort { Text = "Nenhuma domesticação está em andamento." }, seq);
             return;
         }
 
@@ -370,7 +370,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "ยกเลิกไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível cancelar." }, seq);
             return;
         }
         Send(default(OK), seq);
@@ -401,7 +401,7 @@ public partial class Player
         }
         if (info.Domesticated || !info.DomesticationInProgress)
         {
-            Send(new Abort { Text = "ให้อาหารได้เฉพาะตอนกำลังทำให้เชื่อง" });
+            Send(new Abort { Text = "O animal só pode ser alimentado durante a domesticação." });
             return;
         }
 
@@ -421,7 +421,7 @@ public partial class Player
         }
         if (eaten.Count == 0)
         {
-            Send(new Abort { Text = "ไม่มีอาหารที่สัตว์ตัวนี้กินได้ในรายการที่เลือก" });
+            Send(new Abort { Text = "Nenhum dos alimentos selecionados pode ser consumido por este animal." });
             return;
         }
 
@@ -439,7 +439,7 @@ public partial class Player
             !StatFormula.TryEval(DomesticationTables.ProbabilityExpr, vars, out double prob))
         {
             Console.WriteLine("[ทำให้เชื่อง] ⚠️ คิดสูตร domesticate_time/domesticate_probability ไม่ได้ — ไม่กินอาหาร");
-            Send(new Abort { Text = "ข้อมูลสูตรทำให้เชื่องผิดพลาด — ยังให้อาหารไม่ได้" });
+            Send(new Abort { Text = "Os dados da receita de domesticação são inválidos. Não é possível alimentar o animal." });
             return;
         }
 
@@ -455,7 +455,7 @@ public partial class Player
         });
         if (!ok)
         {
-            Send(new Abort { Text = "ให้อาหารไม่สำเร็จ" });
+            Send(new Abort { Text = "Não foi possível alimentar o animal." });
             return;
         }
 
@@ -495,17 +495,17 @@ public partial class Player
         }
         if (info.Domesticated)
         {
-            Send(new Abort { Text = "สัตว์ตัวนี้เชื่องแล้ว" }, seq);
+            Send(new Abort { Text = "Este animal já está domesticado." }, seq);
             return;
         }
         if (!info.DomesticationInProgress)
         {
-            Send(new Abort { Text = "ยังไม่ได้เริ่มทำให้เชื่อง" }, seq);
+            Send(new Abort { Text = "A domesticação ainda não foi iniciada." }, seq);
             return;
         }
         if (Times.UnixTimeNow() < info.DomesticateUntil)
         {
-            Send(new Abort { Text = "ยังไม่ถึงเวลา" }, seq);
+            Send(new Abort { Text = "Ainda não chegou a hora." }, seq);
             return;
         }
 
@@ -519,7 +519,7 @@ public partial class Player
             // ลบไม่สำเร็จแล้วยังตอบว่า "ล้มเหลว" = สัตว์ค้างในกรงให้กดดูผลซ้ำได้เรื่อย ๆ (กฎข้อ 2)
             if (!RemoveReinFromCage(msg.EntityId, msg.ItemId))
             {
-                Send(new Abort { Text = "อัปเดตสถานะกรงไม่สำเร็จ" }, seq);
+                Send(new Abort { Text = "Não foi possível atualizar o estado da jaula." }, seq);
                 return;
             }
             Send(new DomesticationResult
@@ -546,7 +546,7 @@ public partial class Player
         // เขียนสถานะไม่ติด = ผู้เล่นจะเห็นหน้าต่างรางวัลแล้วกด "가방에 넣기" ไม่ได้ ⇒ อย่าเพิ่งบอกว่าสำเร็จ
         if (!marked)
         {
-            Send(new Abort { Text = "อัปเดตสถานะกรงไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível atualizar o estado da jaula." }, seq);
             return;
         }
         Send(new DomesticationResult
@@ -616,7 +616,7 @@ public partial class Player
         }
         if (info.DomesticationInProgress && !info.Domesticated)
         {
-            Send(new Abort { Text = "กำลังทำให้เชื่องอยู่ เอาออกไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível retirar o animal durante a domesticação." }, seq);
             return;
         }
 
@@ -628,13 +628,13 @@ public partial class Player
             PetStore.Entry entry = BuildTamedPetEntry(info);
             if (entry == null)
             {
-                Send(new Abort { Text = "สร้างสัตว์เลี้ยงไม่สำเร็จ (ไม่พบข้อมูลสัตว์ชนิดนี้)" }, seq);
+                Send(new Abort { Text = "Não foi possível criar o animal de estimação: os dados deste animal não foram encontrados." }, seq);
                 return;
             }
             Item? withPet = RebuildReinItem(info);
             if (!withPet.HasValue)
             {
-                Send(new Abort { Text = "สร้างบังเหียนคืนไม่ได้ (ไม่พบแบบไอเทมของสัตว์ชนิดนี้)" }, seq);
+                Send(new Abort { Text = "Não foi possível recuperar o arreio: o item deste animal não foi encontrado." }, seq);
                 return;
             }
 
@@ -655,12 +655,12 @@ public partial class Player
             int usedSize = _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
             if (usedSize + Math.Max(1, tamedItem.Size) > PetTuning.PlayerInventoryMaxSize)
             {
-                Send(new Abort { Text = "กระเป๋าเต็ม" }, seq);
+                Send(new Abort { Text = "A mochila está cheia." }, seq);
                 return;
             }
             if (!RemoveReinFromCage(msg.EntityId, msg.ItemId))
             {
-                Send(new Abort { Text = "เอาสัตว์ออกจากกรงไม่สำเร็จ" }, seq);
+                Send(new Abort { Text = "Não foi possível retirar o animal da jaula." }, seq);
                 return;
             }
 
@@ -677,20 +677,20 @@ public partial class Player
         Item? rebuilt = RebuildReinItem(info);
         if (!rebuilt.HasValue)
         {
-            Send(new Abort { Text = "สร้างบังเหียนคืนไม่ได้ (ไม่พบแบบไอเทมของสัตว์ชนิดนี้)" }, seq);
+            Send(new Abort { Text = "Não foi possível recuperar o arreio: o item deste animal não foi encontrado." }, seq);
             return;
         }
         Item item = rebuilt.Value;
         int used = _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
         if (used + Math.Max(1, item.Size) > PetTuning.PlayerInventoryMaxSize)
         {
-            Send(new Abort { Text = "กระเป๋าเต็ม" }, seq);
+            Send(new Abort { Text = "A mochila está cheia." }, seq);
             return;
         }
 
         if (!RemoveReinFromCage(msg.EntityId, msg.ItemId))
         {
-            Send(new Abort { Text = "เอาบังเหียนออกจากกรงไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível retirar o arreio da jaula." }, seq);
             return;
         }
         _context.InventoryItems.Add(item);
@@ -718,7 +718,7 @@ public partial class Player
         }
         if (!RemoveReinFromCage(msg.EntityId, msg.ItemId))
         {
-            Send(new Abort { Text = "ปล่อยสัตว์ไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível soltar o animal." }, seq);
             return;
         }
         Send(default(OK), seq);
@@ -745,22 +745,22 @@ public partial class Player
     private bool TryFindRein(string entityId, string itemId, out DomesticationInfo info, out string error)
     {
         info = default;
-        if (!MayTouchArtifact(entityId, "ยุ่งกับกรงฝึก"))
+        if (!MayTouchArtifact(entityId, "Usar jaula de domesticação"))
         {
-            error = "กรงนี้ไม่ใช่ของคุณ";
+            error = "Esta jaula não pertence a você.";
             return false;
         }
         DomesticCage? cage = _world.ArtifactManager.GetDomesticCage(entityId);
         if (!cage.HasValue)
         {
-            error = "ที่นี่ไม่ใช่กรงฝึกให้เชื่อง";
+            error = "Este objeto não é uma jaula de domesticação.";
             return false;
         }
         DomesticationInfo[] reins = cage.Value.Reins ?? Array.Empty<DomesticationInfo>();
         int idx = Array.FindIndex(reins, r => r.ItemId == itemId);
         if (idx < 0)
         {
-            error = "ไม่พบสัตว์ตัวนี้ในกรง";
+            error = "Este animal não foi encontrado na jaula.";
             return false;
         }
         info = reins[idx];
@@ -878,14 +878,14 @@ public partial class Player
 
         if (!reins.Domesticated || !reins.Pet.HasValue)
         {
-            error = "บังเหียนนี้ยังไม่มีสัตว์ที่เชื่องแล้วอยู่ข้างใน";
+            error = "Este arreio ainda não contém um animal domesticado.";
             return false;
         }
 
         PetStore.Entry entry = BuildPetEntryFromReins(reins);
         if (entry == null)
         {
-            error = "ข้อมูลสัตว์ในบังเหียนเสียหาย";
+            error = "Os dados do animal neste arreio estão corrompidos.";
             return false;
         }
 
@@ -893,7 +893,7 @@ public partial class Player
         // กันกดซ้ำ/แพ็กเก็ตซ้ำ — สัตว์ตัวเดิมเข้าสองครั้งจะได้สัตว์ผีที่ลบไม่ออก
         if (store.Any(e => e.Pet.EntityId == entry.Pet.EntityId))
         {
-            error = "ผูกพันสัตว์ตัวนี้ไปแล้ว";
+            error = "Você já criou um vínculo com este animal.";
             return false;
         }
 

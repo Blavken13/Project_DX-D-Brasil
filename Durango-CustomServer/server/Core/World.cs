@@ -127,6 +127,7 @@ public partial class World
         PopulateSafehouseResources();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
         AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
+        InitializeWildStructureExpirations();
         // Saves antigos podem conter spots parcialmente coletados sem fila de renovação.
         foreach (var key in _context.NaturalHarvests.Keys.ToArray()) ScheduleTutorialRefresh(key);
     }
@@ -588,7 +589,7 @@ public partial class World
     /// เลเวลของเกาะนี้ — จาก <c>region_templates.json → level</c> (ri35de = 35)
     /// ใช้กับสูตรที่มีตัวแปร level ระดับเกาะ เช่นหินนำทางที่ต้องใช้เปิดหลุมอุกกาบาต
     /// </summary>
-    private int RegionLevel =>
+    internal int RegionLevel =>
         RegionCatalog.GetTemplate(_terrainData.Info?.region_template)?.Level ?? 1;
 
     private static Crack MakeClosedCrack(int level)
@@ -641,6 +642,7 @@ public partial class World
         }
         // Demolições pendentes terminam mesmo depois de sair o último jogador.
         ProcessDestructs(Gauge.CurrentTime);
+        ProcessWildStructureExpirations(Gauge.CurrentTime);
         ProcessCraterStates(Gauge.CurrentTime);
 
         // สัตว์เดินเล่น — ต้องอยู่นอกลูปผู้เล่น เพราะเป็นเรื่องของสัตว์ ไม่ใช่ของใครคนใดคนหนึ่ง
@@ -909,6 +911,7 @@ public partial class World
         ArtifactManager.AddArtifact(artifact);
         // จำว่าใครสร้าง — ไม่จำ = ไม่มีใครเป็นเจ้าของ แล้วรื้อไม่ได้ (ดู WorldContext.ArtifactOwners)
         ArtifactManager.SetOwner(artifact.EntityId, ownerEntityId);
+        TrackWildStructure(artifact.EntityId, ownerEntityId);
         if (addon.HasValue)
         {
             AppearArtifact? appearArtifact = ArtifactManager.PlaceAddOns(artifact.EntityId, addon.Value._AddOns);
@@ -925,6 +928,10 @@ public partial class World
         AppearArtifact? appearArtifact = ArtifactManager.RemoveArtifact(entityId);
         if (appearArtifact.HasValue)
         {
+            _context.WildStructureExpirations?.Remove(entityId);
+            _context.ArtifactAddOns.Remove(entityId);
+            _context.ArtifactMannequins.Remove(entityId);
+            Player.WarehouseStore.Remove(entityId);
             OnArtifactDisappeared(appearArtifact.Value);
             Save();
         }
@@ -1503,6 +1510,7 @@ public partial class World
             ActivatedAt = Times.UnixTimeNow(),
             ExpiresAt = null,
             Size = 1,
+            LargestSize = 1,
             RegionId = regionId,
             TileX = tile.x,
             TileY = tile.y,
@@ -1538,9 +1546,21 @@ public partial class World
         if (!adjacent) return null;
         rec.Cells.Add(key);
         rec.Size = rec.Cells.Count;
+        rec.LargestSize = Math.Max(rec.LargestSize, rec.Size);
         _context.EstateCells[key] = estateId;
         Save();
         return ToLicense(estateId, rec);
+    }
+
+    public bool CanExpandEstate(string estateId, string ownerId, Point2 cell, int maxSize)
+    {
+        if (!_context.Estates.TryGetValue(estateId, out var estate) || estate.OwnerId != ownerId || estate.Size >= maxSize ||
+            _context.EstateCells.ContainsKey(EstateCellKey(cell.x, cell.y))) return false;
+        return estate.Cells.Any(existing =>
+        {
+            string[] parts = existing.Split(',');
+            return Math.Abs(int.Parse(parts[0]) - cell.x) + Math.Abs(int.Parse(parts[1]) - cell.y) == 1;
+        });
     }
 
     public EstateLicense? ShrinkEstate(string estateId, string ownerId, Point2 cell)
@@ -1550,6 +1570,7 @@ public partial class World
         string key = EstateCellKey(cell.x, cell.y);
         if (!rec.Cells.Contains(key)) return null;
         if (rec.Cells.Count <= 1) return null; // เหลือช่องเดียวให้ใช้ Remove
+        rec.LargestSize = Math.Max(rec.LargestSize, rec.Size);
         rec.Cells.Remove(key);
         rec.Size = rec.Cells.Count;
         _context.EstateCells.Remove(key);

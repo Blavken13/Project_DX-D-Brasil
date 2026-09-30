@@ -179,7 +179,8 @@ public partial class Player
         if (RegionCatalog.TryGet(_world.TerrainId, out Messages.Region region))
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template?.CollectibleLevels.TryGetValue(entityType, out int nativeLevel) == true) return nativeLevel;
+            if (template?.CollectibleLevels.TryGetValue(entityType, out int nativeLevel) == true)
+                return template.Role == Shared.Region.Role.Risky ? Math.Max(template.Level, nativeLevel) : nativeLevel;
             if (template != null && template.Level > 0) return template.Level;
         }
         return 1;
@@ -258,21 +259,21 @@ public partial class Player
         else if (!_touchedNaturals.TryGetValue(msg.Tile, out entityType))
         {
             // ไม่เคยแตะ = ไม่รู้ว่ามันคืออะไร (หรือเก็บไปแล้วเมื่อกี้) — ยกเลิกสะอาด
-            RejectCollect(seq, "ไม่รู้จักของธรรมชาติชิ้นนี้", msg);
+            RejectCollect(seq, "Este recurso natural não foi reconhecido.", msg);
             return;
         }
 
         // ระยะ: client เดินไปถึงก่อนยิงอยู่แล้ว ตรงนี้แค่กันการยิงข้ามแมพ
         if (!IsWithinCollectRange(carcass?.Tile ?? msg.Tile))
         {
-            RejectCollect(seq, "อยู่ไกลเกินไป", msg);
+            RejectCollect(seq, "Você está longe demais.", msg);
             return;
         }
 
         CollectibleTable.GeneratorSpec spec = CollectibleTable.FindGenerator(entityType, msg.GeneratorId);
         if (spec == null)
         {
-            RejectCollect(seq, $"ไม่มี generator '{msg.GeneratorId}' ของชนิด {entityType}", msg);
+            RejectCollect(seq, $"Gerador não encontrado: '{msg.GeneratorId}' do tipo {entityType}", msg);
             return;
         }
 
@@ -307,7 +308,7 @@ public partial class Player
         }
         if (already >= allowed)
         {
-            RejectCollect(seq, $"เก็บ '{spec.Id}' จากเป้านี้ครบ {allowed} ครั้งแล้ว", msg);
+            RejectCollect(seq, $"Coletar '{spec.Id}' deste recurso: {allowed} vezes", msg);
             return;
         }
 
@@ -388,7 +389,7 @@ public partial class Player
         {
             // prototype หาย — ถอนจองแล้วยกเลิก ไม่ปล่อยให้ผู้เล่นค้างหลอด
             UnreserveGenerator(harvestKey, spec.Id);
-            Send(new Abort { Text = "ไม่พบไอเทมที่ควรจะได้" }, seq);
+            Send(new Abort { Text = "O item esperado não foi encontrado." }, seq);
             Send(default(ReplySequenceMark), seq);
             return;
         }
@@ -477,12 +478,12 @@ public partial class Player
         // ชำแหละซากใช้หมวด Butchery · เก็บของธรรมชาติใช้ Gathering
         if (isCarcass)
         {
-            AddExpForAction(SkillTuning.ButcherWeight, Shared.Skill.Category.Butchery, "ชำแหละ");
+            AddExpForAction(SkillTuning.ButcherWeight, Shared.Skill.Category.Butchery, "Esfolar");
             NoteQuestEvent(Shared.Quest.QuestEventType.Collected, QuestCatalog.Filters.Carcass);
         }
         else
         {
-            AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Gathering, "เก็บของ");
+            AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Gathering, "Coletar itens");
             NoteQuestEvent(Shared.Quest.QuestEventType.Collected, QuestCatalog.Filters.Gather);
         }
 
@@ -612,6 +613,7 @@ public partial class Player
         if (string.IsNullOrEmpty(toolItemId)) return false;
         int idx = _context.InventoryItems.FindIndex(it => it.Id == toolItemId);
         if (idx < 0) return false;
+        if (_context.InventoryItems[idx].Durability?.Get() <= 0) return false;
         Messages.Tag[] tags = _context.InventoryItems[idx].Tags;
         if (tags == null) return false;
         int need = CollectibleTable.RequiredToolLevel(spec);
@@ -1064,6 +1066,7 @@ internal static class CollectibleTable
         {
             Add("clam");
         }
+        foreach (string id in LostParcelLoot.For(collectibleId)) Add(id);
         // 2) ชื่อ collectible เป็น prototype อยู่แล้ว (sulphur / basalt / granite / clay_gray …)
         if (PrototypeYaml.GetItemPrototype(collectibleId) != null) Add(collectibleId);
         // 3) ของประจำหมวด (ค่าของเรา)
@@ -1106,7 +1109,7 @@ internal static class CollectibleTable
     public static int ClampLevel(GeneratorSpec spec, int requestedLevel)
     {
         if (spec == null) return Math.Max(1, requestedLevel);
-        Prototype proto = PrototypeYaml.GetItemPrototype(spec.PrototypeId);
+        Prototype proto = PrototypeYaml.GetItemPrototype(spec.PrototypeId, requestedLevel) ?? PrototypeYaml.GetItemPrototype(spec.PrototypeId);
         if (proto == null) return Math.Max(1, requestedLevel);
         int min = Math.Max(1, proto.MinLevel);
         int max = proto.MaxLevel > 0 ? Math.Max(min, proto.MaxLevel) : Math.Max(min, requestedLevel);

@@ -1,0 +1,139 @@
+{
+  "Durango.Logic.Npc.NpcDialogs": {
+    "ชาร์ลี พวกใหม่จากอังโคร่ามาถึงครบไหม": "Charlie, todos os recém-chegados de Ancora chegaram?",
+    "ครบ! กองไฟยังติดอยู่ ทุกคนอารมณ์ดี": "Todos! A fogueira continua acesa e o pessoal está animado.",
+    "ดี อย่าให้ใครออกไปเกาะไม่เสถียรคนเดียวล่ะ": "Ótimo. Não deixe ninguém ir sozinho para uma Ilha Instável.",
+    "รับทราบครับ K มองโลกในแง่ดีไว้!": "Entendido, K! Vamos manter o otimismo!",
+    "รายงานจากบริษัท: เรือเสบียงเข้าท่าพรุ่งนี้": "Relatório da Companhia: o navio de suprimentos chega amanhã.",
+    "ให้ขนไปคลังแคมป์ก่อน ห้ามเอาไปขาย": "Levem tudo ao armazém do acampamento. Nada de vender os suprimentos.",
+    "เข้าใจแล้ว เอเจนต์ D383 รับคำสั่ง": "Entendido. Agente D383, ordem recebida.",
+    "K เธอทำเกินคำสั่งอีกแล้ว การช่วยคนไม่ใช่งานของบริษัท": "K, você desobedeceu às ordens de novo. Salvar pessoas não é o trabalho da Companhia.",
+    "ถ้าปล่อยพวกเขาตาย ก็ไม่มีใครเหลือให้บริษัทจ้าง": "Se deixarmos todos morrerem, não vai sobrar ninguém para a Companhia contratar.",
+    "...คณะกรรมการจะจดไว้": "...O Comitê vai registrar isso.",
+    "จดไปเถอะ ฉันมีคนต้องไปช่วยอีก": "Pode registrar. Ainda tenho gente para salvar.",
+    "K เอาตัวอย่างน้ำจากเกาะใหม่มาให้ฉันบ้างสิ": "K, traga algumas amostras de água da nova ilha para mim.",
+    "หมอ ฉันเป็นคนช่วยชีวิต ไม่ใช่เด็กส่งของ": "Doutor, eu salvo vidas. Não sou entregadora.",
+    "แต่งานวิจัยนี้จะช่วยชีวิตได้เป็นพัน!": "Mas esta pesquisa pode salvar milhares de vidas!",
+    "...ก็ได้ ขวดเดียวนะ": "...Tudo bem. Só uma garrafa.",
+    "โนวัค พวกคุณตัดต้นไม้เยอะเกินไปแล้วนะ": "Novak, vocês estão derrubando árvores demais.",
+    "ริว ถ้าไม่มีไม้ ก็ไม่มีบ้านให้พวกใหม่": "Liu, sem madeira não teremos casas para os recém-chegados.",
+    "ปลูกคืนด้วยสิ ฟอรัมจะจับตาดู": "Então plantem novas árvores. O Fórum vai ficar de olho.",
+    "ได้ ๆ ปลูกคืนสองเท่าเลย พอใจไหม": "Está bem, vamos plantar o dobro. Satisfeita?",
+    "ริว ดอกไม้ตรงหน้าผาน่าจะเป็นพันธุ์ใหม่": "Liu, aquelas flores perto do penhasco parecem ser de uma espécie nova.",
+    "หมอลามะ อย่าเก็บมากเกินไปล่ะ": "Dr. Lamar, não colha flores demais.",
+    "แค่สามดอก เพื่อวิทยาศาสตร์!": "Só três flores. Pela ciência!",
+    "เปียร์ วันนี้ยิ้มหน่อยสิ อากาศดีจะตาย": "Pia, dê um sorriso! O dia está lindo.",
+    "...ชาร์ลี คุณยิ้มได้ทุกวันเลยเหรอ": "...Charlie, como você consegue sorrir todos os dias?",
+    "ก็เรายังมีชีวิตอยู่นี่นา": "Estamos vivos, não estamos?",
+    "F นายเห็น G ไหม": "F, você viu G?",
+    "ไปหาของกินที่แม่น้ำมั้ง": "Acho que foi procurar comida no rio.",
+    "อีกแล้วเหรอ...": "De novo...?",
+    "F ฉันเจอผลไม้แปลก ๆ กินได้ไหม": "F, encontrei uma fruta estranha. Será que dá para comer?",
+    "อย่า! ถามหมอลามะก่อน": "Não! Pergunte ao Dr. Lamar primeiro.",
+    "แต่มันหอมมากเลยนะ": "Mas o cheiro está tão bom!",
+    "โรดริเกซ เรือลำใหม่ต้องใช้เชือกอีกเยอะ": "Rodriguez, o novo barco ainda precisa de muita corda.",
+    "ไปเก็บกกที่ทะเลสาบสิ ฉันเพิ่งเห็นเต็มเลย": "Vá colher juncos no lago. Acabei de ver um monte por lá.",
+    "เซน คืนนี้เวรยามใคร": "Zein, quem fica de guarda esta noite?",
+    "ฉันเอง เอาไฟให้แรงหน่อยล่ะ": "Eu. Deixe a fogueira bem acesa.",
+    "มากิ เธอเคยเห็นทะเลที่บ้านเกิดไหม": "Maki, você já tinha visto o mar na sua terra natal?",
+    "เคย แต่ไม่มีไดโนเสาร์ว่ายอยู่แบบนี้": "Já, mas não havia dinossauros nadando nele!",
+    "โนวัค ขอยืมขวานหน่อย": "Novak, pode me emprestar seu machado?",
+    "คืนมาลับคมด้วยนะ คราวก่อนบิ่นหมด": "Devolva afiado, por favor. Da última vez a lâmina voltou toda lascada.",
+    "{b} วันนี้เป็นไงบ้าง": "{b}, como você está hoje?",
+    "เฮ้ {b} ได้ยินเสียงไดโนเมื่อคืนไหม": "Ei, {b}, ouviu os dinossauros ontem à noite?",
+    "{b} คลังแคมป์ยังมีของกินอยู่ไหม": "{b}, ainda há comida no armazém do acampamento?",
+    "{b} ไปท่าเรือมาหรือยัง เรือเข้าแล้วนะ": "{b}, já foi ao porto? O barco chegou.",
+    "{b} หมอลามะตามหาอยู่นะ": "{b}, o Dr. Lamar está procurando você.",
+    "ก็เรื่อย ๆ {a} ยังมีชีวิตอยู่ก็ดีแล้ว": "Vou levando, {a}. Estar vivo já é uma boa notícia.",
+    "ได้ยิน ตัวใหญ่มากแน่ ๆ": "Ouvi. Devia ser enorme!",
+    "เหลือน้อยแล้ว ต้องออกไปหาเพิ่ม": "Está acabando. Precisamos buscar mais.",
+    "ยัง เดี๋ยวแวะไป": "Ainda não. Vou passar lá daqui a pouco.",
+    "อีกแล้วเหรอ เดี๋ยวไปหา": "De novo? Já vou falar com ele.",
+    "เอาล่ะ ไปทำงานต่อดีกว่า": "Bom, é melhor voltar ao trabalho.",
+    "ระวังตัวด้วยนะ": "Tome cuidado!",
+    "ไว้เจอกันที่กองไฟ": "Nos vemos na fogueira.",
+    "อย่าลืมดื่มน้ำล่ะ": "Não se esqueça de beber água."
+  },
+  "Durango.Logic.Npc.NpcSpawner": {
+    "ริว": "Liu", "โนวัค": "Novak", "ดร.ลามะ": "Dr. Lamar",
+    "โรดริเกซ": "Rodriguez", "สาวรัตน์": "Sawarat", "แม็คเคน": "McCain",
+    "ซาอิน": "Zein", "เปียร์": "Pia", "อนุกรรมการ 924": "Subcomitê 924",
+    "อนุกรรมการ 628": "Subcomitê 628", "อนุกรรมการ 415": "Subcomitê 415",
+    "ฮาวอาตา": "Hauata", "มากิ": "Maki", "โยซิโปวิช": "Josipovic", "ชาร์ลี": "Charlie"
+  },
+  "ToDoListSystem": {
+    "งานทดสอบ: ": "Tarefa de teste: ", "หาไอเทมให้หน่อย ฮ่าๆๆ ": "Encontre estes itens para mim! "
+  },
+  "TutorialIslandSystem": {
+    "ยังไม่เห็นแพ (AppearTutorialBoat)": "A jangada ainda não foi encontrada (AppearTutorialBoat).",
+    "ยังไม่มีเซสชัน — ส่ง Participate แล้ว ลองใหม่": "Nenhuma sessão ativa. A solicitação Participate foi enviada; tente novamente.",
+    "ไม่มีวัตถุดิบในกระเป๋าที่ใส่แพได้": "Não há materiais na mochila que possam ser colocados na jangada."
+  },
+  "Durango.UI.MenuListGroupBase": {
+    "โหมด Online ไม่รองรับการต่อเกาะเพื่อนแบบ LAN": "O modo online não permite conectar à ilha de um amigo pela rede local."
+  },
+  "Durango.System.Config.UiMode": {
+    "เปลี่ยนโหมด UI": "Alterar modo da interface",
+    "เปลี่ยนเป็นโหมด <em>{0}</em> แล้ว\nกรุณาปิดเกมแล้วเปิดใหม่เพื่อให้การเปลี่ยนแปลงมีผล": "Modo alterado para <em>{0}</em>.\nFeche e abra o jogo novamente para aplicar a mudança.",
+    "ตกลง": "Confirmar"
+  },
+  "Durango.System.Config.UiMode::ApplyChanged::1": { "Mobile": "Celular" },
+  "LocalizeSystem": {
+    "English": "Inglês", "한국어": "Coreano", "Español": "Espanhol", "Português": "Português (Brasil)",
+    "Bahasa Indonesia": "Indonésio", "русский": "Russo", "ภาษาไทย": "Tailandês", "Deutsch": "Alemão",
+    "Français": "Francês", "中文(繁體)": "Chinês (tradicional)"
+  },
+  "Durango.UI.TitleClusterInfo": {
+    "[ff5555]●[-] Offline": "[ff5555]●[-] Indisponível", "[66dd66]●[-] Online ": "[66dd66]●[-] Disponível "
+  },
+  "Durango.Logic.Clusters.OffServerLink": {
+    "Data loaded ": "Dados carregados: ", " files · ": " arquivos · ",
+    " MB — entering world…": " MB — entrando no mundo…", "Loading data ": "Carregando dados: ",
+    " • Servidor offline": " • Servidor indisponível", " • Jogadores online: ": " • Jogadores conectados: ",
+    "Durango: Wild Lands — OffServer v": "Durango Brasil — Versão "
+  },
+  "Durango.UI.TitleMenuGroup": {
+    "Nickname": "Nome de usuário",
+    "Entre com seu nickname e senha para continuar.\n\nAinda não tem conta? Escolha Criar conta. O cadastro pedirá nickname, senha e confirmação da senha.": "Entre com seu nome de usuário e senha para continuar.\n\nAinda não tem conta? Escolha Criar conta. O cadastro pedirá nome de usuário, senha e confirmação da senha.",
+    "Entrar • etapa 1 de 2\nInforme o nickname usado na sua conta.": "Entrar • etapa 1 de 2\nInforme o nome de usuário da sua conta.",
+    "Cadastro • etapa 1 de 3\nEscolha o nickname que você usará para entrar.": "Cadastro • etapa 1 de 3\nEscolha o nome de usuário que você usará para entrar.",
+    "Nickname ou senha inválidos.": "Nome de usuário ou senha inválidos.",
+    "Esse nickname já está em uso.": "Esse nome de usuário já está em uso.",
+    "O nickname precisa ter pelo menos 3 caracteres.": "O nome de usuário precisa ter pelo menos 3 caracteres.",
+    "O nickname pode ter no máximo 32 caracteres.": "O nome de usuário pode ter no máximo 32 caracteres.",
+    "Use somente letras, números, ponto, hífen ou underline no nickname.": "Use somente letras, números, ponto, hífen ou sublinhado no nome de usuário.",
+    "No download url": "Endereço de download não encontrado"
+  },
+  "L10N.ManualTranslator::get_LoadingUserInfo": {
+    "Verificando dados do jogo.": "Carregando informações do jogador."
+  },
+  "L10N.ManualTranslator::get_CheckingGameData": {
+    "Carregando informações do jogador.": "Verificando dados do jogo."
+  },
+  "GameManager::GetLastErrors": { "오류코드: ": "Código de erro: " },
+  "Durango.UI.AlarmGroup::KillMsgTest": { "댕댕이": "Cachorrinho" },
+  "Durango.UI.AnimalCheatWidget::Start": { "허드 ID": "ID do rebanho" },
+  "Durango.UI.ClanBaseLostWidget::Set": {
+    "[size=26][b][i]{0:0}[/i][b][/size]회차 방어 성공": "[size=26][b][i]{0:0}[/i][b][/size]ª defesa bem-sucedida"
+  },
+  "Durango.UI.ClanBaseWidget::<RefreshWarpButton>b__28_0": { " 후 무료": " até ficar gratuito" },
+  "Durango.UI.Popup.SendReportPopup::Send": {
+    "서버상황제보": "Relatar situação do servidor", "건의/신고하기": "Enviar sugestão ou denúncia"
+  },
+  "Durango.UI.Popup.ShopCommodityInfoView::GetCaptionText": {
+    "구매 후 미사용 상품  7일 내 청약철회 가능 /  보호자의 동의 없는 미성년자의 결제는 취소할 수 있습니다.": "Produtos não utilizados podem ter a compra cancelada em até 7 dias. Pagamentos feitos por menores sem autorização do responsável podem ser cancelados."
+  },
+  "Durango.UI.Popup.SunsetMailPopup::SendReply": { "선셋 편지": "Carta do pôr do sol" },
+  "Durango.System.Config.ConfigInstance::ChangeLocale": {
+    "변경 후 재시작 하지 않음": "Alterar sem reiniciar"
+  },
+  "Durango.System.Config.ConfigInstance::InjectUiModeSetting": {
+    "UI Mode (PC / Mobile)": "Modo da interface (PC / Celular)"
+  },
+  "Durango.System.Config.ConfigInstance::ShowTerms": {
+    "저작권 관련 제반 사항": "Informações sobre direitos autorais",
+    "저작권의 귀속\n주식회사 넥슨코리아(이하 \"회사\"라 함)가 제공하는 \"야생의 땅: 듀랑고\"(이하 \"본 게임물\"이라 함)의 저작권 등 지적재산권 및 소유권을 포함한 모든 권리는 \"회사\"에게 있습니다.": "Titularidade dos direitos autorais\nTodos os direitos, incluindo direitos autorais, propriedade intelectual e propriedade sobre Durango: Wild Lands (doravante denominado \"Jogo\"), fornecido pela Nexon Korea Corporation (doravante denominada \"Empresa\"), pertencem à Empresa.",
+    "본 게임물의 이용 및 제한\n1.  이용자는 \"본 게임물\"을 게임 플레이 목적으로 무상 이용할 수 있습니다.\n2.  이용자는 \"본 게임물\"을 제1항의 목적을 넘어 영리 목적으로 이용하거나 \"회사\"의 사전 승낙 없이 복제, 전송, 출판, 배포, 방송, 기타 방법에 의하여 이용하거나 타인에게 이용하게 하여서는 안 됩니다.\n3.  이용자는 사설 서버 운영, 리버스 엔지니어링 기타 불법적인 목적이나 관련 법령을 위반하는 방법으로 \"본 게임물\"을 이용하거나 타인에게 이용하게 하여서는 안 됩니다.": "Uso do Jogo e restrições\n1. O usuário pode utilizar o Jogo gratuitamente para jogar.\n2. O usuário não pode utilizar o Jogo para fins lucrativos além da finalidade descrita no item 1, nem copiar, transmitir, publicar, distribuir, divulgar ou disponibilizar o Jogo a terceiros sem autorização prévia da Empresa.\n3. O usuário não pode utilizar ou disponibilizar o Jogo para operar servidores privados, realizar engenharia reversa ou outras atividades ilegais, nem de forma que viole a legislação aplicável.",
+    "면책조항\n\"본 게임물\"은 \"회사\"가 무료로 일시적으로 배포하는 형태로, \"회사\"는 \"본 게임물\"과 관련하여 발생하는 손해에 대해서 어떠한 책임도 지지 않습니다.": "Isenção de responsabilidade\nO Jogo é distribuído temporariamente e gratuitamente pela Empresa, que não assume responsabilidade por danos relacionados ao Jogo."
+  }
+}

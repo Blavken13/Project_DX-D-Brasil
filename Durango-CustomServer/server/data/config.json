@@ -329,7 +329,9 @@
     "ViewCheckSeconds": 0.4,
     "ViewCulling": true,
     "ResourceLevel": 0,
-    "TutorialNaturalRegrowSeconds": 120
+    "TutorialNaturalRegrowSeconds": 120,
+    "WildStructureLifetimeSeconds": 86400,
+    "SafehouseAnimalCount": 40
   },
   "Tools": {
     "Enabled": true,

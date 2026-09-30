@@ -99,7 +99,7 @@ public partial class Player
         //    ไม่เช็ค null ⇒ default(Abort) ทำเกมแครชทันที
         _connection.Recv(delegate(StartClanResearch msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานงานวิจัยของเผ่า" }, header.Seq);
+            Send(new Abort { Text = "A pesquisa do clã ainda não está disponível." }, header.Seq);
         });
 
         // ── GetAvailablePersonalResearch (5987336) ────────────────────────────────
@@ -145,7 +145,7 @@ public partial class Player
         // มาเรียกก่อน แล้วค่อยเรียก Handler ของ seq) ⇒ ผู้เล่นเห็นเหตุผลเป็นข้อความด้วย
         _connection.Recv(delegate(StartPersonalResearch msg, PacketHeader header)
         {
-            Send(new Abort { Text = "ยังไม่เปิดใช้งานงานวิจัยส่วนตัว" }, header.Seq);
+            Send(new Abort { Text = "A pesquisa pessoal ainda não está disponível." }, header.Seq);
         });
     }
 }

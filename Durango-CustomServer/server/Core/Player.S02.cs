@@ -40,7 +40,7 @@ public partial class Player
     /// ⚠️ ทุก Abort/Error ต้องมี Text เสมอ — `default(Abort)` ทำให้ Text เป็น null แล้วฝั่งเกมแครช
     /// ที่ client/GameManager.cs:348-351 DefaultAbortHandler → LimitText(null) (:329-336) → NRE
     /// </summary>
-    private const string S02NotAvailableText = "เซิร์ฟนี้ยังไม่เปิดใช้งานระบบเกาะ PvP / แพบทเรียน";
+    private const string S02NotAvailableText = "As ilhas PvP e a jangada do tutorial ainda não estão disponíveis neste servidor.";
 
     private const string TutorialBoatId = "ancora_9000";
     private const string TutorialBoatSessionId = "boat";
@@ -534,7 +534,7 @@ public partial class Player
                 return;
             }
             Console.WriteLine($"[S02] {EntityId[..Math.Min(8, EntityId.Length)]} ขอออกเรือบทเรียน — ปฏิเสธ (ไม่มีระบบ)");
-            Send(new Abort { Text = S02NotAvailableText + " — ยังออกเรือจากเกาะบทเรียนไม่ได้" }, header.Seq);
+            Send(new Abort { Text = S02NotAvailableText + " — ainda não é possível partir da ilha do tutorial" }, header.Seq);
         });
 
         // ── เกาะ PvP / Warp Rush ─────────────────────────────────────────────────
@@ -635,7 +635,7 @@ public partial class Player
         //   และตัวรับ Abort กลาง (GameManager.cs:308 → :348-351) แสดงเหตุผลให้ผู้เล่นเห็น
         _connection.Recv(delegate(S02EnqueueEntree msg, PacketHeader header)
         {
-            Send(new Abort { Text = S02NotAvailableText + " — ยังลงคิวเข้าเกาะ PvP ไม่ได้" }, header.Seq);
+            Send(new Abort { Text = S02NotAvailableText + " — ainda não é possível entrar na fila da ilha PvP" }, header.Seq);
         });
 
         // S02DequeueEntree (222202) — "ยกเลิกคิวเข้าเกาะ PvP" (struct ว่าง)
@@ -647,7 +647,7 @@ public partial class Player
         // — เราไม่ส่งทั้งคู่ ⇒ ปฏิเสธพร้อมข้อความเหมือนกัน (ยังไงก็ปลด _isRequesting ให้ปุ่มไม่ตาย)
         _connection.Recv(delegate(S02DequeueEntree msg, PacketHeader header)
         {
-            Send(new Abort { Text = S02NotAvailableText + " — ยังยกเลิกคิวเข้าเกาะ PvP ไม่ได้" }, header.Seq);
+            Send(new Abort { Text = S02NotAvailableText + " — ainda não é possível sair da fila da ilha PvP" }, header.Seq);
         });
 
         // S02PVPRefresh (222207) — "ขอสถานะสนามใหม่" (เหลือผู้รอดกี่คน) (struct ว่าง)
@@ -682,7 +682,7 @@ public partial class Player
         // แต่ Text ไม่มีตัวกัน (Error.cs:32 PackString(val.Text) ตรง ๆ) ⇒ ต้องใส่เสมอ
         _connection.Recv(delegate(S02Leave msg, PacketHeader header)
         {
-            Send(new Error { Text = S02NotAvailableText + " — ไม่ได้อยู่ในเกาะ PvP" }, header.Seq);
+            Send(new Error { Text = S02NotAvailableText + " — você não está em uma ilha PvP" }, header.Seq);
         });
     }
 }

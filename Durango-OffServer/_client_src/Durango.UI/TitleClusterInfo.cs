@@ -48,7 +48,7 @@ public class TitleClusterInfo : SelectableWidget
 	public void SetOnlineInfo(bool up, int online)
 	{
 		_characterInfo.supportEncoding = true;
-		_characterInfo.text = (up ? ("[66dd66]●[-] Online " + online) : "[ff5555]●[-] Offline");
+		_characterInfo.text = (up ? ("[66dd66]●[-] Disponível " + online) : "[ff5555]●[-] Indisponível");
 		_characterInfo.color = Color.white;
 	}
 

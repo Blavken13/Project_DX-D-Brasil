@@ -434,7 +434,7 @@ public partial class Player
             ? Math.Max(0.0, animal.DiedAt + AnimalManager.CorpseDisposeDelay - Gauge.CurrentTime)
             : 0.0;
         string countdown = leftSeconds > 0.0
-            ? $" (ซากหายในอีก {(int)leftSeconds / 60}:{(int)leftSeconds % 60:00} นาที)"
+            ? $" (o cadáver desaparece em {(int)leftSeconds / 60}:{(int)leftSeconds % 60:00} minutos)"
             : string.Empty;
         if (label != null) msg.EntityName = new Gettext(label + countdown);
 
@@ -524,7 +524,7 @@ public partial class Player
                 atk is AttackType.Arrow or AttackType.Stone
                     ? Shared.Skill.Category.RangedCombat
                     : Shared.Skill.Category.MeleeCombat;
-            AddExpForAction(SkillTuning.KillWeight, combatCat, "ล่าสัตว์");
+            AddExpForAction(SkillTuning.KillWeight, combatCat, "Caçar");
             NoteQuestEvent(Shared.Quest.QuestEventType.Hunted);
 
             // [7 ก.ย. 2026] เป้าตายแล้วต้องออกจากโหมดต่อสู้ — เดิมไม่เคยส่ง BattleEnded
@@ -544,6 +544,7 @@ public partial class Player
                               $"ที่ [{animal.Tile.x},{animal.Tile.y}]");
         }
 
+        WearEquippedWeapon();
         return true;
     }
 
@@ -594,7 +595,7 @@ public partial class Player
         AnimalManager.Animal animal = _world.AnimalManager?.Get(msg.EntityId);
         if (animal == null || !animal.IsAlive || animal.Captured)
         {
-            RejectTaming(seq, "ไม่เจอสัตว์ตัวนี้ หรือมันตายไปแล้ว");
+            RejectTaming(seq, "Este animal não foi encontrado ou já está morto.");
             return;
         }
         if (_pendingTaming != null || animal.CaptureOwnerId != null)
@@ -602,14 +603,14 @@ public partial class Player
         if (!_context.AppearPlayer.IsAlive) { RejectTaming(seq, "Voce nao pode capturar enquanto esta morto."); return; }
         if (!IsWithinTiles(animal.Tile, NaturalReachTiles))
         {
-            RejectTaming(seq, "อยู่ไกลจากสัตว์เกินไป");
+            RejectTaming(seq, "Você está longe demais do animal.");
             return;
         }
 
         AnimalTypes.Info info = AnimalTypes.Get(animal.EntityType);
         if (info == null || !info.Tamable || string.IsNullOrEmpty(info.TamingResult))
         {
-            RejectTaming(seq, $"สัตว์ชนิด {info?.Name ?? animal.EntityType.ToString()} ทำให้เชื่องไม่ได้");
+            RejectTaming(seq, $"O animal {info?.Name ?? animal.EntityType.ToString()} não pode ser domesticado");
             return;
         }
 
@@ -617,14 +618,14 @@ public partial class Player
         int toolIndex = _context.InventoryItems.FindIndex(item => item.Id == msg.ToolItemId);
         if (toolIndex < 0 || !HasItemTag(_context.InventoryItems[toolIndex], "capturable"))
         {
-            RejectTaming(seq, "ไม่มีเครื่องมือจับสัตว์ในกระเป๋า");
+            RejectTaming(seq, "Nenhuma ferramenta de captura foi encontrada na mochila.");
             return;
         }
 
         double now = Gauge.CurrentTime;
         if (now - _lastTamingAt < TamingTuning.Cooltime)
         {
-            RejectTaming(seq, "เพิ่งจับไปเมื่อกี้ ยังไม่พ้นเวลารอ");
+            RejectTaming(seq, "Você acabou de realizar uma captura. Aguarde antes de tentar novamente.");
             return;
         }
 
@@ -632,7 +633,7 @@ public partial class Player
         float lifeRatio = animal.LifeMax > 0f ? animal.Life / animal.LifeMax : 1f;
         if (lifeRatio > TamingTuning.TamableHpRate)
         {
-            RejectTaming(seq, $"เลือดสัตว์ยังสูงไป ({lifeRatio:P0} ต้องไม่เกิน {TamingTuning.TamableHpRate:P0})");
+            RejectTaming(seq, $"A vida do animal ainda está alta demais ({lifeRatio:P0} não pode ultrapassar {TamingTuning.TamableHpRate:P0})");
             return;
         }
 

@@ -854,7 +854,7 @@ public class AlarmGroup : UIBase
 	{
 		Connections.Frontend.PushPacket(new S02PVPKill
 		{
-			VictimName = "댕댕이"
+			VictimName = "Cachorrinho"
 		});
 	}
 }

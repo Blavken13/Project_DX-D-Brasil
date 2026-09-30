@@ -224,7 +224,7 @@ public class SunsetMailPopup : TooltipBase
 			return;
 		}
 		_isSending = true;
-		GameSystem<SendReportSystem>.Instance().SendServerStatus(value, "선셋 편지", delegate(bool result)
+		GameSystem<SendReportSystem>.Instance().SendServerStatus(value, "Carta do pôr do sol", delegate(bool result)
 		{
 			if (!result)
 			{

@@ -31,7 +31,8 @@ public class Gettext
     {
         if (!string.IsNullOrEmpty(MsgId) && Dict != null)
         {
-            if (Dict.TryGetValue("th_TH", out var th) && !string.IsNullOrEmpty(th)) return th;
+            foreach (string locale in new[] { "pt_BR", "pt-BR", "pt" })
+                if (Dict.TryGetValue(locale, out var portuguese) && !string.IsNullOrEmpty(portuguese)) return portuguese;
 
             // [6 ก.ย. 2026] คำแปลไทยจากไฟล์ .mo — ต้องลองก่อน en_US
             //

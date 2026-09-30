@@ -62,10 +62,10 @@ public static class UiMode
 		catch (Exception)
 		{
 		}
-		string text = (flag ? "PC" : "Mobile");
+		string text = (flag ? "PC" : "Celular");
 		try
 		{
-			UIManager.MessageBox.Show(T._("เปล\u0e35\u0e48ยนโหมด UI"), T._("เปล\u0e35\u0e48ยนเป\u0e47นโหมด <em>{0}</em> แล\u0e49ว\nกร\u0e38ณาป\u0e34ดเกมแล\u0e49วเป\u0e34ดใหม\u0e48เพ\u0e37\u0e48อให\u0e49การเปล\u0e35\u0e48ยนแปลงม\u0e35ผล", text), (Action)null, T._("ตกลง"));
+			UIManager.MessageBox.Show(T._("Alterar modo da interface"), T._("Modo alterado para <em>{0}</em>.\nFeche e abra o jogo novamente para aplicar a mudança.", text), (Action)null, T._("Confirmar"));
 		}
 		catch (Exception)
 		{

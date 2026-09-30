@@ -317,7 +317,7 @@ public static class OffServerLink
 			IntPtr intPtr = FindWindowW(null, "Durango: Wild Lands");
 			if (intPtr != IntPtr.Zero)
 			{
-				SetWindowTextW(intPtr, "Durango: Wild Lands — OffServer v" + ClientVersion);
+				SetWindowTextW(intPtr, "Durango Brasil — Versão " + ClientVersion);
 			}
 		}
 		catch (Exception)
@@ -363,14 +363,14 @@ public static class OffServerLink
 		string text2 = ((double)_httpBytes / 1048576.0).ToString("0.0");
 		if (httpDone >= httpStarted)
 		{
-			return "Data loaded " + httpStarted + " files · " + text2 + " MB — entering world…";
+			return "Dados carregados: " + httpStarted + " arquivos · " + text2 + " MB — entrando no mundo…";
 		}
-		return "Loading data " + httpDone + "/" + httpStarted + " files · " + text2 + " MB  [" + text + "] " + num + "%";
+		return "Carregando dados: " + httpDone + "/" + httpStarted + " arquivos · " + text2 + " MB  [" + text + "] " + num + "%";
 	}
 
 	public static void SetServerStatus(bool up, int online)
 	{
-        ServerStatusSuffix = (up ? (" • Jogadores online: " + online) : " • Servidor offline");
+        ServerStatusSuffix = (up ? (" • Jogadores conectados: " + online) : " • Servidor indisponível");
 	}
 
 	public static Cluster CreateClusterNamed(string displayName, string gateway = null)

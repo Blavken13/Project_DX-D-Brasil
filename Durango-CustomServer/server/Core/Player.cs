@@ -153,7 +153,7 @@ public partial class Player
             if (!IsAdmin)
             {
                 Console.WriteLine($"[โกง] ปฏิเสธคำสั่งจาก {Short(EntityId)}: {msg._Cheat}");
-                Send(new Abort { Text = "ไม่มีสิทธิ์ใช้คำสั่งนี้" }, header.Seq);
+                Send(new Abort { Text = "Você não tem permissão para usar este comando." }, header.Seq);
                 return;
             }
             HandleCheatMsg(msg._Cheat, header.Seq);
@@ -939,7 +939,7 @@ public partial class Player
                 new QuestCategory
                 {
                     Category = QuestCatalog.DailyCategory,
-                    Name = "รายวัน",
+                    Name = "Diária",
                     UnreceivedCount = CountClaimableDaily()
                 }
             },
@@ -1003,7 +1003,7 @@ public partial class Player
                 }
                 msg2.Items = list.ToArray();
                 AddItems(list);
-                Send(new Info { Text = $"{list[0].Name} {result}개 획득" }, seq);
+                Send(new Info { Text = $"{list[0].Name} {result} unidades obtidas" }, seq);
                 Send(msg2);
                 break;
             }
@@ -1081,7 +1081,7 @@ public partial class Player
                 AnimalManager manager = _world.AnimalManager;
                 if (manager == null || array.Length < 2 || !ushort.TryParse(array[1], out ushort animalType))
                 {
-                    Send(new Info { Text = "ใช้: animal <ชนิด> [เลเวล]" }, seq);
+                    Send(new Info { Text = "Uso: animal <tipo> [nível]" }, seq);
                     break;
                 }
                 int animalLevel = array.Length >= 3 && int.TryParse(array[2], out int lv) ? lv : 1;
@@ -1093,10 +1093,10 @@ public partial class Player
                 AnimalManager.Animal spawned = manager.SpawnAt(animalType, animalLevel, spot);
                 if (spawned == null)
                 {
-                    Send(new Info { Text = $"ไม่มีสัตว์ชนิด {animalType} ในข้อมูล" }, seq);
+                    Send(new Info { Text = $"Nenhum animal do tipo {animalType} nos dados do jogo" }, seq);
                     break;
                 }
-                Send(new Info { Text = $"เสก {animalType} lv{spawned.CombatLevel} ที่ [{spot.x},{spot.y}]" }, seq);
+                Send(new Info { Text = $"Criado: {animalType} lv{spawned.CombatLevel} em [{spot.x},{spot.y}]" }, seq);
                 Console.WriteLine($"[โกง] {Short(EntityId)} เสกสัตว์ {animalType} lv{spawned.CombatLevel} " +
                                   $"ที่ [{spot.x},{spot.y}] (id {spawned.EntityId})");
                 break;
@@ -1519,7 +1519,7 @@ public partial class Player
             if (!IsWithinTiles(touch.Tile, NaturalReachTiles))
             {
                 Console.WriteLine($"[แตะ] ปฏิเสธ {Short(EntityId)}: ช่อง [{touch.Tile.x},{touch.Tile.y}] อยู่ไกลเกินไป");
-                Send(new Abort { Text = "อยู่ไกลเกินไป" }, seq);
+                Send(new Abort { Text = "Você está longe demais." }, seq);
                 return;
             }
             BiomeSpriteInfo biomeSpriteInfo = DataHelper.GetBiomeSpriteInfo(touch.EntityType);
@@ -1668,7 +1668,7 @@ public partial class Player
     public static readonly HashSet<string> Admins = new(StringComparer.Ordinal);
 
     private static string Short(string id) =>
-        string.IsNullOrEmpty(id) ? "(ว่าง)" : id[..Math.Min(8, id.Length)];
+        string.IsNullOrEmpty(id) ? "(vazio)" : id[..Math.Min(8, id.Length)];
 
     /// <summary>เนมสเปซคีย์ที่ **เซิร์ฟเป็นเจ้าของ** — client เขียนไม่ได้</summary>
     private const string ServerStoragePrefix = "server_";
@@ -1804,13 +1804,13 @@ public partial class Player
     /// </summary>
     private void HandleDestructMsg(DestructArtifact msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "รื้อ")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Desmontar")) return;
         // ⚠️ [6 ก.ย. 2026] ของในตู้ไม่ได้ถูกลบไปกับหลัง แต่จะหายจากไฟล์ในรอบเซฟถัดไป
         // แล้วดึงคืนไม่ได้ (เหตุผลเต็มที่ Player.Inventory.HasStoredItems)
         if (HasStoredItems(msg.EntityId))
         {
             Console.WriteLine($"[รื้อ] ปฏิเสธ {Short(EntityId)}: {msg.EntityId} ยังมีของในตู้");
-            Send(new Abort { Text = "ต้องเอาของออกจากตู้ก่อนรื้อ" });
+            Send(new Abort { Text = "Retire os itens do armário antes de desmontá-lo." });
             return;
         }
 
@@ -1925,35 +1925,35 @@ public partial class Player
     {
         if (!MayTouchArtifact(msg.EntityId, "plant"))
         {
-            Send(new Abort { Text = "ไม่มีสิทธิ์ปลูกในแปลงนี้" }, seq);
+            Send(new Abort { Text = "Você não tem permissão para plantar neste canteiro." }, seq);
             return;
         }
 
         AppearArtifact? plot = _world.ArtifactManager.Get(msg.EntityId);
         if (!plot.HasValue)
         {
-            Send(new Abort { Text = "ไม่พบแปลงปลูก" }, seq);
+            Send(new Abort { Text = "O canteiro não foi encontrado." }, seq);
             return;
         }
 
         if (plot.Value.States.Farming.HasValue ||
             !string.IsNullOrEmpty(_world.ArtifactManager.PlantedSeed(msg.EntityId)))
         {
-            Send(new Abort { Text = "แปลงนี้มีพืชอยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Este canteiro já possui uma planta." }, seq);
             return;
         }
 
         int seedIndex = _context.InventoryItems.FindIndex(item => item.Id == msg.SeedItemId);
         if (seedIndex < 0)
         {
-            Send(new Abort { Text = "ไม่พบเมล็ดในกระเป๋า" }, seq);
+            Send(new Abort { Text = "As sementes não foram encontradas na mochila." }, seq);
             return;
         }
 
         Item seed = _context.InventoryItems[seedIndex];
         if (CropYaml.Get(seed.Prototype) == null)
         {
-            Send(new Abort { Text = "ไอเทมนี้ปลูกไม่ได้" }, seq);
+            Send(new Abort { Text = "Este item não pode ser plantado." }, seq);
             return;
         }
 
@@ -1966,7 +1966,7 @@ public partial class Player
                 seed.Prototype,
                 StringComparison.Ordinal))
         {
-            Send(new Abort { Text = "ปลูกเมล็ดไม่สำเร็จ" }, seq);
+            Send(new Abort { Text = "Não foi possível plantar a semente." }, seq);
             return;
         }
 
@@ -1977,7 +1977,7 @@ public partial class Player
             RemovedItemIds = new[] { seed.Id }
         });
 
-        AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "ปลูกพืช");
+        AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "Cultivar");
         NoteQuestEvent(Shared.Quest.QuestEventType.Farmed);
         OnContextChanged();
     }
@@ -2088,7 +2088,7 @@ public partial class Player
         else
         {
             // ห้ามส่ง Abort ที่ไม่มีข้อความ (ฝั่งเกม NRE — ดูเหตุผลเต็มที่จุดแรกในไฟล์นี้)
-            Send(new Abort { Text = "ทำรายการนี้ไม่ได้" }, seq);
+            Send(new Abort { Text = "Não é possível realizar esta ação." }, seq);
         }
     }
 
@@ -2533,7 +2533,7 @@ public partial class Player
         Console.WriteLine($"[sail] ไม่รู้จักเกาะ '{msg.RegionId}'");
         // Error มีสอง string: TypeName ต้นฉบับกัน null ให้แล้ว แต่ Text ไม่ได้กัน
         // ⇒ default(Error) ทำให้ฝั่งเกมแครชด้วยเหตุผลเดียวกับ Abort
-        Send(new Error { Text = "ไม่พบเกาะปลายทาง" }, seq);
+        Send(new Error { Text = "A ilha de destino não foi encontrada." }, seq);
     }
 
     /// <summary>
@@ -2632,7 +2632,7 @@ public partial class Player
             if (!CanAccessSailingTemplate(template))
             {
                 Console.WriteLine($"[sail] ปฏิเสธ: {Short(EntityId)} lv{_skillLevel} พยายามไป {target} lv{template?.Level}");
-                Send(new Abort { Text = "เลเวลยังไม่ถึงเกาะนี้" }, seq);
+                Send(new Abort { Text = "Seu nível é insuficiente para esta ilha." }, seq);
                 return;
             }
         }

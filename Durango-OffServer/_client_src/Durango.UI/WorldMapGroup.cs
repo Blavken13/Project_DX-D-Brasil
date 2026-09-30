@@ -1217,6 +1217,8 @@ public class WorldMapGroup : UIBase
 		switch (GameManager.Region.Role())
 		{
 		case Role.Rural:
+		case Role.Risky:
+		case Role.Safehouse:
 		case Role.Outpost:
 		case Role.Urban:
 			if (!PlayerBehavior.LocalPlayer.IsMoving)

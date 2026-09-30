@@ -145,12 +145,12 @@ public partial class Player
         string templateId = msg.TemplateId;
         if (string.IsNullOrEmpty(templateId))
         {
-            Send(new Abort { Text = "ต้องเลือกภูมิประเทศของเกาะส่วนตัว" }, seq);
+            Send(new Abort { Text = "Escolha o terreno da ilha particular." }, seq);
             return;
         }
         if (!IsAllowedPersonalTemplate(templateId))
         {
-            Send(new Abort { Text = "ภูมิประเทศนี้ใช้สร้างเกาะส่วนตัวไม่ได้" }, seq);
+            Send(new Abort { Text = "Este terreno não pode ser usado para criar uma ilha particular." }, seq);
             return;
         }
 
@@ -360,7 +360,7 @@ public partial class Player
             else if (kv.Value.Type == (int)OwnerType.Player)
             {
                 urban = lic;
-                if (kv.Value.Size > largestUrban) largestUrban = kv.Value.Size;
+                largestUrban = Math.Max(largestUrban, Math.Max(kv.Value.Size, kv.Value.LargestSize));
             }
         }
         return new EstateLicenses
@@ -614,12 +614,12 @@ public partial class Player
             estateTile.x + World.EstateGridSize > maxTileX ||
             estateTile.y + World.EstateGridSize > maxTileY)
         {
-            Send(new Abort { Text = "พื้นที่นี้อยู่นอกขอบเขตเกาะ" }, seq);
+            Send(new Abort { Text = "Este local está fora dos limites da ilha." }, seq);
             return;
         }
         if (!IsWithinTiles(estateTile, ArtifactReachTiles + World.EstateGridSize))
         {
-            Send(new Abort { Text = "ต้องอยู่ใกล้พื้นที่ก่อนประกาศที่ดิน" }, seq);
+            Send(new Abort { Text = "Aproxime-se do local antes de reivindicar o território." }, seq);
             return;
         }
 
@@ -630,7 +630,7 @@ public partial class Player
             CurrentRegionIdForEstate());
         if (!license.HasValue)
         {
-            Send(new Abort { Text = "ประกาศที่ดินไม่ได้ — ช่องถูกจองแล้วหรือมีที่ดินชนิดนี้อยู่แล้ว" }, seq);
+            Send(new Abort { Text = "Não foi possível reivindicar o território: o local está reservado ou já possui um território deste tipo." }, seq);
             return;
         }
         Send(license.Value, seq);
@@ -643,15 +643,29 @@ public partial class Player
     {
         EstateRecord estate = _world.GetEstate(msg.EstateId);
         string authorityOwner = EstateAuthorityOwner(estate);
+        if (string.IsNullOrEmpty(authorityOwner) || !_world.CanExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize))
+        {
+            Send(new Abort { Text = "Não foi possível expandir o território." }, seq);
+            return;
+        }
+        long expansionCost = estate.Size < estate.LargestSize ? 0 :
+            EstateExpansionCost.For((OwnerType)estate.Type, estate.Size, _world.RegionLevel);
+        if (expansionCost > 0 && !EconomyAvailable(seq)) return;
+        if (expansionCost > 0 && !_economy.Spend(_context, Shared.Economy.Currency.TStone, expansionCost, out string paymentError))
+        {
+            Send(new Abort { Text = paymentError }, seq);
+            return;
+        }
         EstateLicense? license = string.IsNullOrEmpty(authorityOwner)
             ? null
             : _world.ExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize);
         if (!license.HasValue)
         {
-            Send(new Abort { Text = "ขยายที่ดินไม่ได้" }, seq);
+            Send(new Abort { Text = "Não foi possível expandir o território." }, seq);
             return;
         }
         Send(license.Value, seq);
+        if (expansionCost > 0) SendWalletNow();
         BroadcastEstateGridsAround(msg.Cell);
         OnContextChanged();
     }
@@ -665,7 +679,7 @@ public partial class Player
             : _world.ShrinkEstate(msg.EstateId, authorityOwner, msg.Cell);
         if (!license.HasValue)
         {
-            Send(new Abort { Text = "ลดขนาดที่ดินไม่ได้" }, seq);
+            Send(new Abort { Text = "Não foi possível reduzir o território." }, seq);
             return;
         }
         Send(license.Value, seq);

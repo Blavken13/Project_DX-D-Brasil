@@ -53,7 +53,7 @@ public partial class Player
         // ประกาศเป็น const "ในเมธอด" ไม่ใช่สมาชิกของคลาส เพราะ Player เป็น partial class ที่ถูกเขียน
         // พร้อมกันหลายไฟล์ — ตั้งชื่อสมาชิกซ้ำข้ามไฟล์เมื่อไหร่คอมไพล์พังทันที ส่วน const ในเมธอด
         // เป็นของเฉพาะเมธอดนี้ ชนกับไฟล์อื่นไม่ได้ (และถูก inline ตอนคอมไพล์ ไม่ต้องแคปเจอร์เข้า closure)
-        const string AllyNotAvailableText = "ยังไม่เปิดใช้งานระบบพันธมิตรของแคลน";
+        const string AllyNotAvailableText = "As alianças entre clãs ainda não estão disponíveis.";
 
         // ── GetAllySlots (9138745) — ขอสถานะช่องพันธมิตรทั้งหมดของแคลนตัวเอง ──────────────
         // จุดยิง: client/ClanSystem.cs:83 (OnReady ตอนเข้าเกม) และ :202 (ตอนย้าย/เข้าแคลนใหม่)
@@ -85,7 +85,7 @@ public partial class Player
         // (→ UIManager.SystemMsg แสดง 4 วินาที)
         _connection.Recv(delegate(SuggestAlly msg, PacketHeader header)
         {
-            Send(new Abort { Text = AllyNotAvailableText + " — ยังเสนอเป็นพันธมิตรไม่ได้" }, header.Seq);
+            Send(new Abort { Text = AllyNotAvailableText + " — ainda não é possível propor alianças" }, header.Seq);
         });
 
         // ── SuggestBreak (9138748) — เสนอ "เลิกเป็นพันธมิตร" แบบตกลงกันสองฝ่าย ──────────
@@ -95,7 +95,7 @@ public partial class Player
         //           ลงทะเบียนไว้กันเหนียว (และกัน log "ไม่มี handler" ถ้ามีทางยิงอื่น)
         _connection.Recv(delegate(SuggestBreak msg, PacketHeader header)
         {
-            Send(new Abort { Text = AllyNotAvailableText + " — ยังเสนอเลิกเป็นพันธมิตรไม่ได้" }, header.Seq);
+            Send(new Abort { Text = AllyNotAvailableText + " — ainda não é possível propor o fim de uma aliança" }, header.Seq);
         });
 
         // ── AcceptSuggestion (9138749) — รับข้อเสนอที่อีกฝ่ายส่งมา ─────────────────────
@@ -106,7 +106,7 @@ public partial class Player
         // เราไม่มีข้อเสนอค้างอยู่จริงให้รับ ⇒ ตอบ Abort
         _connection.Recv(delegate(AcceptSuggestion msg, PacketHeader header)
         {
-            Send(new Abort { Text = AllyNotAvailableText + " — ยังรับข้อเสนอไม่ได้" }, header.Seq);
+            Send(new Abort { Text = AllyNotAvailableText + " — ainda não é possível aceitar propostas" }, header.Seq);
         });
 
         // ── RefuseSuggestion (9138750) — ปฏิเสธข้อเสนอที่อีกฝ่ายส่งมา ──────────────────
@@ -114,7 +114,7 @@ public partial class Player
         //         (ปุ่ม "거절" คู่กับ AcceptSuggestion ในกล่องเดียวกัน)
         _connection.Recv(delegate(RefuseSuggestion msg, PacketHeader header)
         {
-            Send(new Abort { Text = AllyNotAvailableText + " — ยังปฏิเสธข้อเสนอไม่ได้" }, header.Seq);
+            Send(new Abort { Text = AllyNotAvailableText + " — ainda não é possível recusar propostas" }, header.Seq);
         });
 
         // ── BreakAlly (9138751) — ฉีกสัญญาพันธมิตรฝ่ายเดียว (ไม่รออีกฝ่ายตกลง) ──────────
@@ -123,7 +123,7 @@ public partial class Player
         // เราไม่มีสัญญาจริงให้ฉีก และไม่มีที่เก็บสถานะล็อกช่อง ⇒ ตอบ Abort
         _connection.Recv(delegate(BreakAlly msg, PacketHeader header)
         {
-            Send(new Abort { Text = AllyNotAvailableText + " — ยังเลิกเป็นพันธมิตรไม่ได้" }, header.Seq);
+            Send(new Abort { Text = AllyNotAvailableText + " — ainda não é possível encerrar alianças" }, header.Seq);
         });
     }
 }

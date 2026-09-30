@@ -235,6 +235,8 @@ public class WorldRegistry
         }
         // โลกใช้ไฟล์ terrain จริง (pe10gr_*) แต่จำ region id ของตัวเองแยกได้ผ่าน registry key
         context.TerrainId = terrainFile ?? regionId;
+        // Definir a classificação lógica antes de processar expirações.
+        context.IsSettlementIsland = _settlementRegions.ContainsKey(regionId);
 
         var world = new World(context);
         world.Registry = this;

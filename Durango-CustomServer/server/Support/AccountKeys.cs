@@ -41,5 +41,5 @@ public static class AccountKeys
 
     /// <summary>Forma reduzida para logs; não exponha o account_id completo</summary>
     public static string ForLog(string key) =>
-        string.IsNullOrEmpty(key) ? "(ไม่มี)" : key[..Math.Min(8, key.Length)] + "…";
+        string.IsNullOrEmpty(key) ? "(nenhum)" : key[..Math.Min(8, key.Length)] + "…";
 }
