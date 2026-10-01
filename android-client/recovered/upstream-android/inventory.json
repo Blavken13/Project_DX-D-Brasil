@@ -1,0 +1,24 @@
+{
+  "source_index_sha256": "64b1ceab2f696a1ac07410bf7e95cc9d59c0c94f7bd0d118da369fbb19708785",
+  "retrieved_at": "2026-10-01",
+  "bundles": [
+    {
+      "server_filename": "models$pc$male$body$m_body_vine.prefab.25f6720ea5bb04cb85ad3732d234d42d.bundle",
+      "catalog_entry": {
+        "Name": "models$pc$male$body$m_body_vine.prefab.bundle",
+        "Hash": "b90b31c8bb02f6d8191b1d31657c0934",
+        "Crc": "25f6720ea5bb04cb85ad3732d234d42d",
+        "Size": 69955,
+        "Dependencies": [
+          "models$pc$male$body$materials$m_body_nude01-texture1.mat.bundle"
+        ],
+        "Priority": 495
+      },
+      "bytes": 110079,
+      "sha256": "04bc1524f191d6b1caf4c4a3cc06ae49c8197a30b3cebb43e9fd630d0250c674",
+      "download_url": "http://api.durangonewdawn.com:8190/assetbundles/android/models$pc$male$body$m_body_vine.prefab.25f6720ea5bb04cb85ad3732d234d42d.bundle",
+      "unity_version": "2017.4.34f1",
+      "validation": "appearance restored after reconnect, confirmed by user"
+    }
+  ]
+}

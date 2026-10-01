@@ -16,7 +16,7 @@ APK = PROJECT / 'DurangoBrasilApk'
 WORK = ROOT / 'work'
 DIST = ROOT / 'dist'
 GATEWAY = 'http://179.197.72.129:8190'
-OUTPUT_NAME = 'DurangoBrasil-alfa-2.apk'
+OUTPUT_NAME = 'DurangoBrasil-alfa-3.apk'
 TITLE_CREDITS = 'Vision Force\nServidor Brasileiro\nVersão 1.0'
 JAVA_BIN = Path('C:/Program Files/Android/Android Studio/jbr/bin')
 SDK = Path.home() / 'AppData/Local/Android/Sdk'
@@ -63,7 +63,7 @@ def patch_launcher(decoded):
     for method in ['checkUpdate()V', 'openUpdate()V', 'reportCrash(Z)V', 'showServerDialog()V']:
         text = replace_method(text, method, '    .locals 0\n    return-void')
     text = text.replace('"newdawn"', '"durango-br-auth-v1"')
-    text = text.replace('"launcher 0.4.9"', '"Durango Brasil Android alfa 2"')
+    text = text.replace('"launcher 0.4.9"', '"Durango Brasil Android alfa 3"')
     text = text.replace('"https://api.durangonewdawn.com"', json.dumps(GATEWAY))
     text = re.sub(r'"http://api\.durangonewdawn\.com:8190;[^"]+"', json.dumps(GATEWAY), text)
     # v1 is zero in buildUi; allow the local title video to autoplay behind AUTH.
@@ -155,6 +155,7 @@ def patch_assets():
         (APK / relative).write_bytes(data)
     apply_login_ui()
     apply_branding()
+    apply_app_icon()
 
 
 def validate_branding_inputs():
@@ -174,6 +175,27 @@ def apply_branding():
     for entry in manifest['files']:
         source = ROOT / 'branding/resources' / entry['path']
         shutil.copy2(source, APK / entry['path'])
+
+    # The localized English loading sprite still points at the community artwork.
+    # Both names must reference the user's Brazilian rectangle in the same atlas.
+    # Keep names, object references, coordinates of every other icon and binary sizes.
+    relative = Path('assets/bin/Data/19ae04aa5e3159148bf3c56716acbcae')
+    baseline = original(relative)
+    data = bytearray(baseline)
+    rectangles = []
+    for name, expected in ((b'bg_loading_ment_kr', (1953, 157, 92, 35)),
+                           (b'bg_loading_ment_en', (2028, 964, 92, 35))):
+        if data.count(name) != 1:
+            raise ValueError('Unexpected loading sprite definition: ' + name.decode())
+        position = (data.index(name) + len(name) + 3) // 4 * 4
+        coordinates = struct.unpack_from('<4i', data, position)
+        if coordinates != expected:
+            raise ValueError('Loading atlas layout differs from the verified baseline')
+        rectangles.append((position, coordinates))
+    struct.pack_into('<4i', data, rectangles[1][0], *rectangles[0][1])
+    if len(data) != len(baseline):
+        raise ValueError('Loading atlas serialized size changed')
+    (APK / relative).write_bytes(data)
 
     # Keep the serialized string allocation and all object offsets unchanged.
     # NGUI's zero-width color resets fill the spare bytes without visible padding.
@@ -206,6 +228,17 @@ def apply_branding():
         if len(data) != len(baseline):
             raise ValueError('Serialized title asset length changed')
         (APK / relative).write_bytes(data)
+
+
+def apply_app_icon():
+    manifest = json.loads((ROOT / 'branding/app-icon-manifest.json').read_text('utf-8'))
+    if hashlib.sha256((ROOT / manifest['source']).read_bytes()).hexdigest() != manifest['source_sha256']:
+        raise ValueError('App icon source changed; run prepare_app_icon.py before compiling')
+    for entry in manifest['files']:
+        source = ROOT / 'branding/resources' / entry['path']
+        if hashlib.sha256(source.read_bytes()).hexdigest() != entry['sha256']:
+            raise ValueError('App icon resource changed: ' + entry['path'])
+        shutil.copy2(source, APK / entry['path'])
 
 
 def apply_login_ui():

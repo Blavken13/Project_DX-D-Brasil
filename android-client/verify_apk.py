@@ -6,7 +6,7 @@ import struct
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-APK_NAME = 'DurangoBrasil-alfa-2.apk'
+APK_NAME = 'DurangoBrasil-alfa-3.apk'
 EXTRACTED = ROOT.parent / 'DurangoBrasilApk'
 GATEWAY = 'http://179.197.72.129:8190'
 checks = 0
@@ -84,6 +84,17 @@ with zipfile.ZipFile(ROOT / 'dist' / APK_NAME) as archive:
         check('Vision Force\nServidor Brasileiro\nVersão 1.0'.encode('utf-8') in data,
               'Three-line Brazilian title credits: ' + filename)
         check(b'NEXON Korea Corp.' not in data, 'Old title credits replaced: ' + filename)
+    icon_manifest = json.loads((ROOT / 'branding/app-icon-manifest.json').read_text('utf-8'))
+    for entry in icon_manifest['files']:
+        check(hashlib.sha256(archive.read(entry['path'])).hexdigest() == entry['sha256'],
+              'Brazilian app icon: ' + entry['path'])
+    atlas = archive.read('assets/bin/Data/19ae04aa5e3159148bf3c56716acbcae')
+    rectangles = []
+    for name in (b'bg_loading_ment_kr', b'bg_loading_ment_en'):
+        position = (atlas.index(name) + len(name) + 3) // 4 * 4
+        rectangles.append(struct.unpack_from('<4i', atlas, position))
+    check(rectangles[0] == rectangles[1] == (1953, 157, 92, 35),
+          'All loading locales use the Brazilian artwork rectangle')
 
 file = ROOT / 'dist' / APK_NAME
 digest = hashlib.sha256(file.read_bytes()).hexdigest()

@@ -50,9 +50,39 @@ def main():
     with Image.open(ROOT / 'ui/logo-durango-brasil.png') as web_logo:
         assert web_logo.size == logo.size
         assert web_logo.convert('RGBA').tobytes() == logo.convert('RGBA').tobytes()
+    relative = 'assets/bin/Data/19ae04aa5e3159148bf3c56716acbcae'
+    atlas_before = UnityPy.load(str((ROOT / 'base' / relative).resolve()))
+    atlas_after = UnityPy.load(str((APK / relative).resolve()))
+    baseline = {o.path_id: o for o in atlas_before.objects}
+    updated = {o.path_id: o for o in atlas_after.objects}
+    assert baseline.keys() == updated.keys()
+    modified = []
+    for path_id, obj in baseline.items():
+        old, new = obj.get_raw_data(), updated[path_id].get_raw_data()
+        if old == new:
+            continue
+        modified.append(path_id)
+        assert path_id == 3 and obj.type.name == 'MonoBehaviour' and len(old) == len(new)
+        def coordinates(raw, name):
+            position = (raw.index(name) + len(name) + 3) // 4 * 4
+            return position, struct.unpack_from('<4i', raw, position)
+        kr_position, kr = coordinates(new, b'bg_loading_ment_kr')
+        en_position, en = coordinates(new, b'bg_loading_ment_en')
+        assert kr == en == (1953, 157, 92, 35)
+        assert coordinates(old, b'bg_loading_ment_kr')[1] == kr
+        assert all(en_position <= n < en_position + 16
+                   for n, (a, b) in enumerate(zip(old, new)) if a != b)
+    assert modified == [3]
+    icon_manifest = json.loads((ROOT / 'branding/app-icon-manifest.json').read_text('utf-8'))
+    assert len(icon_manifest['files']) == 30
+    for entry in icon_manifest['files']:
+        assert hashlib.sha256((APK / entry['path']).read_bytes()).hexdigest() == entry['sha256']
+        with Image.open(APK / entry['path']) as icon:
+            assert list(icon.size) == entry['dimensions'] and icon.mode == 'RGBA'
     report = {'artwork_files_preserved': len(manifest['files']), 'labels': labels,
               'serialized_sizes_unchanged': True, 'object_references_preserved': True,
               'login_logo_matches_character_logo': True, 'protocol_version_unchanged': True}
+    report.update({'localized_loading_logo_fixed': True, 'app_icon_variants': 30})
     (ROOT / 'work/branding-check.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
 

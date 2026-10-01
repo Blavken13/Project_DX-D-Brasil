@@ -1,7 +1,7 @@
 # Cliente Android do Durango Brasil
 
-APK de teste atual: `dist/DurangoBrasil-alfa-2.apk` (01/10/2026, aproximadamente 304 MiB).
-O APK alfa 1 anterior foi preservado em `dist/`.
+APK de teste atual: `dist/DurangoBrasil-alfa-3.apk` (01/10/2026, aproximadamente 305 MiB).
+Os APKs anteriores de `dist/` foram removidos após validar esta versão.
 
 Gateway fixo: `http://179.197.72.129:8190`.
 Pacote Android: `com.durangobrasil.apk`; nome no celular: `DurangoBrasil`.
@@ -201,7 +201,7 @@ python android-client/build_apk.py
 
 O script preserva os arquivos modificados originais em `work/original/` e pode
 ser executado novamente sem aplicar duas vezes as alterações.
-Os oito arquivos-base necessários para reaplicar os patches ficam versionados
+Os nove arquivos-base necessários para reaplicar os patches ficam versionados
 em `base/`, com hashes em `base/manifest.json`. A compilação prioriza esses arquivos,
 permitindo reconstruir o cliente após clonar o repositório sem depender dos backups
 locais de `work/`. As imagens personalizadas continuam em `branding/resources/`.
@@ -215,7 +215,7 @@ mesma instalação de teste em compilações posteriores.
 ## Verificações
 
 - Assinaturas v1/v2/v3 e alinhamento conferidos com as ferramentas Android.
-- 2.957 verificações de integridade, empacotamento, preservação dos binários
+- 2.988 verificações de integridade, empacotamento, preservação dos binários
   do jogo e configuração de conexão aprovadas por `verify_apk.py`.
 - Pacote, atividade inicial, ARM64 e permissão de HTTP conferidos no APK final.
 - 24 verificações do adaptador Java contra uma cópia real do gateway com contas
@@ -236,9 +236,29 @@ mesma instalação de teste em compilações posteriores.
   terreno do tutorial, safehouse e ilha selvagem foram verificadas. O handshake
   HTTP do PC respondeu durante quatro downloads móveis simultâneos.
 
-Não havia celular conectado durante a geração do APK. A abertura do Unity e a
-entrada no mundo precisam ser validadas no aparelho com o pacote de recursos
-publicado no staging. A recuperação posterior do cache não confirma esses fluxos.
+### Correções do alfa 3
+
+- O loading utilizava o sprite inglês `bg_loading_ment_en`, com a arte Primal Colony.
+  A arte brasileira estava somente em `bg_loading_ment_kr`. O atlas agora aponta
+  ambos para o retângulo brasileiro, preservando a textura, os outros ícones,
+  os nomes, as referências e os tamanhos serializados.
+- O ícone do aplicativo utiliza `icon.png`, preservado em `branding/app-icon.png`.
+  As 30 variantes dos recursos drawable/mipmap foram substituídas, incluindo
+  `app_icon_global` e as variantes round em todas as seis densidades. Para importar
+  outra edição, execute `python android-client/prepare_app_icon.py` antes de compilar.
+- O personagem preto resultava da ausência de `m_body_vine.prefab.bundle`.
+  O recurso foi recuperado do gateway público original com os mesmos metadados
+  do catálogo e publicado no staging, sem modificar saves ou shaders. O usuário
+  confirmou no celular que o personagem voltou ao normal após reconectar.
+  Sua proveniência fica em `recovered/upstream-android/inventory.json`.
+  `prepare_android_assets.py` agora inclui os recursos adicionais verificados:
+  o conjunto tem 1.171 bundles disponíveis e 982 ausentes. O índice permanece intacto.
+- `tests/check_additional_android_assets.py` confirma que esse tipo de recuperação
+  entra no pacote e rejeita hashes, metadados ou índices divergentes.
+
+Os logs e a tela do aparelho foram usados para diagnosticar a silhueta preta.
+Os arquivos e referências da logo e do ícone são conferidos antes de entregar o APK;
+a validação visual dessas duas alterações deve ser feita após instalar o alfa 3.
 
 Referências das ferramentas: [Apktool](https://apktool.org/blog/apktool-2.12.1/),
 [apksigner](https://developer.android.com/tools/apksigner) e

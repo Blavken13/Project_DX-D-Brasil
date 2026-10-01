@@ -20,7 +20,9 @@ def audit(directory):
 def main():
     code, recovered = audit(SERVER / 'assetbundles/android')
     assert code == 3 and recovered['complete'] is False
-    assert recovered['available'] == 1170 and recovered['missing'] == 983
+    prepared = json.loads((ROOT / 'android-client/dist/assetbundles-android-5.2.1.json').read_text())
+    assert recovered['available'] == prepared['available']
+    assert recovered['missing'] == prepared['missing']
     assert recovered['prerequisites_ready'] is False
     assert len(recovered['prerequisite_dependencies_missing']) >= 301
     assert recovered['invalid_bundle_headers'] == []
