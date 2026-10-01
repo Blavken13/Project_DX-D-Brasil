@@ -1,0 +1,42 @@
+[
+  {
+    "path": "AndroidManifest.xml",
+    "bytes": 14168,
+    "sha256": "55e6d3a7c46d0b72235ef151f42931e47c50711b17ebfacc958c70fc2c965b22"
+  },
+  {
+    "path": "resources.arsc",
+    "bytes": 462912,
+    "sha256": "8aa130e641485b222f72e8f01c77401dcf0858991194293b4a4b8ac0e326e4d8"
+  },
+  {
+    "path": "classes.dex",
+    "bytes": 4822668,
+    "sha256": "b6ecda6ec4bfc340598e6bcd523d1da83533b24f49876a9f150daec4691d0cdf"
+  },
+  {
+    "path": "classes2.dex",
+    "bytes": 64696,
+    "sha256": "02fd4911ce5c716a13187f1ce42876b493e0dc24efe7fe43454cb1f0f31e42ff"
+  },
+  {
+    "path": "lib/arm64-v8a/libnd.so",
+    "bytes": 28040,
+    "sha256": "4e9e5139ed1b69993efeef9f02ab484b9bcb867434eab7dcb6d0a44ceff3f18d"
+  },
+  {
+    "path": "assets/bin/Data/b7b0096f71e8a0640be95cc8b863f74d",
+    "bytes": 448,
+    "sha256": "de62a3f627a14bc300896d3aeb4b87c507fde9a00b0545a43c5a8ff49da1f3f4"
+  },
+  {
+    "path": "assets/bin/Data/6827ab7f4ebc56143b5702d0d1b8abc6",
+    "bytes": 52264,
+    "sha256": "b3aea3ecb2c14fec7c449cc8308c9560acfdaf46c25c228210bda19d08258a16"
+  },
+  {
+    "path": "assets/bin/Data/7d9842174a415534b91e990f357c7f29",
+    "bytes": 45984,
+    "sha256": "21c54a6f5af68bb33570752ede94f3092c60e7a0b674b2c84bf9f8c3a237be95"
+  }
+]

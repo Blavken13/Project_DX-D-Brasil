@@ -1506,47 +1506,34 @@ public class Gateway
             }
         }
 
-        if (url.StartsWith("/assetbundles/android/"))
-        {
-            if (string.IsNullOrEmpty(AssetBundleAndroidDir) || !Directory.Exists(AssetBundleAndroidDir))
-            {
-                return null;
-            }
-            string aName = Path.GetFileName(url.Substring("/assetbundles/android/".Length).Split('?')[0]);
-            if (string.IsNullOrEmpty(aName) || aName.Contains(".."))
-            {
-                return (HttpListenerRequest request, Dictionary<string, string> postData) => new WebServer.BadRequestResponse();
-            }
-            string aPath = Path.Combine(AssetBundleAndroidDir, aName);
-            // [แก้เอง] 5 ก.ย. 2026 — เสิร์ฟแบบสตรีม (FileResponse) แทน File.ReadAllBytes
-            //
-            // bundle ก้อนละหลาย MB: ReadAllBytes = byte[] ก้อนใหญ่ตกไป Large Object Heap ทุกคำขอ
-            // มือถือหลายเครื่องโหลดพร้อมกัน ⇒ GC ถี่จนลูปเกมหยุดเดิน (วัดจริง 13 คน = 2 tps)
-            // FileResponse อ่านทีละ 64 KB เขียนตรงลง OutputStream — หน่วยความจำคงที่ ไม่แตะ LOH
-            // (คลาสนี้มีมาตั้งแต่ 4 ก.ย. แต่ไม่เคยถูกเรียกใช้จริงเลย)
-            return (HttpListenerRequest request, Dictionary<string, string> postData) =>
-            {
-                if (File.Exists(aPath))
-                {
-                    return new WebServer.FileResponse(aPath);
-                }
-                string resolvedA = ResolveBundleIgnoringHash(aName, AssetBundleAndroidDir);
-                if (resolvedA != null)
-                {
-                    return new WebServer.FileResponse(resolvedA);
-                }
-                // soundbank พากย์เสียงแยกภาษา: ชุด Android มีแค่ en_us — เสิร์ฟ en_us แทนทุกภาษา
-                string fallbackA = ResolveVoiceBankFallback(aName, AssetBundleAndroidDir);
-                if (fallbackA != null)
-                {
-                    Console.WriteLine("[assetbundle-android] {0} ไม่มี ⇒ เสิร์ฟ en_us แทน", aName);
-                    return new WebServer.FileResponse(fallbackA);
-                }
-                Console.WriteLine("[assetbundle-android] 404 {0}", aName);
-                return new WebServer.NotFountResponse();
-            };
-        }
-
+        if (url.StartsWith("/assetbundles/android/", StringComparison.OrdinalIgnoreCase))
+        {
+            string aName = Uri.UnescapeDataString(url.Substring("/assetbundles/android/".Length).Split('?')[0]);
+            if (string.IsNullOrEmpty(aName) || aName.Contains("..") || aName.IndexOfAny(new[] { '/', '\\', ':', '\0' }) >= 0)
+                return (HttpListenerRequest _, Dictionary<string, string> __) => new WebServer.BadRequestResponse();
+
+            bool isIndex = aName == AndroidAssetBundleCheck.IndexName;
+            if (!isIndex && !AndroidAssetBundleCheck.IsBundleName(aName))
+                return (HttpListenerRequest _, Dictionary<string, string> __) => new WebServer.NotFountResponse();
+
+            return (HttpListenerRequest request, Dictionary<string, string> _) =>
+            {
+                if (!string.Equals(request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
+                    return new WebServer.NotFountResponse();
+                if (string.IsNullOrEmpty(AssetBundleAndroidDir)) return new WebServer.NotFountResponse();
+                string aPath = Path.Combine(AssetBundleAndroidDir, aName);
+                if (!File.Exists(aPath))
+                {
+                    Console.WriteLine("[assetbundle-android] 404 {0}", aName);
+                    return new WebServer.NotFountResponse();
+                }
+                // Cada CRC tem conteúdo próprio. Nunca gravar outro arquivo nesse endereço do cache Unity.
+                if (isIndex)
+                    return new WebServer.FileResponse(aPath) { ContentType = "application/json; charset=utf-8" };
+                return new WebServer.FileResponse(aPath, "\"" + aName + "\"");
+            };
+        }
+
         if (url.StartsWith("/terrains/", StringComparison.OrdinalIgnoreCase))
         {
             return TerrainRoute(url);
@@ -1556,39 +1543,6 @@ public class Gateway
         // แต่เข้าไม่ถึงเลย เพราะเงื่อนไขชุดแรก (ข้างบน) จับ url เดียวกันไปก่อนเสมอ ⇒ ลบทิ้ง
         // (แก้ที่ชุดแรกที่เดียวพอ ไม่ต้องแก้สองที่แล้วลืมที่ใดที่หนึ่ง)
         return (HttpListenerRequest request, Dictionary<string, string> _) => new WebServer.BadRequestResponse();
-    }
-
-    /// <summary>client ขอ <ชื่อ>.<crc>.bundle — ถ้า crc ไม่ตรงไฟล์บนดิสก์ หาด้วย "ชื่อตัด hash"</summary>
-    private static string ResolveBundleIgnoringHash(string requestedName, string dir)
-    {
-        const string suffix = ".bundle";
-        if (!requestedName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)) return null;
-        string stem = requestedName.Substring(0, requestedName.Length - suffix.Length);
-        int lastDot = stem.LastIndexOf('.');
-        if (lastDot <= 0) return null;
-        string prefix = stem.Substring(0, lastDot + 1);
-        try
-        {
-            return Directory.GetFiles(dir, prefix + "*.bundle").FirstOrDefault();
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
-    /// <summary>เสียงพากย์: soundbanks$android$<lang>$voice_*.bnk — เซิร์ฟมีแค่ en_us</summary>
-    private static string ResolveVoiceBankFallback(string requestedName, string dir)
-    {
-        const string marker = "$android$";
-        int idx = requestedName.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
-        if (idx < 0) return null;
-        int langStart = idx + marker.Length;
-        int langEnd = requestedName.IndexOf('$', langStart);
-        if (langEnd < 0 || !requestedName.Contains("$voice_")) return null;
-        string fallback = requestedName.Substring(0, langStart) + "en_us" + requestedName.Substring(langEnd);
-        string path = Path.Combine(dir, fallback);
-        return File.Exists(path) ? path : null;
     }
 
     private static Point2 GetPoint2FromUrl(string url)

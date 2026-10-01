@@ -1,0 +1,25 @@
+{
+  "team": "Vision Force",
+  "server_label": "Servidor Brasileiro",
+  "display_version": "1.0",
+  "files": [
+    {
+      "role": "loading_atlas",
+      "path": "assets/bin/Data/bcb37f4b3d27e4a4f93a3ec965e256dc",
+      "bytes": 8388824,
+      "sha256": "e542ba9fa7b81e4a61ebe4425322a427cc13258e860f3d41b9ed1ad1d115ba30"
+    },
+    {
+      "role": "character_logo",
+      "path": "assets/bin/Data/c6c98a0f398372a41862a640adc466d2",
+      "bytes": 656552,
+      "sha256": "04d247c7007f3829dfda46273b06b5e40bead262993fe855a6c00e16fc631101"
+    },
+    {
+      "role": "team_splash",
+      "path": "res/drawable/unity_static_splash.png",
+      "bytes": 158959,
+      "sha256": "11641bc13149ba4abf9d7afae787e98510ffbfe3eca3136881f06a6e0eb327af"
+    }
+  ]
+}

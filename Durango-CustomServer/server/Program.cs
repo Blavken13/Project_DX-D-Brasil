@@ -81,6 +81,7 @@ internal static class Program
         int gamePort = GameServer.DefaultPort;   // 8191
         string dataDir = Path.Combine(AppContext.BaseDirectory, "data");
         string androidBundles = null;
+        bool androidAssetsCheck = false;
         string publicHost = null;
         int maxPlayers = 200;
         // token ของ /health — เอาจาก env ได้ด้วย จะได้ไม่ต้องโผล่ในบรรทัดคำสั่ง (ps เห็นหมด)
@@ -218,6 +219,7 @@ internal static class Program
                 case "--terrains": TerrainLoader.TerrainDir = args[++i]; break;
                 case "--terrain": TerrainLoader.DefaultTerrainFile = args[++i]; break;
                 case "--assetbundles-android": androidBundles = args[++i]; break;
+                case "--android-assets-check": androidAssetsCheck = true; break;
                 case "--public-host": publicHost = args[++i]; break;
                 case "--url-prefix":
                 {
@@ -249,6 +251,7 @@ internal static class Program
                 case "-h":
                     Console.WriteLine("  --localization-check [--data <dir>] Valida textos brasileiros, nomes, descricoes e prioridade de idioma");
                     Console.WriteLine("  --polish-check [--data <dir>] Valida pacotes, durabilidade, niveis, expansao e limpeza de construcoes");
+                    Console.WriteLine("  --android-assets-check [--assetbundles-android <dir>] Audita catálogo, preload e dependências sem abrir o servidor");
                     Console.WriteLine("DurangoServerNx — เซิร์ฟแท้พอร์ตตรง · มือถือก่อน");
                     Console.WriteLine("  --quest-check [--data <dir>]  ตรวจแคตตาล็อก Daily เฟส 1 (ไม่ต้องเปิดเซิร์ฟ)");
                     Console.WriteLine("  --economy-check [--data <dir>]  Valida mercado, loja, persistencia e protocolo TCP em saves temporarios");
@@ -279,6 +282,19 @@ internal static class Program
             return 2;
         }
         storageKey = normalizedStorageKey;
+
+        // Pacote Android externo ao build; --assetbundles-android continua tendo precedência.
+        if (androidBundles == null)
+        {
+            string candidate = Path.GetFullPath(Path.Combine(dataDir, "..", "assetbundles", "android"));
+            if (File.Exists(Path.Combine(candidate, "Info.5.2.1.json")))
+                androidBundles = candidate;
+        }
+        if (androidBundles != null)
+            Console.WriteLine($"[boot] recursos Android: {androidBundles}");
+
+        if (androidAssetsCheck)
+            return AndroidAssetBundleCheck.Run(androidBundles);
 
         foreach (string id in (admins ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries))
         {

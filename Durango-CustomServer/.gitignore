@@ -2,6 +2,7 @@
 **/bin/
 **/obj/
 **/publish/
+server/assetbundles/android/
 
 # ตัวเกม (1 GB — ก๊อปมาจากชุดแจก ไม่ใช่ซอร์ส)
 game/

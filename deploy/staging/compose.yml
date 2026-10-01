@@ -18,6 +18,7 @@ services:
 
     volumes:
       - durango-staging-state:/app/AppData-nx
+      - ../../Durango-CustomServer/server/assetbundles/android:/app/assetbundles/android:ro
 
     command:
       - "--name"
@@ -28,6 +29,8 @@ services:
       - "/app/data"
       - "--terrains"
       - "/app/data/terrains"
+      - "--assetbundles-android"
+      - "/app/assetbundles/android"
       - "--public-host"
       - "${DURANGO_PUBLIC_HOST}"
       - "--max-players"

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>Durango Brasil</title>
+  <style>
+    :root { color-scheme:dark; --gold:#dfc28b; --text:#f5f2e8; --muted:#b2b8ad;
+      --top:env(safe-area-inset-top,0px); --bottom:env(safe-area-inset-bottom,0px);
+      --left:env(safe-area-inset-left,0px); --right:env(safe-area-inset-right,0px); }
+    * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    [hidden] { display:none !important; }
+    html,body { margin:0; width:100%; height:100%; background:#101b17; }
+    body { color:var(--text); font:14px 'Segoe UI',Roboto,Arial,sans-serif; }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    button:disabled { cursor:default; opacity:.55; }
+    button:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
+    .backdrop { position:fixed; inset:0; pointer-events:none;
+      background:#101b17 url('landscape.jpg') center/cover no-repeat; }
+    .backdrop video { width:100%; height:100%; object-fit:cover; }
+    .shade { position:fixed; inset:0; pointer-events:none;
+      background:linear-gradient(0deg,rgba(5,12,9,.45),rgba(5,12,9,.04) 48%,rgba(5,12,9,.15)); }
+    .app { position:relative; height:var(--viewport-height,100%); display:flex; overflow:auto;
+      padding:calc(20px + var(--top)) calc(20px + var(--right)) calc(20px + var(--bottom)) calc(20px + var(--left)); }
+    .auth-layout { width:min(380px,100%); margin:auto; flex-shrink:0; display:flex;
+      flex-direction:column; align-items:center; gap:16px; }
+    .brand { display:block; width:min(310px,85%); height:auto; object-fit:contain;
+      filter:drop-shadow(0 3px 6px rgba(0,0,0,.9)); }
+    .panel { width:100%; border:1px solid rgba(223,194,139,.32); border-radius:7px;
+      padding:23px 26px 18px; background:rgba(10,18,15,.78);
+      -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px);
+      box-shadow:0 12px 38px rgba(0,0,0,.3); }
+    h1 { margin:0; font-size:20px; font-weight:500; text-align:center; letter-spacing:.4px; }
+    .intro { margin:7px 0 18px; text-align:center; color:var(--muted); font-size:12px; line-height:1.4; }
+    .fields { display:flex; flex-direction:column; gap:12px; }
+    .field { display:flex; flex-direction:column; gap:5px; }
+    .field label { color:#d3d7ce; font-size:11px; letter-spacing:.35px; }
+    .field input { width:100%; min-width:0; height:40px; padding:0 11px; border-radius:4px;
+      border:1px solid rgba(188,202,175,.29); background:rgba(5,11,8,.68); color:var(--text);
+      outline:none; -webkit-user-select:text; user-select:text; }
+    .field input::placeholder { color:#8b9689; font-size:12px; }
+    .field input:focus { border-color:var(--gold); box-shadow:0 0 0 1px rgba(223,194,139,.16); }
+    .primary { width:100%; height:43px; margin-top:17px; border:1px solid #efdaad; border-radius:4px;
+      background:linear-gradient(105deg,#c5a366,#ead3a1); color:#172119; font-weight:700;
+      letter-spacing:2px; font-size:13px; box-shadow:0 3px 14px rgba(184,144,65,.12); }
+    .primary:active { filter:brightness(1.1); }
+    .switch { width:100%; margin-top:13px; padding:3px 0; border:0; background:none;
+      color:var(--gold); font-size:12px; line-height:1.5; }
+    .notice { color:#f1c39c; font-size:12px; line-height:1.45; text-align:center; margin:11px 0 0; }
+    .notice:empty { display:none; }
+    .notice.ok { color:#b0d2a5; }
+    .progress { height:2px; overflow:hidden; margin-top:13px; border-radius:2px; background:#ffffff18; }
+    .progress i { display:block; width:35%; height:100%; background:var(--gold); animation:loading 1.2s infinite; }
+    @keyframes loading { from { margin-left:-35%; } to { margin-left:100%; } }
+    .connection { display:flex; justify-content:center; align-items:center; gap:7px;
+      color:#a5af9f; font-size:10px; margin-top:14px; }
+    .dot { width:5px; height:5px; border-radius:50%; background:#a6aa94; flex-shrink:0; }
+    .dot.on { background:#a2ca8d; } .dot.off { background:#dc9c80; }
+    .account { text-align:center; }
+    .account small { color:var(--muted); }
+    .account-name { margin:8px 0 0; font-size:19px; font-weight:500; overflow-wrap:anywhere; }
+    .version { color:#a0aa96; font-size:10px; text-align:center; text-shadow:0 1px 3px #000; }
+    .update { margin:0 0 15px; color:var(--gold); font-size:12px; text-align:center; }
+    .keyboard-visible .brand,.keyboard-visible .version { display:none; }
+    .keyboard-visible .auth-layout { gap:0; }
+    @media (max-height:520px) {
+      .app { padding-top:calc(12px + var(--top)); padding-bottom:calc(12px + var(--bottom)); }
+      .auth-layout { width:min(350px,100%); gap:10px; }
+      .brand { width:155px; max-width:76%; }
+      .panel { padding:12px 22px; }
+      h1 { font-size:16px; margin-bottom:8px; }
+      .intro { display:none; }
+      .fields { gap:8px; }
+      .field { gap:4px; }
+      .field input { height:33px; }
+      .primary { height:36px; margin-top:10px; }
+      .switch { margin-top:8px; font-size:11px; }
+      .connection { margin-top:8px; }
+      .version { font-size:9px; }
+      .register-mode .fields { display:grid; grid-template-columns:1fr 1fr; }
+      .register-mode .field:first-child { grid-column:1 / -1; }
+    }
+    @media (max-height:380px) {
+      .brand { width:140px; }
+      .panel { padding:12px 20px 10px; }
+      h1 { margin-bottom:9px; font-size:16px; }
+      .fields { gap:7px; }
+      .field input { height:33px; }
+      .connection { margin-top:7px; }
+      .version { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true">
+    <video id="background-video" autoplay loop muted playsinline preload="auto" poster="landscape.jpg" tabindex="-1">
+      <source src="../../../Movie/Mobile/title.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="shade" aria-hidden="true"></div>
+  <main class="app">
+    <div class="auth-layout">
+      <img class="brand" src="logo-durango-brasil.png" alt="Durango Brasil" width="646" height="254">
+      <section class="panel" aria-labelledby="form-title">
+        <div class="update" id="atualiza" hidden>
+          <span id="atualiza-texto"></span>
+          <button class="primary" id="atualiza-botao" type="button">ATUALIZAR</button>
+        </div>
+        <div id="fora">
+          <h1 id="form-title">Entrar</h1>
+          <p class="intro" id="form-description">Bem-vindo ao alfa do Durango Brasil.</p>
+          <form id="auth-form" novalidate>
+            <div class="fields">
+              <div class="field">
+                <label for="email">Usuário</label>
+                <input id="email" type="text" inputmode="text" autocapitalize="none" spellcheck="false"
+                  maxlength="32" autocomplete="username" placeholder="Usuário do Durango Brasil" required>
+              </div>
+              <div class="field">
+                <label for="senha">Senha</label>
+                <input id="senha" type="password" maxlength="128" autocomplete="current-password"
+                  placeholder="Sua senha" enterkeyhint="go" required>
+              </div>
+              <div class="field" id="confirmation-field" hidden>
+                <label for="confirmar-senha">Confirmar senha</label>
+                <input id="confirmar-senha" type="password" maxlength="128" autocomplete="new-password"
+                  placeholder="Repita a senha" enterkeyhint="go">
+              </div>
+            </div>
+            <button class="primary" id="submit-auth" type="submit">ENTRAR</button>
+            <button class="switch" id="switch-auth" type="button">Criar uma conta</button>
+          </form>
+        </div>
+        <div class="account" id="dentro" hidden>
+          <small>Conectado como</small>
+          <h2 class="account-name" id="email-conta"></h2>
+          <button class="primary" id="jogar" type="button">CONTINUAR</button>
+          <button class="switch" id="sair" type="button">Trocar de conta</button>
+        </div>
+        <div class="progress" id="barra" hidden aria-hidden="true"><i></i></div>
+        <p class="notice" id="aviso" role="status" aria-live="polite"></p>
+        <div class="connection"><i class="dot" id="dot" aria-hidden="true"></i><span id="online">Conectando ao Durango Brasil…</span></div>
+      </section>
+      <div class="version" id="versao">Durango Brasil · Alfa</div>
+    </div>
+  </main>
+  <script src="mobile.js"></script>
+</body>
+</html>

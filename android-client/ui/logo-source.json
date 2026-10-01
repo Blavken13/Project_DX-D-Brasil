@@ -1,0 +1,13 @@
+{
+  "source": "DurangoBrasilApk/assets/bin/Data/c6c98a0f398372a41862a640adc466d2",
+  "texture_name": "logo_eng",
+  "texture_path_id": 1,
+  "dimensions": [
+    646,
+    254
+  ],
+  "unity_version": "2017.4.34f1",
+  "extractor": "UnityPy 1.25.3",
+  "png_sha256": "a8d443b9ada5308e89f282f3b7db2340e5d0de57e83b1889fc4f7c4f52930ab3",
+  "unity_file_sha256": "04d247c7007f3829dfda46273b06b5e40bead262993fe855a6c00e16fc631101"
+}
