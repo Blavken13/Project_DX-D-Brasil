@@ -87,6 +87,7 @@ public static class OffServerLink
 	{
 		get
 		{
+			if (LostHorizon.PC.LauncherSessionBridge.Active) return LostHorizon.PC.LauncherSessionBridge.Servers;
 			Load();
 			if (_localServers.Count > 0)
 			{
@@ -116,6 +117,7 @@ public static class OffServerLink
 	{
 		get
 		{
+			if (LostHorizon.PC.LauncherSessionBridge.Active) return "Lost Horizon Brasil";
 			Load();
 			return _name;
 		}
@@ -190,6 +192,7 @@ public static class OffServerLink
 	{
 		get
 		{
+			if (LostHorizon.PC.LauncherSessionBridge.Active) return true;
 			Load();
 			return !string.IsNullOrEmpty(_gateway);
 		}
@@ -199,6 +202,7 @@ public static class OffServerLink
 	{
 		get
 		{
+			if (LostHorizon.PC.LauncherSessionBridge.Active) return LostHorizon.PC.LauncherSessionBridge.Gateway;
 			Load();
 			return _gateway;
 		}
@@ -317,7 +321,7 @@ public static class OffServerLink
 			IntPtr intPtr = FindWindowW(null, "Durango: Wild Lands");
 			if (intPtr != IntPtr.Zero)
 			{
-				SetWindowTextW(intPtr, "Durango Brasil — Versão " + ClientVersion);
+				SetWindowTextW(intPtr, "Lost Horizon — Cliente " + ClientVersion);
 			}
 		}
 		catch (Exception)
@@ -489,6 +493,7 @@ public static class OffServerLink
 
 	public static void FetchServers(Action onChanged)
 	{
+		if (LostHorizon.PC.LauncherSessionBridge.Active) return;
 		Load();
 		if (_localServers.Count > 0)
 		{

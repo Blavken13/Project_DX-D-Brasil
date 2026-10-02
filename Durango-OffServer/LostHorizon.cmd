@@ -1,0 +1,2 @@
+@echo off
+start "Lost Horizon" "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -STA -WindowStyle Hidden -File "%~dp0Launcher\Start-LostHorizon.ps1"

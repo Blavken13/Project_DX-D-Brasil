@@ -1,23 +1,18 @@
-Durango OffServer — ตัวเกมสำหรับเข้าเซิร์ฟ (v2.9)
-================================================
-
-วิธีเล่น
-  1. แตก zip ไว้ที่ไหนก็ได้ (ห้ามอยู่ในโฟลเดอร์ที่ต้องสิทธิ์ admin เช่น Program Files)
-  2. เปิด DurangoLauncher.exe → รอเช็คเวอร์ชัน → กด "เล่น"
-  3. ครั้งแรกสร้างตัวละครในเกมได้เลย
-
-อัปเดต
-  launcher เช็คเวอร์ชันกับเซิร์ฟทุกครั้งที่เปิด · มีใหม่จะขึ้นปุ่ม "อัปเดต" — กดแล้วรอโหลดจบ ไม่ต้องโหลด zip ใหม่เอง
-
-offserver.txt
-  ไฟล์ตั้งค่าที่เกมอ่าน · gateway=http://187.53.129.69:8292 คือเซิร์ฟ · ลบไฟล์ = กลับไปเล่น offline คนเดียว
-
-บัญชี (Account Number)
-  เข้าเกมครั้งแรก = เซิร์ฟสร้างบัญชี UUID ไม่ซ้ำกับใครให้อัตโนมัติ ดูเลขได้ในเกมที่ ตั้งค่า ▸ Account ▸ Account Number
-  ย้ายเครื่อง: เปิด offserver.txt บนเครื่องใหม่ เติมบรรทัด  account=<Account Number ของเรา>  แล้วเข้าเกม — ตัวละครเดิมโผล่มาเลย
-  ⚠ ห้ามบอก Account Number ให้ใคร — ใครถือเลขนี้เข้าบัญชีเราได้ · ผูก Discord (บอท 🔗 → โค้ด 6 ตัว → ตั้งค่า ▸ Enter Coupon) เพื่อกู้บัญชีได้เมื่อมีปัญหา
-
-ปัญหาที่พบบ่อย
-  · เปิดแล้วไม่ขึ้นอะไรเลย → ดู player.log ในโฟลเดอร์เกม และ %TEMP%\DurangoLauncher.log
-  · Windows SmartScreen เตือน → More info → Run anyway (ไฟล์ไม่ได้เซ็นชื่อ)
-  · เข้าโลกไม่ได้ / ค้างที่โหลด → เซิร์ฟอาจปิดอยู่ ดูสถานะมุมขวาบนของ launcher
+Lost Horizon — cliente para PC
+
+Abra DurangoBrasil.exe para entrar ou criar sua conta.
+Se o Windows bloquear o EXE, abra LostHorizon.cmd, na mesma pasta.
+
+O login aparece antes do splash e da seleção de personagens.
+A conta salva aguarda o botão CONTINUAR; TROCAR DE CONTA abre o formulário.
+Havendo mais de um servidor em offserver.txt, escolha-o no painel de login.
+
+Mantenha todos os arquivos do cliente juntos, incluindo a pasta Launcher e
+DurangoV2_Data/Managed/LostHorizon.PC.dll. O iniciador utiliza o .NET Framework
+e o Windows PowerShell que acompanham o Windows.
+
+As sessões são criptografadas por usuário do Windows e servidor. Senhas não
+são salvas; copiar um número de conta para offserver.txt não substitui o login.
+
+Informações de compilação e testes: ../pc-client/README.md.
+Diagnóstico do iniciador PowerShell: Launcher/launcher-error.log.
