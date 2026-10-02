@@ -12,7 +12,7 @@ COMMAND = [str(SERVER / 'bin/test-runtime-linux/dotnet'),
 
 def audit(directory):
     result = subprocess.run(COMMAND + ['--assetbundles-android', str(directory)],
-                            capture_output=True, text=True, timeout=30)
+                            capture_output=True, text=True, encoding='utf-8', timeout=30)
     report, _ = json.JSONDecoder().raw_decode(result.stdout[result.stdout.index('{'):])
     return result.returncode, report
 
@@ -24,7 +24,10 @@ def main():
     assert recovered['available'] == prepared['available']
     assert recovered['missing'] == prepared['missing']
     assert recovered['prerequisites_ready'] is False
-    assert len(recovered['prerequisite_dependencies_missing']) >= 301
+    assert recovered['prerequisite_dependencies_missing']
+    tutorial = json.loads((ROOT / 'android-client/bundled/tutorial/manifest.json').read_text())['bundles']
+    assert not ({entry['name'] for entry in tutorial} &
+                set(recovered['prerequisite_dependencies_missing']))
     assert recovered['invalid_bundle_headers'] == []
     assert recovered['undeclared_dependencies'] == []
     with tempfile.TemporaryDirectory(prefix='durango-android-catalog-') as temp:
@@ -49,6 +52,9 @@ def main():
         texture.unlink()
         code, report = audit(directory)
         assert code == 3 and report['prerequisite_dependencies_missing'] == ['texture.bundle']
+        texture.write_bytes(b'UnityFS\0fixture\0' + b'2017.4.7f1\0')
+        code, report = audit(directory)
+        assert code == 0 and report['invalid_bundle_headers'] == []
         texture.write_bytes(b'not a Unity bundle')
         code, report = audit(directory)
         assert code == 3 and report['invalid_bundle_headers'] == [texture.name]

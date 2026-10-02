@@ -140,4 +140,17 @@ continuam presentes nos testes. O cliente de PC não foi editado.
 
 O servidor passou 46 verificações de regressão. O teste dos recursos conferiu
 as quatro dependências, as referências dos dois prefabs e seis texturas decodificadas.
-A cena sem a árvore precisa ser conferida após a publicação do servidor no staging.
+A cena sem a árvore foi conferida após a publicação no staging: captura do
+Redmi Note 12 mostrou K realizando a ressuscitação, Pia ao lado e a moto,
+com o personagem totalmente visível e sem a acácia diante da câmera.
+
+O servidor publicado é o commit `000dd4475914b660119f486edd05b666deea2b0b`.
+Antes da troca da imagem Docker, o volume persistente foi salvo e o backup teve
+todos os 92 arquivos conferidos por tamanho e SHA-256. Foram preservadas 15 contas
+e 22 arquivos de personagens nos dois conjuntos de dados existentes. O gateway,
+TCP do jogo, handshake Android/Windows, catálogo e os quatro bundles enviados
+por HTTP passaram nas verificações posteriores.
+
+A preparação e a auditoria confirmaram 1.175 bundles disponíveis, 978 ainda
+ausentes e nenhum cabeçalho inválido. Os recursos de K e Pia deixaram de estar
+ausentes; a correção do tutorial não significa que o pacote inteiro esteja completo.

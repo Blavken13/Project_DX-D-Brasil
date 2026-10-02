@@ -40,6 +40,12 @@ os hashes do servidor e as seis texturas. A remoção da acácia AF01, posição
 As verificações de regressão do servidor cobrem a remoção e a preservação das
 árvores vizinhas e de outros mapas.
 
+A publicação do servidor `000dd44` foi conferida no staging. Na nova cena do
+celular, K realiza o resgate com Pia ao lado, sem a árvore obstruindo a câmera.
+Contas e personagens foram preservados com backup verificado antes da troca
+da imagem. A auditoria atual registra 1.175 recursos disponíveis e 978 ainda
+ausentes, com os quatro recursos do tutorial presentes e cabeçalhos válidos.
+
 ## Login e conta salva
 
 A tela utiliza `ui/index.html`, `ui/mobile.js` e a logo brasileira em um WebView
