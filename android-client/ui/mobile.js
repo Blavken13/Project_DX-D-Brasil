@@ -31,7 +31,7 @@
     document.body.classList.toggle('register-mode', register);
     continueAfterAuth = false;
     $('#form-title').textContent = register ? 'Criar conta' : 'Entrar';
-    $('#form-description').textContent = register ? 'Sua aventura começa aqui.' : 'Bem-vindo ao alfa do Durango Brasil.';
+    $('#form-description').textContent = register ? 'Sua aventura começa aqui.' : 'Bem-vindo ao alfa de Lost Horizon.';
     $('#confirmation-field').hidden = !register;
     $('#confirmar-senha').required = register;
     $('#confirmar-senha').value = '';
@@ -99,7 +99,7 @@
     status(online) {
       const connected = typeof online === 'number' && online >= 0;
       $('#dot').className = 'dot ' + (connected ? 'on' : 'off');
-      $('#online').textContent = connected ? 'Durango Brasil · Servidor online' : 'Servidor indisponível no momento';
+      $('#online').textContent = connected ? 'Lost Horizon · Servidor online' : 'Servidor indisponível no momento';
     },
     account(username) {
       authenticated = !!username;
@@ -129,7 +129,7 @@
       $('#atualiza-botao').hidden = !button;
       lock(busy);
     },
-    version(text) { $('#versao').textContent = text || 'Durango Brasil · Alfa'; }
+    version(text) { $('#versao').textContent = text || 'Lost Horizon · Alfa'; }
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -165,7 +165,7 @@
     if (bridge) bridge.ready();
     else {
       $('#online').textContent = 'Prévia local';
-      window.PRIMAL.version('Durango Brasil · Prévia');
+      window.PRIMAL.version('Lost Horizon · Prévia');
     }
   });
 })();

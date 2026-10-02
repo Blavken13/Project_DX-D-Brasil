@@ -154,3 +154,42 @@ por HTTP passaram nas verificações posteriores.
 A preparação e a auditoria confirmaram 1.175 bundles disponíveis, 978 ainda
 ausentes e nenhum cabeçalho inválido. Os recursos de K e Pia deixaram de estar
 ausentes; a correção do tutorial não significa que o pacote inteiro esteja completo.
+
+## Restauração dos demais elementos e K junto à jangada — 02/10/2026
+
+O usuário confirmou que as ausências posteriores ocorriam somente no Android.
+Os dados originais do terreno não tinham sido alterados além da acácia. Foram
+adicionadas duas regressões: todos os pontos de jardim fora de `49,48` e todos
+os bytes de landmarks por chunk permanecem iguais aos originais. As 48
+verificações passaram no runtime Linux via WSL; a execução do DLL novo no
+Windows está bloqueada pela política local de Controle de Aplicativos.
+
+Foram recuperados 112 recursos Android originais faltantes na cadeia de 198
+dependências do cenário. Mantiveram CRC, hash, nomes, CABs/PathIDs e versão
+Unity anunciados no índice. A validação decodificou 155 texturas e resolveu
+32.934 referências, usando também os recursos internos do APK. A publicação
+adicionou somente os arquivos ausentes, sem trocar catálogo, reiniciar o servidor
+ou modificar contas. O usuário confirmou rochas, espinheiros, dinossauros,
+NPCs e jangada restaurados. A acácia obstrutiva continua sendo a única remoção.
+
+Restava a aparência da K junto à jangada. O PC possui um código adicional de
+criação dessa personagem que não está no APK original. No Alfa 4, a ponte
+Android usa o ToDo original `talk_npc_raft_ancora.meet_chief` e o prefab de K.
+A instrumentação confirmou zero componentes `ClientInteractionToDo` no cenário
+durante a primeira tentativa: substituir a aparência de um NPC 502 existente
+era insuficiente. A revisão acrescenta a criação desse NPC ausente, na mesma
+posição relativa à jangada usada no PC, enquanto o objetivo está ativo.
+O componente de interação continua usando a conclusão normal da conversa.
+O usuário confirmou K visível e o fim do fechamento ao entrar no mapa. O teste
+de clique revelou que o seletor priorizava a jangada quando K era seu filho.
+A revisão final coloca K no mesmo nível da estrutura e usa handles separados
+para remover K quando a jangada for descarregada. A ação do NPC continua
+concluindo somente o ToDo da conversa, após o clique do jogador.
+
+A validação final do usuário confirmou que foi possível conversar com K e
+seguir a missão. A revisão intermediária apresentou SIGSEGV ao consultar o
+request do prefab: `il2cpp_field_set_value` neste motor grava objetos de referência
+diretamente. O endereço de uma variável temporária não é um objeto gerenciado.
+Foram corrigidas as gravações do request, strings e array de ações, mantendo
+endereços de payload somente para valores numéricos. O tratador de sinais
+temporário usado para localizar a falha foi removido da versão final.

@@ -73,7 +73,7 @@ public final class OriginalAuthActivity extends Activity {
 
     private void ready() {
         if (!active()) return;
-        script("PRIMAL.version('Durango Brasil · Alfa');PRIMAL.rememberEmail(" +
+        script("PRIMAL.version('Lost Horizon · Alfa');PRIMAL.rememberEmail(" +
             JSONObject.quote(preferences.getString("username", "")) + ");");
         String saved = preferences.getString("session", "");
         String name = null;

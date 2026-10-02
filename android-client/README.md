@@ -1,20 +1,22 @@
-# Cliente Android do Durango Brasil
+# Cliente Android Lost Horizon
 
-APK atual: `dist/DurangoBrasil-original-alfa-3.apk` (02/10/2026, aproximadamente
-303 MiB), versão Android `50204` / `5.2.1-br-alfa3`.
+APK atual: `dist/LostHorizon-alfa.apk` (02/10/2026, aproximadamente
+303 MiB), versão Android `50206` / `5.2.1-losthorizon-alfa`.
 
 ## Base original do jogo
 
 O cliente usa a pasta `Durango original`, com Unity **2017.4.34f1**. Essa pasta
 é entrada somente de leitura; a compilação usa `work/original-nexon/client/`.
-As imagens, vídeos, shaders, atlas, splash, textos, `resources.arsc`, DEX do jogo
-original e `libunity.so` continuam intactos. São 1.761 arquivos originais
+Os vídeos, shaders, `resources.arsc`, DEX do jogo original e `libunity.so`
+continuam intactos. A identidade visual altera somente as imagens da marca,
+os créditos da seleção e o nome instalado. São 1.725 arquivos originais
 preservados byte a byte. O teste anterior foi confirmado pelo jogador:
 acesso ao mapa e shaders carregando corretamente.
 
 As alterações internas permanecem restritas ao modo online, gateway brasileiro,
 carregamento da ponte de requisições e substituição da autenticação NPA
-antiga. O Alfa 3 também inclui as dependências do resgate de K e Pia. No servidor,
+antiga. O Alfa 3 incluiu as dependências do resgate de K e Pia; o Alfa 4 restaura
+a aparência da K no NPC junto à jangada. No servidor,
 a árvore decorativa que obstruía o resgate é filtrada somente no terreno Âncora.
 O banco e os arquivos do cliente de PC não foram modificados.
 
@@ -43,8 +45,36 @@ As verificações de regressão do servidor cobrem a remoção e a preservação
 A publicação do servidor `000dd44` foi conferida no staging. Na nova cena do
 celular, K realiza o resgate com Pia ao lado, sem a árvore obstruindo a câmera.
 Contas e personagens foram preservados com backup verificado antes da troca
-da imagem. A auditoria atual registra 1.175 recursos disponíveis e 978 ainda
-ausentes, com os quatro recursos do tutorial presentes e cabeçalhos válidos.
+da imagem. A recuperação adicional de 112 dependências originais restaurou os
+demais elementos do mapa, confirmados pelo usuário no celular. A preparação
+atual registra 1.287 recursos disponíveis e 866 ainda ausentes.
+
+## K junto à jangada: Alfa 4
+
+`native/original/tutorial_raft_k.c` usa o modelo
+`Models/NPC/F_NPC_K_Story.prefab` e o ToDo original
+`talk_npc_raft_ancora.meet_chief`. No APK original, o NPC interativo 502 não foi
+criado no cenário testado. A ponte acrescenta K enquanto esse objetivo está
+ativo, com o mesmo posicionamento relativo à jangada usado no PC. O NPC fica
+no mesmo nível da jangada na hierarquia: colocá-lo dentro da estrutura fazia
+o seletor de cliques priorizar a montagem da jangada. Handles acompanham a
+existência dos dois objetos para remover K ao descarregar a jangada. Um handle e a
+verificação do NPC impedem duplicatas. Se um NPC 502 já existir, somente sua
+aparência é substituída, preservando posição, collider e conversa.
+Os componentes de interação por quests do modelo de K são retirados para
+não disputar o clique com o ToDo original. Nenhum objetivo é concluído pela ponte.
+
+A ponte usa o carregador assíncrono de dependências já existente e executa no
+Update do tutorial, na thread Unity. O prólogo nativo é conferido antes de instalar
+a ponte. Não modifica o cliente de PC, motor, shaders nem objetivos do servidor.
+`tests/verify_raft_k.py` confere o NPC original, ToDo, modelo, seis dependências
+e APIs mantidas no APK. A confirmação visual e da conversa é feita no celular.
+
+O usuário confirmou K visível, conversa funcional e avanço da missão no Redmi
+Note 12. O fechamento da revisão intermediária foi corrigido: a API de campos
+do Unity 2017 recebe referências diretamente, enquanto valores numéricos usam
+o endereço do payload. A requisição do prefab e as strings agora seguem esse
+contrato. A versão final não inclui o tratador de sinais usado no diagnóstico.
 
 ## Login e conta salva
 
@@ -86,10 +116,52 @@ No Redmi Note 12 conectado, o painel centralizado, a transparência e o vídeo
 foram conferidos por captura de tela. O jogador confirmou que a abertura com
 conta salva permanece no login e que Continuar abre os personagens normalmente.
 
-O pacote é `com.nexon.durango.global`, ARM64, nome no aparelho **Durango: Wild Lands**,
+O pacote é `com.nexon.durango.global`, ARM64, nome no aparelho **Lost Horizon**,
 com a mesma chave de teste brasileira da versão anterior. Atualiza esse APK por
 instalação normal, preservando a sessão e os recursos já baixados. Não substitui
 uma instalação oficial Nexon assinada com outra chave.
+
+## Identidade visual Lost Horizon
+
+`branding_original.py` usa as três imagens na raiz do projeto: `icon.png`,
+`logo.png` e `credits_splash_nexon_what.png`. O ícone é aplicado às 30 variantes
+de densidade e formato. A logo substitui as versões inglesa e coreana da seleção,
+a imagem do login e as duas regiões do atlas usadas abaixo do hexágono.
+O splash Android recebe diretamente a imagem da Vision Force.
+
+O atlas mantém ETC2 RGBA8, dimensões, tamanho e referências dos sprites.
+Apenas 423 dos 524.288 blocos comprimidos foram alterados; os demais são idênticos
+ao original. Os objetos Unity fora da marca permanecem byte a byte iguais,
+inclusive materiais e shaders. Os créditos exibem:
+
+```text
+2016 VISION FORCE. Todos os direitos da Produtora
+*Cliente 5.2.1
+```
+
+A versão antiga em outro rótulo é ocultada para evitar duplicação.
+O relatório `work/original-nexon/branding-verification.json` registra os hashes
+das imagens, regiões do atlas e verificações. O nome Android é alterado no
+manifesto sem reconstruir a tabela de recursos. Pacote, chave de assinatura,
+autenticação e correção do tutorial continuam compatíveis com o Alfa 4.
+
+## Aparência feminina
+
+Em 02/10/2026, o staging retornava 404 para roupas e cabelos femininos,
+mantendo a aparência provisória preta. Foram recuperados 321 bundles Android
+originais para completar as 366 aparências e suas 376 dependências.
+`tests/verify_female_appearance.py` valida modelos, materiais, 379 texturas,
+referências CAB/PathID e o preload. O pacote de recursos foi atualizado para
+1.608 bundles disponíveis; 545 outros recursos do catálogo ainda estão ausentes.
+
+Os arquivos adicionais são servidos pelo gateway; o APK atual continua válido.
+Não é preciso recompilar, reinstalar ou limpar dados. Depois da publicação,
+feche o jogo e entre novamente para refazer os pedidos que falharam.
+O inventário em `recovered/upstream-android/` permite recuperar os arquivos
+ignorados pelo Git. Os shaders originais e as correções de K e Pia foram
+conferidos e preservados.
+Os 321 arquivos foram publicados no staging e verificados pela rota HTTP;
+o usuário confirmou a aparência feminina normal após reconectar no celular.
 
 ## Limpeza das versões anteriores
 

@@ -174,6 +174,16 @@ internal static class GameplayRegressionCheck
                 "acacia que encobre o resgate nao e enviada no garden de Ancora");
             Check(tutorial.NaturalTypeAt(new Point2(49, 57)) == 14024,
                 "outras acacias decorativas de Ancora permanecem no mapa");
+            var originalTutorial = TerrainLoader.Load("tropical_event_ancora_01");
+            var originalNaturals = Durango.Terrain.NaturalInfo.FromBytes(originalTutorial.Garden);
+            Check(originalNaturals.Where(n => n.X != 49 || n.Y != 48 || n.EntityType != 14024)
+                    .All(n => tutorial.NaturalTypeAt(new Point2(n.X, n.Y)) == n.EntityType),
+                "remocao pontual preserva todos os demais recursos naturais originais de Ancora");
+            var originalLandmarks = Durango.Terrain.LandmarkInfo.FromBytes(originalTutorial.Landmarks);
+            Check(originalLandmarks.GroupBy(n => Durango.Terrain.Util.TilePositionToChunkCoords(new Point2(n.X, n.Y)))
+                    .All(group => Durango.Terrain.LandmarkInfo.ToBytes(group.ToList())
+                        .SequenceEqual(tutorial.GetChunkLandmark(group.Key))),
+                "landmarks de rochas, espinheiros, dinossauros e NPCs sao enviados sem alteracoes");
             tutorial.AddNatural(obstructionTile, 14024);
             Check(tutorial.NaturalTypeAt(obstructionTile) == 0,
                 "renovacao nao recria a arvore na frente da cena");

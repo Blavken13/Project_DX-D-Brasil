@@ -11,6 +11,7 @@
 
 #define LOG(...) __android_log_print(ANDROID_LOG_INFO, "BRTutorial", __VA_ARGS__)
 static uintptr_t engine;
+extern int br_install_raft_k(void *, uintptr_t);
 static void *(*string_new)(const char *);
 static void *(*original_url)(void *, void *, void *, void *, const void *);
 static const char *bundles[] = {
@@ -92,6 +93,7 @@ static void *worker(void *unused) {
             if (init && string_new && dladdr(init, &info)) {
                 engine = (uintptr_t)info.dli_fbase;
                 install();
+                br_install_raft_k(library, engine);
                 return NULL;
             }
         }

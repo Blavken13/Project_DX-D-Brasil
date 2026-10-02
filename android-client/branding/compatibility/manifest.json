@@ -1,0 +1,8 @@
+{
+  "unity_version": "6000.6.0f1",
+  "platform": "Android",
+  "file": "durango-br-shaders.bundle",
+  "sha256": "3995f41e9077e06a1d4f1fd2045932336d6d827d73e8382713d3359d387d333e",
+  "source_sha256": "407e3fcb47119661f42c977461489ef78c6f1ab7f20a646fdc21a02688e85ca6",
+  "shader": "Durango/Building/Floor2AlphaUV"
+}

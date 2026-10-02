@@ -9,13 +9,14 @@ import struct
 import xml.etree.ElementTree as ET
 import zipfile
 import build_apk as shared
+import branding_original as branding
 
 ROOT, PROJECT = shared.ROOT, shared.PROJECT
 SOURCE = PROJECT / 'Durango original'
 WORK = ROOT / 'work/original-nexon'
 CLIENT = WORK / 'client'
 DECODED = WORK / 'decoded'
-OUTPUT = 'DurangoBrasil-original-alfa-3.apk'
+OUTPUT = 'LostHorizon-alfa.apk'
 LOGIN_FILES = {'assets/durango-br/launcher/web/' + name for name in
                ['index.html', 'mobile.js', 'logo-durango-brasil.png']}
 BUNDLED = ROOT / 'bundled/tutorial'
@@ -53,7 +54,8 @@ def authentication():
     login = CLIENT / 'assets/durango-br/launcher/web'
     login.mkdir(parents=True, exist_ok=True)
     for name in ['index.html', 'mobile.js', 'logo-durango-brasil.png']:
-        shutil.copy2(ROOT / 'ui' / name, login / name)
+        source = PROJECT / 'logo.png' if name == 'logo-durango-brasil.png' else ROOT / 'ui' / name
+        shutil.copy2(source, login / name)
     ns = 'http://schemas.android.com/apk/res/android'
     ET.register_namespace('android', ns)
     key = lambda name: '{' + ns + '}' + name
@@ -64,6 +66,8 @@ def authentication():
     for child in list(game):
         if child.tag == 'intent-filter': game.remove(child)
     game.set(key('exported'), 'false')
+    game.set(key('label'), 'Lost Horizon')
+    app.set(key('label'), 'Lost Horizon')
     app.set(key('allowBackup'), 'false')  # The new gateway token stays private.
     auth = ET.SubElement(app, 'activity', {
         key('name'): 'com.newdawn.launcher.OriginalAuthActivity', key('exported'): 'true',
@@ -76,13 +80,13 @@ def authentication():
     tree.write(manifest, encoding='utf-8', xml_declaration=True)
     yaml = DECODED / 'apktool.yml'
     text = yaml.read_text('utf-8')
-    text = re.sub(r'versionCode: \d+', 'versionCode: 50204', text)
-    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-br-alfa3', text)
+    text = re.sub(r'versionCode: \d+', 'versionCode: 50206', text)
+    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa', text)
     yaml.write_text(text, 'utf-8')
     rebuilt = WORK / 'resources-rebuilt.apk'
     shared.run(shared.JAVA_BIN / 'java.exe', '-jar', ROOT / 'work/apktool.jar', 'b', DECODED, '-o', rebuilt)
     with zipfile.ZipFile(rebuilt) as archive:
-        # Retain the original resource table and every original image/XML resource.
+        # Retain the original resource table and IDs; branding replaces PNG payloads later.
         (CLIENT / 'AndroidManifest.xml').write_bytes(archive.read('AndroidManifest.xml'))
 
 def networking():
@@ -128,14 +132,15 @@ def tutorial_bundles():
     compiler = Path(os.environ.get('ANDROID_NDK_HOME',
         Path(os.environ['LOCALAPPDATA']) / 'Android/Sdk/ndk/28.2.13676358')) / 'toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe'
     shared.run(compiler, '--target=aarch64-linux-android21', '-shared', '-fPIC', '-O2',
-        ROOT / 'native/original/tutorial_bundles.c', '-o', CLIENT / 'lib/arm64-v8a/libbr.so',
+        ROOT / 'native/original/tutorial_bundles.c', ROOT / 'native/original/tutorial_raft_k.c',
+        '-Wall', '-Wextra', '-Werror', '-Wno-unused-parameter', '-o', CLIENT / 'lib/arm64-v8a/libbr.so',
         '-L' + str(ROOT / 'native/original'), '-Wl,--no-as-needed', '-l:libnd-auth.so',
         '-llog', '-ldl', '-pthread', '-Wl,-z,max-page-size=16384')
 
 def verify():
     changed = []
     allowed = {'AndroidManifest.xml', 'lib/arm64-v8a/libil2cpp.so',
-               'assets/bin/Data/b7b0096f71e8a0640be95cc8b863f74d'}
+               'assets/bin/Data/b7b0096f71e8a0640be95cc8b863f74d'} | branding.changed_files(SOURCE)
     preserved = 0
     for original in SOURCE.rglob('*'):
         if not original.is_file(): continue
@@ -149,14 +154,18 @@ def verify():
     assert added == {'classes2.dex', 'lib/arm64-v8a/libnd.so', 'lib/arm64-v8a/libbr.so'} | LOGIN_FILES | BUNDLE_FILES
     report = {'source': str(SOURCE), 'unity': '2017.4.34f1', 'gateway': shared.GATEWAY,
               'preserved_files': preserved, 'changed_files': sorted(changed), 'added_files': sorted(added),
-              'game_visual_assets_unchanged': True, 'original_folder_modified': False,
+              'branding': branding.verify(SOURCE, CLIENT),
+              'unity_shaders_and_nonbranding_assets_preserved': True, 'original_folder_modified': False,
               'login_video': 'assets/Movie/Mobile/title.mp4', 'login_requires_player_action': True,
-              'tutorial_dependencies': BUNDLE_MANIFEST['bundles']}
+              'tutorial_dependencies': BUNDLE_MANIFEST['bundles'],
+              'raft_k': {'entity_id': '502', 'todo': 'talk_npc_raft_ancora.meet_chief',
+                         'creates_missing_npc_at_tutorial_boat': True, 'automatic_todo_completion': False}}
     (WORK / 'verification.json').write_text(json.dumps(report, indent=2) + '\n', 'utf-8')
-    print('Verified: game resources and Unity retained; gateway/authentication and local login UI updated.', flush=True)
+    print('Verified: Lost Horizon branding; Unity, shaders and unrelated game resources retained.', flush=True)
 
 def main():
-    prepare(); authentication(); networking(); tutorial_bundles(); verify()
+    prepare(); authentication(); networking(); tutorial_bundles()
+    branding.apply(SOURCE, CLIENT, WORK); verify()
     shared.APK = CLIENT; shared.OUTPUT_NAME = OUTPUT; shared.PACKAGE_EXCLUDES = set()
     shared.DIST.mkdir(exist_ok=True)
     shared.package()
