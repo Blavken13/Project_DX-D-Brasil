@@ -1,96 +1,102 @@
 # Cliente Android do Durango Brasil
 
-APK de teste atual: `dist/DurangoBrasil-alfa-3.apk` (01/10/2026, aproximadamente 305 MiB).
-Os APKs anteriores de `dist/` foram removidos após validar esta versão.
+APK atual: `dist/DurangoBrasil-original-alfa-3.apk` (02/10/2026, aproximadamente
+303 MiB), versão Android `50204` / `5.2.1-br-alfa3`.
 
-Gateway fixo: `http://179.197.72.129:8190`.
-Pacote Android: `com.durangobrasil.apk`; nome no celular: `DurangoBrasil`.
-O pacote separado permite instalar esta versão junto do aplicativo da comunidade.
-O APK original fornece somente bibliotecas ARM64 (`arm64-v8a`); essa arquitetura foi preservada.
+## Base original do jogo
 
-## Login
+O cliente usa a pasta `Durango original`, com Unity **2017.4.34f1**. Essa pasta
+é entrada somente de leitura; a compilação usa `work/original-nexon/client/`.
+As imagens, vídeos, shaders, atlas, splash, textos, `resources.arsc`, DEX do jogo
+original e `libunity.so` continuam intactos. São 1.761 arquivos originais
+preservados byte a byte. O teste anterior foi confirmado pelo jogador:
+acesso ao mapa e shaders carregando corretamente.
 
-A tela AUTH existente foi reaproveitada. Informe o **usuário**, e não um e-mail,
-e a mesma senha da conta usada no PC. O cadastro aceita de 3 a 32 caracteres
-(`A-Z`, `a-z`, números, ponto, hífen e sublinhado), e senha de pelo menos 8 caracteres.
-O botão Criar conta registra no gateway e entra automaticamente quando o cadastro termina.
+As alterações internas permanecem restritas ao modo online, gateway brasileiro,
+carregamento da ponte de requisições e substituição da autenticação NPA
+antiga. O Alfa 3 também inclui as dependências do resgate de K e Pia. No servidor,
+a árvore decorativa que obstruía o resgate é filtrada somente no terreno Âncora.
+O banco e os arquivos do cliente de PC não foram modificados.
 
-O adaptador Java usa `/auth/register`, `/auth/login`, `/accounts` e `/status`.
-O token `auth_token` retornado pelo login é entregue ao jogo pelo Intent existente.
-A ponte nativa `libnd.so` foi adaptada para incluir esse valor no campo de formulário
-`token` das requisições `/accounts` e `/sessions`, que é o contrato atual do servidor.
-Os cabeçalhos `Authorization` das sessões do jogo continuam sendo gerados pelo Unity.
-Nenhuma alteração no servidor é necessária para essa autenticação.
+## Tutorial Âncora: Alfa 3
 
-O token e seu prazo ficam nas preferências do aplicativo; a senha não é salva.
-Após expirar o token ou reiniciar o servidor, o jogador precisa entrar novamente.
-A identidade da conta é resolvida pelo servidor e recupera os mesmos personagens do PC.
+Os quatro bundles de `bundled/tutorial/` completam materiais e texturas de K e
+o efeito usado por Pia. Foram recuperados do cache Android, com Unity 2017,
+CABs e PathIDs correspondentes aos prefabs originais. O manifesto registra
+tamanho, CRC, hash do catálogo e SHA-256; a compilação confere os arquivos.
 
-### Aparência da tela AUTH
+`native/original/tutorial_bundles.c` compila uma ponte ARM64 `libbr.so` que
+redireciona somente esses quatro nomes para os StreamingAssets do APK. As
+demais requisições continuam pelo fluxo original. A ponte depende de `libnd.so`
+para manter a autenticação brasileira. O motor e os shaders originais permanecem
+intactos. É necessário o Android NDK, indicado por `ANDROID_NDK_HOME` ou encontrado
+na instalação local `28.2.13676358` do SDK.
 
-As fontes da interface ficam em `ui/`: login e cadastro centralizados num painel
-escuro translúcido, sem cartões de notícias ou seletor de servidor. O fundo usa
-o vídeo já existente `assets/Movie/Mobile/title.mp4`, em repetição e sem áudio.
-A logo acima do painel foi extraída da textura `logo_eng` do próprio jogo;
-`ui/logo-source.json` registra sua origem e hash. Nenhuma textura Unity foi alterada.
+No celular, os registros confirmaram as quatro leituras locais e a cena avançou:
+personagem de pé, Pia visível, HUD e controle de movimento presentes, objetivo
+“Para a Jangada” ativo. `tests/verify_tutorial_bundles.py` valida as referências,
+os hashes do servidor e as seis texturas. A remoção da acácia AF01, posição
+`49,48`, é feita em `World`, inclusive para saves antigos e renovação dos recursos.
+As verificações de regressão do servidor cobrem a remoção e a preservação das
+árvores vizinhas e de outros mapas.
 
-O cadastro inclui confirmação de senha. Depois de um login ou cadastro bem-sucedido,
-a tela chama a ponte existente para abrir o jogo no gateway brasileiro. Uma sessão
-restaurada mostra Continuar e Trocar de conta. A seleção de personagem permanece no Unity.
+## Login e conta salva
 
-Para aplicar só a interface à pasta extraída, antes de gerar o próximo APK:
+A tela utiliza `ui/index.html`, `ui/mobile.js` e a logo brasileira em um WebView
+local. O painel é centralizado, preto e translúcido. O vídeo de fundo é exatamente
+`assets/Movie/Mobile/title.mp4`, também utilizado na seleção de personagens.
+O arquivo permanece original e tem apenas uma cópia dentro do APK.
 
-```powershell
-python android-client/build_apk.py --ui-only
-```
+Ao abrir o aplicativo com uma sessão salva, a tela mostra **Continuar** e
+**Trocar de conta**. Não abre o Unity automaticamente. A sessão é validada no
+gateway somente depois do toque em Continuar; se expirada, mostra o formulário.
+Trocar de conta apaga o token local e permite entrar ou cadastrar outro usuário.
+Um login ou cadastro solicitado explicitamente abre o jogo após autenticar.
 
-A compilação completa também copia essas fontes e ajusta o WebView para permitir
-a reprodução automática do vídeo. A opção `--ui-only` não altera DEX nem gera um APK;
-o ajuste nativo do WebView só entra no APK na próxima compilação completa.
+Use o usuário e a senha da mesma conta brasileira do PC. A senha não é salva;
+o token e sua validade permanecem nas preferências privadas, com backup Android
+desativado. O WebView não permite navegação externa nem acesso a outros arquivos.
+O vídeo para quando o login deixa de estar visível e é liberado ao abrir o jogo.
 
-A prévia local pode ser aberta com `python android-client/tests/preview_login.py`.
-Login, cadastro, confirmação de senha, erro de credenciais e a chamada automática
-de abertura foram conferidos no navegador com uma ponte Java simulada apenas em
-`test-login.html`. O vídeo e o encaixe da interface foram conferidos em paisagem
-873×393 e 800×360 e em retrato 393×873. Isso não substitui o teste no Android após
-a compilação. O APK alfa 2 inclui essa interface, o vídeo e o ajuste de autoplay;
-a validação no aparelho ainda precisa ser feita.
+Gateway: `http://179.197.72.129:8190`. A ponte ARM64 acrescenta `token` aos POSTs
+`/accounts` e `/sessions`, mantendo os cabeçalhos das sessões do jogo.
 
-### Identidade visual e créditos
-
-As três imagens editadas pelo usuário em `DurangoBrasilApk` foram preservadas em
-`branding/resources/`, com hashes e caminhos originais em `branding/manifest.json`:
-
-- `assets/bin/Data/bcb37f4b3d27e4a4f93a3ec965e256dc`: atlas de ícones/carregamento;
-- `assets/bin/Data/c6c98a0f398372a41862a640adc466d2`: textura `logo_eng` da seleção;
-- `res/drawable/unity_static_splash.png`: splash da equipe Vision Force.
-
-Toda compilação aplica essas fontes, sem recuperar versões antigas dessas imagens
-dos backups do launcher. A logo do HTML é extraída da mesma textura Unity. Caso as
-imagens da pasta original sejam editadas novamente, atualize as fontes antes de compilar:
+## Compilar e validar
 
 ```powershell
-python android-client/prepare_branding.py
-python android-client/build_apk.py
+python android-client/build_original_apk.py
 ```
 
-`prepare_branding.py` usa UnityPy 1.25.3 (nesta máquina, em `work/python-deps`).
-Os créditos dos dois prefabs de título passaram a exibir três linhas: **Vision Force**,
-**Servidor Brasileiro** e **Versão 1.0**. O patch mantém os 62 bytes da string
-serializada com marcadores NGUI invisíveis de restauração de cor, e verifica o layout
-do UILabel antes de alterar o pivô inferior, a altura e a fonte. Os demais objetos,
-seus identificadores, tamanhos e referências continuam intactos.
+Requer Java do Android Studio e os utilitários APKtool/D8/assinatura em `work/`.
+A biblioteca necessária foi preservada em `native/original/libnd-auth.so`, com
+SHA-256 conferido pelo script; não depende de uma pasta de APK antigo na raiz.
+As fontes da tela e da autenticação estão em `src/com/newdawn/launcher/`.
 
-O texto **1.0** identifica a apresentação desta distribuição. A versão interna do
-jogo/protocolo continua **5.2.1**, preservando o contrato do gateway e dos bundles.
-O APK mantém o pacote e a mesma chave de assinatura de teste do alfa anterior.
-`tests/check_android_branding.py` verifica as imagens, os dois rótulos e a preservação
-dos outros 525 objetos desses prefabs. Não houve teste visual desses créditos no Android.
+A compilação confere os recursos originais, verifica assinatura e alinhamento,
+e compara os arquivos dentro do APK assinado com o cliente validado. O relatório
+fica em `work/original-nexon/verification.json`. Não registra senhas ou tokens.
 
-Os serviços de autenticação, notícias, diagnóstico e atualização do outro servidor
-foram desconectados dos fluxos deste cliente. A seleção de outro gateway foi
-desabilitada nessa distribuição. A lista de servidores interna do Unity contém
-somente Durango Brasil, apontando para o mesmo gateway da tela AUTH.
+No Redmi Note 12 conectado, o painel centralizado, a transparência e o vídeo
+foram conferidos por captura de tela. O jogador confirmou que a abertura com
+conta salva permanece no login e que Continuar abre os personagens normalmente.
+
+O pacote é `com.nexon.durango.global`, ARM64, nome no aparelho **Durango: Wild Lands**,
+com a mesma chave de teste brasileira da versão anterior. Atualiza esse APK por
+instalação normal, preservando a sessão e os recursos já baixados. Não substitui
+uma instalação oficial Nexon assinada com outra chave.
+
+## Limpeza das versões anteriores
+
+Foram removidas da raiz `DurangoBrasilApk` e `Durango-Brasil-v5.2.1`, após preservar
+a ponte de autenticação e conferir os recursos da identidade visual em `branding/`.
+A base atual `Durango original`, o servidor, o cliente de PC e o diretório `deploy`
+foram mantidos. `localization` continua necessário à manutenção da tradução e
+`tools` ao iniciador local do servidor.
+
+Os scripts dos clientes antigos e da experiência Unity 6 permanecem como referência
+histórica; o comando de compilação ativo é `build_original_apk.py`. As bibliotecas,
+recursos e fontes da identidade visual em `branding/` podem ser usados em futuras
+personalizações, sem reintroduzir os motores Unity modificados pelos outros APKs.
 
 ## Recursos Android para os testes
 
@@ -113,9 +119,13 @@ python android-client/prepare_android_assets.py
 O script confere os hashes recuperados, a assinatura UnityFS e a versão Unity,
 copia os arquivos para `Durango-CustomServer/server/assetbundles/android/` e
 gera `dist/assetbundles-android-5.2.1.tar.gz`, seu SHA-256 e um relatório JSON.
-O índice original é preservado integralmente; seus tamanhos lógicos não são
-usados para cortar os arquivos físicos. O pacote, os bundles e o índice ficam
-ignorados pelo Git. Eles precisam ser transferidos separadamente ao staging.
+O índice de origem é mantido integralmente como referência. No catálogo preparado,
+somente as quatro dependências integradas de K e Pia recebem os metadados das
+revisões recuperadas; os demais nomes e referências permanecem intactos. O script
+também inclui esses quatro arquivos, para não desfazer a correção em nova preparação.
+O cache grande e o pacote de transferência são ignorados pelo Git. As quatro
+dependências e o catálogo corrigido são versionados; o restante do cache ainda
+precisa ser transferido separadamente ao staging.
 
 O servidor detecta automaticamente `assetbundles/android/` ao lado da pasta
 `--data`, quando o índice existe. A inicialização pelo BAT local usa essa detecção.

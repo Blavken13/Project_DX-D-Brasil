@@ -1,4 +1,4 @@
-"""Prepare the recovered Android bundles for the gateway without changing their index."""
+"""Prepare recovered Android bundles and verified embedded tutorial dependencies."""
 import argparse
 import hashlib
 import json
@@ -10,6 +10,7 @@ import tarfile
 ROOT = Path(__file__).resolve().parent.parent
 RECOVERY = ROOT / 'android-client/recovered/android-cache-2026-09-30'
 ADDITIONAL = ROOT / 'android-client/recovered/upstream-android'
+TUTORIAL = ROOT / 'android-client/bundled/tutorial'
 
 
 def native(path):
@@ -47,6 +48,20 @@ def main():
         if extra['source_index_sha256'] != digest(source_index):
             raise ValueError('Os recursos adicionais pertencem a outro índice Android.')
         additional = {entry['server_filename']: entry for entry in extra['bundles']}
+    # Only these four recovered revisions replace catalog metadata. All other
+    # entries retain their original CRC, hash, size and dependency references.
+    tutorial = {}
+    bundled = json.loads((TUTORIAL / 'manifest.json').read_text(encoding='utf-8'))['bundles']
+    by_name = {entry['name']: entry for entry in bundled}
+    for entry in index['FileList']:
+        if entry['Name'] not in by_name:
+            continue
+        recovered = by_name[entry['Name']]
+        source = TUTORIAL / recovered['name']
+        if digest(source) != recovered['sha256'] or source.stat().st_size != recovered['bytes']:
+            raise ValueError('Recurso integrado inválido: ' + recovered['name'])
+        entry.update(Crc=recovered['crc'], Hash=recovered['cache_hash'], Size=recovered['bytes'])
+        tutorial[recovered['server_filename']] = (source, recovered)
     entries = list(index['FileList']) + [{
         'Name': 'preload.bundle', 'Crc': index['PreloadCrc'],
         'Hash': index['PreloadHash'], 'Priority': 9999, 'Dependencies': []}]
@@ -58,7 +73,9 @@ def main():
             raise ValueError('Nome inválido no índice: ' + name)
         filename = name[:-7] + '.' + entry['Crc'] + '.bundle'
         source = args.source / filename
-        if not os.path.isfile(native(source)):
+        if filename in tutorial:
+            source, recovered = tutorial[filename]
+        elif not os.path.isfile(native(source)):
             source = args.additional / 'bundles-android' / filename
             if filename not in additional or not os.path.isfile(native(source)):
                 missing.append(entry)
@@ -72,7 +89,8 @@ def main():
             raise ValueError('Hash divergente do celular: ' + filename)
         with open(native(source), 'rb') as stream:
             header = stream.read(96)
-        if not header.startswith(b'UnityFS\0') or b'2017.4.34f1\0' not in header:
+        if not header.startswith(b'UnityFS\0') or not any(version in header for version in
+                (b'2017.4.34f1\0', b'2017.4.7f1\0')):
             raise ValueError('Bundle incompatível com o APK: ' + filename)
         target = args.output / filename
         if source.resolve() != target.resolve():
@@ -92,14 +110,19 @@ def main():
         if entry['Name'] in available_names and entry['Priority'] >= 500
         for dep in entry.get('Dependencies', [])
         if dep in declared_names and dep not in available_names})
-    # Preserve all logical sizes, hashes, CRCs and references for future recovery.
+    # Preserve the source verbatim unless verified tutorial revisions were applied.
     temp_index = args.output / 'Info.5.2.1.json.tmp'
-    shutil.copyfile(native(source_index), native(temp_index))
+    if tutorial:
+        temp_index.write_text(json.dumps(index, separators=(',', ':')) + '\n', encoding='utf-8')
+    else:
+        shutil.copyfile(native(source_index), native(temp_index))
     os.replace(native(temp_index), native(args.output / 'Info.5.2.1.json'))
     report = {'expected': len(entries), 'available': len(available), 'missing': len(missing),
               'payload_bytes': sum(entry['bytes'] for entry in available),
               'required_missing': len(required_missing), 'required_dependencies_missing': dependencies_missing,
-              'index_sha256': digest(source_index), 'bundles': available, 'missing_bundles': missing}
+              'source_index_sha256': digest(source_index),
+              'index_sha256': digest(args.output / 'Info.5.2.1.json'),
+              'bundles': available, 'missing_bundles': missing}
     args.archive.parent.mkdir(parents=True, exist_ok=True)
     report_path = args.archive.with_suffix('').with_suffix('.json')
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

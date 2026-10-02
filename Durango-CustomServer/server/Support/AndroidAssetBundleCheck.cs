@@ -74,7 +74,8 @@ internal static class AndroidAssetBundleCheck
                     int count = stream.Read(header, 0, header.Length);
                     string signature = Encoding.ASCII.GetString(header, 0, count);
                     if (!signature.StartsWith("UnityFS\0", StringComparison.Ordinal) ||
-                        !signature.Contains("2017.4.34f1\0", StringComparison.Ordinal))
+                        !(signature.Contains("2017.4.34f1\0", StringComparison.Ordinal) ||
+                          signature.Contains("2017.4.7f1\0", StringComparison.Ordinal)))
                         invalidHeaders.Add(filename);
                 }
                 foreach (string dependency in entry["Dependencies"]?.Values<string>() ?? Enumerable.Empty<string>())

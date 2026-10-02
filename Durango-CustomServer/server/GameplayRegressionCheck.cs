@@ -169,6 +169,25 @@ internal static class GameplayRegressionCheck
             tutorialContext.Initialize(Path.Combine(root, "tutorial.world"));
             var tutorial = new World(tutorialContext);
             Check(tutorial.IsTutorialIsland, "terrain Ancora reconhecido como tutorial");
+            var obstructionTile = new Point2(49, 48);
+            Check(tutorial.NaturalTypeAt(obstructionTile) == 0,
+                "acacia que encobre o resgate nao e enviada no garden de Ancora");
+            Check(tutorial.NaturalTypeAt(new Point2(49, 57)) == 14024,
+                "outras acacias decorativas de Ancora permanecem no mapa");
+            tutorial.AddNatural(obstructionTile, 14024);
+            Check(tutorial.NaturalTypeAt(obstructionTile) == 0,
+                "renovacao nao recria a arvore na frente da cena");
+            var legacyTutorialContext = new WorldContext { TerrainId = "tropical_event_ancora_01" };
+            legacyTutorialContext.Initialize(Path.Combine(root, "legacy-tutorial.world"));
+            legacyTutorialContext.Garden = TerrainLoader.Load("tropical_event_ancora_01").Garden;
+            legacyTutorialContext.AddedNatural.Add(new Durango.Terrain.NaturalInfo
+                { X = 49, Y = 48, EntityType = 14024 });
+            var legacyTutorial = new World(legacyTutorialContext);
+            Check(legacyTutorial.NaturalTypeAt(obstructionTile) == 0,
+                "garden persistido e naturais adicionados antigos tambem filtram a arvore");
+            world.AddNatural(obstructionTile, 14024);
+            Check(world.NaturalTypeAt(obstructionTile) == 14024,
+                "mesmas coordenadas e especie seguem permitidas em outros mapas");
             Point2 spot = tutorial.EntryPoint;
             tutorial.AddNatural(spot, 11002);
             string key = $"{spot.x},{spot.y}";

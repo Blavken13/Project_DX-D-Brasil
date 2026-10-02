@@ -1,3 +1,5 @@
 DurangoBrasilApk/** -text
 android-client/base/** -text
 android-client/branding/resources/** -text
+"Durango original/**" -text -diff
+android-client/bundled/**/*.bundle -text

@@ -137,7 +137,12 @@
     $('#switch-auth').addEventListener('click', () => mode(!register));
     $('#jogar').addEventListener('click', play);
     $('#sair').addEventListener('click', () => {
-      if (bridge && !busy) { notice(''); bridge.signOut(); }
+      if (bridge && !busy) {
+        $('#email').value = '';
+        $('#senha').value = '';
+        $('#confirmar-senha').value = '';
+        notice(''); bridge.signOut();
+      }
     });
     $('#atualiza-botao').addEventListener('click', () => { if (bridge) bridge.update(); });
     document.addEventListener('visibilitychange', resumeVideo);

@@ -778,6 +778,7 @@ public partial class World
             NaturalInfo natural
             in NaturalInfo.FromBytes(garden))
         {
+            if (IsTutorialSceneObstruction(natural.X, natural.Y, natural.EntityType)) continue;
             if (_removedNatural.Any(
                     t => t.x == natural.X &&
                          t.y == natural.Y))
@@ -806,6 +807,7 @@ public partial class World
 
         foreach (NaturalInfo natural in _addedNatural)
         {
+            if (IsTutorialSceneObstruction(natural.X, natural.Y, natural.EntityType)) continue;
             if (IsFishingNatural(natural.EntityType))
             {
                 Point2 fishingTile =
@@ -1070,6 +1072,7 @@ public partial class World
 
     private bool AddNaturalToGarden(Point2 tile, ushort entityType)
     {
+        if (IsTutorialSceneObstruction(tile.x, tile.y, entityType)) return false;
         Point2 point = Util.TilePositionToChunkCoords(tile);
         if (point.x < 0 || point.x >= NumChunksX || point.y < 0 || point.y >= NumChunksY) return false;
         if (!DataHelper.IsNaturalObject(entityType)) return false;
@@ -1092,6 +1095,13 @@ public partial class World
         _chunkData[point.x, point.y].Garden = NaturalInfo.ToBytes(list);
         return true;
     }
+
+    // A acácia decorativa AF01 fica entre a câmera e o resgate de K em Âncora.
+    // Filtrar os chunks também cobre Garden/AddedNatural de saves antigos;
+    // impedir a renovação evita que ela reapareça sem alterar os demais recursos.
+    private bool IsTutorialSceneObstruction(int x, int y, ushort entityType) =>
+        string.Equals(TerrainId, "tropical_event_ancora_01", StringComparison.Ordinal) &&
+        x == 49 && y == 48 && entityType == 14024;
 
     private static bool IsFishingNatural(ushort entityType)
     {

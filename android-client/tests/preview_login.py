@@ -5,7 +5,7 @@ from pathlib import Path
 import urllib.parse
 
 ROOT = Path(__file__).resolve().parents[2]
-ASSETS = ROOT / 'DurangoBrasilApk/assets'
+ASSETS = ROOT / 'android-client/work/original-nexon/client/assets'
 BRIDGE = r"""
 <script>
 (() => {
@@ -35,8 +35,8 @@ BRIDGE = r"""
 
 class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        if urllib.parse.urlsplit(self.path).path == '/newdawn/launcher/web/test-login.html':
-            html = (ASSETS / 'newdawn/launcher/web/index.html').read_text('utf-8')
+        if urllib.parse.urlsplit(self.path).path == '/durango-br/launcher/web/test-login.html':
+            html = (ASSETS / 'durango-br/launcher/web/index.html').read_text('utf-8')
             payload = html.replace('<script src="mobile.js"></script>', BRIDGE + '<script src="mobile.js"></script>').encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
@@ -49,7 +49,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     server = ThreadingHTTPServer(('127.0.0.1', 19880), partial(Handler, directory=str(ASSETS)))
-    print('Prévia: http://127.0.0.1:19880/newdawn/launcher/web/index.html', flush=True)
+    print('Prévia: http://127.0.0.1:19880/durango-br/launcher/web/index.html', flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -17,6 +17,7 @@ WORK = ROOT / 'work'
 DIST = ROOT / 'dist'
 GATEWAY = 'http://179.197.72.129:8190'
 OUTPUT_NAME = 'DurangoBrasil-alfa-3.apk'
+PACKAGE_EXCLUDES = set()
 TITLE_CREDITS = 'Vision Force\nServidor Brasileiro\nVersão 1.0'
 JAVA_BIN = Path('C:/Program Files/Android/Android Studio/jbr/bin')
 SDK = Path.home() / 'AppData/Local/Android/Sdk'
@@ -291,6 +292,8 @@ def package():
             if not path.is_file():
                 continue
             name = path.relative_to(APK).as_posix()
+            if name in PACKAGE_EXCLUDES:
+                continue
             if name.startswith('META-INF/') and (path.suffix.upper() in ['.SF', '.RSA', '.DSA', '.EC'] or path.name == 'MANIFEST.MF'):
                 continue
             # Unity/Wwise/video can use AssetManager.openFd, which requires stored assets.
