@@ -24,6 +24,7 @@ public partial class Gateway
         RegisterAdminMailRoutes();
         try { _adminAuth = new AdminAuth(Path.Combine(DataDir ?? Json.DataDir, "admin-auth.json")); }
         catch (Exception) { Console.WriteLine("[admin] Credenciais ausentes ou inválidas; login bloqueado."); }
+        RegisterClientReportRoutes();
 
         _webServer.PostRoute["/admin/login"] = (request, data) =>
         {

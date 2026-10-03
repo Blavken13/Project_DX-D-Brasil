@@ -14,6 +14,11 @@ services:
 
     environment:
       DURANGO_ADMIN_CONFIG_DIR: /app/AppData-nx/admin-config
+      DURANGO_REPORTS_TRUSTED_PROXY: 172.29.91.2
+
+    networks:
+      - default
+      - reports
 
     ports:
       - "${DURANGO_GATEWAY_PORT:-8190}:8190/tcp"
@@ -58,6 +63,39 @@ services:
         max-size: "20m"
         max-file: "5"
 
+  reports-proxy:
+    image: caddy:2.11.4-alpine
+    container_name: durango-brasil-reports
+    restart: unless-stopped
+    environment:
+      DURANGO_PUBLIC_HOST: ${DURANGO_PUBLIC_HOST}
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+    networks:
+      reports:
+        ipv4_address: 172.29.91.2
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - reports-tls:/data
+      - reports-config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+networks:
+  reports:
+    name: durango-brasil-reports
+    ipam:
+      config:
+        - subnet: 172.29.91.0/24
+
 volumes:
+  reports-tls:
+    name: durango-brasil-reports-tls
+  reports-config:
+    name: durango-brasil-reports-config
   durango-staging-state:
     name: durango-brasil-staging-state

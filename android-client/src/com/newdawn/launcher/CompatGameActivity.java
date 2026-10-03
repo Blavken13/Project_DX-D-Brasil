@@ -14,6 +14,7 @@ public final class CompatGameActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         requestWindowFeature(1);
         super.onCreate(state);
+        MobileReports.stopForGame();
         NativeRuntime.activity(this);
         CrashDiagnostics.stage(this, "GAME_PREPARING");
         try {

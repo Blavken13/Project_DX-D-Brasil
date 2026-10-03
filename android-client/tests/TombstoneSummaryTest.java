@@ -18,6 +18,10 @@ public final class TombstoneSummaryTest {
             bytes(16,join(number(1,123),bytes(2,thread))),bytes(16,join(number(1,999),bytes(2,other))),
             text(14,secret),text(9,"password"),bytes(18,text(1,"token="+secret)));
         String report=TombstoneSummary.summarize(input);
+        String build="0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+        byte[] buildFrame=join(number(1,0x1234),text(6,"libunity.so"),text(8,build));
+        String buildReport=TombstoneSummary.summarize(join(number(6,123),bytes(16,join(number(1,123),bytes(2,bytes(4,buildFrame))))));
+        if(!buildReport.contains("build="+build))throw new AssertionError("BuildID was redacted: "+buildReport);
         if(!report.contains("16384")||!report.contains("1234 libil2cpp.so il2cpp_init+12")||!report.contains("Sinal nativo: 11"))throw new AssertionError(report);
         for(String forbidden:new String[]{secret,"account-secret","user@example.com","password","wrong-thread.so"})if(report.contains(forbidden))throw new AssertionError("Leak: "+forbidden);
         for(byte[] malformed:new byte[][]{{10,(byte)255},{0},{(byte)128},{15}}){

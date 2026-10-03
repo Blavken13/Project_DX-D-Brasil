@@ -7694,6 +7694,24 @@
       "unity_version": "2017.4.34f1",
       "texture_count": 1,
       "validation": "Android target 13, original catalog metadata, Unity objects and texture decoding"
+    },
+    {
+      "server_filename": "models$pc$male$body$m_body_beginner_leaf.fbx.119999585ccb6817cf2ce148ba55755d.bundle",
+      "catalog_entry": {
+        "Name": "models$pc$male$body$m_body_beginner_leaf.fbx.bundle",
+        "Hash": "107b3618959208f9550b47a911615d66",
+        "Crc": "119999585ccb6817cf2ce148ba55755d",
+        "Size": 53899,
+        "Dependencies": [
+          "models$pc$male$body$materials$m_body_nude01-texture1.mat.bundle"
+        ],
+        "Priority": 495
+      },
+      "bytes": 86110,
+      "sha256": "3fb3f5df5d34664184589c060ad3edb9a566d757af9cd3bc49f87c443daebd30",
+      "download_url": "http://api.durangonewdawn.com:8190/assetbundles/android/models$pc$male$body$m_body_beginner_leaf.fbx.119999585ccb6817cf2ce148ba55755d.bundle",
+      "unity_version": "2017.4.34f1",
+      "validation": "Android starter appearance; exact original catalog and dependencies; validated Unity 2017 Android objects"
     }
   ],
   "updated_at": "2026-10-02",
@@ -8796,6 +8814,18 @@
     "observed_failures": [
       "models$pc$female$body$f_body_hoody.fbx.bundle",
       "models$pc$female$hair$f_hair_longwave_01.prefab.bundle"
+    ]
+  },
+  "starter_male_dependencies": {
+    "roots": [
+      "models$pc$male$body$m_body_beginner_leaf.fbx.bundle"
+    ],
+    "bundles": [
+      "models$pc$male$body$m_body_beginner_leaf.fbx.bundle",
+      "models$pc$male$body$materials$m_body_nude01-texture1.mat.bundle"
+    ],
+    "recovered_names": [
+      "models$pc$male$body$m_body_beginner_leaf.fbx.bundle"
     ]
   }
 }

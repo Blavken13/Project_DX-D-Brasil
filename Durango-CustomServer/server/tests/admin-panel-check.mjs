@@ -7,10 +7,11 @@ import net from 'node:net';
 import dgram from 'node:dgram';
 import { spawn, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { mobileReportChecks, mobileReportRestartChecks } from './mobile-reports-check.mjs';
 
 // Real HTTP integration, with an isolated data directory and disposable saves.
 const server = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const dll = path.join(server, 'bin', 'Debug', 'net9.0', 'DurangoServer.dll');
+const dll = path.join(server, 'bin', process.env.DURANGO_ADMIN_TEST_CONFIGURATION || 'Debug', 'net9.0', 'DurangoServer.dll');
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'durango-admin-check-'));
 const data = path.join(root, 'data');
 fs.cpSync(path.join(server, 'data'), data, { recursive: true });
@@ -152,6 +153,7 @@ try {
     session = login.session;
     check(session?.length === 64 && login.expires_in === 28800, 'login emite sessão com expiração');
     check((await json('/health')).players_online === 0, 'saúde autenticada');
+    const reportState = await mobileReportChecks({origin,request,json,check,root});
     const players = await json('/admin/players');
     check(players.length > 0 && players.every(p => !p.online), 'saves offline visíveis');
     const mailItems = await json('/admin/mail/items');
@@ -213,6 +215,7 @@ try {
     check(restored, 'servidor reinicia com configuração persistente');
     session = (await json('/admin/login', { username: 'admin-fixture', password: 'integration-test-password' })).session;
     check((await json('/admin/config')).Animals.DamageBase === damageBefore + 1, 'alteração administrativa sobrevive ao reinício com dados substituídos');
+    await mobileReportRestartChecks({request,json,check,state:reportState});
     const mailbox = await json('/admin/mail/inbox?entity_id=mail-alice');
     check(mailbox.length === 2 && mailbox.some(m => m.AttachedItems?.length === 2), 'emails e anexos preservados após reinício');
     console.log(`PASS ${checks} verificações HTTP`);

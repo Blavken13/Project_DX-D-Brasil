@@ -109,7 +109,10 @@ public final class OriginalAuthActivity extends Activity {
 
     private void ready() {
         if (!active()) return;
-        script("PRIMAL.version('Lost Horizon · Alfa 50209');PRIMAL.rememberEmail(" +
+        String version = "Lost Horizon · Alfa";
+        try { version += " " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode; }
+        catch (Exception ignored) { }
+        script("PRIMAL.version(" + JSONObject.quote(version) + ");PRIMAL.rememberEmail(" +
             JSONObject.quote(preferences.getString("username", "")) + ");");
         String saved = preferences.getString("session", "");
         String name = null;
@@ -204,6 +207,7 @@ public final class OriginalAuthActivity extends Activity {
     private void launch(NewDawnApi.Session session) {
         if (!active() || opening) return;
         opening=true;setBusy(true);
+        MobileReports.stopForGame();
         CrashDiagnostics.stage(this,"LOGIN_VIDEO_RELEASING");
         if(web==null){openGame(session);return;}
         releasingVideo=true;
@@ -265,12 +269,20 @@ public final class OriginalAuthActivity extends Activity {
     }
 
     private void diagnostics() {
-        new AlertDialog.Builder(this).setTitle("Diagnóstico").setItems(new String[]{"Ver último fechamento","Compartilhar relatório","Salvar relatório","Modo de compatibilidade"},(dialog,index)->{
+        new AlertDialog.Builder(this).setTitle("Diagnóstico").setItems(new String[]{"Ver último fechamento","Compartilhar relatório","Salvar relatório","Modo de compatibilidade","Envio de relatórios","Reportar problema visual"},(dialog,index)->{
             if(index==0){File report=CrashDiagnostics.latest(this);TextView text=new TextView(this);text.setText(CrashDiagnostics.read(report));text.setTextIsSelectable(true);text.setPadding(20,12,20,12);
                 ScrollView scroll=new ScrollView(this);scroll.addView(text);new AlertDialog.Builder(this).setTitle("Último fechamento").setView(scroll).setPositiveButton("Fechar",null).show();}
             else if(index==1)shareReport();
             else if(index==2){savingReport=CrashDiagnostics.latest(this);Intent save=new Intent(Intent.ACTION_CREATE_DOCUMENT);save.addCategory(Intent.CATEGORY_OPENABLE);save.setType("text/plain");save.putExtra(Intent.EXTRA_TITLE,savingReport.getName());
                 try{startActivityForResult(save,61);}catch(RuntimeException error){notice("Nenhum aplicativo disponível para salvar. Use Compartilhar relatório.");}}
+            else if(index==4){MobileReports.status(this,message->ui.post(()->{
+                if(!active())return;
+                new AlertDialog.Builder(this).setTitle("Envio de relatórios").setMessage(message+"\n\nSão enviados dados do aparelho, etapas e pilhas de erro, sem conta, senha ou conversa.")
+                    .setPositiveButton(MobileReports.enabled(this)?"Desativar envio automático":"Ativar envio automático",(d,w)->MobileReports.enabled(this,!MobileReports.enabled(this)))
+                    .setNeutralButton("Tentar envio agora",(d,w)->MobileReports.retryNow(this,result->ui.post(()->{if(active())notice(result);})))
+                    .setNegativeButton("Fechar",null).show();}));}
+            else if(index==5){new AlertDialog.Builder(this).setTitle("Problema observado na última partida")
+                .setItems(new String[]{"Personagem preto","Textura não carregou","Outro problema visual"},(d,which)->MobileReports.visual(this,new String[]{"black_character","missing_texture","other_visual"}[which],result->ui.post(()->{if(active())notice(result);}))).setNegativeButton("Cancelar",null).show();}
             else {boolean[] selected={CrashDiagnostics.compatible(this),CrashDiagnostics.disableTitleVideo(this)};
                 new AlertDialog.Builder(this).setTitle("Modo de compatibilidade")
                     .setMultiChoiceItems(new String[]{"Gráficos reduzidos (30 FPS e resolução menor)","Desativar vídeo da seleção (teste de falhas)"},selected,(d,which,checked)->selected[which]=checked)
@@ -304,6 +316,7 @@ public final class OriginalAuthActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume();
+        if(!opening)MobileReports.loginVisible(this);
         immersive();
         if (web != null) {
             web.onResume();
@@ -312,6 +325,7 @@ public final class OriginalAuthActivity extends Activity {
     }
 
     @Override protected void onPause() {
+        MobileReports.pause();
         if (web != null) {
             script("(()=>{const v=document.querySelector('#background-video');if(v)v.pause();})();");
             web.onPause();

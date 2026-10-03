@@ -6,10 +6,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Durango.Online;
 
-// Gateway.Process serializes access to this store on the server loop.
+// Collector workers also validate sessions; dictionary access is synchronized.
 internal sealed class AdminAuth
 {
     private readonly string _username;
+    private readonly object _sync = new();
     private readonly byte[] _salt;
     private readonly byte[] _hash;
     private readonly int _iterations;
@@ -31,6 +32,7 @@ internal sealed class AdminAuth
 
     public bool AllowAttempt(string ip)
     {
+        lock (_sync) {
         var now = DateTimeOffset.UtcNow;
         foreach (var key in new List<string>(_attempts.Keys))
         {
@@ -46,6 +48,7 @@ internal sealed class AdminAuth
         if (attempts.Count >= 5) return false;
         attempts.Enqueue(now);
         return true;
+        }
     }
 
     public string Login(string username, string password)
@@ -55,22 +58,26 @@ internal sealed class AdminAuth
         bool valid = CryptographicOperations.FixedTimeEquals(candidate, _hash);
         CryptographicOperations.ZeroMemory(candidate);
         if (!valid || !string.Equals(username, _username, StringComparison.Ordinal)) return null;
+        lock (_sync) {
         RemoveExpired();
         if (_sessions.Count >= 128) return null;
         string token = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
         _sessions[token] = DateTimeOffset.UtcNow.AddHours(SessionHours);
         return token;
+        }
     }
 
     public bool IsValid(string token)
     {
+        lock (_sync) {
         RemoveExpired();
         return token != null && _sessions.ContainsKey(token);
+        }
     }
 
     public void Logout(string token)
     {
-        if (token != null) _sessions.Remove(token);
+        lock (_sync) { if (token != null) _sessions.Remove(token); }
     }
 
     private void RemoveExpired()

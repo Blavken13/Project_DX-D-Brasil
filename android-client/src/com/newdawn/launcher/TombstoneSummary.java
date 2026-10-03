@@ -78,7 +78,7 @@ final class TombstoneSummary {
                 file=file.substring(file.lastIndexOf('/')+1);
                 out.append('#').append(index++).append(" pc ").append(Long.toHexString(pc)).append(' ')
                     .append(clean(file)).append(' ').append(clean(function)).append('+').append(delta)
-                    .append(" build=").append(clean(build)).append('\n');
+                    .append(" build=").append(build.matches("[a-fA-F0-9]{0,128}")?build:"[redigido]").append('\n');
             }
         }
         if(out.length()==0)out.append("Tombstone sem pilha disponível.\n");

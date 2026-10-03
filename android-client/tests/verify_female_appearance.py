@@ -12,10 +12,12 @@ server = ROOT / 'Durango-CustomServer/server/assetbundles/android'
 inventory = json.loads((ROOT / 'android-client/recovered/upstream-android/inventory.json').read_text())
 index = json.loads((server / 'Info.5.2.1.json').read_text())
 catalog = {e['Name']: e for e in index['FileList']}
-manifest = inventory['female_appearance_dependencies']
+starter = '--starter-male' in sys.argv
+manifest = inventory['starter_male_dependencies' if starter else 'female_appearance_dependencies']
 recorded = {e['catalog_entry']['Name']: e for e in inventory['bundles']}
-roots = sorted(n for n in catalog if n.startswith('models$pc$female$'))
-assert roots == manifest['roots'] and len(roots) == 366
+roots = (['models$pc$male$body$m_body_beginner_leaf.fbx.bundle'] if starter else
+         sorted(n for n in catalog if n.startswith('models$pc$female$')))
+assert roots == manifest['roots'] and len(roots) == (1 if starter else 366)
 pending, closure = list(roots), set()
 while pending:
     name = pending.pop()
@@ -23,7 +25,7 @@ while pending:
         continue
     closure.add(name)
     pending.extend(catalog[name]['Dependencies'])
-assert sorted(closure) == manifest['bundles'] and len(closure) == 376
+assert sorted(closure) == manifest['bundles'] and len(closure) == (2 if starter else 376)
 
 objects, references, builtin, textures = {}, [], set(), 0
 # Models reference common shaders and lookup textures in the original preload.
@@ -94,6 +96,6 @@ for name in ('unity_builtin_extra', 'unity default resources'):
         env = UnityPy.load(str(path))
         engine_objects.update((name, obj.path_id) for obj in env.objects)
 assert builtin <= engine_objects, 'Missing engine builtin references: ' + str(builtin - engine_objects)
-assert textures >= 333
-print(f'PASS: {len(roots)} female appearances, {len(closure)} bundles plus original preload, '
+assert textures >= (1 if starter else 333)
+print(f'PASS: {len(roots)} appearances, {len(closure)} bundles plus original preload, '
       f'{textures} decoded textures, {len(references)} resolved references and {len(builtin)} engine references')

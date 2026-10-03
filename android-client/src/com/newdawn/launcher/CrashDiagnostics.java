@@ -25,15 +25,19 @@ final class CrashDiagnostics {
         String stage=read(new File(directory(app),"runtime-stage.txt"));
         String events=read(new File(directory(app),"runtime-events.txt"));
         String java=read(new File(directory(app),"java-failure.txt"));
+        String graphics=read(new File(directory(app),"graphics-info.txt"));
+        MobileReports.prepare(app,stage,events,java,graphics);
         stage(app,"LOGIN_STARTING");
         write(new File(directory(app),"runtime-events.txt"),"");
         write(new File(directory(app),"java-failure.txt"),"");
-        new Thread(() -> collect(app,stage,events,java),"LH-diagnostics").start();
+        write(new File(directory(app),"graphics-info.txt"),"");
         Thread.UncaughtExceptionHandler prior=Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler((thread,error)->{
-            failure(app,"JAVA_CRASH",error);
-            if(prior!=null)prior.uncaughtException(thread,error);
-            else {Process.killProcess(Process.myPid());System.exit(10);}
+            try { failure(app,"JAVA_CRASH",error); } catch(Throwable ignored) { }
+            finally {
+                if(prior!=null)prior.uncaughtException(thread,error);
+                else {Process.killProcess(Process.myPid());System.exit(10);}
+            }
         });
     }
     static void failure(Context context,String stage,Throwable error) {
@@ -49,6 +53,7 @@ final class CrashDiagnostics {
         write(new File(directory(context),"java-failure.txt"),text.toString());
     }
     static synchronized void snapshot(Context context) {
+        MobileReports.startupFailure(context);
         String value=header(context)+"\nInicialização interrompida com segurança; não é um encerramento confirmado pelo Android.\n"+
             "Última etapa: "+read(new File(directory(context),"runtime-stage.txt"))+
             "\nEtapas nativas:\n"+read(new File(directory(context),"runtime-events.txt"))+
@@ -73,7 +78,7 @@ final class CrashDiagnostics {
     static void compatible(Context context,boolean value) {context.getSharedPreferences("lh-compatibility",0).edit().putBoolean("enabled",value).apply();}
     static boolean disableTitleVideo(Context context) {return context.getSharedPreferences("lh-compatibility",0).getBoolean("disable-title-video",false);}
     static void disableTitleVideo(Context context,boolean value) {context.getSharedPreferences("lh-compatibility",0).edit().putBoolean("disable-title-video",value).apply();}
-    private static synchronized void collect(Context context,String previous,String events,String java) {
+    static synchronized void collect(Context context,String previous,String events,String java,String graphics) {
         if(previous.isEmpty())return;
         StringBuilder text=new StringBuilder(header(context));text.append("\nÚltima etapa da sessão anterior: ").append(previous);
         long timestamp=System.currentTimeMillis();boolean found=false;
@@ -89,19 +94,13 @@ final class CrashDiagnostics {
                     text.append("Data do encerramento: ").append(new java.util.Date(timestamp)).append("\nMotivo: ")
                         .append(reason(exit.getReason())).append(" (código ").append(exit.getReason())
                         .append(")\nSinal/status: ").append(exit.getStatus()).append("\nRAM amostrada: ").append(exit.getRss()).append(" KiB\n");
-                    if(Build.VERSION.SDK_INT>=31&&exit.getReason()==ApplicationExitInfo.REASON_CRASH_NATIVE) {
-                        try(InputStream trace=exit.getTraceInputStream()) {
-                            if(trace!=null)text.append(TombstoneSummary.read(trace));
-                            else text.append("Android não disponibilizou a pilha nativa.\n");
-                        }catch(Exception error){text.append("Pilha nativa indisponível ou formato não reconhecido.\n");}
-                    }
+                    // Structured collector reads the bounded tombstone once and writes its summary.
                     context.getSharedPreferences("lh-diagnostics",0).edit().putLong("last-exit",timestamp).apply();break;
                 }
             }catch(Exception ignored){text.append("Histórico de encerramentos indisponível neste sistema.\n");}
         }
         if(!found)text.append("Motivo não informado pelo Android; não é possível afirmar que houve crash.\n");
         if(!events.isEmpty())text.append("\nEtapas nativas anteriores:\n").append(events);
-        String graphics=read(new File(directory(context),"graphics-info.txt"));
         if(!graphics.isEmpty())text.append("\nÚltimo dispositivo gráfico observado:\n").append(graphics);
         if(!java.isEmpty())text.append("\nRegistro Java (sem mensagens):\n").append(java);
         write(new File(reports(context),"relatorio-"+timestamp+".txt"),text.toString());prune(context);

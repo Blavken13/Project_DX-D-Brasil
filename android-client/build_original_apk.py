@@ -18,7 +18,9 @@ SOURCE = PROJECT / 'Durango original'
 WORK = ROOT / 'work/original-nexon'
 CLIENT = WORK / 'client'
 DECODED = WORK / 'decoded'
-OUTPUT = 'LostHorizon-alfa.apk'
+OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa.apk')
+if Path(OUTPUT).name != OUTPUT or not OUTPUT.endswith('.apk'):
+    raise ValueError('LH_APK_OUTPUT must be an APK filename')
 ANDROID_JAR = shared.SDK / 'platforms/android-36/android.jar'
 LOGIN_FILES = {'assets/durango-br/launcher/web/' + name for name in
                ['index.html', 'mobile.js', 'logo-durango-brasil.png']}
@@ -68,7 +70,8 @@ public class UnityPlayer extends android.widget.FrameLayout {
                *(ROOT / 'src/com/newdawn/launcher' / name for name in
                  ['NewDawnApi.java', 'OriginalAuthActivity.java', 'NativeRuntime.java',
                   'CompatGameActivity.java', 'DiagnosticApplication.java',
-                  'CrashDiagnostics.java', 'ReportProvider.java', 'TombstoneSummary.java']))
+                  'CrashDiagnostics.java', 'ReportProvider.java', 'TombstoneSummary.java',
+                  'MobileReports.java', 'MobileReportQueue.java', 'MobileReportTransport.java']))
     compile_api = WORK / 'unity-compile-api.jar'
     with zipfile.ZipFile(compile_api, 'w') as archive:
         path = classes / 'com/unity3d/player/UnityPlayer.class'
@@ -99,6 +102,20 @@ public class UnityPlayer extends android.widget.FrameLayout {
     app.set(key('allowBackup'), 'false')  # The new gateway token stays private.
     app.set(key('name'), 'com.newdawn.launcher.DiagnosticApplication')
     app.set(key('pageSizeCompat'), 'enabled')
+    endpoint = os.environ.get('LH_DIAGNOSTICS_ENDPOINT', 'https://179.197.72.129/client-reports/mobile')
+    if endpoint:
+        from urllib.parse import urlparse
+        import ipaddress
+        url = urlparse(endpoint)
+        local = os.environ.get('LH_DIAGNOSTICS_LOCAL', '') == '1'
+        if url.scheme not in ['http', 'https'] or (url.scheme != 'https' and not local) or url.username or url.password or url.query or url.fragment:
+            raise ValueError('Use HTTPS, or LH_DIAGNOSTICS_LOCAL=1 for explicit local HTTP testing')
+        if url.scheme == 'http':
+            address = ipaddress.ip_address(url.hostname)
+            if not (address.is_private or address.is_loopback):
+                raise ValueError('Local HTTP diagnostics requires a private/loopback IP')
+        ET.SubElement(app, 'meta-data', {key('name'): 'lh.diagnostics.endpoint', key('value'): endpoint})
+        ET.SubElement(app, 'meta-data', {key('name'): 'lh.diagnostics.local', key('value'): str(local).lower()})
     import copy
     compatible_game = copy.deepcopy(game)
     compatible_game.set(key('name'), 'com.newdawn.launcher.CompatGameActivity')
@@ -118,8 +135,8 @@ public class UnityPlayer extends android.widget.FrameLayout {
     tree.write(manifest, encoding='utf-8', xml_declaration=True)
     yaml = DECODED / 'apktool.yml'
     text = yaml.read_text('utf-8')
-    text = re.sub(r'versionCode: \d+', 'versionCode: 50209', text)
-    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa-compat2', text)
+    text = re.sub(r'versionCode: \d+', 'versionCode: 50212', text)
+    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa-reports3', text)
     text = re.sub(r'minSdkVersion: [^\n]+', "minSdkVersion: '21'", text)
     yaml.write_text(text, 'utf-8')
     rebuilt = WORK / 'resources-rebuilt.apk'

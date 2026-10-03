@@ -378,6 +378,9 @@ public class WebServer
 		}
 	}
 
+	// Only explicitly registered diagnostics paths bypass the simulation queue.
+	public Func<HttpListenerContext, string, bool> BackgroundHandler { get; set; }
+
 	private void ListenerCallback(IAsyncResult result)
 	{
 		try
@@ -385,6 +388,7 @@ public class WebServer
 			if (_listener.IsListening)
 			{
 				HttpListenerContext item = _listener.EndGetContext(result);
+				if (BackgroundHandler?.Invoke(item, StripPrefix(item.Request.Url.AbsolutePath)) == true) return;
 					lock (_contextQueue)
 					{
 						if (_contextQueue.Count >= MaxQueuedContexts)

@@ -12,6 +12,29 @@ const mailExample = {target:'player',recipient_id:'',subject:'Sua entrega chegou
 $('mail-json').value = sessionStorage.getItem('durango-mail-draft') || JSON.stringify(mailExample,null,2);
 const titles = {overview:'Visão geral',players:'Jogadores',economy:'Economia',config:'Configurações',islands:'Ilhas',data:'Dados do jogo',actions:'Operações'};
 function notice(message, error = false) { $('notice').hidden = false; $('notice').textContent = message; $('notice').className = error ? 'error' : ''; }
+titles.reports = 'Relatórios de erros';
+let reportOffset = 0;
+async function loadReports() {
+ const filters = new URLSearchParams({offset:reportOffset,event_type:$('report-type').value,version_name:$('report-version').value.trim(),model:$('report-model').value.trim(),signature:$('report-signature').value.trim()});
+ const result = await api('/admin/client-reports?' + filters);
+ $('report-metrics').innerHTML = metric('Relatórios armazenados',fmt(result.total))+metric('Resultados filtrados',fmt(result.filtered_total))+metric('Instalações nos resultados',fmt(result.installations));
+ $('report-table').innerHTML = table(['Recebido','Ocorrido','Tipo','APK','Modelo / Android','Última etapa','Assinatura','Detalhes'], result.reports.map(r=>[
+  esc(new Date(r.received_at).toLocaleString('pt-BR')),esc(new Date(r.occurred_at).toLocaleString('pt-BR')),esc(r.event_type),esc(r.version_name),esc(`${r.manufacturer} ${r.model} / API ${r.android_api}`),esc(r.last_stage),esc(r.signature),`<button data-report-id="${esc(r.event_id)}">Abrir</button>`]));
+ $('report-groups').innerHTML = table(['Assinatura','Tipo','Ocorrências','Instalações','Modelos','Versões'],result.groups.map(g=>[esc(g.signature),esc(g.event_type),fmt(g.count),fmt(g.installations),esc(g.models.join(', ')),esc(g.versions.join(', '))]));
+ $('report-pagination').textContent = result.filtered_total ? `${fmt(reportOffset+1)}–${fmt(Math.min(reportOffset+100,result.filtered_total))} de ${fmt(result.filtered_total)}` : 'Nenhum relatório';
+ $('report-prev').disabled = reportOffset===0; $('report-next').disabled = reportOffset+100>=result.filtered_total;
+}
+async function downloadReports(format) {
+ const response = await fetch('/admin/client-reports/export?format='+format,{cache:'no-store',headers:{'X-Admin-Session':session}});
+ if(!response.ok){if(response.status===403)endSession();throw new Error(`Exportação falhou: HTTP ${response.status}.`);}
+ const url = URL.createObjectURL(await response.blob()); const link = document.createElement('a');link.href=url;link.download='relatorios-mobile-completos.'+format;link.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+function reportAction(work) {Promise.resolve().then(work).catch(error=>notice(error.message,true));}
+$('report-filter').addEventListener('click',()=>{reportOffset=0;reportAction(loadReports);});
+$('report-prev').addEventListener('click',()=>{reportOffset=Math.max(0,reportOffset-100);reportAction(loadReports);});
+$('report-next').addEventListener('click',()=>{reportOffset+=100;reportAction(loadReports);});
+for(const format of ['csv','json'])$('report-'+format).addEventListener('click',async()=>{const button=$('report-'+format);button.disabled=true;try{await downloadReports(format);}catch(error){notice(error.message,true);}finally{button.disabled=false;}});
+$('report-table').addEventListener('click',event=>{const button=event.target.closest('[data-report-id]');if(!button)return;reportAction(async()=>{const result=await api('/admin/client-reports/'+encodeURIComponent(button.dataset.reportId));$('report-detail').textContent=JSON.stringify(result,null,2);$('report-detail-card').hidden=false;$('report-detail-card').scrollIntoView({behavior:'smooth'});});});
 function endSession() {
  session = ''; sessionStorage.removeItem('durango-admin-session'); clearInterval(timer); timer = null;
  $('app').hidden = true; $('login').hidden = false; $('password').value = ''; players = []; catalog = null;
@@ -55,6 +78,7 @@ async function refresh() {
   if(target==='config')await config();
   if(target==='islands')await islands();
   if(target==='data')await loadCatalog();
+  if(target==='reports')await loadReports();
   if(target==='actions'){catalog=await api('/admin/catalog');maintenance(catalog.maintenance);await loadMailTools();}
   $('connection').textContent='● Servidor conectado';$('updated').textContent='Atualizado em '+new Date().toLocaleString('pt-BR');
  }catch(error){$('connection').textContent='● Falha na conexão';notice(error.message,true);}

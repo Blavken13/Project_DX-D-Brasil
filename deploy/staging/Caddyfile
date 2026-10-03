@@ -1,0 +1,28 @@
+{
+    admin off
+}
+
+https://{$DURANGO_PUBLIC_HOST} {
+    tls {
+        issuer acme {
+            dir https://acme-v02.api.letsencrypt.org/directory
+            profile shortlived
+        }
+    }
+    @reports {
+        path /client-reports/mobile
+        method POST
+    }
+    handle @reports {
+        request_body {
+            max_size 64KB
+        }
+        reverse_proxy durango-server:8190
+    }
+    handle /status {
+        reverse_proxy durango-server:8190
+    }
+    handle {
+        respond 404
+    }
+}
