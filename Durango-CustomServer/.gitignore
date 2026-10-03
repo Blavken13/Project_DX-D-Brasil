@@ -24,6 +24,7 @@ test-shots/
 *.pid
 launcher.session
 saves/
+server/data/admin-auth.json
 
 # ไฟล์ของเครื่อง/เอดิเตอร์
 .vs/

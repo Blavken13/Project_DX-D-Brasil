@@ -21,7 +21,7 @@ namespace Durango.Online;
 //  2) /sessions: ต้นฉบับรับเฉพาะฟิลด์ "player" (LAN joiner) — เพิ่ม session token + สล็อตผู้เล่น
 //     ให้รองรับคนหลายคนโดยคงรูปร่าง response ต้นฉบับ (user_id + session_token)
 //  3) /entry: frontend_addresses ใช้ host จาก --public-host หรือ Host header (ต้นฉบับ: 127.0.0.1 คงที่)
-public class Gateway
+public partial class Gateway
 {
     public const int DefaultPort = 8190;
 
@@ -101,6 +101,7 @@ public class Gateway
 
     private void RegisterRoutes()
     {
+        RegisterAdminRoutes();
         _webServer.GetRoute["/knock"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
             string platform = PlatformKey(request.QueryString.Get("platform"));
@@ -858,7 +859,7 @@ public class Gateway
                     new JObject { ["error"] = "JSON inválido: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
             }
             string path = Path.Combine(DataDir ?? Json.DataDir, "config.json");
-            File.WriteAllText(path, json);
+            AdminConfigStore.Write(DataDir ?? Json.DataDir, path, json);
             Console.WriteLine("[admin] config.json ถูกอัปเดตแล้ว");
             return new WebServer.JsonResponse(new JObject { ["saved"] = true }.ToString());
         };
@@ -897,7 +898,7 @@ public class Gateway
                     new JObject { ["error"] = "JSON inválido: " + e.Message }.ToString(), HttpStatusCode.BadRequest);
             }
             string path = Path.Combine(DataDir ?? Json.DataDir, "islands.json");
-            File.WriteAllText(path, json);
+            AdminConfigStore.Write(DataDir ?? Json.DataDir, path, json);
             Console.WriteLine("[admin] islands.json ถูกอัปเดตแล้ว");
             return new WebServer.JsonResponse(new JObject { ["saved"] = true }.ToString());
         };
@@ -928,7 +929,7 @@ public class Gateway
             if (string.IsNullOrEmpty(entries))
                 return new WebServer.JsonResponse(new JObject { ["error"] = "O campo entries é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             string path = Path.Combine(DataDir ?? Json.DataDir, "whitelist.txt");
-            File.WriteAllText(path, "# Lista de acesso ao servidor (ID ou nome do personagem, um por linha)\n" + entries);
+            AdminConfigStore.Write(DataDir ?? Json.DataDir, path, "# Lista de acesso ao servidor (ID ou nome do personagem, um por linha)\n" + entries);
             Console.WriteLine("[admin] whitelist.txt ถูกอัปเดตแล้ว");
             return new WebServer.JsonResponse(new JObject { ["saved"] = true }.ToString());
         };
@@ -941,7 +942,7 @@ public class Gateway
             if (string.IsNullOrEmpty(islandId))
                 return new WebServer.JsonResponse(new JObject { ["error"] = "O parâmetro ?id= é obrigatório." }.ToString(), HttpStatusCode.BadRequest);
             // กัน path traversal
-            if (islandId.Contains("..") || islandId.Contains('/') || islandId.Contains('\\'))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(islandId, "^[A-Za-z0-9_-]+$"))
                 return new WebServer.BadRequestResponse();
             string path = Path.Combine(DataDir ?? Json.DataDir, "islands", islandId, "config.json");
             if (!File.Exists(path))
@@ -957,7 +958,7 @@ public class Gateway
             string json = postData.Get("json");
             if (string.IsNullOrEmpty(islandId) || string.IsNullOrEmpty(json))
                 return new WebServer.JsonResponse(new JObject { ["error"] = "Os campos id e json são obrigatórios." }.ToString(), HttpStatusCode.BadRequest);
-            if (islandId.Contains("..") || islandId.Contains('/') || islandId.Contains('\\'))
+            if (!System.Text.RegularExpressions.Regex.IsMatch(islandId, "^[A-Za-z0-9_-]+$"))
                 return new WebServer.BadRequestResponse();
             try { JObject.Parse(json); }
             catch (Exception e)
@@ -968,7 +969,7 @@ public class Gateway
             string dir = Path.Combine(DataDir ?? Json.DataDir, "islands", islandId);
             Directory.CreateDirectory(dir);
             string path = Path.Combine(dir, "config.json");
-            File.WriteAllText(path, json);
+            AdminConfigStore.Write(DataDir ?? Json.DataDir, path, json);
             Console.WriteLine($"[admin] islands/{islandId}/config.json ถูกอัปเดตแล้ว");
             return new WebServer.JsonResponse(new JObject { ["saved"] = true }.ToString());
         };
@@ -1194,28 +1195,13 @@ public class Gateway
     /// </summary>
     private bool IsAdminAllowed(HttpListenerRequest request)
     {
-        string want = AdminToken;
-        if (string.IsNullOrEmpty(want))
-        {
-            IPAddress from = request?.RemoteEndPoint?.Address;
-            return from != null && IPAddress.IsLoopback(from);
-        }
-        string got = request?.Headers?["X-Admin-Token"];
-        if (string.IsNullOrEmpty(got))
-        {
-            // fallback ชั่วคราวสำหรับเครื่องมือเก่าที่ยังส่ง ?token=
-            got = request?.QueryString?["token"];
-        }
-        if (string.IsNullOrEmpty(got) || got.Length != want.Length)
-        {
-            return false;
-        }
-        int diff = 0;
-        for (int i = 0; i < want.Length; i++)
-        {
-            diff |= got[i] ^ want[i];
-        }
-        return diff == 0;
+        if (request == null || !SameAdminOrigin(request)) return false;
+        if (_adminAuth?.IsValid(request.Headers["X-Admin-Session"]) == true) return true;
+        // Explicit legacy automation token; no implicit loopback access or URL passwords.
+        string got = request.Headers["X-Admin-Token"];
+        if (string.IsNullOrEmpty(AdminToken) || string.IsNullOrEmpty(got)) return false;
+        return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(
+            System.Text.Encoding.UTF8.GetBytes(AdminToken), System.Text.Encoding.UTF8.GetBytes(got));
     }
 
     /// <summary>
@@ -1396,7 +1382,7 @@ public class Gateway
         // ══ Admin Web UI — เสิร์ฟไฟล์จาก server/admin/ ═══════════════════════════════════════════
         // /admin/ → index.html, /admin/style.css → CSS, /admin/app.js → JS
         // ต้องเปิด admin token ถึงจะเข้าได้ (กันคนนอกเห็นหน้าจัดการเซิร์ฟ)
-        if (url.StartsWith("/admin", StringComparison.OrdinalIgnoreCase))
+        if (url.Split('?')[0] == "/admin" || url.StartsWith("/admin/", StringComparison.OrdinalIgnoreCase))
         {
             string adminDir = Path.Combine(AppContext.BaseDirectory, "admin");
             // ถ้าไม่มีโฟลเดอร์ admin ข้าง executable ให้ลองหาใน DataDir

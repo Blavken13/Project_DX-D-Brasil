@@ -30,7 +30,10 @@ public class PlayerContext
     public Durango.Logic.Clusters.PlayerInfo PlayerInfo;
 
     [JsonProperty("inventory_items")]
-    public List<Item> InventoryItems;
+    public List<Item> InventoryItems;
+
+    [JsonProperty("mail_sequence")]
+    public long MailSequence;
 
     [JsonProperty("equipped_items")]
     public Dictionary<string, string> EquippedItems;

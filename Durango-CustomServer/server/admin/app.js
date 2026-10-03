@@ -1,750 +1,132 @@
-/* ══ Durango LastHuman Admin Tool — app.js ═══════════════════════════════════════ */
-
-(function () {
-    'use strict';
-
-    // ── State ──────────────────────────────────────────────────────────────────
-    let serverUrl = '';
-    let adminToken = '';
-    let configData = null;
-    let configMeta = null;
-    let islandsData = null;
-    let refreshTimer = null;
-
-    // ── DOM Refs ───────────────────────────────────────────────────────────────
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
-
-    // Auto-detect server URL จากหน้าเว็บปัจจุบัน
-    $('#server-url').value = window.location.origin;
-
-    // ── API Helper ─────────────────────────────────────────────────────────────
-    async function api(method, path, body) {
-        const url = serverUrl + path;
-        const headers = { 'X-Admin-Token': adminToken };
-        const opts = { method, headers };
-        if (body) {
-            if (typeof body === 'string') {
-                headers['Content-Type'] = 'application/x-www-form-urlencoded';
-                opts.body = body;
-            } else {
-                headers['Content-Type'] = 'application/x-www-form-urlencoded';
-                const params = new URLSearchParams();
-                for (const [k, v] of Object.entries(body)) {
-                    params.append(k, v);
-                }
-                opts.body = params.toString();
-            }
-        }
-        const resp = await fetch(url, opts);
-        const text = await resp.text();
-        try { return JSON.parse(text); } catch { return { _raw: text }; }
-    }
-
-    // ── Login ──────────────────────────────────────────────────────────────────
-    $('#login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        serverUrl = $('#server-url').value.replace(/\/+$/, '');
-        adminToken = $('#admin-token').value;
-        $('#login-error').textContent = '';
-        try {
-            const health = await api('GET', '/health');
-            if (health.error || health._raw?.includes('403')) {
-                $('#login-error').textContent = 'Token ไม่ถูกต้องหรือเซิร์ฟไม่ตอบ';
-                return;
-            }
-            $('#login-screen').classList.remove('active');
-            $('#app-screen').classList.add('active');
-            loadDashboard();
-        } catch (err) {
-            $('#login-error').textContent = 'เชื่อมต่อเซิร์ฟไม่ได้: ' + err.message;
-        }
-    });
-
-    // ── Navigation ─────────────────────────────────────────────────────────────
-    $$('.nav-item').forEach((item) => {
-        item.addEventListener('click', () => {
-            $$('.nav-item').forEach((n) => n.classList.remove('active'));
-            $$('.page').forEach((p) => p.classList.remove('active'));
-            item.classList.add('active');
-            const page = item.dataset.page;
-            $(`#page-${page}`).classList.add('active');
-            if (page === 'dashboard') loadDashboard();
-            else if (page === 'config') loadConfig();
-            else if (page === 'features') loadConfig();
-            else if (page === 'islands') loadIslands();
-            else if (page === 'players') loadOnlinePlayers();
-            else if (page === 'economy') loadEconomy();
-            else if (page === 'actions') { /* static */ }
-        });
-    });
-
-    // ══ เศรษฐกิจ — เฝ้าเงินเฟ้อ ═════════════════════════════════════════════════
-    // เซิร์ฟใช้สกุลเดียวคือ T Stone (server/Core/Player.Wallet.cs)
-    // ตัวเลข ณ จุดเดียวบอกอะไรไม่ได้ ต้องดูส่วนต่างตามเวลา ⇒ จำค่าครั้งก่อนไว้เทียบให้
-    let lastEconomy = null;
-
-    const fmt = (n) => Number(n || 0).toLocaleString('th-TH');
-
-    async function loadEconomy() {
-        const box = $('#eco-top');
-        try {
-            const d = await api('GET', '/admin/economy');
-            $('#eco-total').textContent = fmt(d.total_tstone);
-            $('#eco-chars').textContent = fmt(d.character_count);
-            $('#eco-holders').textContent = fmt(d.holder_count);
-            $('#eco-avg').textContent = fmt(d.average);
-            $('#eco-median').textContent = fmt(d.median);
-            $('#eco-max').textContent = fmt(d.max);
-
-            // ส่วนต่างจากครั้งก่อน — บวกเร็วกว่าจำนวนคนโต = ก๊อกแรงกว่าท่อระบาย
-            const now = Date.now();
-            if (lastEconomy) {
-                const dt = Math.max(1, (now - lastEconomy.at) / 1000);
-                const dTotal = d.total_tstone - lastEconomy.total;
-                const dChars = d.character_count - lastEconomy.chars;
-                const perHour = Math.round((dTotal / dt) * 3600);
-                const cls = dTotal > 0 ? 'error-text' : '';
-                $('#eco-delta').innerHTML =
-                    '<div class="' + cls + '">' +
-                    'เงินรวมเปลี่ยน <b>' + (dTotal >= 0 ? '+' : '') + fmt(dTotal) + '</b> ' +
-                    'ใน ' + Math.round(dt) + ' วินาที (≈ ' + (perHour >= 0 ? '+' : '') + fmt(perHour) + ' /ชม.)<br>' +
-                    'ตัวละครเปลี่ยน ' + (dChars >= 0 ? '+' : '') + fmt(dChars) +
-                    '</div>';
-            }
-            lastEconomy = { at: now, total: d.total_tstone, chars: d.character_count };
-
-            const b = d.buckets || {};
-            $('#eco-buckets').innerHTML = '<table class="data-table"><thead><tr><th>ช่วงยอดเงิน</th><th>จำนวนคน</th></tr></thead><tbody>' +
-                Object.keys(b).map((k) => '<tr><td>' + k + '</td><td>' + fmt(b[k]) + '</td></tr>').join('') +
-                '</tbody></table>';
-
-            const rows = d.top || [];
-            box.innerHTML = rows.length === 0
-                ? 'ยังไม่มีตัวละครที่มีเงิน'
-                : '<table class="data-table"><thead><tr><th>ชื่อ</th><th>T Stone</th><th>ออนไลน์</th></tr></thead><tbody>' +
-                  rows.map((r) => '<tr><td>' + esc(r.name || r.entity_id) + '</td><td>' + fmt(r.t_stone) + '</td><td>' +
-                                  (r.online ? '●' : '') + '</td></tr>').join('') +
-                  '</tbody></table>';
-        } catch (e) {
-            box.textContent = 'โหลดไม่สำเร็จ: ' + e.message;
-        }
-    }
-
-    $('#btn-refresh-economy').addEventListener('click', loadEconomy);
-
-    // ── Logout ─────────────────────────────────────────────────────────────────
-    $('#btn-logout').addEventListener('click', () => {
-        clearInterval(refreshTimer);
-        $('#app-screen').classList.remove('active');
-        $('#login-screen').classList.add('active');
-        serverUrl = '';
-        adminToken = '';
-    });
-
-    // ══ Dashboard ══════════════════════════════════════════════════════════════
-
-    async function loadDashboard() {
-        try {
-            const [health, who] = await Promise.all([
-                api('GET', '/health'),
-                api('GET', '/admin/who')
-            ]);
-
-            if (health.error) {
-                $('#stat-players').textContent = '⚠️';
-                return;
-            }
-
-            // Stats
-            $('#stat-players').textContent = health.players_online ?? '—';
-            $('#stat-max-players').textContent = health.max_players ?? '—';
-            $('#stat-uptime').textContent = formatUptime(health.uptime_sec);
-            $('#stat-tick').textContent = health.tick_ms ? `${health.tick_ms.p50?.toFixed(1)}ms` : '—';
-            $('#stat-worlds').textContent = health.worlds_loaded ?? '—';
-            $('#stat-save').textContent = health.last_save_ago_sec != null ? `${Math.round(health.last_save_ago_sec)}s ago` : '—';
-            $('#stat-save-fail').textContent = health.save_failures ?? '0';
-            $('#stat-errors').textContent = health.loop_errors ?? '0';
-
-            // Online players
-            const players = who.players || who;
-            if (Array.isArray(players) && players.length > 0) {
-                let html = '<table><tr><th>Name</th><th>Entity ID</th><th>Level</th><th>Region</th></tr>';
-                for (const p of players) {
-                    html += `<tr><td>${esc(p.name || p.Name || '—')}</td><td><code>${esc(p.entity_id || p.EntityId || '—')}</code></td><td>${p.level || p.Level || '—'}</td><td>${esc(p.region || p.Region || '—')}</td></tr>`;
-                }
-                html += '</table>';
-                $('#online-players-list').innerHTML = html;
-            } else {
-                $('#online-players-list').innerHTML = '<div class="empty-state"><div class="icon">👤</div>ไม่มีผู้เล่นออนไลน์</div>';
-            }
-
-            // Unhandled packets
-            const unhandled = health.unhandled_packet_types || {};
-            const keys = Object.keys(unhandled);
-            if (keys.length > 0) {
-                let html = '<table><tr><th>TypeCode</th><th>Count</th></tr>';
-                for (const k of keys.sort((a, b) => unhandled[b] - unhandled[a])) {
-                    html += `<tr><td>${k}</td><td>${unhandled[k]}</td></tr>`;
-                }
-                html += '</table>';
-                $('#unhandled-packets').innerHTML = html;
-            } else {
-                $('#unhandled-packets').textContent = 'ไม่มี — ทุก packet type มี handler แล้ว ✓';
-            }
-        } catch (err) {
-            console.error('Dashboard load error:', err);
-        }
-    }
-
-    // Auto-refresh dashboard
-    refreshTimer = setInterval(() => {
-        if ($('#page-dashboard').classList.contains('active')) loadDashboard();
-    }, 5000);
-
-    // ══ Config Editor ═══════════════════════════════════════════════════════════
-
-    async function loadConfig() {
-        try {
-            const [cfg, meta] = await Promise.all([
-                api('GET', '/admin/config'),
-                api('GET', '/admin/config/meta')
-            ]);
-            if (cfg.error) { alert('ไม่สามารถโหลด config: ' + cfg.error); return; }
-            configData = cfg;
-            configMeta = meta.error ? null : meta;
-            renderConfigEditor();
-            renderFeatureToggles();
-        } catch (err) {
-            console.error('Config load error:', err);
-        }
-    }
-
-    function renderConfigEditor() {
-        if (!configData) return;
-        const container = $('#config-sections');
-        container.innerHTML = '';
-
-        const skipSections = ['Features', 'Spawn', 'Zones', 'Starter'];
-
-        for (const [section, data] of Object.entries(configData)) {
-            if (skipSections.includes(section)) continue;
-
-            const div = document.createElement('div');
-            div.className = 'config-section';
-
-            const header = document.createElement('div');
-            header.className = 'config-section-header';
-            header.innerHTML = `<span>▸ ${esc(section)}</span><span class="arrow">▸</span>`;
-            header.addEventListener('click', () => div.classList.toggle('open'));
-            div.appendChild(header);
-
-            const body = document.createElement('div');
-            body.className = 'config-section-body';
-
-            if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-                for (const [key, value] of Object.entries(data)) {
-                    body.appendChild(createConfigField(section, key, value, configMeta?.[section]?.[key]));
-                }
-            } else if (Array.isArray(data)) {
-                const ta = document.createElement('textarea');
-                ta.className = 'code-editor';
-                ta.rows = Math.min(8, data.length + 2);
-                ta.value = JSON.stringify(data, null, 2);
-                ta.dataset.section = section;
-                ta.dataset.key = '__array__';
-                ta.addEventListener('change', () => {
-                    try {
-                        configData[section] = JSON.parse(ta.value);
-                    } catch (e) {
-                        alert('JSON ผิดรูปแบบ: ' + e.message);
-                    }
-                });
-                body.appendChild(ta);
-            } else {
-                body.appendChild(createConfigField(section, section, data, configMeta?.[section]));
-            }
-
-            div.appendChild(body);
-            container.appendChild(div);
-        }
-
-        // Spawn section
-        if (configData.Spawn) {
-            const div = document.createElement('div');
-            div.className = 'config-section';
-            div.innerHTML = `<div class="config-section-header"><span>▸ Spawn (สัตว์)</span><span class="arrow">▸</span></div>`;
-            div.querySelector('.config-section-header').addEventListener('click', () => div.classList.toggle('open'));
-            const body = document.createElement('div');
-            body.className = 'config-section-body';
-            const ta = document.createElement('textarea');
-            ta.className = 'code-editor';
-            ta.rows = 12;
-            ta.value = JSON.stringify(configData.Spawn, null, 2);
-            ta.addEventListener('change', () => {
-                try { configData.Spawn = JSON.parse(ta.value); } catch (e) { alert('JSON ผิดรูปแบบ: ' + e.message); }
-            });
-            body.appendChild(ta);
-            div.appendChild(body);
-            container.appendChild(div);
-        }
-
-        // Zones section
-        if (configData.Zones) {
-            const div = document.createElement('div');
-            div.className = 'config-section';
-            div.innerHTML = `<div class="config-section-header"><span>▸ Zones</span><span class="arrow">▸</span></div>`;
-            div.querySelector('.config-section-header').addEventListener('click', () => div.classList.toggle('open'));
-            const body = document.createElement('div');
-            body.className = 'config-section-body';
-            const ta = document.createElement('textarea');
-            ta.className = 'code-editor';
-            ta.rows = 10;
-            ta.value = JSON.stringify(configData.Zones, null, 2);
-            ta.addEventListener('change', () => {
-                try { configData.Zones = JSON.parse(ta.value); } catch (e) { alert('JSON ผิดรูปแบบ: ' + e.message); }
-            });
-            body.appendChild(ta);
-            div.appendChild(body);
-            container.appendChild(div);
-        }
-
-        // Starter section
-        if (configData.Starter) {
-            const div = document.createElement('div');
-            div.className = 'config-section';
-            div.innerHTML = `<div class="config-section-header"><span>▸ Starter (ของเริ่มต้น)</span><span class="arrow">▸</span></div>`;
-            div.querySelector('.config-section-header').addEventListener('click', () => div.classList.toggle('open'));
-            const body = document.createElement('div');
-            body.className = 'config-section-body';
-            const ta = document.createElement('textarea');
-            ta.className = 'code-editor';
-            ta.rows = 10;
-            ta.value = JSON.stringify(configData.Starter, null, 2);
-            ta.addEventListener('change', () => {
-                try { configData.Starter = JSON.parse(ta.value); } catch (e) { alert('JSON ผิดรูปแบบ: ' + e.message); }
-            });
-            body.appendChild(ta);
-            div.appendChild(body);
-            container.appendChild(div);
-        }
-    }
-
-    function createConfigField(section, key, value, meta) {
-        const row = document.createElement('div');
-        row.className = 'config-field';
-
-        const labelDiv = document.createElement('div');
-        labelDiv.innerHTML = `<div class="config-field-label">${esc(key)}</div>`;
-        if (meta?.d) {
-            labelDiv.innerHTML += `<div class="config-field-desc">${esc(meta.d)}</div>`;
-        }
-        row.appendChild(labelDiv);
-
-        const inputDiv = document.createElement('div');
-        const input = document.createElement('input');
-
-        if (typeof value === 'boolean') {
-            input.type = 'checkbox';
-            input.checked = value;
-            input.dataset.section = section;
-            input.dataset.key = key;
-            input.dataset.type = 'bool';
-            input.addEventListener('change', () => {
-                configData[section][key] = input.checked;
-            });
-        } else if (typeof value === 'number') {
-            input.type = Number.isInteger(value) ? 'number' : 'number';
-            input.step = Number.isInteger(value) ? '1' : 'any';
-            input.value = value;
-            input.dataset.section = section;
-            input.dataset.key = key;
-            input.dataset.type = 'number';
-            input.addEventListener('change', () => {
-                configData[section][key] = Number(input.value);
-            });
-        } else {
-            input.type = 'text';
-            input.value = value ?? '';
-            input.dataset.section = section;
-            input.dataset.key = key;
-            input.dataset.type = 'string';
-            input.addEventListener('change', () => {
-                configData[section][key] = input.value;
-            });
-        }
-
-        inputDiv.appendChild(input);
-        row.appendChild(inputDiv);
-        return row;
-    }
-
-    // Save Config
-    $('#btn-save-config').addEventListener('click', async () => {
-        const status = $('#config-status');
-        status.textContent = 'กำลังบันทึก...';
-        status.className = 'status-text';
-        try {
-            const result = await api('POST', '/admin/config', { json: JSON.stringify(configData, null, 2) });
-            if (result.saved) {
-                status.textContent = '✓ บันทึกสำเร็จ';
-                status.className = 'status-text success';
-            } else {
-                status.textContent = '❌ ' + (result.error || 'ไม่ทราบสาเหตุ');
-                status.className = 'status-text error';
-            }
-        } catch (err) {
-            status.textContent = '❌ ' + err.message;
-            status.className = 'status-text error';
-        }
-    });
-
-    // Reload Config
-    $('#btn-reload-config').addEventListener('click', async () => {
-        await loadConfig();
-        $('#config-status').textContent = '✓ Reloaded';
-        $('#config-status').className = 'status-text success';
-    });
-
-    // ══ Feature Toggles ════════════════════════════════════════════════════════
-
-    function renderFeatureToggles() {
-        if (!configData?.Features) return;
-        const grid = $('#features-grid');
-        grid.innerHTML = '';
-
-        for (const [key, value] of Object.entries(configData.Features)) {
-            const item = document.createElement('div');
-            item.className = 'feature-toggle';
-
-            const label = document.createElement('label');
-            label.textContent = key;
-
-            const switchDiv = document.createElement('label');
-            switchDiv.className = 'toggle-switch';
-
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.checked = !!value;
-            input.addEventListener('change', () => {
-                configData.Features[key] = input.checked;
-            });
-
-            const slider = document.createElement('span');
-            slider.className = 'toggle-slider';
-
-            switchDiv.appendChild(input);
-            switchDiv.appendChild(slider);
-            item.appendChild(label);
-            item.appendChild(switchDiv);
-            grid.appendChild(item);
-        }
-    }
-
-    // Save Features
-    $('#btn-save-features').addEventListener('click', async () => {
-        const status = $('#features-status');
-        status.textContent = 'กำลังบันทึก...';
-        status.className = 'status-text';
-        try {
-            const result = await api('POST', '/admin/config', { json: JSON.stringify(configData, null, 2) });
-            if (result.saved) {
-                status.textContent = '✓ บันทึกสำเร็จ';
-                status.className = 'status-text success';
-            } else {
-                status.textContent = '❌ ' + (result.error || 'ไม่ทราบสาเหตุ');
-                status.className = 'status-text error';
-            }
-        } catch (err) {
-            status.textContent = '❌ ' + err.message;
-            status.className = 'status-text error';
-        }
-    });
-
-    // ══ Islands ═════════════════════════════════════════════════════════════════
-
-    async function loadIslands() {
-        try {
-            const data = await api('GET', '/admin/islands');
-            if (data.error) { alert(data.error); return; }
-            islandsData = data;
-            renderIslands();
-        } catch (err) {
-            console.error('Islands load error:', err);
-        }
-    }
-
-    function renderIslands() {
-        if (!islandsData) return;
-        const list = $('#islands-list');
-        list.innerHTML = '';
-
-        const islands = islandsData.Islands || [];
-        for (const island of islands) {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <h3>🏝️ ${esc(island.Name)} <code style="color:var(--text-dim);font-size:0.8em;">${esc(island.Id)}</code></h3>
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:12px;">
-                    <div><label class="config-field-label">Name</label><input type="text" data-field="Name" value="${esc(island.Name)}"></div>
-                    <div><label class="config-field-label">Terrain</label><input type="text" data-field="Terrain" value="${esc(island.Terrain)}"></div>
-                    <div><label class="config-field-label">Min Level</label><input type="number" data-field="MinLevel" value="${island.MinLevel}"></div>
-                    <div><label class="config-field-label">Max Level</label><input type="number" data-field="MaxLevel" value="${island.MaxLevel}"></div>
-                    <div><label class="config-field-label">Required Level</label><input type="number" data-field="RequiredLevel" value="${island.RequiredLevel}"></div>
-                    <div><label class="config-field-label">Host</label><input type="text" data-field="Host" value="${esc(island.Host)}"></div>
-                    <div><label class="config-field-label">Gateway Port</label><input type="number" data-field="GatewayPort" value="${island.GatewayPort}"></div>
-                    <div><label class="config-field-label">Game Port</label><input type="number" data-field="GamePort" value="${island.GamePort}"></div>
-                </div>
-            `;
-
-            // Bind input changes
-            card.querySelectorAll('input').forEach((input) => {
-                input.addEventListener('change', () => {
-                    const field = input.dataset.field;
-                    const val = input.type === 'number' ? Number(input.value) : input.value;
-                    island[field] = val;
-                });
-            });
-
-            list.appendChild(card);
-        }
-    }
-
-    // Save Islands
-    $('#btn-save-islands').addEventListener('click', async () => {
-        const status = $('#islands-status');
-        status.textContent = 'กำลังบันทึก...';
-        status.className = 'status-text';
-        try {
-            const result = await api('POST', '/admin/islands', { json: JSON.stringify(islandsData, null, 2) });
-            if (result.saved) {
-                status.textContent = '✓ บันทึกสำเร็จ';
-                status.className = 'status-text success';
-            } else {
-                status.textContent = '❌ ' + (result.error || 'ไม่ทราบสาเหตุ');
-                status.className = 'status-text error';
-            }
-        } catch (err) {
-            status.textContent = '❌ ' + err.message;
-            status.className = 'status-text error';
-        }
-    });
-
-    // Reload Islands
-    $('#btn-reload-islands').addEventListener('click', loadIslands);
-
-    // ══ Players ═════════════════════════════════════════════════════════════════
-
-    // Tabs
-    $$('.tab-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-            $$('.tab-btn').forEach((b) => b.classList.remove('active'));
-            $$('.tab-content').forEach((c) => c.classList.remove('active'));
-            btn.classList.add('active');
-            $(`#tab-${btn.dataset.tab}`).classList.add('active');
-            if (btn.dataset.tab === 'online') loadOnlinePlayers();
-            else if (btn.dataset.tab === 'whitelist') loadWhitelist();
-            else if (btn.dataset.tab === 'bans') loadBans();
-        });
-    });
-
-    async function loadOnlinePlayers() {
-        try {
-            const data = await api('GET', '/admin/who');
-            const players = data.players || data;
-            const container = $('#online-table');
-
-            if (Array.isArray(players) && players.length > 0) {
-                let html = '<table><tr><th>Name</th><th>Entity ID</th><th>Level</th><th>Region</th><th>Actions</th></tr>';
-                for (const p of players) {
-                    const eid = p.entity_id || p.EntityId || '';
-                    const name = p.name || p.Name || '—';
-                    html += `<tr>
-                        <td>${esc(name)}</td>
-                        <td><code style="font-size:0.8em;">${esc(eid)}</code></td>
-                        <td>${p.level || p.Level || '—'}</td>
-                        <td>${esc(p.region || p.Region || '—')}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" onclick='window._kick(${jsLiteral(eid)},${jsLiteral(name)})'>เตะ</button>
-                            <button class="btn btn-danger btn-sm" onclick='window._ban(${jsLiteral(eid)},${jsLiteral(name)})'>แบน</button>
-                        </td>
-                    </tr>`;
-                }
-                html += '</table>';
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = '<div class="empty-state"><div class="icon">👤</div>ไม่มีผู้เล่นออนไลน์</div>';
-            }
-        } catch (err) {
-            console.error('Load online error:', err);
-        }
-    }
-
-    // Kick/Ban global functions
-    window._kick = async (entityId, name) => {
-        if (!confirm(`เตะ ${name} (${entityId})?`)) return;
-        const result = await api('POST', '/admin/kick', { entity_id: entityId, reason: 'เตะโดยผู้ดูแล' });
-        alert(result.kicked ? 'เตะสำเร็จ' : 'เตะไม่สำเร็จ');
-        loadOnlinePlayers();
-    };
-
-    window._ban = async (entityId, name) => {
-        if (!confirm(`แบน ${name} (${entityId})? ผู้เล่นจะถูกเตะออกทันที`)) return;
-        const reason = prompt('เหตุผลที่แบน:', 'ถูกแบนโดยผู้ดูแล') || 'ถูกแบนโดยผู้ดูแล';
-        const result = await api('POST', '/admin/ban', { entity_id: entityId, reason });
-        alert(result.banned ? 'แบนสำเร็จ' : 'แบนไม่สำเร็จ: ' + (result.error || ''));
-        loadOnlinePlayers();
-    };
-
-    // Refresh
-    $('#btn-refresh-online').addEventListener('click', loadOnlinePlayers);
-
-    // Whitelist
-    async function loadWhitelist() {
-        try {
-            const data = await api('GET', '/admin/whitelist');
-            if (data.entries) {
-                $('#whitelist-editor').value = data.entries.join('\n');
-            }
-        } catch (err) {
-            console.error('Load whitelist error:', err);
-        }
-    }
-
-    $('#btn-save-whitelist').addEventListener('click', async () => {
-        const status = $('#whitelist-status');
-        const entries = $('#whitelist-editor').value;
-        status.textContent = 'กำลังบันทึก...';
-        status.className = 'status-text';
-        try {
-            const result = await api('POST', '/admin/whitelist', { entries });
-            if (result.saved) {
-                status.textContent = '✓ บันทึกสำเร็จ';
-                status.className = 'status-text success';
-            } else {
-                status.textContent = '❌ ' + (result.error || '');
-                status.className = 'status-text error';
-            }
-        } catch (err) {
-            status.textContent = '❌ ' + err.message;
-            status.className = 'status-text error';
-        }
-    });
-
-    // Bans
-    async function loadBans() {
-        try {
-            const data = await api('GET', '/admin/bans');
-            const container = $('#bans-list');
-            const bans = data.bans || data;
-
-            if (Array.isArray(bans) && bans.length > 0) {
-                let html = '<table><tr><th>Account Key</th><th>Reason</th><th>Date</th></tr>';
-                for (const b of bans) {
-                    html += `<tr><td><code>${esc(b.key || b.Key || '—')}</code></td><td>${esc(b.reason || b.Reason || '—')}</td><td>${esc(b.date || b.Date || '—')}</td></tr>`;
-                }
-                html += '</table>';
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = '<div class="empty-state"><div class="icon">✅</div>ไม่มีผู้เล่นที่ถูกแบน</div>';
-            }
-        } catch (err) {
-            console.error('Load bans error:', err);
-        }
-    }
-
-    // ══ Game Data Browser ═══════════════════════════════════════════════════════
-
-    $('#btn-load-data').addEventListener('click', async () => {
-        const select = $('#data-select');
-        const asset = select.value;
-        if (!asset) return;
-
-        const viewer = $('#data-viewer');
-        viewer.style.display = 'block';
-        viewer.textContent = 'กำลังโหลด...';
-
-        try {
-            const data = await api('GET', `/assets/${asset}`);
-            if (data._raw) {
-                viewer.textContent = data._raw;
-            } else {
-                viewer.textContent = JSON.stringify(data, null, 2);
-            }
-        } catch (err) {
-            viewer.textContent = 'Error: ' + err.message;
-        }
-    });
-
-    // ══ Server Actions ══════════════════════════════════════════════════════════
-
-    // Announce
-    $('#btn-announce').addEventListener('click', async () => {
-        const text = $('#announce-text').value.trim();
-        if (!text) { alert('กรุณาใส่ข้อความ'); return; }
-        const result = await api('POST', '/admin/announce', { text });
-        const el = $('#announce-result');
-        if (result.sent != null) {
-            el.textContent = `✓ ส่งสำเร็จถึง ${result.sent} คน`;
-            el.className = 'result-text success';
-        } else {
-            el.textContent = '❌ ' + (result.error || 'ไม่ทราบสาเหตุ');
-            el.className = 'result-text error';
-        }
-    });
-
-    // Maintenance
-    $('#btn-maintenance-on').addEventListener('click', async () => {
-        const result = await api('POST', '/admin/maintenance', { on: '1' });
-        const el = $('#maintenance-result');
-        el.textContent = result.maintenance ? '✓ เปิด Maintenance Mode แล้ว' : '❌ ' + (result.error || '');
-        el.className = result.maintenance ? 'result-text success' : 'result-text error';
-    });
-
-    $('#btn-maintenance-off').addEventListener('click', async () => {
-        const result = await api('POST', '/admin/maintenance', { on: '0' });
-        const el = $('#maintenance-result');
-        el.textContent = !result.maintenance ? '✓ ปิด Maintenance Mode แล้ว' : '❌ ' + (result.error || '');
-        el.className = !result.maintenance ? 'result-text success' : 'result-text error';
-    });
-
-    // Reload
-    $('#btn-reload-server').addEventListener('click', async () => {
-        const el = $('#reload-result');
-        el.textContent = 'กำลัง reload...';
-        el.className = 'result-text';
-        try {
-            const result = await api('POST', '/admin/reload');
-            if (result.reloaded) {
-                el.textContent = '✓ Reload สำเร็จ';
-                el.className = 'result-text success';
-            } else {
-                el.textContent = '❌ ' + (result.error || '');
-                el.className = 'result-text error';
-            }
-        } catch (err) {
-            el.textContent = '❌ ' + err.message;
-            el.className = 'result-text error';
-        }
-    });
-
-    // ══ Utilities ═══════════════════════════════════════════════════════════════
-
-    function esc(s) {
-        if (s == null) return '';
-        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
-
-    function jsLiteral(s) {
-        return esc(JSON.stringify(String(s ?? '')));
-    }
-
-    function formatUptime(sec) {
-        if (sec == null) return '—';
-        const h = Math.floor(sec / 3600);
-        const m = Math.floor((sec % 3600) / 60);
-        if (h > 0) return `${h}h ${m}m`;
-        return `${m}m ${Math.floor(sec % 60)}s`;
-    }
-
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n ?? 0).toLocaleString('pt-BR');
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let session = sessionStorage.getItem('durango-admin-session') || '';
+let page = 'overview', players = [], catalog = null, dataFile = null, islandId = null, timer = null, refreshing = false;
+let mailItems = null, mailPreview = null;
+const newMailId = () => Array.from(crypto.getRandomValues(new Uint8Array(16)),n=>n.toString(16).padStart(2,'0')).join('');
+let mailRequestId = sessionStorage.getItem('durango-mail-request-id') || newMailId();
+const mailExample = {target:'player',recipient_id:'',subject:'Sua entrega chegou',message:'Obrigado! Resgate os anexos desta mensagem para recebê-los na mochila.',type:'purchase',items:[]};
+$('mail-json').value = sessionStorage.getItem('durango-mail-draft') || JSON.stringify(mailExample,null,2);
+const titles = {overview:'Visão geral',players:'Jogadores',economy:'Economia',config:'Configurações',islands:'Ilhas',data:'Dados do jogo',actions:'Operações'};
+function notice(message, error = false) { $('notice').hidden = false; $('notice').textContent = message; $('notice').className = error ? 'error' : ''; }
+function endSession() {
+ session = ''; sessionStorage.removeItem('durango-admin-session'); clearInterval(timer); timer = null;
+ $('app').hidden = true; $('login').hidden = false; $('password').value = ''; players = []; catalog = null;
+}
+async function api(path, body) {
+ const response = await fetch(path, {method:body === undefined ? 'GET':'POST',cache:'no-store',headers:{'X-Admin-Session':session,...(body === undefined ? {} : {'Content-Type':'application/x-www-form-urlencoded'})},body:body === undefined ? undefined:new URLSearchParams(body)});
+ const text = await response.text(); let result; try { result = JSON.parse(text); } catch { result = {}; }
+ if (!response.ok) {
+  if (session && (response.status === 401 || response.status === 403)) {endSession();$('login-error').textContent = 'Sessão expirada. Entre novamente.';}
+  throw new Error(result.error || `O servidor respondeu HTTP ${response.status}.`);
+ }
+ if (result.error) throw new Error(result.error);
+ return result;
+}
+function metric(label, value) { return `<div class="metric"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`; }
+function table(headers, rows) { return rows.length ? `<table><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(cell=>`<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>` : '<p class="muted">Nenhum registro encontrado.</p>'; }
+function status(online) { return `<span class="tag ${online?'':'offline'}">${online?'Online':'Offline'}</span>`; }
+async function startSession() {
+ await api('/health'); $('login').hidden = true; $('app').hidden = false; $('password').value = '';
+ clearInterval(timer); timer = setInterval(()=>{if(session && !document.hidden && ['overview','players','economy','actions'].includes(page)) refresh();},5000);
+ await refresh();
+}
+$('login-form').addEventListener('submit', async event => {
+ event.preventDefault(); $('login-error').textContent = ''; $('login-button').disabled = true;
+ try {const result = await api('/admin/login',{username:$('username').value.trim(),password:$('password').value}); session = result.session;sessionStorage.setItem('durango-admin-session',session);await startSession();}
+ catch(error) {$('login-error').textContent = error.message;} finally {$('login-button').disabled = false;}
+});
+$('logout').addEventListener('click',async()=>{try{await api('/admin/logout',{});}catch{}finally{endSession();}});
+document.querySelectorAll('nav button').forEach(button=>button.addEventListener('click',()=>{
+ page = button.dataset.page; document.querySelectorAll('.page').forEach(el=>el.hidden=el.id!==page);
+ document.querySelectorAll('nav button').forEach(el=>el.classList.toggle('active',el===button));$('page-title').textContent=titles[page];$('notice').hidden=true;refresh();
+}));
+$('refresh').addEventListener('click',()=>{if(['config','islands'].includes(page)&&!confirm('Atualizar substituirá os campos por dados salvos no servidor. Continuar?'))return;refresh();});
+async function refresh() {
+ if (!session || refreshing) return; refreshing = true; $('refresh').disabled = true;
+ try {
+  const target = page;
+  if(target==='overview')await overview();
+  if(target==='players')await loadPlayers();
+  if(target==='economy')await economy();
+  if(target==='config')await config();
+  if(target==='islands')await islands();
+  if(target==='data')await loadCatalog();
+  if(target==='actions'){catalog=await api('/admin/catalog');maintenance(catalog.maintenance);await loadMailTools();}
+  $('connection').textContent='● Servidor conectado';$('updated').textContent='Atualizado em '+new Date().toLocaleString('pt-BR');
+ }catch(error){$('connection').textContent='● Falha na conexão';notice(error.message,true);}
+ finally{refreshing=false;$('refresh').disabled=false;}
+}
+async function overview() {
+ const [health,who,inventory]=await Promise.all([api('/health'),api('/admin/who'),api('/admin/catalog')]);
+ $('metrics').innerHTML=metric('Jogadores online',`${fmt(health.players_online)} / ${health.max_players>0?fmt(health.max_players):'sem limite'}`)+metric('Tempo ativo',`${Math.floor(health.uptime_sec/3600)}h ${Math.floor(health.uptime_sec/60)%60}min`)+metric('Mundos carregados',fmt(health.worlds_loaded))+metric('Tabelas e configurações',fmt(inventory.files.length));
+ const states=[['Tempo por tick (p50)',fmt(health.tick_ms?.p50)+' ms'],['Erros no loop',fmt(health.loop_errors)],['Falhas de salvamento',fmt(health.save_failures)],['Último salvamento',health.last_save_ago_sec>=0?fmt(Math.round(health.last_save_ago_sec))+' s atrás':'Aguardando primeiro salvamento'],['Manutenção',inventory.maintenance?'Ativa':'Desativada'],['Terrenos disponíveis',fmt(inventory.terrains.length)],['Catálogo Android',inventory.android_catalog_available?'Disponível (pode ser parcial)':'Ausente']];
+ $('server-state').innerHTML=states.map(([key,value])=>`<div><dt>${esc(key)}</dt><dd>${esc(value)}</dd></div>`).join('');
+ $('packets').innerHTML=table(['Tipo','Quantidade'],Object.entries(health.unhandled_packet_types||{}).map(([key,value])=>[esc(key),fmt(value)]));
+ $('online').innerHTML=table(['Nome','ID','Região'],who.map(p=>[esc(p.name),esc(p.entity_id),esc(p.region)]));maintenance(inventory.maintenance);
+}
+async function loadPlayers(){const [rows,bans]=await Promise.all([api('/admin/players'),api('/admin/bans')]);players=rows;renderPlayers();$('bans').innerHTML=table(['Conta (resumo)','Motivo','Data'],bans.map(b=>[esc(b.key),esc(b.reason),esc(new Date(b.at*1000).toLocaleString('pt-BR'))]));}
+function renderPlayers(){const search=$('player-search').value.toLowerCase();$('player-table').innerHTML=table(['Personagem','Nível','Estado','Região','T Stone','Warp Gem','Durango Coin','Ações'],players.filter(p=>`${p.name} ${p.entity_id}`.toLowerCase().includes(search)).map(p=>[`${esc(p.name||'Sem nome')}<br><small class="muted">${esc(p.entity_id)}</small>`,fmt(p.level),p.banned?'<span class="tag offline">Banido</span>':status(p.online),esc(p.region||'—'),fmt(p.t_stone),fmt(p.warp_gem),fmt(p.durango_coin),`<button data-action="wallet" data-id="${esc(p.entity_id)}">Saldo</button>${p.online?`<button data-action="kick" data-id="${esc(p.entity_id)}">Desconectar</button>`:''}<button class="danger" data-action="${p.banned?'unban':'ban'}" data-id="${esc(p.entity_id)}">${p.banned?'Desbanir':'Banir'}</button>`]));}
+$('player-search').addEventListener('input',renderPlayers);
+$('player-table').addEventListener('click',async event=>{
+ const button=event.target.closest('button[data-action]');if(!button)return;
+ const entity_id=button.dataset.id,action=button.dataset.action;let body={entity_id},path='/admin/'+action;
+ if(action==='wallet'){
+  const currency=prompt('Moeda: tstone, warpgem ou durangocoin','tstone');if(currency===null)return;
+  if(!['tstone','warpgem','durangocoin'].includes(currency)){notice('Moeda inválida.',true);return;}
+  const amount=prompt('Novo saldo inteiro (0 a 99999999)');if(amount===null)return;
+  if(!/^\d+$/.test(amount)||Number(amount)>99999999){notice('Saldo inválido.',true);return;}
+  if(!confirm(`Definir ${currency} do personagem ${entity_id} para ${fmt(amount)}?`))return;
+  body={entity_id,currency,amount};path='/admin/economy/set';
+ }else{if(!confirm(`${action==='ban'?'Banir a conta inteira de':action==='unban'?'Remover o banimento de':'Desconectar'} ${entity_id}?`))return;if(action!=='unban'){const reason=prompt('Motivo da ação','Ação administrativa.');if(reason===null)return;body.reason=reason;}}
+ await execute(button,async()=>{const result=await api(path,body);if(result.kicked===false||result.unbanned===false)throw new Error('A ação não foi aplicada. Atualize os dados.');await loadPlayers();return 'Alteração aplicada ao personagem.';});
+});
+async function economy(){const data=await api('/admin/economy?top=100');$('economy-metrics').innerHTML=metric('T Stone total',fmt(data.total_tstone))+metric('Warp Gem total',fmt(data.total_warp_gem))+metric('Durango Coin total',fmt(data.total_durango_coin))+metric('Personagens',fmt(data.character_count));$('economy-table').innerHTML=table(['Nome','T Stone','Warp Gem','Durango Coin','Estado'],(data.top||[]).map(p=>[esc(p.name||p.entity_id),fmt(p.t_stone),fmt(p.warp_gem),fmt(p.durango_coin),status(p.online)]));}
+async function config(){const data=await api('/admin/config');$('config-editor').value=JSON.stringify(data,null,2);$('features').innerHTML='';for(const [key,value]of Object.entries(data.Features||{})){if(typeof value!=='boolean')continue;const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=value;input.addEventListener('change',()=>{try{const next=JSON.parse($('config-editor').value);next.Features[key]=input.checked;$('config-editor').value=JSON.stringify(next,null,2);}catch(error){input.checked=!input.checked;notice('Corrija o JSON antes de alterar as opções.',true);}});label.append(input,document.createTextNode(key));$('features').append(label);}}
+async function saveJson(path,id,extra={}){const json=$(id).value;const parsed=JSON.parse(json);if(!parsed||Array.isArray(parsed)||typeof parsed!=='object')throw new Error('O JSON precisa conter um objeto.');await api(path,{...extra,json});return 'Arquivo salvo. Consulte as instruções da tela para aplicar a alteração.';}
+async function islands(){const data=await api('/admin/islands');$('islands-editor').value=JSON.stringify(data,null,2);const rows=data.Islands||[];$('island-table').innerHTML=table(['ID','Nome','Terreno','Nível','Gateway','Jogo'],rows.map(p=>[esc(p.Id),esc(p.Name),esc(p.Terrain),`${fmt(p.MinLevel)}–${fmt(p.MaxLevel)}`,esc(p.Address||`${p.Host}:${p.GatewayPort}`),esc(p.GamePort)]));$('island-select').replaceChildren(...rows.map(p=>new Option(`${p.Id} · ${p.Terrain}`,p.Id)));islandId=null;$('island-editor').value='';$('island-editor').disabled=true;$('save-island').disabled=true;}
+$('island-select').addEventListener('change',()=>{islandId=null;$('save-island').disabled=true;$('island-editor').disabled=true;$('island-editor').value='';});
+async function loadCatalog(){catalog=await api('/admin/catalog');$('catalog-summary').textContent=`${fmt(catalog.files.length)} arquivos JSON · ${fmt(catalog.terrains.length)} terrenos. Consulta dos arquivos efetivamente disponíveis no servidor.`;filterCatalog();}
+function filterCatalog(){if(!catalog)return;const previous=$('data-select').value,query=$('data-search').value.toLowerCase();$('data-select').replaceChildren(...catalog.files.filter(f=>f.path.toLowerCase().includes(query)).map(f=>new Option(`${f.path} (${fmt(Math.round(f.bytes/1024))} KB)`,f.path)));if([...$('data-select').options].some(o=>o.value===previous))$('data-select').value=previous;}
+$('data-search').addEventListener('input',filterCatalog);
+function maintenance(on){$('maintenance-state').textContent=on?'Manutenção ativa. Novas entradas bloqueadas.':'Servidor aberto para novas entradas.';}
+async function execute(button,work){button.disabled=true;try{notice(await work());}catch(error){notice(error.message,true);}finally{button.disabled=false;}}
+function on(id,work){$(id).addEventListener('click',()=>execute($(id),work));}
+on('save-config',()=>saveJson('/admin/config','config-editor'));
+on('save-islands',()=>saveJson('/admin/islands','islands-editor'));
+on('load-island',async()=>{const id=$('island-select').value;if(!id)throw new Error('Selecione uma ilha.');const data=await api('/admin/island/config?id='+encodeURIComponent(id));islandId=id;$('island-editor').value=JSON.stringify(data,null,2);$('island-editor').disabled=false;$('save-island').disabled=false;return 'Configuração de '+id+' carregada.';});
+on('save-island',()=>{if(!islandId)throw new Error('Carregue a ilha antes de salvar.');return saveJson('/admin/island/config','island-editor',{id:islandId});});
+on('load-data',async()=>{const path=$('data-select').value;if(!path)throw new Error('Selecione um arquivo.');const data=await api('/admin/data?path='+encodeURIComponent(path));const text=JSON.stringify(data,null,2);dataFile={path,text};$('data-viewer').textContent=text.slice(0,300000);$('data-detail').textContent=`${path} · ${fmt(text.length)} caracteres${text.length>300000?' · Prévia limitada. Baixe o JSON para consultar o arquivo completo.':''}`;$('download-data').disabled=false;return 'Arquivo carregado.';});
+$('download-data').addEventListener('click',()=>{if(!dataFile)return;const url=URL.createObjectURL(new Blob([dataFile.text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=dataFile.path.replace(/\//g,'_');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+const reload=async()=>{await api('/admin/reload',{});return 'Configurações recarregadas no servidor.';};on('reload',reload);on('reload-config',reload);
+function mailChanged() {
+ mailPreview=null; $('mail-send').disabled=true; $('mail-preview-result').hidden=true;
+ mailRequestId=newMailId();sessionStorage.setItem('durango-mail-request-id',mailRequestId);
+ sessionStorage.setItem('durango-mail-draft',$('mail-json').value);$('mail-result').textContent='Valide o JSON antes de enviar.';
+}
+$('mail-json').addEventListener('input',mailChanged);
+async function loadMailTools() {
+ const state=await api('/admin/mail/status');$('mail-status').textContent=`Correio ativo · ${fmt(state.messages)} mensagens · ${fmt(state.pending)} aguardando resgate.`;
+ const [items,recipients]=await Promise.all([mailItems?Promise.resolve(mailItems):api('/admin/mail/items'),api('/admin/players')]);mailItems=items;
+ const previous=$('mail-recipient').value;
+ $('mail-recipient').replaceChildren(...recipients.filter(p=>p.mail_eligible).map(p=>new Option(`${p.name} · ${p.entity_id}`,p.entity_id)));
+ if([...$('mail-recipient').options].some(o=>o.value===previous))$('mail-recipient').value=previous;
+ if(!$('mail-json').dataset.initialized){let draft={};try{draft=JSON.parse($('mail-json').value);}catch{}$('mail-target').value=draft.target==='all'?'all':'player';$('mail-recipient').disabled=draft.target==='all';if(draft.recipient_id&&[...$('mail-recipient').options].some(o=>o.value===draft.recipient_id))$('mail-recipient').value=draft.recipient_id;$('mail-json').dataset.initialized='1';}
+ filterMailItems();
+}
+function filterMailItems(){if(!mailItems)return;const query=$('mail-item-search').value.toLowerCase();$('mail-item').replaceChildren(...mailItems.filter(i=>`${i.name} ${i.prototype_id}`.toLowerCase().includes(query)).slice(0,200).map(i=>new Option(`${i.name} · ${i.prototype_id}`,i.prototype_id)));}
+$('mail-item-search').addEventListener('input',filterMailItems);
+$('mail-target').addEventListener('change',()=>{$('mail-recipient').disabled=$('mail-target').value==='all';mailPreview=null;$('mail-send').disabled=true;});
+$('mail-recipient').addEventListener('change',()=>{mailPreview=null;$('mail-send').disabled=true;});
+on('mail-template',async()=>{const data=JSON.parse($('mail-json').value);data.target=$('mail-target').value;if(data.target==='all')delete data.recipient_id;else{if(!$('mail-recipient').value)throw new Error('Selecione um jogador.');data.recipient_id=$('mail-recipient').value;}$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return 'Destinatário atualizado no JSON.';});
+on('mail-add-item',async()=>{const data=JSON.parse($('mail-json').value),id=$('mail-item').value;if(!id)throw new Error('Selecione um item.');if(!Array.isArray(data.items))data.items=[];data.items.push({prototype_id:id,quantity:1,level:1});$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return 'Anexo adicionado. Ajuste quantity e level no JSON, se necessário.';});
+on('mail-preview',async()=>{const json=$('mail-json').value;const data=await api('/admin/mail/preview',{json});if(json!==$('mail-json').value)throw new Error('O JSON mudou durante a validação. Valide novamente.');mailPreview={json,data};$('mail-preview-result').textContent=JSON.stringify(data,null,2);$('mail-preview-result').hidden=false;$('mail-send').disabled=false;$('mail-result').textContent=`Pronto para enviar a ${fmt(data.recipients)} personagem(ns), com ${fmt(data.attachments_per_player)} anexo(s) por personagem.`;return 'JSON válido. Confira a prévia antes de enviar.';});
+on('mail-send',async()=>{if(!mailPreview||mailPreview.json!==$('mail-json').value)throw new Error('Valide o JSON novamente.');const preview=mailPreview;if(!confirm(`Enviar “${preview.data.subject}” para ${fmt(preview.data.recipients)} personagem(ns), com ${fmt(preview.data.attachments_per_player)} anexo(s) para cada um?`))return 'Envio cancelado.';sessionStorage.setItem('durango-mail-request-id',mailRequestId);sessionStorage.setItem('durango-mail-draft',preview.json);const result=await api('/admin/mail/send',{json:preview.json,request_id:mailRequestId});$('mail-result').textContent=result.duplicate?'Este envio já foi registrado. Nenhuma mensagem duplicada foi criada.':`Email entregue ao correio de ${fmt(result.sent)} personagem(ns).`;await loadMailTools();return $('mail-result').textContent;});
+on('mail-new',async()=>{if(!confirm('Preparar outro envio? Enviar novamente o mesmo conteúdo criará novas mensagens.'))return 'Envio atual mantido.';mailChanged();return 'Novo envio preparado. Valide o JSON.';});
+on('announce',async()=>{const text=$('announcement').value.trim();if(!text)throw new Error('Escreva a mensagem.');const result=await api('/admin/announce',{text});$('announcement').value='';return `Anúncio enviado para ${fmt(result.sent)} jogadores.`;});
+for(const [id,onValue]of [['maintenance-on','1'],['maintenance-off','0']])on(id,async()=>{const result=await api('/admin/maintenance',{on:onValue});maintenance(result.maintenance);return result.maintenance?'Manutenção ativada.':'Servidor aberto.';});
+if(session)startSession().catch(error=>{endSession();$('login-error').textContent=error.message;});
 })();

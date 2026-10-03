@@ -25,6 +25,7 @@ internal static class Program
 
     /// <summary>host ที่กำลังรัน — ให้ตัวจัดการปิดเครื่องเซฟได้ก่อนออก</summary>
     private static Host _host;
+    private static FileStream _saveLease;
 
     private static int _shutdownDone;
 
@@ -34,6 +35,7 @@ internal static class Program
         if (System.Threading.Interlocked.Exchange(ref _shutdownDone, 1) != 0) return;
         try
         {
+            if (_host == null) return;
             Console.WriteLine($"[boot] ปิดเซิร์ฟ ({reason}) — เซฟก่อน...");
             _host?.SaveAll();
             _host?.Close();
@@ -46,6 +48,10 @@ internal static class Program
         catch (Exception e)
         {
             Console.WriteLine("[boot] ⚠️ เซฟตอนปิดไม่สำเร็จ: " + e.Message);
+        }
+        finally
+        {
+            _saveLease?.Dispose();
         }
     }
 
@@ -94,6 +100,10 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--mail-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return MailCheck.Run(dataDir);
                 case "--localization-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
@@ -268,9 +278,10 @@ internal static class Program
                     Console.WriteLine("  --farm-check [--data <dir>]   ตรวจวงจรเก็บเกี่ยวแปลง (grows_to → ของในกระเป๋า)");
                     Console.WriteLine("  --name <nome público>      nome exibido do servidor");
                     Console.WriteLine("  --storage-key <chave>      namespace persistente dos saves (ou env DURANGO_STORAGE_KEY)");
+                    Console.WriteLine("  --mail-check [--data <dir>] Valida correio, anexos, persistência e protocolo TCP");
                     Console.WriteLine("  --gateway-port, --game-port, --data, --terrains, --terrain,");
                     Console.WriteLine("  --assetbundles-android, --public-host, --url-prefix, --max-players, --tps, --cluster-mode,");
-                    Console.WriteLine("  --admin-token <t>   token ของ /health (หรือ env DURANGO_ADMIN_TOKEN) — ไม่ตั้ง = เรียกได้เฉพาะเครื่องตัวเอง");
+                    Console.WriteLine("  --admin-token <t>   Token opcional para automação via X-Admin-Token (ou env DURANGO_ADMIN_TOKEN)");
                     Console.WriteLine("  --adopt-orphans     ให้บัญชีแรกที่เข้ามารับตัวละครที่ยังไม่มีเจ้าของ (ใช้ตอนย้ายข้อมูลครั้งเดียว ห้ามเปิดค้าง)");
                     Console.WriteLine("  --admins <id,id>    entity id ของผู้ดูแล (หรือ env DURANGO_ADMINS) — ไม่ตั้ง = คำสั่ง cheat ปิดสนิท");
                     Console.WriteLine("  --min-client-version <v>  เวอร์ชันตัวเกมต่ำสุดที่ยอมให้เข้า — ไม่ตั้ง = รับทุกเวอร์ชัน");
@@ -303,6 +314,19 @@ internal static class Program
         if (androidAssetsCheck)
             return AndroidAssetBundleCheck.Run(androidBundles);
 
+        AppData.BasePath = Path.GetFullPath(Path.Combine(dataDir, "..", "AppData-nx"));
+        try
+        {
+            ServerStartupGuard.CheckPorts(gatewayPort, gamePort);
+            _saveLease = ServerStartupGuard.AcquireSaveLease(AppData.CombinePath(WorldContext.GetBasePath(storageKey)));
+        }
+        catch (Exception e) when (e is IOException || e is ArgumentException || e is UnauthorizedAccessException)
+        {
+            Console.WriteLine($"[boot] Inicialização cancelada: {e.Message}");
+            Console.WriteLine("[boot] Nenhum save foi carregado ou gravado por esta tentativa.");
+            return 1;
+        }
+
         foreach (string id in (admins ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
             Player.Admins.Add(id.Trim());
@@ -323,6 +347,7 @@ internal static class Program
         // ---- game data (เทียบเท่า Loader ของ client) ----
         // ⚠️ ต้องโหลด**ก่อน** DataStore — ตัวนั้นอ่าน JSON แล้วสร้าง Gettext ทันที
         // ซึ่ง Gettext.ToString() จะไปหยิบคำแปลจาก catalog นี้ (ดู Support/MoCatalog.cs)
+        AdminConfigStore.Restore(dataDir);
         MoCatalog.Load(dataDir);
         DataStore.Load(dataDir);
 
@@ -332,7 +357,6 @@ internal static class Program
 
         // ---- host + saves ----
         // AppData (เซฟ .player/.world) อยู่ข้าง ๆ data เหมือนเกมเก็บ AppData ของมันเอง
-        AppData.BasePath = Path.GetFullPath(Path.Combine(dataDir, "..", "AppData-nx"));
         DurangoServer.Core.ServerKnock.HostName = name;
         var host = new Host(storageKey);
         _host = host;
@@ -354,17 +378,15 @@ internal static class Program
         }
         catch (Exception e)
         {
-            Console.WriteLine($"[boot] ❌ เปิดพอร์ตไม่สำเร็จ: {e.Message}");
-            Console.WriteLine("       (8190 ต้อง netsh urlacl หรือรันด้วยสิทธิ์ที่พอ — ดู docs/server/ServerNx.md)");
+            Console.WriteLine($"[boot] Não foi possível iniciar os serviços de rede: {e.Message}");
+            Console.WriteLine($"[boot] Confira TCP {gatewayPort}, TCP {gamePort} e UDP {gatewayPort + 1}. Encerre a instância anterior com Ctrl+C se alguma porta estiver ocupada.");
             return 1;
         }
 
         Console.WriteLine($"[boot] พร้อม — gateway http://0.0.0.0:{gatewayPort} · game tcp:{gamePort} · " +
                           $"cluster_mode={Host.ClusterMode} · max-players={maxPlayers}");
         Console.WriteLine("[boot] มือถือ: ต่อ gateway port 8190 ตามที่ APK ฝังมา (หรือ --url-prefix ถ้าเปลี่ยนพอร์ต)");
-        Console.WriteLine(string.IsNullOrEmpty(adminToken)
-            ? "[boot] /health เปิดเฉพาะ 127.0.0.1 (ยังไม่ได้ตั้ง --admin-token)"
-            : "[boot] /health ต้องมี ?token=… (ตั้งจาก --admin-token/env แล้ว)");
+        Console.WriteLine("[boot] Painel: /admin/ — login por usuário e senha; /health exige sessão ou X-Admin-Token.");
 
         // ---- main loop (ต้นฉบับ: GameManager.Update → Server.Process ทุกเฟรม; เซิร์ฟรันคงที่ 120 TPS) ----
         double tickIntervalTicks = System.Diagnostics.Stopwatch.Frequency / (double)Math.Max(1, _ticksPerSecond);

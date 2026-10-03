@@ -171,7 +171,7 @@ public sealed class ShopCatalog
         return results.ToArray();
     }
 
-    private static Item MakeItem(JToken spec)
+    internal static Item MakeItem(JToken spec)
     {
         string id = (string)spec["prototype_id"];
         var item = Cheats.MakeItem(id, (int?)spec["level"] ?? 1) ?? throw new InvalidOperationException("Item ausente: " + id);

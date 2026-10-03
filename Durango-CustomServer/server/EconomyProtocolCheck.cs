@@ -104,7 +104,7 @@ internal static class EconomyProtocolCheck
         private readonly List<(object Message, PacketHeader Header)> _replies = new();
         private readonly bool _simulatePlayer;
 
-        public Link(PlayerContext context, World world, EconomyStore store, bool simulatePlayer = false)
+        public Link(PlayerContext context, World world, EconomyStore store, bool simulatePlayer = false, MailStore mailStore = null)
         {
             _simulatePlayer = simulatePlayer;
             using var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -123,6 +123,7 @@ internal static class EconomyProtocolCheck
             Receive<Messages.Timer>(); Receive<Rewarded>(); Receive<DisappearEntity>(); Receive<EntityDied>();
             Receive<BattleBegun>(); Receive<BattleEnded>(); Receive<AppearAnimal>(); Receive<Weather>();
             Receive<GardenDiff>(); Receive<DisappearEntityOnTile>();
+            Receive<Mails>(); Receive<MailPut>();
             Receive<Collected>(); Receive<CollectibleChanged>(); Receive<ReplySequenceMark>();
             Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
             Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
@@ -133,7 +134,7 @@ internal static class EconomyProtocolCheck
             Receive<Recipes>(); Receive<ArtifactBlueprints>(); Receive<Skills>(); Receive<Failed>();
             Receive<Actions>(); Receive<SkillCategoryExperienced>(); Receive<ExpGained>();
             Server.StartReceive(); Client.StartReceive();
-            Player = new Player(context.EntityId, Server, world, context, false, store);
+            Player = new Player(context.EntityId, Server, world, context, false, store, mailStore);
             if (simulatePlayer) world.AddPlayer(Player);
             PumpUntil(() => Messages.OfType<AppearPlayer>().Any());
         }

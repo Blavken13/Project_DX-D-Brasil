@@ -143,6 +143,7 @@ public class Host
 
     public GameServer GameServer { get; private set; }
     public EconomyStore Economy { get; private set; }
+    public MailStore Mail { get; private set; }
 
     public Gateway Gateway { get; private set; }
 
@@ -252,8 +253,10 @@ public class Host
     public void Start(int gamePort, int gatewayPort, string publicHost, string androidBundlesDir, string assetsDir, string dataDir = null)
     {
         Economy = new EconomyStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "economy.json"), new ShopCatalog());
-        foreach (var context in _contexts) Economy.Recover(context.Player);
-        GameServer = new GameServer(_worldCtx, _fallbackPlayer) { Economy = Economy };
+        Mail = new MailStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "mail.json"));
+        foreach (var context in _contexts) { Mail.Recover(context.Player); Economy.Recover(context.Player); }
+        GameServer = new GameServer(_worldCtx, _fallbackPlayer) { Economy = Economy, Mail = Mail };
+        Mail.Updated += GameServer.NotifyMail;
         Economy.ProductBought += GameServer.NotifyMarketSale;
         // โลกของเกาะตั้งต้น (ไฟล์ 0.world ของต้นฉบับ) ใช้ต่อเป็นเกาะแรกของสารบัญ
         Worlds = new WorldRegistry(_storageKey, GameServer.World, _worldCtx?.TerrainId);

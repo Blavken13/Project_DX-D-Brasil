@@ -35,6 +35,7 @@ public partial class Player
 
     private readonly PlayerContext _context;
     private readonly EconomyStore _economy;
+    private readonly MailStore _mailStore;
     public static int InventoryMaxSize => PetTuning.PlayerInventoryMaxSize;
 
     private int _centerX;
@@ -64,13 +65,15 @@ public partial class Player
 
     public event Action ContextChanged;
 
-    public Player(string entityId, Connection connection, World world, PlayerContext context, bool isLocalPlayer, EconomyStore economy = null)
+    public Player(string entityId, Connection connection, World world, PlayerContext context, bool isLocalPlayer, EconomyStore economy = null, MailStore mailStore = null)
     {
         EntityId = entityId;
         _connection = connection;
         _world = world;
         _context = context;
         _economy = economy;
+        _mailStore = mailStore;
+        _mailStore?.Recover(context);
         _economy?.Recover(context);
         IsLocalPlayer = isLocalPlayer;
         if (_context.AppearPlayer.Move.Movements == null || !IsLocalPlayer)
@@ -573,6 +576,7 @@ public partial class Player
         SendDefoggedChunks();
         SendQuestCategories();
         AnnouncePlayableQuests();
+        SendMailbox();
         Send(_context.AppearPlayer);
     }
 

@@ -56,6 +56,7 @@
         /// </summary>
         public WorldRegistry Worlds { get; set; }
         public EconomyStore Economy { get; set; }
+        public MailStore Mail { get; set; }
 
         /// <summary>โลกที่ผู้เล่นคนนี้อยู่ — ตกไปที่โลกตั้งต้นถ้ายังไม่มีระบบหลายเกาะ</summary>
         public World WorldOf(PlayerContext context)
@@ -97,7 +98,8 @@
         public void Start(int port)
         {
             Port = port;
-            _listener.Start(port);
+            if (!_listener.Start(port))
+                throw new InvalidOperationException($"Não foi possível abrir a porta TCP {port} do jogo.");
             _listener.ClientAccepted += Listener_ClientAccepted;
         }
 
@@ -413,6 +415,7 @@
         /// <summary>Consulta usada por GET /online_statuses.</summary>
         public bool IsPlayerOnline(string entityId) => FindOnlinePlayer(entityId) != null;
         public void NotifyMarketSale(EconomyStore.MarketListing listing) => FindOnlinePlayer(listing.SellerId)?.NotifyMarketSale(listing);
+        public void NotifyMail(string entityId) => FindOnlinePlayer(entityId)?.NotifyMailDelivery();
 
         // FACILDIGITAL_STAGE2_CHAT_ROUTING
         /// <summary>
@@ -726,7 +729,7 @@
                     connection.Send(default(OK), readyHeader.Seq);
                     bool flag = playerContext.EntityId == text;
                     World playerWorld = WorldOf(playerContext);
-                    Player player = new(text, connection, playerWorld, playerContext, flag, Economy);
+                    Player player = new(text, connection, playerWorld, playerContext, flag, Economy, Mail);
                     if (flag)
                     {
                         player.ContextChanged += delegate

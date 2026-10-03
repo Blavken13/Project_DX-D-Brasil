@@ -1,23 +1,15 @@
-Durango OffServer — ตัวเกมสำหรับเข้าเซิร์ฟ (v2.9)
-================================================
-
-วิธีเล่น
-  1. แตก zip ไว้ที่ไหนก็ได้ (ห้ามอยู่ในโฟลเดอร์ที่ต้องสิทธิ์ admin เช่น Program Files)
-  2. เปิด DurangoLauncher.exe → รอเช็คเวอร์ชัน → กด "เล่น"
-  3. ครั้งแรกสร้างตัวละครในเกมได้เลย
-
-อัปเดต
-  launcher เช็คเวอร์ชันกับเซิร์ฟทุกครั้งที่เปิด · มีใหม่จะขึ้นปุ่ม "อัปเดต" — กดแล้วรอโหลดจบ ไม่ต้องโหลด zip ใหม่เอง
-
-offserver.txt
-  ไฟล์ตั้งค่าที่เกมอ่าน · gateway=http://187.53.129.69:8292 คือเซิร์ฟ · ลบไฟล์ = กลับไปเล่น offline คนเดียว
-
-บัญชี (Account Number)
-  เข้าเกมครั้งแรก = เซิร์ฟสร้างบัญชี UUID ไม่ซ้ำกับใครให้อัตโนมัติ ดูเลขได้ในเกมที่ ตั้งค่า ▸ Account ▸ Account Number
-  ย้ายเครื่อง: เปิด offserver.txt บนเครื่องใหม่ เติมบรรทัด  account=<Account Number ของเรา>  แล้วเข้าเกม — ตัวละครเดิมโผล่มาเลย
-  ⚠ ห้ามบอก Account Number ให้ใคร — ใครถือเลขนี้เข้าบัญชีเราได้ · ผูก Discord (บอท 🔗 → โค้ด 6 ตัว → ตั้งค่า ▸ Enter Coupon) เพื่อกู้บัญชีได้เมื่อมีปัญหา
-
-ปัญหาที่พบบ่อย
-  · เปิดแล้วไม่ขึ้นอะไรเลย → ดู player.log ในโฟลเดอร์เกม และ %TEMP%\DurangoLauncher.log
-  · Windows SmartScreen เตือน → More info → Run anyway (ไฟล์ไม่ได้เซ็นชื่อ)
-  · เข้าโลกไม่ได้ / ค้างที่โหลด → เซิร์ฟอาจปิดอยู่ ดูสถานะมุมขวาบนของ launcher
+Durango Brasil — servidor e cliente OffServer
+
+A documentação foi traduzida para português e atualizada em README.md.
+Leia README.md nesta pasta para as instruções de jogo, contas e execução.
+
+Servidor público: http://179.197.72.129:8190
+Painel administrativo: http://179.197.72.129:8190/admin/
+Servidor local: http://127.0.0.1:8190
+Painel local: http://127.0.0.1:8190/admin/
+
+Os endereços seguem Durango-OffServer/offserver.txt.
+O painel público depende da publicação da versão atual no VPS.
+
+O correio administrativo e o envio de JSON com anexos são documentados
+em docs/correio-administrativo.md.
