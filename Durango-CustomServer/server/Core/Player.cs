@@ -2284,6 +2284,7 @@ public partial class Player
     public void Process()
     {
         _connection.Process();
+        UpdatePendingCrafts(Gauge.CurrentTime);
         UpdateTaming(Gauge.CurrentTime);
         UpdatePendingCollects(Gauge.CurrentTime);
         UpdateCraterInvestment(Gauge.CurrentTime);

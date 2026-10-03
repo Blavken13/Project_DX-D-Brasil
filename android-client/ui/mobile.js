@@ -145,6 +145,7 @@
       }
     });
     $('#atualiza-botao').addEventListener('click', () => { if (bridge) bridge.update(); });
+    $('#diagnostico').addEventListener('click', () => { if (bridge && bridge.diagnostics) bridge.diagnostics(); });
     document.addEventListener('visibilitychange', resumeVideo);
     document.addEventListener('pointerdown', () => { if ($('#background-video').paused && !busy) resumeVideo(); }, { passive:true });
     $('#background-video').addEventListener('error', () => { $('#background-video').hidden = true; });

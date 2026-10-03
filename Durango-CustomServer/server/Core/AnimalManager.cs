@@ -643,28 +643,74 @@ public class AnimalManager
     {
         if (template?.Role == Shared.Region.Role.Safehouse)
         {
-            var species = template.Herds.Values.SelectMany(spawns => spawns)
-                .Where(spawn => AnimalTypes.Get(spawn.EntityType) is { BaseScale: <= 1f })
-                .Select(spawn => spawn.EntityType).Distinct().ToArray();
-            if (species.Length == 0) return;
-            int placed = 0;
-            var candidates = TerrainEcology.LandGrid(terrain, 12, 12)
-                .Where(tile => !(tile.x is >= 88 and <= 145 && tile.y is >= 70 and <= 138)).ToList();
-            // Distribuir por toda a ilha: a ordem da grade concentra animais numa só borda.
+            const ushort compsognathus = 2015;
+            const ushort zebraceratops = 2027;
+
+            int wantedTotal = WorldTuning.SafehouseAnimalCount;
+            int wantedZebra = Math.Min(wantedTotal, WorldTuning.SafehouseZebraceratopsCount);
+            int wantedCompso = Math.Min(
+                wantedTotal - wantedZebra,
+                WorldTuning.SafehouseCompsognathusCount);
+            int safehouseLevel = WorldTuning.SafehouseAnimalLevel;
+
+            // A grade antiga (12 tiles) podia não fornecer 100 posições válidas.
+            // Preferimos espaçamento 8; se ainda faltar terreno, completamos com grade 4,
+            // sempre fora da área central das construções.
+            bool Allowed(Point2 tile) =>
+                !(tile.x is >= 88 and <= 145 && tile.y is >= 70 and <= 138);
+
+            var candidates = TerrainEcology.LandGrid(terrain, 8, 8)
+                .Where(Allowed)
+                .ToList();
+            var seen = new HashSet<string>(
+                candidates.Select(tile => $"{tile.x},{tile.y}"),
+                StringComparer.Ordinal);
+
+            if (candidates.Count < wantedTotal)
+            {
+                foreach (Point2 tile in TerrainEcology.LandGrid(terrain, 4, 6))
+                {
+                    if (!Allowed(tile)) continue;
+                    if (seen.Add($"{tile.x},{tile.y}")) candidates.Add(tile);
+                    if (candidates.Count >= wantedTotal) break;
+                }
+            }
+
+            // Distribuir por toda a ilha em vez de concentrar no início da grade.
             for (int i = candidates.Count - 1; i > 0; i--)
             {
                 int j = _rng.Next(i + 1);
                 (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
             }
-            foreach (var tile in candidates)
+
+            int cursor = 0;
+            int compsoPlaced = 0;
+            int zebraPlaced = 0;
+
+            foreach ((ushort type, int speciesTarget) in new[]
             {
-                if (tile.x is >= 88 and <= 145 && tile.y is >= 70 and <= 138) continue;
-                var animal = SpawnAt(species[placed % species.Length], Math.Max(1, template.Level - 2), tile);
-                if (animal == null) continue;
-                animal.DefensiveOnly = true;
-                if (++placed >= WorldTuning.SafehouseAnimalCount) break;
+                (compsognathus, wantedCompso),
+                (zebraceratops, wantedZebra)
+            })
+            {
+                int placedForSpecies = 0;
+                while (cursor < candidates.Count && placedForSpecies < speciesTarget)
+                {
+                    Point2 tile = candidates[cursor++];
+                    Animal animal = SpawnAt(type, safehouseLevel, tile);
+                    if (animal == null) continue;
+                    animal.DefensiveOnly = true;
+                    placedForSpecies++;
+                }
+
+                if (type == compsognathus) compsoPlaced = placedForSpecies;
+                else if (type == zebraceratops) zebraPlaced = placedForSpecies;
             }
-            Console.WriteLine($"[safehouse] fauna pequena restaurada: {placed} animais de espécies nativas.");
+
+            Console.WriteLine(
+                $"[safehouse] fauna: compso={compsoPlaced}/{wantedCompso} " +
+                $"zebraceratops={zebraPlaced}/{wantedZebra} lv={safehouseLevel} " +
+                $"total={compsoPlaced + zebraPlaced}/{wantedTotal} candidatos={candidates.Count}");
             return;
         }
         if (terrain?.Herds == null || template == null || template.Herds.Count == 0)

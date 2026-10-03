@@ -331,7 +331,9 @@
     "ResourceLevel": 0,
     "TutorialNaturalRegrowSeconds": 120,
     "WildStructureLifetimeSeconds": 86400,
-    "SafehouseAnimalCount": 40
+    "SafehouseAnimalCount": 100,
+    "SafehouseZebraceratopsCount": 50,
+    "SafehouseAnimalLevel": 3
   },
   "Tools": {
     "Enabled": true,

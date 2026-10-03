@@ -1085,6 +1085,9 @@ public partial class Player
                 {
                     SendSkills();
                     SendFullStatistics();
+                    // Novo skill gratuito pode liberar receitas. O RecipeSystem do cliente
+                    // mantém cache durante a sessão; sem este push a receita só aparece após relogar.
+                    PushUnlockedRecipes();
                 }
             }
         }

@@ -67,10 +67,12 @@ public static class CraftTuning
     public const float GreatSuccessRate = 0f;
 
     /// <summary>
-    /// **ค่าของเรา** — เพดานเวลาคราฟต์ที่ยอมหน่วงคำตอบ Crafted (วินาที)
-    /// กันสูตรที่ข้อมูลเพี้ยนทำให้ผู้เล่นค้างหลอดยาวผิดปกติ (ค่าจริงสูงสุดในไฟล์คือ 18 วิ)
+    /// Limite de segurança do craft manual. O tempo nativo vem de
+    /// recipes.json -> effort e constants.json -> duration_formula = "e".
+    /// O maior effort do dataset atual é 82, portanto 120 não trunca nenhuma receita.
     /// </summary>
-    public const float MaxCraftSeconds = 60f;
+    public const float MinCraftSeconds = 0.1f;
+    public const float MaxCraftSeconds = 120f;
 
     /// <summary>
     /// **ค่าของเรา** — ความจุคิวของโต๊ะคราฟต์ที่ตอบไปใน Workbench(3000)
@@ -288,17 +290,23 @@ public partial class Player
     private readonly HashSet<string> _likedBlueprints = new();
 
     /// <summary>
-    /// นาฬิกาที่รอส่ง Crafted ของสูตรที่มี duration &gt; 0 — เก็บไว้เพื่อ Dispose ตอนตัดการเชื่อมต่อ
-    ///
-    /// ⚠️ ทำไมต้องใช้ threading timer แทนการนับในลูปหลัก: ลูป 120 รอบ/วินาทีเรียก
-    /// <see cref="Process"/> ซึ่งอยู่ใน Core/Player.cs — ไฟล์ที่ระบบนี้แตะไม่ได้ (มี agent อื่นทำงาน
-    /// พร้อมกัน) จึงไม่มีจุดเสียบงานรายเฟรม
-    /// **สิ่งเดียวที่ callback ทำคือ <c>_connection.Send</c>** ซึ่งปลอดภัยข้ามเธรดโดยตัวมันเอง
-    /// (GameCode/Durango.Online/Connection.cs:146 ล็อก _sendLock ทั้งก้อน แล้วแค่เขียนลงบัฟเฟอร์
-    ///  ส่วนการยิงออก socket ยังทำโดยลูปหลักที่ StartSend เหมือนเดิม)
-    /// การแก้ inventory/context ทั้งหมดทำเสร็จตั้งแต่ตอนรับ Craft บนเธรดหลักแล้ว
+    /// Craft manual pendente. O cliente já serializa a fila: só envia o próximo Craft
+    /// depois de receber Crafted do anterior. Mantemos a conclusão no loop principal
+    /// para não alterar inventário/context a partir de uma thread de Timer.
     /// </summary>
-    private readonly List<System.Threading.Timer> _craftTimers = new();
+    private sealed class PendingCraft
+    {
+        public uint Seq;
+        public CraftRecipeData Recipe;
+        public string RecipeId;
+        public string ToolItemId;
+        public Item[] ReservedMaterials;
+        public Item[] Products;
+        public Crafted Crafted;
+        public double DueAt;
+    }
+
+    private PendingCraft _pendingCraft;
 
     private void RegisterCraftingHandlers()
     {
@@ -385,7 +393,7 @@ public partial class Player
             Send(new Abort { Text = "A melhoria de equipamentos ainda não está disponível." }, header.Seq);
         });
 
-        _connection.ConnetionClosed += ClearCraftTimers;
+        _connection.ConnetionClosed += CancelPendingCraft;
     }
 
     /// <summary>
@@ -452,6 +460,12 @@ public partial class Player
 
     private void HandleCraftMsg(Craft msg, uint seq)
     {
+        if (_pendingCraft != null)
+        {
+            Send(new Abort { Text = "Já existe uma fabricação em andamento." }, seq);
+            return;
+        }
+
         CraftRecipeData recipe = CraftRecipeStore.Get(msg.RecipeId);
         if (recipe == null)
         {
@@ -497,26 +511,6 @@ public partial class Player
             return;
         }
 
-        // ── ตั้งแต่บรรทัดนี้ถือว่าคราฟต์สำเร็จแล้ว: หักของ → เติมของ → ค่อยบอกผล ──
-        // ลำดับสำคัญ: client/InventorySystem.cs:605-616 OnCraftSucceed หาไอเทมจาก **กระเป๋า**
-        // ด้วย id ที่มากับ Crafted แล้วติดธง "ของใหม่" ⇒ InventoryUpdated ต้องถึงก่อน Crafted
-        string[] consumedIds = materials.Select(item => item.Id).ToArray();
-        _context.InventoryItems.RemoveAll(item => consumedIds.Contains(item.Id));
-        Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = consumedIds });
-        AddItems(products);                                   // เข้ากระเป๋า + OnContextChanged (เซฟ)
-        Send(new InventoryUpdated { EntityId = EntityId, Items = products });
-
-        // เครื่องมือที่ใช้คราฟต์สึก (ขวาน/มีด/ค้อน ฯลฯ) — เส้นเดียวกับเก็บของ · stick ไม่สึก (ไม่ใช่ tool)
-        WearTool(msg.ToolItemId, "craft");
-
-        // [7 ก.ย. 2026] ให้ exp ตอนหักของ+เติมของแล้ว — ไม่รอ Timer/FinishCraft
-        // (inventory เปลี่ยนตั้งแต่ตรงนี้แล้ว ถ้าให้ตอนส่ง Crafted จะซ้ำ/ช้าโดยใช่เหตุ)
-        AddExpForAction(SkillTuning.CraftWeight, MapRecipeSkillCategory(recipe.category),
-                        $"Fabricar {msg.RecipeId}");
-        NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, recipe.category);
-
-        SpendCraftEnergy(recipe);
-
         var crafted = new Crafted
         {
             Result = craftResult,
@@ -524,68 +518,112 @@ public partial class Player
             Items = products
         };
 
-        // เวลาคราฟต์จากไฟล์จริง (recipes.json → duration) — 424 สูตรจาก 625 เป็น 0 = เสร็จทันที
-        // [7 ก.ย. 2026] คูณตัวคูณจากสกิลหมวดคราฟต์ที่เก่งที่สุด (ดู Player.SkillEffects.cs)
-        // สูตรที่ duration = 0 อยู่แล้วก็ยังเป็น 0 (คูณแล้วไม่เปลี่ยน) ⇒ ไม่กระทบของที่เสร็จทันที
-        float duration = Math.Clamp(recipe.duration * CraftDurationScale(), 0f, CraftTuning.MaxCraftSeconds);
-
-        // เปิดชุดคำตอบต่อเนื่อง แล้วบอกเวลาจริงของหลอดทันที (ไม่งั้น client ใช้ Ping+10 วิ ค้างไว้)
-        Send(default(ReplySequenceMark), seq);
-        Send(new Messages.Timer { Duration = duration }, seq);
-        if (duration <= 0f)
-        {
-            FinishCraft(crafted, seq);
-            return;
-        }
-        ScheduleCraftFinish(crafted, seq, duration);
+        BeginPendingCraft(recipe, msg.RecipeId, msg.ToolItemId, materials, products, crafted, seq);
     }
 
-    /// <summary>ส่งผลคราฟต์แล้วปิดชุดคำตอบต่อเนื่องของ seq นั้น (ไม่ปิด = handler ฝั่ง client ค้างค้าง)</summary>
+    /// <summary>
+    /// Tempo ativo nativo: recipes.json -> effort; constants.json -> duration_formula = "e".
+    /// duration_wait é o tempo do craft delegado à bancada e não deve ser usado no craft manual.
+    /// </summary>
+    private float CraftDurationSeconds(CraftRecipeData recipe)
+    {
+        float effort = 1f;
+        if (recipe != null &&
+            float.TryParse(recipe.effort, NumberStyles.Float, CultureInfo.InvariantCulture, out float parsed) &&
+            parsed > 0f)
+        {
+            effort = parsed;
+        }
+
+        return Math.Clamp(
+            effort * CraftDurationScale(),
+            CraftTuning.MinCraftSeconds,
+            CraftTuning.MaxCraftSeconds);
+    }
+
+    private void BeginPendingCraft(
+        CraftRecipeData recipe,
+        string recipeId,
+        string toolItemId,
+        List<Item> materials,
+        Item[] products,
+        Crafted crafted,
+        uint seq)
+    {
+        float duration = CraftDurationSeconds(recipe);
+        Item[] reserved = materials.ToArray();
+        string[] consumedIds = reserved.Select(item => item.Id).ToArray();
+
+        // Reserva real: os materiais saem ao iniciar, mas o produto só entra ao concluir.
+        // Isso impede reutilizar o mesmo ItemId durante a animação.
+        _context.InventoryItems.RemoveAll(item => consumedIds.Contains(item.Id));
+        Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = consumedIds });
+
+        _pendingCraft = new PendingCraft
+        {
+            Seq = seq,
+            Recipe = recipe,
+            RecipeId = recipeId,
+            ToolItemId = toolItemId,
+            ReservedMaterials = reserved,
+            Products = products,
+            Crafted = crafted,
+            DueAt = Gauge.CurrentTime + duration
+        };
+
+        Send(default(ReplySequenceMark), seq);
+        Send(new Messages.Timer { Duration = duration }, seq);
+    }
+
+    /// <summary>Chamado no loop principal por Player.Process().</summary>
+    private void UpdatePendingCrafts(double now)
+    {
+        PendingCraft pending = _pendingCraft;
+        if (pending == null || now < pending.DueAt) return;
+
+        _pendingCraft = null;
+
+        // InventoryUpdated precisa chegar antes de Crafted: o cliente procura os IDs
+        // de Crafted na mochila para marcar os itens como novos.
+        AddItems(pending.Products);
+        Send(new InventoryUpdated { EntityId = EntityId, Items = pending.Products });
+
+        WearTool(pending.ToolItemId, "craft");
+        AddExpForAction(
+            SkillTuning.CraftWeight,
+            MapRecipeSkillCategory(pending.Recipe.category),
+            $"Fabricar {pending.RecipeId}");
+        NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, pending.Recipe.category);
+        SpendCraftEnergy(pending.Recipe);
+
+        FinishCraft(pending.Crafted, pending.Seq);
+    }
+
+    /// <summary>
+    /// Se a conexão cair no meio do craft, devolve os materiais reservados.
+    /// Nenhum produto/EXP/energia é concedido.
+    /// </summary>
+    private void CancelPendingCraft()
+    {
+        PendingCraft pending = _pendingCraft;
+        if (pending == null) return;
+        _pendingCraft = null;
+
+        foreach (Item item in pending.ReservedMaterials ?? Array.Empty<Item>())
+        {
+            if (!_context.InventoryItems.Any(existing => existing.Id == item.Id))
+            {
+                _context.InventoryItems.Add(item);
+            }
+        }
+        OnContextChanged();
+    }
+
+    /// <summary>Envia o resultado e fecha a sequência de respostas do Craft.</summary>
     private void FinishCraft(Crafted crafted, uint seq)
     {
         Send(crafted, seq);
         Send(default(ReplySequenceMark), seq);
-    }
-
-    /// <summary>
-    /// นัดส่ง Crafted เมื่อครบเวลา — ดูเหตุผลที่ใช้ threading timer ที่ <see cref="_craftTimers"/>
-    /// </summary>
-    private void ScheduleCraftFinish(Crafted crafted, uint seq, float duration)
-    {
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(delegate
-        {
-            try
-            {
-                FinishCraft(crafted, seq);        // Send เท่านั้น — ไม่แตะ inventory/context
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[craft] ส่งผลคราฟต์ไม่สำเร็จ: {e.Message}");
-            }
-            finally
-            {
-                lock (_craftTimers)
-                {
-                    _craftTimers.Remove(timer);
-                }
-                timer?.Dispose();
-            }
-        }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-        lock (_craftTimers)
-        {
-            _craftTimers.Add(timer);
-        }
-        timer.Change((int)(duration * 1000f), System.Threading.Timeout.Infinite);
-    }
-
-    private void ClearCraftTimers()
-    {
-        lock (_craftTimers)
-        {
-            foreach (System.Threading.Timer timer in _craftTimers) timer.Dispose();
-            _craftTimers.Clear();
-        }
     }
 
     // ── การตรวจเงื่อนไข ─────────────────────────────────────────────────────────────
@@ -1013,52 +1051,46 @@ public partial class Player
     private void HandleCookResult(CraftRecipeData recipe, Craft msg, List<Item> materials, uint seq)
     {
         string baseId = null;
-        if (msg.Materials != null && msg.Materials.TryGetValue("base", out string[] baseIds) && baseIds is { Length: > 0 })
+        if (msg.Materials != null && msg.Materials.TryGetValue("base", out string[] baseIds) &&
+            baseIds is { Length: > 0 })
+        {
             baseId = baseIds[0];
-        int baseIndex = string.IsNullOrEmpty(baseId) ? -1 : _context.InventoryItems.FindIndex(it => it.Id == baseId);
+        }
+
+        int baseIndex = string.IsNullOrEmpty(baseId)
+            ? -1
+            : _context.InventoryItems.FindIndex(it => it.Id == baseId);
         if (baseIndex < 0)
         {
             Send(new Abort { Text = "O material principal não foi encontrado na mochila." }, seq);
             return;
         }
+
         Item cooked = _context.InventoryItems[baseIndex];
         if (recipe.deduct_modifiable_count && cooked.ModifiableCount <= 0)
         {
             Send(new Abort { Text = "Não é possível continuar preparando este item." }, seq);
             return;
         }
-        string[] consumedIds = materials
-            .Where(it => !string.Equals(it.Id, baseId, StringComparison.Ordinal))
-            .Select(it => it.Id).ToArray();
+
         if (recipe.deduct_modifiable_count)
         {
             cooked.ModifiableCount = Math.Max(0, cooked.ModifiableCount - 1);
             cooked.ModifiedCount += 1;
         }
         ApplyAddColor(ref cooked, recipe);
-        if (consumedIds.Length > 0)
-            _context.InventoryItems.RemoveAll(it => consumedIds.Contains(it.Id));
-        baseIndex = _context.InventoryItems.FindIndex(it => it.Id == baseId);
-        if (baseIndex >= 0) _context.InventoryItems[baseIndex] = cooked;
-        OnContextChanged();
-        if (consumedIds.Length > 0)
-            Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = consumedIds });
-        Send(new InventoryUpdated { EntityId = EntityId, Items = new[] { cooked } });
-        WearTool(msg.ToolItemId, "craft");   // เครื่องมือทำอาหารสึก (ถ้าเป็น tool — stick ไม่สึก)
-        AddExpForAction(SkillTuning.CraftWeight, MapRecipeSkillCategory(recipe.category), $"Cozinhar {msg.RecipeId}");
-        NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, recipe.category);
-        SpendCraftEnergy(recipe);
+
+        Item[] products = { cooked };
         var crafted = new Crafted
         {
             Result = Result.Success,
             ActionInfo = MakeActionInfo(recipe, cooked.Level),
-            Items = new[] { cooked }
+            Items = products
         };
-        float duration = Math.Clamp(recipe.duration * CraftDurationScale(), 0f, CraftTuning.MaxCraftSeconds);
-        Send(default(ReplySequenceMark), seq);
-        Send(new Messages.Timer { Duration = duration }, seq);
-        if (duration <= 0f) { FinishCraft(crafted, seq); return; }
-        ScheduleCraftFinish(crafted, seq, duration);
+
+        // Todos os materiais, inclusive o base, ficam reservados até a conclusão.
+        // Em caso de desconexão, CancelPendingCraft devolve os originais.
+        BeginPendingCraft(recipe, msg.RecipeId, msg.ToolItemId, materials, products, crafted, seq);
     }
 
     /// <summary>ทา add_color ทับสีของ item ตาม add_color_rate (alpha blend มาตรฐาน = ความหมายตรงตัวของ field)</summary>

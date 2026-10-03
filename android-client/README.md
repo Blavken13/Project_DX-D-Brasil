@@ -1,7 +1,66 @@
 # Cliente Android Lost Horizon
 
 APK atual: `dist/LostHorizon-alfa.apk` (02/10/2026, aproximadamente
-303 MiB), versão Android `50206` / `5.2.1-losthorizon-alfa`.
+303 MiB), versão Android `50209` / `5.2.1-losthorizon-alfa-compat2`.
+
+## Compatibilidade e relatório de fechamento — revisão 50209
+
+A autenticação agora usa `native/original/runtime_compat.c`, compilado como
+`libnd.so`. As pontes são instaladas de forma síncrona em `CompatGameActivity`,
+antes da criação do UnityPlayer. As APIs gerenciadas são usadas no fluxo Send
+do jogo após a inicialização; não há polling com sleeps nem patch por worker.
+As duas pontes próprias têm alinhamento ELF e RELRO de 16 KB e conferem os
+retornos das proteções de memória. O motor e os shaders originais são preservados.
+A opção de renderização multithread é desativada mudando um único byte de
+PlayerSettings, sem reserializar o arquivo global inteiro.
+
+O vídeo do login é desacoplado e o WebView destruído antes de abrir o jogo.
+Uma falha do WebView oferece formulário Android com login/cadastro e diagnóstico.
+No Android 15/16, o modo de compatibilidade fica ligado por padrão e solicita
+30 FPS/resolução reduzida, quando suportado pelas APIs originais. Desde a revisão
+50209, o vídeo da seleção volta a reproduzir por padrão, independentemente desse
+perfil. Diagnóstico → Modo de compatibilidade oferece duas opções separadas:
+gráficos reduzidos e desativação do vídeo da seleção para investigar fechamentos.
+A segunda opção inicia desmarcada, inclusive ao atualizar a revisão 50208;
+quando marcada, deixa a seleção sem vídeo. Prólogo e vídeos de outros mapas
+continuam no player original. Altere as opções antes de entrar no personagem.
+
+Diagnóstico oferece Ver último fechamento, Compartilhar relatório e Salvar relatório.
+Os cinco registros mais recentes ficam em `files/diagnostics/reports/`, na área
+privada do aplicativo. O compartilhamento usa URI temporária somente de leitura;
+Salvar abre o seletor de documentos do Android. Não exige permissão de armazenamento.
+No Android 11+, o histórico do sistema informa o motivo; no Android 12+, pode
+fornecer a pilha nativa. Só sinal, bibliotecas e frames do thread que falhou são
+exportados: logs brutos, mensagens de exceção, memória, senhas e tokens são omitidos.
+Quando o sistema não disponibiliza o motivo/pilha, o relatório registra essa ausência.
+
+O manifesto declara mínimo Android 5/API 21, mantém target 28 e habilita
+`android:pageSizeCompat="enabled"`. Unity 2017/libmain ainda são binários legados
+de 4 KB; o modo do Android é uma medida de compatibilidade, sem garantia universal.
+O POCO X6/Android 16 permanece pendente de validação manual pelo tester.
+
+Regressões: `tests/verify_runtime_compat.py`, `verify_presentation.py`,
+`verify_tutorial_bundles.py` e `verify_raft_k.py`. O primeiro executa testes nativos
+dos mesmos helpers da ponte e testa o parser de tombstone sem precisar de USB.
+
+## Discord e transição após o trem
+
+Os ícones de megafone e porta da seleção de personagens abrem
+`https://discord.gg/nFHKbS7De`. A porta usa o mesmo manipulador do aviso;
+esse clique não limpa a conta nem executa o logout antigo.
+
+Após o trem, o player original reproduz `Movie/Mobile/warping.mp4`, já incluído
+no APK, em lugar da URL externa da Nexon. O vídeo permanece sem compressão para
+o `AssetManager.openFd` do player Android. A conclusão do vídeo e a ação de
+pressionar e segurar para pular mantêm seus callbacks originais.
+
+`presentation_original.py` modifica somente três literais dos metadados e uma
+instrução ARM64 de quatro bytes do callback da porta. Os offsets, definições de
+métodos e demais literais são preservados. `tests/verify_presentation.py` confere
+os endereços pelos metadados/registro IL2CPP, o destino da instrução, o conteúdo
+do APK assinado e a leitura local do vídeo sem compressão. Esta revisão foi
+validada por inspeção e testes de integridade; a reprodução no celular aguarda
+o teste manual do jogador.
 
 ## Base original do jogo
 
@@ -9,7 +68,7 @@ O cliente usa a pasta `Durango original`, com Unity **2017.4.34f1**. Essa pasta
 é entrada somente de leitura; a compilação usa `work/original-nexon/client/`.
 Os vídeos, shaders, `resources.arsc`, DEX do jogo original e `libunity.so`
 continuam intactos. A identidade visual altera somente as imagens da marca,
-os créditos da seleção e o nome instalado. São 1.725 arquivos originais
+os créditos da seleção e o nome instalado. Os demais recursos originais são
 preservados byte a byte. O teste anterior foi confirmado pelo jogador:
 acesso ao mapa e shaders carregando corretamente.
 
@@ -104,8 +163,8 @@ python android-client/build_original_apk.py
 ```
 
 Requer Java do Android Studio e os utilitários APKtool/D8/assinatura em `work/`.
-A biblioteca necessária foi preservada em `native/original/libnd-auth.so`, com
-SHA-256 conferido pelo script; não depende de uma pasta de APK antigo na raiz.
+A ponte é compilada dos fontes de `native/original/`; `libnd-auth.so` é mantida
+somente como referência da implementação anterior.
 As fontes da tela e da autenticação estão em `src/com/newdawn/launcher/`.
 
 A compilação confere os recursos originais, verifica assinatura e alinhamento,

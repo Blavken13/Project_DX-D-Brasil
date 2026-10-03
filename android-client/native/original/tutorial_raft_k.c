@@ -9,6 +9,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include "runtime_compat.h"
 #define LOG(...) __android_log_print(ANDROID_LOG_INFO, "BRRaftK", __VA_ARGS__)
 typedef struct { void *klass, *monitor, *bounds; uintptr_t length; void *items[]; } Array;
 typedef struct { float x,y,z; } Vec3;
@@ -322,17 +323,6 @@ int br_install_raft_k(void *library,uintptr_t base) {
     void *entry=(void *)(base+0x16f88ec);
     const unsigned char expected[16]={0xf6,0x57,0xbd,0xa9,0xf4,0x4f,0x01,0xa9,0xfd,0x7b,0x02,0xa9,0xfd,0x83,0x00,0x91};
     if(memcmp(entry,expected,16)) {LOG("Cliente inesperado; restauracao nao instalada");return 0;}
-    long size=sysconf(_SC_PAGESIZE);if(size<=0)return 0;
-    void *stub=mmap(NULL,size,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
-    if(stub==MAP_FAILED)return 0;
-    uint32_t jump[]={0x58000051,0xd61f0220};void *back=(char *)entry+16;
-    memcpy(stub,entry,16);memcpy((char *)stub+16,jump,8);memcpy((char *)stub+24,&back,8);
-    __builtin___clear_cache(stub,(char *)stub+32);
-    if(mprotect(stub,size,PROT_READ|PROT_EXEC)) {munmap(stub,size);return 0;}
-    void *page=(void *)((uintptr_t)entry&~((uintptr_t)size-1));
-    if(mprotect(page,size,PROT_READ|PROT_WRITE|PROT_EXEC)) {munmap(stub,size);return 0;}
-    original_update=stub;void *replacement=update;
-    memcpy(entry,jump,8);memcpy((char *)entry+8,&replacement,8);
-    __builtin___clear_cache(entry,(char *)entry+16);mprotect(page,size,PROT_READ|PROT_EXEC);
+    if (!br_hook_install(entry,expected,update,(void **)&original_update)) return 0;
     LOG("Restauracao visual da K instalada; motor original preservado");return 1;
 }

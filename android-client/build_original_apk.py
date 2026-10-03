@@ -10,6 +10,8 @@ import xml.etree.ElementTree as ET
 import zipfile
 import build_apk as shared
 import branding_original as branding
+import presentation_original as presentation
+import runtime_settings_original as runtime_settings
 
 ROOT, PROJECT = shared.ROOT, shared.PROJECT
 SOURCE = PROJECT / 'Durango original'
@@ -17,6 +19,7 @@ WORK = ROOT / 'work/original-nexon'
 CLIENT = WORK / 'client'
 DECODED = WORK / 'decoded'
 OUTPUT = 'LostHorizon-alfa.apk'
+ANDROID_JAR = shared.SDK / 'platforms/android-36/android.jar'
 LOGIN_FILES = {'assets/durango-br/launcher/web/' + name for name in
                ['index.html', 'mobile.js', 'logo-durango-brasil.png']}
 BUNDLED = ROOT / 'bundled/tutorial'
@@ -38,18 +41,43 @@ def prepare():
         for path in (SOURCE / 'res').rglob('*'):
             if path.is_file(): archive.write(path, path.relative_to(SOURCE).as_posix())
     shared.run(shared.JAVA_BIN / 'java.exe', '-jar', ROOT / 'work/apktool.jar',
-               'd', '-s', '-f', '-o', DECODED, source)
+               'if', ANDROID_JAR, '-p', WORK / 'framework')
+    shared.run(shared.JAVA_BIN / 'java.exe', '-jar', ROOT / 'work/apktool.jar',
+               'd', '-s', '-f', '-p', WORK / 'framework', '-o', DECODED, source)
 
 def authentication():
-    classes = WORK / 'auth-classes'; classes.mkdir(exist_ok=True)
+    classes = WORK / 'compat-classes'
+    if classes.exists():
+        assert classes.resolve().is_relative_to(WORK.resolve()), 'Compile output must stay inside work'
+        shutil.rmtree(classes)
+    classes.mkdir()
+    stub = WORK / 'compile-stubs/com/unity3d/player/UnityPlayer.java'
+    stub.parent.mkdir(parents=True, exist_ok=True)
+    # Compile-only declaration. The actual class is retained in original classes.dex.
+    stub.write_text('''package com.unity3d.player;
+public class UnityPlayer extends android.widget.FrameLayout {
+ public UnityPlayer(android.content.Context c){super(c);}
+ public void quit(){} public void pause(){} public void resume(){}
+ public void start(){} public void stop(){} public void lowMemory(){}
+ public void configurationChanged(android.content.res.Configuration c){}
+ public void windowFocusChanged(boolean f){}
+ public boolean injectEvent(android.view.InputEvent e){return false;}
+}''', 'utf-8')
     shared.run(shared.JAVA_BIN / 'javac.exe', '--release', '8', '-encoding', 'UTF-8',
-               '-cp', ROOT / 'work/android.jar', '-d', classes,
-               ROOT / 'src/com/newdawn/launcher/NewDawnApi.java',
-               ROOT / 'src/com/newdawn/launcher/OriginalAuthActivity.java')
+               '-cp', ANDROID_JAR, '-d', classes, stub,
+               *(ROOT / 'src/com/newdawn/launcher' / name for name in
+                 ['NewDawnApi.java', 'OriginalAuthActivity.java', 'NativeRuntime.java',
+                  'CompatGameActivity.java', 'DiagnosticApplication.java',
+                  'CrashDiagnostics.java', 'ReportProvider.java', 'TombstoneSummary.java']))
+    compile_api = WORK / 'unity-compile-api.jar'
+    with zipfile.ZipFile(compile_api, 'w') as archive:
+        path = classes / 'com/unity3d/player/UnityPlayer.class'
+        archive.write(path, 'com/unity3d/player/UnityPlayer.class')
     dex = WORK / 'auth-dex'; dex.mkdir(exist_ok=True)
     shared.run(shared.JAVA_BIN / 'java.exe', '-cp', ROOT / 'work/d8.jar',
-               'com.android.tools.r8.D8', '--min-api', '21', '--lib', ROOT / 'work/android.jar',
-               '--output', dex, *sorted(classes.rglob('*.class')))
+               'com.android.tools.r8.D8', '--min-api', '21', '--lib', ANDROID_JAR,
+               '--classpath', compile_api,
+               '--output', dex, *sorted((classes / 'com/newdawn').rglob('*.class')))
     shutil.copy2(dex / 'classes.dex', CLIENT / 'classes2.dex')
     login = CLIENT / 'assets/durango-br/launcher/web'
     login.mkdir(parents=True, exist_ok=True)
@@ -69,6 +97,16 @@ def authentication():
     game.set(key('label'), 'Lost Horizon')
     app.set(key('label'), 'Lost Horizon')
     app.set(key('allowBackup'), 'false')  # The new gateway token stays private.
+    app.set(key('name'), 'com.newdawn.launcher.DiagnosticApplication')
+    app.set(key('pageSizeCompat'), 'enabled')
+    import copy
+    compatible_game = copy.deepcopy(game)
+    compatible_game.set(key('name'), 'com.newdawn.launcher.CompatGameActivity')
+    app.append(compatible_game)
+    ET.SubElement(app, 'provider', {
+        key('name'): 'com.newdawn.launcher.ReportProvider',
+        key('authorities'): 'com.nexon.durango.global.lh.reports',
+        key('exported'): 'false', key('grantUriPermissions'): 'true'})
     auth = ET.SubElement(app, 'activity', {
         key('name'): 'com.newdawn.launcher.OriginalAuthActivity', key('exported'): 'true',
         key('hardwareAccelerated'): 'true',
@@ -80,11 +118,12 @@ def authentication():
     tree.write(manifest, encoding='utf-8', xml_declaration=True)
     yaml = DECODED / 'apktool.yml'
     text = yaml.read_text('utf-8')
-    text = re.sub(r'versionCode: \d+', 'versionCode: 50206', text)
-    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa', text)
+    text = re.sub(r'versionCode: \d+', 'versionCode: 50209', text)
+    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa-compat2', text)
+    text = re.sub(r'minSdkVersion: [^\n]+', "minSdkVersion: '21'", text)
     yaml.write_text(text, 'utf-8')
     rebuilt = WORK / 'resources-rebuilt.apk'
-    shared.run(shared.JAVA_BIN / 'java.exe', '-jar', ROOT / 'work/apktool.jar', 'b', DECODED, '-o', rebuilt)
+    shared.run(shared.JAVA_BIN / 'java.exe', '-jar', ROOT / 'work/apktool.jar', 'b', '-p', WORK / 'framework', DECODED, '-o', rebuilt)
     with zipfile.ZipFile(rebuilt) as archive:
         # Retain the original resource table and IDs; branding replaces PNG payloads later.
         (CLIENT / 'AndroidManifest.xml').write_bytes(archive.read('AndroidManifest.xml'))
@@ -100,16 +139,6 @@ def networking():
     assert struct.unpack_from('<I', raw, 0x137b748)[0] == 0x97fd4c73
     struct.pack_into('<I', raw, 0x137b748, 0x14000048)
     (CLIENT / 'lib/arm64-v8a/libil2cpp.so').write_bytes(raw)
-    bridge = bytearray((ROOT / 'native/original/libnd-auth.so').read_bytes())
-    assert hashlib.sha256(bridge).hexdigest() == 'fe2673ea8e450887bf6fa62b8d79d568cafa404cb83f239af200ac610a1f7c32', 'Authentication bridge changed; review before building'
-    assert b'AddField\0' in bridge and b'token\0' in bridge
-    # Reused bridge logs must never print full or partial credentials.
-    for previous, replacement in [
-        (b'ticket anexado: %s\0', b'autenticado\0'),
-        (b'ticket lido do Intent (%.4s...), origens: %s\0', b'credencial recebida\0')]:
-        assert bridge.count(previous) == 1
-        bridge = bridge.replace(previous, replacement.ljust(len(previous), b'\0'))
-    (CLIENT / 'lib/arm64-v8a/libnd.so').write_bytes(bridge)
     relative = Path('assets/bin/Data/b7b0096f71e8a0640be95cc8b863f74d')
     raw = bytearray((SOURCE / relative).read_bytes())
     start = raw.index(b'{\n'); size = struct.unpack_from('<I', raw, start - 4)[0]
@@ -132,14 +161,21 @@ def tutorial_bundles():
     compiler = Path(os.environ.get('ANDROID_NDK_HOME',
         Path(os.environ['LOCALAPPDATA']) / 'Android/Sdk/ndk/28.2.13676358')) / 'toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe'
     shared.run(compiler, '--target=aarch64-linux-android21', '-shared', '-fPIC', '-O2',
+        ROOT / 'native/original/runtime_compat.c', '-Wall', '-Wextra', '-Werror',
+        '-Wno-unused-parameter', '-Wl,-soname,libnd.so', '-Wl,-z,max-page-size=16384',
+        '-Wl,-z,common-page-size=16384', '-o', CLIENT / 'lib/arm64-v8a/libnd.so',
+        '-llog', '-ldl', '-pthread')
+    shared.run(compiler, '--target=aarch64-linux-android21', '-shared', '-fPIC', '-O2',
         ROOT / 'native/original/tutorial_bundles.c', ROOT / 'native/original/tutorial_raft_k.c',
         '-Wall', '-Wextra', '-Werror', '-Wno-unused-parameter', '-o', CLIENT / 'lib/arm64-v8a/libbr.so',
-        '-L' + str(ROOT / 'native/original'), '-Wl,--no-as-needed', '-l:libnd-auth.so',
-        '-llog', '-ldl', '-pthread', '-Wl,-z,max-page-size=16384')
+        '-L' + str(CLIENT / 'lib/arm64-v8a'), '-Wl,--no-as-needed', '-l:libnd.so',
+        '-llog', '-ldl', '-pthread', '-Wl,-z,max-page-size=16384', '-Wl,-z,common-page-size=16384')
 
 def verify():
     changed = []
     allowed = {'AndroidManifest.xml', 'lib/arm64-v8a/libil2cpp.so',
+               presentation.METADATA.as_posix(),
+               runtime_settings.SETTINGS.as_posix(),
                'assets/bin/Data/b7b0096f71e8a0640be95cc8b863f74d'} | branding.changed_files(SOURCE)
     preserved = 0
     for original in SOURCE.rglob('*'):
@@ -155,8 +191,14 @@ def verify():
     report = {'source': str(SOURCE), 'unity': '2017.4.34f1', 'gateway': shared.GATEWAY,
               'preserved_files': preserved, 'changed_files': sorted(changed), 'added_files': sorted(added),
               'branding': branding.verify(SOURCE, CLIENT),
-              'unity_shaders_and_nonbranding_assets_preserved': True, 'original_folder_modified': False,
+              'presentation': presentation.verify(SOURCE, CLIENT),
+              'unity_shaders_preserved': True, 'original_folder_modified': False,
+              'runtime_settings': runtime_settings.verify(SOURCE, CLIENT),
               'login_video': 'assets/Movie/Mobile/title.mp4', 'login_requires_player_action': True,
+              'compatibility': {'own_source_auth': True, 'patch_before_unity_player': True,
+                                'title_video_enabled_by_default': True, 'title_video_independent_option': True,
+                                'runtime_page_size': True, 'reports_private': True,
+                                'legacy_unity_16kb_requires_android_compat_mode': True},
               'tutorial_dependencies': BUNDLE_MANIFEST['bundles'],
               'raft_k': {'entity_id': '502', 'todo': 'talk_npc_raft_ancora.meet_chief',
                          'creates_missing_npc_at_tutorial_boat': True, 'automatic_todo_completion': False}}
@@ -165,11 +207,14 @@ def verify():
 
 def main():
     prepare(); authentication(); networking(); tutorial_bundles()
+    presentation.apply(SOURCE, CLIENT)
+    runtime_settings.apply(SOURCE, CLIENT)
     branding.apply(SOURCE, CLIENT, WORK); verify()
     shared.APK = CLIENT; shared.OUTPUT_NAME = OUTPUT; shared.PACKAGE_EXCLUDES = set()
     shared.DIST.mkdir(exist_ok=True)
     shared.package()
     with zipfile.ZipFile(shared.DIST / OUTPUT) as archive:
+        assert archive.getinfo(presentation.MOVIE.as_posix()).compress_type == zipfile.ZIP_STORED, 'Movie must support AssetManager.openFd'
         for path in CLIENT.rglob('*'):
             if not path.is_file(): continue
             name = path.relative_to(CLIENT).as_posix()

@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include "runtime_compat.h"
 
 #define LOG(...) __android_log_print(ANDROID_LOG_INFO, "BRTutorial", __VA_ARGS__)
 static uintptr_t engine;
@@ -59,51 +60,17 @@ static int install(void) {
     const unsigned char expected[16] = {0xf8,0x5f,0xbc,0xa9,0xf6,0x57,0x01,0xa9,
         0xf4,0x4f,0x02,0xa9,0xfd,0x7b,0x03,0xa9};
     if (memcmp(entry, expected, sizeof(expected))) { LOG("Versao nativa inesperada"); return 0; }
-    long page_size = sysconf(_SC_PAGESIZE);
-    if (page_size <= 0) return 0;
-    void *stub = mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    if (stub == MAP_FAILED) { LOG("Sem espaco para ponte; usando servidor"); return 0; }
-    const uint32_t instructions[2] = {0x58000051, 0xd61f0220}; /* LDR X17,literal; BR X17 */
-    /* The four saved instructions are stack stores, with no PC-relative operands. */
-    memcpy(stub, entry, 16);
-    memcpy((char *)stub + 16, instructions, 8);
-    void *continuation = (char *)entry + 16;
-    memcpy((char *)stub + 24, &continuation, 8);
-    __builtin___clear_cache(stub, (char *)stub + 32);
-    if (mprotect(stub, page_size, PROT_READ | PROT_EXEC)) { munmap(stub, page_size); return 0; }
-    void *page = (void *)((uintptr_t)entry & ~((uintptr_t)page_size - 1));
-    if (mprotect(page, page_size, PROT_READ | PROT_WRITE | PROT_EXEC)) { munmap(stub, page_size); return 0; }
-    original_url = stub;
-    void *replacement = target_url;
-    memcpy(entry, instructions, 8);
-    memcpy((char *)entry + 8, &replacement, 8);
-    __builtin___clear_cache(entry, (char *)entry + 16);
-    mprotect(page, page_size, PROT_READ | PROT_EXEC);
+    if (!br_hook_install(entry, expected, target_url, (void **)&original_url)) return 0;
     LOG("Recursos de K e Pia integrados ao APK");
     return 1;
 }
 
-static void *worker(void *unused) {
-    for (int i = 0; i < 1200; i++) {
-        void *library = dlopen("libil2cpp.so", RTLD_NOW | RTLD_NOLOAD);
-        if (library) {
-            Dl_info info;
-            void *init = dlsym(library, "il2cpp_init");
-            string_new = dlsym(library, "il2cpp_string_new");
-            if (init && string_new && dladdr(init, &info)) {
-                engine = (uintptr_t)info.dli_fbase;
-                install();
-                br_install_raft_k(library, engine);
-                return NULL;
-            }
-        }
-        usleep(50000);
-    }
-    LOG("Inicializacao expirada; usando recursos do servidor");
-    return NULL;
-}
-
-__attribute__((constructor)) static void initialize(void) {
-    pthread_t thread;
-    if (!pthread_create(&thread, NULL, worker, NULL)) pthread_detach(thread);
+int br_install_tutorial(void *library, uintptr_t base) {
+    if (original_url) return 1;
+    engine=base;
+    string_new=dlsym(library,"il2cpp_string_new");
+    if (!string_new) return 0;
+    int resources=install();
+    int raft=br_install_raft_k(library,engine);
+    return resources && raft;
 }
