@@ -127,7 +127,11 @@ internal static class EconomyProtocolCheck
             Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
             Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
             Receive<Messages.Region>(); Receive<Routes>();
-            Receive<EstateLicense>(); Receive<AppearArtifact>();
+            Receive<EstateLicense>(); Receive<EstateLicenses>(); Receive<EstateGrids>(); Receive<AppearArtifact>();
+            Receive<Warehouse>(); Receive<WarehouseUpdated>(); Receive<SectionItems>();
+            Receive<Quests>(); Receive<Messages.QuestState>(); Receive<NotifyQuestProceed>(); Receive<QuestRewardResults>();
+            Receive<Recipes>(); Receive<ArtifactBlueprints>(); Receive<Skills>(); Receive<Failed>();
+            Receive<Actions>(); Receive<SkillCategoryExperienced>(); Receive<ExpGained>();
             Server.StartReceive(); Client.StartReceive();
             Player = new Player(context.EntityId, Server, world, context, false, store);
             if (simulatePlayer) world.AddPlayer(Player);
@@ -136,6 +140,11 @@ internal static class EconomyProtocolCheck
 
         private void Receive<T>() => Client.Recv<T>((message, header) =>
         { Messages.Add(message); _replies.Add((message, header)); });
+
+        public void Send<T>(T message)
+        {
+            if (!Client.Send(message)) throw new InvalidOperationException("Nao foi possivel enviar " + typeof(T).Name);
+        }
 
         public TReply Request<T, TReply>(T message)
         {

@@ -127,6 +127,7 @@ public partial class Player
     /// </summary>
     private void AnimalTurn(AnimalManager.Animal animal, double now)
     {
+        if (!animal.IsAlive || animal.IsKnockedDown || animal.CaptureOwnerId != null) return;
         AnimalTypes.Info info = AnimalTypes.Get(animal.EntityType);
         if (info == null) return;
         if (!_context.AppearPlayer.IsAlive) return;             // ตายแล้วไม่ต้องรุมซ้ำ
@@ -214,7 +215,8 @@ public partial class Player
     // Executado a cada tick do mundo, independentemente do intervalo de visibilidade.
     public void ResolveAnimalAttack(AnimalManager.Animal animal, double now)
     {
-        if (!animal.IsAlive || animal.Captured || !_context.AppearPlayer.IsAlive || animal.AggroTargetId != EntityId)
+        if (!animal.IsAlive || animal.Captured || animal.IsKnockedDown || animal.CaptureOwnerId != null ||
+            !_context.AppearPlayer.IsAlive || animal.AggroTargetId != EntityId)
         { animal.AttackAt = animal.AttackHitAt = 0; return; }
         var info = AnimalTypes.Get(animal.EntityType);
         if (info == null) { animal.AttackAt = animal.AttackHitAt = 0; return; }
@@ -238,6 +240,25 @@ public partial class Player
         var position = PlayerWorldPosition();
         float aimDx = position.x - animal.AttackTargetPosition.x;
         float aimDy = position.y - animal.AttackTargetPosition.y;
+        // A esquiva nativa reage ao impacto por 1,2 s. O tempo vem da ação,
+        // sem confiar no timestamp enviado pelo cliente ou premiar uso sem ataque.
+        if (HasActiveDefense(now) && IsWithinTiles(animal.Tile, AnimalAttackTiles + 2))
+        {
+            _world.BroadCast(new Damaged
+            {
+                VictimId = EntityId,
+                AttackerId = animal.EntityId,
+                EventAt = now,
+                Damage = new Damage
+                {
+                    Result = DamageResult.Dodged, Value = 0,
+                    Part = BodyPart.Body, Direction = CombatTuning.HitDirection,
+                    AttackType = BodyAttackTypeOf(info), Effects = DamageEffects.None
+                }
+            });
+            RecordSuccessfulDefense(active: true);
+            return;
+        }
         // O golpe não segue o jogador depois do aviso: sair do alcance/alvo permite desviar.
         if (!IsWithinTiles(animal.Tile, AnimalAttackTiles) ||
             aimDx * aimDx + aimDy * aimDy > AnimalAttackAimRadius * AnimalAttackAimRadius) return;
@@ -269,6 +290,7 @@ public partial class Player
 
         _survival.Add(SurvivalState.KeyLife, -value);
         FlushSurvival();
+        RecordDefenseExperience(BattleDataStore.DamageableExp.hit_factor);
 
         // ⚠️ ต้องเทียบกับค่ามากกว่า 0 นิดหนึ่ง: หลอดเลือดมีความชันบวก (ฟื้นเอง) ⇒ พออ่านค่า
         // อีกเสี้ยววินาทีถัดมามันไต่ขึ้นพ้น 0 แล้ว ทำให้เช็ค "<= 0" ไม่เคยจริงเลยแม้เลือดจะหมด
@@ -477,7 +499,13 @@ public partial class Player
         bool justAngered = string.IsNullOrEmpty(animal.AggroTargetId);
         animal.AggroTargetId = EntityId;      // ตีมันแล้วมันสู้กลับ แม้เป็นสัตว์กินพืช
         // เพิ่งโกรธ ⇒ เปลี่ยนเป็นท่ายืนแบบเตรียมสู้ ให้เห็นบนจอว่ามันตอบสนอง
-        if (justAngered && animal.IsAlive) _world.BroadCast(animal.ToMotionMessage());
+        if (justAngered && animal.IsAlive && !animal.IsKnockedDown) _world.BroadCast(animal.ToMotionMessage());
+        ApplyAnimalGroggy(animal, attack, Gauge.CurrentTime);
+        if (animal.Life <= 0)
+        {
+            animal.KnockedDownUntil = 0;
+            animal.Groggy = animal.GroggyMax; // Retira as estrelas de atordoamento da carcaça.
+        }
 
         // ⚠️ ต้องส่งหลอดเลือดชุดใหม่ตามไปด้วย ไม่งั้น**หลอดเลือดของเป้าไม่ขยับเลย**
         // ข้อความ Damaged(12) ทำแค่เอฟเฟกต์ตอนโดน (client/Durango.Logic.Combat/DamagedProcesser.cs:155
@@ -511,6 +539,8 @@ public partial class Player
         if (animal.Life <= 0f)
         {
             animal.IsAlive = false;
+            animal.KnockedDownUntil = 0;
+            animal.AttackAt = animal.AttackHitAt = animal.StandAt = 0;
             animal.DiedAt = Times.UnixTimeNow();
             _world.BroadCast(new EntityDied { EntityId = animal.EntityId, At = animal.DiedAt });
             // ⚠️ EntityDied อย่างเดียวไม่พอ — client/AnimalBehavior.cs:830 OnDie ไม่เล่นท่าตายให้
@@ -576,6 +606,38 @@ public partial class Player
     /// <summary>เวลาที่เริ่มจับครั้งล่าสุด — ใช้กับ taming_cooltime</summary>
     private double _lastTamingAt;
     private sealed record PendingTaming(string AnimalId, string ToolId, double DueAt);
+
+    // O tackle usa dano físico 0.2 e atordoamento 5.0 nos dados originais.
+    // Atordoamento não deve ser multiplicado pelo bônus de dano físico do golpe.
+    private void ApplyAnimalGroggy(AnimalManager.Animal animal, BattleAttackInfo attack, double now)
+    {
+        if (!animal.IsAlive || animal.Life <= 0 || animal.IsKnockedDown || attack.groggy <= 0) return;
+        animal.RecoverGroggy(now);
+        var info = AnimalTypes.Get(animal.EntityType);
+        var from = PlayerWorldPosition();
+        var at = animal.PositionAt(now);
+        double angle = Math.Atan2(from.x - at.x, from.y - at.y) * 180 / Math.PI - animal.Yaw;
+        angle = (angle % 360 + 540) % 360 - 180;
+        string side = Math.Abs(angle) <= 45 ? "front" : Math.Abs(angle) >= 135 ? "back" : angle > 0 ? "right" : "left";
+        float ratio = info?.GroggyDamageRatios?.GetValueOrDefault(side, 1f) ?? 1f;
+        float before = animal.Groggy;
+        animal.Groggy = Math.Max(0, before - CurrentAttackPower() * OutgoingDamageScale() * attack.groggy * Math.Max(0, ratio));
+        if (animal.Groggy > 0)
+        {
+            if (before > animal.GroggyDazedThreshold && animal.Groggy <= animal.GroggyDazedThreshold)
+                Send(new Info { Text = "O animal está perdendo o equilíbrio." });
+            else if (before > animal.GroggyWeakThreshold && animal.Groggy <= animal.GroggyWeakThreshold)
+                Send(new Info { Text = "O animal está enfraquecendo." });
+            return;
+        }
+        animal.KnockedDownUntil = now + animal.GroggyDuration;
+        animal.AttackAt = animal.AttackHitAt = animal.StandAt = 0;
+        _world.BroadCast(animal.ToMotionMessage());
+        animal.StopWalkingAt = 0;
+        var status = CombatStatus(animal, AnimalStatus.KnockDown, lookAt: false);
+        status.Details["notice_attack"] = 0;
+        _world.BroadCast(status);
+    }
     private PendingTaming _pendingTaming;
 
     /// <summary>ตัวสุ่มของระบบจับสัตว์ — main loop เส้นเดียว ไม่ต้องล็อก</summary>
@@ -637,6 +699,11 @@ public partial class Player
             return;
         }
 
+        if (!animal.IsKnockedDown || animal.KnockedDownUntil <= now)
+        {
+            RejectTaming(seq, "O animal precisa estar caído e atordoado. Use um golpe de atordoamento antes de capturar.");
+            return;
+        }
         _lastTamingAt = now;
         animal.CaptureOwnerId = EntityId;
         _pendingTaming = new PendingTaming(animal.EntityId, msg.ToolItemId, now + TamingTuning.TamingTime);
@@ -668,6 +735,8 @@ public partial class Player
         { Send(new Info { Text = "O animal nao esta mais enfraquecido o suficiente para capturar." }); return; }
 
         float chance = TamingChance(animal, lifeRatio);
+        if (!animal.IsKnockedDown)
+        { Send(new Info { Text = "A captura foi interrompida: o animal se recuperou do atordoamento." }); return; }
         bool success = TamingRng.NextDouble() < chance;
         Console.WriteLine($"[จับสัตว์] {EntityId[..Math.Min(8, EntityId.Length)]} จับ {info.Name} " +
                           $"lv{animal.CombatLevel} เลือด {lifeRatio:P0} โอกาส {chance:P0} → " +
@@ -695,6 +764,7 @@ public partial class Player
         // Captura é remoção do mundo, nunca morte ou geração de carcaça.
         animal.IsAlive = false;
         animal.Captured = true;
+        animal.KnockedDownUntil = 0;
         animal.Butchered = true;
         animal.DiedAt = now;
         animal.AggroTargetId = null;
@@ -717,6 +787,7 @@ public partial class Player
                 ReinsId = rein.Value.Id
             }
         });
+        NoteQuestEvent(Shared.Quest.QuestEventType.AnimalTamed, animal.EntityType.ToString());
         OnContextChanged();
     }
 
@@ -760,7 +831,7 @@ public partial class Player
         {
             EntityId = animal.EntityId,
             Life = new Gauge(animal.LifeMax, 0f, new[] { new GaugeNode(Gauge.CurrentTime, animal.Life) }),
-            Gauges = new Dictionary<string, Gauge>()
+            Gauges = animal.SurvivalGauges(Gauge.CurrentTime)
         });
     }
 

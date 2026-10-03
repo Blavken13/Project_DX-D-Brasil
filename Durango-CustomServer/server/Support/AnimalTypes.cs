@@ -26,6 +26,11 @@ public static class AnimalTypes
         public string LifeMax;         // สูตร
         public string Attack;          // สูตร
         public string Defense;         // สูตร
+        public string GroggyMax;
+        public string GroggyDuration;
+        public string GroggyVelocity;
+        public string[] GroggySections;
+        public Dictionary<string, float> GroggyDamageRatios;
         public int MinCombatLevel = 1;
         public int MaxCombatLevel = 99;
         public bool Tamable;
@@ -123,6 +128,11 @@ public static class AnimalTypes
                 LifeMax = (string)o["life_max"],
                 Attack = (string)o["attack"],
                 Defense = (string)o["defense"],
+                GroggyMax = (string)o["groggy_max"],
+                GroggyDuration = (string)o["groggy_duration"],
+                GroggyVelocity = (string)o["groggy_velocity"],
+                GroggySections = o["groggy_section"]?.ToObject<string[]>(),
+                GroggyDamageRatios = o["groggy_damage_ratio_table"]?.ToObject<Dictionary<string, float>>(),
                 Tamable = (bool?)o["tamable"] ?? false,
                 BaseScale = ReadScale(o),
                 SizeLevel = (int?)o["size_level"] ?? 1,

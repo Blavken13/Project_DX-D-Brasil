@@ -49,6 +49,7 @@ internal static class WorldInteractionCheck
             WorkbenchTags.AssetsDir = Path.Combine(dataDir, "assets");
             TerrainLoader.TerrainDir = Path.Combine(dataDir, "terrains");
             RegionCatalog.Load(Path.Combine(dataDir, "assets"));
+            EstateAccessCheck.Run(root, Check);
             var wc = Context(root, "grass_company_safehouse_01");
             var world = new World(wc);
             var terrain = TerrainLoader.Load(wc.TerrainId);

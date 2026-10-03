@@ -657,7 +657,7 @@ public partial class Player
             error = "A bancada informada não existe.";
             return false;
         }
-        if (!MayTouchArtifact(workbench.Value.EntityId, "usar bancada"))
+        if (!MayTouchArtifact(workbench.Value.EntityId, "usar bancada", Shared.Estate.AccessRights.UseFacility))
         {
             error = "Você não tem permissão para usar esta bancada.";
             return false;
@@ -1246,7 +1246,7 @@ public partial class Player
     /// </summary>
     private void HandleGetWorkbenchMsg(GetWorkbench msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "abrir bancada"))
+        if (!MayTouchArtifact(msg.EntityId, "abrir bancada", Shared.Estate.AccessRights.UseFacility))
         {
             Send(new Abort { Text = "Você não tem permissão para usar esta bancada." }, seq);
             return;

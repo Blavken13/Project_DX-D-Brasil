@@ -667,7 +667,7 @@ public partial class Player
     private void HandleGetCapsulatingCostMsg(GetCapsulatingCost msg, uint seq)
     {
         if (!TryGetBuildTarget(msg.EntityId, "Consultar custo de coleta", out AppearArtifact artifact,
-                               out MergedBlueprint _, out string error))
+                               out MergedBlueprint _, out string error, Shared.Estate.AccessRights.Take))
         {
             Send(new Abort { Text = error }, seq);
             return;
@@ -703,7 +703,7 @@ public partial class Player
     private void HandleCapsulateArtifactMsg(CapsulateArtifact msg, uint seq)
     {
         if (!TryGetBuildTarget(msg.EntityId, "Coletar", out AppearArtifact artifact,
-                               out MergedBlueprint blueprint, out string error))
+                               out MergedBlueprint blueprint, out string error, Shared.Estate.AccessRights.Take))
         {
             Send(new Abort { Text = error }, seq);
             return;
@@ -894,7 +894,8 @@ public partial class Player
     /// em Ilha Particular somente o proprietário pode modificar as próprias estruturas.
     /// </summary>
     private bool TryGetBuildTarget(string entityId, string what, out AppearArtifact artifact,
-                                   out MergedBlueprint blueprint, out string error)
+                                   out MergedBlueprint blueprint, out string error,
+                                   Shared.Estate.AccessRights requiredRights = Shared.Estate.AccessRights.Occupy)
     {
         artifact = default;
         blueprint = null;
@@ -914,7 +915,7 @@ public partial class Player
         }
 
         string artifactOwner = _world.ArtifactManager.OwnerOf(entityId);
-        if (!CanUseArtifactInCurrentSettlement(found, artifactOwner))
+        if (!CanUseArtifactInCurrentSettlement(found, artifactOwner, requiredRights))
         {
             error = "Você não tem permissão para modificar esta estrutura.";
             return false;

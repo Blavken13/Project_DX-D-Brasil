@@ -187,7 +187,8 @@ internal static class QuestCatalogCheck
         Expect(!QuestCatalog.IsTracked("advisor_combat_onehand_master"), "Once/permanent ไม่ติดตามในเฟส 1");
         Expect(QuestCatalog.IsPlayableCategory("daily"), "หมวด daily เปิดใน UI");
         Expect(!QuestCatalog.IsPlayableCategory("sunset"), "sunset ไม่ใช่หมวดที่เฟส 1 เปิดเอง");
-        Expect(!QuestCatalog.IsPlayableCategory("permanent"), "permanent ยังไม่เปิดแท็บ");
+        Expect(QuestCatalog.IsPlayableCategory("permanent"), "conquistas permanentes abertas no cliente");
+        Expect(QuestCatalog.IsTracked("permanent_gathering_any_01"), "conquista de coleta acompanha eventos reais");
     }
 
     static void ExpectLive(string id, QuestEventType ev, string filter, int goal)

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using Durango.Online;
 using System.Text.RegularExpressions;
 using Durango.Utils;
 using Newtonsoft.Json;
@@ -19,6 +21,7 @@ namespace Yaml.Util;
 public static class QuestCatalog
 {
     public const string DailyCategory = "daily";
+    public const string AchievementCategory = "permanent";
 
     /// <summary>Canonical event filters written into <see cref="QuestDef.Filter"/>.</summary>
     public static class Filters
@@ -45,6 +48,7 @@ public static class QuestCatalog
         ById.Clear();
         ByCategory.Clear();
         Loaded = false;
+        QuestRewardTuning.Load();
 
         var raw = Json.ReadFromFile<Dictionary<string, QuestAssetRow>>("quests/quests_for_client");
         if (raw == null || raw.Count == 0)
@@ -71,6 +75,15 @@ public static class QuestCatalog
             if (def.IsLive) live++;
         }
 
+        // Ordenar por meta, não pelo primeiro número da descrição nem pelo nível
+        // atual de quem resgata: cada etapa da mesma conquista cresce de forma fixa.
+        foreach (var chain in ById.Values.Where(d => d.Category == AchievementCategory && d.IsLive)
+            .GroupBy(d => Regex.Replace(d.Id, @"_\d+$", "")))
+        {
+            int tier = 0;
+            foreach (var def in chain.OrderBy(d => d.GoalCount).ThenBy(d => d.Id, StringComparer.Ordinal))
+                def.RewardTier = ++tier;
+        }
         Loaded = true;
         Console.WriteLine($"[เควส] โหลดแคตตาล็อก {ById.Count} แถว (Daily {daily} · Once {once} · เล่นได้ {live})");
     }
@@ -81,15 +94,15 @@ public static class QuestCatalog
         return ById.TryGetValue(questId, out QuestDef def) ? def : null;
     }
 
-    /// <summary>Daily (and later Once) categories the server actually lists to the client.</summary>
+    /// <summary>Categorias de missões e conquistas que o servidor oferece ao cliente.</summary>
     public static bool IsPlayableCategory(string category)
-        => string.Equals(category, DailyCategory, StringComparison.Ordinal);
+        => category == DailyCategory || category == AchievementCategory;
 
     /// <summary>Id is a Daily/Once row we persist and answer with real state (not sunset Finished).</summary>
     public static bool IsTracked(string questId)
     {
         QuestDef def = Find(questId);
-        return def != null && IsPlayableCategory(def.Category);
+        return def != null && (def.Category == DailyCategory || (def.Category == AchievementCategory && def.IsLive));
     }
 
     public static IReadOnlyList<QuestDef> InCategory(string category)
@@ -118,7 +131,7 @@ public static class QuestCatalog
         Classify(id, category, type, description, goal, out QuestEventType ev, out string filter,
             out bool live, out string unknown);
 
-        return new QuestDef
+        var def = new QuestDef
         {
             Id = id,
             Category = category,
@@ -133,6 +146,8 @@ public static class QuestCatalog
             DisplayOnHud = row.DisplayOnHud,
             Order = row.Order
         };
+        if (category == AchievementCategory && type == QuestType.Once) ClassifyAchievement(def);
+        return def;
     }
 
     public static int ParseGoal(string description)
@@ -143,6 +158,49 @@ public static class QuestCatalog
         return int.TryParse(m.Groups[1].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) && n > 0
             ? n
             : 1;
+    }
+
+    private static void ClassifyAchievement(QuestDef def)
+    {
+        var counters = new (string Prefix, QuestEventType Event, string Filter)[]
+        {
+            ("permanent_hunt_any_animal_", QuestEventType.Hunted, ""),
+            ("permanent_weaponcrafting_any_", QuestEventType.Crafted, Filters.Weapon),
+            ("permanent_armorcrafting_any_", QuestEventType.Crafted, Filters.Clothing),
+            ("permanent_cooking_any_", QuestEventType.Crafted, Filters.Cook),
+            ("permanent_constructing_any_", QuestEventType.Built, ""),
+            ("permanent_gathering_any_", QuestEventType.Collected, Filters.Gather),
+            ("permanent_farming_any_", QuestEventType.Farmed, "")
+        };
+        foreach (var counter in counters)
+        {
+            if (!def.Id.StartsWith(counter.Prefix, StringComparison.Ordinal)) continue;
+            def.Event = counter.Event; def.Filter = counter.Filter;
+            def.IsLive = true; def.UnknownReason = ""; return;
+        }
+        if (def.Id.StartsWith("permanent_level_character_", StringComparison.Ordinal))
+        {
+            def.LevelCategory = -1; def.IsLive = true; def.UnknownReason = ""; return;
+        }
+        var skills = new (string Name, Shared.Skill.Category Category)[]
+        {
+            ("melee_combat", Shared.Skill.Category.MeleeCombat), ("ranged_combat", Shared.Skill.Category.RangedCombat),
+            ("defense", Shared.Skill.Category.Defense), ("butchery", Shared.Skill.Category.Butchery),
+            ("weaponcrafting", Shared.Skill.Category.Weaponcrafting), ("armorcrafting", Shared.Skill.Category.Armorcrafting),
+            ("cooking", Shared.Skill.Category.Cooking), ("constructing", Shared.Skill.Category.Constructing),
+            ("process", Shared.Skill.Category.Process), ("gathering", Shared.Skill.Category.Gathering),
+            ("farming", Shared.Skill.Category.Farming)
+        };
+        foreach (var skill in skills)
+        {
+            if (!def.Id.StartsWith("permanent_level_skill_" + skill.Name + "_", StringComparison.Ordinal)) continue;
+            def.LevelCategory = (int)skill.Category; def.IsLive = true; def.UnknownReason = ""; return;
+        }
+        if (def.Id == "taming_animal_zebra")
+        {
+            def.Event = QuestEventType.AnimalTamed; def.Filter = "2027";
+            def.GoalCount = 1; def.IsLive = true; def.UnknownReason = "";
+        }
     }
 
     static void Classify(string id, string category, QuestType type, string description, int goal,
@@ -278,9 +336,9 @@ public static class QuestCatalog
     /// </summary>
     public static bool Matches(QuestDef def, QuestEventType ev, string detail)
     {
-        if (def == null || !def.IsLive || def.Event != ev) return false;
+        if (def == null || !def.IsLive || ev == QuestEventType.Invalid || def.Event != ev) return false;
         if (string.IsNullOrEmpty(def.Filter)) return true;
-        if (ev == QuestEventType.Collected)
+        if (ev == QuestEventType.Collected || ev == QuestEventType.AnimalTamed)
         {
             return string.Equals(def.Filter, detail, StringComparison.OrdinalIgnoreCase);
         }
@@ -366,6 +424,8 @@ public sealed class QuestDef
     public string UnknownReason;
     public bool DisplayOnHud;
     public int Order;
+    public int RewardTier = 1;
+    public int LevelCategory = -2; // -2 contador; -1 nível do personagem; demais: categoria de skill.
 }
 
 /// <summary>Plain progress row used by tests and by <see cref="Durango.Online.Player.QuestStore"/>.</summary>

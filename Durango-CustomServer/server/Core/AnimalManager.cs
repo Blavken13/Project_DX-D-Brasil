@@ -85,6 +85,28 @@ public class AnimalManager
         public float Life;
         public float Attack;
         public float Defense;
+        public float GroggyMax;
+        public float Groggy;
+        public float GroggyWeakThreshold;
+        public float GroggyDazedThreshold;
+        public float GroggyVelocity;
+        public double GroggyUpdatedAt;
+        public double GroggyDuration;
+        public double KnockedDownUntil;
+        public bool IsKnockedDown => IsAlive && !Captured && KnockedDownUntil > 0;
+
+        public void RecoverGroggy(double now)
+        {
+            if (!IsAlive || IsKnockedDown) return;
+            if (GroggyUpdatedAt > 0 && now > GroggyUpdatedAt)
+                Groggy = Math.Clamp(Groggy + (float)(now - GroggyUpdatedAt) * GroggyVelocity, 0, GroggyMax);
+            GroggyUpdatedAt = now;
+        }
+
+        public Dictionary<string, Gauge> SurvivalGauges(double now) => new()
+        {
+            ["groggy"] = new Gauge(Math.Max(1, GroggyMax), 0, new[] { new GaugeNode(now, Groggy) })
+        };
         public bool IsAlive = true;
         public bool Captured;
         public bool DefensiveOnly;
@@ -210,6 +232,7 @@ public class AnimalManager
                 AnimalMotions.Motions m = AnimalMotions.Of(EntityType);
                 if (m == null) return null;
                 if (!IsAlive) return m.Dead ?? m.Stand;
+                if (IsKnockedDown) return m.Groggy ?? m.Stand;
                 if (!string.IsNullOrEmpty(AggroTargetId)) return m.BattleStand ?? m.Stand;
                 return m.Stand ?? m.Idle;
             }
@@ -217,6 +240,7 @@ public class AnimalManager
 
         /// <summary>ท่าตายเล่นครั้งเดียวแล้วค้างท่าสุดท้าย ท่าอื่นวนซ้ำ</summary>
         public MotionOption CurrentMotionOption =>
+            IsKnockedDown ? MotionOption.IN_PLACE_MOTION | MotionOption.SNAP_ANGLE_BEGIN :
             IsAlive ? MotionOption.LOOPING : MotionOption.NORMAL;
 
         /// <summary>
@@ -266,6 +290,8 @@ public class AnimalManager
         public Move ToMotionMessage()
         {
             double now = Gauge.CurrentTime;
+            if (IsKnockedDown)
+                return MakeMotion(CurrentMotion, Yaw, now, Math.Max(.1, KnockedDownUntil - now));
             // ท่าตายเล่นรอบเดียว ท่ายืนวนลูป
             return MakeMotion(CurrentMotion, Yaw, now, IsAlive ? 2.0 : 30.0, loop: IsAlive);
         }
@@ -332,7 +358,7 @@ public class AnimalManager
             {
                 EntityId = EntityId,
                 Life = new Gauge(LifeMax, 0f, new[] { new GaugeNode(Gauge.CurrentTime, Life) }),
-                Gauges = new Dictionary<string, Gauge>()
+                Gauges = SurvivalGauges(Gauge.CurrentTime)
             },
             Display = new AnimalDisplay
             {
@@ -368,6 +394,7 @@ public class AnimalManager
     public IReadOnlyList<Animal> All => _animals;
 
     public int Count => _animals.Count;
+    public event Action<Animal> GroggyStateChanged;
 
     public AnimalManager(TerrainData terrain, RegionCatalog.TemplateInfo template)
     {
@@ -414,6 +441,22 @@ public class AnimalManager
                 }
                 continue;
             }
+
+            // A recuperação é sincronizada pelo mundo, inclusive sem jogadores próximos.
+            if (animal.IsKnockedDown)
+            {
+                if (now >= animal.KnockedDownUntil && animal.CaptureOwnerId == null)
+                {
+                    animal.KnockedDownUntil = 0;
+                    animal.Groggy = animal.GroggyMax;
+                    animal.GroggyUpdatedAt = now;
+                    animal.NextAttackAt = Math.Max(animal.NextAttackAt, now + 0.5);
+                    broadcast(animal.ToMotionMessage());
+                    GroggyStateChanged?.Invoke(animal);
+                }
+                continue;
+            }
+            animal.RecoverGroggy(now);
 
             // [7 ก.ย. 2026] ตีจบแล้ว — ดึงกลับท่ายืนที่ตำแหน่งจริง
             //
@@ -601,6 +644,9 @@ public class AnimalManager
         animal.AttackAt = animal.AttackHitAt = 0;
         animal.NextAttackAt = 0;
         animal.Life = animal.LifeMax;
+        animal.Groggy = animal.GroggyMax;
+        animal.GroggyUpdatedAt = Gauge.CurrentTime;
+        animal.KnockedDownUntil = 0;
         animal.DiedAt = 0.0;
         animal.LastCorpseLogAt = 0.0;
         animal.Butchered = false;
@@ -651,7 +697,7 @@ public class AnimalManager
             int wantedCompso = Math.Min(
                 wantedTotal - wantedZebra,
                 WorldTuning.SafehouseCompsognathusCount);
-            int safehouseLevel = WorldTuning.SafehouseAnimalLevel;
+            int safehouseLevel = Math.Max(1, template.Level - 2);
 
             // A grade antiga (12 tiles) podia não fornecer 100 posições válidas.
             // Preferimos espaçamento 8; se ainda faltar terreno, completamos com grade 4,
@@ -909,6 +955,7 @@ public class AnimalManager
         // ถ้าสูตรอ่านไม่ออกจริง ๆ ให้ใช้ค่าสำรองที่ "ไม่ทำให้เกมพัง" แล้วบ่นออกล็อก
         // (life 1 = ตีทีเดียวตาย ดีกว่าสัตว์อมตะที่ไม่มีใครรู้ว่าทำไม)
         float lifeMax = (float)Math.Max(1.0, StatFormula.EvalOr(info.LifeMax, vars, 1.0));
+        float groggyMax = (float)Math.Max(1.0, StatFormula.EvalOr(info.GroggyMax, vars, lifeMax));
 
         return new Animal
         {
@@ -921,6 +968,13 @@ public class AnimalManager
             Yaw = (float)(SpawnYawRng.NextDouble() * 360.0),
             LifeMax = lifeMax,
             Life = lifeMax,
+            GroggyMax = groggyMax,
+            Groggy = groggyMax,
+            GroggyWeakThreshold = (float)StatFormula.EvalOr(info.GroggySections?.ElementAtOrDefault(1), vars, groggyMax / 3),
+            GroggyDazedThreshold = (float)StatFormula.EvalOr(info.GroggySections?.ElementAtOrDefault(2), vars, groggyMax / 9),
+            GroggyDuration = Math.Max(0.1, StatFormula.EvalOr(info.GroggyDuration, vars, 8)),
+            GroggyVelocity = (float)Math.Max(0, StatFormula.EvalOr(info.GroggyVelocity, vars, 0)),
+            GroggyUpdatedAt = Gauge.CurrentTime,
             Attack = (float)Math.Max(0.0, StatFormula.EvalOr(info.Attack, vars, 0.0)),
             Defense = (float)Math.Max(0.0, StatFormula.EvalOr(info.Defense, vars, 0.0))
         };

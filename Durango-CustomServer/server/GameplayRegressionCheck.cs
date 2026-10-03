@@ -114,9 +114,43 @@ internal static class GameplayRegressionCheck
             var tool = Cheats.MakeItem(toolPrototype, 60).Value;
             context.InventoryItems.Add(tool);
             animal.Life = animal.LifeMax * .001f;
+            link.Request<UseTamingAction, Abort>(new UseTamingAction { EntityId = animal.EntityId, ToolItemId = tool.Id });
+            Check(animal.CaptureOwnerId == null && !animal.IsKnockedDown,
+                "vida baixa sozinha nao permite capturar um animal em pe");
+            animal.Life = animal.LifeMax;
+            animal.Groggy = 1;
+            animal.AttackAt = animal.AttackHitAt = animal.StandAt = Gauge.CurrentTime + 1;
+            // Usa a investida original, que produz pouco dano fisico e muito atordoamento.
+            var tackle = Json.ReadFromFile<JObject>("player/player_battle_actions")["melee_tackle"]["attack_info"][0]
+                .ToObject<BattleAttackInfo>();
+            Check((bool)Call(player, "TryAttackAnimal", animal.EntityId, tackle, Gauge.CurrentTime),
+                "investida passa pelo handler real de dano ao animal");
+            Check(animal.IsAlive && animal.Life > 0 && animal.IsKnockedDown && animal.Groggy == 0,
+                "investida derruba animal vivo sem criar cadaver");
+            Check(animal.CurrentMotion == AnimalMotions.Of(animal.EntityType).Groggy &&
+                animal.AttackAt == 0 && animal.AttackHitAt == 0 && animal.StandAt == 0,
+                "queda usa clip Groggy nativo e cancela aviso, impacto e retorno a postura");
+            Check((animal.ToMotionMessage().Movements[0].MotionOption & 1) == 0 &&
+                ((byte)animal.CurrentMotionOption & 1) == 0,
+                "queda nao repete animacao de cair em loop, inclusive para novos observadores");
+            life = survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime);
+            Call(player, "AnimalTurn", animal, Gauge.CurrentTime);
+            player.ResolveAnimalAttack(animal, Gauge.CurrentTime + 1);
+            Check(animal.AttackAt == 0 && survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime) >= life,
+                "animal caido nao reage nem causa dano");
+            world.AnimalManager.Process(animal.KnockedDownUntil - .01, _ => { });
+            Check(animal.IsKnockedDown, "animal permanece caido ate o fim da duracao nativa");
+            world.AnimalManager.Process(animal.KnockedDownUntil + .01, _ => { });
+            Check(!animal.IsKnockedDown && animal.Groggy == animal.GroggyMax,
+                "animal recupera postura e resistencia sem morrer");
+            animal.Life = animal.LifeMax * .001f;
+            Call(player, "ApplyAnimalGroggy", animal, new BattleAttackInfo { groggy = 10000 }, Gauge.CurrentTime);
             int inventoryCount = context.InventoryItems.Count;
             int deaths = link.Messages.OfType<EntityDied>().Count();
             link.Request<UseTamingAction, Messages.Timer>(new UseTamingAction { EntityId = animal.EntityId, ToolItemId = tool.Id });
+            world.AnimalManager.Process(animal.KnockedDownUntil + .01, _ => { });
+            Check(animal.IsKnockedDown && animal.CaptureOwnerId == context.EntityId,
+                "tentativa iniciada durante queda permanece protegida ate terminar");
             Check(animal.IsAlive && !animal.Captured && context.InventoryItems.Count == inventoryCount,
                 "captura aguarda o tempo da ferramenta sem remover animal instantaneamente");
             Call(player, "UpdateTaming", Gauge.CurrentTime + TamingTuning.TamingTime + .1);
@@ -148,6 +182,7 @@ internal static class GameplayRegressionCheck
                 player.GetType().GetField("_lastTamingAt", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(player, 0d);
                 animal.Life = animal.LifeMax * .001f;
                 Place(context, animal.Tile);
+                Call(player, "ApplyAnimalGroggy", animal, new BattleAttackInfo { groggy = 10000 }, Gauge.CurrentTime);
                 link.Request<UseTamingAction, Messages.Timer>(new UseTamingAction { EntityId = animal.EntityId, ToolItemId = tool.Id });
             }
             BeginCapture();
@@ -164,6 +199,13 @@ internal static class GameplayRegressionCheck
             Check(animal.IsAlive && !animal.Captured && animal.CaptureOwnerId == null,
                 "sair do alcance interrompe captura e libera alvo");
             Place(context, tile);
+
+            var killed = world.AnimalManager.SpawnAt(animal.EntityType, 1, tile);
+            killed.Life = 1; killed.Groggy = 0; killed.KnockedDownUntil = Gauge.CurrentTime + 8;
+            Call(player, "TryAttackAnimal", killed.EntityId, tackle, Gauge.CurrentTime);
+            Check(!killed.IsAlive && !killed.Captured && killed.KnockedDownUntil == 0 && killed.Groggy == killed.GroggyMax,
+                "golpe letal produz morte normal e limpa atordoamento, sem tratar como captura");
+            link.Request<UseTamingAction, Abort>(new UseTamingAction { EntityId = killed.EntityId, ToolItemId = tool.Id });
 
             var tutorialContext = new WorldContext { TerrainId = "tropical_event_ancora_01" };
             tutorialContext.Initialize(Path.Combine(root, "tutorial.world"));

@@ -454,7 +454,7 @@ public partial class Player
         });
         _connection.Recv(delegate(OpenGate msg, PacketHeader header)
         {
-            if (!MayTouchArtifact(msg.EntityId, "abrir portão")) return;
+            if (!MayTouchArtifact(msg.EntityId, "abrir portão", Shared.Estate.AccessRights.Enter)) return;
 
             _world.ArtifactManager.OpenGate(new PropKey
             {
@@ -464,7 +464,7 @@ public partial class Player
         });
         _connection.Recv(delegate(CloseGate msg, PacketHeader header)
         {
-            if (!MayTouchArtifact(msg.EntityId, "fechar portão")) return;
+            if (!MayTouchArtifact(msg.EntityId, "fechar portão", Shared.Estate.AccessRights.Enter)) return;
 
             _world.ArtifactManager.OpenGate(new PropKey
             {
@@ -478,12 +478,12 @@ public partial class Player
         });
         _connection.Recv(delegate(TurnOnMusic msg, PacketHeader header)
         {
-            if (!MayTouchArtifact(msg.EntityId, "ligar música")) return;
+            if (!MayTouchArtifact(msg.EntityId, "ligar música", Shared.Estate.AccessRights.UseFacility)) return;
             _world.ArtifactManager.TurnOnMusic(msg.EntityId);
         });
         _connection.Recv(delegate(TurnOffMusic msg, PacketHeader header)
         {
-            if (!MayTouchArtifact(msg.EntityId, "desligar música")) return;
+            if (!MayTouchArtifact(msg.EntityId, "desligar música", Shared.Estate.AccessRights.UseFacility)) return;
             _world.ArtifactManager.TurnOffMusic(msg.EntityId);
         });
         _connection.Recv(delegate(ChangeMannequinDisplay msg, PacketHeader header)
@@ -512,7 +512,7 @@ public partial class Player
         });
         _connection.Recv(delegate(TakeOutItem msg, PacketHeader header)
         {
-            if (!MayTouchArtifact(msg.EntityId, "retirar itens"))
+            if (!MayTouchArtifact(msg.EntityId, "retirar itens", Shared.Estate.AccessRights.Take))
             {
                 Send(new Abort { Text = "Você não tem permissão para retirar itens deste objeto." }, header.ReplyOf);
                 return;
@@ -941,6 +941,12 @@ public partial class Player
                     Category = QuestCatalog.DailyCategory,
                     Name = "Diária",
                     UnreceivedCount = CountClaimableDaily()
+                },
+                new QuestCategory
+                {
+                    Category = QuestCatalog.AchievementCategory,
+                    Name = "Conquistas",
+                    UnreceivedCount = CountClaimableAchievements()
                 }
             },
             Epic = new QuestCategory { Category = EpicCategory }
@@ -1281,6 +1287,10 @@ public partial class Player
                 string artifactOwner = _world.ArtifactManager.OwnerOf(touch.EntityId);
                 bool authorized = touched.HasValue &&
                                   CanUseArtifactInCurrentSettlement(touched.Value, artifactOwner);
+                bool CanPerform(Shared.Estate.AccessRights rights) => touched.HasValue &&
+                    CanUseArtifactInCurrentSettlement(touched.Value, artifactOwner, rights);
+                bool canBuild = CanPerform(Shared.Estate.AccessRights.Occupy);
+                bool canTake = CanPerform(Shared.Estate.AccessRights.Take);
 
                 if (touched is { } building)
                 {
@@ -1289,7 +1299,7 @@ public partial class Player
                         case Shared.Building.BuildingState.Occupied:
                             // Estruturas em construção só podem receber materiais de quem possui
                             // autoridade sobre o domínio, salvo no modo Editable.
-                            if (authorized || flag)
+                            if (canBuild || flag)
                             {
                                 list.Add(Shared.System.Interaction.BuildArtifact);
                             }
@@ -1297,7 +1307,7 @@ public partial class Player
 
                         case Shared.Building.BuildingState.Built:
                             // A finalização segue a mesma autoridade da construção.
-                            if ((authorized || flag) &&
+                            if ((canBuild || flag) &&
                                 (building.States.Postprocess is not { } pp || Gauge.CurrentTime >= pp.EndsAt))
                             {
                                 list.Add(Shared.System.Interaction.CompleteArtifact);
@@ -1306,7 +1316,7 @@ public partial class Player
                         case Shared.Building.BuildingState.Completed:
                             // "포장" — เก็บใส่กระเป๋าแล้วเอาไปวางที่ใหม่ (Player.Building.cs)
                             // ของถาวร (ท่าเรือ/รูวาร์ป) เก็บไม่ได้ตามข้อมูลเกมเอง
-                            if (authorized && !blueprint.Permanent)
+                            if (canTake && !blueprint.Permanent)
                             {
                                 list.Add(Shared.System.Interaction.Capsulate);
                             }
@@ -1319,7 +1329,7 @@ public partial class Player
                     // ซึ่งเป็นค่าจริงใน data/config.json **ไม่มีปุ่มรื้อเลยสักหลัง** ผู้เล่นสร้างผิดที่
                     // แล้วแก้ไม่ได้ ต้องเรียกแอดมินมาลบให้ (เจอตอนเทสด้วย bot — เมนูมีแค่ Rest)
                     // ⇒ ผูกกับ "เป็นเจ้าของ" แทน ซึ่งตรงกับด่านจริงที่ HandleDestructMsg ใช้อยู่แล้ว
-                    if (authorized || flag) list.Add(Shared.System.Interaction.DestructArtifact);
+                    if (CanPerform(Shared.Estate.AccessRights.Destruct) || flag) list.Add(Shared.System.Interaction.DestructArtifact);
                 }
                 if (!completed)
                 {
@@ -1419,11 +1429,11 @@ public partial class Player
                     Farming? farming = touched?.States.Farming;
                     bool occupied = farming.HasValue;
                     bool mature = occupied && FarmHarvest.IsMature(farming.Value, Gauge.CurrentTime);
-                    if (!occupied && (authorized || flag))
+                    if (!occupied && (canBuild || flag))
                     {
                         list.Add(Shared.System.Interaction.Plant);
                     }
-                    if (mature && (authorized || flag))
+                    if (mature && (canTake || flag))
                     {
                         string seed = _world.ArtifactManager.PlantedSeed(touch.EntityId);
                         Crop harvestCrop = CropYaml.Get(seed);
@@ -1461,7 +1471,7 @@ public partial class Player
                     list.Add(Shared.System.Interaction.ScribbleDrawing);
                     list.Add(Shared.System.Interaction.ScribbleText);
                 }
-                if (blueprint.Components.Contains("Gate") && (authorized || flag))
+                if (blueprint.Components.Contains("Gate") && (CanPerform(Shared.Estate.AccessRights.Enter) || flag))
                 {
                     AppearArtifact? appearArtifact = _world.ArtifactManager.Get(touch.EntityId);
                     if (appearArtifact.HasValue)
@@ -1476,7 +1486,7 @@ public partial class Player
                     list.Add(Shared.System.Interaction.ChangeMannequinHead);
                     list.Add(Shared.System.Interaction.ChangeMannequinBody);
                 }
-                if (KUtility.GetSize(blueprint.Musics) > 0 && (authorized || flag))
+                if (KUtility.GetSize(blueprint.Musics) > 0 && (CanPerform(Shared.Estate.AccessRights.UseFacility) || flag))
                 {
                     AppearArtifact? appearArtifact2 = _world.ArtifactManager.Get(touch.EntityId);
                     if (appearArtifact2.HasValue)
@@ -1618,9 +1628,11 @@ public partial class Player
     /// Ilha Particular → proprietário;
     /// Ilha de Clã → membros do clã dentro do domínio do clã.
     ///
-    /// Estruturas sem proprietário e sem domínio válido continuam protegidas por padrão.
+    /// Permissoes delegadas sao verificadas para a acao solicitada; administrar o dominio
+    /// continua reservado ao proprietario. Estruturas sem dominio continuam protegidas.
     /// </summary>
-    private bool MayTouchArtifact(string artifactEntityId, string what)
+    private bool MayTouchArtifact(string artifactEntityId, string what,
+        Shared.Estate.AccessRights requiredRights = Shared.Estate.AccessRights.None)
     {
         AppearArtifact? found = _world.ArtifactManager.Get(artifactEntityId);
         if (!found.HasValue)
@@ -1633,7 +1645,7 @@ public partial class Player
         AppearArtifact artifact = found.Value;
         string owner = _world.ArtifactManager.OwnerOf(artifactEntityId);
 
-        if (!CanUseArtifactInCurrentSettlement(artifact, owner))
+        if (!CanUseArtifactInCurrentSettlement(artifact, owner, requiredRights))
         {
             Console.WriteLine(
                 $"[permissão] {Short(EntityId)} não pode {what} {artifactEntityId} — " +
@@ -1804,7 +1816,7 @@ public partial class Player
     /// </summary>
     private void HandleDestructMsg(DestructArtifact msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "Desmontar")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Desmontar", Shared.Estate.AccessRights.Destruct)) return;
         // ⚠️ [6 ก.ย. 2026] ของในตู้ไม่ได้ถูกลบไปกับหลัง แต่จะหายจากไฟล์ในรอบเซฟถัดไป
         // แล้วดึงคืนไม่ได้ (เหตุผลเต็มที่ Player.Inventory.HasStoredItems)
         if (HasStoredItems(msg.EntityId))
@@ -1923,7 +1935,7 @@ public partial class Player
 
     private void HandlePlantSeedMsg(PlantSeed msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "plant"))
+        if (!MayTouchArtifact(msg.EntityId, "plant", Shared.Estate.AccessRights.Occupy))
         {
             Send(new Abort { Text = "Você não tem permissão para plantar neste canteiro." }, seq);
             return;

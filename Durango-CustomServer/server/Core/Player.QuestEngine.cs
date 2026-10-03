@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Messages;
 using Shared.Quest;
 using Yaml.Util;
@@ -9,7 +10,7 @@ using QuestStateEnum = Shared.Quest.QuestState;
 namespace Durango.Online;
 
 /// <summary>
-/// Phase 1 quest engine — Daily (and Once when the same count-event pipeline applies).
+/// Missões diárias e conquistas com eventos de jogabilidade e metas de nível.
 /// Progress lives in <see cref="QuestStore"/> and is flushed to <c>_context.Quests</c>.
 /// </summary>
 public partial class Player
@@ -107,6 +108,7 @@ public partial class Player
     /// <summary>โฆษณาแท็บ Daily หลัง QuestCategories ถึงฝั่งเกมแล้ว</summary>
     void AnnouncePlayableQuests()
     {
+        RefreshAchievementLevels();
         QuestToDo[] todos = DailyTodos();
         if (todos.Length == 0) return;
         Send(new QuestStarted
@@ -123,7 +125,7 @@ public partial class Player
         for (int i = 0; i < defs.Count; i++)
         {
             QuestStore.Ensure(EntityId, defs[i]);
-            todos[i] = QuestStore.ToQuestToDo(EntityId, defs[i].Id);
+            todos[i] = QuestStore.ToQuestToDo(EntityId, defs[i].Id, BuildQuestReward(defs[i]));
         }
         return todos;
     }
@@ -148,9 +150,9 @@ public partial class Player
         EnsureDailyReset();
 
         bool any = false;
-        foreach (QuestDef def in QuestCatalog.InCategory(QuestCatalog.DailyCategory))
+        foreach (QuestDef def in QuestCatalog.Live)
         {
-            if (!QuestCatalog.Matches(def, ev, detail)) continue;
+            if (!QuestCatalog.IsTracked(def.Id) || !QuestCatalog.Matches(def, ev, detail)) continue;
             QuestStore.Entry entry = QuestStore.Ensure(EntityId, def);
             if (entry == null) continue;
             var row = new QuestProgressRow
@@ -179,37 +181,33 @@ public partial class Player
     }
 
     /// <summary>
-    /// กดรับรางวัล Daily ที่ ReachTheGoal — จ่าย skill exp (assets ไม่มีตารางไอเทม)
-    /// คืน true เมื่อเคลมสำเร็จ (caller ต้องไม่ Abort)
+    /// Resgata EXP e moedas T de uma diária ou conquista concluída.
+    /// Retorna true quando a solicitação foi tratada, inclusive se houve Abort.
     /// </summary>
     bool TryClaimPlayableQuestReward(string questId, uint seq)
     {
         EnsureDailyReset();
+        RefreshAchievementLevels();
 
         QuestDef def = QuestCatalog.Find(questId);
         if (def == null || !QuestCatalog.IsTracked(questId)) return false;
 
-        QuestStore.Entry entry = QuestStore.Find(EntityId, questId);
-        if (entry == null || entry.State != QuestStateEnum.ReachTheGoal)
+        if (!def.IsLive || !QuestStore.TryFinishReward(EntityId, questId, out QuestStore.Entry entry))
         {
             Console.WriteLine($"[เควส] {Short(EntityId)} ขอรับ '{questId}' แต่ยังไม่ถึงเป้า");
             Send(new Abort { Text = "A recompensa desta missão ainda não está disponível." }, seq);
             return true;
         }
 
-        int exp = PreviewActionExp(SkillTuning.QuestClaimWeight);
+        var reward = BuildQuestReward(def);
+        var (_, weight) = QuestRewardTuning.For(def, _skillLevel);
+        int exp = reward.Exp ?? 0;
         SkillCat? skill = SkillForQuest(def);
-        AddExpForAction(SkillTuning.QuestClaimWeight, skill, $"Missão {questId}");
-
-        QuestStore.Set(EntityId, questId, QuestStateEnum.Finished, Math.Max(entry.GoalCount, entry.Progress),
-            Math.Max(1, entry.GoalCount));
+        // O estado de resgate e o saldo são gravados no mesmo PlayerContext.
+        long stones = reward.Currency?.GetValueOrDefault(Shared.Economy.Currency.TStone) ?? 0;
+        AddTStone(stones, $"Recompensa {questId}");
+        AddExpForAction(weight, skill, $"Missão {questId}");
         OnContextChanged();
-
-        var reward = new RewardInfo
-        {
-            Exp = exp,
-            QuestScore = 10
-        };
 
         Send(new NotifyQuestProceed
         {
@@ -232,7 +230,7 @@ public partial class Player
             }
         });
 
-        Console.WriteLine($"[เควส] {Short(EntityId)} รับรางวัล '{questId}' (exp {exp})");
+        Console.WriteLine($"[missões] {Short(EntityId)} resgatou '{questId}': {exp} EXP e {stones} moedas T");
         return true;
     }
 
@@ -255,5 +253,39 @@ public partial class Player
                 return SkillCat.Weaponcrafting;
         }
         return null;
+    }
+
+    int CountClaimableAchievements() => QuestCatalog.InCategory(QuestCatalog.AchievementCategory)
+        .Count(d => d.IsLive && QuestStore.StateOf(EntityId, d.Id) == QuestStateEnum.ReachTheGoal);
+
+    internal RewardInfo BuildQuestReward(QuestDef def)
+    {
+        var (stones, weight) = QuestRewardTuning.For(def, _skillLevel);
+        int exp = Math.Min(Math.Max(0, ExpCap() - (_skills?.Exp ?? 0)), PreviewActionExp(weight));
+        return new RewardInfo
+        {
+            Exp = exp,
+            Currency = stones > 0 ? new() { [Shared.Economy.Currency.TStone] = Math.Min(stones, Math.Max(0, MaxCurrencyBalance - TStone)) } : null,
+            QuestScore = def?.Category == QuestCatalog.DailyCategory ? 10 : null
+        };
+    }
+
+    void RefreshAchievementLevels(bool save = true)
+    {
+        if (_skills == null || !_questsHydrated) return;
+        bool changed = false;
+        foreach (var def in QuestCatalog.InCategory(QuestCatalog.AchievementCategory).Where(d => d.IsLive && d.LevelCategory >= -1))
+        {
+            var entry = QuestStore.Ensure(EntityId, def);
+            if (entry.State is QuestStateEnum.Finished or QuestStateEnum.ReachTheGoal) continue;
+            int level = def.LevelCategory == -1 ? _skillLevel : CategoryState(def.LevelCategory).Level;
+            int progress = Math.Min(Math.Max(0, level), def.GoalCount);
+            if (progress <= entry.Progress) continue;
+            QuestStore.Set(EntityId, def.Id, progress >= def.GoalCount ? QuestStateEnum.ReachTheGoal : QuestStateEnum.WorkInProgress,
+                progress, def.GoalCount);
+            Send(new NotifyQuestProceed { QuestId = def.Id, Progress = progress, GoalCount = def.GoalCount, Finished = false });
+            changed = true;
+        }
+        if (changed && save) OnContextChanged();
     }
 }

@@ -1,0 +1,26 @@
+{
+  "provenance": "Balanceamento do alfa brasileiro. Não é a tabela original da Nexon; ver docs/taming-and-quest-rewards.md.",
+  "daily": [
+    {"level": 1, "t_stones": 100},
+    {"level": 10, "t_stones": 200},
+    {"level": 20, "t_stones": 400},
+    {"level": 30, "t_stones": 600},
+    {"level": 40, "t_stones": 800},
+    {"level": 50, "t_stones": 1000},
+    {"level": 60, "t_stones": 1200}
+  ],
+  "achievements": [
+    {"tier": 1, "t_stones": 250, "exp_multiplier": 1},
+    {"tier": 2, "t_stones": 500, "exp_multiplier": 2},
+    {"tier": 3, "t_stones": 1000, "exp_multiplier": 3},
+    {"tier": 4, "t_stones": 1500, "exp_multiplier": 4},
+    {"tier": 5, "t_stones": 2000, "exp_multiplier": 5},
+    {"tier": 6, "t_stones": 3000, "exp_multiplier": 6},
+    {"tier": 7, "t_stones": 4000, "exp_multiplier": 7},
+    {"tier": 8, "t_stones": 5000, "exp_multiplier": 8},
+    {"tier": 9, "t_stones": 6000, "exp_multiplier": 9},
+    {"tier": 10, "t_stones": 7500, "exp_multiplier": 10},
+    {"tier": 11, "t_stones": 9000, "exp_multiplier": 11},
+    {"tier": 12, "t_stones": 10000, "exp_multiplier": 12}
+  ]
+}

@@ -127,6 +127,24 @@ public partial class World
         PopulateSafehouseResources();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
         AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
+        AnimalManager.GroggyStateChanged += animal =>
+        {
+            BroadCast(new Survival
+            {
+                EntityId = animal.EntityId,
+                Life = new Gauge(animal.LifeMax, 0, new[] { new GaugeNode(Gauge.CurrentTime, animal.Life) }),
+                Gauges = animal.SurvivalGauges(Gauge.CurrentTime)
+            });
+            BroadCast(new CombatInteraction
+            {
+                EntityId = animal.EntityId,
+                Details = new Dictionary<string, long>
+                {
+                    ["status"] = (long)(string.IsNullOrEmpty(animal.AggroTargetId)
+                        ? Shared.Animal.AnimalStatus.Peace : Shared.Animal.AnimalStatus.Battle)
+                }
+            });
+        };
         InitializeWildStructureExpirations();
         // Saves antigos podem conter spots parcialmente coletados sem fila de renovação.
         foreach (var key in _context.NaturalHarvests.Keys.ToArray()) ScheduleTutorialRefresh(key);
@@ -1487,9 +1505,7 @@ public partial class World
             Size = rec.Size,
             RegionId = rec.RegionId,
             Tile = new Point2(rec.TileX, rec.TileY),
-            AccessRights = rec.AccessForOthers.HasValue
-                ? new Messages.AccessRights { ForOthers = (Shared.Estate.AccessRights)rec.AccessForOthers.Value }
-                : null
+            AccessRights = rec.ToAccessRights()
         };
     }
 

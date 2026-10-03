@@ -745,7 +745,7 @@ public partial class Player
     private bool TryFindRein(string entityId, string itemId, out DomesticationInfo info, out string error)
     {
         info = default;
-        if (!MayTouchArtifact(entityId, "Usar jaula de domesticação"))
+        if (!MayTouchArtifact(entityId, "Usar jaula de domesticação", Shared.Estate.AccessRights.UseFacility))
         {
             error = "Esta jaula não pertence a você.";
             return false;

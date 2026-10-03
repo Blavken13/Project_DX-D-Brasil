@@ -176,12 +176,16 @@ public partial class Player
     /// </summary>
     private int CurrentGatheringLevel(ushort entityType = 0)
     {
-        if (RegionCatalog.TryGet(_world.TerrainId, out Messages.Region region))
+        RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(_world.TerrainInfo?.region_template);
+        if (template != null)
         {
-            RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
-            if (template?.CollectibleLevels.TryGetValue(entityType, out int nativeLevel) == true)
+            // Refugio e assentamentos usam o nivel da ilha, inclusive recursos adicionados
+            // e instancias da Ilha Domada. Os overrides originais ainda estao no nivel 1.
+            if (template.Role is Shared.Region.Role.Safehouse or Shared.Region.Role.Personal)
+                return Math.Max(1, template.Level);
+            if (template.CollectibleLevels.TryGetValue(entityType, out int nativeLevel))
                 return template.Role == Shared.Region.Role.Risky ? Math.Max(template.Level, nativeLevel) : nativeLevel;
-            if (template != null && template.Level > 0) return template.Level;
+            if (template.Level > 0) return template.Level;
         }
         return 1;
     }

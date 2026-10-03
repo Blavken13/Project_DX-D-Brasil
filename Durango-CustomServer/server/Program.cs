@@ -115,7 +115,11 @@ internal static class Program
                         if (args[j] == "--data") dataDir = args[j + 1];
                     return EconomyCheck.Run(dataDir);
                 case "--quest-check":
+                case "--quest-rewards-check":
+                case "--progression-check":
                 {
+                    bool checkProgression = args[i] == "--progression-check";
+                    bool checkRewards = args[i] == "--quest-rewards-check";
                     string checkData = Path.Combine(AppContext.BaseDirectory, "data");
                     while (i + 1 < args.Length)
                     {
@@ -127,7 +131,8 @@ internal static class Program
                         }
                         i++;
                     }
-                    return QuestCatalogCheck.Run(checkData);
+                    return checkProgression ? ProgressionRegressionCheck.Run(checkData) :
+                        checkRewards ? QuestRewardCheck.Run(checkData) : QuestCatalogCheck.Run(checkData);
                 }
                 case "--fx-check":
                 {
@@ -254,6 +259,8 @@ internal static class Program
                     Console.WriteLine("  --android-assets-check [--assetbundles-android <dir>] Audita catálogo, preload e dependências sem abrir o servidor");
                     Console.WriteLine("DurangoServerNx — เซิร์ฟแท้พอร์ตตรง · มือถือก่อน");
                     Console.WriteLine("  --quest-check [--data <dir>]  ตรวจแคตตาล็อก Daily เฟส 1 (ไม่ต้องเปิดเซิร์ฟ)");
+                    Console.WriteLine("  --quest-rewards-check [--data <dir>] Valida moedas T, EXP, conquistas, reset e resgate pelo TCP");
+                    Console.WriteLine("  --progression-check [--data <dir>] Valida desbloqueios de craft, bancadas e experiencia de Defesa");
                     Console.WriteLine("  --economy-check [--data <dir>]  Valida mercado, loja, persistencia e protocolo TCP em saves temporarios");
                     Console.WriteLine("  --gameplay-check [--data <dir>]  Valida avisos de ataque, captura, descanso e renovacao do tutorial");
                     Console.WriteLine("  --fx-check [--data <dir>]     ตรวจแพ็กเก็ต Rewarded ของเลเวลขึ้น / หมวดขึ้น");

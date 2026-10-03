@@ -66,7 +66,9 @@ internal static class DataCheck
         {
             IReadOnlyList<CollectibleTable.GeneratorSpec> specs = CollectibleTable.AllSpecs(entityType);
             string[] ids = specs.Select(s => s.Id).ToArray();
-            bool ok = ids.Contains(expect);
+            // O ID do gerador pertence ao protocolo do cliente (ex.: reed).
+            // O recurso entregue pode ter outro ID de prototype (ex.: stem).
+            bool ok = specs.Any(s => string.Equals(s.PrototypeId, expect, StringComparison.Ordinal));
             if (!ok) bad++;
             Console.WriteLine($"  {(ok ? "✓" : "✗")} {entityType} {what}");
             Console.WriteLine($"      ได้: {(ids.Length == 0 ? "(ไม่มีอะไรเลย)" : string.Join(" · ", specs.Select(s => $"{s.Id} \"{s.Name}\"")))}");

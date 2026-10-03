@@ -701,6 +701,8 @@ public partial class Player
             return;
         }
         string entityId = msg.Target.Value.EntityId;
+        if (!MayTouchArtifact(entityId, "abrir recipiente", Shared.Estate.AccessRights.UseFacility))
+        { Send(new Abort { Text = "Você não tem permissão para abrir este recipiente." }, seq); return; }
         List<Item> items = WarehouseStore.Items(entityId, WarehouseStore.ContainerSection, create: false);
         Send(new Messages.Inventory
         {
@@ -758,7 +760,7 @@ public partial class Player
     /// </summary>
     private void HandlePutInItemMsg(PutInItem msg, uint seq)
     {
-        if (!MayTouchArtifact(msg.EntityId, "guardar itens no recipiente"))
+        if (!MayTouchArtifact(msg.EntityId, "guardar itens no recipiente", Shared.Estate.AccessRights.Give))
         {
             Send(new Abort { Text = "Você não tem permissão para usar este recipiente." }, seq);
             return;
@@ -925,7 +927,8 @@ public partial class Player
     {
         // ⚠️ ตู้/คลังผูกกับสิ่งปลูกสร้าง ⇒ ต้องเป็นเจ้าของและอยู่ใกล้ ไม่งั้นเดินผ่านบ้านคนอื่น
         // จำ entity id จากแพ็กเก็ต แล้วขนของทั้งคลังเข้ากระเป๋าตัวเองได้โดยเจ้าของไม่รู้ตัว
-        if (!MayTouchArtifact(msg.EntityId, "Abrir armário")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Abrir armário", Shared.Estate.AccessRights.UseFacility))
+        { Send(new Abort { Text = "Você não tem permissão para abrir este depósito." }, seq); return; }
         WarehouseStore.EnsureDefaultSection(msg.EntityId, DefaultWarehouseSection);
         Send(new Messages.Warehouse
         {
@@ -949,7 +952,8 @@ public partial class Player
     {
         // ⚠️ ตู้/คลังผูกกับสิ่งปลูกสร้าง ⇒ ต้องเป็นเจ้าของและอยู่ใกล้ ไม่งั้นเดินผ่านบ้านคนอื่น
         // จำ entity id จากแพ็กเก็ต แล้วขนของทั้งคลังเข้ากระเป๋าตัวเองได้โดยเจ้าของไม่รู้ตัว
-        if (!MayTouchArtifact(msg.EntityId, "Ver conteúdo do armário")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Ver conteúdo do armário", Shared.Estate.AccessRights.UseFacility))
+        { Send(new Abort { Text = "Você não tem permissão para abrir este depósito." }, seq); return; }
         List<Item> items = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         Send(new SectionItems
         {
@@ -966,7 +970,7 @@ public partial class Player
     /// </summary>
     private void HandleAddItemsToWarehouseMsg(AddItemsToWarehouse msg)
     {
-        if (!MayTouchArtifact(msg.EntityId, "guardar itens no depósito"))
+        if (!MayTouchArtifact(msg.EntityId, "guardar itens no depósito", Shared.Estate.AccessRights.Give))
         {
             Send(new Abort { Text = "Você não tem permissão para usar este depósito." });
             return;
@@ -1016,7 +1020,8 @@ public partial class Player
     {
         // ⚠️ ตู้/คลังผูกกับสิ่งปลูกสร้าง ⇒ ต้องเป็นเจ้าของและอยู่ใกล้ ไม่งั้นเดินผ่านบ้านคนอื่น
         // จำ entity id จากแพ็กเก็ต แล้วขนของทั้งคลังเข้ากระเป๋าตัวเองได้โดยเจ้าของไม่รู้ตัว
-        if (!MayTouchArtifact(msg.EntityId, "Retirar itens do armário")) return;
+        if (!MayTouchArtifact(msg.EntityId, "Retirar itens do armário", Shared.Estate.AccessRights.Take))
+        { Send(new Abort { Text = "Você não tem permissão para retirar itens deste depósito." }); return; }
         List<Item> section = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         if (section == null) return;
         int free = InventoryMaxSizeMirroredFromPlayerCs

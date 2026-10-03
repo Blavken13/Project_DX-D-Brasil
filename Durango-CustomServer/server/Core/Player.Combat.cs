@@ -87,10 +87,20 @@ public class BattleActionData
 {
     public BattleActionMeta meta;
     public BattleAttackInfo[] attack_info;
+    public BattleDefenseInfo defense_info;
+}
+
+public class BattleDefenseInfo
+{
+    public float active_time;
+    public float stand_by_time;
+    public float dodge_force;
 }
 
 public class BattleActionMeta
 {
+    public float exp_factor;
+    public Shared.Skill.Category skill_category;
     public int stamina;
     public float cooltime;
     public float action_length;
@@ -167,6 +177,13 @@ public class CombatConstantsData
 {
     public DeathPenaltyData death_penalty;
     public ReviveImmediatelyData revive_immediately;
+    public DamageableExpData damageable_exp;
+}
+
+public class DamageableExpData
+{
+    public double hit_factor = .1;
+    public double auto_defense_factor = 1;
 }
 
 /// <summary>ชนิดอาวุธของแต่ละ prototype — performance.json → weapon → &lt;id&gt; → "[1, 60]" → attack_type</summary>
@@ -262,6 +279,11 @@ public static class BattleDataStore
     public static DeathPenaltyData DeathPenalty
     {
         get { EnsureLoaded(); return _constants.death_penalty; }
+    }
+
+    public static DamageableExpData DamageableExp
+    {
+        get { EnsureLoaded(); return _constants.damageable_exp ?? new DamageableExpData(); }
     }
 
     public static ReviveImmediatelyData ReviveImmediately
@@ -475,6 +497,12 @@ public partial class Player
             FlushSurvival();
         }
         SetBattleMode(true, msg.TargetEntityId);
+        if (action.defense_info != null && action.meta.skill_category == Shared.Skill.Category.Defense)
+        {
+            BeginDefenseAction(action, now);
+            return;
+        }
+        ClearDefenseAction();
 
         BattleAttackInfo attack = action.attack_info != null && action.attack_info.Length > 0
             ? action.attack_info[0]
@@ -537,6 +565,7 @@ public partial class Player
     /// </summary>
     private void ReceiveAttack(Player attacker, BattleAttackInfo attack, double startAt)
     {
+        if (!_context.AppearPlayer.IsAlive) return;
         PlayerBattleStats stats = BattleDataStore.Stats;
         string damageKind = DominantAtkRatio(attack);
         float defenseRatio = 1f;
@@ -565,7 +594,8 @@ public partial class Player
         // โดนหรือหลบ — ใช้ Derived.Dodge / Accuracy ของทั้งสองฝ่ายหลังรวมสกิล
         float myDodge = CurrentDerivedDodge();
         float atkAccuracy = attacker.CurrentDerivedAccuracy();
-        bool dodged = myDodge > 0 && myDodge * (attack.accuracy_ratio > 0f ? attack.accuracy_ratio : 1f)
+        bool activeDefense = HasActiveDefense(Gauge.CurrentTime);
+        bool dodged = activeDefense || myDodge > 0 && myDodge * (attack.accuracy_ratio > 0f ? attack.accuracy_ratio : 1f)
                       > atkAccuracy;
 
         var damaged = new Damaged
@@ -586,12 +616,17 @@ public partial class Player
         _world.BroadCast(damaged);
         attacker.WearEquippedWeapon();
         SetBattleMode(true, attacker.EntityId);
-        if (dodged) return;
+        if (dodged)
+        {
+            RecordSuccessfulDefense(activeDefense);
+            return;
+        }
 
         // เลือดของผู้เล่น = หลอด life (players.json → survival.life ค่าสูงสุดมาจาก life.max_gauge = 300
         // ซึ่งตรงกับ body_parts.body.max_hp) ⇒ หักที่หลอดนี้ ไม่ได้เก็บ HP แยกอีกชุด
         _survival.Add(SurvivalState.KeyLife, -value);
         FlushSurvival();
+        RecordDefenseExperience(BattleDataStore.DamageableExp.hit_factor);
         // เทียบกับ 1 ไม่ใช่ 0 — หลอดเลือดมีความชันบวก อ่านช้าไปเสี้ยววินาทีค่าจะไต่พ้น 0 แล้ว
         // (เหตุผลเต็มอยู่ที่ Player.Hunting.DeadLifeThreshold)
         if (_survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime) <= DeadLifeThreshold)
@@ -708,6 +743,7 @@ public partial class Player
     /// </summary>
     private void SetBattleMode(bool on, string enemyId = null)
     {
+        if (!on) ClearDefenseAction();
         if (on == _inBattle)
         {
             return;
@@ -767,6 +803,7 @@ public partial class Player
     private void Die()
     {
         if (!_context.AppearPlayer.IsAlive) return;
+        ClearDefenseAction();
         _context.AppearPlayer.IsAlive = false;
         _deathCount++;
         _survival.Set(SurvivalState.KeyLife, 0f);

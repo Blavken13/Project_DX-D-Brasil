@@ -306,6 +306,8 @@ internal class SkillConstantsJson
 
 internal class SkillSave
 {
+    // Frações de EXP de Defesa por impactos reais; persistem entre sessões.
+    [JsonProperty("defense_exp_remainder")] public double DefenseExpRemainder;
     /// <summary>เผื่ออนาคตต้องแปลงรูปแบบเซฟ</summary>
     [JsonProperty("v")] public int Version = 1;
 
@@ -730,6 +732,7 @@ public partial class Player
 
     private void SaveSkillState()
     {
+        RefreshAchievementLevels(save: false);
         // ⚠️ serialize พลาดแล้วเขียน null ทับ = สกิลทั้งชุดของผู้เล่นหายตอนโหลดรอบหน้า
         // ⇒ เก็บของเดิมไว้ดีกว่าเขียนทับด้วยของว่าง (เหตุผลเดียวกับ Support/SafeSave.WriteAtomic)
         byte[] blob = Json.WriteToBytes(_skills);
@@ -1054,6 +1057,7 @@ public partial class Player
 
         SkillCategorySave state = CategoryState((int)category);
         double reduced = 0.0;
+        bool publishedSkills = false;
 
         if (state.ResearchEnd > 0.0)
         {
@@ -1084,6 +1088,7 @@ public partial class Player
                 if (GrantFreeSkills(save: false))
                 {
                     SendSkills();
+                    publishedSkills = true;
                     SendFullStatistics();
                     // Novo skill gratuito pode liberar receitas. O RecipeSystem do cliente
                     // mantém cache durante a sessão; sem este push a receita só aparece após relogar.
@@ -1099,6 +1104,9 @@ public partial class Player
             Exp = state.ResearchEnd > 0.0 ? 0 : amount,
             ResearchReducedTime = reduced
         });
+        // SkillCategoryExperienced desenha apenas o indicador. A barra de EXP,
+        // o nível e a pesquisa do cliente são atualizados pelo pacote Skills.
+        if (!publishedSkills) SendSkills();
         if (save) SaveSkillState();
     }
 
@@ -1173,7 +1181,16 @@ public partial class Player
     /// ⚠️ ต้องเป็น 0 ไม่ใช่ seq ของคำขอที่กำลังทำอยู่ — ฝั่งเกมรับ Recipes ด้วย handler กลาง
     /// เรียกหลังทุกจุดที่ "ชุดสูตรที่ปลดได้" เปลี่ยน: เรียนสกิล · แจกสกิลอัตโนมัติ · วิจัยหมวดเสร็จ
     /// </summary>
-    private void PushUnlockedRecipes() => SendRecipes(0u);
+    private void PushUnlockedRecipes()
+    {
+        SendRecipes(0u);
+        Send(new ArtifactBlueprints
+        {
+            Ids = CraftableBlueprintIds(),
+            LikedBlueprintIds = _likedBlueprints.ToArray(),
+            NewBlueprintIds = Array.Empty<string>()
+        });
+    }
 
     private void HandleResearch(ResearchSkillCategory msg, uint seq)
     {

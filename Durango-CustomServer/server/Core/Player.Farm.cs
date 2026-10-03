@@ -218,7 +218,7 @@ public partial class Player
         }
 
         string owner = _world.ArtifactManager.OwnerOf(msg.EntityId);
-        if (!CanUseArtifactInCurrentSettlement(artifact, owner))
+        if (!CanUseArtifactInCurrentSettlement(artifact, owner, Shared.Estate.AccessRights.Take))
         {
             RejectCollect(seq, "Você não tem permissão para colher neste canteiro.", msg);
             return true;

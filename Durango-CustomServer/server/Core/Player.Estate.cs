@@ -126,9 +126,7 @@ public partial class Player
         // ฟิลด์จริง (server/GameCode/Messages/SetEstateLicense.cs:9,11): EstateId · AccessRights
         //   โดย Messages.AccessRights (server/GameCode/Messages/AccessRights.cs:10,12,14) แยกเป็น
         //   ForOthers / ForFriends(map ตาม FriendType) / ForClanMembers(map ตาม role id)
-        // ตรรกะ: Player.PersonalRegion.cs:368 — เก็บเฉพาะ ForOthers ลง EstateRecord.AccessForOthers
-        //   แล้วตอบ default(OK) (OK ไม่มีฟิลด์ ใช้ default ได้ ต่างจาก Abort ที่ห้าม)
-        //   ⚠️ ForFriends/ForClanMembers ยังไม่ถูกเก็บ — ตั้งค่าสองอันนั้นแล้วค่าจะหายรอบหน้า
+        // Persiste ForOthers, ForFriends e ForClanMembers e responde OK na mesma sequencia.
         _connection.Recv(delegate(SetEstateLicense msg, PacketHeader header)
         {
             HandleSetEstateLicense(msg, header.Seq);

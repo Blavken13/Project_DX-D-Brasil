@@ -526,7 +526,9 @@ public partial class Player
 
                 EstateRecord estate = _world.GetEstate(estateId);
                 if (estate == null ||
-                    !string.Equals(estate.OwnerId, requiredOwner, StringComparison.Ordinal) ||
+                    (!string.Equals(estate.OwnerId, requiredOwner, StringComparison.Ordinal) &&
+                     !(settlement?.Kind == SettlementRegionKind.SharedTamed &&
+                       estate.Allows(EntityId, Shared.Estate.AccessRights.Occupy))) ||
                     (requiredType.HasValue && estate.Type != (int)requiredType.Value))
                 {
                     error = "A área de construção invade um domínio sem permissão.";
@@ -538,7 +540,8 @@ public partial class Player
         return true;
     }
 
-    private bool CanUseArtifactInCurrentSettlement(AppearArtifact artifact, string artifactOwner)
+    private bool CanUseArtifactInCurrentSettlement(AppearArtifact artifact, string artifactOwner,
+        Shared.Estate.AccessRights requiredRights = Shared.Estate.AccessRights.None)
     {
         if (string.Equals(artifactOwner, EntityId, StringComparison.Ordinal))
         {
@@ -564,7 +567,8 @@ public partial class Player
         if (settlement.Kind == SettlementRegionKind.SharedTamed)
         {
             return estate.Type == (int)OwnerType.Player &&
-                   string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal);
+                   (string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal) ||
+                    estate.Allows(EntityId, requiredRights));
         }
 
         if (settlement.Kind == SettlementRegionKind.Clan)
@@ -714,7 +718,7 @@ public partial class Player
             Send(new Abort { Text = "Domínio não encontrado ou sem permissão administrativa." }, seq);
             return;
         }
-        rec.AccessForOthers = (int)msg.AccessRights.ForOthers;
+        rec.SetAccessRights(msg.AccessRights);
         _world.Save();
         Send(default(OK), seq);
         if (rec.Cells.Count > 0)

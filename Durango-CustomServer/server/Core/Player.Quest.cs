@@ -89,6 +89,7 @@ public partial class Player
         // ว่าง = โปรโตคอลไม่ได้กำหนดมา ⇒ ใช้หมวดเรื่องหลักเป็นค่าตั้งต้น
         EnsureDailyReset();
         string category = string.IsNullOrEmpty(msg.Category) ? EpicCategory : msg.Category;
+        RefreshAchievementLevels();
 
         var todos = new List<QuestToDo>();
         if (QuestCatalog.IsPlayableCategory(category))
@@ -96,8 +97,9 @@ public partial class Player
             // Daily (และ Once ที่ pipeline เดียวกันในอนาคต) — รายชื่อจาก assets ไม่ใช่ epics
             foreach (QuestDef def in QuestCatalog.InCategory(category))
             {
+                if (category == QuestCatalog.AchievementCategory && !def.IsLive) continue;
                 QuestStore.Ensure(EntityId, def);
-                todos.Add(QuestStore.ToQuestToDo(EntityId, def.Id));
+                todos.Add(QuestStore.ToQuestToDo(EntityId, def.Id, BuildQuestReward(def)));
             }
         }
         else
@@ -136,6 +138,7 @@ public partial class Player
     private void HandleGetQuestStateMsg(GetQuestState msg, uint seq)
     {
         EnsureDailyReset();
+        RefreshAchievementLevels();
         var states = new Dictionary<string, Shared.Quest.QuestState>();
         // client ส่งมาครั้งละ 1 id (QuestSystem.cs:207-209) แต่โปรโตคอลรองรับหลาย id ⇒ ทำครบ
         // ⚠️ key ว่างห้ามใส่ — Dictionary<string,_> โยน ArgumentNullException กับ null key
@@ -325,7 +328,7 @@ public partial class Player
         }
 
         /// <summary>แปลงสถานะเป็น QuestToDo ตามโครงที่ handler เดิมส่ง (ค่าเริ่มต้นเหมือนเดิมทุกฟิลด์)</summary>
-        public static QuestToDo ToQuestToDo(string ownerEntityId, string questId)
+        public static QuestToDo ToQuestToDo(string ownerEntityId, string questId, RewardInfo? reward = null)
         {
             Entry entry = Find(ownerEntityId, questId);
             QuestDef def = QuestCatalog.Find(questId);
@@ -340,7 +343,7 @@ public partial class Player
                 Finished = finished,
                 EndAt = def != null && def.Type == QuestType.Daily ? QuestCatalog.NextResetUnix() : 0.0,
                 // ปุ่มรับรางวัลโผล่จาก Reward.HasValue (QuestNodeWidget.UpdateQuestRewards)
-                Reward = QuestCatalog.IsTracked(questId) ? DisplayReward() : null
+                Reward = QuestCatalog.IsTracked(questId) ? reward ?? DisplayReward() : null
             };
         }
 
@@ -353,6 +356,20 @@ public partial class Player
         }
 
         // ── ชุด id ของเควสเรื่องหลัก — cache ครั้งเดียวต่อโปรเซส ────────────────────────
+        public static bool TryFinishReward(string ownerEntityId, string questId, out Entry result)
+        {
+            lock (Gate)
+            {
+                result = null;
+                if (string.IsNullOrEmpty(questId) || !OfUnlocked(ownerEntityId).TryGetValue(questId, out var entry) ||
+                    entry.State != Shared.Quest.QuestState.ReachTheGoal || entry.GoalCount < 1 || entry.Progress < entry.GoalCount)
+                    return false;
+                entry.State = Shared.Quest.QuestState.Finished;
+                result = new Entry { State = entry.State, GoalCount = entry.GoalCount, Progress = entry.Progress };
+                return true;
+            }
+        }
+
         private static HashSet<string> _storyQuestIds;
 
         /// <summary>

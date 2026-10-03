@@ -39,6 +39,55 @@ internal static class GameplayPolishCheck
     { new Movement { MotionName = "Stand", PlaybackRate = 1, Path = new[]
         { new Location { Position = new WorldPosition(tile.x * 200, tile.y * 200), Time = Gauge.CurrentTime } } } };
 
+    private static void CheckStarterResources(string root, World world, int expectedLevel, string name)
+    {
+        var context = Player(root, name, world.TerrainId);
+        Place(context, world.EntryPoint);
+        using var link = new EconomyProtocolCheck.Link(context, world, null, true);
+        var template = RegionCatalog.GetTemplate(world.TerrainInfo.region_template);
+        var types = template.CollectibleLevels.Keys
+            .Concat(Durango.Terrain.NaturalInfo.FromBytes(TerrainLoader.Load(world.TerrainId).Garden)
+                .Select(n => n.EntityType))
+            .Append((ushort)13014).Distinct().Where(t => CollectibleTable.GeneratorCount(t) > 0).ToArray();
+        Check(world.RegionLevel == expectedLevel && types.Length > 0, name + " possui recursos e nivel de ilha esperado");
+        foreach (ushort type in types)
+        {
+            int level = (int)Call(link.Player, "CurrentGatheringLevel", type);
+            Check(level == expectedLevel, name + " recurso " + type + " acompanha nivel " + expectedLevel);
+            var collectible = link.Player.BuildCollectibleFor("", type, world.EntryPoint);
+            Check(collectible.Generators.All(g => g.Level == CollectibleTable.ClampLevel(
+                CollectibleTable.FindGenerator(type, g.Id), expectedLevel)), name + " menu " + type + " projeta nivel da ilha");
+        }
+
+        // Coleta pelo TCP: o nivel enviado pelo cliente nao pode alterar o item recebido.
+        var tile = new Point2(world.EntryPoint.x + 6, world.EntryPoint.y + 6);
+        world.AddNatural(tile, 13014);
+        Place(context, tile);
+        var touched = link.Request<Touch, Touched>(new Touch { EntityId = "", EntityType = 13014, Tile = tile });
+        var generator = touched.Collectible.Generators.First();
+        int before = context.InventoryItems.Count;
+        var timer = link.Request<Collect, Messages.Timer>(new Collect
+            { EntityId = "", Tile = tile, GeneratorId = generator.Id, Level = 1 });
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
+        link.PumpUntil(() => link.Messages.OfType<Collected>().Any());
+        var gathered = context.InventoryItems.Skip(before).ToArray();
+        Check(gathered.Length > 0 && gathered.All(i => i.Level ==
+            Math.Min(expectedLevel, PrototypeYaml.GetItemPrototype(i.Prototype).MaxLevel)), name + " entrega itens no nivel da ilha pelo TCP");
+
+        var carcass = world.AnimalManager.All.FirstOrDefault();
+        if (carcass != null)
+        {
+            Check(world.AnimalManager.All.All(a => a.CombatLevel == Math.Max(1, expectedLevel - 2)),
+                name + " dinos permanecem dois niveis abaixo da ilha");
+            carcass.Life = 0;
+            carcass.IsAlive = false;
+            var collectible = link.Player.BuildCollectibleFor(carcass.EntityId, carcass.EntityType, carcass.Tile);
+            Check(collectible.Generators.Length > 0 && collectible.Generators.All(g => g.Level ==
+                CollectibleTable.ClampLevel(CollectibleTable.FindGenerator(carcass.EntityType, g.Id), carcass.CombatLevel)),
+                name + " coleta de carcaca usa nivel do dino");
+        }
+    }
+
     public static int Run(string dataDir)
     {
         string root = Path.Combine(Path.GetTempPath(), "Durango-polish-check-" + Guid.NewGuid().ToString("N"));
@@ -54,6 +103,11 @@ internal static class GameplayPolishCheck
             var high = new World(highContext);
             var lowContext = Context(root, "low", "pe10gr_1");
             var low = new World(lowContext);
+            CheckStarterResources(root, new World(Context(root, "safehouse", "grass_company_safehouse_01")), 5, "safehouse");
+            CheckStarterResources(root, low, 10, "ilha-domada");
+            var tutorial = new World(Context(root, "tutorial", "tropical_event_ancora_01"));
+            using (var tutorialLink = new EconomyProtocolCheck.Link(Player(root, "tutorial-tester", tutorial.TerrainId), tutorial, null, true))
+                Check((int)Call(tutorialLink.Player, "CurrentGatheringLevel", (ushort)11009) == 1, "tutorial conserva recursos nivel 1");
             var store = new EconomyStore(Path.Combine(root, "economy.json"), new ShopCatalog());
             var context = Player(root, "tester", highId);
             Place(context, high.EntryPoint);
