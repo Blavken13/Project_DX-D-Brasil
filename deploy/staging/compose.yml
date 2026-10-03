@@ -17,8 +17,9 @@ services:
       DURANGO_REPORTS_TRUSTED_PROXY: 172.29.91.2
 
     networks:
-      - default
-      - reports
+      default: {}
+      reports:
+        ipv4_address: 172.29.91.3
 
     ports:
       - "${DURANGO_GATEWAY_PORT:-8190}:8190/tcp"
