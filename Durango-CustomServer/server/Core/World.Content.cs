@@ -116,6 +116,45 @@ public partial class World
         Console.WriteLine($"[safehouse] adicionados {added} spots em {types.Length} tipos nativos, sem sobrepor construções.");
     }
 
+    private void PopulateFlowerResources()
+    {
+        // Uma migracao por mundo, inclusive saves com garden persistido. Nao e
+        // uma rotina por frame e nao restaura imediatamente plantas ja coletadas.
+        if (_context.FlowerEcologyVersion >= 1 ||
+            RegionCatalog.GetTemplate(_terrainData.Info?.region_template)?.Role == Role.Tutorial) return;
+        ushort[] types = { 11008, 11020, 11091, 14063, 14064 };
+        const int minimumPerType = 8;
+        var current = new List<NaturalInfo>();
+        foreach (var chunk in _chunkData)
+            current.AddRange(NaturalInfo.FromBytes(chunk.Garden ?? Array.Empty<byte>()));
+        var candidates = TerrainEcology.LandGrid(_terrainData, 4).ToArray();
+        var landmarks = LandmarkInfo.FromBytes(_terrainData.Landmarks ?? Array.Empty<byte>());
+        int added = 0;
+        foreach (ushort type in types)
+        {
+            var info = DataHelper.GetBiomeSpriteInfo(type);
+            if (info?.Survivability == null || !CollectibleTable.AllSpecs(type).Any(s => s.PrototypeId == "flower")) continue;
+            int count = current.Count(n => n.EntityType == type) + _context.NaturalRegrow.Count(n => n.EntityType == type);
+            if (count >= minimumPerType) continue;
+            // Ordem estavel, distribuida pelo mapa; sem Random compartilhado com combate.
+            foreach (var tile in candidates.OrderBy(p => unchecked((uint)(p.x * 73856093 ^ p.y * 19349663 ^ type))))
+            {
+                if (count >= minimumPerType) break;
+                if (!info.Survivability.Contains(TerrainEcology.BiomeAt(_terrainData, tile)) ||
+                    !CanPlaceSystemContent(tile) || _removedNatural.Contains(tile) ||
+                    _context.NaturalRegrow.Any(n => Math.Abs(n.X - tile.x) <= 1 && Math.Abs(n.Y - tile.y) <= 1) ||
+                    current.Any(n => Math.Abs(n.X - tile.x) <= 1 && Math.Abs(n.Y - tile.y) <= 1) ||
+                    landmarks.Any(n => Math.Abs(n.X - tile.x) <= 2 && Math.Abs(n.Y - tile.y) <= 2)) continue;
+                AddNatural(tile, type);
+                current.Add(new NaturalInfo { X = (ushort)tile.x, Y = (ushort)tile.y, EntityType = type });
+                count++; added++;
+            }
+        }
+        _context.FlowerEcologyVersion = 1;
+        Save();
+        if (added > 0) Console.WriteLine($"[flores] {TerrainId}: restaurados {added} spots nos biomas nativos.");
+    }
+
     public Point2 PortalLanding(Point2 portal)
     {
         for (int radius = 4; radius <= 32; radius++)

@@ -50,6 +50,55 @@ internal static class WorldInteractionCheck
             TerrainLoader.TerrainDir = Path.Combine(dataDir, "terrains");
             RegionCatalog.Load(Path.Combine(dataDir, "assets"));
             EstateAccessCheck.Run(root, Check);
+            var flowerRecipe = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("item/recipes")["capture_tool_02"];
+            Check(flowerRecipe["slots"].Any(s => (int?)s["required_materials"]?["flower"] == 20 &&
+                s["source_info"].Any(source => (string)source["collectible_id"] == "bush_lilac" &&
+                    (string)source["generator_id"] == "flower_lilac")), "ferramenta intermediaria exige flores nivel 20 de lilas nos dados nativos");
+            var flowerGenerators = new System.Collections.Generic.Dictionary<ushort, string> {
+                [11008] = "dogrose_flower", [11020] = "flower_lilac", [11091] = "lavender_flower",
+                [14063] = "lavender_flower", [14064] = "wiregrass_flower" };
+            foreach (var pair in flowerGenerators)
+            {
+                var spec = CollectibleTable.FindGenerator(pair.Key, pair.Value);
+                Check(spec?.PrototypeId == "flower" && CollectibleTable.Build("flower-source", pair.Key).Generators.Any(g => g.Id == pair.Value),
+                    "flor generica e id original de coleta em " + pair.Key);
+            }
+            Check(!CollectibleTable.AllSpecs(11002).Any(s => s.PrototypeId == "flower"), "arbusto sem flores nao recebe loot floral");
+
+            // Save antigo com garden congelado, recurso alterado e coleta persistida.
+            var legacyFlowers = Context(root, "ri35te");
+            legacyFlowers.Garden = TerrainLoader.Load("ri35te").Garden;
+            legacyFlowers.AddedNatural.Add(new NaturalInfo { X = 20, Y = 20, EntityType = 11002 });
+            legacyFlowers.RemovedNatural.Add(new Point2(12, 12));
+            legacyFlowers.NaturalHarvests["20,20"] = new System.Collections.Generic.List<string> { "leaf_small" };
+            var legacyFlowerWorld = new World(legacyFlowers);
+            Check(legacyFlowers.AddedNatural.Count(n => n.EntityType == 11020) == 8 &&
+                legacyFlowerWorld.NaturalTypeAt(new Point2(20, 20)) == 11002 &&
+                legacyFlowers.RemovedNatural.Contains(new Point2(12, 12)) && legacyFlowers.NaturalHarvests["20,20"].Count == 1,
+                "save antigo recebe lilas sem apagar garden, alteracoes ou coletas");
+            SafeSave.FlushPending();
+            var savedFlowers = JsonConvert.DeserializeObject<WorldContext>(File.ReadAllText(legacyFlowers.Path));
+            savedFlowers.Initialize(legacyFlowers.Path);
+            var savedFlowerWorld = new World(savedFlowers);
+            Check(savedFlowers.FlowerEcologyVersion == 1 && savedFlowers.AddedNatural.Count == legacyFlowers.AddedNatural.Count &&
+                savedFlowers.NaturalHarvests["20,20"].Count == 1, "reinicio preserva flores e nao repete migracao");
+            var craftContext = Player(root, "flower-crafter");
+            using (var craftLink = new EconomyProtocolCheck.Link(craftContext, savedFlowerWorld, null, true))
+            {
+                var lilac = savedFlowers.AddedNatural.First(n => n.EntityType == 11020);
+                var lilacTile = new Point2(lilac.X, lilac.Y);
+                Place(craftContext, lilacTile);
+                var flowerMenu = craftLink.Request<Touch, Touched>(new Touch { EntityId = "native-lilac", EntityType = 11020, Tile = lilacTile });
+                Check(flowerMenu.Collectible.Generators.Single(g => g.Id == "flower_lilac").Level == 35,
+                    "spot restaurado oferece flores no nivel da ilha");
+                var flowerTimer = craftLink.Request<Collect, Messages.Timer>(new Collect { EntityId = "native-lilac", Tile = lilacTile, GeneratorId = "flower_lilac" });
+                Call(craftLink.Player, "UpdatePendingCollects", Gauge.CurrentTime + flowerTimer.Duration + .1);
+                craftLink.PumpUntil(() => craftContext.InventoryItems.Any(i => i.Prototype == "flower"));
+                var gatheredFlower = craftContext.InventoryItems.Single(i => i.Prototype == "flower");
+                var flowerSlot = flowerRecipe["slots"].First(s => (int?)s["required_materials"]?["flower"] == 20).ToObject<CraftRecipeSlotData>();
+                Check(gatheredFlower.Level == 35 && (bool)typeof(Durango.Online.Player).GetMethod("MatchesSlot", BindingFlags.NonPublic | BindingFlags.Static)
+                    .Invoke(null, new object[] { gatheredFlower, flowerSlot }), "flor coletada e aceita pelo filtro real da ferramenta de domagem");
+            }
             var wc = Context(root, "grass_company_safehouse_01");
             var world = new World(wc);
             var terrain = TerrainLoader.Load(wc.TerrainId);
@@ -88,6 +137,16 @@ internal static class WorldInteractionCheck
                 var tc = new WorldContext { TerrainId = id };
                 tc.Initialize(Path.Combine(root, id + "-catalog.world"));
                 var tw = new World(tc);
+                Check(tc.FlowerEcologyVersion == (id == "tropical_event_ancora_01" ? 0 : 1), "migracao floral em " + id);
+                var newFlowers = tc.AddedNatural.Where(n => flowerGenerators.ContainsKey(n.EntityType)).ToArray();
+                Check(newFlowers.All(n => DataHelper.GetBiomeSpriteInfo(n.EntityType).Survivability.Contains(
+                    TerrainEcology.BiomeAt(data, new Point2(n.X, n.Y))) && tw.CanPlaceSystemContent(new Point2(n.X, n.Y)) &&
+                    !NaturalInfo.FromBytes(data.Garden).Any(original => original.X == n.X && original.Y == n.Y)),
+                    "flores preservam spots existentes, construcoes e biomas em " + id);
+                if (id is "pe10gr_1" or "ri35te" or "ri30td01" or "ri55tu")
+                    Check(newFlowers.Any(n => n.EntityType == 11020), "lilas restaurado para craft em " + id);
+                if (id == "ri15sv01") Check(newFlowers.Any(n => n.EntityType is 11091 or 14063), "lavanda restaurada com variante do bioma real");
+                if (id == "ri18tp01") Check(newFlowers.Any(n => n.EntityType == 11008), "roseira tropical restaurada");
                 var template = RegionCatalog.GetTemplate(data.Info.region_template);
                 if (template.Role is not (Shared.Region.Role.Personal or Shared.Region.Role.Tutorial))
                 {
@@ -149,6 +208,23 @@ internal static class WorldInteractionCheck
             Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
             link.PumpUntil(() => link.Messages.OfType<Collected>().Any());
             Check(context.InventoryItems.Count > beforeFishing + 1 && link.Messages.OfType<Collected>().Any(), "arpao coleta peixe no protocolo real");
+
+            // Coleta real: manter ids de protocolo, mas entregar flower no inventario.
+            int flowerIndex = 0;
+            foreach (var pair in flowerGenerators)
+            {
+                var flowerTile = new Point2(64 + flowerIndex++ * 2, 64);
+                world.AddNatural(flowerTile, pair.Key);
+                Place(context, flowerTile);
+                string id = "flower-check-" + pair.Key;
+                var floralMenu = link.Request<Touch, Touched>(new Touch { EntityId = id, EntityType = pair.Key, Tile = flowerTile });
+                Check(floralMenu.Collectible.Generators.Any(g => g.Id == pair.Value && g.Enabled), "TCP oferece flor coletavel em " + pair.Key);
+                int before = context.InventoryItems.Count;
+                var floralTimer = link.Request<Collect, Messages.Timer>(new Collect { EntityId = id, Tile = flowerTile, GeneratorId = pair.Value });
+                Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + floralTimer.Duration + .1);
+                link.PumpUntil(() => context.InventoryItems.Count > before);
+                Check(context.InventoryItems.Last().Prototype == "flower", "TCP entrega item flower em " + pair.Key);
+            }
 
             var portals = world.ArtifactManager.Enumerable(a => BlueprintStore.GetBlueprint(a.EntityType)?.Components?.Contains("Warphole") == true).Take(2).ToArray();
             foreach (var portal in portals)

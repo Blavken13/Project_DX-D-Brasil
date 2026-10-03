@@ -1315,6 +1315,11 @@ internal static class CollectibleTable
         // 1) ชื่อตรงกับ prototype อยู่แล้ว
         if (PrototypeYaml.GetItemPrototype(generatorId) != null) return generatorId;
 
+        // Os ids de protocolo identificam a planta; o inventario usa o item generico
+        // flower. Confirmados em recipes.json/source_info e generator_client_data.
+        if (generatorId is "dogrose_flower" or "lavender_flower" or "wiregrass_flower" or "flower_lilac")
+            return PrototypeYaml.GetItemPrototype("flower") != null ? "flower" : null;
+
         // Ancora original: tree_date usa generator "date", mas o item recebido é fruit_tropical.
         // Confirmado diretamente no tráfego do servidor funcional.
         if (string.Equals(generatorId, "date", StringComparison.Ordinal) &&

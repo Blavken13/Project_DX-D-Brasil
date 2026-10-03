@@ -114,6 +114,9 @@ public class WorldContext
     [JsonProperty("safehouse_ecology_version")]
     public int SafehouseEcologyVersion;
 
+    [JsonProperty("flower_ecology_version")]
+    public int FlowerEcologyVersion;
+
     [JsonProperty("wild_structure_expirations")]
     public Dictionary<string, double> WildStructureExpirations = new();
 

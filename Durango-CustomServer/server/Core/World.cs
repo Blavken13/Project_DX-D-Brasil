@@ -125,6 +125,7 @@ public partial class World
         PlaceTutorialSceneArtifacts();
         PlaceSafehouseSceneArtifacts();
         PopulateSafehouseResources();
+        PopulateFlowerResources();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
         AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
         AnimalManager.GroggyStateChanged += animal =>
