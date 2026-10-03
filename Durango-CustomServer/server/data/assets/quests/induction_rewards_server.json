@@ -1,0 +1,14 @@
+{
+  "provenance": "Fontes originais: missoes e presenca, confirmadas em purchaser/vouchers e ArtifactInteractions do cliente. Quantidades configuradas para o alfa brasileiro; a tabela Nexon nao foi recuperada.",
+  "daily_quest": 2,
+  "achievement_per_tier": 2,
+  "achievement_max": 12,
+  "daily_score_bonuses": [
+    {"score": 20, "stones": 2},
+    {"score": 50, "stones": 4},
+    {"score": 100, "stones": 6}
+  ],
+  "attendance_days": 28,
+  "attendance_daily": 5,
+  "attendance_bonus": 20
+}

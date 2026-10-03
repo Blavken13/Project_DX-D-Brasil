@@ -4,33 +4,7 @@ using Messages;
 
 namespace Durango.Online;
 
-// ═══════════════════════════════════════════════════════════════════════════════════
-//  อีเวนต์ / เช็คอินรายวัน / ฤดูกาล / มินิเกม / กระดานเวลา (Timeline)
-//
-//  กลุ่มนี้เป็น "ระบบรอบนอก" ที่เกมยิงมาตอนเปิดหน้าจอต่าง ๆ แล้วเดิมเซิร์ฟไม่มี handler เลย
-//  ⇒ ฝั่งเกมค้างรอคำตอบเงียบ ๆ (บางระบบตั้งธง initialized ได้ที่เดียวคือตอนได้คำตอบ)
-//
-//  เซิร์ฟเรายังไม่มีของจริงรองรับ: ไม่มีปฏิทินเช็คอิน · ไม่มีนิยามฤดูกาล ·
-//  ไม่มีกระดานคะแนนเครื่องต่อยจริง · ไม่มีระบบ push
-//  ⇒ ตอบ "โครงว่างที่ถูกต้องตามชนิดที่ฝั่งเกมรอ" แบบเดียวกับ Player.Social.cs
-//     และ **ไม่แต่งของรางวัล/อีเวนต์ปลอม** (กฎ: ว่างดีกว่าหลอก)
-//  ⇒ คำสั่งที่เป็น "การกระทำ" ซึ่งทำจริงไม่ได้ ตอบ Abort ที่มีข้อความเสมอ
-//
-//  ⚠️ DeregisterUser (1999) = "ลบบัญชีถาวร" — **ห้ามลบอะไรจริงเด็ดขาด** ปฏิเสธอย่างเดียว
-//
-//  ⚠️ ทุก Abort ในไฟล์นี้ต้องมี Text เสมอ (ห้าม default(Abort)):
-//     client/GameManager.cs:269 ผูก global On<Abort>(DefaultAbortHandler)
-//     → GameManager.cs:309-311 เรียก UIManager.SystemMsg(LimitText(msg.Text))
-//     → GameManager.cs:290-297 LimitText อ่าน text.Length ตรง ๆ ⇒ Text = null คือ NRE ฝั่งเกม
-//     (ผลข้างเคียงที่ตั้งใจ: ข้อความของเราจะขึ้นเป็น system message ให้ผู้เล่นเห็นเหตุผล)
-//
-//  ⚠️ ยังไม่ถูกต่อสาย: RegisterEventHandlers() ยังไม่มีใครเรียกใน Player.Systems.cs
-//     (ไฟล์นั้นห้ามแตะจากงานนี้) ⇒ ต้องเพิ่มบรรทัด RegisterEventHandlers(); ใน
-//     RegisterSystemHandlers() ไม่งั้น handler ทั้งไฟล์นี้ไม่ถูกลงทะเบียนเลย
-//
-//  — ทุก handler อ้างจุดยิงจริงจากต้นฉบับ (client/ = โค้ดฝั่งผู้เล่น)
-//    เลขบรรทัดตรวจซ้ำแล้วกับไฟล์จริง ณ 6 ก.ย. 2026
-// ═══════════════════════════════════════════════════════════════════════════════════
+// Missoes/presenca restauradas; sistemas sem dados continuam respondendo com estados vazios ou Abort.
 
 public partial class Player
 {
@@ -41,50 +15,13 @@ public partial class Player
 
     private void RegisterEventHandlers()
     {
-        // ── เช็คอินรายวัน (ปฏิทินอีเวนต์) ────────────────────────────────────────────
-        //
-        // หมายเหตุโครงสร้าง: ฝั่งเกมสร้างรายการปฏิทินได้ที่เดียวคือ push TodayAttendanceRewards
-        // (client/Durango.Logic/EventSystem.cs:19,31 — global On<TodayAttendanceRewards>)
-        // เราไม่ push ⇒ Calendars = null ⇒ เมนู Event ค้างปิด
-        // (EventSystem.cs:18 ปิดไว้ตั้งแต่ Start · :24 เปิดเมื่อ KUtility.GetSize(Calendars) > 0)
-        // สามตัวข้างล่างจึงแทบไม่ถูกยิง แต่ลงทะเบียนไว้กันค้าง/กัน log "ไม่มี handler"
-
-        // GetAttendanceRewards (1097852) — ขอรายการรางวัลเช็คอินของหมวดนั้น
-        // ยิงจาก client/Durango.Logic/EventSystem.cs:52 แล้วผูกคำตอบด้วย
-        //   `.On(delegate(AttendanceRewards msg, ...))` ที่ EventSystem.cs:55
-        // ⇒ ต้องตอบชนิด AttendanceRewards (1097853) ผูก seq
-        // ⚠️ client/Durango.Logic.Event/Calendar.cs:100 เช็ค `if (rewards.Category == Category)`
-        //    ก่อนทำอะไรต่อ ⇒ **ต้องสะท้อน Category ที่ขอมากลับไปเป๊ะ ๆ** ไม่งั้นค้างตลอด
-        // Rewards/Appendices ว่าง: Calendar.InitRewards ใช้ KUtility.GetSize() รับ 0 ได้ปกติ
-        // (ไม่แต่งรางวัลปลอม — เซิร์ฟไม่มีปฏิทินเช็คอินจริง)
+        // Calendario de pedras: dados, resgate diario e bonus de ciclo.
         _connection.Recv(delegate(GetAttendanceRewards msg, PacketHeader header)
-        {
-            Send(new AttendanceRewards
-            {
-                Category = msg.Category,
-                Rewards = Array.Empty<AttendanceReward>(),
-                Appendices = Array.Empty<AttendanceReward>()
-            }, header.Seq);
-        });
-
-        // GiveAttendanceReward (1097854) — "กดรับรางวัลเช็คอินของวันนี้"
-        // ยิงจาก client/Durango.Logic/EventSystem.cs:67 แล้วผูก `.All(...)` ที่ :72 แล้วเช็ค
-        // `typeCode == 1231` (OK) เท่านั้นถึงนับว่าสำเร็จ (EventSystem.cs:75-79)
-        // ⇒ ตอบอะไรที่ไม่ใช่ OK = ล้มเหลวอย่างสุภาพ ฝั่งเกมไม่มาร์กว่ารับแล้ว (Calendar.cs:130-143)
-        // เป็น "การกระทำ" ที่ทำจริงไม่ได้ (ไม่มีปฏิทิน/ไม่มีรางวัลผูกไว้) ⇒ Abort พร้อมข้อความ
+        { SendInductionAttendanceRewards(msg.Category, header.Seq); });
         _connection.Recv(delegate(GiveAttendanceReward msg, PacketHeader header)
-        {
-            Send(new Abort { Text = "As recompensas de presença ainda não estão disponíveis." }, header.Seq);
-        });
-
-        // GiveAttendanceAppendix (1097855) — "กดรับรางวัลพิเศษท้ายปฏิทิน"
-        // ยิงจาก client/Durango.Logic/EventSystem.cs:90 — เงื่อนไขสำเร็จเหมือนกันเป๊ะ
-        // (`.All(...)` ที่ :94 · เช็ค typeCode == 1231 ที่ :98-101)
-        // และ Calendar.cs:146-167 จะมาร์ก _appendices ต่อเมื่อ ok เท่านั้น ⇒ Abort ปลอดภัย
+        { ClaimInductionAttendance(msg.Category, msg.RewardNumber, msg.IsRestore, false, header.Seq); });
         _connection.Recv(delegate(GiveAttendanceAppendix msg, PacketHeader header)
-        {
-            Send(new Abort { Text = "As recompensas especiais ainda não estão disponíveis." }, header.Seq);
-        });
+        { ClaimInductionAttendance(msg.Category, msg.SelectedReward, false, true, header.Seq); });
 
         // ── ฤดูกาล (Season) ─────────────────────────────────────────────────────────
         //

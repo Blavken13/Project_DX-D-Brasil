@@ -131,6 +131,7 @@ internal static class EconomyProtocolCheck
             Receive<EstateLicense>(); Receive<EstateLicenses>(); Receive<EstateGrids>(); Receive<AppearArtifact>();
             Receive<Warehouse>(); Receive<WarehouseUpdated>(); Receive<SectionItems>();
             Receive<Quests>(); Receive<Messages.QuestState>(); Receive<NotifyQuestProceed>(); Receive<QuestRewardResults>();
+            Receive<QuestScoreInfos>(); Receive<TodayAttendanceRewards>(); Receive<AttendanceRewards>();
             Receive<Recipes>(); Receive<ArtifactBlueprints>(); Receive<Skills>(); Receive<Failed>();
             Receive<Actions>(); Receive<SkillCategoryExperienced>(); Receive<ExpGained>();
             Server.StartReceive(); Client.StartReceive();

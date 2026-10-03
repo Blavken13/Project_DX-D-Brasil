@@ -576,6 +576,7 @@ public partial class Player
         SendDefoggedChunks();
         SendQuestCategories();
         AnnouncePlayableQuests();
+        SendInductionAttendance();
         SendMailbox();
         Send(_context.AppearPlayer);
     }

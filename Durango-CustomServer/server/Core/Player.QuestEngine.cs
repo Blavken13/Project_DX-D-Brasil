@@ -25,6 +25,7 @@ public partial class Player
     {
         if (_questsHydrated) return;
         _questsHydrated = true;
+        _context.InductionScoreClaims ??= new();
 
         ContextChanged += FlushQuestSave;
 
@@ -72,6 +73,8 @@ public partial class Player
 
     void ResetDailyQuests()
     {
+        _context.InductionScoreClaims ??= new();
+        _context.InductionScoreClaims.Clear();
         foreach (QuestDef def in QuestCatalog.InCategory(QuestCatalog.DailyCategory))
         {
             QuestStore.Set(EntityId, def.Id, QuestStateEnum.WorkInProgress, 0, Math.Max(1, def.GoalCount));
@@ -205,6 +208,8 @@ public partial class Player
         SkillCat? skill = SkillForQuest(def);
         // O estado de resgate e o saldo são gravados no mesmo PlayerContext.
         long stones = reward.Currency?.GetValueOrDefault(Shared.Economy.Currency.TStone) ?? 0;
+        int induction = reward.Vouchers?.FirstOrDefault(v => v.VoucherId == CrackTuning.VoucherId).Count ?? 0;
+        if (induction > 0) AddInductionStones(induction, $"Missao {questId}");
         AddTStone(stones, $"Recompensa {questId}");
         AddExpForAction(weight, skill, $"Missão {questId}");
         OnContextChanged();
@@ -222,12 +227,7 @@ public partial class Player
             Category = def.Category,
             QuestId = questId,
             Reward = reward,
-            QuestScoreInfos = new QuestScoreInfos
-            {
-                Category = def.Category,
-                CurQuestScore = 0,
-                QuestScoreRewards = Array.Empty<QuestScoreReward>()
-            }
+            QuestScoreInfos = BuildQuestScoreInfos(def.Category)
         });
 
         Console.WriteLine($"[missões] {Short(EntityId)} resgatou '{questId}': {exp} EXP e {stones} moedas T");
@@ -261,12 +261,14 @@ public partial class Player
     internal RewardInfo BuildQuestReward(QuestDef def)
     {
         var (stones, weight) = QuestRewardTuning.For(def, _skillLevel);
+        int induction = Math.Min(InductionRewardTuning.ForQuest(def), Math.Max(0, InductionRewardTuning.Maximum - InductionStones));
         int exp = Math.Min(Math.Max(0, ExpCap() - (_skills?.Exp ?? 0)), PreviewActionExp(weight));
         return new RewardInfo
         {
             Exp = exp,
             Currency = stones > 0 ? new() { [Shared.Economy.Currency.TStone] = Math.Min(stones, Math.Max(0, MaxCurrencyBalance - TStone)) } : null,
-            QuestScore = def?.Category == QuestCatalog.DailyCategory ? 10 : null
+            QuestScore = def?.Category == QuestCatalog.DailyCategory ? 10 : null,
+            Vouchers = induction > 0 ? new[] { StoneVoucher(induction) } : Array.Empty<VoucherInfo>()
         };
     }
 

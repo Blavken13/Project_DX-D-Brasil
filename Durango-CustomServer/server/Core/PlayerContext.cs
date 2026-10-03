@@ -165,6 +165,8 @@ public class PlayerContext
     [JsonProperty("warp_matter")] public long WarpMatter;
 
     [JsonProperty("vouchers")] public Dictionary<string, int> Vouchers = new();
+    [JsonProperty("induction_score_claims")] public HashSet<int> InductionScoreClaims = new();
+    [JsonProperty("induction_attendance")] public InductionAttendanceSave InductionAttendance = new();
     [JsonProperty("economy_sequence")] public long EconomySequence;
     [JsonProperty("market_tradability_version")] public int MarketTradabilityVersion;
     [JsonProperty("market_favorites")] public HashSet<string> MarketFavorites = new();

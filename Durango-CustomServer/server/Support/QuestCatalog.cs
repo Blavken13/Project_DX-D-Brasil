@@ -49,6 +49,7 @@ public static class QuestCatalog
         ByCategory.Clear();
         Loaded = false;
         QuestRewardTuning.Load();
+        InductionRewardTuning.Load();
 
         var raw = Json.ReadFromFile<Dictionary<string, QuestAssetRow>>("quests/quests_for_client");
         if (raw == null || raw.Count == 0)

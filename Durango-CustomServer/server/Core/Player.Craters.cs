@@ -16,12 +16,14 @@ public partial class Player
 
     public int InductionStones => Math.Max(0, _context.Vouchers?.GetValueOrDefault(CrackTuning.VoucherId) ?? 0);
 
-    public void AddInductionStones(int amount)
+    public void AddInductionStones(int amount, string reason = "Recompensa")
     {
         if (amount <= 0) return;
-        int max = (int?)Json.ReadFromFile<JObject>("purchaser/vouchers")?[CrackTuning.VoucherId]?["count_max"] ?? 240;
+        int max = InductionRewardTuning.Maximum;
         _context.Vouchers ??= new Dictionary<string, int>();
-        _context.Vouchers[CrackTuning.VoucherId] = (int)Math.Min(max, (long)InductionStones + amount);
+        int before = InductionStones;
+        _context.Vouchers[CrackTuning.VoucherId] = (int)Math.Min(max, (long)before + amount);
+        Console.WriteLine($"[pedras-portal] {ShortEntityId()} +{InductionStones - before} → {InductionStones} ({reason})");
         PushWallet();
     }
 

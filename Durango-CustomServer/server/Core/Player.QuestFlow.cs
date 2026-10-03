@@ -4,66 +4,16 @@ using Messages;
 
 namespace Durango.Online;
 
-// ═══════════════════════════════════════════════════════════════════════════════════
-//  เควส: รางวัล / คะแนน / NPC เนื้อเรื่อง / วาร์ปเนื้อเรื่อง / ภารกิจหมู่เกาะ
-//
-//  ไฟล์นี้รับ "ปลายทางฝั่งการกระทำ" ของระบบเควส ส่วน "ปลายทางฝั่งอ่านข้อมูล"
-//  (GetQuests 237918 / GetQuestState 398132) อยู่ที่ Core/Player.Quest.cs แล้ว — ห้ามทับกัน
-//
-//  ═══ ความจริงของเซิร์ฟตอนนี้ ═══
-//  เซิร์ฟ **ยังไม่มีเอนจินเควส** — ไม่มีใครเริ่มเควส วัดความคืบหน้า หรือจ่ายรางวัล
-//  (คอมเมนต์เดียวกันที่ Core/Player.Quest.cs:36-42 · QuestStore ยังว่างเปล่าตลอด)
-//  และไม่มีระบบ "ภารกิจหมู่เกาะ" ด้วย — เซิร์ฟไม่เคยส่ง CurrentArchipelagoTodos ออกไปเลย
-//  (grep ทั้ง server/Core + server/Support แล้วไม่มีจุดส่ง) ⇒ ToDo ของหมู่เกาะจึงไม่เคยขึ้น
-//
-//  ⇒ กติกาที่ใช้ทั้งไฟล์นี้ (ตาม ROADMAP ข้อ "ห้ามแต่งข้อมูลปลอม"):
-//    · คำขอที่เป็น "การอ่านข้อมูล" → ตอบชนิดที่ฝั่งเกมรอ ด้วย **ค่าว่างที่ถูกโครงสร้าง**
-//      เพราะบางหน้าจอตั้งธง initialized ได้ที่เดียวคือตอนได้คำตอบ ไม่ตอบ = ค้างหมุนตลอดกาล
-//    · คำขอที่เป็น "การกระทำ" ที่ทำจริงไม่ได้ → ตอบ Abort ที่มี Text เสมอ
-//      ฝั่งเกมมี global handler รับอยู่ (client/GameManager.cs:269 → :309-312
-//      DefaultAbortHandler → UIManager.SystemMsg) ⇒ ผู้เล่นเห็นข้อความ ไม่ใช่กดแล้วเงียบ
-//      ⚠️ ห้าม default(Abort) เด็ดขาด — Text=null ทำให้ LimitText(null).Length แครชฝั่งเกม
-//    · ห้ามจ่ายรางวัลลม ๆ (QuestRewardResults / QuestScoreReward ที่ State=Taken) เพราะจะทำให้
-//      UI ขึ้นว่า "รับรางวัลแล้ว" ทั้งที่ไม่มีของเข้ากระเป๋าจริง
-//
-//  ═══ ทำไมต้องลงทะเบียนแม้จะตอบไม่ได้ ═══
-//  ทุกตัวในไฟล์นี้เดิม "ไม่มี handler" ⇒ log เซิร์ฟขึ้นเตือนทุกครั้งที่ผู้เล่นกด และผู้เล่นไม่ได้
-//  อะไรกลับเลย · ที่หนักกว่านั้นคือ RequestQuestScoreReward ที่ล็อกหน้าจอค้างถาวรถ้าเงียบ
-//  (ดูคอมเมนต์ตรง handler นั้น)
-// ═══════════════════════════════════════════════════════════════════════════════════
+// Missoes/presenca restauradas; sistemas sem dados continuam respondendo com estados vazios ou Abort.
 
 public partial class Player
 {
     private void RegisterQuestFlowHandlers()
     {
-        // ── GetQuestScoreInfos (237920) — แถบคะแนนเควสด้านล่างหน้าเควส ─────────────
-        // ยิงจาก QuestGroup.UpdateQuestScores (client/Durango.UI/QuestGroup.cs:121-128)
-        // ผ่าน QuestSystem.GetQuestScoreInfos (client/Durango.Logic/QuestSystem.cs:280-289)
-        // ซึ่งผูก **.On<QuestScoreInfos> กับ seq** ⇒ ต้องตอบที่ header.Seq เท่านั้น
-        // (อีกจุดคือปุ่มโกงตอน debug build — client/Durango.UI/QuestBottomWidget.cs:342-348)
-        //
-        // ⚠️ ก่อนยิง client เรียก _questBottomWidget.BeginLoading() (QuestGroup.cs:126 →
-        //    QuestBottomWidget.cs:84-92) ซึ่งเปิดไอคอนโหลดค้างไว้ · ตัวที่ปิดมันมีตัวเดียวคือ
-        //    UpdateScoreInfo → EndLoading (QuestBottomWidget.cs:102-104) ที่จะถูกเรียกก็ต่อเมื่อ
-        //    คำตอบ QuestScoreInfos มาถึง (QuestSystem.cs:285 → QuestGroup.cs:196-201)
-        //    ⇒ **ไม่ตอบ = แถบล่างหน้าเควสหมุนค้างตลอดกาล**
+        // A barra original mostra pontos e bonus reais, inclusive apos reconexao.
         _connection.Recv(delegate(GetQuestScoreInfos msg, PacketHeader header)
-        {
-            SendEmptyQuestScoreInfos(msg.Category, header.Seq);
-        });
+        { Send(BuildQuestScoreInfos(msg.Category), header.Seq); });
 
-        // ── RequestQuestReward (237923) — กดปุ่ม "รับรางวัล" ที่การ์ดเควส ───────────
-        // ยิงจาก QuestNodeWidget.OnClickReceiveButton (client/Durango.UI/QuestNodeWidget.cs:109-117)
-        // ผ่าน QuestSystem.RequestQuestReward (client/Durango.Logic/QuestSystem.cs:291-297)
-        // **ไม่มี .On ผูก seq** — ฝั่งเกมรอ QuestRewardResults(237924) ทาง global handler แทน
-        // (client/Durango.Logic/QuestSystem.cs:62 Connections.Frontend.On<QuestRewardResults>)
-        //
-        // ทำไมไม่ตอบ QuestRewardResults: มันคือ "ใบเสร็จการจ่ายรางวัล" — client จะเอาไป
-        // SetQuestRewardResults ทำให้เควสกลายเป็นรับรางวัลแล้ว (QuestSystem.cs:136) และเด้ง
-        // ป๊อปอัพของรางวัล ทั้งที่เซิร์ฟไม่มีเอนจินเควสจ่ายของจริง = หลอกผู้เล่น ⇒ ตอบ Abort
-        //
-        // ผลข้างเคียงที่ยอมรับได้: ปุ่มจะค้างวงแหวนโหลด (_isWaitRewardRequest=true) จนกว่า
-        // การ์ดจะถูกวาดใหม่ ซึ่ง Set() รีเซ็ตธงให้เอง (QuestNodeWidget.cs:96-98)
         _connection.Recv(delegate(RequestQuestReward msg, PacketHeader header)
         {
             if (TryClaimPlayableQuestReward(msg.QuestId, header.Seq)) return;
@@ -71,31 +21,9 @@ public partial class Player
             Send(new Abort { Text = "O resgate de recompensas de missões ainda não está disponível." }, header.Seq);
         });
 
-        // ── RequestQuestScoreReward (237925) — กดรับรางวัลตามคะแนนเควส ─────────────
-        // ยิงจาก QuestBottomWidget.QuestRewardRequested (client/Durango.UI/QuestBottomWidget.cs:292-300)
-        // ผ่าน QuestSystem.RequestQuestScoreReward (client/Durango.Logic/QuestSystem.cs:299-311)
-        // ซึ่งผูก **.On<QuestScoreInfos> กับ seq**
-        //
-        // ⚠️⚠️ จุดตายที่ต้องระวังที่สุดในไฟล์นี้: ก่อนยิง client เรียก LockInteraction() แล้ว
-        //    แปะ LoadingRing (QuestBottomWidget.cs:294-299) · ตัวปลดล็อกมีเส้นเดียวคือ
-        //    UpdateScoreInfo → EndLoading + PlayScrollAnim → UnlockInteraction
-        //    (QuestBottomWidget.cs:102-118, 193-217) ซึ่งวิ่งได้ก็ต่อเมื่อได้ QuestScoreInfos
-        //    ⇒ ตอบแค่ Abort อย่างเดียว = แถบคะแนนล็อกถาวร กดอะไรไม่ได้อีกเลยจนกว่าจะปิดเกม
-        //
-        // ⇒ ตอบสองก้อนบน seq เดียว: Abort (บอกผู้เล่นว่ายังทำไม่ได้) + QuestScoreInfos
-        //   (สถานะจริงปัจจุบัน = คะแนน 0 ไม่มีรางวัล ⇒ ปลดล็อก UI โดยไม่โกหกว่ารับรางวัลแล้ว)
-        //   ต้องคร่อมด้วย ReplySequenceMark ไม่งั้นก้อนที่สองไม่ถึงฝั่งเกม
-        //   (client/Durango.Network/Connection.cs:839-861 เปิด/ปิดชุดคำตอบต่อเนื่อง —
-        //    กลไกเดียวกับที่ Core/Player.Crafting.cs:91-110 อธิบายไว้)
+        // Rejeicoes tambem respondem QuestScoreInfos para liberar a interface.
         _connection.Recv(delegate(RequestQuestScoreReward msg, PacketHeader header)
-        {
-            Console.WriteLine($"[เควส] {Short(EntityId)} ขอรับรางวัลคะแนน {msg.Score} หมวด '{msg.Category}' — เซิร์ฟยังไม่มีตารางรางวัลคะแนน");
-
-            Send(default(ReplySequenceMark), header.Seq);   // เปิดชุดคำตอบต่อเนื่อง
-            Send(new Abort { Text = "As recompensas por pontos de missão ainda não estão disponíveis." }, header.Seq);
-            SendEmptyQuestScoreInfos(msg.Category, header.Seq);
-            Send(default(ReplySequenceMark), header.Seq);   // ปิดชุด — ไม่ปิด handler ฝั่งเกมค้าง
-        });
+        { ClaimQuestScoreStones(msg, header.Seq); });
 
         // ── CustomQuestEvent (312798) — สคริปต์ไกด์แจ้ง "เกิดเหตุการณ์คำสำคัญนี้แล้ว" ──
         // ยิงจากคำสั่งในสคริปต์ PlayGuide ชื่อ "CustomQuestEvent"
@@ -218,46 +146,4 @@ public partial class Player
         });
     }
 
-    /// <summary>
-    /// ตอบ QuestScoreInfos(237921) แบบ "ว่างแต่ถูกโครงสร้าง" — ใช้ร่วมกันสองจุด
-    /// (GetQuestScoreInfos และ RequestQuestScoreReward) เพื่อไม่ให้สองเส้นตอบขัดกันเอง
-    ///
-    /// ⚠️ QuestScoreRewards **ห้ามเป็น null** — ฝั่งเกมทำ
-    /// <c>_scoreRewards.AddRange(questScoreInfos.QuestScoreRewards)</c> ตรง ๆ
-    /// (client/Durango.UI/QuestBottomWidget.cs:120-126) ⇒ null = ArgumentNullException แครช
-    ///
-    /// ทำไมส่งอาร์เรย์ว่าง (ไม่ใช่แต่งตารางรางวัล): client ใช้ "มีรางวัลกี่ชิ้น" ตัดสินว่าหมวดนี้
-    /// มีระบบคะแนนหรือไม่ — <c>HasQuestScore = GetSize(rewards) &gt; 0</c>
-    /// (client/Durango.Logic/QuestSystem.cs:471-481) แล้ว QuestGroup ซ่อนแถบล่างทิ้งไปเลย
-    /// ถ้าเป็น false (client/Durango.UI/QuestGroup.cs:133-140) ⇒ ผู้เล่นเห็น "ไม่มีระบบนี้"
-    /// ซึ่งเป็นความจริง ดีกว่าเห็นตารางรางวัลปลอมที่กดแล้วไม่ได้ของ
-    ///
-    /// CurQuestScore=0 คือคะแนนจริงของผู้เล่น — เซิร์ฟไม่เคยให้คะแนนเควสใคร (ไม่มีเอนจินเควส)
-    /// </summary>
-    private void SendEmptyQuestScoreInfos(string category, uint seq)
-    {
-        Send(new QuestScoreInfos
-        {
-            // ⚠️ ต้อง echo หมวดที่ขอมา **ดิบ ๆ ห้ามแทนค่า** — client ทิ้งคำตอบที่หมวดไม่ตรงกับ
-            // แท็บที่เปิดอยู่ทั้งก้อน: QuestGroup.QuestScoreInfosUpdated เช็ค
-            // `if (IsOpened && !(questScoreInfos.Category != SelectedCategory))` ก่อนเรียก
-            // UpdateScoreInfo (client/Durango.UI/QuestGroup.cs:194-200)
-            // ⇒ หมวดไม่ตรง = ไม่มีใครเรียก EndLoading/UnlockInteraction = ค้างถาวร
-            //   ซึ่งเป็นอาการเดียวกับที่ทั้งไฟล์นี้พยายามกันอยู่
-            //
-            // เดิมตรงนี้เขียนว่า "ว่าง ⇒ ใช้ EpicCategory" ซึ่งกลับหัวกลับหาง: ถ้า client ขอมา
-            // ด้วยหมวดว่างจริง SelectedCategory ฝั่งนั้นก็ว่างด้วย การตอบ "sunset" กลับไปจึง
-            // การันตีว่าหมวดไม่ตรง — คือสร้างอาการค้างขึ้นมาเองแทนที่จะกัน
-            // (ต่างจาก GetQuests ที่ Player.Quest.cs:81 แทนค่าได้ เพราะเส้นนั้น client ใช้
-            //  หมวดของฝั่งตัวเองเดินต่อ ไม่ได้เอา Category ในคำตอบไปเทียบแบบนี้)
-            //
-            // ในทางปฏิบัติหมวดว่างไปไม่ถึงอยู่แล้ว — QuestGroup.TryOpen คืน false ถ้า
-            // SelectedCategory ว่าง (client/Durango.UI/QuestGroup.cs:84-96) ⇒ ไม่มีใครยิงคำขอ
-            // แต่ echo ดิบไว้ก็ไม่มีทางผิด ส่วนการแทนค่ามีแต่ทางผิด ⇒ เลือกทางที่ผิดไม่ได้
-            // null ก็ปลอดภัย (QuestScoreInfos.Pack แปลง null เป็นสตริงว่างให้เอง) แต่เขียนชัดไว้
-            Category = category ?? string.Empty,
-            CurQuestScore = 0,
-            QuestScoreRewards = Array.Empty<QuestScoreReward>()
-        }, seq);
-    }
 }
