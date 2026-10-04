@@ -81,7 +81,18 @@ public partial class Player
             }
         }
 
-        return Math.Min(1f, total / (float)Math.Max(1, SkillEffectTuning.FullAt));
+        string bonusKey = category switch
+        {
+            Shared.Skill.Category.Gathering => "gathering_plus",
+            Shared.Skill.Category.Butchery => "butchering_plus",
+            Shared.Skill.Category.Weaponcrafting => "weaponcraft_plus",
+            Shared.Skill.Category.Armorcrafting => "armorcraft_plus",
+            Shared.Skill.Category.Constructing => "construction_plus",
+            Shared.Skill.Category.Cooking => "cook_plus",
+            Shared.Skill.Category.Process => "handicraft_plus",
+            _ => null
+        };
+        return Math.Min(1f, (total + (bonusKey == null ? 0 : ClanModifier(bonusKey))) / Math.Max(1, SkillEffectTuning.FullAt));
     }
 
     /// <summary>ความเก่งด้านคราฟต์ — ใช้หมวดที่เก่งที่สุด (สูตรไหนก็ได้)</summary>
@@ -249,7 +260,7 @@ public partial class Player
         int levels = Math.Max(0, _skillLevel - 1);
 
         bool changed = _survival.SetMaxBonus(SurvivalState.KeyHealth,
-                           levels * LifePerLevel + Math.Max(0f, endurance) * LifePerEndurance, now);
+                           levels * LifePerLevel + Math.Max(0f, endurance) * LifePerEndurance + ClanModifier("max_health_plus"), now);
         changed |= _survival.SetMaxBonus(SurvivalState.KeyEnergy,
                        levels * EnergyPerLevel + Math.Max(0f, will) * EnergyPerWill, now);
 

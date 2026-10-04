@@ -758,7 +758,7 @@ public partial class Player
             return;
         }
 
-        if (_context.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + Math.Max(1, rein.Value.Size) > InventoryMaxSize)
+        if (_context.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + Math.Max(1, rein.Value.Size) > CurrentInventoryCapacity)
         { Send(new Info { Text = "Inventario cheio. O animal nao foi removido." }); return; }
 
         // Captura é remoção do mundo, nunca morte ou geração de carcaça.

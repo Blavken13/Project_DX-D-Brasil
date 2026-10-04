@@ -79,10 +79,26 @@ public class EstateRecord
 	public bool Allows(string playerId, Shared.Estate.AccessRights required)
 	{
 		if (required == Shared.Estate.AccessRights.None) return false;
+		string ownerClan = Type == (int)Shared.Estate.OwnerType.ClanEstate || Type == (int)Shared.Estate.OwnerType.ClanWarphole
+			? OwnerId : ClanStore.ClanIdOf(OwnerId);
+		int role = ClanStore.MemberRole(playerId, ownerClan);
+		if (role >= 0 && AccessForClanMembers != null && AccessForClanMembers.TryGetValue(role, out var clanRights))
+			return (clanRights & required) == required;
 		var friendType = FriendStore.GetFriendType(OwnerId, playerId);
 		var rights = friendType == Shared.Player.FriendType.Invalid
 			? (Shared.Estate.AccessRights)(AccessForOthers ?? 0)
 			: AccessForFriends?.GetValueOrDefault(friendType) ?? Shared.Estate.AccessRights.None;
+		return (rights & required) == required;
+	}
+
+	internal bool AllowsClan(string playerId, Shared.Estate.AccessRights required)
+	{
+		int role = ClanStore.MemberRole(playerId, OwnerId);
+		if (role < 0) return false;
+		if (ClanStore.CanManageEstate(playerId, OwnerId)) return true;
+		if (required == Shared.Estate.AccessRights.None) required = Shared.Estate.AccessRights.Occupy;
+		var rights = AccessForClanMembers == null ? (Shared.Estate.AccessRights)31
+			: AccessForClanMembers.GetValueOrDefault(role);
 		return (rights & required) == required;
 	}
 }

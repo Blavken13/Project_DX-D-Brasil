@@ -162,6 +162,8 @@ public partial class Player
             return;
         }
 
+        if (ClanRules.Blueprints(25).Contains(msg.BlueprintId) && !UnlockedBlueprintIds().Contains(msg.BlueprintId))
+        { Send(new Abort { Text = "Seu clã ainda não desbloqueou esta construção." }, seq); return; }
         Point2 size = ResolveSize(blueprint, msg.Size, msg.Rotation);
         int area = Math.Max(1, size.x * size.y);
 
@@ -306,6 +308,8 @@ public partial class Player
         artifact.Display.Parts = new Dictionary<string, string>();
 
         artifact.States.EntityId = artifact.EntityId;
+        if (_world.Registry?.IsClanRegion(LogicalRegionId()) == true)
+            artifact.States.Access = DefaultClanArtifactAccess();
         artifact.States.BuildingState = BuildingState.Occupied;
         artifact.States.Level = (byte)Math.Clamp(blueprint.MinLevel, 1, 255);
         artifact.States.MaxHealth = Cheats.ArtifactMaxHealth;
@@ -761,7 +765,7 @@ public partial class Player
         };
 
         int usedSize = _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
-        if (usedSize + Math.Max(1, capsuleItem.Size) > PetTuning.PlayerInventoryMaxSize)
+        if (usedSize + Math.Max(1, capsuleItem.Size) > CurrentInventoryCapacity)
         {
             Send(new Abort { Text = "A mochila está cheia." }, seq);
             return;

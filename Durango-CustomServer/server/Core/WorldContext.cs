@@ -12,6 +12,8 @@ namespace Durango.Online;
 // พอร์ตจาก nexonSRC/Durango.Online/WorldContext.cs — ฟอร์แมตเซฟตรงต้นฉบับ (.world JSON)
 public class WorldContext
 {
+    [JsonProperty("clan_economy_sequence")]
+    public long ClanEconomySequence;
     [JsonProperty("player_slot")]
     public int PlayerSlot;
 

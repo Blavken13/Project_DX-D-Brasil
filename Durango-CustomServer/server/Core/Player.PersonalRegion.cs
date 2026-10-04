@@ -113,7 +113,7 @@ public partial class Player
 
     private string CurrentClanId()
     {
-        string clanId = _context.AppearPlayer.Member.ClanId;
+        string clanId = ClanStore.ClanIdOf(EntityId);
         return string.IsNullOrWhiteSpace(clanId) ? null : clanId;
     }
 
@@ -300,6 +300,9 @@ public partial class Player
         {
             try
             {
+                if (_world.Registry?.IsClanRegion(dest) == true &&
+                    (! _world.Registry.TryGetSettlementRegion(dest, out var destination) || destination.OwnerId != CurrentClanId()))
+                { Send(new Abort { Text = "Você não pertence mais ao clã dessa ilha." }); return; }
                 _context.RegionId = dest;
                 _context.AppearPlayer.Move.Movements = null;
                 if (!string.IsNullOrEmpty(_context.Path))
@@ -348,6 +351,12 @@ public partial class Player
         EstateLicense? urban = null;
         int largestPersonal = 0;
         int largestUrban = 0;
+        EstateLicense? clanEstate = null; int largestClan = 0;
+        string clanRegion = EnsureClanWorldRegistered();
+        World clanWorld = clanRegion == null ? null : _world.Registry?.GetOrCreate(clanRegion);
+        foreach (var estate in clanWorld?.EnumerateEstates() ?? Enumerable.Empty<KeyValuePair<string, EstateRecord>>())
+            if (estate.Value.OwnerId == CurrentClanId() && estate.Value.Type == (int)OwnerType.ClanEstate)
+            { clanEstate = clanWorld.ToLicense(estate.Key, estate.Value); largestClan = Math.Max(largestClan, estate.Value.LargestSize); }
         foreach (var kv in _world.EnumerateEstates())
         {
             if (kv.Value.OwnerId != EntityId) continue;
@@ -368,7 +377,8 @@ public partial class Player
             PersonalEstate = personal,
             UrbanEstate = urban,
             LargestPersonalEstateSize = largestPersonal,
-            LargestUrbanEstateSize = largestUrban
+            LargestUrbanEstateSize = largestUrban,
+            ClanEstate = clanEstate, LargestClanEstateSize = largestClan
         };
     }
 
@@ -534,16 +544,17 @@ public partial class Player
                     error = "A área de construção invade um domínio sem permissão.";
                     return false;
                 }
+                if (requiredType == OwnerType.ClanEstate && !estate.AllowsClan(EntityId, Shared.Estate.AccessRights.Occupy))
+                { error = "Seu cargo não permite construir nesta área do enclave."; return false; }
             }
         }
-
         return true;
     }
 
     private bool CanUseArtifactInCurrentSettlement(AppearArtifact artifact, string artifactOwner,
         Shared.Estate.AccessRights requiredRights = Shared.Estate.AccessRights.None)
     {
-        if (string.Equals(artifactOwner, EntityId, StringComparison.Ordinal))
+        if (_world.Registry?.IsClanRegion(LogicalRegionId()) != true && string.Equals(artifactOwner, EntityId, StringComparison.Ordinal))
         {
             return true;
         }
@@ -577,7 +588,8 @@ public partial class Player
             return !string.IsNullOrEmpty(clanId) &&
                    string.Equals(clanId, settlement.OwnerId, StringComparison.Ordinal) &&
                    estate.Type == (int)OwnerType.ClanEstate &&
-                   string.Equals(estate.OwnerId, clanId, StringComparison.Ordinal);
+                   string.Equals(estate.OwnerId, clanId, StringComparison.Ordinal) &&
+                   ClanArtifactAllows(artifact, estate, requiredRights);
         }
 
         return false;
@@ -627,6 +639,7 @@ public partial class Player
             return;
         }
 
+        if (actualType == OwnerType.ClanEstate) { DeclareEnclave(msg, ownerId, seq); return; }
         EstateLicense? license = _world.DeclareEstate(
             ownerId,
             actualType,
@@ -646,6 +659,7 @@ public partial class Player
     private void HandleExpandEstate(ExpandEstate msg, uint seq)
     {
         EstateRecord estate = _world.GetEstate(msg.EstateId);
+        if (ClanEstate(estate)) { ExpandEnclave(msg, estate, seq); return; }
         string authorityOwner = EstateAuthorityOwner(estate);
         if (string.IsNullOrEmpty(authorityOwner) || !_world.CanExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize))
         {
@@ -677,6 +691,7 @@ public partial class Player
     private void HandleShrinkEstate(ShrinkEstate msg, uint seq)
     {
         EstateRecord estate = _world.GetEstate(msg.EstateId);
+        if (ClanEstate(estate)) { ShrinkEnclave(msg, estate, seq); return; }
         string authorityOwner = EstateAuthorityOwner(estate);
         EstateLicense? license = string.IsNullOrEmpty(authorityOwner)
             ? null
@@ -694,6 +709,7 @@ public partial class Player
     private void HandleRemoveEstate(RemoveEstate msg)
     {
         EstateRecord rec = _world.GetEstate(msg.EstateId);
+        if (ClanEstate(rec)) { RemoveEnclave(msg, rec); return; }
         Point2 cell = default;
         if (rec != null && rec.Cells.Count > 0)
         {
@@ -713,6 +729,7 @@ public partial class Player
     private void HandleSetEstateLicense(SetEstateLicense msg, uint seq)
     {
         EstateRecord rec = _world.GetEstate(msg.EstateId);
+        if (ClanEstate(rec)) { SetEnclaveLicense(msg, rec, seq); return; }
         if (string.IsNullOrEmpty(EstateAuthorityOwner(rec)))
         {
             Send(new Abort { Text = "Domínio não encontrado ou sem permissão administrativa." }, seq);
@@ -732,6 +749,7 @@ public partial class Player
     private void HandleExtendEstate(ExtendEstateActivation msg, uint seq)
     {
         EstateRecord rec = _world.GetEstate(msg.EstateId);
+        if (ClanEstate(rec)) { ExtendEnclave(msg, rec, seq); return; }
         if (string.IsNullOrEmpty(EstateAuthorityOwner(rec)))
         {
             Send(new Abort { Text = "Domínio não encontrado ou sem permissão administrativa." }, seq);
@@ -756,7 +774,8 @@ public partial class Player
         foreach (var kv in _world.EnumerateEstates())
         {
             if (kv.Value.Type != (int)type) continue;
-            if (!string.IsNullOrEmpty(EstateAuthorityOwner(kv.Value)))
+            if (!string.IsNullOrEmpty(EstateAuthorityOwner(kv.Value)) ||
+                (type == OwnerType.ClanEstate && kv.Value.OwnerId == CurrentClanId()))
             {
                 return _world.ToLicense(kv.Key, kv.Value);
             }

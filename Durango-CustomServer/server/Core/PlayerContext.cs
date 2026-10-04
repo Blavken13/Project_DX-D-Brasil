@@ -34,6 +34,18 @@ public class PlayerContext
 
     [JsonProperty("mail_sequence")]
     public long MailSequence;
+
+    [JsonProperty("premium_sequence")]
+    public long PremiumSequence;
+
+    [JsonProperty("premium_exp_remainder")]
+    public int PremiumExpRemainder;
+
+    [JsonProperty("clan_exp_remainder")]
+    public int ClanExpRemainder;
+
+    [JsonIgnore]
+    public PremiumStore Premium;
 
     [JsonProperty("equipped_items")]
     public Dictionary<string, string> EquippedItems;

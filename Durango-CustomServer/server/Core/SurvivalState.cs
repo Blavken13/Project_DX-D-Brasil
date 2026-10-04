@@ -328,6 +328,7 @@ public sealed class SurvivalState
     public bool Set(string key, float value)
     {
         if (string.IsNullOrEmpty(key)) return false;
+        if (key == KeyFatigue && _fatigueDisabled) value = 0;
         _values[key] = value;
         _pendingSets.Add(key);
         _dirty = true;
@@ -343,8 +344,17 @@ public sealed class SurvivalState
     }
 
     /// <summary>ค่าปัจจุบันของหลอด (อ่านจากเส้นที่ส่งไปแล้ว) — 0 ถ้าไม่มีหลอดนั้น</summary>
+    private bool _fatigueDisabled;
+    public void SetFatigueDisabled(bool disabled)
+    {
+        if (_fatigueDisabled == disabled) return;
+        _fatigueDisabled = disabled;
+        Set(KeyFatigue, 0);
+    }
+
     public float ValueAt(string key, double at)
     {
+        if (key == KeyFatigue && _fatigueDisabled) return 0;
         Gauge g = GaugeOf(key);
         if (g?.Determination != null && g.Determination.Length > 0) return g.Get(at);
         return _values.TryGetValue(key, out float v) ? v : 0f;
@@ -498,6 +508,12 @@ public sealed class SurvivalState
 
     private Gauge BuildGauge(string key, SurvivalGaugeDef def, Gauge maxGauge, double now)
     {
+        if (key == KeyFatigue && _fatigueDisabled)
+        {
+            _values[key] = 0;
+            return new Gauge((def.Max ?? 100f) + MaxBonus(key), def.Min ?? 0f, new[] {
+                new GaugeNode(now, 0), new GaugeNode(now + SurvivalTuning.DeterminationHorizon, 0) });
+        }
         float min = def.Min ?? 0f;
         float maxNow, maxEnd;
         if (maxGauge != null)

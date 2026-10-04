@@ -4,26 +4,11 @@ using Messages;
 
 namespace Durango.Online;
 
-// ═══════════════════════════════════════════════════════════════════════════════════
-//  สังคม: ปาร์ตี้ / เพื่อน / บันทึก / แคลน / กลุ่มผู้สนับสนุน / โนมัด / ผู้กลับ
-//
-//  เดิมเซิร์ฟไม่มี handler กลุ่มนี้เลย ⇒ เกมยิงมาตอนเข้าเกม/เปิดหน้าจอแล้วเงียบ
-//  (log VPS 6 ก.ย.: "ไม่มี handler" type 20001/2402/2439/3667/2347809/100000/3450983/5015/1444250)
-//  เซิร์ฟยังไม่มีระบบปาร์ตี้/แคลน/เพื่อนจริง ⇒ ตอบ "ค่าว่างแต่ถูกโครงสร้าง" ตามที่ client ยอม
-//  — ทุก handler อ้างจุดยิง/จุดรับจากต้นฉบับ NEXON (nexonSRC) ทั้งหมด
-// ═══════════════════════════════════════════════════════════════════════════════════
-
+// Handlers sociais auxiliares. Equipes e clãs possuem registros próprios.
 public partial class Player
 {
     private void RegisterSocialHandlers()
     {
-        // GetParty (20001) — client ยิงแบบ **ไม่ผูกรอ** อะไรกลับ (nexonSRC/Durango.Logic/PartySystem.cs:203
-        // `Connections.Frontend.Send(default(GetParty))` ไม่มี .On) — สถานะปาร์ตี้เดินทางมาทาง
-        // push อื่น ⇒ ลงทะเบียนเปล่าไว้กัน log "ไม่มี handler"
-        _connection.Recv(delegate(GetParty msg, PacketHeader header)
-        {
-        });
-
         // FACILDIGITAL_STAGE5_GET_SOCIAL
         // Amigos e solicitações vêm do FriendStore persistente.
         // Follow/block/favoritos continuam com seus backends separados.
@@ -39,12 +24,10 @@ public partial class Player
             Send(new Memos(), header.Seq);
         });
 
-        // GetClanCreationCosts (3667) — ค่าสร้างแคลน — client รอ .On<Costs>
-        // (nexonSRC/ClanSystem.cs:552 GetClanMakeCost) ข้อมูล costs.json จริง **ไม่มี** บล็อก
-        // ค่าสร้างแคลน (มีแต่ clan_warphole_visit) ⇒ ตอบ Costs ว่าง ไม่เดาตัวเลขเอง (กฎ ROADMAP ข้อ 6)
+        // Custo original de criação em constants.json.
         _connection.Recv(delegate(GetClanCreationCosts msg, PacketHeader header)
         {
-            Send(new Costs(), header.Seq);
+            Send(new Costs { _Costs = new() { [Shared.Economy.Currency.TStone] = ClanRules.CreationCost } }, header.Seq);
         });
 
         // GetSupportRequests (2347809) — คำขอสนับสนุนกลุ่ม (faction) — ฝั่งเกมรับด้วย

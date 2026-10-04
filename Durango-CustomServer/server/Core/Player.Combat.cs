@@ -699,9 +699,9 @@ public partial class Player
             _lastDerivedAbilities.TryGetValue(key, out float value) &&
             value > 0f)
         {
-            return value;
+            return value + ClanAbilityBonus(key);
         }
-        return fallback;
+        return fallback + ClanAbilityBonus(key);
     }
 
     private AttackType CurrentAttackType()

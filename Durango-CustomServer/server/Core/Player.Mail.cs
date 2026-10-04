@@ -16,7 +16,7 @@ public partial class Player
             if (!_mailStore.Accept(_context, msg.MailIds, out var items, out var vouchers, out string error))
             { Send(new Abort { Text = error }, header.Seq); return; }
             if (items.Length > 0) Send(new InventoryUpdated { EntityId = EntityId, Items = items });
-            if (vouchers.Length > 0) SendWalletNow(); else OnContextChanged();
+            SendWalletNow();
             SendMailbox(); Send(default(OK), header.Seq);
         });
         _connection.Recv(delegate(DeleteMails msg, PacketHeader header)

@@ -149,7 +149,7 @@ public partial class Player
         //    จะถูก Abort ตัวนี้บล็อกไว้เงียบ ๆ
         _connection.Recv(delegate(SetArtifactAccess msg, PacketHeader header)
         {
-            Send(new Abort { Text = "As permissões de uso de construções ainda não estão disponíveis." }, header.Seq);
+            SetArtifactPermissions(msg, header.Seq);
         });
 
         // ── กลุ่มที่ 3: วาร์ปไปที่ดิน — ต้องตอบตามกติกาหลอดวาร์ป ─────────────────────────────

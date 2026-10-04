@@ -13,6 +13,7 @@ $('mail-json').value = sessionStorage.getItem('durango-mail-draft') || JSON.stri
 const titles = {overview:'Visão geral',players:'Jogadores',economy:'Economia',config:'Configurações',islands:'Ilhas',data:'Dados do jogo',actions:'Operações'};
 function notice(message, error = false) { $('notice').hidden = false; $('notice').textContent = message; $('notice').className = error ? 'error' : ''; }
 titles.reports = 'Relatórios de erros';
+titles.premium = 'Premium';
 let reportOffset = 0;
 async function loadReports() {
  const filters = new URLSearchParams({offset:reportOffset,event_type:$('report-type').value,version_name:$('report-version').value.trim(),model:$('report-model').value.trim(),signature:$('report-signature').value.trim()});
@@ -60,7 +61,7 @@ function table(headers, rows) { return rows.length ? `<table><thead><tr>${header
 function status(online) { return `<span class="tag ${online?'':'offline'}">${online?'Online':'Offline'}</span>`; }
 async function startSession() {
  await api('/health'); $('login').hidden = true; $('app').hidden = false; $('password').value = '';
- clearInterval(timer); timer = setInterval(()=>{if(session && !document.hidden && ['overview','players','economy','actions'].includes(page)) refresh();},5000);
+ clearInterval(timer); timer = setInterval(()=>{if(session && !document.hidden && ['overview','players','premium','economy','actions'].includes(page)) refresh();},5000);
  await refresh();
 }
 $('login-form').addEventListener('submit', async event => {
@@ -80,6 +81,7 @@ async function refresh() {
   const target = page;
   if(target==='overview')await overview();
   if(target==='players')await loadPlayers();
+  if(target==='premium')await loadPremium();
   if(target==='economy')await economy();
   if(target==='config')await config();
   if(target==='islands')await islands();
@@ -99,8 +101,65 @@ async function overview() {
  $('online').innerHTML=table(['Nome','ID','Região'],who.map(p=>[esc(p.name),esc(p.entity_id),esc(p.region)]));maintenance(inventory.maintenance);
 }
 async function loadPlayers(){const [rows,bans]=await Promise.all([api('/admin/players'),api('/admin/bans')]);players=rows;renderPlayers();$('bans').innerHTML=table(['Conta (resumo)','Motivo','Data'],bans.map(b=>[esc(b.key),esc(b.reason),esc(new Date(b.at*1000).toLocaleString('pt-BR'))]));}
-function renderPlayers(){const search=$('player-search').value.toLowerCase();$('player-table').innerHTML=table(['Personagem','Nível','Estado','Região','T Stone','Warp Gem','Durango Coin','Ações'],players.filter(p=>`${p.name} ${p.entity_id}`.toLowerCase().includes(search)).map(p=>[`${esc(p.name||'Sem nome')}<br><small class="muted">${esc(p.entity_id)}</small>`,fmt(p.level),p.banned?'<span class="tag offline">Banido</span>':status(p.online),esc(p.region||'—'),fmt(p.t_stone),fmt(p.warp_gem),fmt(p.durango_coin),`<button data-action="wallet" data-id="${esc(p.entity_id)}">Saldo</button>${p.online?`<button data-action="kick" data-id="${esc(p.entity_id)}">Desconectar</button>`:''}<button class="danger" data-action="${p.banned?'unban':'ban'}" data-id="${esc(p.entity_id)}">${p.banned?'Desbanir':'Banir'}</button>`]));}
+function renderPlayers(){const search=$('player-search').value.toLowerCase();$('player-table').innerHTML=table(['Personagem','Nível','Estado','Premium','Região','T Stone','Warp Gem','Durango Coin','Ações'],players.filter(p=>`${p.name} ${p.entity_id}`.toLowerCase().includes(search)).map(p=>[`${esc(p.name||'Sem nome')}<br><small class="muted">${esc(p.entity_id)}</small>`,fmt(p.level),p.banned?'<span class="tag offline">Banido</span>':status(p.online),premiumLabel(p.premium),esc(p.region||'—'),fmt(p.t_stone),fmt(p.warp_gem),fmt(p.durango_coin),`<button data-action="wallet" data-id="${esc(p.entity_id)}">Saldo</button>${p.online?`<button data-action="kick" data-id="${esc(p.entity_id)}">Desconectar</button>`:''}<button class="danger" data-action="${p.banned?'unban':'ban'}" data-id="${esc(p.entity_id)}">${p.banned?'Desbanir':'Banir'}</button>`]));}
 $('player-search').addEventListener('input',renderPlayers);
+const premiumDate = seconds => seconds > 0 ? new Date(seconds*1000).toLocaleString('pt-BR') : '—';
+function premiumLabel(p){return p?.active ? '<span class="tag">Ativo</span><br><small>'+esc(premiumDate(p.expires_at))+'</small>' : p?.expires_at>0 ? '<span class="tag offline">Expirado</span>' : '—';}
+let premiumPackages=[], premiumRows=[];
+let premiumOperation=sessionStorage.getItem('durango-premium-operation')||'';
+function premiumDraftChanged(){premiumOperation='';sessionStorage.removeItem('durango-premium-operation');premiumPreview();}
+function premiumPreview(){
+ const pkg=premiumPackages.find(p=>p.Id===$('premium-package').value), row=premiumRows.find(p=>p.entity_id===$('premium-recipient').value);
+ if(!pkg){$('premium-benefits').textContent='';$('premium-preview').textContent='';return;}
+ $('premium-benefits').textContent='+'+pkg.InventoryBonus+' de capacidade · '+pkg.DailyGems+' Warp Gems/dia · '+pkg.DailyItems.map(i=>i.Count+' × '+(i.Name||'consumível')).join(', ')+' · '+pkg.ImmediateGems+' Warp Gems na ativação.';
+ const days=Number($('premium-days').value), current=row?.premium?.packages?.find(p=>p.package_id===pkg.Id);
+ $('premium-preview').textContent=Number.isInteger(days)&&days>0&&days<=3650 ? 'Vencimento previsto: '+premiumDate(Math.max(Date.now()/1000,current?.expires_at||0)+days*86400)+' (hora local).' : 'Informe de 1 a 3650 dias inteiros.';
+}
+async function loadPremium(){
+ const [state,rows]=await Promise.all([api('/admin/premium'),api('/admin/players')]);premiumPackages=state.packages;premiumRows=rows;
+ const recipient=$('premium-recipient').value,pkg=$('premium-package').value;
+ $('premium-recipient').innerHTML=rows.filter(p=>p.mail_eligible).map(p=>'<option value="'+esc(p.entity_id)+'">'+esc(p.name||p.entity_id)+' · '+esc(p.entity_id)+'</option>').join('');
+ $('premium-package').innerHTML=premiumPackages.map(p=>'<option value="'+esc(p.Id)+'">'+esc(p.Name)+'</option>').join('');
+ if(rows.some(p=>p.entity_id===recipient))$('premium-recipient').value=recipient;
+ if(premiumPackages.some(p=>p.Id===pkg))$('premium-package').value=pkg;
+ if(!pkg&&premiumPackages.length)$('premium-days').value=premiumPackages[0].Days;
+ $('premium-grant').disabled=!$('premium-recipient').value;
+ $('premium-metrics').innerHTML=metric('Personagens premium',fmt(rows.filter(p=>p.premium?.active).length))+metric('Pacotes ativos',fmt(rows.reduce((n,p)=>n+(p.premium?.packages?.filter(s=>s.active).length||0),0)))+metric('XP adicional','50%')+metric('Chance de item extra','25%');
+ renderPremium();premiumPreview();
+ $('premium-history').innerHTML=table(['Data','Personagem','Pacote','Ação','Dias','Vencimento','Gems'],state.history.map(o=>[esc(premiumDate(o.At)),esc(rows.find(p=>p.entity_id===o.EntityId)?.name||o.EntityId),esc(premiumPackages.find(p=>p.Id===o.PackageId)?.Name||o.PackageId),o.Action==='grant'?'Concessão / renovação':'Revogação',fmt(o.Days),esc(premiumDate(o.Until)),fmt(o.Gems)]));
+}
+function renderPremium(){
+ const search=$('premium-search').value.toLowerCase(),filter=$('premium-filter').value;
+ const rows=premiumRows.filter(p=>(p.name+' '+p.entity_id).toLowerCase().includes(search)).filter(p=>filter==='all'||filter==='active'&&p.premium?.active||filter==='expired'&&!p.premium?.active&&p.premium?.expires_at>0||filter==='none'&&!p.premium?.expires_at);
+ $('premium-table').innerHTML=table(['Personagem','Conexão','Premium','Pacotes / vencimento','Capacidade','Gems diárias','Ações'],rows.map(p=>[
+  esc(p.name||p.entity_id)+'<br><small>'+esc(p.entity_id)+'</small>',status(p.online),premiumLabel(p.premium),
+  (p.premium?.packages||[]).map(s=>esc(s.name)+' · '+esc(premiumDate(s.expires_at))+(s.active?' · '+fmt(Math.ceil(s.remaining_seconds/3600))+' h restantes':' · encerrado')).join('<br>')||'—',
+  fmt(p.inventory_capacity),fmt(p.premium?.daily_gems),'<button data-premium-select="'+esc(p.entity_id)+'">Selecionar</button> '+(p.premium?.packages||[]).filter(s=>s.active).map(s=>'<button class="danger" data-premium-revoke="'+esc(p.entity_id)+'" data-package="'+esc(s.package_id)+'">Revogar '+esc(s.name)+'</button>').join(' ')]));
+}
+$('premium-search').addEventListener('input',renderPremium);$('premium-filter').addEventListener('change',renderPremium);
+for(const id of ['premium-recipient','premium-days'])$(id).addEventListener('change',premiumDraftChanged);
+$('premium-package').addEventListener('change',()=>{const pkg=premiumPackages.find(p=>p.Id===$('premium-package').value);if(pkg)$('premium-days').value=pkg.Days;premiumDraftChanged();});
+$('premium-days').addEventListener('input',premiumDraftChanged);
+$('premium-form').addEventListener('submit',async event=>{
+ event.preventDefault();const days=Number($('premium-days').value),entity_id=$('premium-recipient').value,package_id=$('premium-package').value;
+ if(!entity_id||!Number.isInteger(days)||days<1||days>3650){notice('Escolha um personagem e uma duração válida.',true);return;}
+ const pkg=premiumPackages.find(p=>p.Id===package_id),row=premiumRows.find(p=>p.entity_id===entity_id);
+ if(!confirm('Liberar / renovar '+pkg.Name+' para '+(row?.name||entity_id)+' por '+days+' dias? '+pkg.ImmediateGems+' Warp Gems serão creditadas na ativação.'))return;
+ const fingerprint=JSON.stringify({entity_id,package_id,days});
+ try{const pending=premiumOperation?JSON.parse(premiumOperation):null;if(pending?.fingerprint!==fingerprint)premiumOperation=JSON.stringify({fingerprint,id:newMailId()});}catch{premiumOperation=JSON.stringify({fingerprint,id:newMailId()});}
+ sessionStorage.setItem('durango-premium-operation',premiumOperation);
+ $('premium-grant').disabled=true;
+ try{const result=await api('/admin/premium/grant',{entity_id,package_id,days,request_id:JSON.parse(premiumOperation).id});premiumOperation='';sessionStorage.removeItem('durango-premium-operation');$('premium-result').textContent=(result.duplicate?'Operação já confirmada. ':'Premium aplicado. ')+'Vencimento: '+premiumDate(result.operation.Until);await loadPremium();}
+ catch(error){notice(error.message,true);}finally{$('premium-grant').disabled=false;}
+});
+$('premium-table').addEventListener('click',async event=>{
+ const select=event.target.closest('[data-premium-select]');if(select){$('premium-recipient').value=select.dataset.premiumSelect;premiumDraftChanged();$('premium-form').scrollIntoView({behavior:'smooth'});return;}
+ const revoke=event.target.closest('[data-premium-revoke]');if(!revoke)return;
+ const row=premiumRows.find(p=>p.entity_id===revoke.dataset.premiumRevoke),pkg=premiumPackages.find(p=>p.Id===revoke.dataset.package);
+ if(!confirm('Revogar '+pkg.Name+' de '+(row?.name||revoke.dataset.premiumRevoke)+'? Outros pacotes continuarão ativos. Itens e gems já entregues serão preservados.'))return;
+ revoke.disabled=true;try{await api('/admin/premium/revoke',{entity_id:revoke.dataset.premiumRevoke,package_id:pkg.Id,request_id:newMailId()});await loadPremium();notice('Pacote revogado.');}catch(error){notice(error.message,true);revoke.disabled=false;}
+});
+
 $('player-table').addEventListener('click',async event=>{
  const button=event.target.closest('button[data-action]');if(!button)return;
  const entity_id=button.dataset.id,action=button.dataset.action;let body={entity_id},path='/admin/'+action;

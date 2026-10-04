@@ -605,7 +605,7 @@ public partial class Player
         List<Item> main = RollTaskProducts(def, pet, bonus: false);
         List<Item> extra = RollTaskProducts(def, pet, bonus: true);
         int need = main.Sum(it => Math.Max(1, it.Size)) + extra.Sum(it => Math.Max(1, it.Size));
-        int free = PetTuning.PlayerInventoryMaxSize - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
+        int free = CurrentInventoryCapacity - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
         if (need > free)
         {
             // ไม่แตะ Tasks เลย ⇒ ผู้เล่นเก็บของแล้วกดใหม่ได้ ผลงานไม่หาย

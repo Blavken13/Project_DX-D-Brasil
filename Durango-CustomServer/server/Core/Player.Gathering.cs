@@ -468,6 +468,26 @@ public partial class Player
         string harvestKey, Point2 tile, string entityId, bool isCarcass, bool ranOut,
         string toolItemId)
     {
+        if (!isCarcass && PremiumActive && items.Count > 0 && PremiumGatherRoll() < PremiumStore.GatherChance)
+        {
+            var source = items[0];
+            var bonus = Cheats.MakeItem(source.Prototype, source.Level);
+            if (bonus.HasValue)
+            {
+                var extra = bonus.Value;
+                extra.CollectibleId = source.CollectibleId;
+                extra.GeneratorId = source.GeneratorId;
+                items.Add(extra);
+            }
+        }
+        if (_context.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + items.Sum(i => (long)Math.Max(1, i.Size)) > CurrentInventoryCapacity)
+        {
+            if (items.Count > 0) UnreserveGenerator(harvestKey, items[0].GeneratorId);
+            Send(new Abort { Text = "Não há espaço na mochila para esta coleta. Libere espaço e tente novamente." }, seq);
+            Send(default(ReplySequenceMark), seq);
+            return;
+        }
+        collected.Items = items.ToArray();
         AddItems(items);
         // ⚠️ ReplyOf = 0 (global push) — ถ้าตอบที่ seq ของ Collect ฝั่งเกมจะนับเป็น
         // "packet ที่ไม่ใช่ 104/1134/2019/3648" แล้วสั่ง StopCollectTimer + OnGatheringFailed

@@ -8,6 +8,7 @@ import dgram from 'node:dgram';
 import { spawn, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { mobileReportChecks, mobileReportRestartChecks } from './mobile-reports-check.mjs';
+import { premiumAdminChecks, premiumRestartChecks } from './premium-admin-check.mjs';
 
 // Real HTTP integration, with an isolated data directory and disposable saves.
 const server = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -145,7 +146,7 @@ try {
     }
     for (const route of ['/admin', '/admin/', '/admin/app.js', '/admin/style.css'])
         check((await request(route)).ok, 'interface disponível: ' + route);
-    for (const route of ['/health', '/admin/players', '/admin/config', '/admin/catalog', '/admin/mail/status', '/admin/mail/items'])
+    for (const route of ['/health', '/admin/players', '/admin/config', '/admin/catalog', '/admin/mail/status', '/admin/mail/items', '/admin/premium'])
         check((await request(route)).status === 403, 'acesso anônimo bloqueado: ' + route);
     check((await request('/admin/login', { username: 'admin-fixture', password: 'wrong' })).status === 401, 'senha incorreta rejeitada');
     check((await request('/admin/login', { username: 'admin-fixture', password: 'integration-test-password' }, { Origin: 'https://external.example' })).status === 403, 'login de outra origem bloqueado');
@@ -156,6 +157,7 @@ try {
     const reportState = await mobileReportChecks({origin,request,json,check,root});
     const players = await json('/admin/players');
     check(players.length > 0 && players.every(p => !p.online), 'saves offline visíveis');
+    const premiumState = await premiumAdminChecks({request,json,check});
     const mailItems = await json('/admin/mail/items');
     check(mailItems.length >= 2400 && mailItems.some(i => i.prototype_id === 'fatigue_drug_store'), 'catálogo completo de anexos disponível');
     const shopItems = mailItems.filter(i => i.shop), skinItems = mailItems.filter(i => i.skin);
@@ -208,6 +210,7 @@ try {
     check(!(await json('/admin/maintenance', { on: '0' })).maintenance, 'servidor reaberto');
     check((await json('/admin/announce', { text: 'Teste administrativo' })).sent === 0, 'anúncio executado');
     check((await json('/admin/reload', {})).reloaded, 'recarga de configuração executada');
+    premiumState.warp_gem = (await json('/admin/players')).find(p => p.entity_id === premiumState.entity_id).warp_gem;
     check((await json('/admin/logout', {})).logged_out, 'logout executado');
     check((await request('/health')).status === 403, 'sessão revogada após logout');
     session = '';
@@ -229,6 +232,7 @@ try {
     session = (await json('/admin/login', { username: 'admin-fixture', password: 'integration-test-password' })).session;
     check((await json('/admin/config')).Animals.DamageBase === damageBefore + 1, 'alteração administrativa sobrevive ao reinício com dados substituídos');
     await mobileReportRestartChecks({request,json,check,state:reportState});
+    await premiumRestartChecks({json,check,state:premiumState});
     const mailbox = await json('/admin/mail/inbox?entity_id=mail-alice');
     check(mailbox.length === 3 && mailbox.some(m => m.AttachedItems?.length === 2)
         && mailbox.some(m => m.AttachedVouchers?.some(v => v.VoucherId === 'voucher_resource_induced_stone' && v.Count === 7)),

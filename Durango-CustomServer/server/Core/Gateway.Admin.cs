@@ -22,6 +22,7 @@ public partial class Gateway
     private void RegisterAdminRoutes()
     {
         RegisterAdminMailRoutes();
+        RegisterAdminPremiumRoutes();
         try { _adminAuth = new AdminAuth(Path.Combine(DataDir ?? Json.DataDir, "admin-auth.json")); }
         catch (Exception) { Console.WriteLine("[admin] Credenciais ausentes ou inválidas; login bloqueado."); }
         RegisterClientReportRoutes();
@@ -65,6 +66,8 @@ public partial class Gateway
                     ["banned"] = BanList.IsBanned(player.OwnerKey),
                     ["mail_eligible"] = !string.IsNullOrEmpty(player.Path) && !string.IsNullOrEmpty(player.OwnerKey)
                         && player.PlayerInfo?.IsSoftDeleted != true,
+                    ["premium"] = _host.Premium == null ? null : JToken.FromObject(_host.Premium.Describe(player.EntityId)),
+                    ["inventory_capacity"] = Player.InventoryCapacity(player),
                     ["t_stone"] = player.TStone, ["warp_gem"] = player.WarpGem,
                     ["durango_coin"] = player.DurangoCoin
                 });

@@ -59,6 +59,9 @@ public sealed partial class EconomyStore
     {
         lock (_sync)
         {
+            ClanStore.EnsureLoaded(context.Path);
+            foreach (var effect in _state.Effects.Where(e => e.ClanOperation != null))
+                ClanStore.ApplyEconomic(effect.ClanOperation, effect.Sequence);
             if (context.EconomySequence > _state.Sequence)
                 throw new InvalidDataException("Personagem possui transacoes posteriores ao ledger: " + context.EntityId);
             foreach (var effect in _state.Effects.Where(e => e.EntityId == context.EntityId && e.Sequence > context.EconomySequence))
@@ -105,6 +108,8 @@ public sealed partial class EconomyStore
 
     private static void Apply(PlayerContext context, EconomyEffect effect)
     {
+        ClanStore.ApplyEconomic(effect.ClanOperation, effect.Sequence);
+        effect.ClanEstate?.RuntimeWorld?.ApplyClanEstate(effect.ClanEstate, effect.Sequence);
         if (context.EconomySequence >= effect.Sequence) return;
         if (effect.RemoveItemIds != null)
             context.InventoryItems.RemoveAll(i => effect.RemoveItemIds.Contains(i.Id));
@@ -158,7 +163,7 @@ public sealed partial class EconomyStore
     }
 
     private static bool CanReceive(PlayerContext context, Item[] items) =>
-        context.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + items.Sum(i => (long)Math.Max(1, i.Size)) <= Player.InventoryMaxSize;
+        context.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + items.Sum(i => (long)Math.Max(1, i.Size)) <= Player.InventoryCapacity(context);
 
     public sealed class EconomyState
     {
@@ -171,6 +176,8 @@ public sealed partial class EconomyStore
 
     public sealed class EconomyEffect
     {
+        [JsonProperty] internal ClanEconomyOperation ClanOperation;
+        [JsonProperty] internal ClanEstateOperation ClanEstate;
         public long Sequence;
         public string EntityId;
         public string[] RemoveItemIds;

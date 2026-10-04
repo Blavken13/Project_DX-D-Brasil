@@ -15,7 +15,7 @@
     //  1) เซิร์ฟนี้รับหลายผู้เล่นในโลกเดียว — ต้นฉบับ offline โฮสต์ 1 คน/สล็อต จึงเซฟเฉพาะ _playerCtx
     //     ที่นี่ ContextChanged เซฟ context ของคนนั้นถ้ามี Path (สล็อตจริงบนดิสก์)
     //  2) IssueSession: token→entityId สำหรับ /sessions (ต้นฉบับไม่มี session token จริง)
-    public class GameServer
+    public partial class GameServer
     {
         public const int DefaultPort = 8191;
 
@@ -67,6 +67,12 @@
             }
 
             string regionId = context?.RegionId;
+            if (Worlds.TryGetSettlementRegion(regionId, out var settlement) && settlement.Kind == SettlementRegionKind.Clan
+                && ClanStore.ClanIdOf(context.EntityId) != settlement.OwnerId)
+            {
+                Worlds.EnsureDefaultSharedTamedRegion(); regionId = context.RegionId = WorldRegistry.DefaultSharedTamedRegionId;
+                context.AppearPlayer.Move.Movements = null; context.Save();
+            }
             if (string.IsNullOrEmpty(regionId) ||
                 RegionCatalog.TryGet(regionId, out _) ||
                 Worlds.IsSettlementRegion(regionId))
@@ -89,6 +95,7 @@
 
         public GameServer(WorldContext worldCtx, PlayerContext playerCtx)
         {
+            Player.ClanChanged += NotifyClanChanged;
             _listener = new Listener();
             Port = 8191;
             _playerCtx = playerCtx;
@@ -105,6 +112,7 @@
 
         public void Close()
         {
+            Player.ClanChanged -= NotifyClanChanged;
             try
             {
                 _listener.Close();
@@ -130,6 +138,7 @@
             DropStaleUnauthenticated();
             CleanupExpiredSessions();
             if (Worlds != null) Worlds.ProcessAll(); else World.Process();
+            PublishPartyStatus();
         }
 
         /// <summary>
@@ -416,6 +425,8 @@
         public bool IsPlayerOnline(string entityId) => FindOnlinePlayer(entityId) != null;
         public void NotifyMarketSale(EconomyStore.MarketListing listing) => FindOnlinePlayer(listing.SellerId)?.NotifyMarketSale(listing);
         public void NotifyMail(string entityId) => FindOnlinePlayer(entityId)?.NotifyMailDelivery();
+        public PremiumStore Premium { get; set; }
+        public void NotifyPremium(string entityId) => FindOnlinePlayer(entityId)?.SyncPremium();
 
         // FACILDIGITAL_STAGE2_CHAT_ROUTING
         /// <summary>
@@ -430,7 +441,7 @@
             if (senderContext == null) return 0;
 
             World senderWorld = WorldOf(senderContext);
-            string senderClanId = senderContext.AppearPlayer.Member.ClanId ?? string.Empty;
+            string senderClanId = ClanStore.ClanIdOf(senderContext.EntityId) ?? string.Empty;
 
             var recipients = new List<Connection>();
             foreach (KeyValuePair<Connection, string> pair in _radiotowerConnections)
@@ -455,11 +466,14 @@
                         allowed =
                             !string.IsNullOrEmpty(senderClanId) &&
                             string.Equals(
-                                targetContext.AppearPlayer.Member.ClanId,
+                                ClanStore.ClanIdOf(targetEntityId),
                                 senderClanId,
                                 StringComparison.Ordinal);
                         break;
 
+                    case Shared.Chat.ChannelType.Party:
+                        allowed = PartyStore.SameTeam(senderContext.EntityId, targetEntityId);
+                        break;
                     default:
                         allowed = false;
                         break;
@@ -519,7 +533,8 @@
                 if (!string.IsNullOrEmpty(context.Path)) context.Save();
             });
 
-            connection.Recv(delegate(ResubscribeClanChannel msg, PacketHeader header) { });
+            connection.Recv(delegate(ResubscribeClanChannel msg, PacketHeader header) { ClanStore.SyncContext(context); });
+            connection.Recv(delegate(ResubscribePartyChannel msg, PacketHeader header) { });
 
             connection.Recv(delegate(SayInExclusiveChannel msg, PacketHeader header)
             {
@@ -540,7 +555,7 @@
 
                     case Shared.Chat.ChannelType.Clan:
                     case Shared.Chat.ChannelType.ClanWar:
-                        if (string.IsNullOrEmpty(context.AppearPlayer.Member.ClanId))
+                        if (string.IsNullOrEmpty(ClanStore.ClanIdOf(context.EntityId)))
                         {
                             connection.Send(new Abort
                             {
@@ -551,13 +566,9 @@
                         break;
 
                     case Shared.Chat.ChannelType.Party:
-                        // Player.Party.cs ainda não mantém uma party real.
-                        // Nunca transformar chat de party em broadcast de região.
-                        connection.Send(new Abort
-                        {
-                            Text = "O chat de grupo ainda não está disponível."
-                        }, header.Seq);
-                        return;
+                        if (!PartyStore.Accepted(entityId))
+                        { connection.Send(new Abort { Text = "Você não pertence a um grupo." }, header.Seq); return; }
+                        break;
 
                     default:
                         connection.Send(new Abort
@@ -729,6 +740,7 @@
                     connection.Send(default(OK), readyHeader.Seq);
                     bool flag = playerContext.EntityId == text;
                     World playerWorld = WorldOf(playerContext);
+                    Premium?.Recover(playerContext);
                     Player player = new(text, connection, playerWorld, playerContext, flag, Economy, Mail);
                     if (flag)
                     {

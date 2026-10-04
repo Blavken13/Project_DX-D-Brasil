@@ -132,6 +132,15 @@ public class ArtifactManager
         _artifacts.Add(artifact.EntityId, artifact);
     }
 
+    internal void SetAccess(string entityId, ArtifactAccess access)
+    {
+        if (!_artifacts.TryGetValue(entityId, out var artifact)) return;
+        artifact.States.EntityId = entityId;
+        artifact.States.Access = Durango.Utils.Json.Read<ArtifactAccess>(Durango.Utils.Json.Write(access));
+        _artifacts[entityId] = artifact;
+        RaiseStateUpdated(entityId, artifact.States);
+    }
+
     public AppearArtifact? Get(string entityId)
     {
         if (_artifacts.TryGetValue(entityId, out var value)) return value;

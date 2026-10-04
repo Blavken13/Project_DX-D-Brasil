@@ -100,6 +100,14 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--social-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return SocialCheck.Run(dataDir);
+                case "--premium-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return PremiumCheck.Run(dataDir);
                 case "--mail-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

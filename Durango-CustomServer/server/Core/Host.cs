@@ -144,6 +144,7 @@ public class Host
     public GameServer GameServer { get; private set; }
     public EconomyStore Economy { get; private set; }
     public MailStore Mail { get; private set; }
+    public PremiumStore Premium { get; private set; }
 
     public Gateway Gateway { get; private set; }
 
@@ -254,12 +255,15 @@ public class Host
     {
         Economy = new EconomyStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "economy.json"), new ShopCatalog());
         Mail = new MailStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "mail.json"));
-        foreach (var context in _contexts) { Mail.Recover(context.Player); Economy.Recover(context.Player); }
-        GameServer = new GameServer(_worldCtx, _fallbackPlayer) { Economy = Economy, Mail = Mail };
+        Premium = new PremiumStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "premium.json"));
+        foreach (var context in _contexts) { Mail.Recover(context.Player); Economy.Recover(context.Player); Premium.Recover(context.Player); }
+        GameServer = new GameServer(_worldCtx, _fallbackPlayer) { Economy = Economy, Mail = Mail, Premium = Premium };
         Mail.Updated += GameServer.NotifyMail;
+        Premium.Updated += GameServer.NotifyPremium;
         Economy.ProductBought += GameServer.NotifyMarketSale;
         // โลกของเกาะตั้งต้น (ไฟล์ 0.world ของต้นฉบับ) ใช้ต่อเป็นเกาะแรกของสารบัญ
         Worlds = new WorldRegistry(_storageKey, GameServer.World, _worldCtx?.TerrainId);
+        Worlds.Economy = Economy;
         GameServer.Worlds = Worlds;
         // ลงทะเบียนเกาะส่วนตัวของผู้เล่นที่โหลดมาแล้ว ก่อนมีคนเดินทางเข้า
         foreach (Context context in _contexts)

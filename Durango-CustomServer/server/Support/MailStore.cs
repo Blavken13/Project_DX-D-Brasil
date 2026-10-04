@@ -5,6 +5,7 @@ using System.Linq;
 using Durango.Utils;
 using Messages;
 using Shared.Mailing;
+using Shared.Economy;
 
 namespace Durango.Online;
 
@@ -60,10 +61,21 @@ public sealed class MailStore
 
     public bool Dispatch(string requestId, string fingerprint, string[] recipients, string subject, string text,
         MailType type, Item[] items, VoucherInfo[] vouchers, out DispatchResult result, out string error)
+        => Dispatch(requestId, fingerprint, recipients, subject, text, type, items, vouchers, null, out result, out error);
+
+    public bool HasDispatch(string requestId)
+    {
+        lock (_sync) return _state.Dispatches.Any(d => d.RequestId == requestId);
+    }
+
+    public bool Dispatch(string requestId, string fingerprint, string[] recipients, string subject, string text,
+        MailType type, Item[] items, VoucherInfo[] vouchers, Dictionary<Currency, int> money, out DispatchResult result, out string error)
     {
         lock (_sync)
         {
             result = null; error = null;
+            if (money?.Any(m => m.Key != Currency.Gem || m.Value < 1 || m.Value > EconomyStore.BalanceLimit) == true)
+            { error = "Moeda de correio inválida."; return false; }
             var existing = _state.Dispatches.FirstOrDefault(d => d.RequestId == requestId);
             if (existing != null)
             {
@@ -89,7 +101,7 @@ public sealed class MailStore
                     }
                 }
                 next.Messages.Add(new Entry { Id = Guid.NewGuid().ToString(), EntityId = recipient,
-                    SentAt = _clock(), Subject = subject, Text = text, Type = type, Items = attachments, Vouchers = CopyVouchers(vouchers) });
+                    SentAt = _clock(), Subject = subject, Text = text, Type = type, Items = attachments, Vouchers = CopyVouchers(vouchers), Money = CopyMoney(money) });
             }
             next.Dispatches.Add(new DispatchRecord { RequestId = requestId, Fingerprint = fingerprint, Recipients = ids });
             if (!Commit(next, out error)) return false;
@@ -106,7 +118,7 @@ public sealed class MailStore
             .OrderByDescending(m => m.SentAt).Select(m => new Mail {
                 Id = m.Id, SentAt = m.SentAt, SenderId = "Durango Brasil", MailType = m.Type,
                 Text = m.Subject + "\n" + m.Text, AttachedItems = CopyItems(m.Items), AttachedVouchers = CopyVouchers(m.Vouchers),
-                Read = m.Read, Accepted = m.Accepted, AcceptedEntityId = m.Accepted ? m.EntityId : null
+                Money = CopyMoney(m.Money), Read = m.Read, Accepted = m.Accepted, AcceptedEntityId = m.Accepted ? m.EntityId : null
             }).ToArray();
     }
 
@@ -129,7 +141,11 @@ public sealed class MailStore
             if (pending.Length == 0) return true; // A repeated claim is harmless.
             var items = pending.SelectMany(m => m.Items ?? Array.Empty<Item>()).ToArray();
             var vouchers = MergeVouchers(pending.SelectMany(m => m.Vouchers ?? Array.Empty<VoucherInfo>()));
-            if (player.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + items.Sum(i => (long)Math.Max(1, i.Size)) > Player.InventoryMaxSize)
+            var money = pending.SelectMany(m => CopyMoney(m.Money)).GroupBy(m => m.Key)
+                .ToDictionary(g => g.Key, g => checked(g.Sum(m => (long)m.Value)));
+            if (money.Any(m => m.Key != Currency.Gem || m.Value <= 0 || player.WarpGem > EconomyStore.BalanceLimit - m.Value))
+            { error = "A carteira não comporta as Warp Gems desta entrega. Use algumas e tente novamente."; return false; }
+            if (items.Length > 0 && player.InventoryItems.Sum(i => (long)Math.Max(1, i.Size)) + items.Sum(i => (long)Math.Max(1, i.Size)) > Player.InventoryCapacity(player))
             { error = "Não há espaço na mochila. Libere espaço e resgate novamente."; return false; }
             foreach (var voucher in vouchers)
             {
@@ -141,7 +157,7 @@ public sealed class MailStore
             }
             var next = Next();
             next.Messages = next.Messages.Select(m => pending.Contains(m) ? m with { Accepted = true, Read = true } : m).ToList();
-            var claim = new Claim { EntityId = player.EntityId, Sequence = ++next.Sequence, Items = CopyItems(items), Vouchers = CopyVouchers(vouchers) };
+            var claim = new Claim { EntityId = player.EntityId, Sequence = ++next.Sequence, Items = CopyItems(items), Vouchers = CopyVouchers(vouchers), Money = money };
             next.Claims.Add(claim);
             if (!Commit(next, out error)) return false;
             Apply(player, claim); received = CopyItems(items); receivedVouchers = CopyVouchers(vouchers); return true;
@@ -155,7 +171,7 @@ public sealed class MailStore
         lock (_sync)
         {
             if (!Select(entityId, ids, out var selected, out error)) return false;
-            if (delete && selected.Any(m => !m.Accepted && ((m.Items?.Length ?? 0) > 0 || (m.Vouchers?.Length ?? 0) > 0)))
+            if (delete && selected.Any(m => !m.Accepted && ((m.Items?.Length ?? 0) > 0 || (m.Vouchers?.Length ?? 0) > 0 || (m.Money?.Count ?? 0) > 0)))
             { error = "Resgate os anexos antes de excluir a mensagem."; return false; }
             var next = Next();
             next.Messages = next.Messages.Select(m => selected.Contains(m) ? m with { Read = true, Deleted = delete } : m).ToList();
@@ -181,6 +197,13 @@ public sealed class MailStore
         player.Vouchers ??= new Dictionary<string, int>();
         foreach (var voucher in CopyVouchers(claim.Vouchers))
             player.Vouchers[voucher.VoucherId] = checked(player.Vouchers.GetValueOrDefault(voucher.VoucherId) + voucher.Count);
+        if (claim.Money != null)
+            foreach (var money in claim.Money)
+            {
+                if (money.Key != Currency.Gem || money.Value <= 0 || player.WarpGem > EconomyStore.BalanceLimit - money.Value)
+                    throw new InvalidDataException("Crédito de correio inválido.");
+                player.WarpGem = checked(player.WarpGem + money.Value);
+            }
         player.MailSequence = claim.Sequence; player.Save();
     }
     private static Item[] CopyItems(Item[] items)
@@ -194,6 +217,7 @@ public sealed class MailStore
         vouchers.Where(v => !string.IsNullOrWhiteSpace(v.VoucherId) && v.Count > 0)
             .GroupBy(v => v.VoucherId, StringComparer.Ordinal)
             .Select(g => new VoucherInfo { VoucherId = g.Key, Count = checked(g.Sum(v => v.Count)) }).ToArray();
+    private static Dictionary<Currency, int> CopyMoney(Dictionary<Currency, int> money) => money == null ? new() : new(money);
     public sealed class State
     {
         public int Version = 1; public long Sequence;
@@ -203,8 +227,9 @@ public sealed class MailStore
     {
         public string Id, EntityId, Subject, Text; public double SentAt; public MailType Type;
         public Item[] Items = Array.Empty<Item>(); public VoucherInfo[] Vouchers = Array.Empty<VoucherInfo>(); public bool Read, Accepted, Deleted;
+        public Dictionary<Currency, int> Money = new();
     }
-    public sealed class Claim { public long Sequence; public string EntityId; public Item[] Items; public VoucherInfo[] Vouchers = Array.Empty<VoucherInfo>(); }
+    public sealed class Claim { public long Sequence; public string EntityId; public Item[] Items; public VoucherInfo[] Vouchers = Array.Empty<VoucherInfo>(); public Dictionary<Currency, long> Money = new(); }
     public sealed class DispatchRecord { public string RequestId, Fingerprint; public string[] Recipients; }
     public sealed class DispatchResult { public string RequestId; public int Recipients; public bool Duplicate; }
 }

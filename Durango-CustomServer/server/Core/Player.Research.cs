@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Durango.Network;
 using Messages;
 
@@ -67,7 +68,8 @@ public partial class Player
                 // ระบุชนิดเต็ม ๆ ตามสไตล์ฝั่งเกม (ที่นั่น Messages.ClanResearch ชนกับ
                 // Yaml.ClanResearch จริง — client/Durango.Logic/ResearchSystem.cs:92,119)
                 // ฝั่งเซิร์ฟยังไม่มี Yaml.ClanResearch จึงไม่ชน แต่เขียนเต็มไว้กันชนภายหลัง
-                ResearchList = Array.Empty<Messages.ClanResearch>()
+                ResearchList = (ClanStore.Find(ClanStore.ClanIdOf(EntityId))?.Researches.Values ?? Enumerable.Empty<ClanResearchRecord>())
+                    .Select(r => new Messages.ClanResearch { ResearchId = r.Id, LabEntityId = r.Lab, Until = r.Until, CooltimeUntil = r.CooltimeUntil }).ToArray()
             }, header.Seq);
         });
 
@@ -81,7 +83,7 @@ public partial class Player
         {
             Send(new AvailableClanResearch
             {
-                AvailableResearchIds = Array.Empty<string>()
+                AvailableResearchIds = AvailableClanResearch(msg.EntityId, msg.Tile)
             }, header.Seq);
         });
 
@@ -99,7 +101,7 @@ public partial class Player
         //    ไม่เช็ค null ⇒ default(Abort) ทำเกมแครชทันที
         _connection.Recv(delegate(StartClanResearch msg, PacketHeader header)
         {
-            Send(new Abort { Text = "A pesquisa do clã ainda não está disponível." }, header.Seq);
+            StartClanResearch(msg, header.Seq);
         });
 
         // ── GetAvailablePersonalResearch (5987336) ────────────────────────────────

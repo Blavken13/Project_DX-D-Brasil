@@ -69,7 +69,7 @@ public partial class Player
         int regionLevel = Math.Max(1, template?.Level ?? 1);
         int selfLevel = Math.Max(1, _context.AppearPlayer.Level);
 
-        double basis = FatigueTuning.BaseVelocity(role, selfLevel, regionLevel);
+        double basis = PremiumActive ? 0 : FatigueTuning.BaseVelocity(role, selfLevel, regionLevel);
 
         // ── หมวดที่ทำงานอยู่ ───────────────────────────────────────────────────────
         // **จุดที่ข้อมูลไม่ได้บอก — บอกไว้ตรง ๆ** ไฟล์ไม่ระบุว่าหมวด Default ทำงาน "พร้อมกับ"

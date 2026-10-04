@@ -125,6 +125,10 @@ internal static class EconomyProtocolCheck
             Receive<GardenDiff>(); Receive<DisappearEntityOnTile>();
             Receive<Mails>(); Receive<MailPut>();
             Receive<Collected>(); Receive<CollectibleChanged>(); Receive<ReplySequenceMark>();
+            Receive<InventoryInfos>(); Receive<FatigueVelocities>();
+            Receive<Party>(); Receive<PartierStatus>(); Receive<ClanInfoUpdated>(); Receive<ClanStatusEffectsUpdated>(); Receive<ClanRewardsUpdated>();
+            Receive<SayInExclusiveChannel>();
+            Receive<Costs>(); Receive<AllySlots>(); Receive<ClanResearchList>(); Receive<AvailableClanResearch>(); Receive<Messages.ClanResearch>(); Receive<Emigrated>();
             Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
             Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
             Receive<Messages.Region>(); Receive<Routes>();
@@ -161,7 +165,7 @@ internal static class EconomyProtocolCheck
             var timer = Stopwatch.StartNew();
             while (!completed() && timer.ElapsedMilliseconds < 5000)
             { Client.Process(); Server.Process(); if (_simulatePlayer) Player?.Process(); Thread.Sleep(2); }
-            if (!completed()) throw new TimeoutException("Resposta TCP nao recebida. Ultimas mensagens: " +
+            if (!completed()) throw new TimeoutException("Resposta TCP nao recebida. Aborts: " + string.Join(" | ", Messages.OfType<Abort>().TakeLast(3).Select(a => a.Text)) + ". Ultimas mensagens: " +
                 string.Join(",", Messages.TakeLast(8).Select(m => m.GetType().Name)));
         }
 

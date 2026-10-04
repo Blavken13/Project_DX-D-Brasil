@@ -878,7 +878,7 @@ public partial class Player
     /// <summary>ความสามารถคราฟของผู้เล่นสำหรับ Derived นี้ — รวมโมดิฟายเออร์จากสกิลที่เรียน (base 0)</summary>
     private float CraftAbilityValue(Shared.Ability.Derived ability)
     {
-        float sum = 0f;
+        float sum = ClanAbilityBonus(ability);
         foreach (var (id, value) in CollectModifiers())
         {
             if (SkillDataStore.DerivedOfModifier.TryGetValue(id, out Shared.Ability.Derived d) && d == ability)

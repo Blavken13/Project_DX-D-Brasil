@@ -41,6 +41,7 @@ public sealed class SettlementRegionInstance
 public class WorldRegistry
 {
     private readonly string _clusterKey;
+    internal EconomyStore Economy { get; set; }
     private readonly Dictionary<string, World> _worlds = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>เกาะตั้งต้นสำหรับผู้เล่นที่ยังไม่เคยไปไหน</summary>
@@ -241,6 +242,7 @@ public class WorldRegistry
         var world = new World(context);
         world.Registry = this;
         _worlds[regionId] = world;
+        Economy?.RecoverClanWorld(world, regionId);
         return world;
     }
 

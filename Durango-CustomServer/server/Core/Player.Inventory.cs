@@ -48,7 +48,7 @@ public partial class Player
     /// ถ้าเราตอบ 100 ทีหลัง กระเป๋าจะ "หด" กลางเกมตอนผู้เล่นแค่กดล็อกไอเทม ⇒ ยึดเลขเดียวกับที่
     /// ส่งไปแล้วไว้ก่อน จนกว่า SendInventory จะถูกแก้ให้ตรงกับข้อมูลจริง (ไฟล์นั้นอยู่นอกขอบเขต)
     /// </summary>
-    private const int InventoryMaxSizeMirroredFromPlayerCs = 200;
+    private int InventoryMaxSizeMirroredFromPlayerCs => CurrentInventoryCapacity;
 
     /// <summary>
     /// **ค่าของเรา** — ชื่อแท็บเริ่มต้นของคลังสินค้า
@@ -1024,6 +1024,9 @@ public partial class Player
         { Send(new Abort { Text = "Você não tem permissão para retirar itens deste depósito." }); return; }
         List<Item> section = WarehouseStore.Items(msg.EntityId, msg.SectionName, create: false);
         if (section == null) return;
+        int requested = (msg.ItemIds ?? Array.Empty<string>()).Distinct().Count(id => section.Any(item => item.Id == id));
+        if (!CanWithdrawArtifact(msg.EntityId, requested, out string quotaError))
+        { Send(new Abort { Text = quotaError }); return; }
         int free = InventoryMaxSizeMirroredFromPlayerCs
                    - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
         var moved = new List<Item>();
@@ -1045,6 +1048,7 @@ public partial class Player
             Send(new Abort { Text = "A mochila está cheia." });
             return;
         }
+        RecordArtifactWithdrawal(msg.EntityId, moved.Count);
         Send(new InventoryUpdated
         {
             EntityId = EntityId,

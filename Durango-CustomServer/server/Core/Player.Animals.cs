@@ -758,7 +758,7 @@ public partial class Player
             Send(new Abort { Text = "Este animal não foi encontrado." });
             return;
         }
-        int free = PetTuning.PlayerInventoryMaxSize - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
+        int free = CurrentInventoryCapacity - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
         var moved = new List<Item>();
         foreach (string id in msg.ItemIds ?? Array.Empty<string>())
         {
@@ -1331,7 +1331,7 @@ public partial class Player
     /// <summary>คืนของในกระเป๋าสัตว์กลับเข้ากระเป๋าผู้เล่นเท่าที่ใส่ไหว (ที่เหลือยังคาอยู่ใน entry.Bag)</summary>
     private List<Item> ReturnBagToPlayer(PetStore.Entry entry)
     {
-        int free = PetTuning.PlayerInventoryMaxSize - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
+        int free = CurrentInventoryCapacity - _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
         var moved = new List<Item>();
         for (int i = entry.Bag.Count - 1; i >= 0; i--)
         {

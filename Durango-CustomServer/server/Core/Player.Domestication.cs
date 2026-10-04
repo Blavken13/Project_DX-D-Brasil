@@ -653,7 +653,7 @@ public partial class Player
             };
 
             int usedSize = _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
-            if (usedSize + Math.Max(1, tamedItem.Size) > PetTuning.PlayerInventoryMaxSize)
+            if (usedSize + Math.Max(1, tamedItem.Size) > CurrentInventoryCapacity)
             {
                 Send(new Abort { Text = "A mochila está cheia." }, seq);
                 return;
@@ -682,7 +682,7 @@ public partial class Player
         }
         Item item = rebuilt.Value;
         int used = _context.InventoryItems.Sum(it => Math.Max(1, it.Size));
-        if (used + Math.Max(1, item.Size) > PetTuning.PlayerInventoryMaxSize)
+        if (used + Math.Max(1, item.Size) > CurrentInventoryCapacity)
         {
             Send(new Abort { Text = "A mochila está cheia." }, seq);
             return;

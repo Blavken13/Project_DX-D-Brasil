@@ -88,6 +88,7 @@ public partial class Player
         // ต้องสร้างก่อน Send(_context.AppearPlayer) ท้าย ctor เพราะ AppearPlayer พก Survival (182)
         // ไปด้วยเป็นลำดับที่ 11 ⇒ เส้นแนวโน้มต้องถูกสร้างใหม่ตามเวลาปัจจุบันก่อนถูกส่ง
         _survival = new SurvivalState(_context, live: true);
+        _survival.SetFatigueDisabled(PremiumActive);
         // ⚠️ **ต้องเก็บ delegate ไว้ในฟิลด์ ห้ามใช้ lambda ลอย ๆ** — ไม่งั้นถอดออกไม่ได้
         // แล้ว World (ซึ่งอยู่ยาวกว่าผู้เล่น) จะถือ Player ที่หลุดไปแล้วไว้ตลอด
         // ⇒ Connection พร้อมบัฟเฟอร์ ~4 MB ไม่ถูกคืนสักไบต์ (ดู Detach)
@@ -439,13 +440,22 @@ public partial class Player
         _connection.Recv(delegate(SayInExclusiveChannel msg, PacketHeader header)
         {
             Message_ message = msg.Message;
-            message.Speaker = new RadioId
-            {
-                Name = _context.AppearPlayer.Name,
-                Freq = _context.AppearPlayer.Freq
-            };
+            message.EntityId = EntityId; message.Time = Durango.Utils.Times.UnixTimeNow();
+            message.Speaker = new RadioId { Name = _context.AppearPlayer.Name ?? _context.PlayerInfo?.PlayerName ?? EntityId, Freq = _context.AppearPlayer.Freq };
             msg.Message = message;
-            _world.BroadCast(msg);
+            if (msg.ChannelType == Shared.Chat.ChannelType.Party || msg.ChannelType == Shared.Chat.ChannelType.Clan || msg.ChannelType == Shared.Chat.ChannelType.ClanWar)
+            {
+                string clanId = ClanStore.ClanIdOf(EntityId);
+                bool party = msg.ChannelType == Shared.Chat.ChannelType.Party;
+                if (party ? !PartyStore.Accepted(EntityId) : string.IsNullOrEmpty(clanId))
+                { Send(new Abort { Text = "Você não pertence a este canal." }, header.Seq); return; }
+                Player[] players; lock (ClanOnlineGate) players = ClanOnlinePlayers.Values.ToArray();
+                foreach (var player in players)
+                    if (party ? PartyStore.SameTeam(EntityId, player.EntityId) : ClanStore.ClanIdOf(player.EntityId) == clanId) player.Send(msg);
+                return;
+            }
+            if (msg.ChannelType == Shared.Chat.ChannelType.Region || msg.ChannelType == Shared.Chat.ChannelType.PersonalRegions) _world.BroadCast(msg);
+            else Send(new Abort { Text = "Canal de chat inválido." }, header.Seq);
         });
         _connection.Recv(delegate(DisappearEntityOnTile msg, PacketHeader header)
         {
@@ -2154,7 +2164,7 @@ public partial class Player
         msg.EntityId = EntityId;
         msg.InventoryInfos.EntityId = EntityId;
         msg.InventoryItems.EntityId = EntityId;
-        msg.InventoryInfos.MaxSize = 200;
+        msg.InventoryInfos.MaxSize = CurrentInventoryCapacity;
         msg.InventoryItems.Items = _context.InventoryItems.ToArray();
         // [7 ก.ย. 2026] ⚠️ เส้นนี้คือ inventory "ของตัวผู้เล่นเอง" ที่ส่งตอนเข้าเกม
         // เดิมไม่เคยใส่ Wallet เลย ⇒ ฝั่งเกมได้ค่า default (null) แล้วยอดเงินเป็น 0 ตลอด
@@ -2300,6 +2310,9 @@ public partial class Player
 
     public void Process()
     {
+        UpdatePremium();
+        UpdateParty();
+        SyncClanBenefits();
         _connection.Process();
         UpdatePendingCrafts(Gauge.CurrentTime);
         UpdateTaming(Gauge.CurrentTime);

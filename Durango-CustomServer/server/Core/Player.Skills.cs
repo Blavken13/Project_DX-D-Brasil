@@ -863,6 +863,21 @@ public partial class Player
             reason = $"{reason} [ALPHA XP x{SkillTuning.AlphaTestPlayerExpMultiplier}]";
         }
 
+        int baseAmount = amount;
+        amount = WithPremiumExp(amount, reason);
+        if (PremiumActive && !string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase))
+            _context.PremiumExpRemainder = (int)(((long)baseAmount * 3 + Math.Clamp(_context.PremiumExpRemainder, 0, 1)) % 2);
+        if (!string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase))
+        {
+            var clan = ClanStore.Find(ClanStore.ClanIdOf(EntityId));
+            if (clan != null && ClanRules.GrowthBuff(clan.Level) > 0)
+            {
+                long scaled = (long)amount * 105 + Math.Clamp(_context.ClanExpRemainder, 0, 99);
+                amount = (int)Math.Min(int.MaxValue, scaled / 100);
+                _context.ClanExpRemainder = (int)(scaled % 100);
+            }
+            if (ClanStore.AddExperience(EntityId, baseAmount)) PushClanStateToOnline(clan?.Id);
+        }
         int before = _skillLevel;
         int cap = ExpCap();
         _skills.Exp = (int)Math.Min((long)_skills.Exp + amount, cap);
@@ -870,9 +885,10 @@ public partial class Player
         // O cliente usa ExpGained apenas para o indicador visual do canto esquerdo.
         // A progressao real vem de Statistics.Exp, portanto nao precisamos exibir o valor bruto
         // da tabela de thresholds (que cresce muito conforme o nivel do personagem).
-        int displayExp = Math.Max(0, indicatorAmount ?? amount);
+        int displayExp = Math.Max(0, indicatorAmount ?? baseAmount);
         Console.WriteLine($"[xp] {ShortId()} +{amount} raw · indicator={displayExp} · total={_skills.Exp}/{cap} · {reason}");
-        Send(new ExpGained { EntityId = EntityId, Exp = displayExp, BonusExp = 0, ResistanceExp = 0 });
+        int bonusDisplay = baseAmount > 0 ? (int)Math.Min(int.MaxValue, (long)displayExp * (amount - baseAmount) / baseAmount) : 0;
+        Send(new ExpGained { EntityId = EntityId, Exp = displayExp, BonusExp = bonusDisplay, ResistanceExp = 0 });
 
         int after = LevelFromExp(_skills.Exp);
         if (after != before)
@@ -919,7 +935,10 @@ public partial class Player
     public int PreviewActionExp(int weight)
     {
         if (weight <= 0 || _skills == null) return 0;
-        return ExpPerAction(_skillLevel) * weight * SkillTuning.AlphaTestPlayerExpMultiplier;
+        int amount = (int)Math.Min(int.MaxValue, (long)ExpPerAction(_skillLevel) * weight * SkillTuning.AlphaTestPlayerExpMultiplier);
+        amount = WithPremiumExp(amount, "preview");
+        var clan = ClanStore.Find(ClanStore.ClanIdOf(EntityId));
+        return clan != null && ClanRules.GrowthBuff(clan.Level) > 0 ? (int)Math.Min(int.MaxValue, ((long)amount * 105 + Math.Clamp(_context.ClanExpRemainder, 0, 99)) / 100) : amount;
     }
 
     /// <summary>เพดาน exp — ค้างที่เลเวลสูงสุดแต่ยังให้แถบเดินจนเต็มช่องสุดท้าย</summary>
@@ -1404,6 +1423,8 @@ public partial class Player
     public HashSet<string> UnlockedBlueprintIds()
     {
         var unlocked = new HashSet<string>(StringComparer.Ordinal);
+        var clan = ClanStore.Find(ClanStore.ClanIdOf(EntityId));
+        if (clan != null) unlocked.UnionWith(ClanRules.Blueprints(clan.Level));
         if (_skills?.Learned == null) return unlocked;
         foreach (var (skillId, subs) in _skills.Learned)
         {
