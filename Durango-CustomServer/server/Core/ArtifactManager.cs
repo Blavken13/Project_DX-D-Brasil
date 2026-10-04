@@ -265,12 +265,18 @@ public class ArtifactManager
         if (!string.IsNullOrEmpty(entityId)) _buildMaterials.Remove(entityId);
     }
 
-    /// <summary>
-    /// เปลี่ยนสถานะการก่อสร้างของหลังหนึ่ง แล้วกระจายให้ทุกคนบนเกาะเห็น
-    ///
-    /// <paramref name="postprocess"/> เป็น null = ล้างช่วง "มาร์มูรี" ทิ้ง
-    /// (ฝั่งเกมอ่าน Postprocess เฉพาะตอน Built/Remodeling — client/Artifact.cs:1063)
-    /// </summary>
+    /// <summary>Atualiza o nível calculado com os materiais usados na construção.</summary>
+    public bool SetLevel(string entityId, int level)
+    {
+        if (!_artifacts.TryGetValue(entityId, out var value)) return false;
+        value.States.EntityId = entityId;
+        value.States.Level = (byte)Math.Clamp(level, 1, 255);
+        _artifacts[entityId] = value;
+        RaiseStateUpdated(entityId, value.States);
+        return true;
+    }
+
+    /// <summary>Atualiza a etapa da construção e seu período de acabamento.</summary>
     public bool SetBuildingState(string entityId, Shared.Building.BuildingState state, Postprocess? postprocess)
     {
         if (string.IsNullOrEmpty(entityId) || !_artifacts.TryGetValue(entityId, out var value)) return false;

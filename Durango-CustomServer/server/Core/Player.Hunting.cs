@@ -95,7 +95,15 @@ public partial class Player
 
             if (inRange)
             {
-                if (_animalSet.Add(animal.EntityId)) Send(animal.ToMessage());
+                if (_animalSet.Add(animal.EntityId))
+                {
+                    Send(animal.ToMessage());
+                    // The client caches survival by EntityId. AppearAnimal does
+                    // not replace that cache when the same animal has respawned.
+                    Send(new Survival { EntityId = animal.EntityId,
+                        Life = new Gauge(animal.LifeMax, 0f, new[] { new GaugeNode(now, animal.Life) }),
+                        Gauges = animal.SurvivalGauges(now) });
+                }
             }
             else
             {

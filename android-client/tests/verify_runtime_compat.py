@@ -60,7 +60,7 @@ def math_tests():
                 'UnityEngine.Screen::SetResolution(System.Int32,System.Int32,System.Boolean,System.Int32)',
                 'UnityEngine.Application::set_targetFrameRate(System.Int32)']:
         assert api in native_source and api.encode()+b'\0' in raw
-    for entry in [0x24e3d3c,0x2436120,0x24366c4,0x243a5e4,0x175de3c,0x157feb4,0x16f88ec]:
+    for entry in [0x24e3d3c,0x24e3a94,0x2436120,0x24366c4,0x243a5e4,0x175de3c,0x157feb4,0x16f88ec]:
         for index in range(4):
             word=struct.unpack_from('<I',raw,entry+index*4)[0]
             pc=0x7000000000+entry+index*4

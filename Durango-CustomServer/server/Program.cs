@@ -121,8 +121,10 @@ internal static class Program
                         if (args[j] == "--data") dataDir = args[j + 1];
                     return LocalizationCheck.Run(dataDir);
                 case "--polish-check":
+                case "--gameplay-bugs-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
+                    if (args[i] == "--gameplay-bugs-check") return GameplayBugsCheck.Run(dataDir);
                     return GameplayPolishCheck.Run(dataDir);
                 case "--world-check":
                     for (int j = 0; j + 1 < args.Length; j++)
@@ -278,6 +280,7 @@ internal static class Program
                 case "-h":
                     Console.WriteLine("  --localization-check [--data <dir>] Valida textos brasileiros, nomes, descricoes e prioridade de idioma");
                     Console.WriteLine("  --polish-check [--data <dir>] Valida pacotes, durabilidade, niveis, expansao e limpeza de construcoes");
+                    Console.WriteLine("  --gameplay-bugs-check [--data <dir>] Valida extensao de materiais, descarte, instalacoes selvagens, nivel de mesas e respawn");
                     Console.WriteLine("  --android-assets-check [--assetbundles-android <dir>] Audita catálogo, preload e dependências sem abrir o servidor");
                     Console.WriteLine("DurangoServerNx — เซิร์ฟแท้พอร์ตตรง · มือถือก่อน");
                     Console.WriteLine("  --quest-check [--data <dir>]  ตรวจแคตตาล็อก Daily เฟส 1 (ไม่ต้องเปิดเซิร์ฟ)");

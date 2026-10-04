@@ -540,6 +540,13 @@ public partial class Player
             return;
         }
 
+        var usedMaterials = _world.ArtifactManager.GetBuildMaterials(artifact.EntityId)
+            .Values.Where(items => items != null).SelectMany(items => items).ToArray();
+        int minLevel = Math.Max(1, blueprint.MinLevel);
+        int materialLevel = usedMaterials.Length == 0 ? minLevel : (int)Math.Round(usedMaterials.Average(item => (double)item.Level));
+        _world.ArtifactManager.SetLevel(artifact.EntityId,
+            Math.Clamp(materialLevel, minLevel, Math.Max(minLevel, blueprint.MaxLevel)));
+
         // พลังงาน: constants.json → build → building.energy (ของจริง = "1" คงที่ ไม่มีตัวแปร)
         SpendBuildEnergy((float)Math.Max(0.0, BuildTuning.EvalByArea(BuildTuning.BuildEnergy, 1, 1.0)));
 

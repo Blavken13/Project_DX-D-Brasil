@@ -18,7 +18,10 @@ CLIENT = ROOT / 'android-client/work/original-nexon/client'
 APK = ROOT / 'android-client/dist/LostHorizon-alfa.apk'
 
 
-def method_addresses():
+def method_addresses(selected=None):
+    if selected is None:
+        selected = {('Durango.System', 'Platform'): {'ShowNotice', 'get_PrologueMovieUrl'},
+                    ('', '<ShowCluster>c__AnonStorey0'): {'<>m__0'}}
     data = (SOURCE / presentation.NATIVE).read_bytes()
     elf = ELFFile(io.BytesIO(data))
     segments = [s for s in elf.iter_segments() if s['p_type'] == 'PT_LOAD']
@@ -68,11 +71,11 @@ def method_addresses():
     for i in range(header[41] // 104):
         typ = struct.unpack_from('<20I8H2I', metadata, header[40] + i * 104)
         name, namespace = text(typ[0]), text(typ[1])
-        if (namespace, name) not in {('Durango.System', 'Platform'), ('', '<ShowCluster>c__AnonStorey0')}:
+        if (namespace, name) not in selected:
             continue
         for method in methods[typ[13]:typ[13] + typ[20]]:
             method_name = text(method[0])
-            if method_name in {'ShowNotice', 'get_PrologueMovieUrl', '<>m__0'}:
+            if method_name in selected[(namespace, name)]:
                 targets[(name, method_name)] = pointer(table + method[6] * 8)
     return targets
 

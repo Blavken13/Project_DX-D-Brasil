@@ -1,7 +1,45 @@
 # Cliente Android Lost Horizon
 
-APK atual: `dist/LostHorizon-alfa.apk` (02/10/2026, aproximadamente
-303 MiB), versão Android `50209` / `5.2.1-losthorizon-alfa-compat2`.
+APK atual: `dist/LostHorizon-alfa.apk`, versão Android `50213` /
+`5.2.1-losthorizon-alfa-stability1`.
+
+## Fechamentos dos testers — revisão 50213
+
+O relatório da revisão 50212 identificou três `java.lang.Error` no callback
+`ServiceConnection` encaminhado por `bitter.jnibridge` e um ANR após o pedido
+de sessão. A inspeção do `libunity.so` original encontrou o serviço
+`com.google.android.gms.ads.identifier.service.START`, a interface
+`IAdvertisingIdService` e o proxy `ServiceConnection`. Esse é um candidato forte
+ao crash, mas os relatórios não provam que foi esse serviço nos três aparelhos.
+
+`CompatGameActivity.bindService` agora retorna `false` somente para a conexão
+de ID publicitário do Google. O jogo recebe o resultado de serviço indisponível
+antes de criar a conexão problemática. O login brasileiro não precisa do ID
+publicitário. As demais conexões de serviços seguem o Android normalmente.
+O evento `LEGACY_AD_ID_SKIPPED` permite conferir que a proteção foi executada.
+
+Somente os pedidos `/accounts` e `/sessions` ao gateway recebem timeout de
+conexão de 10 segundos, timeout de requisição de 20 segundos e desativação da
+repetição automática do BestHTTP. O envio e o tratamento de erros permanecem
+no fluxo assíncrono original. Novos breadcrumbs distinguem retorno de `Send`,
+entrada/retorno do callback, estado do pedido e existência de resposta.
+Um timeout de rede não garante recuperar uma thread principal bloqueada.
+
+Nos ANRs registrados pelo Android, o coletor extrai até 32 frames Java da
+thread `main` do processo do jogo. O trace completo, mensagens e dados de
+outros processos não são enviados. Isso usa o campo `java_frames` existente,
+sem exigir atualização do servidor. A causa do ANR do SM-N975F continua
+pendente de reprodução ou da nova pilha; não foi comprovada pelo relatório.
+
+`tests/verify_mobile_stability.py` verifica o filtro de serviços, privacidade
+do parser de ANR, endereços reais nos metadados IL2CPP, prólogo do callback,
+ABI ARM64 dos setters de timeout e presença das correções no APK assinado.
+Os testes de runtime, apresentação, dependências do tutorial e K também devem
+passar. Nesta revisão, os cinco conjuntos de testes passaram. O APK foi
+instalado como atualização no Redmi Note 12/Android 15: login e entrada no mapa
+concluídos, respostas de conta/sessão recebidas, ambos os callbacks retornaram
+e nenhuma exceção fatal foi registrada no processo durante essa verificação.
+A confirmação nos Androids 12, 16 e 17 depende dos testers afetados.
 
 ## Compatibilidade e relatório de fechamento — revisão 50209
 

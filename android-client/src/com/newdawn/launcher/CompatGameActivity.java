@@ -11,6 +11,16 @@ import com.unity3d.player.UnityPlayer;
 /** All code patches are installed synchronously before the UnityPlayer exists. */
 public final class CompatGameActivity extends Activity {
     private UnityPlayer player;
+    @Override public boolean bindService(Intent intent, android.content.ServiceConnection connection, int flags) {
+        if (intent != null && LegacyServicePolicy.blocked(intent.getAction(), intent.getPackage(),
+                intent.getComponent() == null ? null : intent.getComponent().getPackageName())) {
+            // Return the documented unavailable-service result before Android can
+            // dispatch the old native ServiceConnection proxy on its main thread.
+            CrashDiagnostics.breadcrumb(this, "LEGACY_AD_ID_SKIPPED");
+            return false;
+        }
+        return super.bindService(intent, connection, flags);
+    }
     @Override public void onCreate(Bundle state) {
         requestWindowFeature(1);
         super.onCreate(state);

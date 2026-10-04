@@ -71,7 +71,8 @@ public class UnityPlayer extends android.widget.FrameLayout {
                  ['NewDawnApi.java', 'OriginalAuthActivity.java', 'NativeRuntime.java',
                   'CompatGameActivity.java', 'DiagnosticApplication.java',
                   'CrashDiagnostics.java', 'ReportProvider.java', 'TombstoneSummary.java',
-                  'MobileReports.java', 'MobileReportQueue.java', 'MobileReportTransport.java']))
+                  'MobileReports.java', 'MobileReportQueue.java', 'MobileReportTransport.java',
+                  'LegacyServicePolicy.java', 'AnrSummary.java']))
     compile_api = WORK / 'unity-compile-api.jar'
     with zipfile.ZipFile(compile_api, 'w') as archive:
         path = classes / 'com/unity3d/player/UnityPlayer.class'
@@ -135,8 +136,8 @@ public class UnityPlayer extends android.widget.FrameLayout {
     tree.write(manifest, encoding='utf-8', xml_declaration=True)
     yaml = DECODED / 'apktool.yml'
     text = yaml.read_text('utf-8')
-    text = re.sub(r'versionCode: \d+', 'versionCode: 50212', text)
-    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa-reports3', text)
+    text = re.sub(r'versionCode: \d+', 'versionCode: 50213', text)
+    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa-stability1', text)
     text = re.sub(r'minSdkVersion: [^\n]+', "minSdkVersion: '21'", text)
     yaml.write_text(text, 'utf-8')
     rebuilt = WORK / 'resources-rebuilt.apk'
@@ -216,6 +217,11 @@ def verify():
                                 'title_video_enabled_by_default': True, 'title_video_independent_option': True,
                                 'runtime_page_size': True, 'reports_private': True,
                                 'legacy_unity_16kb_requires_android_compat_mode': True},
+              'stability': {'version_code': 50213, 'version_name': '5.2.1-losthorizon-alfa-stability1',
+                            'legacy_google_ad_id_bind_disabled': True,
+                            'auth_connect_timeout_seconds': 10, 'auth_request_timeout_seconds': 20,
+                            'auth_automatic_retry_disabled': True, 'auth_callback_breadcrumbs': True,
+                            'anr_main_thread_java_frames_only': True},
               'tutorial_dependencies': BUNDLE_MANIFEST['bundles'],
               'raft_k': {'entity_id': '502', 'todo': 'talk_npc_raft_ancora.meet_chief',
                          'creates_missing_npc_at_tutorial_boat': True, 'automatic_todo_completion': False}}

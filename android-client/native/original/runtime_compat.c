@@ -26,6 +26,7 @@ static pthread_mutex_t prepare_lock=PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t bind_lock=PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t stage_lock=PTHREAD_MUTEX_INITIALIZER;
 static void *(*original_send)(void *,const void *);
+static void (*original_callback)(void *,const void *);
 static void (*original_title)(void *,const void *);
 static void (*original_media_init)(void *,const void *);
 static void (*original_media_play)(void *,const void *);
@@ -34,6 +35,7 @@ static __thread int title_context;
 static void *(*invoke)(const void *,void *,void **,void **);
 static void *(*string_new)(const char *);
 static const void *uri_get,*uri_absolute,*add_field;
+static const void *connect_timeout,*request_timeout,*disable_retry,*request_state,*request_response;
 static int binding_state;
 static uint32_t title_media_handle;
 static JavaVM *vm;
@@ -117,6 +119,9 @@ static int bind(void) {
     if(method&&http&&uri&&invoke&&string_new){
         uri_get=method(http,"get_Uri",0);if(!uri_get)uri_get=method(http,"get_CurrentUri",0);
         uri_absolute=method(uri,"get_AbsoluteUri",0);add_field=method(http,"AddField",2);
+        connect_timeout=method(http,"set_ConnectTimeout",1);request_timeout=method(http,"set_Timeout",1);
+        disable_retry=method(http,"set_DisableRetry",1);request_state=method(http,"get_State",0);
+        request_response=method(http,"get_Response",0);
     }
     binding_state=callable(uri_get)&&callable(uri_absolute)&&callable(add_field)?1:-1;
     br_stage(binding_state>0?"AUTH_READY":"AUTH_BINDING_FAILED");
@@ -130,6 +135,33 @@ static int ascii(void *value,char *out,size_t capacity) {
 static int route(const char *address) {
     return lh_auth_route(address);
 }
+static int request_route(void *request) {
+    if(!request||!bind())return 0;
+    void *exception=NULL,*uri=invoke(uri_get,request,NULL,&exception);
+    if(exception||!uri)return 0;
+    void *value=invoke(uri_absolute,uri,NULL,&exception);char address[2048];
+    if(exception||!ascii(value,address,sizeof(address))||!route(address))return 0;
+    return !strncmp(address+sizeof(GATEWAY)-1,"/accounts",9)?1:2;
+}
+static void request_callback(void *request,const void *method_info) {
+    int kind=request_route(request);
+    if(kind){
+        br_stage(kind==1?"ACCOUNT_CALLBACK_ENTER":"SESSION_CALLBACK_ENTER");
+        if(callable(request_state)){
+            void *exception=NULL,*state=invoke(request_state,request,NULL,&exception);
+            /* Use the exported unbox API for enum payloads. */
+            void *(*unbox)(void *)=dlsym(library,"il2cpp_object_unbox");
+            if(!exception&&state&&unbox){int32_t *value=unbox(state);char stage[64];
+                if(value&&*value>=0&&*value<=7){snprintf(stage,sizeof(stage),"%s_STATE_%d",kind==1?"ACCOUNT":"SESSION",*value);br_stage(stage);}}
+        }
+        if(callable(request_response)){
+            void *exception=NULL,*response=invoke(request_response,request,NULL,&exception);
+            if(!exception&&response)br_stage(kind==1?"ACCOUNT_RESPONSE_RECEIVED":"SESSION_RESPONSE_RECEIVED");
+        }
+    }
+    original_callback(request,method_info);
+    if(kind)br_stage(kind==1?"ACCOUNT_CALLBACK_RETURN":"SESSION_CALLBACK_RETURN");
+}
 static void *send_request(void *request,const void *method_info) {
     if(!request)return NULL;
     if(!bind()){notify_failure();return NULL;}
@@ -142,9 +174,23 @@ static void *send_request(void *request,const void *method_info) {
         if(!key||!credential){br_stage("AUTH_ALLOCATION_FAILED");notify_failure();return NULL;}
         void *args[]={key,credential};invoke(add_field,request,args,&exception);
         if(exception){br_stage("AUTH_FIELD_FAILED");notify_failure();return NULL;}
+        /* Bound only authentication requests. TimeSpan is a single Int64 ticks
+         * value in this client; runtime_invoke takes its payload address.
+         * Keep the existing async HTTP worker and game error callback. */
+        if(callable(connect_timeout)&&callable(request_timeout)&&callable(disable_retry)){
+            int64_t connect_ticks=10LL*10000000,timeout_ticks=20LL*10000000;uint8_t retry=1;
+            void *connect_args[]={&connect_ticks},*timeout_args[]={&timeout_ticks},*retry_args[]={&retry};
+            invoke(connect_timeout,request,connect_args,&exception);
+            if(!exception)invoke(request_timeout,request,timeout_args,&exception);
+            if(!exception)invoke(disable_retry,request,retry_args,&exception);
+            if(exception){br_stage("AUTH_TIMEOUT_CONFIGURATION_FAILED");notify_failure();return NULL;}
+        }else br_stage("AUTH_TIMEOUT_ORIGINAL_FALLBACK");
         br_stage(strstr(address+sizeof(GATEWAY)-1,"/accounts")==address+sizeof(GATEWAY)-1?"ACCOUNT_REQUEST":"SESSION_REQUEST");
     }
-    return original_send(request,method_info);
+    int kind=route(address)?(!strncmp(address+sizeof(GATEWAY)-1,"/accounts",9)?1:2):0;
+    void *result=original_send(request,method_info);
+    if(kind)br_stage(kind==1?"ACCOUNT_SEND_RETURN":"SESSION_SEND_RETURN");
+    return result;
 }
 static int skip_title_media(void *self) {
     if(!disable_title_video)return 0;
@@ -218,6 +264,9 @@ JNIEXPORT jboolean JNICALL Java_com_newdawn_launcher_NativeRuntime_prepare(JNIEn
     Dl_info info;void *init=library?dlsym(library,"il2cpp_init"):NULL;
     if(!init||!dladdr(init,&info)){br_stage("NATIVE_LOAD_FAILED");pthread_mutex_unlock(&prepare_lock);return JNI_FALSE;}
     base=(uintptr_t)info.dli_fbase;
+    static const unsigned char callback_bytes[16]={0xf6,0x57,0xbd,0xa9,0xf4,0x4f,0x01,0xa9,0xfd,0x7b,0x02,0xa9,0xfd,0x83,0x00,0x91};
+    if(!original_callback&&!br_hook_install((void *)(base+0x24e3a94),callback_bytes,request_callback,(void **)&original_callback)){
+        br_stage("AUTH_CALLBACK_INSTALL_FAILED");pthread_mutex_unlock(&prepare_lock);return JNI_FALSE;}
     /* Exact original prologue / offsets verified by metadata tests at build. */
     static const unsigned char send_bytes[16]={0xf4,0x4f,0xbe,0xa9,0xfd,0x7b,0x01,0xa9,0xfd,0x43,0x00,0x91,0x74,0x81,0x01,0xb0};
     if(!original_send&&!br_hook_install((void *)(base+0x24e3d3c),send_bytes,send_request,(void **)&original_send)){

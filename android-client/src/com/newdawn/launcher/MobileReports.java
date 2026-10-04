@@ -165,11 +165,14 @@ final class MobileReports {
                     if(exit.getTimestamp()<=cursor||exit.getPid()!=pid||exit.getTimestamp()<meta.optLong("session_started",0))continue;
                     confirmed=true;int reason=exit.getReason();String type=reason==3?"low_memory":reason==4?"java_crash":reason==5?"native_crash":reason==6?"anr":reason==2?"signal":"";
                     if(!type.isEmpty()) {
-                        String trace="";
+                        String trace="", anrFrames="";
                         if(visible&&Build.VERSION.SDK_INT>=31&&reason==5)try(InputStream in=exit.getTraceInputStream()) {
                             if(in!=null)trace=TombstoneSummary.read(new FilterInputStream(in){@Override public int read(byte[] b,int off,int len)throws IOException{if(!visible)throw new IOException();return super.read(b,off,len);}});
                         }catch(Exception ignored){}
-                        JSONObject report=event(context,meta,type,exit.getTimestamp(),stage,events,java,graphics,trace,reason,exit.getStatus(),exit.getRss());
+                        if(visible&&reason==6)try(InputStream in=exit.getTraceInputStream()) {
+                            if(in!=null)anrFrames=AnrSummary.read(new FilterInputStream(in){@Override public int read(byte[] b,int off,int len)throws IOException{if(!visible)throw new IOException();return super.read(b,off,len);}});
+                        }catch(Exception ignored){}
+                        JSONObject report=event(context,meta,type,exit.getTimestamp(),stage,events,java+anrFrames,graphics,trace,reason,exit.getStatus(),exit.getRss());
                         if(!queue(context).add(report.getString("event_id"),report.toString()))return;
                         CrashDiagnostics.write(new File(CrashDiagnostics.reports(context),"relatorio-"+exit.getTimestamp()+".txt"),"Lost Horizon — diagnóstico mobile\n"+report.toString(2));
                     }

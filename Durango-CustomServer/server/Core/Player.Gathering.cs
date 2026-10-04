@@ -226,6 +226,7 @@ public partial class Player
 
     private void HandleGetCollectibleMsg(GetCollectible msg, uint seq)
     {
+        if (TrySendGroundCollectible(msg.EntityId, seq)) return;
         if (TrySendFarmCollectible(msg.EntityId, seq)) return;
         if (_world.AnimalManager?.Get(msg.EntityId)?.Captured == true)
         { Send(new Collectible { EntityId = msg.EntityId, Generators = Array.Empty<Generator>() }, seq); return; }
@@ -244,6 +245,7 @@ public partial class Player
 
     private void HandleCollectMsg(Collect msg, uint seq)
     {
+        if (TryCollectGroundPackage(msg, seq)) return;
         // แปลงเพาะปลูกที่โตแล้วใช้ Collect ชุดเดียวกับของธรรมชาติ (ดู Player.Farm.cs)
         if (TryHandleFarmHarvest(msg, seq)) return;
 

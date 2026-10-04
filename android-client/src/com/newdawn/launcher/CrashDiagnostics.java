@@ -19,6 +19,11 @@ final class CrashDiagnostics {
     static synchronized void stage(Context context, String stage) {
         write(new File(directory(context),"runtime-stage.txt"),System.currentTimeMillis()/1000+" "+Process.myPid()+" "+stage+"\n");
     }
+    static synchronized void breadcrumb(Context context, String event) {
+        try (FileOutputStream out = new FileOutputStream(new File(directory(context), "runtime-events.txt"), true)) {
+            out.write((System.currentTimeMillis()/1000 + " " + event + "\n").getBytes(StandardCharsets.UTF_8));
+        } catch (IOException ignored) { }
+    }
     static void start(Context context) {
         final Context app=context.getApplicationContext();
         // Capture previous stage before any startup callback overwrites it.

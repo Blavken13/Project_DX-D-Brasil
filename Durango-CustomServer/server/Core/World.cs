@@ -749,6 +749,9 @@ public partial class World
     private void OnCorpseDisposed(AnimalManager.Animal animal)
     {
         BroadCast(new DisappearEntity { EntityId = animal.EntityId });
+        BroadCast(new Survival { EntityId = animal.EntityId,
+            Life = new Gauge(animal.LifeMax, 0f, new[] { new GaugeNode(Gauge.CurrentTime, animal.Life) }),
+            Gauges = animal.SurvivalGauges(Gauge.CurrentTime) });
         ForgetHarvests(animal.EntityId);
         foreach (Player player in _players)
         {
@@ -950,6 +953,7 @@ public partial class World
         if (appearArtifact.HasValue)
         {
             _context.WildStructureExpirations?.Remove(entityId);
+            _context.GroundPackages.Remove(entityId);
             _context.ArtifactAddOns.Remove(entityId);
             _context.ArtifactMannequins.Remove(entityId);
             Player.WarehouseStore.Remove(entityId);

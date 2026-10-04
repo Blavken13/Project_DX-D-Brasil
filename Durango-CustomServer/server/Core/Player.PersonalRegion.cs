@@ -554,6 +554,11 @@ public partial class Player
     private bool CanUseArtifactInCurrentSettlement(AppearArtifact artifact, string artifactOwner,
         Shared.Estate.AccessRights requiredRights = Shared.Estate.AccessRights.None)
     {
+        // Wild-island workbenches and campfires are shared facilities. This does
+        // not grant storage, dismantling, construction or administrative rights.
+        if (_world.HasTemporaryPlayerStructures && requiredRights == Shared.Estate.AccessRights.UseFacility &&
+            Yaml.BlueprintStore.GetBlueprint(artifact.EntityType)?.Components is { } components &&
+            (components.Contains("Workbench") || components.Contains("Sanctum"))) return true;
         if (_world.Registry?.IsClanRegion(LogicalRegionId()) != true && string.Equals(artifactOwner, EntityId, StringComparison.Ordinal))
         {
             return true;

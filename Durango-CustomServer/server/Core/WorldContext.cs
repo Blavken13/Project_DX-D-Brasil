@@ -12,6 +12,8 @@ namespace Durango.Online;
 // พอร์ตจาก nexonSRC/Durango.Online/WorldContext.cs — ฟอร์แมตเซฟตรงต้นฉบับ (.world JSON)
 public class WorldContext
 {
+    [JsonProperty("ground_packages")]
+    public Dictionary<string, List<Item>> GroundPackages = new();
     [JsonProperty("clan_economy_sequence")]
     public long ClanEconomySequence;
     [JsonProperty("player_slot")]
@@ -154,6 +156,7 @@ public class WorldContext
 
     public void Initialize(string path)
     {
+        GroundPackages ??= new();
         Artifacts ??= new Dictionary<string, AppearArtifact>();
         ArtifactAddOns ??= new Dictionary<string, AddOns>();
         ArtifactMannequins ??= new Dictionary<string, Messages.Mannequin>();
@@ -188,6 +191,12 @@ public class WorldContext
     /// </summary>
     private void NormalizeLoadedItems()
     {
+        foreach (var items in GroundPackages.Values)
+        {
+            if (items == null) continue;
+            for (int i = 0; i < items.Count; i++)
+                items[i] = ItemExtRepair.Fix(items[i], "Itens no chão");
+        }
         if (ArtifactAddOns != null)
         {
             foreach (string entityId in new List<string>(ArtifactAddOns.Keys))

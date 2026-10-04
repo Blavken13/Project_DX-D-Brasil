@@ -239,8 +239,7 @@ public static class CraftRecipeStore
             if (_byId != null) return;
             var loaded = Json.ReadFromFile<Dictionary<string, CraftRecipeData>>("item/recipes");
             _byId = loaded ?? new Dictionary<string, CraftRecipeData>();
-            _craftableIds = _byId.Where(pair => pair.Value != null && (pair.Value.type == CraftType.Craft
-                                     || (pair.Value.type == CraftType.Modify && pair.Value.category == "cook")))
+            _craftableIds = _byId.Where(pair => Supported(pair.Key, pair.Value))
                                  .Select(pair => pair.Key)
                                  .ToArray();
             Console.WriteLine($"[craft] โหลดสูตรคราฟต์ {_byId.Count} รายการ " +
@@ -253,6 +252,16 @@ public static class CraftRecipeStore
         EnsureLoaded();
         return string.IsNullOrEmpty(id) ? null : _byId.GetValueOrDefault(id);
     }
+
+    public static string ExtendedShape(string id) => id switch
+    {
+        "extend_rope" => "string_long",
+        "extend_stick" or "s02_extend_stick" => "stick_long",
+        _ => null
+    };
+    public static bool Supported(string id, CraftRecipeData recipe) => recipe != null &&
+        (recipe.type == CraftType.Craft || (recipe.type == CraftType.Modify &&
+         (recipe.category == "cook" || ExtendedShape(id) != null)));
 
     /// <summary>
     /// id ของสูตรที่ "ปลดล็อกให้ผู้เล่น" ใน Recipes(120)
@@ -477,7 +486,7 @@ public partial class Player
         // [8 ก.ย. 2026] cook = type Modify (แปลงของในตัว) 
         // ปล่อยผ่านได้ — dye/reform ยังไม่ทำ จึงยังปฏิเสธ
         bool isCook = recipe.type == CraftType.Modify && recipe.category == "cook";
-        if (recipe.type != CraftType.Craft && !isCook)
+        if (!CraftRecipeStore.Supported(msg.RecipeId, recipe))
         {
             Send(new Abort { Text = "Receitas de modificação e melhoria ainda não estão disponíveis." }, seq);
             return;
@@ -498,7 +507,8 @@ public partial class Player
             return;
         }
 
-        if (isCook) { HandleCookResult(recipe, msg, materials, seq); return; }
+        if (isCook || CraftRecipeStore.ExtendedShape(msg.RecipeId) != null)
+        { HandleCookResult(recipe, msg, materials, seq); return; }
 
         // [8 ก.ย. 2026] สุ่ม "สำเร็จยอดเยี่ยม" ตามสูตร NEXON — great = ได้ของเลเวลเต็ม (potential)
         int normalLevel = ProductLevel(recipe, materials);
@@ -1079,6 +1089,7 @@ public partial class Player
             cooked.ModifiedCount += 1;
         }
         ApplyAddColor(ref cooked, recipe);
+        ApplyExtendedShape(ref cooked, msg.RecipeId);
 
         Item[] products = { cooked };
         var crafted = new Crafted
@@ -1124,6 +1135,21 @@ public partial class Player
             && int.TryParse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out b);
     }
 
+    private static void ApplyExtendedShape(ref Item item, string recipeId)
+    {
+        string shape = CraftRecipeStore.ExtendedShape(recipeId);
+        if (shape == null) return;
+        string prefix = shape == "string_long" ? "string_" : "stick_";
+        // Preserve the base item's identity, level, material and durability.
+        // Replace the shape instead of recreating the prototype (which is still short).
+        bool IsShape(Tag tag) => tag.Id == prefix + "short" || tag.Id == prefix + "normal" || tag.Id == prefix + "long";
+        var tags = (item.Tags ?? Array.Empty<Tag>()).Where(t => !IsShape(t)).ToList();
+        var extended = new Tag { Id = shape, Level = item.Level };
+        tags.Add(extended); item.Tags = tags.ToArray();
+        item.TagModifications = (item.TagModifications ?? Array.Empty<Tag>())
+            .Where(t => !IsShape(t)).Append(extended).ToArray();
+    }
+
     /// <summary>ประเมินผลทำอาหาร - ผลคือของ base ที่ถูกปรุง (คงชนิดเดิม, modifiable ลด 1)</summary>
     private void HandleCookEstimate(CraftRecipeData recipe, EstimateCraft msg, uint seq)
     {
@@ -1139,8 +1165,8 @@ public partial class Player
         Item item = bi.Value;
         Prototype prototype = PrototypeYaml.GetItemPrototype(item.Prototype);
         var tags = new Dictionary<string, int>();
-        if (prototype?.Tags != null)
-            foreach (var t in prototype.Tags) tags[t.Key] = item.Level;
+        ApplyExtendedShape(ref item, msg.RecipeId);
+        foreach (Tag tag in item.Tags ?? Array.Empty<Tag>()) tags[tag.Id] = tag.Level;
         int modAfter = recipe.deduct_modifiable_count ? Math.Max(0, item.ModifiableCount - 1) : item.ModifiableCount;
         Send(new CraftEstimationInfo
         {
@@ -1170,7 +1196,7 @@ public partial class Player
             Send(new Abort { Text = "Não foi possível avaliar esta receita." }, seq);
             return;
         }
-        if (recipe.type == CraftType.Modify && recipe.category == "cook")
+        if (recipe.type == CraftType.Modify && CraftRecipeStore.Supported(msg.RecipeId, recipe))
         {
             HandleCookEstimate(recipe, msg, seq);
             return;

@@ -120,6 +120,7 @@ internal static class EconomyProtocolCheck
             Receive<Points>(); Receive<QuestStarted>(); Receive<SetBaseMoveSpeed>(); Receive<Teleported>();
             Receive<CombatInteraction>(); Receive<Move>(); Receive<Damaged>(); Receive<SurvivalUpdated>();
             Receive<StatusEffects>(); Receive<Touched>(); Receive<Collectible>(); Receive<Info>();
+            Receive<Survival>();
             Receive<Messages.Timer>(); Receive<Rewarded>(); Receive<DisappearEntity>(); Receive<EntityDied>();
             Receive<BattleBegun>(); Receive<BattleEnded>(); Receive<AppearAnimal>(); Receive<Weather>();
             Receive<GardenDiff>(); Receive<DisappearEntityOnTile>();

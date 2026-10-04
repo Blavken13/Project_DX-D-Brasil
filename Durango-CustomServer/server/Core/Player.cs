@@ -1190,6 +1190,7 @@ public partial class Player
 
     private void HandleTouchMsg(Messages.Touch touch, uint seq)
     {
+        if (TryTouchGroundPackage(touch.EntityId, seq)) return;
         Console.WriteLine(
             $"[touch-entry-v3] entity={touch.EntityId} type={touch.EntityType} seq={seq}");
         if (touch.EntityType == 0)
@@ -1891,13 +1892,7 @@ public partial class Player
 
     private void HandleDumpItemsMsg(DumpItems msg)
     {
-        _context.InventoryItems.RemoveAll(o => msg.ItemIds.Any(p => p == o.Id));
-        Send(new InventoryUpdated
-        {
-            EntityId = EntityId,
-            RemovedItemIds = msg.ItemIds
-        });
-        OnContextChanged();
+        DumpItemsToGround(msg);
     }
 
     private void HandleGetAddOnsMsg(GetAddOns msg, uint seq)
