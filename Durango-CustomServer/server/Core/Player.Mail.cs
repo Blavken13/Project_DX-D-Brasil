@@ -13,10 +13,11 @@ public partial class Player
         _connection.Recv(delegate(AcceptMails msg, PacketHeader header)
         {
             if (_mailStore == null) { Send(new Abort { Text = "Correio não configurado." }, header.Seq); return; }
-            if (!_mailStore.Accept(_context, msg.MailIds, out var items, out string error))
+            if (!_mailStore.Accept(_context, msg.MailIds, out var items, out var vouchers, out string error))
             { Send(new Abort { Text = error }, header.Seq); return; }
             if (items.Length > 0) Send(new InventoryUpdated { EntityId = EntityId, Items = items });
-            OnContextChanged(); SendMailbox(); Send(default(OK), header.Seq);
+            if (vouchers.Length > 0) SendWalletNow(); else OnContextChanged();
+            SendMailbox(); Send(default(OK), header.Seq);
         });
         _connection.Recv(delegate(DeleteMails msg, PacketHeader header)
         {

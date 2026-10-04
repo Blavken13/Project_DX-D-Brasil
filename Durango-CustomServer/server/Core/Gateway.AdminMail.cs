@@ -41,14 +41,15 @@ public partial class Gateway
             if (recipients.Length == 0 && !send) throw new ArgumentException("Nenhum personagem salvo e vinculado a uma conta corresponde ao destinatário.");
             if (!send) return new WebServer.JsonResponse(new JObject {
                 ["subject"] = mail.Subject, ["message"] = mail.Text, ["recipients"] = recipients.Length,
-                ["target"] = mail.All ? "all" : "player", ["items"] = mail.ResolvedItems,
-                ["attachments_per_player"] = mail.Items.Length
+                ["target"] = mail.All ? "all" : "player", ["items"] = mail.ResolvedItems, ["vouchers"] = mail.ResolvedVouchers,
+                ["attachments_per_player"] = mail.Items.Length,
+                ["portal_stones_per_player"] = mail.Vouchers.Where(v => v.VoucherId == CrackTuning.VoucherId).Sum(v => v.Count)
             }.ToString());
             body.TryGetValue("request_id", out string requestId);
             if (string.IsNullOrWhiteSpace(requestId) || requestId.Length > 100
                 || !System.Text.RegularExpressions.Regex.IsMatch(requestId, "^[A-Za-z0-9_-]+$"))
                 throw new ArgumentException("Informe request_id com até 100 letras, números, hífens ou sublinhados.");
-            if (!_host.Mail.Dispatch(requestId, mail.Fingerprint, recipients, mail.Subject, mail.Text, mail.Type, mail.Items, out var result, out string error))
+            if (!_host.Mail.Dispatch(requestId, mail.Fingerprint, recipients, mail.Subject, mail.Text, mail.Type, mail.Items, mail.Vouchers, out var result, out string error))
                 return new WebServer.JsonResponse(new JObject { ["error"] = error }.ToString(), HttpStatusCode.Conflict);
             return new WebServer.JsonResponse(new JObject {
                 ["sent"] = result.Recipients, ["request_id"] = result.RequestId, ["duplicate"] = result.Duplicate

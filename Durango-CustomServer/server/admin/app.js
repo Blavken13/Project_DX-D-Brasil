@@ -8,7 +8,7 @@ let page = 'overview', players = [], catalog = null, dataFile = null, islandId =
 let mailItems = null, mailPreview = null;
 const newMailId = () => Array.from(crypto.getRandomValues(new Uint8Array(16)),n=>n.toString(16).padStart(2,'0')).join('');
 let mailRequestId = sessionStorage.getItem('durango-mail-request-id') || newMailId();
-const mailExample = {target:'player',recipient_id:'',subject:'Sua entrega chegou',message:'Obrigado! Resgate os anexos desta mensagem para recebê-los na mochila.',type:'purchase',items:[]};
+const mailExample = {target:'player',recipient_id:'',subject:'Sua entrega chegou',message:'Obrigado! Resgate os anexos desta mensagem para recebê-los na mochila.',type:'purchase',items:[],vouchers:[]};
 $('mail-json').value = sessionStorage.getItem('durango-mail-draft') || JSON.stringify(mailExample,null,2);
 const titles = {overview:'Visão geral',players:'Jogadores',economy:'Economia',config:'Configurações',islands:'Ilhas',data:'Dados do jogo',actions:'Operações'};
 function notice(message, error = false) { $('notice').hidden = false; $('notice').textContent = message; $('notice').className = error ? 'error' : ''; }
@@ -40,14 +40,20 @@ function endSession() {
  $('app').hidden = true; $('login').hidden = false; $('password').value = ''; players = []; catalog = null;
 }
 async function api(path, body) {
- const response = await fetch(path, {method:body === undefined ? 'GET':'POST',cache:'no-store',headers:{'X-Admin-Session':session,...(body === undefined ? {} : {'Content-Type':'application/x-www-form-urlencoded'})},body:body === undefined ? undefined:new URLSearchParams(body)});
- const text = await response.text(); let result; try { result = JSON.parse(text); } catch { result = {}; }
- if (!response.ok) {
-  if (session && (response.status === 401 || response.status === 403)) {endSession();$('login-error').textContent = 'Sessão expirada. Entre novamente.';}
-  throw new Error(result.error || `O servidor respondeu HTTP ${response.status}.`);
- }
- if (result.error) throw new Error(result.error);
- return result;
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
+ try {
+  const response = await fetch(path, {method:body === undefined ? 'GET':'POST',cache:'no-store',headers:{'X-Admin-Session':session,...(body === undefined ? {} : {'Content-Type':'application/x-www-form-urlencoded'})},body:body === undefined ? undefined:new URLSearchParams(body),signal:controller.signal});
+  const text = await response.text(); let result; try { result = JSON.parse(text); } catch { result = {}; }
+  if (!response.ok) {
+   if (session && (response.status === 401 || response.status === 403)) {endSession();$('login-error').textContent = 'Sessão expirada. Entre novamente.';}
+   throw new Error(result.error || `O servidor respondeu HTTP ${response.status}.`);
+  }
+  if (result.error) throw new Error(result.error);
+  return result;
+ } catch(error) {
+  if(error && error.name==='AbortError')throw new Error('O servidor não respondeu em até 20 segundos. Tente novamente.');
+  throw error;
+ } finally {clearTimeout(timeout);}
 }
 function metric(label, value) { return `<div class="metric"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`; }
 function table(headers, rows) { return rows.length ? `<table><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(cell=>`<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>` : '<p class="muted">Nenhum registro encontrado.</p>'; }
@@ -117,7 +123,7 @@ async function loadCatalog(){catalog=await api('/admin/catalog');$('catalog-summ
 function filterCatalog(){if(!catalog)return;const previous=$('data-select').value,query=$('data-search').value.toLowerCase();$('data-select').replaceChildren(...catalog.files.filter(f=>f.path.toLowerCase().includes(query)).map(f=>new Option(`${f.path} (${fmt(Math.round(f.bytes/1024))} KB)`,f.path)));if([...$('data-select').options].some(o=>o.value===previous))$('data-select').value=previous;}
 $('data-search').addEventListener('input',filterCatalog);
 function maintenance(on){$('maintenance-state').textContent=on?'Manutenção ativa. Novas entradas bloqueadas.':'Servidor aberto para novas entradas.';}
-async function execute(button,work){button.disabled=true;try{notice(await work());}catch(error){notice(error.message,true);}finally{button.disabled=false;}}
+async function execute(button,work){button.disabled=true;button.classList.add('is-busy');button.setAttribute('aria-busy','true');try{notice(await work());}catch(error){notice(error.message,true);}finally{button.classList.remove('is-busy');button.removeAttribute('aria-busy');button.disabled=false;}}
 function on(id,work){$(id).addEventListener('click',()=>execute($(id),work));}
 on('save-config',()=>saveJson('/admin/config','config-editor'));
 on('save-islands',()=>saveJson('/admin/islands','islands-editor'));
@@ -126,11 +132,29 @@ on('save-island',()=>{if(!islandId)throw new Error('Carregue a ilha antes de sal
 on('load-data',async()=>{const path=$('data-select').value;if(!path)throw new Error('Selecione um arquivo.');const data=await api('/admin/data?path='+encodeURIComponent(path));const text=JSON.stringify(data,null,2);dataFile={path,text};$('data-viewer').textContent=text.slice(0,300000);$('data-detail').textContent=`${path} · ${fmt(text.length)} caracteres${text.length>300000?' · Prévia limitada. Baixe o JSON para consultar o arquivo completo.':''}`;$('download-data').disabled=false;return 'Arquivo carregado.';});
 $('download-data').addEventListener('click',()=>{if(!dataFile)return;const url=URL.createObjectURL(new Blob([dataFile.text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=dataFile.path.replace(/\//g,'_');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 const reload=async()=>{await api('/admin/reload',{});return 'Configurações recarregadas no servidor.';};on('reload',reload);on('reload-config',reload);
-function mailChanged() {
- mailPreview=null; $('mail-send').disabled=true; $('mail-preview-result').hidden=true;
- mailRequestId=newMailId();sessionStorage.setItem('durango-mail-request-id',mailRequestId);
- sessionStorage.setItem('durango-mail-draft',$('mail-json').value);$('mail-result').textContent='Valide o JSON antes de enviar.';
+function invalidateMailPreview() {
+ mailPreview=null;$('mail-preview-result').hidden=true;
+ $('mail-result').textContent='O email será validado automaticamente antes do envio.';
 }
+function mailChanged() {
+ invalidateMailPreview();
+ mailRequestId=newMailId();sessionStorage.setItem('durango-mail-request-id',mailRequestId);
+ sessionStorage.setItem('durango-mail-draft',$('mail-json').value);
+}
+function syncMailDraftFromControls() {
+ const data=JSON.parse($('mail-json').value);
+ data.target=$('mail-target').value;
+ if(data.target==='all')delete data.recipient_id;
+ else{
+  const recipientId=$('mail-recipient').value;
+  if(!recipientId)throw new Error('Selecione um jogador.');
+  data.recipient_id=recipientId;
+ }
+ const json=JSON.stringify(data,null,2);
+ if(json!==$('mail-json').value){$('mail-json').value=json;mailChanged();}
+ return json;
+}
+function syncMailControlsOrNotice(){try{syncMailDraftFromControls();}catch(error){invalidateMailPreview();notice(error.message,true);}}
 $('mail-json').addEventListener('input',mailChanged);
 async function loadMailTools() {
  const state=await api('/admin/mail/status');$('mail-status').textContent=`Correio ativo · ${fmt(state.messages)} mensagens · ${fmt(state.pending)} aguardando resgate.`;
@@ -141,14 +165,32 @@ async function loadMailTools() {
  if(!$('mail-json').dataset.initialized){let draft={};try{draft=JSON.parse($('mail-json').value);}catch{}$('mail-target').value=draft.target==='all'?'all':'player';$('mail-recipient').disabled=draft.target==='all';if(draft.recipient_id&&[...$('mail-recipient').options].some(o=>o.value===draft.recipient_id))$('mail-recipient').value=draft.recipient_id;$('mail-json').dataset.initialized='1';}
  filterMailItems();
 }
-function filterMailItems(){if(!mailItems)return;const query=$('mail-item-search').value.toLowerCase();$('mail-item').replaceChildren(...mailItems.filter(i=>`${i.name} ${i.prototype_id}`.toLowerCase().includes(query)).slice(0,200).map(i=>new Option(`${i.name} · ${i.prototype_id}`,i.prototype_id)));}
+function filterMailItems(){
+ if(!mailItems)return;
+ const query=$('mail-item-search').value.toLowerCase(),scope=$('mail-item-scope').value;
+ const filtered=mailItems.filter(i=>(scope==='all'||(scope==='shop'&&i.shop)||(scope==='skins'&&i.skin))&&`${i.name} ${i.prototype_id} ${i.category||''} ${(i.shop_categories||[]).join(' ')}`.toLowerCase().includes(query));
+ $('mail-item').replaceChildren(...filtered.map(i=>new Option(`${i.name} · ${i.prototype_id}${i.shop?' · Loja':''}`,i.prototype_id)));
+ $('mail-item-count').textContent=`${fmt(filtered.length)} item(ns) nesta lista · catálogo total ${fmt(mailItems.length)}.`;
+}
 $('mail-item-search').addEventListener('input',filterMailItems);
-$('mail-target').addEventListener('change',()=>{$('mail-recipient').disabled=$('mail-target').value==='all';mailPreview=null;$('mail-send').disabled=true;});
-$('mail-recipient').addEventListener('change',()=>{mailPreview=null;$('mail-send').disabled=true;});
-on('mail-template',async()=>{const data=JSON.parse($('mail-json').value);data.target=$('mail-target').value;if(data.target==='all')delete data.recipient_id;else{if(!$('mail-recipient').value)throw new Error('Selecione um jogador.');data.recipient_id=$('mail-recipient').value;}$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return 'Destinatário atualizado no JSON.';});
+$('mail-item-scope').addEventListener('change',filterMailItems);
+$('mail-target').addEventListener('change',()=>{$('mail-recipient').disabled=$('mail-target').value==='all';syncMailControlsOrNotice();});
+$('mail-recipient').addEventListener('change',syncMailControlsOrNotice);
+on('mail-template',async()=>{syncMailDraftFromControls();return 'Destinatário atualizado no JSON.';});
 on('mail-add-item',async()=>{const data=JSON.parse($('mail-json').value),id=$('mail-item').value;if(!id)throw new Error('Selecione um item.');if(!Array.isArray(data.items))data.items=[];data.items.push({prototype_id:id,quantity:1,level:1});$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return 'Anexo adicionado. Ajuste quantity e level no JSON, se necessário.';});
-on('mail-preview',async()=>{const json=$('mail-json').value;const data=await api('/admin/mail/preview',{json});if(json!==$('mail-json').value)throw new Error('O JSON mudou durante a validação. Valide novamente.');mailPreview={json,data};$('mail-preview-result').textContent=JSON.stringify(data,null,2);$('mail-preview-result').hidden=false;$('mail-send').disabled=false;$('mail-result').textContent=`Pronto para enviar a ${fmt(data.recipients)} personagem(ns), com ${fmt(data.attachments_per_player)} anexo(s) por personagem.`;return 'JSON válido. Confira a prévia antes de enviar.';});
-on('mail-send',async()=>{if(!mailPreview||mailPreview.json!==$('mail-json').value)throw new Error('Valide o JSON novamente.');const preview=mailPreview;if(!confirm(`Enviar “${preview.data.subject}” para ${fmt(preview.data.recipients)} personagem(ns), com ${fmt(preview.data.attachments_per_player)} anexo(s) para cada um?`))return 'Envio cancelado.';sessionStorage.setItem('durango-mail-request-id',mailRequestId);sessionStorage.setItem('durango-mail-draft',preview.json);const result=await api('/admin/mail/send',{json:preview.json,request_id:mailRequestId});$('mail-result').textContent=result.duplicate?'Este envio já foi registrado. Nenhuma mensagem duplicada foi criada.':`Email entregue ao correio de ${fmt(result.sent)} personagem(ns).`;await loadMailTools();return $('mail-result').textContent;});
+on('mail-add-portal-stones',async()=>{const quantity=Number($('mail-portal-stones').value);if(!Number.isInteger(quantity)||quantity<1||quantity>240)throw new Error('Pedras de Portal: informe uma quantidade inteira entre 1 e 240.');const data=JSON.parse($('mail-json').value);if(!Array.isArray(data.vouchers))data.vouchers=[];data.vouchers=data.vouchers.filter(v=>v?.voucher_id!=='voucher_resource_induced_stone');data.vouchers.push({voucher_id:'voucher_resource_induced_stone',quantity});$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return `${fmt(quantity)} Pedra(s) de Portal adicionada(s) ao email.`;});
+async function validateMailPreview() {
+ const json=syncMailDraftFromControls();
+ const data=await api('/admin/mail/preview',{json});
+ if(json!==$('mail-json').value)throw new Error('O JSON mudou durante a validação. Valide novamente.');
+ mailPreview={json,data};
+ $('mail-preview-result').textContent=JSON.stringify(data,null,2);
+ $('mail-preview-result').hidden=false;
+ $('mail-result').textContent=`Pronto para enviar a ${fmt(data.recipients)} personagem(ns), com ${fmt(data.attachments_per_player)} item(ns) e ${fmt(data.portal_stones_per_player)} Pedra(s) de Portal por personagem.`;
+ return mailPreview;
+}
+on('mail-preview',async()=>{await validateMailPreview();return 'JSON válido. Confira a prévia antes de enviar.';});
+on('mail-send',async()=>{let preview=mailPreview;if(!preview||preview.json!==$('mail-json').value)preview=await validateMailPreview();if(!confirm(`Enviar “${preview.data.subject}” para ${fmt(preview.data.recipients)} personagem(ns), com ${fmt(preview.data.attachments_per_player)} item(ns) e ${fmt(preview.data.portal_stones_per_player)} Pedra(s) de Portal para cada um?`))return 'Envio cancelado.';sessionStorage.setItem('durango-mail-request-id',mailRequestId);sessionStorage.setItem('durango-mail-draft',preview.json);const result=await api('/admin/mail/send',{json:preview.json,request_id:mailRequestId});$('mail-result').textContent=result.duplicate?'Este envio já foi registrado. Nenhuma mensagem duplicada foi criada.':`Email entregue ao correio de ${fmt(result.sent)} personagem(ns).`;await loadMailTools();return $('mail-result').textContent;});
 on('mail-new',async()=>{if(!confirm('Preparar outro envio? Enviar novamente o mesmo conteúdo criará novas mensagens.'))return 'Envio atual mantido.';mailChanged();return 'Novo envio preparado. Valide o JSON.';});
 on('announce',async()=>{const text=$('announcement').value.trim();if(!text)throw new Error('Escreva a mensagem.');const result=await api('/admin/announce',{text});$('announcement').value='';return `Anúncio enviado para ${fmt(result.sent)} jogadores.`;});
 for(const [id,onValue]of [['maintenance-on','1'],['maintenance-off','0']])on(id,async()=>{const result=await api('/admin/maintenance',{on:onValue});maintenance(result.maintenance);return result.maintenance?'Manutenção ativada.':'Servidor aberto.';});

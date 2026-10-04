@@ -29,6 +29,27 @@ Saldos e marcadores ficam no mesmo save do personagem. Reconectar ou reiniciar n
 
 O limite original continua sendo 240. A prévia/recibo da missão mostra a quantidade que cabe na carteira. Para presença e bônus, se não couber a recompensa inteira, o servidor recusa o resgate e conserva a oportunidade até haver espaço. A carteira é atualizada pelo protocolo nativo `WalletUpdated`, e os ganhos aparecem no log como `[pedras-portal]`.
 
+## Presentes pelo correio administrativo
+
+A Pedra de Portal continua sendo `voucher_resource_induced_stone`; ela não é
+convertida em item de mochila. A Etapa 004 permite anexá-la ao email
+administrativo por meio de `Mail.AttachedVouchers`.
+
+No resgate:
+
+- o correio grava o voucher no journal de claims antes de alterar o save do
+  personagem, preservando a recuperação após interrupções;
+- a carteira do personagem recebe o saldo e o cliente é atualizado por
+  `WalletUpdated`;
+- o limite original de 240 continua valendo;
+- se a recompensa não couber inteira, o resgate é recusado e o email permanece
+  pendente, sem perda parcial;
+- itens comuns/skins continuam em `AttachedItems`, separados dos vouchers.
+
+O painel mostra um campo próprio **Pedras de Portal (cristal laranja)** para
+evitar que `voucher_resource_induced_stone` seja confundido com um
+`prototype_id`.
+
 ## Teste local
 
 1. Entre com o cliente apontando para o servidor local atualizado.

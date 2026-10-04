@@ -157,18 +157,31 @@ try {
     const players = await json('/admin/players');
     check(players.length > 0 && players.every(p => !p.online), 'saves offline visíveis');
     const mailItems = await json('/admin/mail/items');
-    check(mailItems.some(i => i.prototype_id === 'fatigue_drug_store'), 'catálogo de nomes de anexos disponível');
-    const email = {target:'player',recipient_id:'mail-alice',subject:'Entrega de compra',message:'Seus itens estão disponíveis.',type:'purchase',items:[{name:'fatigue_drug_store',quantity:2,level:1}]};
+    check(mailItems.length >= 2400 && mailItems.some(i => i.prototype_id === 'fatigue_drug_store'), 'catálogo completo de anexos disponível');
+    const shopItems = mailItems.filter(i => i.shop), skinItems = mailItems.filter(i => i.skin);
+    check(shopItems.length === 357, 'catálogo identifica os 357 protótipos referenciados pela loja');
+    check(skinItems.length === 166 && skinItems.some(i => i.prototype_id === 'clothes_brachio_costume'), 'catálogo identifica as 166 skins/roupas/acessórios da loja');
+    check(shopItems.some(i => i.prototype_id === 'metal_set') && shopItems.some(i => i.prototype_id === 'rope')
+        && !skinItems.some(i => i.prototype_id === 'metal_set') && !skinItems.some(i => i.prototype_id === 'rope'),
+        'materiais de craft não são classificados como skins');
+    const email = {target:'player',recipient_id:'mail-alice',subject:'Entrega de compra',message:'Seus itens estão disponíveis.',type:'purchase',items:[{name:'fatigue_drug_store',quantity:2,level:1}],vouchers:[]};
     const preview = await json('/admin/mail/preview',{json:JSON.stringify(email)});
-    check(preview.recipients === 1 && preview.attachments_per_player === 2, 'prévia valida destinatário e nomes dos anexos');
+    check(preview.recipients === 1 && preview.attachments_per_player === 2 && preview.portal_stones_per_player === 0, 'prévia valida destinatário e nomes dos anexos');
     check((await json('/admin/mail/inbox?entity_id=mail-alice')).length === 0, 'prévia não envia mensagens');
     check((await request('/admin/mail/send',{json:JSON.stringify(email),request_id:'test-email'},{Origin:'https://external.example'})).status === 403, 'envio de email de outra origem bloqueado');
     check((await request('/admin/mail/preview',{json:JSON.stringify({...email,items:[{name:'unknown-mail-item'}]})})).status === 400, 'nome de item inexistente recusado');
+    check((await request('/admin/mail/preview',{json:JSON.stringify({...email,items:[],vouchers:[{voucher_id:'unknown-voucher',quantity:1}]})})).status === 400, 'voucher desconhecido recusado');
     const sent = await json('/admin/mail/send',{json:JSON.stringify(email),request_id:'test-email'});
     check(sent.sent === 1 && !sent.duplicate, 'email individual persistido para personagem offline');
     check((await json('/admin/mail/send',{json:JSON.stringify(email),request_id:'test-email'})).duplicate, 'repetição HTTP não duplica email');
     check((await request('/admin/mail/send',{json:JSON.stringify({...email,subject:'Outra compra'}),request_id:'test-email'})).status === 409, 'identificador repetido com outro conteúdo recusado');
-    const collective = {...email,target:'all',items:[]};delete collective.recipient_id;
+    const voucherEmail = {...email,subject:'Pedras de Portal',message:'Presente para teste de crateras.',items:[],vouchers:[{voucher_id:'voucher_resource_induced_stone',quantity:7}]};
+    const voucherPreview = await json('/admin/mail/preview',{json:JSON.stringify(voucherEmail)});
+    check(voucherPreview.recipients === 1 && voucherPreview.portal_stones_per_player === 7 && voucherPreview.vouchers?.[0]?.voucher_id === 'voucher_resource_induced_stone', 'prévia aceita Pedras de Portal como voucher nativo');
+    check((await json('/admin/mail/send',{json:JSON.stringify(voucherEmail),request_id:'test-portal-stones'})).sent === 1, 'email com Pedras de Portal persistido');
+    const aliceWithVoucher = await json('/admin/mail/inbox?entity_id=mail-alice');
+    check(aliceWithVoucher.some(m => m.AttachedVouchers?.some(v => v.VoucherId === 'voucher_resource_induced_stone' && v.Count === 7)), 'caixa administrativa expõe o voucher anexado');
+    const collective = {...email,target:'all',items:[],vouchers:[]};delete collective.recipient_id;
     check((await json('/admin/mail/send',{json:JSON.stringify(collective),request_id:'test-all-email'})).sent === 2, 'envio coletivo cobre personagens elegíveis existentes');
     check((await json('/admin/mail/inbox?entity_id=mail-bob')).length === 1, 'mensagem coletiva entregue ao segundo personagem');
     const inventory = await json('/admin/catalog');
@@ -217,7 +230,9 @@ try {
     check((await json('/admin/config')).Animals.DamageBase === damageBefore + 1, 'alteração administrativa sobrevive ao reinício com dados substituídos');
     await mobileReportRestartChecks({request,json,check,state:reportState});
     const mailbox = await json('/admin/mail/inbox?entity_id=mail-alice');
-    check(mailbox.length === 2 && mailbox.some(m => m.AttachedItems?.length === 2), 'emails e anexos preservados após reinício');
+    check(mailbox.length === 3 && mailbox.some(m => m.AttachedItems?.length === 2)
+        && mailbox.some(m => m.AttachedVouchers?.some(v => v.VoucherId === 'voucher_resource_induced_stone' && v.Count === 7)),
+        'emails, itens e Pedras de Portal preservados após reinício');
     console.log(`PASS ${checks} verificações HTTP`);
 } catch (error) { console.error(logs); throw error; }
 finally {
