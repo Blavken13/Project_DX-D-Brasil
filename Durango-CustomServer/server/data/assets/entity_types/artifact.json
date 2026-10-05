@@ -16032,6 +16032,7 @@
     "capsulizable": true
   },
   "6002": {
+    "is_craft": true,
     "exclusive": 0,
     "transparent_site": true,
     "repair_requirement": 15,
@@ -16073,6 +16074,7 @@
     "capsulizable": true
   },
   "6003": {
+    "is_craft": true,
     "exclusive": 0,
     "transparent_site": true,
     "repair_requirement": 25,

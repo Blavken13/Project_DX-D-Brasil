@@ -48,11 +48,17 @@ public static class ItemPerformance
             if (category.Value is not JObject byPrototype) continue;
             if (byPrototype[prototypeId] is not JObject byLevel) continue;
 
-            // ชั้นในเป็นช่วงเลเวล "[1, 60]" — เอาแถวแรก (ค่าที่ต่างตามเลเวลอยู่ในสูตรอยู่แล้ว)
+            // Select the item's actual level range; food tiers can use different
+            // formulas, so the first row is only a fallback for malformed ranges.
             JObject row = null;
             foreach (JProperty range in byLevel.Properties())
             {
-                if (range.Value is JObject o) { row = o; break; }
+                if (range.Value is not JObject o) continue;
+                row ??= o;
+                string[] limits = range.Name.Trim('[', ']', ' ').Split(',');
+                if (limits.Length == 2 && int.TryParse(limits[0].Trim(), out int min) &&
+                    int.TryParse(limits[1].Trim(), out int max) && min <= level && level <= max)
+                { row = o; break; }
             }
             if (row == null) continue;
 

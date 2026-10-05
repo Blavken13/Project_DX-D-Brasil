@@ -30,6 +30,8 @@ public static class RegionCatalog
     {
         public string Id;
         public int Level;
+        public bool Active;
+        public int AvailableLevel;
         public Role Role = Role.Rural;
         public Biome Biome = Biome.Invalid;
         public double ExpiresIn;
@@ -123,6 +125,8 @@ public static class RegionCatalog
                 if (kv.Value is JObject o)
                 {
                     info.Level = (int?)o["level"] ?? 0;
+                    info.Active = (bool?)o["active"] ?? false;
+                    info.AvailableLevel = info.Level;
                     info.ExpiresIn = (double?)o["expires_in"] ?? 0;
                     if (o["collectible_levels"] is JObject levels)
                         foreach (var level in levels.Properties())
@@ -163,6 +167,20 @@ public static class RegionCatalog
                     }
                 }
                 _templates[kv.Key] = info;
+            }
+            // Match RegionTemplateDict.OnInitalized on the client: an active
+            // level band opens at the preceding active band's level + 1.
+            int previous = 0, current = 0;
+            foreach (var info in _templates.Values.Where(t => t.Active).OrderBy(t => t.Level))
+            {
+                if (current < info.Level) { previous = current; current = info.Level; }
+                info.AvailableLevel = previous + 1;
+            }
+            foreach (var info in _templates.Values.Where(t => !t.Active && t.Role == Role.Risky))
+            {
+                var area = _templates.Values.FirstOrDefault(t => t.Active && t.Role == info.Role &&
+                    t.Level == info.Level && t.Biome == info.Biome);
+                if (area != null) info.AvailableLevel = area.AvailableLevel;
             }
             Console.WriteLine($"[region] อ่าน region template {_templates.Count} รายการ");
         }

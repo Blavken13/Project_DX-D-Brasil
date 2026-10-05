@@ -525,6 +525,7 @@ public partial class Player
         }
 
         Send(new Teleported { Tile = tile, Type = type });
+        SendDefoggedChunks();
         OnContextChanged();
     }
 
@@ -542,8 +543,8 @@ public partial class Player
         {
             tilesX = _world.NumTilesX;
             tilesY = _world.NumTilesY;
-            // ชุดเดียวกับที่ส่งตอนเข้าเกม (Player.cs:860 SendDefoggedChunks) — เปิดหมอกทั้งผืน
-            chunks = _world.CreateDefoggedChunks();
+            RevealPlayerSurroundings();
+            chunks = ExploredMapChunks(regionId, _world.NumChunksX, _world.NumChunksY);
         }
         else
         {
@@ -564,11 +565,7 @@ public partial class Player
             }
             tilesX = data.Width;
             tilesY = data.Height;
-            // O preview usa o mesmo mapa completo enviado ao entrar na ilha.
-            var preview = new List<Point2>();
-            for (int y = 0; y < tilesY / 16; y++)
-            for (int x = 0; x < tilesX / 16; x++) preview.Add(new Point2(x, y));
-            chunks = new DefoggedChunks { Chunks = preview.ToArray() };
+            chunks = ExploredMapChunks(regionId, tilesX / 16, tilesY / 16);
         }
 
         Send(new RegionMapInfo
@@ -597,7 +594,7 @@ public partial class Player
     /// Nunca confie apenas na UI: este mesmo gate também é aplicado no handler de Travel.
     /// </summary>
     private bool CanAccessSailingTemplate(RegionCatalog.TemplateInfo template) =>
-        template != null && (template.Level <= 0 || _skillLevel >= template.Level);
+        template != null && (template.AvailableLevel <= 0 || _skillLevel >= template.AvailableLevel);
 
     private void HandleRecommendStableRegionsMsg(uint seq)
     {

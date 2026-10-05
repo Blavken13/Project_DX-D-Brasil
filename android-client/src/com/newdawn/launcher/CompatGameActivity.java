@@ -11,15 +11,28 @@ import com.unity3d.player.UnityPlayer;
 /** All code patches are installed synchronously before the UnityPlayer exists. */
 public final class CompatGameActivity extends Activity {
     private UnityPlayer player;
+    private static String serviceName(String name) {
+        // Intent extras and arbitrary strings must never enter diagnostics.
+        return name != null && name.length() <= 160 && name.matches("[A-Za-z0-9_.$/]+") ? name : "unknown";
+    }
     @Override public boolean bindService(Intent intent, android.content.ServiceConnection connection, int flags) {
+        android.util.Log.i("LHService", "bind action=" + serviceName(intent == null ? null : intent.getAction())
+            + " package=" + serviceName(intent == null ? null : intent.getPackage())
+            + " component=" + serviceName(intent == null || intent.getComponent() == null ? null : intent.getComponent().flattenToShortString())
+            + " connection=" + serviceName(connection == null ? null : connection.getClass().getName()));
         if (intent != null && LegacyServicePolicy.blocked(intent.getAction(), intent.getPackage(),
                 intent.getComponent() == null ? null : intent.getComponent().getPackageName())) {
             // Return the documented unavailable-service result before Android can
             // dispatch the old native ServiceConnection proxy on its main thread.
             CrashDiagnostics.breadcrumb(this, "LEGACY_AD_ID_SKIPPED");
+            android.util.Log.i("LHService", "legacy advertising ID service skipped");
             return false;
         }
-        return super.bindService(intent, connection, flags);
+        CrashDiagnostics.breadcrumb(this, "SERVICE_BIND_BEGIN");
+        boolean bound = super.bindService(intent, connection, flags);
+        CrashDiagnostics.breadcrumb(this, bound ? "SERVICE_BIND_ACCEPTED" : "SERVICE_BIND_UNAVAILABLE");
+        android.util.Log.i("LHService", "bind accepted=" + bound);
+        return bound;
     }
     @Override public void onCreate(Bundle state) {
         requestWindowFeature(1);

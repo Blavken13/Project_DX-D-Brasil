@@ -130,9 +130,8 @@ public partial class Player
         _connection.Recv(delegate(Dashed msg, PacketHeader header)
         {
             if (!_context.AppearPlayer.IsAlive) return;
-            // constants.json → dash → stamina (ของจริง = 20 · หลอดเต็ม 100 ฟื้น 5/วินาที
-            // ⇒ กระโดดรัวได้ 5 ครั้งแล้วต้องรอ ~4 วินาที ตรงกับเกมจริง)
-            _survival.Add(SurvivalState.KeyStamina, -DashTuning.Stamina);
+            // Apply the same stamina balance as combat actions (20 -> 10 for dash).
+            _survival.Add(SurvivalState.KeyStamina, -StaminaTuning.Cost(DashTuning.Stamina));
             FlushSurvival();   // ค่ากระโดด ⇒ ส่งเส้นใหม่ทันที ไม่รอรอบตรวจ
         });
 
@@ -386,7 +385,7 @@ public partial class Player
                 EntityId = EntityId,
                 Grade = 9,
                 CurrentAccessLevel = 9,
-                CurrentMaximumEstateSize = 30,
+                CurrentMaximumEstateSize = EstateExpansionCost.PlayerLimit,
                 DailyExchangedPoints = new Dictionary<float, float>()
             }, header.Seq);
         });
@@ -912,6 +911,8 @@ public partial class Player
             // (client/MoveMsgGenerator.cs:104-110 MotionChanged ก็ตั้ง SendMoveRequired) ⇒ ดูตำแหน่ง
             // ไม่ใช่ดูว่ามี message มา · ไม่มี message "หยุดเดิน" จึงเก็บเวลาไว้แล้วให้ Process ตัดสิน
             WorldPosition after = _context.AppearPlayer.Move.Movements[0].Path[0].Position;
+            if (RevealPlayerSurroundings())
+                Send(ExploredMapChunks(LogicalRegionId(), _world.NumChunksX, _world.NumChunksY));
             if (!Mathf.Approximately(before.x, after.x) || !Mathf.Approximately(before.y, after.y))
             {
                 _lastMovedAt = Gauge.CurrentTime;
@@ -942,7 +943,8 @@ public partial class Player
 
     private void SendDefoggedChunks()
     {
-        Send(_world.CreateDefoggedChunks());
+        RevealPlayerSurroundings();
+        Send(ExploredMapChunks(LogicalRegionId(), _world.NumChunksX, _world.NumChunksY));
     }
 
     private void SendQuestCategories(uint seq = 0u)
@@ -2233,6 +2235,7 @@ public partial class Player
     private void SendEquipments(uint replyOf = 0u)
     {
         Send(UpdateEquipments(), replyOf);
+        if (_skills != null) { SendFullStatistics(); SendRecipes(0u); }
         SendBaseMoveSpeed();
     }
 
@@ -2381,7 +2384,9 @@ public partial class Player
         var byRole = new Dictionary<Role, Dictionary<string, List<Route>>>();
         var byArchipelago = new Dictionary<string, (RegionCatalog.TemplateInfo Template, List<Route> Routes)>();
 
-        foreach (Messages.Region region in RegionCatalog.Others(_world.TerrainId))
+        // Keep the current island in the map list as well. Otherwise a zone
+        // with only one installed island opens an empty selection modal.
+        foreach (Messages.Region region in RegionCatalog.All)
         {
             RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(region.TemplateId);
             if (!CanAccessSailingTemplate(template))

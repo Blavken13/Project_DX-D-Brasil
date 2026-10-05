@@ -18,7 +18,9 @@ SOURCE = PROJECT / 'Durango original'
 WORK = ROOT / 'work/original-nexon'
 CLIENT = WORK / 'client'
 DECODED = WORK / 'decoded'
-OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa.apk')
+VERSION_CODE = 50215
+VERSION_NAME = '5.2.1-losthorizon-alfa-stability3'
+OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa-stability3-50215.apk')
 if Path(OUTPUT).name != OUTPUT or not OUTPUT.endswith('.apk'):
     raise ValueError('LH_APK_OUTPUT must be an APK filename')
 ANDROID_JAR = shared.SDK / 'platforms/android-36/android.jar'
@@ -136,8 +138,8 @@ public class UnityPlayer extends android.widget.FrameLayout {
     tree.write(manifest, encoding='utf-8', xml_declaration=True)
     yaml = DECODED / 'apktool.yml'
     text = yaml.read_text('utf-8')
-    text = re.sub(r'versionCode: \d+', 'versionCode: 50213', text)
-    text = re.sub(r'versionName: [^\n]+', 'versionName: 5.2.1-losthorizon-alfa-stability1', text)
+    text = re.sub(r'versionCode: \d+', f'versionCode: {VERSION_CODE}', text)
+    text = re.sub(r'versionName: [^\n]+', f'versionName: {VERSION_NAME}', text)
     text = re.sub(r'minSdkVersion: [^\n]+', "minSdkVersion: '21'", text)
     yaml.write_text(text, 'utf-8')
     rebuilt = WORK / 'resources-rebuilt.apk'
@@ -217,7 +219,10 @@ def verify():
                                 'title_video_enabled_by_default': True, 'title_video_independent_option': True,
                                 'runtime_page_size': True, 'reports_private': True,
                                 'legacy_unity_16kb_requires_android_compat_mode': True},
-              'stability': {'version_code': 50213, 'version_name': '5.2.1-losthorizon-alfa-stability1',
+              'stability': {'version_code': VERSION_CODE, 'version_name': VERSION_NAME,
+                            'service_bind_logcat_markers': True,
+                            'startup_auth_operation_breadcrumbs': True,
+                            'auth_diagnostic_request_limit': 4,
                             'legacy_google_ad_id_bind_disabled': True,
                             'auth_connect_timeout_seconds': 10, 'auth_request_timeout_seconds': 20,
                             'auth_automatic_retry_disabled': True, 'auth_callback_breadcrumbs': True,

@@ -1,6 +1,7 @@
 """Verify the original APK's scoped Discord callbacks and local movie path."""
 import io
 import json
+import os
 from pathlib import Path
 import struct
 import sys
@@ -15,7 +16,7 @@ import presentation_original as presentation
 
 SOURCE = ROOT / 'Durango original'
 CLIENT = ROOT / 'android-client/work/original-nexon/client'
-APK = ROOT / 'android-client/dist/LostHorizon-alfa.apk'
+APK = Path(os.environ.get('LH_TEST_APK', ROOT / 'android-client/dist/LostHorizon-alfa.apk'))
 
 
 def method_addresses(selected=None):

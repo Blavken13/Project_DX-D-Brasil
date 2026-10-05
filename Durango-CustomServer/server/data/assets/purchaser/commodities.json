@@ -13079,7 +13079,7 @@
     },
     "item_skill_reset_ticket_store": {
       "price_currency": 1,
-      "price_amount": 900,
+      "price_amount": 0,
       "description": {
         "사용 즉시, 모든 스킬을 습득 취소하고 SP를 돌려 받습니다. \"세세한 기억은 잊혀도, 즐거웠던 경험만은 오래도록 남으리라.\"": null
       },

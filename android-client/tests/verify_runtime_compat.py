@@ -86,7 +86,7 @@ def java_tests():
 
 def apk_tests():
     client=ANDROID/'work/original-nexon/client'
-    with zipfile.ZipFile(ANDROID/'dist/LostHorizon-alfa.apk') as apk:
+    with zipfile.ZipFile(Path(os.environ.get('LH_TEST_APK', ANDROID/'dist/LostHorizon-alfa.apk'))) as apk:
         assert apk.read('classes.dex')==(ROOT/'Durango original/classes.dex').read_bytes()
         for name in ['libunity.so','libmain.so','libBlueDoveMediaRender.so']:
             path='lib/arm64-v8a/'+name

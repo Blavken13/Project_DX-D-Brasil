@@ -642,6 +642,13 @@ public partial class Player
     /// </summary>
     private void DespawnPet(PetStore.Entry entry)
     {
+        if (_context.AppearPlayer.Display.BoardingOn == Shared.Display.BoardingOn.Pet &&
+            _context.AppearPlayer.Display.VehicleEntityId == entry.Pet.EntityId)
+        {
+            _context.AppearPlayer.Display.BoardingOn = Shared.Display.BoardingOn.None;
+            _context.AppearPlayer.Display.VehicleEntityId = string.Empty;
+            _world.BroadCast(_context.AppearPlayer.Display);
+        }
         entry.Pet.IsSpawned = false;
         entry.Pet.IsBoarding = false;
         _world.BroadCast(new DisappearPet
@@ -649,6 +656,7 @@ public partial class Player
             EntityId = entry.Pet.EntityId,
             TamerEntityId = entry.Pet.TamerEntityId
         });
+        OnContextChanged();
     }
 
     /// <summary>
@@ -658,8 +666,8 @@ public partial class Player
     /// (client/PetManager.cs:417-464 · ตัวเลือก Mount/Dismount สร้างที่ client เอง —
     ///  client/VehiclePet.cs:221-231 ContextActionFinder) ⇒ ฝั่งเราหา "สัตว์ที่ผู้เล่นคนนี้เรียกออกมา"
     ///
-    /// ไม่ต้องตอบ OK: ฝั่งเกมส่งแบบไม่รอ reply แต่รอ push ของ Pet (1097965) เพื่ออัปเดตสถานะ
-    /// (client/PetManager.cs:61-67 On&lt;Pet&gt; → ProcessPetMsg) ⇒ ผลักตัวที่เปลี่ยนไปให้ทั้งโลก
+    /// Mount requires PlayerDisplay.BoardingOn as well as the Pet update;
+    /// ProcessPetMsg alone does not call Driver.Mount on an existing animal.
     /// </summary>
     private void HandleMountPetMsg(bool boarding)
     {
@@ -667,7 +675,9 @@ public partial class Player
         if (entry == null) return;
         if (boarding)
         {
-            if (!PetIsAlive(entry)) return;
+            if (!_context.AppearPlayer.IsAlive || !PetIsAlive(entry) || entry.Grazing) return;
+            if (_context.AppearPlayer.Display.BoardingOn is Shared.Display.BoardingOn.Vehicle or Shared.Display.BoardingOn.AirBalloon)
+                return;
 
             PetTables.PetDef definition = PetTables.PetOf(entry.Pet.EntityType);
             if (definition == null || !definition.IsRidable)
@@ -676,8 +686,13 @@ public partial class Player
                 return;
             }
         }
+        else if (_context.AppearPlayer.Display.BoardingOn != Shared.Display.BoardingOn.Pet) return;
         entry.Pet.IsBoarding = boarding;
         _world.BroadCast(entry.Pet);
+        _context.AppearPlayer.Display.BoardingOn = boarding ? Shared.Display.BoardingOn.Pet : Shared.Display.BoardingOn.None;
+        _context.AppearPlayer.Display.VehicleEntityId = boarding ? entry.Pet.EntityId : string.Empty;
+        _world.BroadCast(_context.AppearPlayer.Display);
+        OnContextChanged();
     }
 
     /// <summary>ตั้งชื่อสัตว์ — RenamePet (804) · client/PetManager.cs:786-800 รอ OK แล้วรีเฟรชรายการ</summary>

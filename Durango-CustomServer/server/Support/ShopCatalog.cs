@@ -71,7 +71,8 @@ public sealed class ShopCatalog
         int type = (int?)data["type"] ?? -1;
         var currency = (Currency)((int?)data["price_currency"] ?? -1);
         long price = (long?)data["price_amount"] ?? -1;
-        if (!EconomyStore.SupportsCurrency(currency) || price <= 0 || price > EconomyStore.BalanceLimit ||
+        if (!EconomyStore.SupportsCurrency(currency) || price < 0 ||
+            (price == 0 && id != "item_skill_reset_ticket_store") || price > EconomyStore.BalanceLimit ||
             type is not (1 or 2 or 4 or 6 or 7)) return null;
         var contents = data["contents"] as JObject;
         int copies = 1;

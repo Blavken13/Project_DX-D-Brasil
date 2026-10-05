@@ -427,7 +427,23 @@ public partial class Player
             return;
         }
 
-        FoodTable.Effect food = FoodTable.Get(item.Prototype, item.Level);
+        if (item.Prototype == "skill_reset_ticket")
+        {
+            _skills.Learned.Clear();
+            _skills.UntrainedCount = 0;
+            GrantFreeSkills(save: false);
+            _context.InventoryItems.RemoveAt(idx);
+            _lockedItemIds.Remove(item.Id);
+            SaveSkillState();
+            Send(new InventoryUpdated { EntityId = EntityId, RemovedItemIds = new[] { item.Id } });
+            Send(default(OK), seq);
+            SendSkills();
+            SendFullStatistics();
+            PushUnlockedRecipes();
+            return;
+        }
+
+        FoodTable.Effect food = FoodTable.Get(item);
         if (food == null)
         {
             // ไม่ใช่ของกิน — ของใช้ชนิดอื่น (ยา/กล่องสุ่ม/หนังสือสูตร) ยังไม่มีระบบรองรับ
@@ -1494,6 +1510,25 @@ public partial class Player
         private static Root _root;
 
         private static Root Data => _root ??= Json.ReadFromFile<Root>("performance") ?? new Root();
+
+        public static Effect Get(Item item)
+        {
+            Effect food = Get(item.Prototype, item.Level);
+            if (food == null) return null;
+            var performance = item.Performance?.FirstOrDefault(p => p.Id == "food");
+            if (performance == null) return food;
+            float Value(string key, float fallback) => performance.Value.Nums?.TryGetValue(key, out float value) == true ? value : fallback;
+            food.Life = Value("life", food.Life);
+            food.Health = Value("health", food.Health);
+            food.Fatigue = Value("fatigue", food.Fatigue);
+            food.EnergyPotential = Value("energy_potential", food.EnergyPotential);
+            food.DigestiveTime = Math.Max(0.1f, Value("digestivetime", food.DigestiveTime));
+            food.EffectOnLevel = Math.Max(1, (int)Value("effect_on_level", food.EffectOnLevel));
+            food.ModifierEffectTime = Value("modifier_effect_time", (float)(food.ModifierEffectTime ?? 300));
+            if (performance.Value.Strs?.TryGetValue("effect_on", out string effect) == true) food.EffectOn = effect;
+            if (performance.Value.Strs?.TryGetValue("eat_motion", out string motion) == true) food.EatMotion = motion;
+            return food;
+        }
 
         /// <summary>คืน null ถ้าไอเทมนี้ไม่ใช่ของกิน (ไม่มีใน performance.food)</summary>
         public static Effect Get(string prototypeId, int level)

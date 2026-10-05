@@ -48,6 +48,12 @@ public partial class Player
 
     private void LoadPersistedState()
     {
+        // Pets are recalled on reconnect; do not restore a rider with no vehicle.
+        if (_context.AppearPlayer.Display.BoardingOn == Shared.Display.BoardingOn.Pet)
+        {
+            _context.AppearPlayer.Display.BoardingOn = Shared.Display.BoardingOn.None;
+            _context.AppearPlayer.Display.VehicleEntityId = string.Empty;
+        }
         _deathCount = _context.DeathCount;
 
         List<PetStore.Entry> store = PetStore.Of(EntityId);

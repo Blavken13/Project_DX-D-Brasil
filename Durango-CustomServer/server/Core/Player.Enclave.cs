@@ -57,7 +57,7 @@ public partial class Player
         var after = Json.Read<EstateRecord>(Json.Write(estate));
         after.Cells.Add(msg.Cell.x + "," + msg.Cell.y); after.Size = after.Cells.Count;
         after.LargestSize = Math.Max(after.LargestSize, after.Size);
-        CommitEnclave(msg.EstateId, after, estate.Size < estate.LargestSize ? 0 : ClanRules.TerritoryCost(estate.Size), msg.Cell, seq);
+        CommitEnclave(msg.EstateId, after, 0, msg.Cell, seq);
     }
     private void ShrinkEnclave(ShrinkEstate msg, EstateRecord estate, uint seq)
     {

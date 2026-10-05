@@ -133,11 +133,14 @@ internal static class EconomyProtocolCheck
             Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
             Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
             Receive<Messages.Region>(); Receive<Routes>();
+            Receive<Archipelago>(); Receive<Messages.Pet>(); Receive<AppearPet>(); Receive<DisappearPet>(); Receive<PetsInfo>();
+            Receive<PlayerDisplay>();
             Receive<EstateLicense>(); Receive<EstateLicenses>(); Receive<EstateGrids>(); Receive<AppearArtifact>();
             Receive<Warehouse>(); Receive<WarehouseUpdated>(); Receive<SectionItems>();
             Receive<Quests>(); Receive<Messages.QuestState>(); Receive<NotifyQuestProceed>(); Receive<QuestRewardResults>();
             Receive<QuestScoreInfos>(); Receive<TodayAttendanceRewards>(); Receive<AttendanceRewards>();
             Receive<Recipes>(); Receive<ArtifactBlueprints>(); Receive<Skills>(); Receive<Failed>();
+            Receive<CraftEstimationInfo>();
             Receive<Actions>(); Receive<SkillCategoryExperienced>(); Receive<ExpGained>();
             Server.StartReceive(); Client.StartReceive();
             Player = new Player(context.EntityId, Server, world, context, false, store, mailStore);

@@ -154,6 +154,8 @@ internal static class SocialCheck
             Check(!world.EnumerateEstates().Any(), "enclave exige nível original 5");
             Check(ClanStore.AddExperience(alice.EntityId, 968964), "XP compartilhada desbloqueia nível 5");
             Check(ClanStore.Find(clanId).Level == 5 && ClanRules.Reward(5,"capacity") == 20 && ClanRules.AllyCapacity(5) == 3, "progressão libera membros, alianças e território");
+            Check(ClanRules.Reward(5, "max_estate_number") == 12 && ClanRules.Reward(25, "max_estate_number") == 72,
+                "enclave preserva limites originais por nivel: 12 no nivel 5 e 72 no nivel 25");
             Check(a.Request<LeaveClan, Abort>(default).Text.Length > 0 && ClanStore.ClanIdOf(alice.EntityId) == clanId, "líder precisa transferir liderança antes de sair");
             var license = a.Request<DeclareEstate, EstateLicense>(new DeclareEstate { OwnerType = OwnerType.ClanEstate, Cell = cell });
             Check(license.OwnerId == clanId && license.Size == 1, "enclave pertence ao clã");
@@ -166,7 +168,7 @@ internal static class SocialCheck
             Check(world.GetEstate(license.EstateId).Size == 1, "membro comum não expande enclave");
             long beforeFund = ClanStore.Find(clanId).Fund, personalBalance = alice.TStone;
             a.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = license.EstateId, Cell = next });
-            Check(world.GetEstate(license.EstateId).Size == 2 && ClanStore.Find(clanId).Fund == beforeFund - 10000 && alice.TStone == personalBalance, "expansão usa fundo do clã e preserva carteira pessoal");
+            Check(world.GetEstate(license.EstateId).Size == 2 && ClanStore.Find(clanId).Fund == beforeFund && alice.TStone == personalBalance, "expansão gratuita preserva fundo do clã e carteira pessoal");
             var rights = record.ToAccessRights(); rights.ForClanMembers[2] = Shared.Estate.AccessRights.Enter | Shared.Estate.AccessRights.Give;
             a.Request<SetEstateLicense, OK>(new SetEstateLicense { EstateId = license.EstateId, AccessRights = rights });
             Check(!world.GetEstate(license.EstateId).AllowsClan(dave.EntityId, Shared.Estate.AccessRights.Take), "permissões por cargo restringem retirada");

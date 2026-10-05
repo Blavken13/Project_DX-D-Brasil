@@ -335,6 +335,7 @@ public partial class Player
 
         // ReplyOf = 0 — ฝั่งเกมรับด้วย global handler (กับดัก ②)
         Send(new Teleported { Tile = tile, Type = TeleportType.Returning });
+        SendDefoggedChunks();
         OnContextChanged();
     }
 

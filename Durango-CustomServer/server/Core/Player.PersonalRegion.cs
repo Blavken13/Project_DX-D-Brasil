@@ -343,7 +343,7 @@ public partial class Player
         Console.WriteLine($"[เกาะส่วนตัว] {Short(EntityId)} ตั้ง admission = {_context.PersonalRegionAdmission.Count}");
     }
 
-    private const int PersonalEstateMaxSize = 30;
+    private const int PersonalEstateMaxSize = EstateExpansionCost.PlayerLimit;
 
     private EstateLicenses BuildEstateLicenses()
     {
@@ -364,7 +364,7 @@ public partial class Player
             if (kv.Value.Type == (int)OwnerType.PersonalPlayer)
             {
                 personal = lic;
-                if (kv.Value.Size > largestPersonal) largestPersonal = kv.Value.Size;
+                largestPersonal = Math.Max(largestPersonal, Math.Max(kv.Value.Size, kv.Value.LargestSize));
             }
             else if (kv.Value.Type == (int)OwnerType.Player)
             {
@@ -376,9 +376,12 @@ public partial class Player
         {
             PersonalEstate = personal,
             UrbanEstate = urban,
-            LargestPersonalEstateSize = largestPersonal,
-            LargestUrbanEstateSize = largestUrban,
-            ClanEstate = clanEstate, LargestClanEstateSize = largestClan
+            // Native PC/Android clients use these allowances to enable free expansion.
+            // Keep larger historic values for existing estates; enforcement is server-side.
+            LargestPersonalEstateSize = Math.Max(largestPersonal, EstateExpansionCost.PlayerLimit),
+            LargestUrbanEstateSize = Math.Max(largestUrban, EstateExpansionCost.PlayerLimit),
+            ClanEstate = clanEstate, LargestClanEstateSize = Math.Max(largestClan,
+                ClanRules.Reward(ClanStore.Find(CurrentClanId())?.Level ?? 0, "max_estate_number"))
         };
     }
 
@@ -666,17 +669,14 @@ public partial class Player
         EstateRecord estate = _world.GetEstate(msg.EstateId);
         if (ClanEstate(estate)) { ExpandEnclave(msg, estate, seq); return; }
         string authorityOwner = EstateAuthorityOwner(estate);
+        if (!string.IsNullOrEmpty(authorityOwner) && estate.Size >= PersonalEstateMaxSize)
+        {
+            Send(new Abort { Text = "O domínio já atingiu o limite de 8 lotes. Os lotes existentes continuam disponíveis." }, seq);
+            return;
+        }
         if (string.IsNullOrEmpty(authorityOwner) || !_world.CanExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize))
         {
             Send(new Abort { Text = "Não foi possível expandir o território." }, seq);
-            return;
-        }
-        long expansionCost = estate.Size < estate.LargestSize ? 0 :
-            EstateExpansionCost.For((OwnerType)estate.Type, estate.Size, _world.RegionLevel);
-        if (expansionCost > 0 && !EconomyAvailable(seq)) return;
-        if (expansionCost > 0 && !_economy.Spend(_context, Shared.Economy.Currency.TStone, expansionCost, out string paymentError))
-        {
-            Send(new Abort { Text = paymentError }, seq);
             return;
         }
         EstateLicense? license = string.IsNullOrEmpty(authorityOwner)
@@ -688,7 +688,6 @@ public partial class Player
             return;
         }
         Send(license.Value, seq);
-        if (expansionCost > 0) SendWalletNow();
         BroadcastEstateGridsAround(msg.Cell);
         OnContextChanged();
     }

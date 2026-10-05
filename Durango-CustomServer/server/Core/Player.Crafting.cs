@@ -257,20 +257,15 @@ public static class CraftRecipeStore
     {
         "extend_rope" => "string_long",
         "extend_stick" or "s02_extend_stick" => "stick_long",
+        "extend_sheet" => "sheet_wide",
         _ => null
     };
     public static bool Supported(string id, CraftRecipeData recipe) => recipe != null &&
-        (recipe.type == CraftType.Craft || (recipe.type == CraftType.Modify &&
-         (recipe.category == "cook" || ExtendedShape(id) != null)));
+        recipe.type is CraftType.Craft or CraftType.Modify or CraftType.Reform;
 
     /// <summary>
-    /// id ของสูตรที่ "ปลดล็อกให้ผู้เล่น" ใน Recipes(120)
-    ///
-    /// เอาเฉพาะ type = Craft (625 จาก 720) — สูตร Modify/Reform อีก 95 ตัว (ทอด/ย่าง/ปรับปรุงอุปกรณ์)
-    /// ต้องแก้ของเดิมทั้งชิ้น (เพิ่ม tag/ช่องปรับปรุง/สี) ซึ่งเซิร์ฟยังทำไม่ได้
-    /// ⚠️ เหตุผลที่ต้องคัดออกตั้งแต่ตอนนี้ ไม่ใช่ปล่อยให้กดแล้วค่อยปฏิเสธ: เกมไม่แสดงข้อความ
-    /// ใด ๆ เมื่อการคราฟต์ถูก Abort — .Rest() แค่หยุดหลอดเงียบ ๆ (client/CraftSystem.cs:206-214)
-    /// ⇒ โชว์สูตรที่ทำไม่ได้ = ปุ่มกดแล้วไม่เกิดอะไรโดยไม่บอกเหตุผล
+    /// Supported recipes; SendRecipes intersects this list with learned skill rewards.
+    /// Processing and reform recipes now change the original item transactionally.
     /// </summary>
     public static string[] CraftableIds()
     {
@@ -383,17 +378,14 @@ public partial class Player
         {
             Send(new Abort { Text = "Ainda não é possível deixar uma fabricação na bancada." }, header.Seq);
         });
-        // ย้อมสี/ฟอกสี — ใช้ท่อเดียวกับการคราฟต์ (client/CraftSystem.cs:258-284 Dyeing เรียก
-        // RegisterPostCraftEvents ตัวเดียวกัน) ⇒ **ไม่ตอบ = หลอดคราฟต์ค้างจนเต็มแล้วไม่มีอะไรเกิด**
-        // ยังทำไม่ได้จริงเพราะการย้อมต้องคำนวณสีจากตาราง .raw ที่ไม่มีบนเซิร์ฟ
-        // (Support/ItemIconTex.cs พอร์ตมาแบบย่อ) ⇒ ตอบ Abort ให้ .Rest หยุดหลอดสะอาด ๆ
+        // Native dye/bleach messages use the same transactional craft completion.
         RecvFallback(delegate(Dye msg, PacketHeader header)
         {
-            Send(new Abort { Text = "O tingimento ainda não está disponível." }, header.Seq);
+            HandleColorCraft(msg.Channel, false, msg.Materials, msg.ToolItemId, msg.Workbench, header.Seq);
         });
         RecvFallback(delegate(Bleach msg, PacketHeader header)
         {
-            Send(new Abort { Text = "O clareamento de itens ainda não está disponível." }, header.Seq);
+            HandleColorCraft(msg.Channel, true, msg.Materials, msg.ToolItemId, msg.Workbench, header.Seq);
         });
         // ปรับปรุงอุปกรณ์ (reform) — client รอเฉพาะ OK (client/CraftSystem.cs:110) ไม่มี .Rest
         // ตอบ Abort = ปุ่มไม่ทำอะไร ซึ่งตรงกับสภาพจริง ดีกว่าปล่อยเงียบให้ดูเหมือนเซิร์ฟแฮงก์
@@ -467,6 +459,15 @@ public partial class Player
 
     // ── คราฟต์ ──────────────────────────────────────────────────────────────────────
 
+    private void HandleColorCraft(ColorChannel channel, bool bleach, Dictionary<string, string[]> materials,
+        string toolId, PropKey? workbench, uint seq)
+    {
+        string suffix = channel switch { ColorChannel.ColorR => "r", ColorChannel.ColorG => "g", ColorChannel.ColorB => "b", _ => null };
+        if (suffix == null) { Send(new Abort { Text = "Canal de cor inválido." }, seq); return; }
+        HandleCraftMsg(new Craft { RecipeId = (bleach ? "bleach_color_" : "dye_color_") + suffix,
+            Materials = materials, ToolItemId = toolId, Workbench = workbench }, seq);
+    }
+
     private void HandleCraftMsg(Craft msg, uint seq)
     {
         if (_pendingCraft != null)
@@ -481,14 +482,9 @@ public partial class Player
             Send(new Abort { Text = "Esta receita não foi reconhecida." }, seq);
             return;
         }
-        // Modify(1)/Reform(2) ไม่ได้ "สร้างของใหม่" แต่ไปแก้ของเดิม (เพิ่ม tag/ช่องปรับปรุง)
-        // ซึ่งต้องมีระบบ ModifiableCount/ReformSlots ที่เซิร์ฟยังไม่ทำ ⇒ ปฏิเสธตรง ๆ ดีกว่ากินของ
-        // [8 ก.ย. 2026] cook = type Modify (แปลงของในตัว) 
-        // ปล่อยผ่านได้ — dye/reform ยังไม่ทำ จึงยังปฏิเสธ
-        bool isCook = recipe.type == CraftType.Modify && recipe.category == "cook";
         if (!CraftRecipeStore.Supported(msg.RecipeId, recipe))
         {
-            Send(new Abort { Text = "Receitas de modificação e melhoria ainda não estão disponíveis." }, seq);
+            Send(new Abort { Text = "Este tipo de receita não está disponível." }, seq);
             return;
         }
         if (!CheckWorkbench(recipe, msg.Workbench, out string workbenchError))
@@ -507,7 +503,7 @@ public partial class Player
             return;
         }
 
-        if (isCook || CraftRecipeStore.ExtendedShape(msg.RecipeId) != null)
+        if (recipe.type is CraftType.Modify or CraftType.Reform)
         { HandleCookResult(recipe, msg, materials, seq); return; }
 
         // [8 ก.ย. 2026] สุ่ม "สำเร็จยอดเยี่ยม" ตามสูตร NEXON — great = ได้ของเลเวลเต็ม (potential)
@@ -704,25 +700,11 @@ public partial class Player
         }
 
         Messages.Tag[] actualTags = bench.Tags._Tags ?? Array.Empty<Messages.Tag>();
-        foreach (KeyValuePair<string, int> required in recipe.workbench_tags)
-        {
-            bool matched = false;
-            int actualLevel = 0;
-            foreach (Messages.Tag tag in actualTags)
-            {
-                if (!string.Equals(tag.Id, required.Key, StringComparison.Ordinal)) continue;
-                actualLevel = Math.Max(actualLevel, tag.Level);
-                if (tag.Level >= required.Value) { matched = true; break; }
-            }
-            if (!matched)
-            {
-                error = $"A bancada não possui a capacidade necessária: {required.Key} Nv.{required.Value}.";
-                Console.WriteLine($"[craft] bancada {Short(bench.EntityId)} rejeitada: " +
-                                  $"{required.Key} precisa={required.Value} atual={actualLevel}");
-                return false;
-            }
-        }
-        return true;
+        // Same OR filter as native Recipe.IsValidWorkbench (e.g. charcoal: fire OR kiln).
+        if (recipe.workbench_tags.Any(required => actualTags.Any(tag =>
+            tag.Id == required.Key && tag.Level >= required.Value))) return true;
+        error = "A bancada não possui a capacidade necessária para esta receita.";
+        return false;
     }
 
     /// <summary>
@@ -885,16 +867,36 @@ public partial class Player
         return CraftGreatSuccessTuning.Chance(pa, ra, (int)ability);
     }
 
-    /// <summary>ความสามารถคราฟของผู้เล่นสำหรับ Derived นี้ — รวมโมดิฟายเออร์จากสกิลที่เรียน (base 0)</summary>
+    /// <summary>Craft proficiency from category level, learned skills, equipment and clan bonuses.</summary>
     private float CraftAbilityValue(Shared.Ability.Derived ability)
     {
-        float sum = ClanAbilityBonus(ability);
+        // Offline proficiency: researched category level plus learned/equipped bonuses.
+        // Use the same value for Statistics, recipe thresholds and craft success.
+        int category = ability switch {
+            Shared.Ability.Derived.Weaponcraft => (int)Shared.Skill.Category.Weaponcrafting,
+            Shared.Ability.Derived.Armorcraft or Shared.Ability.Derived.Tailor => (int)Shared.Skill.Category.Armorcrafting,
+            Shared.Ability.Derived.Smith or Shared.Ability.Derived.Handicraft => (int)Shared.Skill.Category.Process,
+            Shared.Ability.Derived.Furnishing or Shared.Ability.Derived.Construction => (int)Shared.Skill.Category.Constructing,
+            Shared.Ability.Derived.Cook => (int)Shared.Skill.Category.Cooking,
+            Shared.Ability.Derived.Farming => (int)Shared.Skill.Category.Farming, _ => -1 };
+        float sum = (category < 0 ? 0 : CategoryState(category).Level) + ClanAbilityBonus(ability);
         foreach (var (id, value) in CollectModifiers())
         {
             if (SkillDataStore.DerivedOfModifier.TryGetValue(id, out Shared.Ability.Derived d) && d == ability)
             {
                 sum += value;
             }
+        }
+        foreach (string itemId in _context.EquippedItems.Values.Distinct())
+        {
+            int index = _context.InventoryItems.FindIndex(i => i.Id == itemId);
+            if (index < 0) continue;
+            Item equipped = _context.InventoryItems[index];
+            foreach (var block in equipped.Performance ?? Array.Empty<Performance>())
+                if (block.Id == "modifiers" && block.Nums != null)
+                    foreach (var bonus in block.Nums)
+                        if (SkillDataStore.DerivedOfModifier.TryGetValue(bonus.Key, out var derived) && derived == ability)
+                            sum += bonus.Value;
         }
         return sum;
     }
@@ -1046,6 +1048,7 @@ public partial class Player
         {
             return;
         }
+        energy *= EnergyCostScale();
         _survival.Add(SurvivalState.KeyEnergy, -energy);
         // เพิ่มความเหนื่อยตามการกระทำ (fatigue_cost.craft = 2*√energy) — ครอบคลุมทั้งคราฟต์และทำอาหาร
         _survival.Add(SurvivalState.KeyFatigue, ActionFatigue.Of("craft", energy));
@@ -1088,8 +1091,11 @@ public partial class Player
             cooked.ModifiableCount = Math.Max(0, cooked.ModifiableCount - 1);
             cooked.ModifiedCount += 1;
         }
-        ApplyAddColor(ref cooked, recipe);
-        ApplyExtendedShape(ref cooked, msg.RecipeId);
+        if (recipe.category != "system") ApplyAddColor(ref cooked, recipe);
+        var bySlot = (msg.Materials ?? new Dictionary<string, string[]>()).ToDictionary(p => p.Key,
+            p => materials.Where(m => (p.Value ?? Array.Empty<string>()).Contains(m.Id)).ToArray());
+        if (!ItemCraftModifications.Apply(ref cooked, msg.RecipeId, recipe, bySlot, msg.ReformSlotIndex, out string processingError))
+        { Send(new Abort { Text = processingError }, seq); return; }
 
         Item[] products = { cooked };
         var crafted = new Crafted
@@ -1135,21 +1141,6 @@ public partial class Player
             && int.TryParse(hex.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out b);
     }
 
-    private static void ApplyExtendedShape(ref Item item, string recipeId)
-    {
-        string shape = CraftRecipeStore.ExtendedShape(recipeId);
-        if (shape == null) return;
-        string prefix = shape == "string_long" ? "string_" : "stick_";
-        // Preserve the base item's identity, level, material and durability.
-        // Replace the shape instead of recreating the prototype (which is still short).
-        bool IsShape(Tag tag) => tag.Id == prefix + "short" || tag.Id == prefix + "normal" || tag.Id == prefix + "long";
-        var tags = (item.Tags ?? Array.Empty<Tag>()).Where(t => !IsShape(t)).ToList();
-        var extended = new Tag { Id = shape, Level = item.Level };
-        tags.Add(extended); item.Tags = tags.ToArray();
-        item.TagModifications = (item.TagModifications ?? Array.Empty<Tag>())
-            .Where(t => !IsShape(t)).Append(extended).ToArray();
-    }
-
     /// <summary>ประเมินผลทำอาหาร - ผลคือของ base ที่ถูกปรุง (คงชนิดเดิม, modifiable ลด 1)</summary>
     private void HandleCookEstimate(CraftRecipeData recipe, EstimateCraft msg, uint seq)
     {
@@ -1165,7 +1156,10 @@ public partial class Player
         Item item = bi.Value;
         Prototype prototype = PrototypeYaml.GetItemPrototype(item.Prototype);
         var tags = new Dictionary<string, int>();
-        ApplyExtendedShape(ref item, msg.RecipeId);
+        var bySlot = (msg.Materials ?? new Dictionary<string, string[]>()).ToDictionary(p => p.Key,
+            p => (p.Value ?? Array.Empty<string>()).Select(FindInventoryItem).Where(i => i.HasValue).Select(i => i.Value).ToArray());
+        if (!ItemCraftModifications.Apply(ref item, msg.RecipeId, recipe, bySlot, msg.ReformSlotIndex, out string processingError))
+        { Send(new Abort { Text = processingError }, seq); return; }
         foreach (Tag tag in item.Tags ?? Array.Empty<Tag>()) tags[tag.Id] = tag.Level;
         int modAfter = recipe.deduct_modifiable_count ? Math.Max(0, item.ModifiableCount - 1) : item.ModifiableCount;
         Send(new CraftEstimationInfo
@@ -1196,7 +1190,7 @@ public partial class Player
             Send(new Abort { Text = "Não foi possível avaliar esta receita." }, seq);
             return;
         }
-        if (recipe.type == CraftType.Modify && CraftRecipeStore.Supported(msg.RecipeId, recipe))
+        if ((recipe.type is CraftType.Modify or CraftType.Reform) && CraftRecipeStore.Supported(msg.RecipeId, recipe))
         {
             HandleCookEstimate(recipe, msg, seq);
             return;

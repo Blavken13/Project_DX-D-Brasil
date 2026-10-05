@@ -1,0 +1,86 @@
+[
+  {
+    "terrain": "ri20te_alpha",
+    "template": "ri20te190710",
+    "level": 20,
+    "base_terrain": "ri35te",
+    "sha256": "6d5a498a2831cb73c0643e189b06cfe392da2ddd9f9b39310c7f4dd3644511c2"
+  },
+  {
+    "terrain": "ri40tu_alpha",
+    "template": "ri40tu171228",
+    "level": 40,
+    "base_terrain": "ri30td01",
+    "sha256": "f7a549f00474111374e1707acbb9c0f47d098631bbd649b45cdf2afaef8587d2"
+  },
+  {
+    "terrain": "ri45sw_alpha",
+    "template": "ri45sw171228",
+    "level": 45,
+    "base_terrain": "ra60sw",
+    "sha256": "dc53e471adf2984fcc7df48bc230019d959a2a0821fa4fdb687ebd12fccd5356"
+  },
+  {
+    "terrain": "ri55sw_alpha",
+    "template": "ri55sw171228",
+    "level": 55,
+    "base_terrain": "ra60sw",
+    "sha256": "54b6c670284f2a1f281c2e520f89a0d2e460f9697523e51182ea3deed8e45d48"
+  },
+  {
+    "terrain": "ua60tu_alpha",
+    "template": "ua60tu02Main01",
+    "level": 60,
+    "base_terrain": "ri55tu",
+    "sha256": "bfd045cd7fbb60b432273ce5a2aee00cb86db899ac79e220d8d998e64382c4a9"
+  },
+  {
+    "terrain": "ri50de_alpha",
+    "template": "ri50de171228",
+    "level": 50,
+    "base_terrain": "ri35de",
+    "sha256": "0203b30dc82d3aaf35da70cbc3c0be11e1436b0210b9850a2945de5d9d690055"
+  },
+  {
+    "terrain": "ri55tr_alpha",
+    "template": "ri55tb171228",
+    "level": 55,
+    "base_terrain": "ri40tr",
+    "sha256": "94a6accf38e23e96431208e81b458050bb0a4bfa692732e99c7dd0a3cd2be878"
+  },
+  {
+    "terrain": "ua60tr_alpha",
+    "template": "ua60tr02Main01",
+    "level": 60,
+    "base_terrain": "ri40tr",
+    "sha256": "1954055d5c6d344a5f2b75f731dccd1d1ad31ce9ef2a4c04507ab4dfa7262a21"
+  },
+  {
+    "terrain": "ua60sn_alpha",
+    "template": "ua60sn02Main04_elite",
+    "level": 60,
+    "base_terrain": "ri50sn",
+    "sha256": "cb35b0a9141cec6d56d9b628b760f37be9c572542e1bed438b72e2c399d4a7bd"
+  },
+  {
+    "terrain": "ua60de_alpha",
+    "template": "ua60de02Main02_elite",
+    "level": 60,
+    "base_terrain": "ri35de",
+    "sha256": "270d5cc314a0326dabb28833bfd4d3f05e1bccafcab9415e9577137f8e181c10"
+  },
+  {
+    "terrain": "op60tr_alpha",
+    "template": "op60tr180220",
+    "level": 60,
+    "base_terrain": "ri40tr",
+    "sha256": "fbc5920e6a99902f0929838a1a920a42c845af0081e731ee737fe6b3343471fe"
+  },
+  {
+    "terrain": "op60te_alpha",
+    "template": "op60te180220",
+    "level": 60,
+    "base_terrain": "ri35te",
+    "sha256": "98f885a562ec754fe9b69a718ffdf9d93eac9e23db57ca183457f36957ab7cc7"
+  }
+]

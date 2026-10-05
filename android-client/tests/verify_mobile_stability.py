@@ -1,5 +1,6 @@
 """Verify authentication callbacks/ABI in the real Unity 2017 client and packaged fixes."""
 import subprocess
+import os
 import sys
 import zipfile
 from pathlib import Path
@@ -26,13 +27,17 @@ def main():
     subprocess.run([str(JAVA/'javac.exe'), '-encoding', 'UTF-8', '-d', str(WORK),
                     *map(str, sources), str(ANDROID/'tests/MobileStabilityTest.java')], check=True)
     subprocess.run([str(JAVA/'java.exe'), '-cp', str(WORK), 'com.newdawn.launcher.MobileStabilityTest'], check=True)
-    with zipfile.ZipFile(ANDROID/'dist/LostHorizon-alfa.apk') as apk:
+    with zipfile.ZipFile(Path(os.environ.get('LH_TEST_APK', ANDROID/'dist/LostHorizon-alfa.apk'))) as apk:
         assert apk.read('classes.dex') == (ROOT/'Durango original/classes.dex').read_bytes()
         dex = apk.read('classes2.dex')
-        for marker in [b'LegacyServicePolicy', b'AnrSummary', b'LEGACY_AD_ID_SKIPPED']:
+        for marker in [b'LegacyServicePolicy', b'AnrSummary', b'LEGACY_AD_ID_SKIPPED',
+                       b'LHService', b'SERVICE_BIND_BEGIN', b'SERVICE_BIND_ACCEPTED', b'SERVICE_BIND_UNAVAILABLE']:
             assert marker in dex
         bridge = apk.read('lib/arm64-v8a/libnd.so')
-        for marker in [b'SESSION_CALLBACK_ENTER', b'SESSION_CALLBACK_RETURN', b'SESSION_SEND_RETURN', b'set_Timeout']:
+        for marker in [b'SESSION_CALLBACK_ENTER', b'SESSION_CALLBACK_RETURN', b'SESSION_SEND_RETURN', b'set_Timeout',
+                       b'AUTH_SEND_ENTER', b'AUTH_URI_READ_BEGIN', b'AUTH_URI_READ_RETURN',
+                       b'AUTH_URL_READ_BEGIN', b'AUTH_URL_READ_RETURN', b'AUTH_URL_CONVERT_BEGIN',
+                       b'AUTH_TOKEN_FIELD_BEGIN', b'AUTH_TIMEOUTS_BEGIN', b'CALLBACK_ROUTE_BEGIN']:
             assert marker in bridge
     print('PASS: original metadata method addresses, ARM64 timeout ABI/callback prologue and signed APK stability guards.')
 

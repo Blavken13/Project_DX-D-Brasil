@@ -1184,6 +1184,7 @@ public partial class Player
     private void SpendBuildEnergy(float energy)
     {
         if (energy <= 0f) return;
+        energy *= EnergyCostScale();
         _survival.Add(SurvivalState.KeyEnergy, -energy);
         // เพิ่มความเหนื่อยตามการกระทำ (fatigue_cost.build = 4*√energy)
         _survival.Add(SurvivalState.KeyFatigue, ActionFatigue.Of("build", energy));

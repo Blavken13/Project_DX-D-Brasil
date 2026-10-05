@@ -15,6 +15,7 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
+#include <stdatomic.h>
 #define LOG(...) __android_log_print(ANDROID_LOG_INFO,"LHRuntime",__VA_ARGS__)
 #define GATEWAY "http://179.197.72.129:8190"
 typedef struct {void *klass,*monitor;int32_t length;uint16_t chars[];} ManagedString;
@@ -37,6 +38,7 @@ static void *(*string_new)(const char *);
 static const void *uri_get,*uri_absolute,*add_field;
 static const void *connect_timeout,*request_timeout,*disable_retry,*request_state,*request_response;
 static int binding_state;
+static atomic_uint send_trace_count, callback_trace_count;
 static uint32_t title_media_handle;
 static JavaVM *vm;
 static jclass java_runtime;
@@ -144,7 +146,10 @@ static int request_route(void *request) {
     return !strncmp(address+sizeof(GATEWAY)-1,"/accounts",9)?1:2;
 }
 static void request_callback(void *request,const void *method_info) {
+    int trace=atomic_fetch_add(&callback_trace_count,1)<4;
+    if(trace)br_stage("CALLBACK_ROUTE_BEGIN");
     int kind=request_route(request);
+    if(trace)br_stage("CALLBACK_ROUTE_RETURN");
     if(kind){
         br_stage(kind==1?"ACCOUNT_CALLBACK_ENTER":"SESSION_CALLBACK_ENTER");
         if(callable(request_state)){
@@ -164,26 +169,42 @@ static void request_callback(void *request,const void *method_info) {
 }
 static void *send_request(void *request,const void *method_info) {
     if(!request)return NULL;
+    /* Bound startup tracing to four requests. Record only operation names,
+     * never URLs, request bodies, tokens or managed object addresses. */
+    int trace=atomic_fetch_add(&send_trace_count,1)<4;
+    if(trace)br_stage("AUTH_SEND_ENTER");
     if(!bind()){notify_failure();return NULL;}
+    if(trace)br_stage("AUTH_URI_READ_BEGIN");
     void *exception=NULL,*uri=invoke(uri_get,request,NULL,&exception);
+    if(trace)br_stage("AUTH_URI_READ_RETURN");
     if(exception||!uri){br_stage("AUTH_URI_FAILED");notify_failure();return NULL;}
+    if(trace)br_stage("AUTH_URL_READ_BEGIN");
     void *value=invoke(uri_absolute,uri,NULL,&exception);char address[2048];
+    if(trace)br_stage("AUTH_URL_READ_RETURN");
+    if(trace)br_stage("AUTH_URL_CONVERT_BEGIN");
     if(exception||!ascii(value,address,sizeof(address))){br_stage("AUTH_URI_FAILED");notify_failure();return NULL;}
+    if(trace)br_stage("AUTH_URL_CONVERT_RETURN");
     if(route(address)){
+        if(trace)br_stage("AUTH_TOKEN_ALLOCATION_BEGIN");
         void *key=string_new("token"),*credential=string_new(token);
+        if(trace)br_stage("AUTH_TOKEN_ALLOCATION_RETURN");
         if(!key||!credential){br_stage("AUTH_ALLOCATION_FAILED");notify_failure();return NULL;}
+        if(trace)br_stage("AUTH_TOKEN_FIELD_BEGIN");
         void *args[]={key,credential};invoke(add_field,request,args,&exception);
+        if(trace)br_stage("AUTH_TOKEN_FIELD_RETURN");
         if(exception){br_stage("AUTH_FIELD_FAILED");notify_failure();return NULL;}
         /* Bound only authentication requests. TimeSpan is a single Int64 ticks
          * value in this client; runtime_invoke takes its payload address.
          * Keep the existing async HTTP worker and game error callback. */
         if(callable(connect_timeout)&&callable(request_timeout)&&callable(disable_retry)){
+            if(trace)br_stage("AUTH_TIMEOUTS_BEGIN");
             int64_t connect_ticks=10LL*10000000,timeout_ticks=20LL*10000000;uint8_t retry=1;
             void *connect_args[]={&connect_ticks},*timeout_args[]={&timeout_ticks},*retry_args[]={&retry};
             invoke(connect_timeout,request,connect_args,&exception);
             if(!exception)invoke(request_timeout,request,timeout_args,&exception);
             if(!exception)invoke(disable_retry,request,retry_args,&exception);
             if(exception){br_stage("AUTH_TIMEOUT_CONFIGURATION_FAILED");notify_failure();return NULL;}
+            if(trace)br_stage("AUTH_TIMEOUTS_RETURN");
         }else br_stage("AUTH_TIMEOUT_ORIGINAL_FALLBACK");
         br_stage(strstr(address+sizeof(GATEWAY)-1,"/accounts")==address+sizeof(GATEWAY)-1?"ACCOUNT_REQUEST":"SESSION_REQUEST");
     }

@@ -18,9 +18,11 @@ final class CrashDiagnostics {
     static File reports(Context context) { File d=new File(directory(context),"reports"); d.mkdirs(); return d; }
     static synchronized void stage(Context context, String stage) {
         write(new File(directory(context),"runtime-stage.txt"),System.currentTimeMillis()/1000+" "+Process.myPid()+" "+stage+"\n");
+        breadcrumb(context, stage);
     }
     static synchronized void breadcrumb(Context context, String event) {
-        try (FileOutputStream out = new FileOutputStream(new File(directory(context), "runtime-events.txt"), true)) {
+        File file = new File(directory(context), "runtime-events.txt");
+        try (FileOutputStream out = new FileOutputStream(file, file.length() < 32768)) {
             out.write((System.currentTimeMillis()/1000 + " " + event + "\n").getBytes(StandardCharsets.UTF_8));
         } catch (IOException ignored) { }
     }

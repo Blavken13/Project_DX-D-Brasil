@@ -440,7 +440,7 @@ public partial class Player
             statuses.Add(new ActionStatus
             {
                 Id = id,
-                Stamina = action.meta.stamina,
+                Stamina = StaminaTuning.Cost(action.meta.stamina),
                 Cooltime = action.meta.cooltime
             });
         }
@@ -480,8 +480,9 @@ public partial class Player
             return;
         }
 
-        if (action.meta.stamina > 0 &&
-            _survival.ValueAt(SurvivalState.KeyStamina, now) + 0.001f < action.meta.stamina)
+        float staminaCost = StaminaTuning.Cost(action.meta.stamina);
+        if (staminaCost > 0 &&
+            _survival.ValueAt(SurvivalState.KeyStamina, now) + 0.001f < staminaCost)
         {
             Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: stamina ไม่พอสำหรับ '{msg.ActionId}'");
             return;
@@ -491,9 +492,9 @@ public partial class Player
             now + Math.Max(0f, action.meta.cooltime);
 
         // ค่าความอึดที่ท่าใช้ — ตัวเลขจริงจาก player_battle_actions.json → meta.stamina
-        if (action.meta.stamina > 0)
+        if (staminaCost > 0)
         {
-            _survival.Add(SurvivalState.KeyStamina, -action.meta.stamina);
+            _survival.Add(SurvivalState.KeyStamina, -staminaCost);
             FlushSurvival();
         }
         SetBattleMode(true, msg.TargetEntityId);

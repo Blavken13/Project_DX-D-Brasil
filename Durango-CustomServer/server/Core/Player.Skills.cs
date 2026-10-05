@@ -39,7 +39,7 @@ public static class SkillTuning
     /// = ราว 6% ของทั้งเกม ซึ่งบังคับให้ต้อง "เลือกสายถนัด" ตามที่เกมออกแบบไว้
     /// (โหนดหนึ่งราคา 3–8 แต้ม ⇒ 187 แต้ม ≈ 30–50 สกิล)
     /// </summary>
-    public const int SkillPointsPerLevel = 3;
+    public const int SkillPointsPerLevel = 5;
 
     /// <summary>
     /// **ค่าของเรา** — เลเวลตั้งต้นของตัวละครใหม่
@@ -1113,6 +1113,13 @@ public partial class Player
                     // mantém cache durante a sessão; sem este push a receita só aparece após relogar.
                     PushUnlockedRecipes();
                 }
+                else
+                {
+                    // Category proficiency can cross an advanced recipe threshold
+                    // even when this level has no automatic skill reward.
+                    SendFullStatistics();
+                    PushUnlockedRecipes();
+                }
             }
         }
 
@@ -1378,15 +1385,8 @@ public partial class Player
     private const string BaseSubId = "__base__";
 
     /// <summary>
-    /// สูตรที่ผู้เล่นคนนี้ปลดล็อกแล้ว — **มาจากสกิลที่เรียนแล้วเท่านั้น**
-    ///
-    /// เส้นทางข้อมูลจริง: skills.json → rewards[] → rewards.json → recipe_ids
-    /// (ฝั่งเกมใช้เส้นเดียวกันที่ client/Crafting/Recipe.cs:88-107 GetOwnerSkill)
-    ///
-    /// [7 ก.ย. 2026] เลิกเปิด "สูตรที่ไม่มีสกิลไหนปลด" (88 ตัว) ให้ฟรีแล้ว —
-    /// ในนั้นมีของอีเวนต์ (ชุดซานตา/สเกเลตัน/โปสเตอร์เมษาหน้าโง่) ที่ไม่ควรคราฟต์ได้ในเซิร์ฟปกติ
-    /// ⇒ สูตรที่ไม่มีทางปลดด้วยสกิล = ไม่โผล่ในตารางคราฟต์เลย
-    /// ผู้เล่นใหม่ได้สูตรจากสกิลที่แจกตอนสร้างตัว + สกิลอัตโนมัติ (ราคา 0 แต้ม)
+    /// Recipes unlocked by learned nodes and original crafting proficiency thresholds.
+    /// Event recipes without a skill/proficiency reward remain unavailable.
     /// </summary>
     public HashSet<string> UnlockedRecipeIds()
     {
@@ -1411,6 +1411,7 @@ public partial class Player
                 }
             }
         }
+        unlocked.UnionWith(CraftingAbilityRecipes.Unlocked(CraftAbilityValue));
         return unlocked;
     }
 
@@ -1685,6 +1686,8 @@ public partial class Player
             basicRaw[ability] = BaseAbilityValue(ability);
         }
         ApplyModifiers(modifiers, basicRaw, deriveds);
+        foreach (var ability in CraftingAbilityRecipes.All.Select(u => u.Ability).Distinct())
+            deriveds[ability] = CraftAbilityValue(ability);
         foreach (var (ability, value) in basicRaw)
         {
             basics[ability] = (int)Math.Round(value);

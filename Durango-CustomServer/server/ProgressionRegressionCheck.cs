@@ -18,7 +18,7 @@ internal static class ProgressionRegressionCheck
 {
     private static int _passed;
     private static object Call(object target, string name, params object[] args) => target.GetType()
-        .GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(target, args);
+        .GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Invoke(target, args);
     private static T Field<T>(object target, string name) => (T)target.GetType()
         .GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(target);
     private static void Check(bool value, string text)
@@ -44,13 +44,29 @@ internal static class ProgressionRegressionCheck
             {
                 var player = link.Player; world.AddPlayer(player); player.ContextChanged += context.Save;
                 var skills = Field<SkillSave>(player, "_skills");
+                Check((int)Call(player, "TotalSkillPoints") == SkillDataStore.InitialSkillPoints,
+                    "nivel 1 mantem pontos iniciais");
                 int level60 = (int)typeof(Player).GetMethod("ExpForLevel", BindingFlags.Static | BindingFlags.NonPublic)
                     .Invoke(null, new object[] { 60 });
                 player.AddExp(level60 - skills.Exp, "cheat");
+                Check((int)Call(player, "TotalSkillPoints") == SkillDataStore.InitialSkillPoints + 59 * 5,
+                    "nivel 60 recebe cinco pontos por nivel, inclusive retroativos");
                 var construction = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Constructing);
                 var weapons = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Weaponcrafting);
                 construction.Level = weapons.Level = 60;
                 Call(player, "SaveSkillState");
+                Check(!player.UnlockedBlueprintIds().Contains("cage_domestication_2"), "curral exige sua skill mesmo no nivel 60");
+                for (int stage = 1; stage <= 2; stage++)
+                {
+                    int before = link.Messages.OfType<ArtifactBlueprints>().Count();
+                    link.Request<LearnSkill, OK>(new LearnSkill { SkillId = "cage_domestication", SubId = "__base__", Level = stage });
+                    link.PumpUntil(() => link.Messages.OfType<ArtifactBlueprints>().Count() > before);
+                    string id = stage == 1 ? "cage_domestication_2" : "cage_domestication_4";
+                    Check(link.Messages.OfType<ArtifactBlueprints>().Last().Ids.Contains(id) && BlueprintStore.GetBlueprint(id).IsShowCraftMode,
+                        "aprender curral publica planta habilitada: " + id);
+                }
+                Check((int)Call(player, "RemainSkillPoints") == (int)Call(player, "TotalSkillPoints") - (int)Call(player, "UsedSkillPoints"),
+                    "pontos novos preservam o desconto das skills aprendidas");
                 Check(player.UnlockedBlueprintIds().Contains("fur_table") && !player.UnlockedBlueprintIds().Contains("fur_table_03"),
                     "nivel alto sozinho nao substitui aprendizado da mesa superior");
                 for (int stage = 2; stage <= 4; stage++)
@@ -103,6 +119,24 @@ internal static class ProgressionRegressionCheck
 
                 var defense = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Defense);
                 var survival = Field<SurvivalState>(player, "_survival");
+                survival.Set(SurvivalState.KeyEnergy, 100); survival.Set(SurvivalState.KeyStamina, 80);
+                Call(player, "FlushSurvival");
+                link.Send(default(Dashed)); link.Request<GetActions, Actions>(default);
+                Check(Math.Abs(survival.ValueAt(SurvivalState.KeyStamina, Gauge.CurrentTime) - 70) < 1,
+                    "esquiva cobra dez pontos de estamina pelo protocolo");
+                survival.Set(SurvivalState.KeyEnergy, 80); Call(player, "FlushSurvival");
+                var survivalSkill = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Survival);
+                int survivalLevel = survivalSkill.Level; survivalSkill.Level = 60;
+                float energyScale = (float)Call(player, "EnergyCostScale");
+                Check(energyScale < 1, "Sobrevivencia avancada reduz custo de energia");
+                Call(player, "SpendCraftEnergy", new CraftRecipeData { energy = "10" });
+                Check(Math.Abs(survival.ValueAt(SurvivalState.KeyEnergy, Gauge.CurrentTime) - (80 - 10 * energyScale)) < .2,
+                    "craft aplica economia de energia da Sobrevivencia");
+                survival.Set(SurvivalState.KeyEnergy, 80); Call(player, "FlushSurvival");
+                Call(player, "SpendBuildEnergy", 10f);
+                Check(Math.Abs(survival.ValueAt(SurvivalState.KeyEnergy, Gauge.CurrentTime) - (80 - 10 * energyScale)) < .2,
+                    "construcao aplica economia de energia da Sobrevivencia");
+                survivalSkill.Level = survivalLevel;
                 var animal = world.AnimalManager.SpawnAt(2027, 1, world.EntryPoint);
                 animal.AggroTargetId = context.EntityId; animal.Attack = 2;
                 var position = context.AppearPlayer.Move.Movements[0].Path[0].Position;
@@ -114,8 +148,14 @@ internal static class ProgressionRegressionCheck
                 Check(DefenseProgress(defense) == initial && skills.DefenseExpRemainder == 0, "ficar em combate sem impacto nao concede Defesa");
                 var actions = link.Request<GetActions, Actions>(default);
                 Check(actions.BattleActions.Any(a => a.Id == "barehand_dodge"), "esquiva nativa disponivel sem arma");
+                float dodgeCost = actions.BattleActions.Single(a => a.Id == "barehand_dodge").Stamina;
+                Check(dodgeCost == StaminaTuning.Cost(BattleDataStore.Action("barehand_dodge").meta.stamina),
+                    "cliente recebe custo de estamina atualizado");
+                survival.Set(SurvivalState.KeyStamina, dodgeCost + 1); Call(player, "FlushSurvival");
                 link.Send(new UseBattleAction { ActionId = "barehand_dodge", StartAt = 1 });
                 link.PumpUntil(() => Field<double>(player, "_defenseActiveUntil") > Gauge.CurrentTime);
+                Check(survival.ValueAt(SurvivalState.KeyStamina, Gauge.CurrentTime) < 2,
+                    "combate aceita saldo reduzido e debita o custo anunciado");
                 double until = Field<double>(player, "_defenseActiveUntil");
                 Check(DefenseProgress(defense) == initial, "usar esquiva sem ataque nao permite farmar experiencia");
                 float life = survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime);

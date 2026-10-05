@@ -1,0 +1,14 @@
+# Progressão, estamina, comida e doma
+
+- Pontos de habilidade: 5 por nível (antes 3); mantém os pontos iniciais e as skills já aprendidas. O saldo é calculado pelo nível, portanto os personagens existentes recebem a diferença automaticamente ao entrar.
+- Estamina: combate e esquiva gastam 50% do custo anterior, arredondado para cima porque o protocolo anuncia custos inteiros. `Actions` informa o mesmo custo que o servidor verifica e debita. Esquiva: 20 → 10. Regeneração e cooldown permanecem nas regras atuais.
+- Craft e construção passam a aplicar `EnergyCostScale`, como a coleta já fazia, respeitando a economia de energia da categoria Sobrevivência. Energia é o teto da estamina; a correção também evita reduzir esse teto desnecessariamente.
+- Preparo: substitui o processamento que apenas alterava a cor por atributos de aquecimento, fritura, defumação, conservação e outros métodos, usando as definições em `tags.json`. Remove `raw_food`, aplica modificadores numéricos (`ratio`, `incr`, `decr`, `set`) e textuais. Estimativa e resultado usam a mesma transformação, sem alterar o item original durante a estimativa.
+- Balanceamento do servidor local: como a energia da comida é concedida imediatamente, o bônus positivo de `energy_expression` do preparo aumenta `energy_potential` pela fórmula `potencial_base × (1 + expressão_preparada − expressão_base)`. Por exemplo, carne preparada com aquecimento de nível 1 recebe 10% de energia adicional; fritura de nível 1 recebe 50%. O cálculo parte da base, impedindo duplicar o mesmo bônus ao recalcular.
+- Consumo usa os números e efeitos do bloco `food` do item preparado, com fallback para a definição original quando o item antigo não contém esses campos. Os novos atributos persistem no save. Alimentos preparados anteriormente pelo caminho que só mudava a cor não têm registro suficiente para reconstruir o método; o bônus será aplicado aos novos preparos.
+- A geração de atributos seleciona o intervalo de nível correspondente ao item, evitando usar a primeira faixa do catálogo em comidas de outro nível.
+- Currais `cage_domestication_2` e `cage_domestication_4`: habilitados para construção (`is_craft=true`). Mantém as skills, níveis, materiais e ferramentas originais; aprender cada etapa publica sua planta imediatamente.
+
+Validação: build Release e testes `--progression-check`, `--gameplay-bugs-check`, `--polish-check`, `--social-check`, usando saves temporários. Os testes incluem preparo real por TCP, consumo dos valores preparados, persistência e recálculo sem duplicação, saldo de pontos, currais por skill e custos de energia/estamina.
+
+Para testar: reinicie o servidor local e reconecte PC/celular. Compare os pontos disponíveis, a esquiva e o combate; prepare uma nova porção de carne e confira os atributos e a recuperação; aprenda as etapas de curral na categoria Construção e verifique as plantas.

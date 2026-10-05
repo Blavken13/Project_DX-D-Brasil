@@ -164,28 +164,44 @@ internal static class GameplayPolishCheck
             Check(repaired.Durability.Max() > 1 && repaired.Durability.Get() == repaired.Durability.Max(), "reparo conserva capacidade real");
             Check(context.InventoryItems.All(i => i.Id != kit.Id), "reparo consome o kit");
 
-            // Expansão barata e cara: validar autoridade antes de debitar qualquer valor.
+            // Free expansion on every island, capped at eight without truncating old estates.
             var cell = new Point2(10, 10);
             var highEstate = high.DeclareEstate(context.EntityId, OwnerType.Player, cell, highId).Value;
             long expectedCost = EstateExpansionCost.For(OwnerType.Player, 1, high.RegionLevel);
-            context.TStone = expectedCost - 1;
-            link.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
-            Check(high.GetEstate(highEstate.EstateId).Size == 1 && context.TStone == expectedCost - 1, "saldo insuficiente nao expande nem debita");
-            context.TStone = expectedCost + 100;
+            context.TStone = 0;
             var expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
-            Check(expanded.Size == 2 && context.TStone == 100 && expectedCost > 0, "ilha alta cobra valor nativo uma vez");
+            Check(expanded.Size == 2 && context.TStone == 0 && expectedCost == 0, "ilha alta expande gratuitamente com saldo zero");
             link.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
-            Check(context.TStone == 100, "repeticao de expansao nao cobra novamente");
+            Check(context.TStone == 0, "repeticao de expansao nao altera carteira");
             link.Request<ShrinkEstate, EstateLicense>(new ShrinkEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
             expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
-            Check(expanded.Size == 2 && context.TStone == 100, "reexpansao ate tamanho ja pago continua gratuita como indicado no cliente");
+            Check(expanded.Size == 2 && context.TStone == 0, "reexpansao continua gratuita como indicado no cliente");
+            var allowances = link.Request<GetEstateLicenses, EstateLicenses>(default);
+            Check(allowances.LargestUrbanEstateSize == 8 && allowances.LargestPersonalEstateSize == 8,
+                "PC e Android recebem oito lotes gratuitos pelo mesmo protocolo");
+            for (int x = 12; x <= 17; x++)
+                expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(x, 10) });
+            link.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(18, 10) });
+            Check(expanded.Size == 8 && high.GetEstate(highEstate.EstateId).Cells.Count == 8 && context.TStone == 0,
+                "oitavo lote permitido e nono recusado sem cobrar");
+            // Simulate a save produced before the new cap, including a recorded maximum above eight.
+            var legacy = high.GetEstate(highEstate.EstateId);
+            legacy.Cells.AddRange(new[] { "18,10", "19,10", "20,10", "21,10" });
+            foreach (string key in legacy.Cells) highContext.EstateCells[key] = highEstate.EstateId;
+            legacy.Size = legacy.LargestSize = 12;
+            link.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(22, 10) });
+            allowances = link.Request<GetEstateLicenses, EstateLicenses>(default);
+            Check(allowances.UrbanEstate.Value.Size == 12 && legacy.Cells.Count == 12 && allowances.LargestUrbanEstateSize == 12,
+                "dominio legado acima do teto conserva todos os lotes e sua licenca");
+            Check(high.TryGetEstateIdAtCell(new Point2(21, 10), out string legacyId) && legacyId == highEstate.EstateId,
+                "lote excedente continua pertencendo ao dominio");
             var beginner = Player(root, "beginner", low.TerrainId);
             beginner.TStone = 0;
             using var beginnerLink = new EconomyProtocolCheck.Link(beginner, low, store, true);
             var lowEstate = low.DeclareEstate(beginner.EntityId, OwnerType.Player, cell, low.TerrainId).Value;
             expanded = beginnerLink.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = lowEstate.EstateId, Cell = new Point2(11, 10) });
             Check(expanded.Size == 2 && beginner.TStone == 0, "ilha nivel 10 expande gratuitamente com saldo zero");
-            Check(EstateExpansionCost.For(OwnerType.PersonalPlayer, 1, 60) == 0, "ilha particular preserva regra propria de expansao");
+            Check(EstateExpansionCost.For(OwnerType.PersonalPlayer, 1, 60) == 0, "ilha particular tambem expande sem custo");
 
             // Expiração precisa sobreviver a reinícios e limpar conteúdo associado.
             var artifact = high.ArtifactManager.Enumerable(a => a.States.BuildingState == Shared.Building.BuildingState.Completed).First();
@@ -201,6 +217,9 @@ internal static class GameplayPolishCheck
             var reload = Newtonsoft.Json.JsonConvert.DeserializeObject<WorldContext>(File.ReadAllText(highContext.Path));
             reload.Initialize(highContext.Path);
             var restored = new World(reload);
+            Check(restored.GetEstate(highEstate.EstateId).Size == 12 &&
+                restored.TryGetEstateIdAtCell(new Point2(21, 10), out legacyId) && legacyId == highEstate.EstateId,
+                "reiniciar conserva tamanho e celulas do dominio legado sem limitar save");
             Check(reload.WildStructureExpirations[artifact.EntityId] == expiry, "reiniciar nao renova prazo da construcao");
             int systemCount = restored.ArtifactManager.Enumerable(a => string.IsNullOrEmpty(restored.ArtifactManager.OwnerOf(a.EntityId))).Count();
             restored.ProcessWildStructureExpirations(expiry + 1);

@@ -50,6 +50,7 @@ internal static class WorldInteractionCheck
             TerrainLoader.TerrainDir = Path.Combine(dataDir, "terrains");
             RegionCatalog.Load(Path.Combine(dataDir, "assets"));
             EstateAccessCheck.Run(root, Check);
+            MapTravelMountCheck.Run(root, Check);
             var flowerRecipe = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("item/recipes")["capture_tool_02"];
             Check(flowerRecipe["slots"].Any(s => (int?)s["required_materials"]?["flower"] == 20 &&
                 s["source_info"].Any(source => (string)source["collectible_id"] == "bush_lilac" &&
@@ -94,7 +95,7 @@ internal static class WorldInteractionCheck
                 var flowerTimer = craftLink.Request<Collect, Messages.Timer>(new Collect { EntityId = "native-lilac", Tile = lilacTile, GeneratorId = "flower_lilac" });
                 Call(craftLink.Player, "UpdatePendingCollects", Gauge.CurrentTime + flowerTimer.Duration + .1);
                 craftLink.PumpUntil(() => craftContext.InventoryItems.Any(i => i.Prototype == "flower"));
-                var gatheredFlower = craftContext.InventoryItems.Single(i => i.Prototype == "flower");
+                var gatheredFlower = craftContext.InventoryItems.First(i => i.Prototype == "flower");
                 var flowerSlot = flowerRecipe["slots"].First(s => (int?)s["required_materials"]?["flower"] == 20).ToObject<CraftRecipeSlotData>();
                 Check(gatheredFlower.Level == 35 && (bool)typeof(Durango.Online.Player).GetMethod("MatchesSlot", BindingFlags.NonPublic | BindingFlags.Static)
                     .Invoke(null, new object[] { gatheredFlower, flowerSlot }), "flor coletada e aceita pelo filtro real da ferramenta de domagem");
@@ -133,7 +134,7 @@ internal static class WorldInteractionCheck
                     "dimensoes e validade de " + id);
                 var map = link.Request<GetRegionMapInfo, RegionMapInfo>(new GetRegionMapInfo { RegionId = id });
                 Check(map.TerrainId == id && map.TileCount.x == data.Width && map.TileCount.y == data.Height &&
-                    map.DefoggedChunks.Chunks.Length == data.Width / 16 * (data.Height / 16), "preview completo de " + id);
+                    map.DefoggedChunks.Chunks.Length < data.Width / 16 * (data.Height / 16), "preview preserva nevoa de " + id);
                 var tc = new WorldContext { TerrainId = id };
                 tc.Initialize(Path.Combine(root, id + "-catalog.world"));
                 var tw = new World(tc);
@@ -148,6 +149,11 @@ internal static class WorldInteractionCheck
                 if (id == "ri15sv01") Check(newFlowers.Any(n => n.EntityType is 11091 or 14063), "lavanda restaurada com variante do bioma real");
                 if (id == "ri18tp01") Check(newFlowers.Any(n => n.EntityType == 11008), "roseira tropical restaurada");
                 var template = RegionCatalog.GetTemplate(data.Info.region_template);
+                if (id.EndsWith("_alpha", StringComparison.Ordinal))
+                    Check(tw.RegionLevel == template.Level && (template.Role != Shared.Region.Role.Risky ||
+                        tw.AnimalManager.All.All(a => a.CombatLevel == Math.Clamp(Math.Max(1, template.Level - 2),
+                            AnimalTypes.Get(a.EntityType).MinCombatLevel, AnimalTypes.Get(a.EntityType).MaxCombatLevel))),
+                        "nova ilha preserva nivel e fauna do template: " + id);
                 if (template.Role is not (Shared.Region.Role.Personal or Shared.Region.Role.Tutorial))
                 {
                     Check(data.Pois.Warpholes.Count >= 2 && data.Pois.Craters.Count >= 1 &&

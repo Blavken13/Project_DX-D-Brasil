@@ -58,6 +58,7 @@ public static class Cheats
             });
         }
         value.Tags = list.ToArray();
+        ItemCraftModifications.Initialize(ref value);
 
         // ของกินได้ต้องมี ModifiableCount > 0 ถึงจะเอาไปปรุงได้
         // (client/Crafting/RecipeSlot.cs:32 ช่อง ModifyBase ต้องการ) — ข้อมูลเกมไม่เก็บค่านี้

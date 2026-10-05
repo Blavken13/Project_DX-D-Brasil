@@ -1,7 +1,42 @@
 # Cliente Android Lost Horizon
 
-APK atual: `dist/LostHorizon-alfa.apk`, versão Android `50213` /
-`5.2.1-losthorizon-alfa-stability1`.
+Nova build de teste: `dist/LostHorizon-alfa-stability3-50215.apk`, versão Android
+`50215` / `5.2.1-losthorizon-alfa-stability3`. A compilação usa esse nome distinto
+e preserva `LostHorizon-alfa.apk` e os APKs anteriores.
+
+## Samsung Android 16 — revisão 50215
+
+O relatório do SM-A256U1 está na revisão 50212 (`reports3`) e mostra uma falha Java
+em `JNIBridge.invoke` durante `ServiceConnection.onServiceConnected`. A pilha não
+identifica qual serviço se conectou. A revisão 50215 inclui o bloqueio já existente
+do serviço opcional de identificação publicitária do Unity antigo, além de registrar
+no logcat (`LHService`) a ação, pacote, componente e classe da conexão de serviço,
+sem Intent extras ou credenciais. As etapas `SERVICE_BIND_*` também entram no relatório.
+
+Captura e reprodução no aparelho afetado por ADB/ZeroTier dependem do IP/porta de
+depuração, pareamento quando necessário e autorização exibida no celular. A presença
+da correção no pacote não comprova a resolução nesse Samsung até concluir esse teste.
+Para verificar esta build sem substituir o APK anterior, defina `LH_TEST_APK` com o
+caminho do novo APK ao executar os testes de estabilidade, compatibilidade e apresentação.
+
+## Diagnóstico do SIGSEGV — revisão 50214
+
+Um Xiaomi 2409FPCC4G / Android 15 registrou saída por sinal 11 na revisão
+50213, com última etapa `AUTH_READY`, página de 4096 bytes e sem pilha nativa.
+Isso não identifica a função que falhou. `AUTH_READY` informa somente que
+os métodos da ponte de autenticação foram encontrados; não confirma login.
+As etapas são globais ao processo e podem ser escritas por threads diferentes.
+
+Esta revisão preserva as proteções da 50213 e adiciona etapas antes/depois de
+ler URI, obter a URL, converter a string, alocar/adicionar o token e configurar
+timeouts. O registro detalhado fica limitado aos quatro primeiros envios e
+callbacks. Não registra URLs, credenciais ou endereços de objetos.
+As etapas Java da inicialização também passam a constar no histórico.
+
+Esta é uma revisão de diagnóstico, não uma correção comprovada desse SIGSEGV.
+Solicitar ao tester uma tentativa com as mesmas opções e um novo relatório
+após reabrir o aplicativo. Em uma segunda tentativa, desativar apenas o vídeo
+da seleção para comparar, sem atribuir previamente a falha ao vídeo.
 
 ## Fechamentos dos testers — revisão 50213
 

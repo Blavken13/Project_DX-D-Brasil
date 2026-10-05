@@ -153,7 +153,11 @@ public class PlayerContext
     /// ดูที่หัวคลาส <see cref="ExploredPoint"/> ใน Core/Player.Map.cs
     /// </summary>
     [JsonProperty("explored_pois", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, ExploredPoint> ExploredPOIs;
+    public Dictionary<string, ExploredPoint> ExploredPOIs;
+
+    // Chunk coordinates are packed as x/y, independent of map width.
+    [JsonProperty("explored_chunks", NullValueHandling = NullValueHandling.Ignore)]
+    public Dictionary<string, HashSet<int>> ExploredChunks;
 
     /// <summary>
     /// Saldo de T-Stone deste personagem.
@@ -512,6 +516,7 @@ internal static class ItemExtRepair
     public static void Normalize([CanBeNull] List<Item> items, string where)
     {
         ItemDurability.Normalize(items);
+        ItemCraftModifications.Normalize(items);
         if (items == null || items.Count == 0) return;
         int repaired = 0;
         int dropped = 0;

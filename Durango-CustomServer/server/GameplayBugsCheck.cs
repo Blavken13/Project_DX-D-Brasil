@@ -44,6 +44,7 @@ internal static class GameplayBugsCheck
             context.AppearPlayer.Move.Movements = new[] { new Movement { MotionName = "Stand", PlaybackRate = 1,
                 Path = new[] { new Location { Position = new WorldPosition(tile.x * 200, tile.y * 200), Time = Gauge.CurrentTime } } } };
 
+            WorkbenchCraftCheck.Run(link, context, world, tile);
             foreach (string recipeId in new[] { "extend_rope", "extend_stick", "s02_extend_stick" })
             {
                 var recipe = CraftRecipeStore.Get(recipeId);
