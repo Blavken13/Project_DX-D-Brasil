@@ -24,7 +24,7 @@ internal static class WorkbenchCraftCheck
         var prototype = SingletonDict<string, List<Prototype>>.Instance.Keys.FirstOrDefault(k =>
             PrototypeYaml.GetItemPrototype(k) is { Tags: { } tags } &&
             Matches(tags, slot.required_tags) && Matches(tags, slot.required_materials));
-        // Processed materials have dynamic tags and do not have a separate prototype.
+        // Some processed materials require dynamic tags absent from native prototypes.
         Item item = Cheats.MakeItem(prototype ?? "wood_log", 60).Value;
         var tags = (item.Tags ?? Array.Empty<Tag>()).ToList();
         foreach (var filter in new[] { slot.required_tags, slot.required_materials })
@@ -100,20 +100,47 @@ internal static class WorkbenchCraftCheck
         skillSave.Learned = savedSkills;
         foreach (var level in categoryLevels) skillSave.Categories[level.Key].Level = level.Value;
 
-        foreach (string id in new[] { "trim", "process", "board", "extend_sheet", "dry", "tan", "smelt", "refine", "dye_color_r", "reform_pocket", "roast_01", "fry" })
+        var cases = new[] { "trim", "process", "extend_sheet", "dry", "tan", "smelt", "refine", "dye_color_r", "reform_pocket", "roast_01", "fry" }
+            .Select(id => (Id: id, Material: (string)null))
+            .Concat(new[] { "board", "s02_board", "board_02", "board_03" }
+                .SelectMany(id => (id == "board" ? new[] { "wood", "stone", "bone", "metal" } :
+                    id == "board_02" ? new[] { "wood", "stone" } : new[] { "stone" })
+                    .Select(material => (Id: id, Material: material))));
+        foreach (var testCase in cases)
         {
+            string id = testCase.Id;
             var recipe = catalog[id];
             var inputs = recipe.slots.ToDictionary(s => s.slot_id,
                 s => Enumerable.Range(0, s.count_min).Select(_ => Material(s)).ToArray());
+            if (testCase.Material != null)
+            {
+                Item material = inputs["base"][0];
+                if (id == "board")
+                {
+                    var slot = recipe.slots.Single(s => s.slot_id == "base");
+                    string nativeSource = SingletonDict<string, List<Prototype>>.Instance.Keys.FirstOrDefault(k =>
+                        PrototypeYaml.GetItemPrototype(k) is { Tags: { } tags } && tags.ContainsKey(testCase.Material) &&
+                        Matches(tags, slot.required_tags) && Matches(tags, slot.required_materials));
+                    if (nativeSource != null) material = Cheats.MakeItem(nativeSource, 60).Value;
+                }
+                material.Tags = material.Tags.Where(t => !new[] { "wood", "stone", "bone", "metal" }.Contains(t.Id))
+                    .Append(new Tag { Id = testCase.Material, Level = material.Level }).ToArray();
+                if (id == "board_02")
+                    material.Tags = material.Tags.Where(t => t.Id is not "trim_wood" and not "trim_stone")
+                        .Append(new Tag { Id = "trim_" + testCase.Material, Level = material.Level }).ToArray();
+                inputs["base"] = new[] { material };
+            }
             if (recipe.category == "cook") inputs["base"] = new[] { Cheats.MakeItem("meat", 1).Value };
             var baseItem = inputs["base"][0];
+            string originalJson = Json.Write(baseItem);
             foreach (Item input in inputs.Values.SelectMany(v => v)) context.InventoryItems.Add(input);
             var toolPrototype = SingletonDict<string, List<Prototype>>.Instance.Keys.FirstOrDefault(k =>
                 PrototypeYaml.GetItemPrototype(k).Tags?.Keys.Any(t => recipe.tool_tags.ContainsKey(t)) == true);
             Item? tool = toolPrototype == null ? null : Cheats.MakeItem(toolPrototype, 60);
             if (tool.HasValue) context.InventoryItems.Add(tool.Value);
-            var blueprint = BlueprintStore.GetAllBlueprints().First(b => b.Components?.Contains("Workbench") == true && WorkbenchTags.Of(b.EntityType)?.Any(t =>
-                recipe.workbench_tags.TryGetValue(t.Id, out int level) && t.Level >= level) == true);
+            var blueprint = BlueprintStore.GetAllBlueprints().First(b => b.Components?.Contains("Workbench") == true &&
+                (recipe.workbench_tags == null || recipe.workbench_tags.Count == 0 || WorkbenchTags.Of(b.EntityType)?.Any(t =>
+                    recipe.workbench_tags.TryGetValue(t.Id, out int level) && t.Level >= level) == true));
             var bench = Cheats.MakeAppearArtifact(new[] { "prop", blueprint.EntityType.ToString() }, out _).Value;
             bench.Tile = tile; bench.States.BuildingState = Shared.Building.BuildingState.Completed;
             world.ConstructArtifact(bench, null, context.EntityId);
@@ -122,12 +149,32 @@ internal static class WorkbenchCraftCheck
                 RecipeId = id, Materials = materialIds, ReformSlotIndex = recipe.type == CraftType.Reform ? 0 : null });
             Check(context.InventoryItems.Single(i => i.Id == baseItem.Id).ModifiableCount == baseItem.ModifiableCount,
                 id + " estimativa nao consome processamento");
+            Check(Json.Write(context.InventoryItems.Single(i => i.Id == baseItem.Id)) == originalJson,
+                id + " estimativa preserva material original completo");
+            if (testCase.Material != null)
+            {
+                string expectedPrototype = "board_" + testCase.Material;
+                Check(estimate.CraftEstimation.Value.PrototypeId == expectedPrototype &&
+                    estimate.CraftEstimation.Value.Name == (string)PrototypeYaml.GetItemPrototype(expectedPrototype).Name,
+                    id + " previa mostra tabua de " + testCase.Material + " em vez do pilar");
+            }
             var timer = link.Request<Craft, Messages.Timer>(new Craft { RecipeId = id, Materials = materialIds,
                 ToolItemId = tool?.Id, Workbench = new PropKey { EntityId = bench.EntityId, Tile = tile },
                 ReformSlotIndex = recipe.type == CraftType.Reform ? 0 : null });
             Call(link.Player, "UpdatePendingCrafts", Gauge.CurrentTime + timer.Duration + 1);
             link.PumpUntil(() => context.InventoryItems.Any(i => i.Id == baseItem.Id));
             Item result = context.InventoryItems.Single(i => i.Id == baseItem.Id);
+            if (testCase.Material != null)
+            {
+                var prototype = PrototypeYaml.GetItemPrototype("board_" + testCase.Material);
+                Check(result.Prototype == "board_" + testCase.Material && result.Name == (string)prototype.Name &&
+                    result.Icon == prototype.Icon && result.Description == (string)prototype.Description && result.Size == prototype.Size &&
+                    !result.Tags.Any(t => t.Id is "pillar_thin" or "pillar_normal" or "pillar_thick"),
+                    id + " entrega tabua de " + testCase.Material + " com identidade visual e forma corretas");
+                var persisted = Json.Read<Item>(Json.Write(result));
+                Check(persisted.Prototype == result.Prototype && persisted.Name == result.Name && persisted.Level == baseItem.Level,
+                    id + " conserva tabua e nivel apos salvar");
+            }
             Check(result.Tags.All(t => estimate.CraftEstimation.Value.Tags.TryGetValue(t.Id, out int level) && t.Level == level)
                 && result.ModifiableCount == estimate.CraftEstimation.Value.ModifiableCount,
                 id + " craft TCP conclui como previsto pela estimativa");

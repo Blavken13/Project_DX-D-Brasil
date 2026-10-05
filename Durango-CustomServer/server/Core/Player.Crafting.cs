@@ -1154,7 +1154,6 @@ public partial class Player
             return;
         }
         Item item = bi.Value;
-        Prototype prototype = PrototypeYaml.GetItemPrototype(item.Prototype);
         var tags = new Dictionary<string, int>();
         var bySlot = (msg.Materials ?? new Dictionary<string, string[]>()).ToDictionary(p => p.Key,
             p => (p.Value ?? Array.Empty<string>()).Select(FindInventoryItem).Where(i => i.HasValue).Select(i => i.Value).ToArray());
@@ -1169,7 +1168,7 @@ public partial class Player
             {
                 PrototypeId = item.Prototype,
                 Level = item.Level,
-                Name = prototype?.Name,
+                Name = item.Name,
                 Durability = new Vector2(item.Durability?.Get() ?? ItemDurability.Maximum(item.Prototype, item.Level),
                     item.Durability?.Max() ?? ItemDurability.Maximum(item.Prototype, item.Level)),
                 Tags = tags,

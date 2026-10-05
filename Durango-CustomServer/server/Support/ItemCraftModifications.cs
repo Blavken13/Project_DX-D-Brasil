@@ -5,6 +5,7 @@ using Durango.Utils;
 using Messages;
 using Newtonsoft.Json.Linq;
 using Shared.Item;
+using Yaml;
 
 namespace Durango.Online;
 
@@ -129,6 +130,23 @@ public static class ItemCraftModifications
         else if (id == "fabric_waterproof") Increase(ref item, "water_proof");
         else if (id is "board" or "s02_board" or "board_02" or "board_03")
         {
+            // Processing preserves the inventory identity and material properties,
+            // but the resulting shape also needs its own native item prototype.
+            Item source = item;
+            string materialType = new[] { "wood", "bone", "stone", "metal" }
+                .FirstOrDefault(material => Has(source, material));
+            if (materialType != null)
+            {
+                string prototypeId = "board_" + materialType;
+                Prototype prototype = PrototypeYaml.GetItemPrototype(prototypeId, item.Level);
+                if (prototype == null) { error = "O produto desta receita não está disponível."; return false; }
+                item.Prototype = prototypeId;
+                item.Name = prototype.Name;
+                item.Description = prototype.Description;
+                item.Icon = prototype.Icon;
+                item.SubIcon = null;
+                item.Size = prototype.Size;
+            }
             SetTag(ref item, "board_normal", item.Level, "pillar_thin", "pillar_normal", "pillar_thick");
             foreach (string material in new[] { "wood", "bone", "stone", "metal" })
                 if (Has(item, material)) SetTag(ref item, "board_" + material + "_delimiter", item.Level);
