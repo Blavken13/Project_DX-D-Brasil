@@ -169,7 +169,19 @@ internal static class GameplayPolishCheck
             var highEstate = high.DeclareEstate(context.EntityId, OwnerType.Player, cell, highId).Value;
             long expectedCost = EstateExpansionCost.For(OwnerType.Player, 1, high.RegionLevel);
             context.TStone = 0;
+            var mobileLicense = link.Request<GetEstateLicenses, EstateLicenses>(default).UrbanEstate.Value;
+            Check(mobileLicense.Deposit.HasValue && mobileLicense.DepositRunsOutAt.HasValue,
+                "licenca TCP fornece os dois campos exigidos antes do Android enviar expansao");
+            double nextDaily = Math.Truncate(Math.Truncate(Math.Pow(1.4, mobileLicense.Size + 1)) * 50 / (mobileLicense.Size + 1))
+                * (mobileLicense.Size + 1);
+            double remainingDeposit = mobileLicense.Deposit.Value.Item1 -
+                Math.Truncate(Math.Truncate(Math.Pow(1.4, mobileLicense.Size)) * 50 / mobileLicense.Size) * mobileLicense.Size *
+                (Gauge.CurrentTime - mobileLicense.Deposit.Value.Item2) / 86400;
+            Check(nextDaily > 0 && remainingDeposit / nextDaily >= 1,
+                "credito de compatibilidade satisfaz a confirmacao nativa sem saldo na carteira");
             var expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
+            Check(expanded.Deposit.HasValue && expanded.DepositRunsOutAt.HasValue,
+                "resposta da expansao preserva campos necessarios para o proximo toque no Android");
             Check(expanded.Size == 2 && context.TStone == 0 && expectedCost == 0, "ilha alta expande gratuitamente com saldo zero");
             link.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
             Check(context.TStone == 0, "repeticao de expansao nao altera carteira");

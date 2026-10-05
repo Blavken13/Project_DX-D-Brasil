@@ -1500,6 +1500,12 @@ public partial class World
 
     public EstateLicense ToLicense(string estateId, EstateRecord rec)
     {
+        // Android's unmodified EstateGridGroup.ExpandEstate returns without
+        // sending ExpandEstate if either deposit field is absent. PC bypasses
+        // this legacy maintenance dialog. Free estates need protocol credit,
+        // not a payment or a wallet balance; no deposit is persisted or debited.
+        bool legacyDeposit = rec.Type == (int)OwnerType.Player || rec.Type == (int)OwnerType.ClanEstate;
+        double now = Gauge.CurrentTime;
         return new EstateLicense
         {
             EstateId = estateId,
@@ -1507,6 +1513,8 @@ public partial class World
             OwnerId = rec.OwnerId,
             ActivatedAt = rec.ActivatedAt,
             ExpiresAt = rec.ExpiresAt,
+            Deposit = legacyDeposit ? new Pair<int, double>(int.MaxValue, now) : null,
+            DepositRunsOutAt = legacyDeposit ? rec.ExpiresAt ?? now + 365 * 86400.0 : null,
             Size = rec.Size,
             RegionId = rec.RegionId,
             Tile = new Point2(rec.TileX, rec.TileY),
