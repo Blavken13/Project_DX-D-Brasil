@@ -1,8 +1,21 @@
 # Cliente Android Lost Horizon
 
-Nova build de teste: `dist/LostHorizon-alfa-stability3-50215.apk`, versão Android
-`50215` / `5.2.1-losthorizon-alfa-stability3`. A compilação usa esse nome distinto
+Nova build de teste: `dist/LostHorizon-alfa-tutorial-stability4-50216.apk`, versão Android
+`50216` / `5.2.1-losthorizon-alfa-tutorial-stability4`. A compilação usa esse nome distinto
 e preserva `LostHorizon-alfa.apk` e os APKs anteriores.
+
+## Motorola / tutorial — revisão 50216
+
+Mitigação e diagnóstico para o moto g84 5G: perfil de compatibilidade com maior
+dimensão limitada a 960 pixels e 30 FPS; notificações de memória encaminhadas ao
+Unity também no nível RUNNING_LOW; restauração visual de K restrita ao objetivo
+ativo e referências de tipos gerenciados protegidas contra coleta. Os relatórios
+registram os eventos do guia, envio de materiais da jangada, partida e pressão
+de memória. Sinais SIGSEGV/SIGBUS também tentam obter o tombstone quando o Android
+o disponibiliza. O sinal 9 da 50212 pode indicar pressão de memória; o sinal 11 da
+50214 confirma falha nativa, sem identificar a função. A nova build requer teste
+no Motorola; não há confirmação da causa específica. Veja
+`docs/diagnostico-motorola-tutorial-50216.md`.
 
 ## Samsung Android 16 — revisão 50215
 

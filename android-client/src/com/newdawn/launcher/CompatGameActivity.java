@@ -72,8 +72,13 @@ public final class CompatGameActivity extends Activity {
     @Override protected void onStart(){super.onStart();if(player!=null)player.start();}
     @Override protected void onStop(){super.onStop();if(player!=null)player.stop();}
     @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);}
-    @Override public void onLowMemory(){super.onLowMemory();if(player!=null)player.lowMemory();}
-    @Override public void onTrimMemory(int level){super.onTrimMemory(level);if(level==15&&player!=null)player.lowMemory();}
+    @Override public void onLowMemory(){super.onLowMemory();CrashDiagnostics.breadcrumb(this,"ANDROID_LOW_MEMORY");if(player!=null)player.lowMemory();}
+    @Override public void onTrimMemory(int level){super.onTrimMemory(level);
+        if(level==TRIM_MEMORY_RUNNING_LOW||level==TRIM_MEMORY_RUNNING_CRITICAL||level>=TRIM_MEMORY_MODERATE){
+            CrashDiagnostics.breadcrumb(this,"ANDROID_MEMORY_TRIM_"+level);
+            if(player!=null)player.lowMemory();
+        }
+    }
     @Override public void onConfigurationChanged(Configuration config){super.onConfigurationChanged(config);if(player!=null)player.configurationChanged(config);}
     @Override public void onWindowFocusChanged(boolean focused){super.onWindowFocusChanged(focused);if(player!=null)player.windowFocusChanged(focused);}
     @Override public boolean dispatchKeyEvent(KeyEvent event){return event.getAction()==KeyEvent.ACTION_MULTIPLE&&player!=null?player.injectEvent(event):super.dispatchKeyEvent(event);}

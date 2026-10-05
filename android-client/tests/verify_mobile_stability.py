@@ -23,6 +23,11 @@ def main():
     # ARM64 setters store the single-register TimeSpan payload, or the bool byte.
     assert native[0x24e1c68:0x24e1c78] == bytes.fromhex('015800f9c0035fd6015c00f9c0035fd6')
     assert native[0x24e1c38:0x24e1c44] == bytes.fromhex('2800001208600139c0035fd6')
+    tutorial = {'SendPutTutorialBoatMaterials': 0x169e338, 'SendDepartTutorial': 0x169e5d4}
+    resolved = method_addresses({('', 'TutorialIslandSystem'): set(tutorial)})
+    for name, address in tutorial.items(): assert resolved[('TutorialIslandSystem', name)] == address
+    assert native[0x169e338:0x169e348] == bytes.fromhex('eb2bba6de923016df85f02a9f65703a9')
+    assert native[0x169e5d4:0x169e5e4] == bytes.fromhex('f657bda9f44f01a9fd7b02a9fd830091')
     sources = [ANDROID/'src/com/newdawn/launcher'/n for n in ['LegacyServicePolicy.java', 'AnrSummary.java']]
     subprocess.run([str(JAVA/'javac.exe'), '-encoding', 'UTF-8', '-d', str(WORK),
                     *map(str, sources), str(ANDROID/'tests/MobileStabilityTest.java')], check=True)
@@ -39,6 +44,11 @@ def main():
                        b'AUTH_URL_READ_BEGIN', b'AUTH_URL_READ_RETURN', b'AUTH_URL_CONVERT_BEGIN',
                        b'AUTH_TOKEN_FIELD_BEGIN', b'AUTH_TIMEOUTS_BEGIN', b'CALLBACK_ROUTE_BEGIN']:
             assert marker in bridge
+        tutorial_bridge = apk.read('lib/arm64-v8a/libbr.so')
+        for marker in [b'TUTORIAL_RAFT_MATERIALS_SEND', b'TUTORIAL_RAFT_MATERIALS_RETURN',
+                       b'TUTORIAL_DEPART_SEND', b'TUTORIAL_DEPART_RETURN']:
+            assert marker in tutorial_bridge, marker
+        assert b'ANDROID_LOW_MEMORY' in dex and b'ANDROID_MEMORY_TRIM_' in dex
     print('PASS: original metadata method addresses, ARM64 timeout ABI/callback prologue and signed APK stability guards.')
 
 if __name__ == '__main__': main()

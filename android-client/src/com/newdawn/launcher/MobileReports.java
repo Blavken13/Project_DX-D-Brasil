@@ -166,7 +166,8 @@ final class MobileReports {
                     confirmed=true;int reason=exit.getReason();String type=reason==3?"low_memory":reason==4?"java_crash":reason==5?"native_crash":reason==6?"anr":reason==2?"signal":"";
                     if(!type.isEmpty()) {
                         String trace="", anrFrames="";
-                        if(visible&&Build.VERSION.SDK_INT>=31&&reason==5)try(InputStream in=exit.getTraceInputStream()) {
+                        if(visible&&Build.VERSION.SDK_INT>=31&&(reason==5 || (reason==2 &&
+                            (exit.getStatus()==android.system.OsConstants.SIGSEGV || exit.getStatus()==android.system.OsConstants.SIGBUS))))try(InputStream in=exit.getTraceInputStream()) {
                             if(in!=null)trace=TombstoneSummary.read(new FilterInputStream(in){@Override public int read(byte[] b,int off,int len)throws IOException{if(!visible)throw new IOException();return super.read(b,off,len);}});
                         }catch(Exception ignored){}
                         if(visible&&reason==6)try(InputStream in=exit.getTraceInputStream()) {

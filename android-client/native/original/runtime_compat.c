@@ -255,7 +255,7 @@ static void apply_profile(void) {
     void (*fps)(int)=resolve("UnityEngine.Application::set_targetFrameRate(System.Int32)");
     if(fps){fps(30);br_stage("SAFE_FPS_REQUESTED");}
     if(width&&height&&resolution){int w=width(),h=height();
-        if(w>0&&h>0){int longest=w>h?w:h;if(longest>1280){resolution(w*1280/longest,h*1280/longest,1,30);br_stage("SAFE_RESOLUTION_APPLIED");}}}
+        if(w>0&&h>0){int longest=w>h?w:h;if(longest>960){resolution(w*960/longest,h*960/longest,1,30);br_stage("SAFE_RESOLUTION_APPLIED");}}}
 }
 static void title(void *self,const void *m) {
     br_stage(disable_title_video?"TITLE_VIDEO_DISABLED":"TITLE_VIDEO");

@@ -6,6 +6,7 @@
 #include <android/log.h>
 #include <dlfcn.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
@@ -41,12 +42,16 @@ static uint32_t (*handle_new)(void *,uint8_t);
 static void *(*handle_target)(uint32_t);
 static void (*handle_free)(uint32_t);
 static void (*original_update)(void *,const void *);
+static void (*original_fill)(void *,const void *);
+static void (*original_depart)(void *,void *,const void *);
 static void *interaction_type, *game_type, *quest_type, *renderer_type;
 static void *object_klass, *manager_type;
 static unsigned ticks;
 static int resolved, disabled;
 static uint32_t spawned_handle;
 static uint32_t boat_handle;
+static uint32_t type_handles[5];
+static void *reference(void *,const char *);
 
 static void *klass(const char *ns,const char *name) {
     size_t count=0; const void **list=assemblies(domain_get(),&count);
@@ -103,7 +108,38 @@ static int resolve(void) {
     interaction_type=type_object(class_type(ik)); game_type=type_object(class_type(gk));
     quest_type=type_object(class_type(qk)); renderer_type=type_object(class_type(rk));
     manager_type=type_object(class_type(mk));
-    return interaction_type&&game_type&&quest_type&&renderer_type&&manager_type;
+    if(!(interaction_type&&game_type&&quest_type&&renderer_type&&manager_type))return 0;
+    /* Type objects are managed references retained by this native module.
+     * Root them explicitly across collections during terrain/scene changes. */
+    void *types[]={interaction_type,game_type,quest_type,renderer_type,manager_type};
+    for(int i=0;i<5;i++)if(!type_handles[i])type_handles[i]=handle_new(types[i],0);
+    return 1;
+}
+static void trace_guide(void *guide) {
+    static char previous[128];
+    void *event=reference(guide,"_currentEvent"),*name=reference(event,"Name");
+    if(!name)return;
+    int length=*(int *)((char *)name+16);
+    if(length<1||length>110)return;
+    const uint16_t *text=(uint16_t *)((char *)name+20);
+    char stage[128]="GUIDE_";
+    for(int i=0;i<length;i++) {
+        unsigned c=text[i];if(c>='a'&&c<='z')c-=32;
+        if(!((c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'))return;
+        stage[6+i]=(char)c;
+    }
+    stage[6+length]=0;
+    if(strcmp(previous,stage)){snprintf(previous,sizeof(previous),"%s",stage);br_stage(stage);}
+}
+static void fill(void *self,const void *method_info) {
+    br_stage("TUTORIAL_RAFT_MATERIALS_SEND");
+    original_fill(self,method_info);
+    br_stage("TUTORIAL_RAFT_MATERIALS_RETURN");
+}
+static void depart(void *self,void *boat,const void *method_info) {
+    br_stage("TUTORIAL_DEPART_SEND");
+    original_depart(self,boat,method_info);
+    br_stage("TUTORIAL_DEPART_RETURN");
 }
 static void *reference(void *obj,const char *name) {
     if(!obj)return NULL; void *f=field(obj,name),*value=NULL;
@@ -255,6 +291,10 @@ static void restore(void *guide) {
         handle_free(spawned_handle);spawned_handle=0;
         if(boat_handle) {handle_free(boat_handle);boat_handle=0;}
     }
+    void *event=reference(guide,"_currentEvent"),*name=reference(event,"Name");
+    if(!equals(name,"trigger_arrive_shipyard")&&!equals(name,"talk_npc_raft_ancora")&&!raft_todo_active())return;
+    /* No global NPC scans or prefab changes after the raft conversation.
+     * In particular, leave scene departure and teardown to the original game. */
     void *args[]={interaction_type};
     Array *npcs=call(object_klass,NULL,"FindObjectsOfType",1,"System.Type",args);
     if(!npcs)return;
@@ -306,7 +346,7 @@ static void restore(void *guide) {
 static void update(void *self,const void *method_info) {
     if(!ticks)LOG("Update do tutorial ativo na thread Unity");
     original_update(self,method_info);
-    if(++ticks%90==0)restore(self);
+    if(++ticks%90==0){trace_guide(self);restore(self);}
 }
 int br_install_raft_k(void *library,uintptr_t base) {
 #define API(var,name) do { *(void **)(&var)=dlsym(library,"il2cpp_" name); if(!var)return 0; } while(0)
@@ -324,5 +364,11 @@ int br_install_raft_k(void *library,uintptr_t base) {
     const unsigned char expected[16]={0xf6,0x57,0xbd,0xa9,0xf4,0x4f,0x01,0xa9,0xfd,0x7b,0x02,0xa9,0xfd,0x83,0x00,0x91};
     if(memcmp(entry,expected,16)) {LOG("Cliente inesperado; restauracao nao instalada");return 0;}
     if (!br_hook_install(entry,expected,update,(void **)&original_update)) return 0;
+    const unsigned char fill_bytes[16]={0xeb,0x2b,0xba,0x6d,0xe9,0x23,0x01,0x6d,
+        0xf8,0x5f,0x02,0xa9,0xf6,0x57,0x03,0xa9};
+    if(!br_hook_install((void *)(base+0x169e338),fill_bytes,fill,(void **)&original_fill))
+        br_stage("TUTORIAL_FILL_TRACE_UNAVAILABLE");
+    if(!br_hook_install((void *)(base+0x169e5d4),expected,depart,(void **)&original_depart))
+        br_stage("TUTORIAL_DEPART_TRACE_UNAVAILABLE");
     LOG("Restauracao visual da K instalada; motor original preservado");return 1;
 }

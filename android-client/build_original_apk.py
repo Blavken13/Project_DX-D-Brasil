@@ -18,9 +18,9 @@ SOURCE = PROJECT / 'Durango original'
 WORK = ROOT / 'work/original-nexon'
 CLIENT = WORK / 'client'
 DECODED = WORK / 'decoded'
-VERSION_CODE = 50215
-VERSION_NAME = '5.2.1-losthorizon-alfa-stability3'
-OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa-stability3-50215.apk')
+VERSION_CODE = 50216
+VERSION_NAME = '5.2.1-losthorizon-alfa-tutorial-stability4'
+OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa-tutorial-stability4-50216.apk')
 if Path(OUTPUT).name != OUTPUT or not OUTPUT.endswith('.apk'):
     raise ValueError('LH_APK_OUTPUT must be an APK filename')
 ANDROID_JAR = shared.SDK / 'platforms/android-36/android.jar'
@@ -220,6 +220,9 @@ def verify():
                                 'runtime_page_size': True, 'reports_private': True,
                                 'legacy_unity_16kb_requires_android_compat_mode': True},
               'stability': {'version_code': VERSION_CODE, 'version_name': VERSION_NAME,
+                            'tutorial_gameplay_breadcrumbs': True,
+                            'raft_restoration_scoped_to_active_objective': True,
+                            'compatibility_max_resolution_edge': 960,
                             'service_bind_logcat_markers': True,
                             'startup_auth_operation_breadcrumbs': True,
                             'auth_diagnostic_request_limit': 4,
