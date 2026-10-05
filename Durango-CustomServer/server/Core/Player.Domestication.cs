@@ -411,11 +411,11 @@ public partial class Player
         var eatenIds = new List<string>();
         foreach (string id in msg.ItemIds ?? Array.Empty<string>())
         {
+            if (string.IsNullOrEmpty(id) || eatenIds.Contains(id)) continue;
             int idx = _context.InventoryItems.FindIndex(it => it.Id == id);
             if (idx < 0) continue;
             Item item = _context.InventoryItems[idx];
-            if (!DomesticationTables.IsPetFood(item.Prototype)) continue;
-            if (info.EatableTags is { Length: > 0 } && !ItemHasAnyTag(item, info.EatableTags)) continue;
+            if (!PetFoodRules.CanEat(info.PetEntityType, item, domestication: true)) continue;
             eaten.Add(item);
             eatenIds.Add(item.Id);
         }

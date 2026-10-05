@@ -50,8 +50,8 @@
       "Enabled": true,
       "Scale": 1
     },
-    "SpawnScale": 1.5,
-    "MaxAnimalsPerRegion": 120
+    "MaxAnimalsPerRegion": 120,
+    "TargetAnimalsPerRegion": 40
   },
   "Exp": {
     "KillBase": 4,

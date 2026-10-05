@@ -120,16 +120,6 @@ public static class Cheats
         }
         // อาหารสัตว์ — ฝั่งเกมคัดไอเทมที่ป้อนสัตว์ได้จากหมวดนี้ (client/Durango.UI/PetUtil.cs:128-133)
         // ไม่แนบ ⇒ หน้าต่าง "เลือกอาหาร" ว่างเปล่าทั้งที่มีอาหารอยู่ในกระเป๋า
-        PerformanceYaml.PetFood petFood = PerformanceYaml.GetPetFood(prototypeId);
-        if (petFood != null)
-        {
-            list2.Add(new Performance
-            {
-                Id = "pet_food",
-                Nums = new Dictionary<string, float> { { "vigor", petFood.Vigor } }
-            });
-        }
-
         // บังเหียน — ถ้าไม่มี pet_entity_type ฝั่งเกมไม่ถือว่าไอเทมนี้ "เป็นสัตว์"
         // (client/Durango.Logic.Item/Util.cs:298-306) ⇒ ร้านค้าไม่ยิง GetPreviewPet มาเลย
         PerformanceYaml.Rein rein = PerformanceYaml.GetRein(prototypeId);

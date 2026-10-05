@@ -13,12 +13,6 @@ public static class AnimalTuning
     private static JObject _animals;
 
     /// <summary>
-    /// 1.5 = 50% mais animais que os herds-base confirmados.
-    /// </summary>
-    public static double SpawnScale =>
-        Math.Max(1.0, GetDouble("SpawnScale", 1.5));
-
-    /// <summary>
     /// Teto de animais selvagens mantidos por regiao.
     /// </summary>
     public static int MaxAnimalsPerRegion =>
@@ -26,6 +20,9 @@ public static class AnimalTuning
             (int)Math.Round(GetDouble("MaxAnimalsPerRegion", 120.0)),
             1,
             500);
+
+    public static int TargetAnimalsPerRegion => Math.Min(MaxAnimalsPerRegion,
+        Math.Clamp((int)Math.Round(GetDouble("TargetAnimalsPerRegion", 40)), 1, 500));
 
     public static void Reload() => _animals = null;
 

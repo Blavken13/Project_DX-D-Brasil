@@ -131,6 +131,8 @@ internal static class EconomyProtocolCheck
             Receive<SayInExclusiveChannel>();
             Receive<Costs>(); Receive<AllySlots>(); Receive<ClanResearchList>(); Receive<AvailableClanResearch>(); Receive<Messages.ClanResearch>(); Receive<Emigrated>();
             Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
+            Receive<SkillNeeded>();
+            Receive<FeedingSuccess>();
             Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
             Receive<Messages.Region>(); Receive<Routes>();
             Receive<Archipelago>(); Receive<Messages.Pet>(); Receive<AppearPet>(); Receive<DisappearPet>(); Receive<PetsInfo>();

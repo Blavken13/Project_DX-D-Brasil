@@ -335,6 +335,7 @@ public partial class Player
             int idx = _context.InventoryItems.FindIndex(it => it.Id == id);
             if (idx < 0) continue;
             Item item = _context.InventoryItems[idx];
+            if (!PetFoodRules.CanEat(entry.Pet.EntityType, item)) continue;
             float vigor = PetTables.FoodVigor(item.Prototype, item.Level);
             if (vigor <= 0f) continue;
             CageTables.FoodInfo food = CageTables.FoodOf(item.Prototype, item.Level);

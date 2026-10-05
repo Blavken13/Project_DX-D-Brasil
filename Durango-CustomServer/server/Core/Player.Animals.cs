@@ -838,6 +838,7 @@ public partial class Player
             int idx = _context.InventoryItems.FindIndex(it => it.Id == id);
             if (idx < 0) continue;
             Item item = _context.InventoryItems[idx];
+            if (!PetFoodRules.CanEat(entry.Pet.EntityType, item)) continue;
             float vigor = PetTables.FoodVigor(item.Prototype, item.Level);
             if (vigor <= 0f) continue;                  // ไม่ใช่อาหารสัตว์ — ไม่กิน ไม่หาย
             _context.InventoryItems.RemoveAt(idx);
@@ -1675,11 +1676,12 @@ public partial class Player
     /// แยกจาก Yaml.Pets (Support/YamlGameplay.cs) เพราะคลาสนั้นไม่มีช่อง rein_id / available_ranks
     /// ที่ระบบนี้ต้องใช้ และไฟล์นั้นอยู่นอกขอบเขตงาน — จึงอ่านไฟล์เดียวกันซ้ำเป็นของตัวเอง
     /// </summary>
-    private static class PetTables
+    internal static class PetTables
     {
         // ── pets_for_client.json ────────────────────────────────────────────────────
         public class PetDef
         {
+            [JsonProperty("type")] public string Kind { get; set; }
             [JsonProperty("name")] public Gettext NameText { get; set; }
             [JsonProperty("type_name")] public string TypeName { get; set; }
             [JsonProperty("rein_id")] public string ReinId { get; set; }
@@ -1866,11 +1868,11 @@ public partial class Player
             return def == null ? null : Animals.GetValueOrDefault(def.VehicleEntityType);
         }
 
-        /// <summary>อาหารที่สัตว์ชนิดนี้กิน — animal.json → preferred_food_tag (ว่าง = กินได้ทุกอย่างที่เป็น pet_food)</summary>
+        /// <summary>Diet from pets_for_client.json; food preferences do not restrict the menu.</summary>
         public static string[] EatableTagsOf(ushort petEntityType)
         {
-            string tag = AnimalOf(petEntityType)?.PreferredFoodTag;
-            return string.IsNullOrEmpty(tag) ? Array.Empty<string>() : new[] { tag };
+            // preferred_food_tag describes a favorite, not an exclusive diet.
+            return PetFoodRules.DietTags(PetOf(petEntityType)?.Kind);
         }
 
         /// <summary>แรงก์ที่สัตว์ชนิดนี้เป็นได้ — pets_for_client.json → available_ranks (ตัวเลข 10-14 ตรงกับ PetRank)</summary>

@@ -130,6 +130,18 @@ internal static class Program
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
                     return WorldInteractionCheck.Run(dataDir);
+                case "--fauna-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return FaunaLootCheck.Run(dataDir);
+                case "--pet-feeding-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return PetFeedingCheck.Run(dataDir);
+                case "--estate-return-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return EstateReturnCheck.Run(dataDir);
                 case "--gameplay-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

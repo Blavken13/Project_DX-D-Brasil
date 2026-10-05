@@ -100,6 +100,7 @@ public partial class Player
         };
         // Bag ประกาศเป็น readonly List ใน PetStore.Entry ⇒ เติมเข้าไป ไม่ใช่แทนที่ทั้งลิสต์
         if (saved.Bag != null) entry.Bag.AddRange(saved.Bag);
+        PetFoodRules.RepairPet(ref entry.Pet);
 
         // ── ธงที่ต้องรีเซ็ต: หลังรีสตาร์ตไม่มีสัตว์ตัวไหนอยู่ในโลกแล้ว ──────────────────
         // ถ้าปล่อย IsSpawned = true ค้างไว้ ผู้เล่นจะเรียกสัตว์ตัวอื่นออกมาแล้ว

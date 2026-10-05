@@ -76,11 +76,13 @@ public partial class Player
         _mailStore?.Recover(context);
         _economy?.Recover(context);
         IsLocalPlayer = isLocalPlayer;
-        if (_context.AppearPlayer.Move.Movements == null || !IsLocalPlayer)
+        if (_context.PendingEstateArrival != null || _context.AppearPlayer.Move.Movements == null || !IsLocalPlayer)
         {
+            bool estateArrival = _context.PendingEstateArrival != null;
             _context.AppearPlayer.Move.Movements = new Movement[1];
             _context.AppearPlayer.Move.Movements[0].Path = new Location[1];
             _context.AppearPlayer.Move.Movements[0].Path[0].Position = GetEntryPosition();
+            if (estateArrival && !string.IsNullOrEmpty(_context.Path)) _context.Save();
         }
         _centerX = _world.NumChunksX / 2;
         _centerY = _world.NumChunksY / 2;
@@ -592,7 +594,8 @@ public partial class Player
 
     private WorldPosition GetEntryPosition()
     {
-        return new WorldPosition(_world.EntryPoint.x * 200, _world.EntryPoint.y * 200);
+        Point2 tile = ConsumeEstateArrival();
+        return new WorldPosition(tile.x * 200, tile.y * 200);
     }
 
     private void World_ArtifactAppeared(AppearArtifact artifact)

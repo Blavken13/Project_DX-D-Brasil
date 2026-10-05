@@ -86,6 +86,7 @@ internal static class WorldInteractionCheck
             var craftContext = Player(root, "flower-crafter");
             using (var craftLink = new EconomyProtocolCheck.Link(craftContext, savedFlowerWorld, null, true))
             {
+                ((SkillCategorySave)Call(craftLink.Player, "CategoryState", (int)Shared.Skill.Category.Gathering)).Level = 35;
                 var lilac = savedFlowers.AddedNatural.First(n => n.EntityType == 11020);
                 var lilacTile = new Point2(lilac.X, lilac.Y);
                 Place(craftContext, lilacTile);

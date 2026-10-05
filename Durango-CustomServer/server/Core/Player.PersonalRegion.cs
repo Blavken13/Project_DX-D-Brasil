@@ -224,6 +224,18 @@ public partial class Player
             return;
         }
 
+        World destination = _world.Registry?.GetOrCreate(dest) ?? _world;
+        OwnerType estateType = msg.OwnerType == OwnerType.PersonalPlayer && string.IsNullOrEmpty(_context.PersonalRegionId)
+            ? OwnerType.Player : msg.OwnerType;
+        string estateId = estateType is OwnerType.Player or OwnerType.PersonalPlayer
+            ? OwnedEstateId(destination, estateType) : null;
+        if (string.Equals(dest, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
+        {
+            Point2 tile = destination.TryEstateArrivalTile(estateId, out Point2 ownedTile) ? ownedTile : destination.EntryPoint;
+            BeginWarp(tile, seq, estateId == null ? "Retornar ao bote" : "Retornar ao domínio");
+            return;
+        }
+
         const float duration = 1f; // Valor temporário do Alpha/Beta.
         Send(new Messages.Timer { Duration = duration }, seq);
         Console.WriteLine($"[assentamento] {Short(EntityId)} retornando para {dest}");
@@ -232,6 +244,7 @@ public partial class Player
         {
             try
             {
+                _context.PendingEstateArrival = estateId == null ? null : new EstateArrival { RegionId = dest, EstateId = estateId };
                 _context.RegionId = dest;
                 _context.AppearPlayer.Move.Movements = null;
                 if (!string.IsNullOrEmpty(_context.Path))
@@ -372,6 +385,10 @@ public partial class Player
                 largestUrban = Math.Max(largestUrban, Math.Max(kv.Value.Size, kv.Value.LargestSize));
             }
         }
+        personal ??= FindOwnedEstateLicense(OwnerType.PersonalPlayer);
+        urban ??= FindOwnedEstateLicense(OwnerType.Player);
+        largestPersonal = Math.Max(largestPersonal, personal?.Size ?? 0);
+        largestUrban = Math.Max(largestUrban, urban?.Size ?? 0);
         return new EstateLicenses
         {
             PersonalEstate = personal,
@@ -784,6 +801,9 @@ public partial class Player
                 return _world.ToLicense(kv.Key, kv.Value);
             }
         }
+        World destination = WorldForOwnedEstate(type);
+        string estateId = OwnedEstateId(destination, type);
+        if (estateId != null) return destination.ToLicense(estateId, destination.GetEstate(estateId));
         return null;
     }
 }

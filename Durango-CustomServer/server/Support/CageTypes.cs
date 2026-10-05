@@ -66,7 +66,12 @@ public static class CageTypes
         foreach (string key in keys)
         {
             AppearArtifact artifact = artifacts[key];
-            if (artifact.States.Cage is not JObject node) continue;
+            if (artifact.States.Cage is not JObject node)
+            {
+                PetFoodRules.RepairCages(ref artifact.States);
+                artifacts[key] = artifact;
+                continue;
+            }
             try
             {
                 // ⚠️ ต้องใช้ serializer ชุดเดียวกับที่เขียนไฟล์ (Json.Setting)
@@ -77,6 +82,7 @@ public static class CageTypes
                 artifact.States.Cage = node["Tasks"] != null
                     ? node.ToObject<GrowCage>(serializer)
                     : node.ToObject<Messages.Cage>(serializer);
+                PetFoodRules.RepairCages(ref artifact.States);
                 artifacts[key] = artifact;
                 fixedCount++;
             }

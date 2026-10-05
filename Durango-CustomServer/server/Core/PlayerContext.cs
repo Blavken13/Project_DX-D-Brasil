@@ -79,7 +79,10 @@ public class PlayerContext
     public string OwnerKey;
 
     [JsonProperty("region_id")]
-    public string RegionId;
+    public string RegionId;
+
+    [JsonProperty("pending_estate_arrival", NullValueHandling = NullValueHandling.Ignore)]
+    public EstateArrival PendingEstateArrival;
 
     /// <summary>
     /// เกาะส่วนตัวของผู้เล่นคนนี้ — id โลกใน WorldRegistry (เช่น personal_&lt;entityIdShort&gt;)
@@ -517,6 +520,7 @@ internal static class ItemExtRepair
     {
         ItemDurability.Normalize(items);
         ItemCraftModifications.Normalize(items);
+        PetFoodRules.Normalize(items);
         if (items == null || items.Count == 0) return;
         int repaired = 0;
         int dropped = 0;
@@ -549,6 +553,7 @@ internal static class ItemExtRepair
     public static Item Fix(Item item, string where)
     {
         ItemDurability.Normalize(ref item);
+        PetFoodRules.RepairItem(ref item);
         if (item.Ext is not JObject node) return item;
         object rebuilt = Rebuild(node);
         Console.WriteLine(rebuilt != null

@@ -190,6 +190,9 @@ public partial class Player
         return 1;
     }
 
+    private int GatheringSkillLevel => Math.Max(1, CategoryState((int)Shared.Skill.Category.Gathering).Level);
+    private int ButcherySkillLevel => Math.Max(1, CategoryState((int)Shared.Skill.Category.Butchery).Level);
+
     /// <summary>
     /// สร้าง <see cref="Collectible"/> ของของธรรมชาติหนึ่งชิ้น + จำไว้ใช้ตอน Collect
     ///
@@ -212,7 +215,9 @@ public partial class Player
 
         return CollectibleTable.Build(entityId, entityType,
                                       _world.HarvestedGenerators(HarvestKeyOf(entityId, tile)),
-                                      animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel(entityType));
+                                      animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel(entityType),
+                                      itemLevelLimit: animalLevel > 0 ? ButcherySkillLevel : GatheringSkillLevel,
+                                      unlockedRewards: UnlockedCollectibleRewards());
     }
 
     /// <summary>
@@ -238,7 +243,9 @@ public partial class Player
 
         Send(CollectibleTable.Build(msg.EntityId, entityType,
                                     _world.HarvestedGenerators(HarvestKeyOf(msg.EntityId, msg.Tile)),
-                                    animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel(entityType)), seq);
+                                    animalLevel, UnlockedCollectibleCategories(), animalLevel > 0 ? animalLevel : CurrentGatheringLevel(entityType),
+                                    itemLevelLimit: animalLevel > 0 ? ButcherySkillLevel : GatheringSkillLevel,
+                                    unlockedRewards: UnlockedCollectibleRewards()), seq);
     }
 
     // ── ตอน Collect: ตรวจ → ตอบ Timer → ครบเวลาส่ง Collected ────────────────────────
@@ -269,6 +276,12 @@ public partial class Player
             return;
         }
 
+        if (carcass == null && AnimalTypes.Get(entityType) != null)
+        {
+            RejectCollect(seq, "Este cadaver nao esta mais disponivel.", msg);
+            return;
+        }
+
         // ระยะ: client เดินไปถึงก่อนยิงอยู่แล้ว ตรงนี้แค่กันการยิงข้ามแมพ
         if (!IsWithinCollectRange(carcass?.Tile ?? msg.Tile))
         {
@@ -283,7 +296,8 @@ public partial class Player
             return;
         }
 
-        spec = CollectibleTable.AtLevel(spec, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType));
+        int resourceLevel = carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType);
+        spec = CollectibleTable.AtLevel(spec, resourceLevel);
 
         // [7 ก.ย. 2026] ปลดสกิลของหมวดนี้แล้วหรือยัง
         //
@@ -291,10 +305,22 @@ public partial class Player
         // พร้อมปุ่มเปิดหน้าสกิลไปที่โหนดนั้น (client/Durango.Logic/SkillSystem.cs:151-165)
         // ⇒ ผู้เล่นรู้ทันทีว่าต้องไปเรียนอะไร แทนที่จะกดแล้วเงียบ
         string genCategory = CollectibleTable.CategoryOfGenerator(spec);
-        if (genCategory != null && !UnlockedCollectibleCategories().ContainsKey(genCategory))
+        if (carcass != null && spec.RequiredCollectibleReward != null
+            ? !UnlockedCollectibleRewards().Contains(spec.RequiredCollectibleReward)
+            : genCategory != null && !UnlockedCollectibleCategories().ContainsKey(genCategory))
         {
             Console.WriteLine($"[gather] {ShortId()} ยังไม่ได้ปลดหมวด '{genCategory}' (gen={spec.Id})");
-            Send(BuildSkillNeededFor(genCategory), seq);
+            Send(BuildSkillNeededFor(genCategory, carcass != null ? spec.RequiredCollectibleReward : null), seq);
+            return;
+        }
+
+        // O recurso conserva tempo, ferramentas e quantidade compartilhada da ilha.
+        // Apenas o item recebido usa o limite da habilidade; Collect.Level nao e confiavel.
+        int itemLevelCap = Math.Min(resourceLevel, carcass != null ? ButcherySkillLevel : GatheringSkillLevel);
+        int itemLevel = CollectibleTable.ClampLevel(spec, itemLevelCap);
+        if (itemLevel > itemLevelCap)
+        {
+            RejectCollect(seq, $"Este item exige nivel {itemLevel}; o limite desta coleta e {itemLevelCap}.", msg);
             return;
         }
 
@@ -383,7 +409,7 @@ public partial class Player
         var items = new List<Item>();
         for (int i = 0; i < itemCount; i++)
         {
-            Item? item = Cheats.MakeItem(spec.PrototypeId, spec.Level);
+            Item? item = Cheats.MakeItem(spec.PrototypeId, itemLevel);
             if (!item.HasValue) continue;
             Item value = item.Value;
             // ผูกที่มาไว้กับตัวไอเทม — เกมใช้ตอนนับภารกิจ/สารานุกรม (Messages/Item.cs:53-55)
@@ -407,10 +433,8 @@ public partial class Player
             ActionInfo = new ActionInfo
             {
                 ActionLevel = spec.Level,
-                PotentialLevel = spec.Level,
-                // ยังไม่มีระบบสกิล/ความสามารถจริง (Core/Player.cs:283-294 ตอบ GetSkills เป็นชุดว่าง)
-                // ⇒ ส่ง Invalid ตามที่ ActionInfo.Unpack รองรับ แล้วให้สำเร็จ 100%
-                RelatedCategory = Shared.Skill.Category.Invalid,
+                PotentialLevel = itemLevel,
+                RelatedCategory = carcass != null ? Shared.Skill.Category.Butchery : Shared.Skill.Category.Gathering,
                 RelatedAbility = Shared.Ability.Derived.Invalid,
                 SuccessRatio = 1f
             },
@@ -730,6 +754,7 @@ internal static class CollectibleTable
         public float Effort;
         public float Duration;
         public Dictionary<string, int> ToolRequirements;
+        public string RequiredCollectibleReward;
     }
 
     // ── สูตรจาก data/assets/constants.json (ข้อมูลจริงล้วน) ──────────────────────────
@@ -765,7 +790,8 @@ internal static class CollectibleTable
     /// </param>
     public static Collectible Build(string entityId, ushort entityType,
                                     IReadOnlyList<string> harvested = null, int animalLevel = 0,
-                                    Dictionary<string, int> unlockedCategories = null, int resourceLevel = 0)
+                                    Dictionary<string, int> unlockedCategories = null, int resourceLevel = 0,
+                                    int itemLevelLimit = 0, IReadOnlySet<string> unlockedRewards = null)
     {
         if (!_cache.TryGetValue(entityType, out Collectible template))
         {
@@ -783,7 +809,14 @@ internal static class CollectibleTable
             for (int i = 0; i < template.Generators.Length; i++)
             {
                 GeneratorSpec live = i < baseSpecs.Count ? AtLevel(baseSpecs[i], requestedLevel) : null;
-                leveled[i] = live != null ? ToMessage(live) : template.Generators[i];
+                Generator gen = live != null ? ToMessage(live) : template.Generators[i];
+                if (live != null && itemLevelLimit > 0)
+                {
+                    int cap = Math.Min(requestedLevel, itemLevelLimit);
+                    gen.Level = ClampLevel(live, cap);
+                    if (gen.Level > cap) gen.Enabled = false;
+                }
+                leveled[i] = gen;
             }
             template.Generators = leveled;
         }
@@ -820,7 +853,12 @@ internal static class CollectibleTable
                 Generator gen = template.Generators[i];
                 string category = i < specs.Count ? CategoryOfGenerator(specs[i]) : null;
                 // ไม่มีหมวดคุม = ของพื้นฐาน เก็บได้เสมอ (กิ่งไม้/ใบไม้/หญ้า)
-                if (category != null && !unlockedCategories.ContainsKey(category)) gen.Enabled = false;
+                string reward = animalLevel > 0 && i < specs.Count ? specs[i].RequiredCollectibleReward : null;
+                if (reward != null && unlockedRewards != null)
+                {
+                    if (!unlockedRewards.Contains(reward)) gen.Enabled = false;
+                }
+                else if (category != null && !unlockedCategories.ContainsKey(category)) gen.Enabled = false;
                 marked[i] = gen;
             }
             template.Generators = marked;
@@ -884,6 +922,8 @@ internal static class CollectibleTable
     public static string CategoryOfGenerator(GeneratorSpec spec)
     {
         if (spec == null) return null;
+        if (spec.RequiredCollectibleReward != null &&
+            SkillDataStore.Rewards.TryGetValue(spec.RequiredCollectibleReward, out var reward)) return reward.Category;
         if (_categoryOfPrototype.TryGetValue(spec.PrototypeId, out string cached)) return FishingCategory(spec, cached);
 
         string found = null;
@@ -967,12 +1007,6 @@ internal static class CollectibleTable
         Enabled = true
     };
 
-    /// <summary>
-    /// ของที่แล่ได้จากซากสัตว์ทุกชนิด — **ค่าของเรา** (ดูเหตุผลเต็มใน SpecsFor)
-    /// เรียงตามที่ผู้เล่นน่าจะอยากได้ก่อน: เนื้อ → หนัง → กระดูก → ไขมัน
-    /// </summary>
-    private static readonly string[] CarcassGenerators = { "meat", "leather_raw", "bone_leg", "fat" };
-
     private static readonly Dictionary<ushort, List<GeneratorSpec>> _specCache = new();
 
     private static List<GeneratorSpec> SpecsFor(ushort entityType)
@@ -997,12 +1031,20 @@ internal static class CollectibleTable
             // ไม่ได้คิดขึ้นเอง: คอมเมนต์ของ CollectibleIdOf ระบุไว้ตั้งแต่แรกว่าปลายทางควรเป็น
             // "meat / leather_raw / bone_leg / fat" และทั้งสี่มีอยู่จริงใน item/prototype_data.json
             // (ตรวจแล้ว) ⇒ ถ้าสูตรให้ generator อะไรมาก็ใช้ของจริงก่อน แล้วเติมที่ขาด
-            if (AnimalTypes.Get(entityType) != null)
+            AnimalTypes.Info animal = AnimalTypes.Get(entityType);
+            if (animal != null)
             {
-                foreach (string id in CarcassGenerators)
+                var nativeIds = new List<string>(ids);
+                foreach (string id in AnimalLoot.For(animal))
                 {
+                    // Native skin/leg variants replace the family default instead of
+                    // giving both generic leather/bones and their specialized variant.
+                    if (id.StartsWith("leather_raw", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("leather_raw", StringComparison.Ordinal))) continue;
+                    if (id.StartsWith("bone_leg", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("bone_leg", StringComparison.Ordinal))) continue;
+                    if (id.StartsWith("bone_head", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("bone_head", StringComparison.Ordinal))) continue;
                     if (!ids.Contains(id)) ids.Add(id);
                 }
+                ids = ids.OrderBy(id => id == "meat" ? 0 : 1).ToList();
             }
 
             foreach (string prototypeId in ids)
@@ -1010,6 +1052,8 @@ internal static class CollectibleTable
                 // ลำดับในลิสต์ = ความสำคัญ (ตัวแรกคือของหลักที่เกมไฮไลต์เป็น CriticalGenerator)
                 // ส่งเข้าไปให้ MakeSpec คิดจำนวนชิ้น — ของหลักได้เยอะกว่าของรอง
                 GeneratorSpec spec = MakeSpec(collectibleId, prototypeId, list.Count);
+                if (spec != null && animal != null)
+                    spec.RequiredCollectibleReward = spec.Id == "meat_stamina" ? "meat_03" : AnimalLoot.RewardFor(prototypeId);
                 if (spec != null) list.Add(spec);
             }
         }
@@ -1166,7 +1210,8 @@ internal static class CollectibleTable
             Order = spec.Order,
             Effort = effort,
             Duration = Duration(effort),
-            ToolRequirements = proto != null ? ToolsFor(proto, level, spec.CollectibleId) : spec.ToolRequirements
+            ToolRequirements = proto != null ? ToolsFor(proto, level, spec.CollectibleId) : spec.ToolRequirements,
+            RequiredCollectibleReward = spec.RequiredCollectibleReward
         };
     }
 

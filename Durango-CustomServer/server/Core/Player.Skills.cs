@@ -1489,7 +1489,20 @@ public partial class Player
     /// เลือกโหนด "ระดับต่ำสุดที่ยังไม่มี" เพราะเป็นตัวที่ผู้เล่นควรไปเรียนต่อไป
     /// ⚠️ ต้องส่ง SubId/Level ให้ตรงกับตารางจริง ไม่งั้น FindSkill คืน null แล้วป๊อปอัพไม่ขึ้นเลย
     /// </summary>
-    private SkillNeeded BuildSkillNeededFor(string collectibleCategory)
+    public HashSet<string> UnlockedCollectibleRewards()
+    {
+        var unlocked = new HashSet<string>(StringComparer.Ordinal);
+        if (_skills?.Learned == null) return unlocked;
+        foreach (var (skillId, subs) in _skills.Learned)
+        foreach (var (subId, level) in subs)
+        for (int lv = 1; lv <= level; lv++)
+        foreach (string id in FindNode(skillId, subId, lv, out _)?.Rewards ?? Array.Empty<string>())
+            if (SkillDataStore.Rewards.TryGetValue(id, out var reward) && reward.Type == (int)SkillRewardKind.Collectible)
+                unlocked.Add(id);
+        return unlocked;
+    }
+
+    private SkillNeeded BuildSkillNeededFor(string collectibleCategory, string requiredRewardId = null)
     {
         foreach (var (catId, bundles) in SkillDataStore.Skills)
         {
@@ -1506,6 +1519,7 @@ public partial class Player
                             if (!SkillDataStore.Rewards.TryGetValue(rewardId, out SkillRewardJson reward)) continue;
                             if (reward == null || reward.Type != (int)SkillRewardKind.Collectible) continue;
                             if (!string.Equals(reward.Category, collectibleCategory, StringComparison.Ordinal)) continue;
+                            if (requiredRewardId != null && rewardId != requiredRewardId) continue;
 
                             int level = i + 1;                 // ดัชนีในอาเรย์ = ระดับ - 1
                             int have = _skills?.Learned.GetValueOrDefault(skillId)?.GetValueOrDefault(subId) ?? 0;

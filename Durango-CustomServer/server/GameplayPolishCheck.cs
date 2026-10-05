@@ -44,6 +44,7 @@ internal static class GameplayPolishCheck
         var context = Player(root, name, world.TerrainId);
         Place(context, world.EntryPoint);
         using var link = new EconomyProtocolCheck.Link(context, world, null, true);
+        int skillLevel = ((SkillCategorySave)Call(link.Player, "CategoryState", (int)Shared.Skill.Category.Gathering)).Level;
         var template = RegionCatalog.GetTemplate(world.TerrainInfo.region_template);
         var types = template.CollectibleLevels.Keys
             .Concat(Durango.Terrain.NaturalInfo.FromBytes(TerrainLoader.Load(world.TerrainId).Garden)
@@ -56,7 +57,8 @@ internal static class GameplayPolishCheck
             Check(level == expectedLevel, name + " recurso " + type + " acompanha nivel " + expectedLevel);
             var collectible = link.Player.BuildCollectibleFor("", type, world.EntryPoint);
             Check(collectible.Generators.All(g => g.Level == CollectibleTable.ClampLevel(
-                CollectibleTable.FindGenerator(type, g.Id), expectedLevel)), name + " menu " + type + " projeta nivel da ilha");
+                CollectibleTable.FindGenerator(type, g.Id), Math.Min(expectedLevel, skillLevel))),
+                name + " menu " + type + " limita item pela habilidade");
         }
 
         // Coleta pelo TCP: o nivel enviado pelo cliente nao pode alterar o item recebido.
@@ -72,7 +74,8 @@ internal static class GameplayPolishCheck
         link.PumpUntil(() => link.Messages.OfType<Collected>().Any());
         var gathered = context.InventoryItems.Skip(before).ToArray();
         Check(gathered.Length > 0 && gathered.All(i => i.Level ==
-            Math.Min(expectedLevel, PrototypeYaml.GetItemPrototype(i.Prototype).MaxLevel)), name + " entrega itens no nivel da ilha pelo TCP");
+            Math.Min(Math.Min(expectedLevel, skillLevel), PrototypeYaml.GetItemPrototype(i.Prototype).MaxLevel)),
+            name + " entrega itens limitados pela habilidade pelo TCP");
 
         var carcass = world.AnimalManager.All.FirstOrDefault();
         if (carcass != null)
@@ -82,9 +85,10 @@ internal static class GameplayPolishCheck
             carcass.Life = 0;
             carcass.IsAlive = false;
             var collectible = link.Player.BuildCollectibleFor(carcass.EntityId, carcass.EntityType, carcass.Tile);
+            int butcheryLevel = ((SkillCategorySave)Call(link.Player, "CategoryState", (int)Shared.Skill.Category.Butchery)).Level;
             Check(collectible.Generators.Length > 0 && collectible.Generators.All(g => g.Level ==
-                CollectibleTable.ClampLevel(CollectibleTable.FindGenerator(carcass.EntityType, g.Id), carcass.CombatLevel)),
-                name + " coleta de carcaca usa nivel do dino");
+                CollectibleTable.ClampLevel(CollectibleTable.FindGenerator(carcass.EntityType, g.Id), Math.Min(carcass.CombatLevel, butcheryLevel))),
+                name + " coleta de carcaca limita item pelo dino e esquartejamento");
         }
     }
 
@@ -103,6 +107,7 @@ internal static class GameplayPolishCheck
             var high = new World(highContext);
             var lowContext = Context(root, "low", "pe10gr_1");
             var low = new World(lowContext);
+            GatheringLevelCheck.Run(root, high, low, Check);
             CheckStarterResources(root, new World(Context(root, "safehouse", "grass_company_safehouse_01")), 5, "safehouse");
             CheckStarterResources(root, low, 10, "ilha-domada");
             var tutorial = new World(Context(root, "tutorial", "tropical_event_ancora_01"));
@@ -124,13 +129,14 @@ internal static class GameplayPolishCheck
             Check(touched.Collectible.Generators.Length > 0, "pacote perdido permite interagir pelo TCP");
             var generator = touched.Collectible.Generators.First();
             int originalCount = context.InventoryItems.Count;
+            int gatheringLevel = ((SkillCategorySave)Call(link.Player, "CategoryState", (int)Shared.Skill.Category.Gathering)).Level;
             var collect = new Collect { EntityId = "parcel", Tile = parcelTile, GeneratorId = generator.Id };
             var timer = link.Request<Collect, Messages.Timer>(collect);
             Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
             link.PumpUntil(() => link.Messages.OfType<Collected>().Any());
             var gathered = context.InventoryItems.Skip(originalCount).ToArray();
-            Check(gathered.Length > 0 && gathered.All(i => i.Level == Math.Min(high.RegionLevel, PrototypeYaml.GetItemPrototype(i.Prototype).MaxLevel)),
-                "itens dos pacotes acompanham o nivel da ilha");
+            Check(gathered.Length > 0 && gathered.All(i => i.Level == Math.Min(Math.Min(high.RegionLevel, gatheringLevel), PrototypeYaml.GetItemPrototype(i.Prototype).MaxLevel)),
+                "itens dos pacotes naturais respeitam ilha e habilidade");
             int highLevel = (int)Call(link.Player, "CurrentGatheringLevel", (ushort)11002);
             Check(highLevel == high.RegionLevel, "recurso com override legado 1 usa nivel da ilha alta");
             var highSpecs = CollectibleTable.Build("high-resource", 11002, resourceLevel: highLevel).Generators;

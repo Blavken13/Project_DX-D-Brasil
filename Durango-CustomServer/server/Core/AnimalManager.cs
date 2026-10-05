@@ -759,148 +759,93 @@ public class AnimalManager
                 $"total={compsoPlaced + zebraPlaced}/{wantedTotal} candidatos={candidates.Count}");
             return;
         }
-        if (terrain?.Herds == null || template == null || template.Herds.Count == 0)
-        {
-            return;
-        }
+        if (terrain == null || template == null || template.Herds.Count == 0) return;
+        if (template.Role is Shared.Region.Role.Personal or Shared.Region.Role.Tutorial) return;
 
-        // Personal/Tutorial/Safehouse não recebem fauna selvagem.
-        if (template.Role == Shared.Region.Role.Personal ||
-            template.Role == Shared.Region.Role.Tutorial ||
-            template.Role == Shared.Region.Role.Safehouse)
-        {
-            Console.WriteLine(
-                $"[สัตว์] skip wild fauna template={template.Id} role={template.Role}");
-            return;
-        }
-
-        // Unstable Islands são Role.Risky neste dataset.
-        // Regra histórica baseline: fauna comum = nível da ilha - 2.
         int resolvedWildLevel = template.Role == Shared.Region.Role.Risky
-            ? Math.Max(1, template.Level - 2)
-            : 0;
+            ? Math.Max(1, template.Level - 2) : 0;
+        int target = AnimalTuning.TargetAnimalsPerRegion;
+        var definitions = template.Herds.Values.SelectMany(group => group)
+            .Where(spawn => AnimalTypes.Get(spawn.EntityType) != null).ToList();
+        if (definitions.Count == 0) return;
 
-        if (template.Role == Shared.Region.Role.Risky)
+        // Validate native anchors too: converted maps can have herd points in water
+        // or outside their new terrain bounds. Never stack extras at old anchors.
+        bool WildPositionAllowed(Point2 tile) => TerrainEcology.IsLand(terrain, tile) &&
+            !(terrain.Pois?.PortPoints.Any(p => Math.Abs(p.x - tile.x) < 8 && Math.Abs(p.y - tile.y) < 8) ?? false);
+        var anchors = new List<Point2>();
+        foreach (var group in template.Herds)
+        foreach (Point2 tile in terrain.Herds?.Of(group.Key) ?? Array.Empty<Point2>())
+            if (WildPositionAllowed(tile) && !anchors.Any(p => Math.Abs(p.x - tile.x) < 6 && Math.Abs(p.y - tile.y) < 6)) anchors.Add(tile);
+
+        // Keep anchors spread across the entire island when their count exceeds the target.
+        var positions = new List<Point2>();
+        int anchorCount = Math.Min(target, anchors.Count);
+        for (int i = 0; i < anchorCount; i++) positions.Add(anchors[i * anchors.Count / anchorCount]);
+        var wildCandidates = TerrainEcology.LandGrid(terrain, 8, 8).Where(WildPositionAllowed).ToList();
+        for (int i = wildCandidates.Count - 1; i > 0; i--)
         {
-            Console.WriteLine(
-                $"[สัตว์] template={template.Id} role={template.Role} islandLv={template.Level} " +
-                $"wildLv={resolvedWildLevel}");
+            int j = _rng.Next(i + 1);
+            (wildCandidates[i], wildCandidates[j]) = (wildCandidates[j], wildCandidates[i]);
         }
-        else
+        foreach (Point2 tile in wildCandidates)
         {
-            Console.WriteLine(
-                $"[สัตว์] template={template.Id} role={template.Role}: " +
-                "regra histórica específica ainda não definida; preservando fallback legado fora de Risky");
+            if (positions.Count >= target) break;
+            if (positions.Any(p => Math.Abs(p.x - tile.x) < 6 && Math.Abs(p.y - tile.y) < 6)) continue;
+            positions.Add(tile);
         }
-
-        // กระจายโควตาให้ทุกกลุ่มตามสัดส่วนที่แม่แบบสั่ง แทนที่จะเติมกลุ่มแรกจนเต็มแล้วกลุ่มหลังไม่ได้เลย
-        int wanted = 0;
-        foreach (KeyValuePair<string, List<RegionCatalog.HerdSpawn>> group in template.Herds)
+        // Swamp maps have little dry ground. Refine the grid only when necessary,
+        // retaining unique dry tiles rather than placing animals in deep water.
+        foreach (int spacing in new[] { 4, 2, 1 })
         {
-            wanted += Math.Min(group.Value.Count, terrain.Herds.Of(group.Key).Count);
-        }
-        if (wanted == 0) return;
-
-        foreach (KeyValuePair<string, List<RegionCatalog.HerdSpawn>> group in template.Herds)
-        {
-            IReadOnlyList<Point2> points = terrain.Herds.Of(group.Key);
-            int available = Math.Min(group.Value.Count, points.Count);
-            if (available == 0) continue;
-
-            int quota = Math.Max(1, (int)Math.Round(MaxAnimalsPerRegion * (double)available / wanted));
-            quota = Math.Min(quota, available);
-
-            // เลือกแบบเว้นระยะเท่า ๆ กันทั้งลิสต์ ไม่ใช่ตัดเอาแค่ต้นลิสต์
-            // ⇒ สัตว์กระจายทั่วเกาะ ไม่กระจุกอยู่มุมเดียว · และผลเหมือนเดิมทุกครั้ง (ไม่ใช้สุ่ม)
-            double stride = (double)available / quota;
-            for (int n = 0; n < quota; n++)
+            if (positions.Count >= target) break;
+            var dryTiles = TerrainEcology.LandGrid(terrain, spacing, 8).Where(WildPositionAllowed).ToList();
+            for (int i = dryTiles.Count - 1; i > 0; i--)
             {
-                int i = Math.Min(available - 1, (int)(n * stride));
-                Animal animal = Create(
-                    $"herd_{group.Key}_{i}",
-                    group.Value[i],
-                    points[i],
-                    resolvedWildLevel);
-                if (animal == null) continue;
-                _animals.Add(animal);
-                _byId[animal.EntityId] = animal;
+                int j = _rng.Next(i + 1);
+                (dryTiles[i], dryTiles[j]) = (dryTiles[j], dryTiles[i]);
+            }
+            foreach (Point2 tile in dryTiles)
+            {
+                if (positions.Count >= target) break;
+                if (positions.Any(p => Math.Abs(p.x - tile.x) < spacing && Math.Abs(p.y - tile.y) < spacing)) continue;
+                positions.Add(tile);
             }
         }
 
-        // Aumenta a densidade real; somente elevar o teto nao basta,
-        // porque os templates instalados normalmente possuem menos de 60 herds.
-        int targetAnimalCount = Math.Min(
-            MaxAnimalsPerRegion,
-            Math.Max(
-                _animals.Count,
-                (int)Math.Round(
-                    wanted * AnimalTuning.SpawnScale)));
-
-        int extraRound = 1;
-        int extrasCreated = 0;
-
-        while (_animals.Count < targetAnimalCount)
+        // Reserve a slot per species before filling proportionally: sampling every
+        // Nth definition can otherwise omit rare species on the level-60 maps.
+        var species = definitions.GroupBy(s => s.EntityType).Select(g => g.ToList()).ToList();
+        var quotas = new int[species.Count];
+        var plan = new List<RegionCatalog.HerdSpawn>();
+        for (int i = 0; i < species.Count && plan.Count < positions.Count; i++)
         {
-            int countBeforeRound = _animals.Count;
-
-            foreach (
-                KeyValuePair<string, List<RegionCatalog.HerdSpawn>> group
-                in template.Herds)
-            {
-                IReadOnlyList<Point2> points =
-                    terrain.Herds.Of(group.Key);
-
-                int available = Math.Min(
-                    group.Value.Count,
-                    points.Count);
-
-                for (
-                    int i = 0;
-                    i < available &&
-                    _animals.Count < targetAnimalCount;
-                    i++)
-                {
-                    Animal extra = Create(
-                        $"herd_{group.Key}_{i}_extra_{extraRound}",
-                        group.Value[i],
-                        points[i],
-                        resolvedWildLevel);
-
-                    if (extra == null)
-                    {
-                        continue;
-                    }
-
-                    _animals.Add(extra);
-                    _byId[extra.EntityId] = extra;
-                    extrasCreated++;
-                }
-            }
-
-            if (_animals.Count == countBeforeRound)
-            {
-                break;
-            }
-
-            extraRound++;
+            plan.Add(species[i][0]);
+            quotas[i]++;
         }
-
-        Console.WriteLine(
-            $"[fauna] densidade template={terrain.Info?.region_template ?? "?"} " +
-            $"base={wanted} escala={AnimalTuning.SpawnScale:0.##} " +
-            $"extras={extrasCreated} total={_animals.Count} " +
-            $"teto={MaxAnimalsPerRegion}");
-
-        if (_animals.Count > 0)
+        while (plan.Count < positions.Count)
         {
-            int minLevel = _animals.Min(a => a.CombatLevel);
-            int maxLevel = _animals.Max(a => a.CombatLevel);
-
-            Console.WriteLine(
-                $"[สัตว์] เกาะ {terrain.Info?.region_template ?? "?"} เกิดสัตว์ {_animals.Count} ตัว " +
-                $"(แม่แบบสั่งไว้ {wanted} ฝูง · เพดานตอนนี้ {MaxAnimalsPerRegion}) " +
-                $"levels={minLevel}-{maxLevel}");
+            int next = Enumerable.Range(0, species.Count).OrderByDescending(i =>
+                positions.Count * (double)species[i].Count / definitions.Count - quotas[i]).First();
+            plan.Add(species[next][quotas[next] % species[next].Count]);
+            quotas[next]++;
         }
+        for (int i = plan.Count - 1; i > 0; i--)
+        {
+            int j = _rng.Next(i + 1);
+            (plan[i], plan[j]) = (plan[j], plan[i]);
+        }
+        for (int i = 0; i < positions.Count; i++)
+        {
+            var spawn = plan[i];
+            Animal animal = Create($"herd_population_{i}", spawn, positions[i], resolvedWildLevel);
+            if (animal == null) continue;
+            _animals.Add(animal);
+            _byId[animal.EntityId] = animal;
+        }
+        Console.WriteLine($"[fauna] template={template.Id} islandLv={template.Level} " +
+            $"nativeAnchors={anchors.Count} total={_animals.Count}/{target} " +
+            $"species={_animals.Select(a => a.EntityType).Distinct().Count()}");
     }
 
     /// <summary>สุ่มทิศตอนเกิด — แยกจาก _rng เพราะ Create เป็น static</summary>
