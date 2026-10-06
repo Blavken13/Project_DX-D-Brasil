@@ -1,7 +1,8 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-if (args.Length != 3) throw new ArgumentException("input-assembly bridge-assembly output-assembly");
+bool estateOnly = args.Length == 4 && args[3] == "--estate-only";
+if (args.Length != 3 && !estateOnly) throw new ArgumentException("input-assembly bridge-assembly output-assembly [--estate-only]");
 using var resolver = new DefaultAssemblyResolver();
 resolver.AddSearchDirectory(Path.GetDirectoryName(Path.GetFullPath(args[1]))!);
 using var original = AssemblyDefinition.ReadAssembly(args[0], new ReaderParameters { InMemory = true, AssemblyResolver = resolver });
@@ -29,15 +30,34 @@ void Prefix(string name, params Instruction[] body)
     il.InsertBefore(start, Instruction.Create(OpCodes.Ret));
     method.Body.MaxStackSize = Math.Max(method.Body.MaxStackSize, 2);
 }
-Prefix("get_Gateway", Instruction.Create(OpCodes.Call, gateway));
-Prefix("get_MultiServers", Instruction.Create(OpCodes.Call, servers));
-Prefix("get_Enabled", Instruction.Create(OpCodes.Ldc_I4_1));
-Prefix("get_Name", Instruction.Create(OpCodes.Ldstr, "Lost Horizon Brasil"));
-Prefix("FetchServers");
-var title = type.Methods.Single(m => m.Name == "ApplyWindowTitle");
-allowed.Add(title.FullName);
-foreach (var instruction in title.Body.Instructions.Where(i => i.OpCode == OpCodes.Ldstr))
-    if (((string)instruction.Operand).StartsWith("Durango Brasil")) instruction.Operand = "Lost Horizon — Cliente ";
+if (!estateOnly)
+{
+    Prefix("get_Gateway", Instruction.Create(OpCodes.Call, gateway));
+    Prefix("get_MultiServers", Instruction.Create(OpCodes.Call, servers));
+    Prefix("get_Enabled", Instruction.Create(OpCodes.Ldc_I4_1));
+    Prefix("get_Name", Instruction.Create(OpCodes.Ldstr, "Lost Horizon Brasil"));
+    Prefix("FetchServers");
+    var title = type.Methods.Single(m => m.Name == "ApplyWindowTitle");
+    allowed.Add(title.FullName);
+    foreach (var instruction in title.Body.Instructions.Where(i => i.OpCode == OpCodes.Ldstr))
+        if (((string)instruction.Operand).StartsWith("Durango Brasil")) instruction.Operand = "Lost Horizon — Cliente ";
+}
+// The Brazilian server makes purchase and maintenance free. The legacy paid
+// dialog returns silently on zero maintenance. Reuse the existing native free
+// request/callback path, retaining its size guard and tile-to-cell conversion.
+var estate = module.Types.Single(t => t.FullName == "Durango.UI.EstateGridGroup");
+var click = estate.Methods.Single(m => m.Name == "OnExpandEstateClick");
+var free = estate.Methods.Single(m => m.Name == "ExpandPersonalEstate");
+if (free.ReturnType.FullName != "System.Void" || free.Parameters.Count != 1 ||
+    !free.Parameters.Select(p => p.ParameterType.FullName).SequenceEqual(click.Parameters.Select(p => p.ParameterType.FullName)))
+    throw new InvalidOperationException("Estate request ABI changed");
+allowed.Add(click.FullName);
+var paidCalls = click.Body.Instructions.Where(i => i.Operand is MethodReference r &&
+    r.DeclaringType.FullName == estate.FullName && r.Name == "ExpandEstate").ToArray();
+if (paidCalls.Length > 1) throw new InvalidOperationException("Ambiguous estate expansion click");
+if (paidCalls.Length == 1) paidCalls[0].Operand = free;
+else if (!click.Body.Instructions.Any(i => i.Operand is MethodReference r && r.FullName == free.FullName))
+    throw new InvalidOperationException("Estate request path missing");
 module.Assembly.Write(args[2]);
 using var after = AssemblyDefinition.ReadAssembly(args[2]);
 foreach (var method in after.MainModule.Types.SelectMany(Flatten).SelectMany(t => t.Methods).Where(m => m.HasBody))
@@ -45,6 +65,10 @@ foreach (var method in after.MainModule.Types.SelectMany(Flatten).SelectMany(t =
         throw new InvalidOperationException("Unrelated method changed: " + method.FullName);
 if (original.FullName != after.FullName || original.MainModule.RuntimeVersion != after.MainModule.RuntimeVersion)
     throw new InvalidOperationException("Unity assembly identity/runtime changed");
+var patchedClick = after.MainModule.Types.Single(t => t.FullName == estate.FullName).Methods.Single(m => m.Name == click.Name);
+if (patchedClick.Body.Instructions.Any(i => i.Operand is MethodReference r && r.DeclaringType.FullName == estate.FullName && r.Name == "ExpandEstate") ||
+    !patchedClick.Body.Instructions.Any(i => i.Operand is MethodReference r && r.FullName == free.FullName))
+    throw new InvalidOperationException("Free estate expansion routing missing");
 foreach (var method in after.MainModule.Types.Single(t => t.FullName == type.FullName).Methods.Where(m => allowed.Contains(m.FullName)))
 {
     if (method.Name == "ApplyWindowTitle") continue;
@@ -54,7 +78,7 @@ foreach (var method in after.MainModule.Types.Single(t => t.FullName == type.Ful
         !method.Body.Instructions.Contains((Instruction)method.Body.Instructions[1].Operand))
         throw new InvalidOperationException("Invalid launcher import/fallback: " + method.Name);
 }
-Console.WriteLine($"PASS: {allowed.Count} launcher/title methods patched; all other Unity methods preserved.");
+Console.WriteLine($"PASS: {allowed.Count} launcher/title/estate methods checked; all other Unity methods preserved.");
 
 static IEnumerable<TypeDefinition> Flatten(TypeDefinition type)
 {

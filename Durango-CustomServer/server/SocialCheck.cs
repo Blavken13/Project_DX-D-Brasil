@@ -263,8 +263,23 @@ internal static class SocialCheck
                     "pedido nativo de enclave na ilha pública preserva tipo e proprietário do clã");
                 Check(sharedLeader.TStone == 0 && ClanStore.Find(clanId).Fund == publicFund && ClanRules.TerritoryCost(10) == 0,
                     "declaração gratuita não exige carteira pessoal nem debita fundo");
-                Check(mobile.Request<GetEstateLicenses, EstateLicenses>(default).ClanEstate?.EstateId == publicLicense.EstateId,
+                var publicLicenses = mobile.Request<GetEstateLicenses, EstateLicenses>(default);
+                Check(publicLicenses.ClanEstate?.EstateId == publicLicense.EstateId,
                     "menu nativo reconhece licença do enclave público");
+                Check(publicLicenses.LargestClanEstateSize == ClanRules.Reward(ClanStore.Find(clanId).Level, "max_estate_number")
+                    && publicLicenses.ClanEstate.Value.Size < publicLicenses.LargestClanEstateSize,
+                    "licença pública habilita caminho gratuito do cliente até o limite do clã");
+                var estateCosts = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("costs")["estate"];
+                Check((string)estateCosts["extending_cost"]["2"] == "0" && (string)estateCosts["expanding_cost"]["2"] == "0",
+                    "tabela real do cliente tem manutenção e expansão zero; diálogo antigo não deve ser usado");
+                var publicNext = new Point2(publicCell.x + 1, publicCell.y);
+                desktop.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = publicLicense.EstateId, Cell = publicNext });
+                Check(sharedWorld.GetEstate(publicLicense.EstateId).Size == 1, "expansão pública continua recusando jogador sem permissão");
+                var publicExpanded = mobile.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = publicLicense.EstateId, Cell = publicNext });
+                Check(publicExpanded.Size == 2 && publicExpanded.Type == OwnerType.ClanEstate
+                    && sharedWorld.TryGetEstateIdAtCell(publicNext, out string publicNextId) && publicNextId == publicLicense.EstateId
+                    && sharedLeader.TStone == 0 && ClanStore.Find(clanId).Fund == publicFund,
+                    "pedido de expansão gratuita confirma nova célula pública sem cobrar carteira ou fundo");
                 object[] build = { World.TileFromCell(publicCell), new Point2(1, 1), null };
                 Check((bool)Call(mobile.Player, "CanBuildInCurrentSettlement", build), "líder pode construir no enclave público");
                 Check(!(bool)Call(desktop.Player, "CanBuildInCurrentSettlement", build), "outro jogador não pode construir no enclave público");
@@ -280,7 +295,8 @@ internal static class SocialCheck
                 var travelRegistry = new WorldRegistry("social-check", travelWorld, "pe10gr_1") { Economy = economy };
                 var traveler = Context(root, alice.EntityId, travelWorld); economy.Recover(traveler);
                 using var returning = new EconomyProtocolCheck.Link(traveler, travelWorld, economy);
-                Check(returning.Request<GetEstateLicenses, EstateLicenses>(default).ClanEstate?.EstateId == publicLicense.EstateId,
+                var restoredPublic = returning.Request<GetEstateLicenses, EstateLicenses>(default).ClanEstate;
+                Check(restoredPublic?.EstateId == publicLicense.EstateId && restoredPublic?.Size == 2,
                     "licença pública localizada de outra ilha após recarregar os mundos");
                 returning.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = OwnerType.ClanEstate });
                 returning.PumpUntil(() => returning.Messages.OfType<Emigrated>().Any());

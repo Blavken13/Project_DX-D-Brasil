@@ -7,6 +7,7 @@ literal becomes the community Discord. Keep the original movie/skip callbacks.
 import hashlib
 from pathlib import Path
 import struct
+import estate_original as estate
 
 METADATA = Path('assets/bin/Data/Managed/Metadata/global-metadata.dat')
 NATIVE = Path('lib/arm64-v8a/libil2cpp.so')
@@ -89,14 +90,18 @@ def verify(source, client):
         else:
             assert a == b
     assert set(changed) == set(REPLACEMENTS)
-    # The only native edits in this client are the established authentication
-    # dependency/branches and the new four-byte title-door branch.
+    # Native edits are limited to authentication, the title-door branch and
+    # the four-byte estate call redirect; every unrelated byte is preserved.
     expected = bytearray((source / NATIVE).read_bytes())
     expected[0x960a:0x9616] = b'libbr.so\0'.ljust(12, b'\0')
     struct.pack_into('<I', expected, 0x137b240, 0x2a1f03e0)
     struct.pack_into('<I', expected, 0x137b748, 0x14000048)
     expected[DOOR_CALLBACK:DOOR_CALLBACK + 4] = door_branch()
-    assert (client / NATIVE).read_bytes() == bytes(expected), 'Unexpected native edit'
+    # apply() also verifies this module before the estate patch is applied.
+    native = (client / NATIVE).read_bytes()
+    if native[estate.PAID_CALL:estate.PAID_CALL + 4] == estate.branch(estate.FREE_METHOD):
+        expected = bytearray(estate.patch(expected))
+    assert native == bytes(expected), 'Unexpected native edit'
     movie = (source / MOVIE).read_bytes()
     assert (client / MOVIE).read_bytes() == movie, 'Transition video changed'
     return {

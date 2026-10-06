@@ -1,5 +1,12 @@
 # Cliente PC Lost Horizon
 
+Correção da expansão gratuita do enclave: execute `python pc-client/patch_estate_expansion.py`
+para gerar `dist/LostHorizon-PC-enclave1.zip` a partir do cliente atual. Feche o jogo
+e extraia o pacote sobre `Durango-OffServer`. O patch altera somente a chamada do
+clique de expansão e verifica todos os demais métodos contra a cópia anterior.
+O limite da licença e a validação do servidor continuam ativos. Essa correção
+também é aplicada pelo build completo do iniciador.
+
 O iniciador abre o login com o vídeo `DurangoV2_Data/StreamingAssets/Movie/PC/title.mp4`, a logo Lost Horizon e um painel preto semitransparente. Somente ao entrar ou clicar em **Continuar** o jogo Unity é iniciado: login → splash existente → seleção de personagens.
 
 ## Abrir o jogo
@@ -16,7 +23,7 @@ O servidor escolhido em `offserver.txt` continua disponível; havendo mais de um
 - As duas variantes de idioma do logo abaixo do hexágono de carregamento usam a mesma imagem.
 - O splash existente permanece intacto.
 - As logos mantêm os IDs dos objetos Unity. O atlas mantém DXT5 e somente os blocos comprimidos das duas regiões substituídas são alterados.
-- O helper `LostHorizon.PC.dll` importa a sessão para a autenticação já existente. O patch modifica seis métodos do iniciador/título em `Assembly-CSharp.dll`; o restante do código do jogo, materiais e shaders é verificado contra a cópia anterior.
+- O helper `LostHorizon.PC.dll` importa a sessão para a autenticação já existente. O patch modifica seis métodos do iniciador/título e a chamada de expansão em `Assembly-CSharp.dll`; o restante do código do jogo, materiais e shaders é verificado contra a cópia anterior.
 
 ## Compilar e verificar
 

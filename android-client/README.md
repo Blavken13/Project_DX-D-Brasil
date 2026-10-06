@@ -1,8 +1,22 @@
 # Cliente Android Lost Horizon
 
-Nova build de teste: `dist/LostHorizon-alfa-tutorial-stability4-50216.apk`, versão Android
-`50216` / `5.2.1-losthorizon-alfa-tutorial-stability4`. A compilação usa esse nome distinto
+Nova build de teste: `dist/LostHorizon-alfa-enclave1-50217.apk`, versão Android
+`50217` / `5.2.1-losthorizon-alfa-enclave1`. A compilação usa esse nome distinto
 e preserva `LostHorizon-alfa.apk` e os APKs anteriores.
+
+## Expansão gratuita do enclave — revisão 50217
+
+O clique agora usa o caminho nativo de expansão gratuita. O diálogo antigo de
+manutenção retornava sem enviar `ExpandEstate` quando a tarifa era zero, mesmo
+com o botão mostrando a expansão gratuita. `estate_original.py` altera uma
+instrução ARM64 de quatro bytes; preserva o limite recebido na licença, a
+conversão de tile para célula, o envio e o callback originais. O servidor mantém
+as verificações de cargo, continuidade, alcance e limite do nível do clã.
+
+Instale este APK como atualização e reconecte. As proteções e o diagnóstico da
+50216 permanecem incluídos. `tests/verify_estate_expansion.py` verifica os métodos
+IL2CPP reais, o destino do clique e os bytes do APK assinado. A confirmação do
+toque na tela do aparelho do tester continua necessária.
 
 ## Motorola / tutorial — revisão 50216
 

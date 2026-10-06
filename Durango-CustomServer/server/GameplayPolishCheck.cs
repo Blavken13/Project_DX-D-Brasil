@@ -178,13 +178,9 @@ internal static class GameplayPolishCheck
             var mobileLicense = link.Request<GetEstateLicenses, EstateLicenses>(default).UrbanEstate.Value;
             Check(mobileLicense.Deposit.HasValue && mobileLicense.DepositRunsOutAt.HasValue,
                 "licenca TCP fornece os dois campos exigidos antes do Android enviar expansao");
-            double nextDaily = Math.Truncate(Math.Truncate(Math.Pow(1.4, mobileLicense.Size + 1)) * 50 / (mobileLicense.Size + 1))
-                * (mobileLicense.Size + 1);
-            double remainingDeposit = mobileLicense.Deposit.Value.Item1 -
-                Math.Truncate(Math.Truncate(Math.Pow(1.4, mobileLicense.Size)) * 50 / mobileLicense.Size) * mobileLicense.Size *
-                (Gauge.CurrentTime - mobileLicense.Deposit.Value.Item2) / 86400;
-            Check(nextDaily > 0 && remainingDeposit / nextDaily >= 1,
-                "credito de compatibilidade satisfaz a confirmacao nativa sem saldo na carteira");
+            var estateCosts = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("costs")["estate"];
+            Check((string)estateCosts["extending_cost"]["0"] == "0" && (string)estateCosts["expanding_cost"]["0"] == "0",
+                "expansao usa o caminho gratuito do cliente, com as duas tarifas reais zeradas");
             var expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
             Check(expanded.Deposit.HasValue && expanded.DepositRunsOutAt.HasValue,
                 "resposta da expansao preserva campos necessarios para o proximo toque no Android");
