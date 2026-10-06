@@ -183,15 +183,17 @@ public partial class Player
             // e instancias da Ilha Domada. Os overrides originais ainda estao no nivel 1.
             if (template.Role is Shared.Region.Role.Safehouse or Shared.Region.Role.Personal)
                 return Math.Max(1, template.Level);
+            if (template.Role == Shared.Region.Role.Risky && template.Level > 0)
+                return template.Level;
             if (template.CollectibleLevels.TryGetValue(entityType, out int nativeLevel))
-                return template.Role == Shared.Region.Role.Risky ? Math.Max(template.Level, nativeLevel) : nativeLevel;
+                return Math.Max(1, template.Level > 0 ? Math.Min(template.Level, nativeLevel) : nativeLevel);
             if (template.Level > 0) return template.Level;
         }
         return 1;
     }
 
-    private int GatheringSkillLevel => Math.Max(1, CategoryState((int)Shared.Skill.Category.Gathering).Level);
-    private int ButcherySkillLevel => Math.Max(1, CategoryState((int)Shared.Skill.Category.Butchery).Level);
+    private int GatheringSkillLevel => Math.Clamp(CategoryState((int)Shared.Skill.Category.Gathering).Level, 1, SkillDataStore.MaxPlayerLevel);
+    private int ButcherySkillLevel => Math.Clamp(CategoryState((int)Shared.Skill.Category.Butchery).Level, 1, SkillDataStore.MaxPlayerLevel);
 
     /// <summary>
     /// สร้าง <see cref="Collectible"/> ของของธรรมชาติหนึ่งชิ้น + จำไว้ใช้ตอน Collect
@@ -317,7 +319,7 @@ public partial class Player
         // O recurso conserva tempo, ferramentas e quantidade compartilhada da ilha.
         // Apenas o item recebido usa o limite da habilidade; Collect.Level nao e confiavel.
         int itemLevelCap = Math.Min(resourceLevel, carcass != null ? ButcherySkillLevel : GatheringSkillLevel);
-        int itemLevel = CollectibleTable.ClampLevel(spec, itemLevelCap);
+        int itemLevel = CollectibleTable.ItemLevel(spec, resourceLevel, carcass != null ? ButcherySkillLevel : GatheringSkillLevel);
         if (itemLevel > itemLevelCap)
         {
             RejectCollect(seq, $"Este item exige nivel {itemLevel}; o limite desta coleta e {itemLevelCap}.", msg);
@@ -494,6 +496,39 @@ public partial class Player
         string harvestKey, Point2 tile, string entityId, bool isCarcass, bool ranOut,
         string toolItemId)
     {
+        // Recheck before delivery: the character state may change while the
+        // gathering timer is running. Bonus items inherit this corrected level.
+        int skillLevel = isCarcass ? ButcherySkillLevel : GatheringSkillLevel;
+        int resourceLevel = collected.ActionInfo.ActionLevel > 0 ? collected.ActionInfo.ActionLevel
+            : items.Count > 0 ? items.Max(i => i.Level) : 1;
+        for (int index = 0; index < items.Count; index++)
+        {
+            var source = items[index];
+            int level = CollectibleTable.ItemLevel(new CollectibleTable.GeneratorSpec { PrototypeId = source.Prototype }, resourceLevel, skillLevel);
+            if (level > Math.Min(resourceLevel, skillLevel))
+            {
+                UnreserveGenerator(harvestKey, source.GeneratorId);
+                Send(new Abort { Text = "Sua habilidade não atende ao nível mínimo deste recurso." }, seq);
+                Send(default(ReplySequenceMark), seq);
+                return;
+            }
+            level = Math.Min(source.Level, level);
+            if (source.Level <= level) continue;
+            Item? adjusted = Cheats.MakeItem(source.Prototype, level);
+            if (!adjusted.HasValue)
+            {
+                UnreserveGenerator(harvestKey, source.GeneratorId);
+                Send(new Abort { Text = "Não foi possível preparar o item desta coleta." }, seq);
+                Send(default(ReplySequenceMark), seq);
+                return;
+            }
+            var item = adjusted.Value;
+            item.Id = source.Id;
+            item.CollectibleId = source.CollectibleId; item.GeneratorId = source.GeneratorId;
+            item.ColorR = source.ColorR; item.ColorG = source.ColorG; item.ColorB = source.ColorB;
+            items[index] = item;
+        }
+        if (items.Count > 0) collected.ActionInfo.PotentialLevel = items.Min(i => i.Level);
         if (!isCarcass && PremiumActive && items.Count > 0 && PremiumGatherRoll() < PremiumStore.GatherChance)
         {
             var source = items[0];
@@ -813,7 +848,7 @@ internal static class CollectibleTable
                 if (live != null && itemLevelLimit > 0)
                 {
                     int cap = Math.Min(requestedLevel, itemLevelLimit);
-                    gen.Level = ClampLevel(live, cap);
+                    gen.Level = ItemLevel(live, requestedLevel, itemLevelLimit);
                     if (gen.Level > cap) gen.Enabled = false;
                 }
                 leveled[i] = gen;
@@ -1185,6 +1220,10 @@ internal static class CollectibleTable
         int max = proto.MaxLevel > 0 ? Math.Max(min, proto.MaxLevel) : Math.Max(min, requestedLevel);
         return Math.Clamp(Math.Max(1, requestedLevel), min, max);
     }
+
+    /// <summary>The same character/resource limit applies to the menu and item delivery.</summary>
+    public static int ItemLevel(GeneratorSpec spec, int resourceLevel, int skillLevel) =>
+        ClampLevel(spec, Math.Min(Math.Max(1, resourceLevel), Math.Clamp(skillLevel, 1, SkillDataStore.MaxPlayerLevel)));
 
     /// <summary>
     /// Projeta um GeneratorSpec para o level da regiao/carcaca sem alterar o spec cacheado.

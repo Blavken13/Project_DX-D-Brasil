@@ -6,6 +6,7 @@ using Durango.Online;
 using Durango.Utils;
 using Messages;
 using Yaml;
+using Yaml.Util;
 
 namespace DurangoServerNx;
 
@@ -85,9 +86,9 @@ internal static class GatheringLevelCheck
         Collect(low, beginner, tile, 60, 10, resourceLevel, check);
         var refreshed = low.Request<GetCollectible, Collectible>(new GetCollectible { EntityId = "", Tile = tile });
         var expertRefresh = Touch(high, tile);
-        check(Leaf(refreshed).Level == 10 && Leaf(refreshed).Amount == Leaf(lowMenu).Amount - 1 &&
+        check(Leaf(refreshed).Level == Math.Min(resourceLevel, Skill(low).Level) && Leaf(refreshed).Amount == Leaf(lowMenu).Amount - 1 &&
             Leaf(expertRefresh).Amount == Leaf(refreshed).Amount,
-            "GetCollectible preserva limite e ambos observam a mesma quantidade restante");
+            "GetCollectible acompanha habilidade após XP e ambos observam a mesma quantidade restante");
         Collect(high, expert, tile, 1, resourceLevel, resourceLevel, check);
         Skill(low).Level = 20;
         check(Leaf(low.Request<GetCollectible, Collectible>(new GetCollectible { EntityId = "", Tile = tile })).Level == 20,
@@ -142,5 +143,96 @@ internal static class GatheringLevelCheck
             prototype.MinLevel = originalMin;
             prototype.MaxLevel = originalMax;
         }
+        CheckLevel60(root, check);
     }
+
+    private static void CheckLevel60(string root, Action<bool, string> check)
+    {
+        string island = RegionCatalog.All.First(r => RegionCatalog.GetTemplate(r.TemplateId) is
+            { Role: Shared.Region.Role.Risky, Level: 60 }).Id;
+        var worldContext = new WorldContext { TerrainId = island };
+        worldContext.Initialize(Path.Combine(root, "gather-60.world"));
+        var world = new World(worldContext);
+        var context = Context(root, "gather-level-matrix", world);
+        using var link = new EconomyProtocolCheck.Link(context, world, null);
+        var skills = (SkillSave)typeof(Player).GetField("_skills", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(link.Player);
+        int characterExp = (int)typeof(Player).GetMethod("ExpForLevel", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { 60 });
+        link.Player.AddExp(characterExp - skills.Exp, "cheat");
+        // Unlock the tested resource families independently of their quality cap.
+        foreach (var (id, subs) in SkillDataStore.Skills[(int)Shared.Skill.Category.Gathering])
+            foreach (var (sub, nodes) in subs)
+            {
+                if (!skills.Learned.TryGetValue(id, out var learned)) skills.Learned[id] = learned = new();
+                learned[sub] = nodes.Length;
+            }
+        var tile = new Point2(world.EntryPoint.x + 9, world.EntryPoint.y + 9);
+        Place(context, tile);
+        var tool = Cheats.MakeItem("axe_onehand_loose_stone", 60).Value;
+        context.InventoryItems.Add(tool);
+        void Gather(ushort type, string generator, int skillLevel, int? deliverySkill = null)
+        {
+            Skill(link).Level = skillLevel; Skill(link).Exp = 0;
+            Skill(link).ResearchStart = Skill(link).ResearchEnd = 0;
+            world.AddNatural(tile, type); world.ForgetHarvests($"{tile.x},{tile.y}");
+            var menu = TouchType(link, type, tile);
+            check(menu.Generators.Single(g => g.Id == generator).Level == skillLevel,
+                $"ilha 60 / Coleta {skillLevel}: prévia de {generator} respeita habilidade");
+            int before = context.InventoryItems.Count;
+            int replies = link.Messages.OfType<Collected>().Count();
+            var timer = link.Request<Collect, Messages.Timer>(new Collect { EntityId = "", Tile = tile,
+                GeneratorId = generator, Level = int.MaxValue, ToolItemId = tool.Id });
+            if (deliverySkill.HasValue) Skill(link).Level = deliverySkill.Value;
+            Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + 1);
+            link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
+            int expected = deliverySkill ?? skillLevel;
+            var items = context.InventoryItems.Skip(before).ToArray();
+            var reply = link.Messages.OfType<Collected>().Last();
+            check(context.AppearPlayer.Level == 60 && items.Length > 0 && items.All(i => i.Level == expected && i.Tags.All(t => t.Level <= expected)) &&
+                reply.Items.All(i => i.Level == expected) && reply.ActionInfo.PotentialLevel == expected,
+                $"personagem 60 coleta {generator} nível {expected}, com tags e pacote concordando");
+            var updated = link.Request<GetSkills, Skills>(default);
+            check(updated.Categories[Shared.Skill.Category.Gathering].Level == Skill(link).Level,
+                "barra da habilidade recebe estado real após os 12 pontos da coleta");
+        }
+        foreach (int level in new[] { 1, 10, 20, 60 })
+        {
+            Gather(11070, "leaf_small", level);
+            Gather(11070, "wood_log", level);
+            Gather(12000, "stone", level);
+        }
+        var premium = new PremiumStore(Path.Combine(root, "gather-premium.json"));
+        premium.Recover(context);
+        check(premium.Change(context, "monthly_package_1", 1, "grant", "gather-level-premium", out _, out _, out _),
+            "premium ativado para verificar nível da coleta adicional");
+        link.Player.SyncPremium(); link.Player.PremiumGatherRoll = () => 0;
+        Gather(11070, "leaf_small", 40, deliverySkill: 10);
+        var premiumItems = link.Messages.OfType<Collected>().Last().Items;
+        check(premiumItems.Length >= 2 && premiumItems.All(i => i.Level == 10 && i.GeneratorId == "leaf_small") &&
+            premiumItems.Select(i => i.Id).Distinct().Count() == premiumItems.Length,
+            "item extra do premium herda limite final e mantém origem e identidade próprias");
+        check(premium.Change(context, "monthly_package_1", 0, "revoke", "gather-level-premium-end", out _, out _, out _),
+            "premium removido antes do teste de reconexão");
+        link.Player.SyncPremium();
+        Skill(link).Level = 10; Skill(link).Exp = 0;
+        Call(link.Player, "SaveSkillState"); context.Save(); check(SafeSave.FlushPending(), "habilidade de Coleta salva para teste de reconexão");
+        var persisted = PlayerContext.Load(context.Path);
+        using var reconnect = new EconomyProtocolCheck.Link(persisted, world, null);
+        check(reconnect.Request<GetSkills, Skills>(default).Categories[Shared.Skill.Category.Gathering].Level == 10,
+            "reconexão preserva Coleta 10 apesar do personagem estar no nível 60");
+        Place(persisted, tile); world.AddNatural(tile, ResourceType); world.ForgetHarvests($"{tile.x},{tile.y}");
+        check(Leaf(Touch(reconnect, tile)).Level == 10, "prévia após reconexão conserva o limite da habilidade");
+        Collect(reconnect, persisted, tile, 60, 10, 60, check);
+        var template = RegionCatalog.GetTemplate(world.TerrainInfo.region_template);
+        bool hadOverride = template.CollectibleLevels.TryGetValue(ResourceType, out int original);
+        try
+        {
+            template.CollectibleLevels[ResourceType] = 80;
+            check((int)Call(reconnect.Player, "CurrentGatheringLevel", ResourceType) == 60,
+                "override de recurso não ultrapassa nível 60 da ilha");
+        }
+        finally { if (hadOverride) template.CollectibleLevels[ResourceType] = original; else template.CollectibleLevels.Remove(ResourceType); }
+    }
+
+    private static Collectible TouchType(EconomyProtocolCheck.Link link, ushort type, Point2 tile) =>
+        link.Request<Touch, Touched>(new Touch { EntityId = "", EntityType = type, Tile = tile }).Collectible;
 }

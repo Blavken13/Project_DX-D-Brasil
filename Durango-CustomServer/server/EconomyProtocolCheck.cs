@@ -143,6 +143,7 @@ internal static class EconomyProtocolCheck
             Receive<QuestScoreInfos>(); Receive<TodayAttendanceRewards>(); Receive<AttendanceRewards>();
             Receive<Recipes>(); Receive<ArtifactBlueprints>(); Receive<Skills>(); Receive<Failed>();
             Receive<CraftEstimationInfo>();
+            Receive<Crafted>();
             Receive<Actions>(); Receive<SkillCategoryExperienced>(); Receive<ExpGained>();
             Server.StartReceive(); Client.StartReceive();
             Player = new Player(context.EntityId, Server, world, context, false, store, mailStore);

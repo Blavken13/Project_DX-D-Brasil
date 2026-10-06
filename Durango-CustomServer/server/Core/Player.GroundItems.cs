@@ -27,6 +27,13 @@ public partial class Player
             || ids.Distinct().Count() != ids.Length) return;
         var items = source.Where(i => ids.Contains(i.Id)).ToList();
         if (items.Count != ids.Length) return;
+        // Tile ausente é a exclusão definitiva usada pelo cliente original.
+        // Não bloquear Dumpable no protótipo: isso também esconderia a exclusão.
+        if (msg.Tile.HasValue && items.Any(item => SkillXpCoupons.IsCoupon(item.Prototype)))
+        {
+            Send(new Abort { Text = "Os Cupons do Luiz não podem ser colocados no chão. Use o descarte sem escolher um local para apagá-los." });
+            return;
+        }
         if (msg.Tile.HasValue && (!IsWithinTiles(msg.Tile.Value, ArtifactReachTiles)
             || !_world.DropItems(msg.Tile.Value, ClampFloor(msg.Floor), items)))
         {

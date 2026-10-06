@@ -42304,7 +42304,7 @@
         "tool_working": null,
         "knife": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42344,7 +42344,7 @@
         "bone": null,
         "knife": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42384,7 +42384,7 @@
         "tool_working": null,
         "knife": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42411,7 +42411,7 @@
   "sword_onehand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌칼": null
@@ -42423,7 +42423,7 @@
         "stone": null,
         "knife": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42450,7 +42450,7 @@
   "sword_onehand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈칼": null
@@ -42462,7 +42462,7 @@
         "bone": null,
         "knife": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42489,7 +42489,7 @@
   "sword_onehand_stone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "흑요석칼": null
@@ -42501,7 +42501,7 @@
         "stone": null,
         "knife": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42528,7 +42528,7 @@
   "sword_onehand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속칼": null
@@ -42540,7 +42540,7 @@
         "metal": null,
         "knife": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42567,7 +42567,7 @@
   "sword_onehand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈솟칼": null
@@ -42579,7 +42579,7 @@
         "bone": null,
         "knife": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42606,7 +42606,7 @@
   "sword_onehand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "거인면도칼": null
@@ -42618,7 +42618,7 @@
         "metal": null,
         "knife": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42645,7 +42645,7 @@
   "sword_onehand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈휜등칼": null
@@ -42814,7 +42814,7 @@
         "sword_twohand": null,
         "knife": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42854,7 +42854,7 @@
         "sword_twohand": null,
         "knife": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42894,7 +42894,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42921,7 +42921,7 @@
   "sword_twohand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 돌칼": null
@@ -42933,7 +42933,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42960,7 +42960,7 @@
   "sword_twohand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈칼": null
@@ -42972,7 +42972,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -42999,7 +42999,7 @@
   "sword_twohand_stone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 흑요석칼": null
@@ -43011,7 +43011,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43038,7 +43038,7 @@
   "sword_twohand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 금속칼": null
@@ -43050,7 +43050,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43077,7 +43077,7 @@
   "sword_twohand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈솟칼": null
@@ -43089,7 +43089,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43116,7 +43116,7 @@
   "sword_twohand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 거인면도칼": null
@@ -43128,7 +43128,7 @@
         "knife": null,
         "sword_twohand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1,
         2
@@ -43156,7 +43156,7 @@
   "sword_twohand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈휜등칼": null
@@ -43326,7 +43326,7 @@
         "tool_working": null,
         "axe_onehand": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43366,7 +43366,7 @@
         "axe_onehand": null,
         "bone": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43406,7 +43406,7 @@
         "axe_onehand": null,
         "tool_working": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43433,7 +43433,7 @@
   "axe_onehand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌도끼": null
@@ -43445,7 +43445,7 @@
         "weapon": null,
         "axe_onehand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43472,7 +43472,7 @@
   "axe_onehand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈도끼": null
@@ -43484,7 +43484,7 @@
         "axe_onehand": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43511,7 +43511,7 @@
   "axe_onehand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈굽도끼": null
@@ -43523,7 +43523,7 @@
         "axe_onehand": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43550,7 +43550,7 @@
   "axe_onehand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속도끼": null
@@ -43562,7 +43562,7 @@
         "metal": null,
         "axe_onehand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43589,7 +43589,7 @@
   "axe_onehand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈톱도끼": null
@@ -43601,7 +43601,7 @@
         "axe_onehand": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43628,7 +43628,7 @@
   "axe_onehand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속각도끼": null
@@ -43640,7 +43640,7 @@
         "metal": null,
         "axe_onehand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43667,7 +43667,7 @@
   "axe_onehand_metal_02_t2": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속각도끼 Ⅱ": null
@@ -43706,7 +43706,7 @@
   "axe_onehand_metal_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "쇠천둥새도끼": null
@@ -43757,7 +43757,7 @@
         "weapon": null,
         "axe_twohand_tool": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43796,7 +43796,7 @@
         "axe_twohand_tool": null,
         "bone": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43835,7 +43835,7 @@
         "metal": null,
         "axe_twohand_tool": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43875,7 +43875,7 @@
         "tool_working": null,
         "axe_twohand_tool": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43915,7 +43915,7 @@
         "axe_twohand_tool": null,
         "bone": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43955,7 +43955,7 @@
         "axe_twohand_tool": null,
         "tool_working": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -43982,7 +43982,7 @@
   "axe_twohand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 돌도끼": null
@@ -43994,7 +43994,7 @@
         "weapon": null,
         "axe_twohand_tool": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44021,7 +44021,7 @@
   "axe_twohand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈도끼": null
@@ -44033,7 +44033,7 @@
         "axe_twohand_tool": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44060,7 +44060,7 @@
   "axe_twohand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈굽도끼": null
@@ -44072,7 +44072,7 @@
         "axe_twohand_tool": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44099,7 +44099,7 @@
   "axe_twohand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 금속도끼": null
@@ -44111,7 +44111,7 @@
         "metal": null,
         "axe_twohand_tool": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44138,7 +44138,7 @@
   "axe_twohand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈톱도끼": null
@@ -44150,7 +44150,7 @@
         "axe_twohand_tool": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44177,7 +44177,7 @@
   "axe_twohand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 금속각도끼": null
@@ -44189,7 +44189,7 @@
         "metal": null,
         "axe_twohand_tool": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44216,7 +44216,7 @@
   "axe_twohand_metal_02_t2": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 금속각도끼 Ⅱ": null
@@ -44255,7 +44255,7 @@
   "axe_twohand_metal_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 쇠천둥새도끼": null
@@ -44306,7 +44306,7 @@
         "blunt_onehand": null,
         "burnable": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "color_woods_brown",
@@ -44461,7 +44461,7 @@
         "blunt_onehand": null,
         "meat": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44502,7 +44502,7 @@
         "hammer_onehand": null,
         "tool_working": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44542,7 +44542,7 @@
         "blunt_onehand": null,
         "hammer_onehand": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44582,7 +44582,7 @@
         "blunt_onehand": null,
         "hammer_onehand": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44622,7 +44622,7 @@
         "hammer_onehand": null,
         "blunt_onehand": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44649,7 +44649,7 @@
   "hammer_onehand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌망치": null
@@ -44661,7 +44661,7 @@
         "blunt_onehand": null,
         "hammer_onehand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44688,7 +44688,7 @@
   "hammer_onehand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈망치": null
@@ -44700,7 +44700,7 @@
         "hammer_onehand": null,
         "blunt_onehand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44727,7 +44727,7 @@
   "hammer_onehand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속망치": null
@@ -44739,7 +44739,7 @@
         "hammer_onehand": null,
         "blunt_onehand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44766,7 +44766,7 @@
   "hammer_onehand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "대갈부수개": null
@@ -44778,7 +44778,7 @@
         "hammer_onehand": null,
         "blunt_onehand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44805,7 +44805,7 @@
   "hammer_onehand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "가시척추": null
@@ -44817,7 +44817,7 @@
         "hammer_onehand": null,
         "blunt_onehand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -44844,7 +44844,7 @@
   "hammer_onehand_metal_02_t2": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "가시척추 Ⅱ": null
@@ -44883,7 +44883,7 @@
   "hammer_onehand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "조랑말망치": null
@@ -45052,7 +45052,7 @@
         "meat": null,
         "tool_working": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45092,7 +45092,7 @@
         "stone": null,
         "tool_working": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45132,7 +45132,7 @@
         "tool_working": null,
         "bone": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45172,7 +45172,7 @@
         "blunt_twohand": null,
         "tool_working": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45199,7 +45199,7 @@
   "hammer_twohand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 돌망치": null
@@ -45211,7 +45211,7 @@
         "blunt_twohand": null,
         "stone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45238,7 +45238,7 @@
   "hammer_twohand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 뼈망치": null
@@ -45250,7 +45250,7 @@
         "blunt_twohand": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45277,7 +45277,7 @@
   "hammer_twohand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 금속망치": null
@@ -45289,7 +45289,7 @@
         "weapon": null,
         "blunt_twohand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45316,7 +45316,7 @@
   "hammer_twohand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 대갈부수개": null
@@ -45328,7 +45328,7 @@
         "blunt_twohand": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45355,7 +45355,7 @@
   "hammer_twohand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 가시척추": null
@@ -45367,7 +45367,7 @@
         "weapon": null,
         "blunt_twohand": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45394,7 +45394,7 @@
   "hammer_twohand_metal_02_t2": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 가시척추 Ⅱ": null
@@ -45433,7 +45433,7 @@
   "hammer_twohand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 조랑말망치": null
@@ -45508,7 +45508,7 @@
   "lance_twohand_bamboo": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "죽창": null
@@ -45520,7 +45520,7 @@
         "wood": null,
         "bamboo": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "#FFFFFF",
@@ -45545,7 +45545,7 @@
   "lance_twohand_stone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌창": null
@@ -45556,7 +45556,7 @@
         "weapon": null,
         "stone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45583,7 +45583,7 @@
   "lance_twohand_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈창": null
@@ -45594,7 +45594,7 @@
         "weapon": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45621,7 +45621,7 @@
   "lance_twohand_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속창": null
@@ -45632,7 +45632,7 @@
         "weapon": null,
         "metal": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45659,7 +45659,7 @@
   "lance_twohand_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈송이창": null
@@ -45670,7 +45670,7 @@
         "weapon": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45697,7 +45697,7 @@
   "lance_twohand_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "두뿔머리창": null
@@ -45708,7 +45708,7 @@
         "weapon": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45735,7 +45735,7 @@
   "lance_twohand_metal_02": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "쇠부리창": null
@@ -45784,7 +45784,7 @@
         "string_normal": null,
         "sling": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         0
       ],
@@ -45861,7 +45861,7 @@
         "burnable": null,
         "bow": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45888,7 +45888,7 @@
   "bow_wooden_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "나무활": null
@@ -45900,7 +45900,7 @@
         "burnable": null,
         "bow": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45927,7 +45927,7 @@
   "bow_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈활": null
@@ -45938,7 +45938,7 @@
         "bone": null,
         "bow": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -45965,7 +45965,7 @@
   "bow_wooden_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "쇠나무활": null
@@ -45976,7 +45976,7 @@
         "wood": null,
         "bow": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46003,7 +46003,7 @@
   "bow_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "머리뼈활": null
@@ -46014,7 +46014,7 @@
         "bone": null,
         "bow": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46041,7 +46041,7 @@
   "bow_bone_03": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈갈매기활": null
@@ -46052,7 +46052,7 @@
         "bone": null,
         "bow": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46079,7 +46079,7 @@
   "bow_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "두겹활": null
@@ -46151,7 +46151,7 @@
   "crossbow_wooden_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "나무석궁": null
@@ -46162,7 +46162,7 @@
         "wood": null,
         "crossbow": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46189,7 +46189,7 @@
   "crossbow_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈석궁": null
@@ -46200,7 +46200,7 @@
         "crossbow": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "color_woods_brown",
@@ -46225,7 +46225,7 @@
   "crossbow_bone_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈갈매기석궁": null
@@ -46236,7 +46236,7 @@
         "crossbow": null,
         "bone": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46263,7 +46263,7 @@
   "crossbow_bone_02_t2": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈갈매기석궁 Ⅱ": null
@@ -46301,7 +46301,7 @@
   "crossbow_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "두겹석궁": null
@@ -46337,7 +46337,7 @@
   "sword_tool_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌작업칼": null
@@ -46351,7 +46351,7 @@
         "sword_onehand": null,
         "tool_working": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46378,7 +46378,7 @@
   "sword_tool_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈작업칼": null
@@ -46419,7 +46419,7 @@
   "sword_armorcrafting": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "재봉사 칼": null
@@ -46458,7 +46458,7 @@
   "axe_tool_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌작업도끼": null
@@ -46472,7 +46472,7 @@
         "axe_onehand": null,
         "tool_working": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46499,7 +46499,7 @@
   "axe_tool_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈작업도끼": null
@@ -46540,7 +46540,7 @@
   "axe_process": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "가공사 도끼": null
@@ -46579,7 +46579,7 @@
   "hammer_tool_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "돌작업망치": null
@@ -46593,7 +46593,7 @@
         "hammer_onehand": null,
         "tool_working": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46620,7 +46620,7 @@
   "hammer_tool_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈작업망치": null
@@ -46661,7 +46661,7 @@
   "hammer_constructing": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "건축가 망치": null
@@ -46713,7 +46713,7 @@
         "stone": null,
         "tool_working": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46740,7 +46740,7 @@
   "saw_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈톱": null
@@ -46753,7 +46753,7 @@
         "tool_working": null,
         "bone": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46780,7 +46780,7 @@
   "saw_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속톱": null
@@ -46833,7 +46833,7 @@
         "blunt_twohand": null,
         "tool_working": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46873,7 +46873,7 @@
         "blunt_twohand": null,
         "tool_working": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46900,7 +46900,7 @@
   "shovel_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈삽": null
@@ -46913,7 +46913,7 @@
         "tool_working": null,
         "bone": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -46940,7 +46940,7 @@
   "shovel_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속삽": null
@@ -46993,7 +46993,7 @@
         "hoe": null,
         "tool_working": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -47033,7 +47033,7 @@
         "hoe": null,
         "tool_working": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -47060,7 +47060,7 @@
   "hoe_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈괭이": null
@@ -47073,7 +47073,7 @@
         "axe_twohand": null,
         "bone": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -47100,7 +47100,7 @@
   "hoe_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속괭이": null
@@ -47153,7 +47153,7 @@
         "weapon": null,
         "tool_working": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -47180,7 +47180,7 @@
   "pickaxe_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈곡괭이": null
@@ -47193,7 +47193,7 @@
         "pickaxe": null,
         "bone": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -47220,7 +47220,7 @@
   "pickaxe_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속곡괭이": null
@@ -47273,7 +47273,7 @@
         "tool_working": null,
         "harpoon": null
       },
-      "max_level": 24,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "color_woods_brown",
@@ -47298,7 +47298,7 @@
   "harpoon_bone_01": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "뼈작살": null
@@ -47311,7 +47311,7 @@
         "bone": null,
         "harpoon": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -47338,7 +47338,7 @@
   "harpoon_metal_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속작살": null
@@ -47390,7 +47390,7 @@
         "tool_working": null,
         "needle": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47427,7 +47427,7 @@
         "tool_working": null,
         "bone": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47452,7 +47452,7 @@
   "needle_metal": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속바늘": null
@@ -47502,7 +47502,7 @@
         "tool_working": null,
         "burnable": null
       },
-      "max_level": 34,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47527,7 +47527,7 @@
   "pot_02": [
     {
       "category": "weapon/tool",
-      "min_level": 30,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "토기냄비": null
@@ -47539,7 +47539,7 @@
         "pot": null,
         "tool_working": null
       },
-      "max_level": 54,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47564,7 +47564,7 @@
   "pot_03": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "유리냄비": null
@@ -47612,7 +47612,7 @@
         "weapon": null,
         "tool_working": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47637,7 +47637,7 @@
   "mortar_02": [
     {
       "category": "weapon/tool",
-      "min_level": 35,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "토기절구": null
@@ -47649,7 +47649,7 @@
         "chunk_normal": null,
         "tool_working": null
       },
-      "max_level": 59,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47674,7 +47674,7 @@
   "mortar_03": [
     {
       "category": "weapon/tool",
-      "min_level": 55,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속절구": null
@@ -47721,7 +47721,7 @@
         "weapon": null,
         "tool_working": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47782,7 +47782,7 @@
   "frypan_01": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "프라이팬": null
@@ -47821,7 +47821,7 @@
   "grill_metal": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "금속석쇠": null
@@ -47869,7 +47869,7 @@
         "tool_working": null,
         "burnable": null
       },
-      "max_level": 49,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "",
@@ -47894,7 +47894,7 @@
   "cutting_board_02": [
     {
       "category": "weapon/tool",
-      "min_level": 45,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "유리도마": null
@@ -49350,7 +49350,7 @@
   "sword_tool_glass": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "유리 조각단검": null
@@ -49363,7 +49363,7 @@
         "tool_gathering": null,
         "knife": null
       },
-      "max_level": 44,
+      "max_level": 60,
       "dyeables": [
         0,
         1
@@ -49391,7 +49391,7 @@
   "bow_wiper": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "와이퍼활": null
@@ -49401,7 +49401,7 @@
         "weapon": null,
         "bow": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -49428,7 +49428,7 @@
   "hammer_onehand_highheel": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "하이힐 뒷굽망치": null
@@ -49438,7 +49438,7 @@
         "weapon": null,
         "blunt_onehand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         0,
         1
@@ -49466,7 +49466,7 @@
   "axe_onehand_kitchen": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "꽃무늬 부엌도끼": null
@@ -49478,7 +49478,7 @@
         "metal": null,
         "axe_onehand": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         0,
         1
@@ -49506,7 +49506,7 @@
   "lance_twohand_sign": [
     {
       "category": "weapon/tool",
-      "min_level": 15,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "표지판 조각창": null
@@ -49517,7 +49517,7 @@
         "weapon": null,
         "metal": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [
         1
       ],
@@ -74736,7 +74736,7 @@
   "urban_axe_twohand": [
     {
       "category": "weapon/tool",
-      "min_level": 30,
+      "min_level": 1,
       "time_limited": true,
       "name": {
         "도시 장인 양손 도끼": null
@@ -74774,7 +74774,7 @@
   "urban_lance_twohand": [
     {
       "category": "weapon/tool",
-      "min_level": 30,
+      "min_level": 1,
       "time_limited": true,
       "name": {
         "도시 장인 장창": null
@@ -74811,7 +74811,7 @@
   "urban_bow": [
     {
       "category": "weapon/tool",
-      "min_level": 30,
+      "min_level": 1,
       "time_limited": true,
       "name": {
         "도시 장인 활": null
@@ -75278,7 +75278,7 @@
       "tags": {
         "capturable": null
       },
-      "max_level": 19,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "#ffffff",
@@ -75303,7 +75303,7 @@
   "capture_tool_02": [
     {
       "category": "weapon/tool",
-      "min_level": 20,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "중급 길들잡이": null
@@ -75312,7 +75312,7 @@
       "tags": {
         "capturable": null
       },
-      "max_level": 39,
+      "max_level": 60,
       "dyeables": [],
       "dump_locked": false,
       "color_b": "#ffffff",
@@ -75337,7 +75337,7 @@
   "capture_tool_03": [
     {
       "category": "weapon/tool",
-      "min_level": 40,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "고급 길들잡이": null
@@ -80115,7 +80115,7 @@
   "hammer_onehand_metal_03": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "용암쇠망치": null
@@ -80155,7 +80155,7 @@
   "hammer_twohand_metal_03": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "양손 용암쇠망치": null
@@ -80195,7 +80195,7 @@
   "bow_bone_04": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "두머리뼈활": null
@@ -80233,7 +80233,7 @@
   "crossbow_bone_04": [
     {
       "category": "weapon/tool",
-      "min_level": 50,
+      "min_level": 1,
       "time_limited": false,
       "name": {
         "두머리뼈석궁": null
@@ -86322,6 +86322,426 @@
       "color_r": "color_woods_brown",
       "item_description": {
         "약으로 쓰는 허브차. \"작은 고통은 큰 고통을 피하는 대가이다.\"": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_sobrevivencia": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Sobrevivência": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP ao personagem. Sobrevivência acompanha o nível do personagem. O ganho respeita o nível máximo de 60 e o excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_combate_corpo_a_corpo": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Combate corpo a corpo": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Combate corpo a corpo, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_combate_a_distancia": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Combate à distância": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Combate à distância, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_defesa": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Defesa": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Defesa, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_abate": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Abate": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Abate, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_coleta": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Coleta": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Coleta, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_culinaria": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Culinária": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Culinária, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_fabricacao_de_armas": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Fabricação de armas": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Fabricação de armas, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_fabricacao_de_armaduras": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Fabricação de armaduras": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Fabricação de armaduras, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_contrucao": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Construção": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Construção, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_agricultura": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Agricultura": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Agricultura, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
+      },
+      "immune_to_time": true
+    }
+  ],
+  "bonus_xp_processamento": [
+    {
+      "category": "material",
+      "min_level": 1,
+      "max_level": 60,
+      "time_limited": false,
+      "name": {
+        "Cupon do Luiz - Processamento": null
+      },
+      "icon": "icon_exp",
+      "tags": {
+        "usable": null
+      },
+      "dyeables": [],
+      "dump_locked": false,
+      "trade_locked": true,
+      "color_r": "#ffffff",
+      "color_g": "#ffffff",
+      "color_b": "#ffffff",
+      "material_name": {
+        "": null
+      },
+      "sub_categories": [
+        "modern_items"
+      ],
+      "item_name": {
+        "": null
+      },
+      "size": 1,
+      "item_description": {
+        "Ao usar, concede 10.000 XP em Processamento, permitindo avançar pelas etapas de pesquisa até o nível máximo de 60. O excedente é descartado. Não pode ser transferido, vendido ou colocado no chão. Pode ser apagado.": null
       },
       "immune_to_time": true
     }

@@ -7647,7 +7647,7 @@
     "description": {
       "뼈, 나무로 만든 바늘.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -50651,7 +50651,7 @@
     "description": {
       "돌로 만든 급조날.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -50713,7 +50713,7 @@
     "description": {
       "뼈로 만든 급조날.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -50852,7 +50852,7 @@
     "description": {
       "돌로 만든 큰 급조날.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -50914,7 +50914,7 @@
     "description": {
       "뼈로 만든 큰 급조날.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -51052,7 +51052,7 @@
     "description": {
       "돌로 만든 작업용 날.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -51258,7 +51258,7 @@
     "description": {
       "급한대로 만든 한손칼.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -51421,7 +51421,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 한손칼.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -51619,7 +51619,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 한손칼.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -51886,7 +51886,7 @@
     "description": {
       "돌로 만든 칼날. 한손칼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -51966,7 +51966,7 @@
     "description": {
       "뼈로 만든 칼날. 한손칼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -52072,7 +52072,7 @@
     "description": {
       "흑요석으로 만든 칼날. 한손칼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -52153,7 +52153,7 @@
     "description": {
       "금속으로 만든 칼날. 한손칼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -52273,7 +52273,7 @@
     "description": {
       "여러 재료로 만든 칼날. 한손칼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -52376,7 +52376,7 @@
     "description": {
       "여러 재료로 만든 칼날. 한손칼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -52641,7 +52641,7 @@
     "description": {
       "급한대로 만든 양손칼.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -52804,7 +52804,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 양손칼.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -53004,7 +53004,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 양손칼.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -53275,7 +53275,7 @@
     "description": {
       "돌로 만든 큰 칼날. 양손칼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -53362,7 +53362,7 @@
     "description": {
       "뼈로 만든 큰 칼날. 양손칼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -53468,7 +53468,7 @@
     "description": {
       "흑요석으로 만든 큰 칼날. 양손칼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -53528,7 +53528,7 @@
     "description": {
       "금속으로 만든 큰 칼날. 양손칼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -53649,7 +53649,7 @@
     "description": {
       "여러 재료로 만든 큰 칼날. 양손칼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -53752,7 +53752,7 @@
     "description": {
       "여러 재료로 만든 큰 칼날. 양손칼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -54016,7 +54016,7 @@
     "description": {
       "급한대로 만든 한손도끼.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -54190,7 +54190,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 한손도끼.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -54399,7 +54399,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 한손도끼.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -54688,7 +54688,7 @@
     "description": {
       "돌로 만든 도끼날. 한손 도끼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -54768,7 +54768,7 @@
     "description": {
       "뼈로 만든 도끼날. 한손 도끼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -54871,7 +54871,7 @@
     "description": {
       "뼈로 굽을 넣은 도끼날. 한손 도끼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -54974,7 +54974,7 @@
     "description": {
       "금속으로 만든 도끼날. 한손 도끼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -55091,7 +55091,7 @@
     "description": {
       "여러 재료로 만든 도끼날. 한손 도끼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -55192,7 +55192,7 @@
     "description": {
       "여러 재료로 만든 도끼날. 한손 도끼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -55597,7 +55597,7 @@
     "description": {
       "급한대로 만든 양손도끼.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -55760,7 +55760,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 양손도끼.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -55960,7 +55960,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 양손도끼.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -56240,7 +56240,7 @@
     "description": {
       "돌로 만든 큰 도끼날. 양손 도끼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -56322,7 +56322,7 @@
     "description": {
       "뼈로 만든 큰 도끼날. 양손 도끼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -56427,7 +56427,7 @@
     "description": {
       "뼈로 굽을 넣은 큰 도끼날. 양손 도끼 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -56509,7 +56509,7 @@
     "description": {
       "금속으로 만든 큰 도끼날. 양손 도끼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -56626,7 +56626,7 @@
     "description": {
       "여러 재료로 만든 큰 도끼날. 양손 도끼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -56727,7 +56727,7 @@
     "description": {
       "여러 재료로 만든 큰 도끼날. 양손 도끼 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -57055,7 +57055,7 @@
     "description": {
       "나무로 만든 몽둥이. 한손으로 쓴다.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "#FFFFFF",
@@ -57226,7 +57226,7 @@
     "description": {
       "급한대로 만든 한손망치.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -57393,7 +57393,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 한손망치.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -57591,7 +57591,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 한손망치.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -57882,7 +57882,7 @@
     "description": {
       "돌로 만든 망치머리. 한손망치 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -57963,7 +57963,7 @@
     "description": {
       "뼈로 만든 망치머리. 한손망치 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -58044,7 +58044,7 @@
     "description": {
       "금속으로 만든 망치머리. 한손망치 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -58166,7 +58166,7 @@
     "description": {
       "여러 재료로 만든 망치머리. 한손망치 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -58271,7 +58271,7 @@
     "description": {
       "여러 재료로 만든 망치머리. 한손망치 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -58648,7 +58648,7 @@
     "description": {
       "급한대로 만든 양손망치.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -58800,7 +58800,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 양손망치.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -58989,7 +58989,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 양손망치.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -59271,7 +59271,7 @@
     "description": {
       "돌로 만든 큰 망치머리. 양손망치 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -59357,7 +59357,7 @@
     "description": {
       "뼈로 만든 큰 망치머리. 양손망치 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -59417,7 +59417,7 @@
     "description": {
       "금속으로 만든 큰 망치머리. 양손망치 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -59542,7 +59542,7 @@
     "description": {
       "여러 재료로 만든 큰 망치머리. 양손망치 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -59647,7 +59647,7 @@
     "description": {
       "여러 재료로 만든 큰 망치머리. 양손망치 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -59948,7 +59948,7 @@
     "description": {
       "대나무로 만든 창.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -60113,7 +60113,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 창.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -60311,7 +60311,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 창.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -60578,7 +60578,7 @@
     "description": {
       "돌로 만든 창날. 창 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -60658,7 +60658,7 @@
     "description": {
       "뼈로 만든 창날. 창 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -60739,7 +60739,7 @@
     "description": {
       "금속으로 만든 창날. 창 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {
       "kiln_04": [
         "kiln_04_volcanic_entrust_cap",
@@ -60859,7 +60859,7 @@
     "description": {
       "여러 재료로 만든 창날. 창 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -60959,7 +60959,7 @@
     "description": {
       "여러 재료로 만든 창날. 창 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -61337,7 +61337,7 @@
     "description": {
       "원거리로 발사체를 날릴 수 있는 슬링.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -61417,7 +61417,7 @@
     "description": {
       "급한대로 만든 활.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -61579,7 +61579,7 @@
     "description": {
       "일반적인 형태를 갖추도록 만든 활.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -61777,7 +61777,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 활.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -62056,7 +62056,7 @@
     "description": {
       "나무로 만든 활대. 활 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -62138,7 +62138,7 @@
     "description": {
       "뼈로 만든 활대. 활 조립에 쓴다.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -62226,7 +62226,7 @@
     "description": {
       "여러 재료로 만든 활대. 활 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -62335,7 +62335,7 @@
     "description": {
       "여러 재료로 만든 활대. 활 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -62442,7 +62442,7 @@
     "description": {
       "여러 재료로 만든 활대. 활 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -62919,7 +62919,7 @@
     "description": {
       "모양을 제대로 갖추고 기능도 개선한 석궁.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -63187,7 +63187,7 @@
     "description": {
       "나무로 만든 석궁대. 석궁 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -63292,7 +63292,7 @@
     "description": {
       "뼈로 만든 석궁대. 석궁 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -63399,7 +63399,7 @@
     "description": {
       "여러 재료로 만든 석궁대. 석궁 조립에 쓴다.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r",
@@ -64053,7 +64053,7 @@
     "description": {
       "작업에 쓰는 돌칼. 무기로 쓰기엔 어렵다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -64350,7 +64350,7 @@
     "description": {
       "작업에 쓰는 돌도끼. 무기로 쓰기엔 어렵다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -64650,7 +64650,7 @@
     "description": {
       "작업에 쓰는 돌망치. 무기로 쓰기엔 어렵다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -64960,7 +64960,7 @@
     "description": {
       "돌로 만든 톱.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -65059,7 +65059,7 @@
     "description": {
       "뼈로 만든 톱.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -65229,7 +65229,7 @@
     "description": {
       "돌로 만든 톱날. 톱 조립에 쓴다.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -65291,7 +65291,7 @@
     "description": {
       "뼈로 만든 톱날. 톱 조립에 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -65493,7 +65493,7 @@
     "description": {
       "나무로 만든 삽.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "#FFFFFF",
@@ -65608,7 +65608,7 @@
     "description": {
       "나무로 만든 삽.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "#FFFFFF",
@@ -65707,7 +65707,7 @@
     "description": {
       "뼈로 만든 삽.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -65877,7 +65877,7 @@
     "description": {
       "뼈로 만든 삽날. 삽 조립에 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -66069,7 +66069,7 @@
     "description": {
       "돌로 만든 괭이. 농사에 쓴다.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -66180,7 +66180,7 @@
     "description": {
       "돌로 만든 괭이. 농사에 쓴다.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -66279,7 +66279,7 @@
     "description": {
       "뼈로 만든 괭이. 농사에 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -66449,7 +66449,7 @@
     "description": {
       "뼈로 만든 괭이날. 괭이 조립에 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -66639,7 +66639,7 @@
     "description": {
       "돌로 만든 곡괭이. 채광에 쓴다.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -66738,7 +66738,7 @@
     "description": {
       "뼈로 만든 곡괭이. 채광에 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -66908,7 +66908,7 @@
     "description": {
       "뼈로 만든 곡괭이날. 곡괭이 조립에 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "base.color_r"
@@ -67056,7 +67056,7 @@
     "description": {
       "나무로 만든 작살. 물고기를 잡을 때 쓴다.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "#FFFFFF",
@@ -67162,7 +67162,7 @@
     "description": {
       "뼈로 만든 작살. 물고기를 잡을 때 쓴다.": null
     },
-    "max_level": 44,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r",
@@ -67336,7 +67336,7 @@
     "description": {
       "요리에 쓰는 나무 냄비.": null
     },
-    "max_level": 34,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -67395,7 +67395,7 @@
     "description": {
       "요리에 쓰는 토기 냄비.": null
     },
-    "max_level": 54,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -67576,7 +67576,7 @@
     "description": {
       "요리에 쓰는 절구.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -67659,7 +67659,7 @@
     "description": {
       "요리에 쓰는 흙으로 만든 절구.": null
     },
-    "max_level": 59,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -67839,7 +67839,7 @@
     "description": {
       "요리에 쓰는 돌판.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -68143,7 +68143,7 @@
     "description": {
       "요리에 쓰는 도마.": null
     },
-    "max_level": 49,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -69641,7 +69641,7 @@
     "description": {
       "나무로 만든 작살. 물고기를 잡을 때 쓴다.": null
     },
-    "max_level": 24,
+    "max_level": 60,
     "season": "s02_warp_rush",
     "replace_color": {
       "0": "#FFFFFF",
@@ -71331,7 +71331,7 @@
     "description": {
       "동물을 포획하는데 사용하는 도구.": null
     },
-    "max_level": 19,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"
@@ -71435,7 +71435,7 @@
     "description": {
       "동물을 포획하는데 사용하는 도구.": null
     },
-    "max_level": 39,
+    "max_level": 60,
     "add_on": {},
     "replace_color": {
       "0": "main.color_r"

@@ -443,6 +443,8 @@ public partial class Player
             return;
         }
 
+        if (TryUseSkillXpCoupon(item, idx, seq)) return;
+
         FoodTable.Effect food = FoodTable.Get(item);
         if (food == null)
         {
@@ -776,6 +778,8 @@ public partial class Player
     /// </summary>
     private void HandlePutInItemMsg(PutInItem msg, uint seq)
     {
+        if (RejectSkillXpCouponTransfer(msg.ItemIds, seq)) return;
+
         if (!MayTouchArtifact(msg.EntityId, "guardar itens no recipiente", Shared.Estate.AccessRights.Give))
         {
             Send(new Abort { Text = "Você não tem permissão para usar este recipiente." }, seq);
@@ -986,6 +990,8 @@ public partial class Player
     /// </summary>
     private void HandleAddItemsToWarehouseMsg(AddItemsToWarehouse msg)
     {
+        if (RejectSkillXpCouponTransfer(msg.ItemIds)) return;
+
         if (!MayTouchArtifact(msg.EntityId, "guardar itens no depósito", Shared.Estate.AccessRights.Give))
         {
             Send(new Abort { Text = "Você não tem permissão para usar este depósito." });

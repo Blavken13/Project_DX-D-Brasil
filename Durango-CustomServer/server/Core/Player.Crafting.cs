@@ -593,6 +593,7 @@ public partial class Player
         // de Crafted na mochila para marcar os itens como novos.
         AddItems(pending.Products);
         Send(new InventoryUpdated { EntityId = EntityId, Items = pending.Products });
+        if (pending.Products.Any(item => _context.EquippedItems.ContainsValue(item.Id))) SendEquipments();
 
         WearTool(pending.ToolItemId, "craft");
         AddExpForAction(
@@ -622,6 +623,7 @@ public partial class Player
                 _context.InventoryItems.Add(item);
             }
         }
+        if ((pending.ReservedMaterials ?? Array.Empty<Item>()).Any(item => _context.EquippedItems.ContainsValue(item.Id))) SendEquipments();
         OnContextChanged();
     }
 
@@ -832,22 +834,24 @@ public partial class Player
     /// (ในไฟล์มี 85 สูตรที่มี prototypes เช่น needle → needle_bone เมื่อช่อง main เป็นของที่มี tag "bone")
     /// </summary>
     private static readonly System.Random _craftRng = new System.Random();
+    internal Func<double> CraftRoll { get; set; } = _craftRng.NextDouble;
 
     /// <summary>
-    /// สุ่มผลคราฟ — "สำเร็จยอดเยี่ยม" (great) ตามสูตร NEXON ⇒ ได้ของเลเวลเต็ม (potential = max_level)
-    /// ไม่ roll ล้มเหลว เพราะสูตร success_probability ต้องมี correction ที่ไม่มีในข้อมูล (ไม่เดา)
+    /// Great success uses the best material level, within proficiency/recipe limits.
+    /// Failure rolls remain disabled because native correction data is unavailable.
     /// </summary>
     private Result RollCraft(CraftRecipeData recipe, int normalLevel, int maxMaterialLevel, out int finalLevel)
     {
         finalLevel = normalLevel;
         float chance = GreatSuccessChance(recipe, normalLevel);
-        if (chance > 0f && _craftRng.NextDouble() < chance)
+        if (chance > 0f && CraftRoll() < chance)
         {
-            // great = ได้คุณภาพดีสุดเท่าที่วัสดุให้ได้ (เลเวลวัสดุสูงสุด) หนีบใน [min_level, max_level]
-            // ⚠️ "great ปรับของยังไง" ไม่มีในข้อมูล NEXON ⇒ ใช้ค่าที่อิงวัสดุจริง ไม่ใช่ max ตายตัว
-            int min = recipe.min_level > 0 ? recipe.min_level : 1;
+            // Great success remains tied to the supplied materials. Weapon/tool
+            // results cannot bypass the proficiency limit through this branch.
+            int min = IsWeaponOrToolCraft(recipe) ? 1 : recipe.min_level > 0 ? recipe.min_level : 1;
             int max = recipe.max_level > 0 ? recipe.max_level : min;
             finalLevel = Math.Clamp(Math.Max(normalLevel, maxMaterialLevel), min, Math.Max(min, max));
+            if (IsWeaponOrToolCraft(recipe)) finalLevel = Math.Min(finalLevel, CraftLevelLimit(recipe));
             return Result.GreatSuccess;
         }
         return Result.Success;
@@ -901,7 +905,7 @@ public partial class Player
         return sum;
     }
 
-    private static Item[] MakeProducts(CraftRecipeData recipe, Dictionary<string, string[]> sent,
+    private Item[] MakeProducts(CraftRecipeData recipe, Dictionary<string, string[]> sent,
                                        List<Item> materials, int levelOverride = -1)
     {
         string prototypeId = ResolvePrototypeId(recipe, sent, materials);
@@ -962,21 +966,31 @@ public partial class Player
     }
 
     /// <summary>
-    /// เลเวลของที่ได้ — **ค่าของเรา**: เฉลี่ยเลเวลวัตถุดิบ แล้วบีบเข้าช่วง min_level..max_level ของสูตร
-    /// ของจริงคำนวณจากความสามารถของผู้เล่น + คุณภาพวัตถุดิบผ่านสูตรใน constants.json ซึ่งเซิร์ฟ
-    /// ยังประเมินไม่ได้ (ดูหมายเหตุที่ <see cref="CraftTuning.SuccessRate"/>)
-    /// ใช้ค่าเฉลี่ยเพราะเป็นตัวเดียวที่ผูกกับ "ของที่ใส่จริง" โดยไม่ต้องเดาสูตร
+    /// Weapon/tool level follows material quality and the corresponding proficiency.
+    /// Other crafts retain their recipe bounds. Recipe minimums still govern inputs
+    /// and unlocks, but never raise an equipment result above the player's ability.
     /// </summary>
-    private static int ProductLevel(CraftRecipeData recipe, List<Item> materials)
+    private int ProductLevel(CraftRecipeData recipe, List<Item> materials)
     {
         int level = recipe.min_level > 0 ? recipe.min_level : 1;
         if (materials.Count > 0)
         {
             level = (int)Math.Round(materials.Average(item => (double)item.Level));
         }
+        if (IsWeaponOrToolCraft(recipe)) return Math.Clamp(level, 1, CraftLevelLimit(recipe));
         int min = recipe.min_level > 0 ? recipe.min_level : 1;
         int max = recipe.max_level > 0 ? recipe.max_level : min;
         return Math.Clamp(level, min, Math.Max(min, max));
+    }
+
+    private static bool IsWeaponOrToolCraft(CraftRecipeData recipe) => recipe?.type == CraftType.Craft &&
+        (recipe.category?.StartsWith("weapon", StringComparison.OrdinalIgnoreCase) == true ||
+         recipe.category?.StartsWith("tool", StringComparison.OrdinalIgnoreCase) == true);
+
+    private int CraftLevelLimit(CraftRecipeData recipe)
+    {
+        var ability = recipe.required_ability ?? Shared.Ability.Derived.Weaponcraft;
+        return Math.Clamp((int)Math.Floor(CraftAbilityValue(ability)), 1, SkillDataStore.MaxPlayerLevel);
     }
 
     /// <summary>

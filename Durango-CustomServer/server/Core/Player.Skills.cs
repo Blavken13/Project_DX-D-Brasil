@@ -87,18 +87,15 @@ public static class SkillTuning
     /// <summary>
     /// TEMP ALPHA TEST EVENT — multiplicador de EXP de personagem recebido por acoes.
     /// 1 = balance normal. Evento acelerado removido após validação do Alpha.
-    /// EXP de categoria de skill continua normal para nao distorcer a progressao das profissoes.
+    /// A pontuação das habilidades é ajustada separadamente em CategoryExpPerAction.
     /// </summary>
     public const int AlphaTestPlayerExpMultiplier = 1;
 
     /// <summary>
-    /// **ค่าของเรา** — exp หมวดสกิลที่ได้ต่อ 1 ครั้ง
-    ///
-    /// เพดาน 3 มาจากของจริง (<c>constants.json</c> → <c>skill.exp_increase_limit</c>)
-    /// เลือก 1 เพราะตาราง <c>exp_needed</c> ของหมวดเล็กมาก (lv1 ต้องการ 1, lv19 ต้องการ 6,
-    /// รวม lv1→60 แค่ 1,396) ⇒ ให้ 1 ต่อครั้งก็ไล่ทันเลเวลผู้เล่นพอดี
+    /// XP por ação de habilidade durante os testes; independente dos cupons.
+    /// Mantém o teto sincronizado com constants.json → skill.exp_increase_limit.
     /// </summary>
-    public const int CategoryExpPerAction = 1;
+    public const int CategoryExpPerAction = 12;
 
     /// <summary>
     /// **ค่าของเรา** — ราคา "ข้ามเวลาวิจัย" (หน่วย Gem)
@@ -393,8 +390,8 @@ internal static class SkillDataStore
     /// <summary>แต้มสกิลตั้งต้น — จาก constants.json → skill_points.initial (10)</summary>
     public static int InitialSkillPoints { get; private set; } = 10;
 
-    /// <summary>เพดาน exp หมวดที่ได้ต่อครั้ง — จาก constants.json → skill.exp_increase_limit (3)</summary>
-    public static float CategoryExpLimit { get; private set; } = 3f;
+    /// <summary>Teto por ação normal de habilidade, definido em constants.json.</summary>
+    public static float CategoryExpLimit { get; private set; } = 12f;
 
     /// <summary>เพดานสัดส่วนที่ย่นเวลาวิจัยได้ — constants.json → skill.research_reduce_time_limit (0.25)</summary>
     public static float ResearchReduceLimit { get; private set; } = 0.25f;
@@ -851,11 +848,12 @@ public partial class Player
     /// </summary>
     /// <param name="amount">exp ดิบ (0 หรือติดลบ = ไม่ทำอะไร)</param>
     /// <param name="reason">เขียนลง log ให้ไล่ที่มาได้ตอนสมดุลเพี้ยน</param>
-    public void AddExp(int amount, string reason, int? indicatorAmount = null)
+    public void AddExp(int amount, string reason, int? indicatorAmount = null, bool fixedGrant = false)
     {
         if (amount <= 0 || _skills == null) return;
 
-        if (!string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase))
+        bool applyBonuses = !fixedGrant && !string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase);
+        if (applyBonuses)
         {
             amount = (int)Math.Min(
                 (long)amount * SkillTuning.AlphaTestPlayerExpMultiplier,
@@ -864,10 +862,10 @@ public partial class Player
         }
 
         int baseAmount = amount;
-        amount = WithPremiumExp(amount, reason);
-        if (PremiumActive && !string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase))
+        if (applyBonuses) amount = WithPremiumExp(amount, reason);
+        if (PremiumActive && applyBonuses)
             _context.PremiumExpRemainder = (int)(((long)baseAmount * 3 + Math.Clamp(_context.PremiumExpRemainder, 0, 1)) % 2);
-        if (!string.Equals(reason, "cheat", StringComparison.OrdinalIgnoreCase))
+        if (applyBonuses)
         {
             var clan = ClanStore.Find(ClanStore.ClanIdOf(EntityId));
             if (clan != null && ClanRules.GrowthBuff(clan.Level) > 0)
@@ -1068,17 +1066,18 @@ public partial class Player
     /// (client/Durango.Logic.Skill/Category.cs:58-72 — ต้องมี research_times &gt; 0 ถึงจะกดวิจัยได้)
     /// </summary>
     /// <param name="save">false = ผู้เรียกจะเซฟเองทีหลัง (กันเขียนไฟล์เซฟซ้ำในการกระทำเดียว)</param>
-    public void AddCategoryExp(SkillCat category, int amount, bool save = true)
+    /// <param name="fixedGrant">Cupom: XP fixo, sem limite por ação nem etapas de pesquisa; excedente no nível máximo é descartado.</param>
+    public void AddCategoryExp(SkillCat category, int amount, bool save = true, bool fixedGrant = false)
     {
         if (_skills == null || amount <= 0) return;
-        amount = (int)Math.Min(amount, SkillDataStore.CategoryExpLimit);
+        if (!fixedGrant) amount = (int)Math.Min(amount, SkillDataStore.CategoryExpLimit);
         if (!SkillDataStore.Categories.TryGetValue((int)category, out SkillCategoryJson table) || table?.ExpNeeded == null) return;
 
         SkillCategorySave state = CategoryState((int)category);
         double reduced = 0.0;
         bool publishedSkills = false;
 
-        if (state.ResearchEnd > 0.0)
+        if (state.ResearchEnd > 0.0 && !fixedGrant)
         {
             // กำลังวิจัยอยู่ = exp ที่ได้กลายเป็น "เวลาที่ย่นได้" แทนที่จะเป็นเลเวล
             // สูตรจริง constants.json → skill.research_time_reduce = "exp * (level / 10.)"
@@ -1086,12 +1085,12 @@ public partial class Player
         }
         else
         {
-            state.Exp += amount;
+            state.Exp = (int)Math.Min(int.MaxValue, (long)state.Exp + amount);
             int levelBefore = state.Level;
             while (state.Level < SkillDataStore.MaxPlayerLevel &&
                    table.ExpNeeded.TryGetValue(state.Level, out int need) && need > 0 && state.Exp >= need)
             {
-                if (table.ResearchTimes != null && table.ResearchTimes.TryGetValue(state.Level, out int secs) && secs > 0)
+                if (!fixedGrant && table.ResearchTimes != null && table.ResearchTimes.TryGetValue(state.Level, out int secs) && secs > 0)
                 {
                     // ถึงขั้นหมุดหมายแล้ว — ค้าง exp ไว้ (client เช็ค Exp >= exp_needed ถึงจะให้กดวิจัย)
                     state.Exp = need;
@@ -1099,6 +1098,13 @@ public partial class Player
                 }
                 state.Exp -= need;
                 state.Level++;
+            }
+            if (fixedGrant)
+            {
+                if (state.Level >= SkillDataStore.MaxPlayerLevel) state.Exp = 0;
+                state.ResearchStart = 0.0;
+                state.ResearchEnd = 0.0;
+                state.ResearchSaved = 0f;
             }
             // หมวดขึ้นเลเวล = แจ้งแบนเนอร์ฝั่งเกม + อาจปลดสกิลอัตโนมัติชุดใหม่ได้
             if (state.Level > levelBefore)
@@ -1700,6 +1706,7 @@ public partial class Player
             basicRaw[ability] = BaseAbilityValue(ability);
         }
         ApplyModifiers(modifiers, basicRaw, deriveds);
+        deriveds[Derived.InventoryCapacity] = CurrentInventoryCapacity;
         foreach (var ability in CraftingAbilityRecipes.All.Select(u => u.Ability).Distinct())
             deriveds[ability] = CraftAbilityValue(ability);
         foreach (var (ability, value) in basicRaw)

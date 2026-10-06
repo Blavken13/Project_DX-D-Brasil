@@ -1,12 +1,14 @@
 {
   "estate": {
     "extending_cost": {
-      "0": "int(pow(1.4, size)) * 50 / size",
-      "2": "int(pow(1.08, size) * 10) * 200 / size"
+      "0": "0",
+      "4": "0",
+      "2": "0"
     },
     "expanding_cost": {
-      "0": "int(pow(1.4, size)) * 2500",
-      "2": "int(pow(1.08, size) * 10) * 1000"
+      "0": "0",
+      "4": "0",
+      "2": "0"
     }
   },
   "cargo": {

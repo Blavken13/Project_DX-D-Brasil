@@ -213,6 +213,10 @@ public partial class Player
                 break;
 
             case OwnerType.ClanEstate:
+                World clanEstateWorld = WorldForClanEstate();
+                dest = clanEstateWorld?.GetEstate(OwnedEstateId(clanEstateWorld, OwnerType.ClanEstate))?.RegionId
+                    ?? EnsureClanWorldRegistered();
+                break;
             case OwnerType.ClanWarphole:
                 dest = EnsureClanWorldRegistered();
                 break;
@@ -227,7 +231,7 @@ public partial class Player
         World destination = _world.Registry?.GetOrCreate(dest) ?? _world;
         OwnerType estateType = msg.OwnerType == OwnerType.PersonalPlayer && string.IsNullOrEmpty(_context.PersonalRegionId)
             ? OwnerType.Player : msg.OwnerType;
-        string estateId = estateType is OwnerType.Player or OwnerType.PersonalPlayer
+        string estateId = estateType is OwnerType.Player or OwnerType.PersonalPlayer or OwnerType.ClanEstate
             ? OwnedEstateId(destination, estateType) : null;
         if (string.Equals(dest, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
         {
@@ -288,6 +292,13 @@ public partial class Player
                 break;
 
             case OwnerType.ClanEstate:
+                World ownedClanWorld = WorldForClanEstate();
+                string ownedClanEstateId = OwnedEstateId(ownedClanWorld, OwnerType.ClanEstate);
+                string ownedClanRegion = ownedClanWorld?.GetEstate(ownedClanEstateId)?.RegionId;
+                if (ownedClanRegion != null && (string.IsNullOrEmpty(dest) ||
+                    string.Equals(dest, ownedClanRegion, StringComparison.OrdinalIgnoreCase)))
+                { dest = ownedClanRegion; break; }
+                goto case OwnerType.ClanWarphole;
             case OwnerType.ClanWarphole:
                 string ownClanRegion = EnsureClanWorldRegistered();
                 if (string.IsNullOrEmpty(ownClanRegion) ||
@@ -365,8 +376,7 @@ public partial class Player
         int largestPersonal = 0;
         int largestUrban = 0;
         EstateLicense? clanEstate = null; int largestClan = 0;
-        string clanRegion = EnsureClanWorldRegistered();
-        World clanWorld = clanRegion == null ? null : _world.Registry?.GetOrCreate(clanRegion);
+        World clanWorld = WorldForClanEstate();
         foreach (var estate in clanWorld?.EnumerateEstates() ?? Enumerable.Empty<KeyValuePair<string, EstateRecord>>())
             if (estate.Value.OwnerId == CurrentClanId() && estate.Value.Type == (int)OwnerType.ClanEstate)
             { clanEstate = clanWorld.ToLicense(estate.Key, estate.Value); largestClan = Math.Max(largestClan, estate.Value.LargestSize); }
@@ -425,6 +435,17 @@ public partial class Player
             switch (settlement.Kind)
             {
                 case SettlementRegionKind.SharedTamed:
+                    if (requestedType == OwnerType.ClanEstate)
+                    {
+                        string sharedClanId = CurrentClanId();
+                        if (string.IsNullOrEmpty(sharedClanId) || !ClanStore.CanManageEstate(EntityId, sharedClanId))
+                        {
+                            error = "Somente Líder ou Oficial pode declarar o domínio do clã.";
+                            return false;
+                        }
+                        ownerId = sharedClanId;
+                        return true;
+                    }
                     actualType = OwnerType.Player;
                     ownerId = EntityId;
                     return true;
@@ -555,6 +576,12 @@ public partial class Player
                 }
 
                 EstateRecord estate = _world.GetEstate(estateId);
+                if (settlement?.Kind == SettlementRegionKind.SharedTamed && estate?.Type == (int)OwnerType.ClanEstate)
+                {
+                    if (estate.OwnerId != CurrentClanId() || !estate.AllowsClan(EntityId, Shared.Estate.AccessRights.Occupy))
+                    { error = "Seu cargo não permite construir nesta área do enclave."; return false; }
+                    continue;
+                }
                 if (estate == null ||
                     (!string.Equals(estate.OwnerId, requiredOwner, StringComparison.Ordinal) &&
                      !(settlement?.Kind == SettlementRegionKind.SharedTamed &&
@@ -579,7 +606,9 @@ public partial class Player
         if (_world.HasTemporaryPlayerStructures && requiredRights == Shared.Estate.AccessRights.UseFacility &&
             Yaml.BlueprintStore.GetBlueprint(artifact.EntityType)?.Components is { } components &&
             (components.Contains("Workbench") || components.Contains("Sanctum"))) return true;
-        if (_world.Registry?.IsClanRegion(LogicalRegionId()) != true && string.Equals(artifactOwner, EntityId, StringComparison.Ordinal))
+        if (_world.Registry?.IsClanRegion(LogicalRegionId()) != true && string.Equals(artifactOwner, EntityId, StringComparison.Ordinal) &&
+            !(_world.TryGetEstateIdAtCell(World.CellFromTile(artifact.Tile), out string ownerEstateId) &&
+              ClanEstate(_world.GetEstate(ownerEstateId))))
         {
             return true;
         }
@@ -602,6 +631,8 @@ public partial class Player
 
         if (settlement.Kind == SettlementRegionKind.SharedTamed)
         {
+            if (estate.Type == (int)OwnerType.ClanEstate)
+                return estate.OwnerId == CurrentClanId() && ClanArtifactAllows(artifact, estate, requiredRights);
             return estate.Type == (int)OwnerType.Player &&
                    (string.Equals(estate.OwnerId, EntityId, StringComparison.Ordinal) ||
                     estate.Allows(EntityId, requiredRights));

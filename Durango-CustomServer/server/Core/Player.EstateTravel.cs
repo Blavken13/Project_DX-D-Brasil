@@ -30,7 +30,26 @@ public partial class Player
     }
 
     private string OwnedEstateId(World world, OwnerType type) => world?.EnumerateEstates()
-        .FirstOrDefault(e => e.Value.Type == (int)type && e.Value.OwnerId == EntityId).Key;
+        .FirstOrDefault(e => e.Value.Type == (int)type && e.Value.OwnerId ==
+            (type == OwnerType.ClanEstate ? CurrentClanId() : EntityId)).Key;
+
+    private World WorldForClanEstate()
+    {
+        string clanId = CurrentClanId();
+        if (clanId == null) return null;
+        bool HasEstate(World world) => world?.EnumerateEstates().Any(e =>
+            e.Value.Type == (int)OwnerType.ClanEstate && e.Value.OwnerId == clanId) == true;
+        if (HasEstate(_world)) return _world;
+        var registry = _world.Registry;
+        if (registry?.EnsureDefaultSharedTamedRegion() == true)
+        {
+            var shared = registry.GetOrCreate(WorldRegistry.DefaultSharedTamedRegionId);
+            if (HasEstate(shared)) return shared;
+        }
+        string region = EnsureClanWorldRegistered();
+        var legacy = region == null ? null : registry?.GetOrCreate(region);
+        return HasEstate(legacy) ? legacy : null;
+    }
 
     private Point2 ConsumeEstateArrival()
     {
@@ -39,7 +58,10 @@ public partial class Player
         if (arrival != null && string.Equals(arrival.RegionId, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
         {
             EstateRecord estate = _world.GetEstate(arrival.EstateId);
-            if (estate?.OwnerId == EntityId && estate.Type is (int)OwnerType.Player or (int)OwnerType.PersonalPlayer &&
+            bool owned = estate != null && (estate.OwnerId == EntityId &&
+                estate.Type is (int)OwnerType.Player or (int)OwnerType.PersonalPlayer ||
+                estate.Type == (int)OwnerType.ClanEstate && estate.OwnerId == CurrentClanId());
+            if (owned &&
                 _world.TryEstateArrivalTile(arrival.EstateId, out Point2 tile)) return tile;
         }
         return _world.EntryPoint;

@@ -42,8 +42,10 @@ internal static class SocialCheck
     {
         string root = Path.Combine(Path.GetTempPath(), "Durango-social-check-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root);
+        string priorAppData = AppData.BasePath;
         try
         {
+            AppData.BasePath = root;
             Json.DataDir = dataDir; MoCatalog.Load(dataDir); DataStore.Load(dataDir);
             TerrainLoader.TerrainDir = Path.Combine(dataDir, "terrains"); WorkbenchTags.AssetsDir = Path.Combine(dataDir, "assets");
             RegionCatalog.Load(Path.Combine(dataDir,"assets"));
@@ -243,9 +245,51 @@ internal static class SocialCheck
             partyPath.SetValue(null,blocked);
             try { Check(!PartyStore.Change("failed-party","make",null,out _,out _) && PartyStore.Snapshot("failed-party") == null, "falha de gravação não cria equipe em memória"); }
             finally { partyPath.SetValue(null,originalPartyPath); }
+            Check(registry.EnsureDefaultSharedTamedRegion(), "ilha pública disponível para declaração nativa do enclave");
+            var sharedWorld = registry.GetOrCreate(WorldRegistry.DefaultSharedTamedRegionId);
+            var sharedLeader = Context(root, alice.EntityId, sharedWorld); sharedLeader.RegionId = WorldRegistry.DefaultSharedTamedRegionId;
+            economy.Recover(sharedLeader); sharedLeader.TStone = 0;
+            var outsider = Context(root, dave.EntityId, sharedWorld); outsider.RegionId = sharedLeader.RegionId;
+            economy.Recover(outsider);
+            Point2 publicCell = World.CellFromTile(sharedWorld.EntryPoint);
+            long publicFund = ClanStore.Find(clanId).Fund;
+            using (var mobile = new EconomyProtocolCheck.Link(sharedLeader, sharedWorld, economy))
+            using (var desktop = new EconomyProtocolCheck.Link(outsider, sharedWorld, economy))
+            {
+                desktop.Request<DeclareEstate, Abort>(new DeclareEstate { OwnerType = OwnerType.ClanEstate, Cell = publicCell });
+                var publicLicense = mobile.Request<DeclareEstate, EstateLicense>(new DeclareEstate { OwnerType = OwnerType.ClanEstate, Cell = publicCell });
+                Check(publicLicense.Type == OwnerType.ClanEstate && publicLicense.OwnerId == clanId &&
+                    publicLicense.RegionId == WorldRegistry.DefaultSharedTamedRegionId,
+                    "pedido nativo de enclave na ilha pública preserva tipo e proprietário do clã");
+                Check(sharedLeader.TStone == 0 && ClanStore.Find(clanId).Fund == publicFund && ClanRules.TerritoryCost(10) == 0,
+                    "declaração gratuita não exige carteira pessoal nem debita fundo");
+                Check(mobile.Request<GetEstateLicenses, EstateLicenses>(default).ClanEstate?.EstateId == publicLicense.EstateId,
+                    "menu nativo reconhece licença do enclave público");
+                object[] build = { World.TileFromCell(publicCell), new Point2(1, 1), null };
+                Check((bool)Call(mobile.Player, "CanBuildInCurrentSettlement", build), "líder pode construir no enclave público");
+                Check(!(bool)Call(desktop.Player, "CanBuildInCurrentSettlement", build), "outro jogador não pode construir no enclave público");
+                var publicArtifact = new AppearArtifact { Tile = World.TileFromCell(publicCell), States = new ArtifactState() };
+                Check((bool)Call(mobile.Player, "CanUseArtifactInCurrentSettlement", publicArtifact, alice.EntityId, Shared.Estate.AccessRights.UseFacility)
+                    && !(bool)Call(desktop.Player, "CanUseArtifactInCurrentSettlement", publicArtifact, alice.EntityId, Shared.Estate.AccessRights.Take),
+                    "instalações do enclave público respeitam direitos do clã");
+                mobile.Request<DeclareEstate, Abort>(new DeclareEstate { OwnerType = OwnerType.ClanEstate, Cell = new Point2(publicCell.x + 1, publicCell.y) });
+                Check(sharedWorld.EnumerateEstates().Count() == 1, "pedido repetido não cria segundo enclave na mesma ilha");
+                registry.SaveAll(); Check(SafeSave.FlushPending(), "enclave público persistido");
+                var travelWorldContext = new WorldContext { TerrainId = "pe10gr_1" }; travelWorldContext.Initialize(Path.Combine(root, "travel.world"));
+                var travelWorld = new World(travelWorldContext);
+                var travelRegistry = new WorldRegistry("social-check", travelWorld, "pe10gr_1") { Economy = economy };
+                var traveler = Context(root, alice.EntityId, travelWorld); economy.Recover(traveler);
+                using var returning = new EconomyProtocolCheck.Link(traveler, travelWorld, economy);
+                Check(returning.Request<GetEstateLicenses, EstateLicenses>(default).ClanEstate?.EstateId == publicLicense.EstateId,
+                    "licença pública localizada de outra ilha após recarregar os mundos");
+                returning.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = OwnerType.ClanEstate });
+                returning.PumpUntil(() => returning.Messages.OfType<Emigrated>().Any());
+                Check(traveler.RegionId == WorldRegistry.DefaultSharedTamedRegionId && traveler.PendingEstateArrival?.EstateId == publicLicense.EstateId,
+                    "retorno ao enclave aponta para terreno público do clã");
+            }
             Console.WriteLine($"[social-check] PASS {_checks} verificações"); return 0;
         }
         catch (Exception e) { Console.Error.WriteLine("[social-check] FAIL " + e); return 1; }
-        finally { PartyStore.Clock = () => DateTimeOffset.UtcNow.ToUnixTimeSeconds(); SafeSave.FlushPending(); Directory.Delete(root,true); }
+        finally { PartyStore.Clock = () => DateTimeOffset.UtcNow.ToUnixTimeSeconds(); SafeSave.FlushPending(); AppData.BasePath = priorAppData; Directory.Delete(root,true); }
     }
 }

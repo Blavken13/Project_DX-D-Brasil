@@ -462,7 +462,7 @@
     "survival_check_period": 30,
     "research_reduce_time_limit": 0.25,
     "research_time_reduce": "exp * (level / 10.)",
-    "exp_increase_limit": 3
+    "exp_increase_limit": 12
   },
   "point_of_interest": {
     "explore_dist": 16,
@@ -859,7 +859,7 @@
   },
   "clan_territory_costs": {
     "currency": 0,
-    "amount": "10000 * territory_count"
+    "amount": "0"
   },
   "warehouse": {
     "section_size": 200

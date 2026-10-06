@@ -80,8 +80,8 @@ internal static class GameplayPolishCheck
         var carcass = world.AnimalManager.All.FirstOrDefault();
         if (carcass != null)
         {
-            Check(world.AnimalManager.All.All(a => a.CombatLevel == Math.Max(1, expectedLevel - 2)),
-                name + " dinos permanecem dois niveis abaixo da ilha");
+            Check(world.AnimalManager.All.All(a => a.CombatLevel == Math.Max(1, expectedLevel)),
+                name + " dinos têm o mesmo nível da ilha");
             carcass.Life = 0;
             carcass.IsAlive = false;
             var collectible = link.Player.BuildCollectibleFor(carcass.EntityId, carcass.EntityType, carcass.Tile);

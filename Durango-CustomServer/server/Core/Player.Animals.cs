@@ -729,6 +729,8 @@ public partial class Player
     /// </summary>
     private void HandlePutInItemsIntoPetMsg(PutInItemsIntoPet msg)
     {
+        if (RejectSkillXpCouponTransfer(msg.ItemIds)) return;
+
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
         if (entry == null)
         {

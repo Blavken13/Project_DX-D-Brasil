@@ -100,6 +100,10 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--xp-coupon-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return SkillXpCouponCheck.Run(dataDir);
                 case "--social-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

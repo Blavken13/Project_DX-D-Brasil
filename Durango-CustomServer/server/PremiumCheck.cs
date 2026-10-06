@@ -139,6 +139,59 @@ internal static class PremiumCheck
             Check(store.Change(alice, "monthly_package_1", 1, "grant", "after-expiry", out var expiredRenew, out _, out _)
                 && expiredRenew.Until == now + 86400, "renovação vencida começa agora");
             Check(PremiumStore.GatherChance == 0.25f, "chance premium definida em 25%");
+            alice.InventoryItems.Clear(); alice.EquippedItems.Clear();
+            link.Player.SyncPremium();
+            var gloves = Cheats.MakeItem("s02_gloves_work_01", 60).Value;
+            var bag = Cheats.MakeItem("event_suitcase", 60).Value;
+            ItemCraftModifications.Initialize(ref gloves);
+            Check(ItemCraftModifications.Apply(ref gloves, "reform_pocket", CraftRecipeStore.Get("reform_pocket"),
+                new Dictionary<string, Item[]>(), 0, out _), "luvas recebem bolso pela melhoria real");
+            int pocket = (int)gloves.Performance.Single(p => p.Id == "armor").Nums["bag_size"];
+            alice.InventoryItems.Add(gloves); alice.InventoryItems.Add(bag);
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 40, "peças na mochila não concedem armazenamento");
+            int infos = link.Messages.OfType<InventoryInfos>().Count();
+            link.Request<Equip, Equipments>(new Equip { Action = "equip", SlotName = "gloves", ItemId = gloves.Id });
+            link.PumpUntil(() => link.Messages.OfType<InventoryInfos>().Count() > infos);
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 40 + pocket &&
+                link.Messages.OfType<InventoryInfos>().Last().MaxSize == Player.InventoryCapacity(alice),
+                "bolso soma com premium e publica capacidade ao equipar");
+            link.Request<Equip, Equipments>(new Equip { Action = "equip", SlotName = "precious", ItemId = bag.Id });
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 40 + pocket + 20,
+                "acessório soma carry_capacity com armadura e premium");
+            var naturalPocket = Cheats.MakeItem("s02_gloves_work_01", 60).Value;
+            naturalPocket.Tags = naturalPocket.Tags.Append(new Tag { Id = "pocket", Level = 2 }).ToArray();
+            alice.InventoryItems.Add(naturalPocket); alice.EquippedItems["gloves"] = naturalPocket.Id;
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 40 + 20 + 1 + 12,
+                "bolsos naturais também concedem armazenamento pela fórmula do atributo");
+            alice.EquippedItems["duplicate"] = naturalPocket.Id;
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 40 + 20 + 1 + 12,
+                "referência repetida no save não duplica armazenamento");
+            alice.EquippedItems.Remove("duplicate"); alice.EquippedItems["gloves"] = gloves.Id;
+            alice.InventoryItems.RemoveAll(i => i.Id == naturalPocket.Id);
+            link.PumpUntil(() => link.Messages.OfType<Statistics>().Last().DerivedsAbilities[Shared.Ability.Derived.InventoryCapacity]
+                == Player.InventoryCapacity(alice));
+            Check(link.Messages.OfType<Statistics>().Last().DerivedsAbilities[Shared.Ability.Derived.InventoryCapacity]
+                == Player.InventoryCapacity(alice), "estatísticas e inventário usam a mesma capacidade");
+            link.Request<Equip, Abort>(new Equip { Action = "equip", SlotName = "head", ItemId = bag.Id });
+            Check(alice.EquippedItems.Count == 2, "item não pode multiplicar bônus em espaços incompatíveis");
+            var full = berry; full.Id = "capacity-ballast"; full.Size = Player.InventoryCapacity(alice) - 2;
+            alice.InventoryItems.Add(full);
+            bool CanReceive(Item[] items) => (bool)typeof(EconomyStore).GetMethod("CanReceive", BindingFlags.Static | BindingFlags.NonPublic)
+                .Invoke(null, new object[] { alice, items });
+            Check(CanReceive(Array.Empty<Item>()) && !CanReceive(new[] { berry }),
+                "capacidade com equipamentos é aplicada ao limite real de entrada de itens");
+            var capacityReload = Json.Read<PlayerContext>(Json.Write(alice)); capacityReload.Initialize(Path.Combine(root, "capacity.player"));
+            store.Recover(capacityReload);
+            Check(Player.InventoryCapacity(capacityReload) == Player.InventoryCapacity(alice),
+                "reconexão preserva bônus do bolso e acessório sem duplicação");
+            link.Request<Equip, Equipments>(new Equip { Action = "unequip", SlotName = "gloves" });
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 40 + 20 && alice.InventoryItems.Count == 3,
+                "remover peça reduz capacidade e preserva itens já guardados");
+            Check(store.Change(alice, "monthly_package_1", 0, "revoke", "capacity-revoke", out _, out _, out _), "premium removido no teste de armazenamento");
+            link.Player.SyncPremium();
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize + 20, "expiração do premium preserva armazenamento do acessório");
+            link.Request<Equip, Equipments>(new Equip { Action = "unequip", SlotName = "precious" });
+            Check(Player.InventoryCapacity(alice) == Player.InventoryMaxSize, "retirar última peça restaura capacidade base");
             var blocked = Path.Combine(root, "blocked"); Directory.CreateDirectory(blocked);
             var brokenStore = new PremiumStore(blocked, () => now);
             long beforeFailure = bob.WarpGem;

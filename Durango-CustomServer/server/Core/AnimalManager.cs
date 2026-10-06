@@ -697,7 +697,7 @@ public class AnimalManager
             int wantedCompso = Math.Min(
                 wantedTotal - wantedZebra,
                 WorldTuning.SafehouseCompsognathusCount);
-            int safehouseLevel = Math.Max(1, template.Level - 2);
+            int safehouseLevel = Math.Max(1, template.Level);
 
             // A grade antiga (12 tiles) podia não fornecer 100 posições válidas.
             // Preferimos espaçamento 8; se ainda faltar terreno, completamos com grade 4,
@@ -743,8 +743,11 @@ public class AnimalManager
                 while (cursor < candidates.Count && placedForSpecies < speciesTarget)
                 {
                     Point2 tile = candidates[cursor++];
-                    Animal animal = SpawnAt(type, safehouseLevel, tile);
+                    Animal animal = Create($"cheat_{type}_{++_cheatSpawnCount}",
+                        new RegionCatalog.HerdSpawn(type, safehouseLevel), tile, safehouseLevel);
                     if (animal == null) continue;
+                    _animals.Add(animal);
+                    _byId[animal.EntityId] = animal;
                     animal.DefensiveOnly = true;
                     placedForSpecies++;
                 }
@@ -762,8 +765,7 @@ public class AnimalManager
         if (terrain == null || template == null || template.Herds.Count == 0) return;
         if (template.Role is Shared.Region.Role.Personal or Shared.Region.Role.Tutorial) return;
 
-        int resolvedWildLevel = template.Role == Shared.Region.Role.Risky
-            ? Math.Max(1, template.Level - 2) : 0;
+        int resolvedWildLevel = Math.Max(1, template.Level);
         int target = AnimalTuning.TargetAnimalsPerRegion;
         var definitions = template.Herds.Values.SelectMany(group => group)
             .Where(spawn => AnimalTypes.Get(spawn.EntityType) != null).ToList();
@@ -882,7 +884,10 @@ public class AnimalManager
             requestedLevel = Math.Max(1, spawn.PackedSuffix);
         }
 
-        int level = Math.Clamp(requestedLevel, info.MinCombatLevel, info.MaxCombatLevel);
+        // Natural fauna follows the island, including species with historic caps
+        // below its level. Explicit administrative spawns retain their own range.
+        int level = resolvedCombatLevel > 0 ? Math.Max(1, requestedLevel)
+            : Math.Clamp(requestedLevel, info.MinCombatLevel, info.MaxCombatLevel);
 
         if (level != requestedLevel)
         {

@@ -2043,6 +2043,10 @@ public partial class Player
         {
             int num = _context.InventoryItems.FindIndex(x => x.Id == msg.ItemId);
             if (num < 0) return;
+            var item = _context.InventoryItems[num];
+            string slot = PerformanceYaml.GetArmor(item.Prototype)?.Slot ?? PerformanceYaml.GetWeapon(item.Prototype)?.Slot;
+            if (string.IsNullOrEmpty(slot) || slot != msg.SlotName)
+            { Send(new Abort { Text = "Este item não pode ser equipado neste espaço." }, headerSeq); return; }
             _context.EquippedItems[msg.SlotName] = msg.ItemId;
         }
         else if (!_context.EquippedItems.Remove(msg.SlotName))
@@ -2238,6 +2242,7 @@ public partial class Player
     private void SendEquipments(uint replyOf = 0u)
     {
         Send(UpdateEquipments(), replyOf);
+        SendInventoryInfos();
         if (_skills != null) { SendFullStatistics(); SendRecipes(0u); }
         SendBaseMoveSpeed();
     }

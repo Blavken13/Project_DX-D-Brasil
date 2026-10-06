@@ -37,6 +37,7 @@ internal static class ProgressionRegressionCheck
             TerrainLoader.TerrainDir = Path.Combine(dataDir, "terrains"); RegionCatalog.Load(Path.Combine(dataDir, "assets"));
             var wc = new WorldContext { TerrainId = "pe10gr_1" }; wc.Initialize(Path.Combine(root, "test.world"));
             var world = new World(wc);
+            CraftEquipmentLevelCheck.Run(root, world, Check);
             var context = new PlayerContext { PlayerInfo = new Durango.Logic.Clusters.PlayerInfo
                 { PlayerEntityId = "progression-tester", PlayerName = "Tester", PlayerLevel = 1 } };
             string savePath = Path.Combine(root, "tester.player"); context.Initialize(savePath);
@@ -49,6 +50,14 @@ internal static class ProgressionRegressionCheck
                 int level60 = (int)typeof(Player).GetMethod("ExpForLevel", BindingFlags.Static | BindingFlags.NonPublic)
                     .Invoke(null, new object[] { 60 });
                 player.AddExp(level60 - skills.Exp, "cheat");
+                var gathering = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Gathering);
+                gathering.Level = 40; gathering.Exp = 0;
+                int skillIndicators = link.Messages.OfType<SkillCategoryExperienced>().Count();
+                player.AddExpForAction(SkillTuning.GatherWeight, Category.Gathering, "Coletar teste");
+                link.PumpUntil(() => link.Messages.OfType<SkillCategoryExperienced>().Count() > skillIndicators);
+                Check(gathering.Level == 40 && gathering.Exp == 12 &&
+                    link.Messages.OfType<SkillCategoryExperienced>().Last().Exp == 12,
+                    "atividade normal concede 12 pontos à barra da habilidade pelo protocolo");
                 Check((int)Call(player, "TotalSkillPoints") == SkillDataStore.InitialSkillPoints + 59 * 5,
                     "nivel 60 recebe cinco pontos por nivel, inclusive retroativos");
                 var construction = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Constructing);
@@ -90,17 +99,15 @@ internal static class ProgressionRegressionCheck
                 link.Request<UntrainSkill, OK>(new UntrainSkill { SkillId = "harpoon", SubId = "__base__", Level = 3 });
                 link.PumpUntil(() => !link.Messages.OfType<Recipes>().Last().Ids.Contains(harpoons[2]));
                 Check(!player.UnlockedRecipeIds().Contains(harpoons[2]), "retirar habilidade tambem atualiza a lista de receitas");
-                foreach (var sample in new[] { ("blade_stone", 19), ("blade_sword_stone_01", 39),
-                    ("harpoon_wooden_01", 24), ("harpoon_bone_01", 44), ("harpoon_metal_01", 60) })
+                foreach (var sample in new[] { ("blade_stone", 60), ("blade_sword_stone_01", 60),
+                    ("harpoon_wooden_01", 60), ("harpoon_bone_01", 60), ("harpoon_metal_01", 60) })
                 {
                     var recipe = CraftRecipeStore.Get(sample.Item1);
                     var materials = new List<Item> { new() { Level = 60, Tags = Array.Empty<Tag>() } };
-                    int resultLevel = (int)typeof(Player).GetMethod("ProductLevel", BindingFlags.Static | BindingFlags.NonPublic)
-                        .Invoke(null, new object[] { recipe, materials });
-                    var products = (Item[])typeof(Player).GetMethod("MakeProducts", BindingFlags.Static | BindingFlags.NonPublic)
-                        .Invoke(null, new object[] { recipe, new Dictionary<string, string[]>(), materials, resultLevel });
+                    int resultLevel = (int)Call(player, "ProductLevel", recipe, materials);
+                    var products = (Item[])Call(player, "MakeProducts", recipe, new Dictionary<string, string[]>(), materials, resultLevel);
                     Check(products.Length > 0 && products.All(p => p.Level == sample.Item2),
-                        "produto respeita tier original: " + sample.Item1);
+                        "arma/ferramenta usa materiais e proficiência 60: " + sample.Item1);
                     if (sample.Item1.StartsWith("harpoon"))
                         Check(products.All(p => p.Durability?.Max() > 1), "arpao mantem durabilidade funcional: " + sample.Item1);
                 }
@@ -161,7 +168,7 @@ internal static class ProgressionRegressionCheck
                 float life = survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime);
                 int beforeSkills = link.Messages.OfType<Skills>().Count();
                 Impact(Gauge.CurrentTime);
-                Check(DefenseProgress(defense) == initial + 2 && survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime) >= life,
+                Check(DefenseProgress(defense) == initial + 12 && survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime) >= life,
                     "esquiva dentro da janela original evita dano e concede fator 2 de Defesa");
                 link.PumpUntil(() => link.Messages.OfType<Damaged>().Any(d => d.VictimId == context.EntityId && d.Damage.Result == DamageResult.Dodged));
                 link.PumpUntil(() => link.Messages.OfType<Skills>().Count() > beforeSkills);
@@ -179,7 +186,7 @@ internal static class ProgressionRegressionCheck
                 Check(survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime) < life && skills.DefenseExpRemainder > 0,
                     "fora da janela golpe volta a causar dano e acumula fracao de EXP passiva");
                 for (int i = 0; i < 9; i++) Impact(until + .02 + i * .01);
-                Check(DefenseProgress(defense) == afterDodge + 1 && skills.DefenseExpRemainder < 1e-6,
+                Check(DefenseProgress(defense) == afterDodge + 12 && skills.DefenseExpRemainder < 1e-6,
                     "coeficiente hit_factor 0.1 acumula sem perder fracao ou duplicar impactos");
                 Impact(until + 1);
                 double fraction = skills.DefenseExpRemainder;

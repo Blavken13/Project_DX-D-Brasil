@@ -6,7 +6,8 @@ namespace Durango.Online;
 
 public partial class Player
 {
-    public static int InventoryCapacity(PlayerContext context) => InventoryMaxSize + (context?.Premium?.InventoryBonus(context.EntityId) ?? 0);
+    public static int InventoryCapacity(PlayerContext context) => (int)Math.Min(int.MaxValue,
+        (long)InventoryMaxSize + (context?.Premium?.InventoryBonus(context.EntityId) ?? 0) + EquipmentInventoryBonus(context));
     public int CurrentInventoryCapacity => InventoryCapacity(_context);
     private bool PremiumActive => _context.Premium?.IsActive(EntityId) == true;
     private string _premiumSignature;
@@ -30,6 +31,7 @@ public partial class Player
         _fatigueCheckedStamp = int.MinValue;
         SendStatusEffects();
         SendInventoryInfos();
+        if (_skills != null) SendFullStatistics();
         SyncFatigueVelocities();
         FlushSurvival();
         SendWalletNow();

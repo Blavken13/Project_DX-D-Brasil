@@ -55,10 +55,24 @@ internal static class FaunaLootCheck
                         .Where(t => AnimalTypes.Get(t) != null).ToHashSet();
                     if (nativeTypes.Count <= manager.Count)
                         Check(nativeTypes.SetEquals(manager.All.Select(a => a.EntityType)), id + ": preserva todas as especies nativas");
-                    if (template.Role == Role.Risky)
-                        Check(manager.All.All(a => a.CombatLevel == Math.Clamp(template.Level - 2,
-                            AnimalTypes.Get(a.EntityType).MinCombatLevel, AnimalTypes.Get(a.EntityType).MaxCombatLevel)),
+                    if (template.Level > 0)
+                        Check(manager.All.All(a => a.CombatLevel == template.Level && a.ToMessage().Level == template.Level),
                             id + ": nivel coerente com ilha");
+                    if (template.Level == 60)
+                    {
+                        var animal = manager.All.First();
+                        var stats = AnimalTypes.Get(animal.EntityType);
+                        Check(Math.Abs(animal.LifeMax - StatFormula.EvalOr(stats.LifeMax,
+                            new Dictionary<string, double> { ["combat_level"] = 60, ["unstable_factor"] = 1 }, 1)) < .01,
+                            id + ": atributos de combate usam nível 60 além do número exibido");
+                        animal.IsAlive = false; animal.Life = 0; animal.DiedAt = 1;
+                        AnimalManager.Animal revived = null;
+                        manager.Process(1 + AnimalManager.CorpseDisposeDelay, _ => { }, a => revived = a);
+                        Check(revived == animal && animal.IsAlive && animal.CombatLevel == 60 && animal.Life == animal.LifeMax,
+                            id + ": respawn conserva nível da ilha e restaura vida");
+                        var reopened = new AnimalManager(terrain, template);
+                        Check(reopened.All.All(a => a.CombatLevel == 60), id + ": recarregar a ilha mantém todos os dinos no nível 60");
+                    }
                 }
             }
             var level30 = TerrainLoader.Load("ri30td01");

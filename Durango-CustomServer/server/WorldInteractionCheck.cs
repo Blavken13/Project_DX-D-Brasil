@@ -152,8 +152,7 @@ internal static class WorldInteractionCheck
                 var template = RegionCatalog.GetTemplate(data.Info.region_template);
                 if (id.EndsWith("_alpha", StringComparison.Ordinal))
                     Check(tw.RegionLevel == template.Level && (template.Role != Shared.Region.Role.Risky ||
-                        tw.AnimalManager.All.All(a => a.CombatLevel == Math.Clamp(Math.Max(1, template.Level - 2),
-                            AnimalTypes.Get(a.EntityType).MinCombatLevel, AnimalTypes.Get(a.EntityType).MaxCombatLevel))),
+                        tw.AnimalManager.All.All(a => a.CombatLevel == Math.Max(1, template.Level))),
                         "nova ilha preserva nivel e fauna do template: " + id);
                 if (template.Role is not (Shared.Region.Role.Personal or Shared.Region.Role.Tutorial))
                 {
