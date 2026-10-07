@@ -25,21 +25,53 @@ namespace Durango.Online;
 /// สิ่งที่ **ไม่ได้** อยู่ในนี้เพราะมีของจริงให้ใช้แล้ว (อย่าก๊อปมาซ้ำ):
 ///   · เกณฑ์เลเวล → <c>statistics/player.json</c> → <c>level_thresholds[80]</c>
 ///   · เลเวลสูงสุด/เลเวลมือใหม่ → <c>constants.json</c> → <c>max_levels.player</c>, <c>newbie_level</c>
-///   · แต้มสกิลตั้งต้น → <c>constants.json</c> → <c>skill_points.initial</c>
+///   · SP por nivel: tabela informada para o original, com bonus temporario de Alpha abaixo.
 ///   · exp ต่อเลเวลของหมวดสกิล/เวลาวิจัย → <c>skill/categories.json</c>
 ///   · สูตรลดเวลาวิจัย → <c>constants.json</c> → <c>skill.research_time_reduce</c>
 /// </summary>
 public static class SkillTuning
 {
-    /// <summary>
-    /// **ค่าของเรา** — แต้มสกิลที่ได้เพิ่มต่อ 1 เลเวลผู้เล่น
-    ///
-    /// คิดจากของจริง: สกิลทั้งเกมรวมกัน 3,213 แต้ม (นับ <c>skill_point</c> ของทั้ง 918 โหนดใน
-    /// <c>skill/skills.json</c>) และเลเวลสูงสุดคือ 60 ⇒ 10 + 59×3 = 187 แต้มตอนเลเวลเต็ม
-    /// = ราว 6% ของทั้งเกม ซึ่งบังคับให้ต้อง "เลือกสายถนัด" ตามที่เกมออกแบบไว้
-    /// (โหนดหนึ่งราคา 3–8 แต้ม ⇒ 187 แต้ม ≈ 30–50 สกิล)
-    /// </summary>
-    public const int SkillPointsPerLevel = 5;
+    /// <summary>Evento temporario de Alpha: +50% de SP, arredondados para cima por nivel.</summary>
+    public const int AlphaTestSkillPointBonusPercent = 50;
+
+    /// <summary>Tabela original fornecida para os niveis de jogador 1 a 60.</summary>
+    public static int OriginalSkillPointsForLevel(int level) => level switch
+    {
+        1 => 15,
+        >= 2 and <= 8 => 6,
+        9 => 7,
+        >= 10 and <= 12 => 8,
+        >= 13 and <= 18 => 9,
+        19 => 10,
+        >= 20 and <= 22 => 11,
+        >= 23 and <= 28 => 12,
+        29 => 13,
+        >= 30 and <= 32 => 14,
+        >= 33 and <= 38 => 15,
+        39 => 16,
+        >= 40 and <= 42 => 17,
+        >= 43 and <= 48 => 18,
+        49 => 19,
+        >= 50 and <= 52 => 20,
+        >= 53 and <= 58 => 21,
+        59 => 22,
+        60 => 23,
+        _ => throw new ArgumentOutOfRangeException(nameof(level), "SP definido somente para niveis 1 a 60.")
+    };
+
+    public static int SkillPointsForLevel(int level)
+    {
+        int original = OriginalSkillPointsForLevel(level);
+        return original + (original * AlphaTestSkillPointBonusPercent + 99) / 100;
+    }
+
+    public static int TotalSkillPointsForLevel(int level)
+    {
+        int total = 0;
+        for (int reached = 1; reached <= Math.Clamp(level, 1, 60); reached++)
+            total += SkillPointsForLevel(reached);
+        return total;
+    }
 
     /// <summary>
     /// **ค่าของเรา** — เลเวลตั้งต้นของตัวละครใหม่
@@ -740,6 +772,7 @@ public partial class Player
         }
         _context.Storage[SkillTuning.StorageKey] = blob;
         OnContextChanged();
+        if (!string.IsNullOrEmpty(LearningGuide.Target)) Send(BuildAdvisorTargets());
     }
 
     /// <summary>
@@ -1545,11 +1578,12 @@ public partial class Player
     }
 
     /// <summary>
-    /// แต้มสกิลทั้งหมด = ของจริง (<c>constants.json</c> → <c>skill_points.initial</c> = 10)
-    /// + <see cref="SkillTuning.SkillPointsPerLevel"/> ต่อเลเวล (ค่าของเรา)
+    /// SP acumulados pela tabela de niveis, incluindo o bonus de Alpha.
+    /// Calculado pelo nivel: personagens existentes recebem a diferenca retroativa
+    /// automaticamente sem alterar skills aprendidas ou acumular creditos em reconexoes.
     /// </summary>
     private int TotalSkillPoints() =>
-        SkillDataStore.InitialSkillPoints + (_skillLevel - 1) * SkillTuning.SkillPointsPerLevel;
+        SkillTuning.TotalSkillPointsForLevel(_skillLevel);
 
     /// <summary>
     /// แต้มที่ใช้ไปแล้ว = ผลรวม <c>skill_point</c> ของโหนด 1..Level ทุกสกิล
@@ -1615,8 +1649,8 @@ public partial class Player
             Categories = categories,
             UntrainedCount = _skills.UntrainedCount,
             // "สกิลแนะนำ" เป็นของระบบไกด์ (LearningGuideSystem) ที่เซิร์ฟยังไม่ทำ — ส่งว่างไว้ก่อน
-            AdvisedSkills = Array.Empty<Messages.Skill>(),
-            AdvisedSkillCategories = new Dictionary<SkillCat, int>()
+            AdvisedSkills = AdvisedGuideSkills(),
+            AdvisedSkillCategories = AdvisedGuideCategories()
         }, replyOf);
     }
 
@@ -1706,6 +1740,8 @@ public partial class Player
             basicRaw[ability] = BaseAbilityValue(ability);
         }
         ApplyModifiers(modifiers, basicRaw, deriveds);
+        // Gauge ceilings already include the selected title; do not add them twice in Statistics.
+        ApplySurvivalMaxToDeriveds(deriveds);
         deriveds[Derived.InventoryCapacity] = CurrentInventoryCapacity;
         foreach (var ability in CraftingAbilityRecipes.All.Select(u => u.Ability).Distinct())
             deriveds[ability] = CraftAbilityValue(ability);
@@ -1758,6 +1794,7 @@ public partial class Player
                 }
             }
         }
+        foreach (var (id, value) in SelectedGuideTitle()?.Modifiers ?? new()) Accumulate(result, id, value);
         return result;
     }
 

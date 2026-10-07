@@ -536,9 +536,69 @@ public sealed class SurvivalState
         // ไม่มีใครต่ออยู่ = เส้นแบน ค่าค้างไว้เฉย ๆ (ยังไม่ทำ offline progression — ดู _live)
         float velocity = _live ? def.Velocity + MomentumOf(key) : 0f;
 
-        GaugeNode[] nodes = MakeLine(now, cur, velocity, min, maxNow, maxEnd, SurvivalTuning.DeterminationHorizon);
+        // health/energy podem atingir o piso ou teto antes do fim do horizonte.
+        // Usar apenas seus extremos dilui a velocidade pelos 600s e deixa life
+        // acima de health; o próximo Flush (por exemplo ao comer) corta essa
+        // diferença de uma vez. Preservar cada trecho da curva do teto.
+        GaugeNode[] nodes = maxGauge != null
+            ? MakeBoundedLine(now, cur, velocity, min, maxGauge, SurvivalTuning.DeterminationHorizon)
+            : MakeLine(now, cur, velocity, min, maxNow, maxEnd, SurvivalTuning.DeterminationHorizon);
         _values[key] = nodes[0].Value;
         return maxGauge != null ? new Gauge(maxGauge, min, nodes) : new Gauge(maxNow, min, nodes);
+    }
+
+    private static GaugeNode[] MakeBoundedLine(double now, float cur, float velocity, float min,
+                                              Gauge maxGauge, double horizon)
+    {
+        var nodes = new List<GaugeNode>();
+        double end = now + horizon;
+        double start = now;
+        cur = Mathf.Clamp(cur, min, Mathf.Max(min, maxGauge.Get(now)));
+        nodes.Add(new GaugeNode(now, cur));
+
+        // A determinação do teto já está em ordem de tempo. Incluir o fim do
+        // horizonte mesmo quando a última determinação chega ao limite antes.
+        foreach (GaugeNode bound in maxGauge.Determination)
+        {
+            if (bound.Time <= start || bound.Time >= end) continue;
+            Segment(bound.Time);
+        }
+        Segment(end);
+        return nodes.ToArray();
+
+        void Segment(double until)
+        {
+            double span = until - start;
+            float maxStart = Mathf.Max(min, maxGauge.Get(start));
+            float maxFinish = Mathf.Max(min, maxGauge.Get(until));
+            float maxVelocity = (float)((maxFinish - maxStart) / span);
+            float relative = velocity - maxVelocity;
+            double hitAt = span;
+            int hit = 0;
+            if (relative > 0f)
+            {
+                double time = Math.Max(0, (maxStart - cur) / relative);
+                if (time < hitAt) { hitAt = time; hit = 1; }
+            }
+            if (velocity < 0f)
+            {
+                double time = Math.Max(0, (cur - min) / -velocity);
+                if (time < hitAt) { hitAt = time; hit = 2; }
+            }
+            if (hit != 0 && hitAt > 0)
+            {
+                float value = hit == 1 ? maxStart + maxVelocity * (float)hitAt : min;
+                nodes.Add(new GaugeNode(start + hitAt, value));
+            }
+            cur = hit switch
+            {
+                1 => maxFinish,
+                2 => min,
+                _ => Mathf.Clamp(cur + velocity * (float)span, min, maxFinish)
+            };
+            nodes.Add(new GaugeNode(until, cur));
+            start = until;
+        }
     }
 
     /// <summary>

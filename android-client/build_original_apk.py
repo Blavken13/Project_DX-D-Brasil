@@ -13,15 +13,16 @@ import branding_original as branding
 import presentation_original as presentation
 import runtime_settings_original as runtime_settings
 import estate_original as estate
+import discovery_original as discovery
 
 ROOT, PROJECT = shared.ROOT, shared.PROJECT
 SOURCE = PROJECT / 'Durango original'
 WORK = ROOT / 'work/original-nexon'
 CLIENT = WORK / 'client'
 DECODED = WORK / 'decoded'
-VERSION_CODE = 50217
-VERSION_NAME = '5.2.1-losthorizon-alfa-enclave1'
-OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa-enclave1-50217.apk')
+VERSION_CODE = 50218
+VERSION_NAME = '5.2.1-losthorizon-alfa-gamefix1'
+OUTPUT = os.environ.get('LH_APK_OUTPUT', 'LostHorizon-alfa-gamefix1-50218.apk')
 if Path(OUTPUT).name != OUTPUT or not OUTPUT.endswith('.apk'):
     raise ValueError('LH_APK_OUTPUT must be an APK filename')
 ANDROID_JAR = shared.SDK / 'platforms/android-36/android.jar'
@@ -214,6 +215,7 @@ def verify():
               'branding': branding.verify(SOURCE, CLIENT),
               'presentation': presentation.verify(SOURCE, CLIENT),
               'estate': estate.verify(SOURCE, CLIENT),
+              'discovery': discovery.verify(SOURCE, CLIENT),
               'unity_shaders_preserved': True, 'original_folder_modified': False,
               'runtime_settings': runtime_settings.verify(SOURCE, CLIENT),
               'login_video': 'assets/Movie/Mobile/title.mp4', 'login_requires_player_action': True,
@@ -242,6 +244,7 @@ def main():
     prepare(); authentication(); networking(); tutorial_bundles()
     presentation.apply(SOURCE, CLIENT)
     estate.apply(CLIENT)
+    discovery.apply(CLIENT)
     runtime_settings.apply(SOURCE, CLIENT)
     branding.apply(SOURCE, CLIENT, WORK); verify()
     shared.APK = CLIENT; shared.OUTPUT_NAME = OUTPUT; shared.PACKAGE_EXCLUDES = set()

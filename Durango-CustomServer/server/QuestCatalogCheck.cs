@@ -83,11 +83,12 @@ internal static class QuestCatalogCheck
         Expect(mission != null && mission.Event == QuestEventType.MissionUpdated, "mission_finish_* = MissionUpdated");
 
         QuestDef biome = QuestCatalog.Find("daily_hunting_d_01");
-        Expect(biome != null && !biome.IsLive, "daily_hunting_d_01 (ไบโอม) ยัง UNKNOWN");
+        Expect(biome != null && biome.IsLive && biome.Objective?.Biome == 0 && biome.Objective.Role == 4,
+            "caça temperada exige o bioma correto em ilha instável");
 
         QuestDef once = QuestCatalog.Find("advisor_combat_onehand_master");
-        Expect(once != null && once.Type == QuestType.Once && !once.IsLive,
-            "Once/permanent โหลดได้แต่ยังไม่เปิด");
+        Expect(once != null && once.Type == QuestType.Once && once.IsLive && once.Objective?.Snapshot == "advisor_completed",
+            "conquista de curso depende de conclusão validada pelo servidor");
 
         QuestDef story = QuestCatalog.Find("web_daily_gathering");
         Expect(story != null && !story.IsLive, "web_daily_* หมวด christmas ยังไม่เปิด");
@@ -184,7 +185,7 @@ internal static class QuestCatalogCheck
     {
         Expect(QuestCatalog.IsTracked("daily_gathering_a_01"), "daily_gathering_a_01 ถูกติดตาม");
         Expect(QuestCatalog.IsTracked("mission_finish_1"), "mission_finish_1 อยู่ในหมวด daily จึงติดตามสถานะ");
-        Expect(!QuestCatalog.IsTracked("advisor_combat_onehand_master"), "Once/permanent ไม่ติดตามในเฟส 1");
+        Expect(QuestCatalog.IsTracked("advisor_combat_onehand_master"), "conquista do guia acompanha conclusão persistida");
         Expect(QuestCatalog.IsPlayableCategory("daily"), "หมวด daily เปิดใน UI");
         Expect(!QuestCatalog.IsPlayableCategory("sunset"), "sunset ไม่ใช่หมวดที่เฟส 1 เปิดเอง");
         Expect(QuestCatalog.IsPlayableCategory("permanent"), "conquistas permanentes abertas no cliente");

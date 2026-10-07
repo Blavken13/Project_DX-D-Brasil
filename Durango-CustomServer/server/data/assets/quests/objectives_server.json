@@ -1,0 +1,1916 @@
+{
+  "daily_hunting_d_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 0,
+    "role": 4
+  },
+  "daily_hunting_d_02": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 1,
+    "role": 4
+  },
+  "daily_hunting_e_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 3,
+    "role": 4
+  },
+  "daily_hunting_e_02": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 5,
+    "role": 4
+  },
+  "daily_hunting_f_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 6,
+    "role": 4
+  },
+  "daily_hunting_f_02": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 2,
+    "role": 4
+  },
+  "daily_hunting_g_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 4,
+    "role": 4
+  },
+  "daily_hunting_h_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "biome": 7,
+    "role": 4
+  },
+  "advisor_combat_onehand_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "combat_melee_onehand_4"
+    ]
+  },
+  "advisor_combat_twohand_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "combat_melee_twohand_4"
+    ]
+  },
+  "advisor_combat_ranged_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "combat_ranged_4"
+    ]
+  },
+  "advisor_combat_butchery_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "combat_butchery_4"
+    ]
+  },
+  "advisor_weaponcrafting_sword_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "weaponcrafting_sword_4"
+    ]
+  },
+  "advisor_weaponcrafting_axe_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "weaponcrafting_axe_4"
+    ]
+  },
+  "advisor_weaponcrafting_hammer_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "weaponcrafting_hammer_4"
+    ]
+  },
+  "advisor_weaponcrafting_bow_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "weaponcrafting_bow_4"
+    ]
+  },
+  "advisor_armorcrafting_settler_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "armorcrafting_settler_4"
+    ]
+  },
+  "advisor_armorcrafting_explorer_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "armorcrafting_explorer_4"
+    ]
+  },
+  "advisor_armorcrafting_hunter_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "armorcrafting_hunter_4"
+    ]
+  },
+  "advisor_cooking_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "cooking_cooking_4"
+    ]
+  },
+  "advisor_baking_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "cooking_baking_4"
+    ]
+  },
+  "advisor_pharmacy_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "cooking_pharmacy_4"
+    ]
+  },
+  "advisor_constructing_furniture_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "constructing_furniture_4"
+    ]
+  },
+  "advisor_constructing_building_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "constructing_building_4"
+    ]
+  },
+  "advisor_gathering_plants_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "gathering_plants_4"
+    ]
+  },
+  "advisor_gathering_mineral_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "gathering_mineral_4"
+    ]
+  },
+  "advisor_farming_master": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed",
+    "courses": [
+      "farming_basic_4"
+    ]
+  },
+  "advisor_selected": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_selected"
+  },
+  "advisor_achieved": {
+    "event": "AdvisorUpdated",
+    "goal": 1,
+    "snapshot": "advisor_completed"
+  },
+  "advisor_achieved_3": {
+    "event": "AdvisorUpdated",
+    "goal": 3,
+    "snapshot": "advisor_completed"
+  },
+  "advisor_achieved_10": {
+    "event": "AdvisorUpdated",
+    "goal": 10,
+    "snapshot": "advisor_completed"
+  },
+  "estate_declare": {
+    "event": "EstateManaged",
+    "goal": 1,
+    "filter": "declare"
+  },
+  "estate_expand": {
+    "event": "EstateManaged",
+    "goal": 1,
+    "filter": "expand"
+  },
+  "estate_declare_urban": {
+    "event": "EstateManaged",
+    "goal": 1,
+    "filter": "declare",
+    "role": 6
+  },
+  "permanent_hunt_compso_01": {
+    "event": "Hunted",
+    "goal": 20,
+    "entity_types": [
+      2015,
+      2158
+    ]
+  },
+  "permanent_hunt_phenacodus_01": {
+    "event": "Hunted",
+    "goal": 10,
+    "entity_types": [
+      2006,
+      2160
+    ]
+  },
+  "permanent_hunt_raptor_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2001
+    ]
+  },
+  "permanent_hunt_ornithomimus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2014
+    ]
+  },
+  "permanent_hunt_parasaurolophus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2009
+    ]
+  },
+  "permanent_hunt_stegosaurus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2000,
+      2061
+    ]
+  },
+  "permanent_hunt_sabertooth_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2007,
+      2047,
+      2088,
+      2157
+    ]
+  },
+  "permanent_hunt_ankylosaurus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2010
+    ]
+  },
+  "permanent_hunt_triceratops_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2003,
+      2062
+    ]
+  },
+  "permanent_hunt_mammoth_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2008
+    ]
+  },
+  "permanent_hunt_brachio_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2004
+    ]
+  },
+  "permanent_hunt_tarbosaurus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2086,
+      2089
+    ]
+  },
+  "permanent_hunt_apatosaurus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2133
+    ]
+  },
+  "permanent_weaponcrafting_onehand_sword_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_sword_one_02"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_sword_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_sword_one_03"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_sword_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_sword_one_04"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_sword_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_sword_two_02"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_sword_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_sword_two_03"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_sword_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_sword_two_04"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_axe_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_axe_one_02"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_axe_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_axe_one_03"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_axe_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_axe_one_04"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_axe_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_axe_two_02"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_axe_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_axe_two_03"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_axe_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_axe_two_04"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_hammer_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_hammer_one_02"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_hammer_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_hammer_one_03"
+    ]
+  },
+  "permanent_weaponcrafting_onehand_hammer_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_hammer_one_04"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_hammer_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_hammer_two_02"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_hammer_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_hammer_two_03"
+    ]
+  },
+  "permanent_weaponcrafting_twohand_hammer_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_hammer_two_04"
+    ]
+  },
+  "permanent_weaponcrafting_spear_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_lance_two_02"
+    ]
+  },
+  "permanent_weaponcrafting_spear_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_lance_two_03"
+    ]
+  },
+  "permanent_weaponcrafting_spear_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_lance_two_04"
+    ]
+  },
+  "permanent_weaponcrafting_bow_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_bow_two_02"
+    ]
+  },
+  "permanent_weaponcrafting_bow_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_bow_two_03"
+    ]
+  },
+  "permanent_weaponcrafting_bow_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_bow_two_04"
+    ]
+  },
+  "permanent_weaponcrafting_crossbow_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_crossbow_two_03"
+    ]
+  },
+  "permanent_weaponcrafting_crossbow_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "assembled_crossbow_two_04"
+    ]
+  },
+  "permanent_armorcrafting_settler_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_mobility"
+    ]
+  },
+  "permanent_armorcrafting_settler_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_settler_02"
+    ]
+  },
+  "permanent_armorcrafting_settler_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_settler_03_worker"
+    ]
+  },
+  "permanent_armorcrafting_settler_04": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_designer_01"
+    ]
+  },
+  "permanent_armorcrafting_explorer_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_linen_01"
+    ]
+  },
+  "permanent_armorcrafting_explorer_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_explorer_02"
+    ]
+  },
+  "permanent_armorcrafting_explorer_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_explorer_03_collector"
+    ]
+  },
+  "permanent_armorcrafting_explorer_04": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_sneak_01"
+    ]
+  },
+  "permanent_armorcrafting_hunter_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_winter_01"
+    ]
+  },
+  "permanent_armorcrafting_hunter_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_hunter_02"
+    ]
+  },
+  "permanent_armorcrafting_hunter_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_hunter_03_skill"
+    ]
+  },
+  "permanent_armorcrafting_hunter_04": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_assault_01"
+    ]
+  },
+  "permanent_armorcrafting_gloves_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "gloves_halffinger_01"
+    ]
+  },
+  "permanent_armorcrafting_gloves_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "gloves_fivefinger_01"
+    ]
+  },
+  "permanent_armorcrafting_gloves_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "gloves_bone_01"
+    ]
+  },
+  "permanent_armorcrafting_shoes_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "shoes_sandal_leather"
+    ]
+  },
+  "permanent_armorcrafting_shoes_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "shoes_boots_01"
+    ]
+  },
+  "permanent_armorcrafting_shoes_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "shoes_bone_01"
+    ]
+  },
+  "permanent_armorcrafting_bag_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "bag_fabric"
+    ]
+  },
+  "permanent_armorcrafting_bag_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "bag_cross"
+    ]
+  },
+  "permanent_armorcrafting_bag_03": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "bag_back"
+    ]
+  },
+  "permanent_cooking_fire_01": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "skewer",
+      "s02_skewer"
+    ]
+  },
+  "permanent_cooking_fire_02": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "roast_01"
+    ]
+  },
+  "permanent_cooking_fire_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "roast_02"
+    ]
+  },
+  "permanent_cooking_fire_04": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "roast_03"
+    ]
+  },
+  "permanent_cooking_water_01": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "boil"
+    ]
+  },
+  "permanent_cooking_water_02": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "steam"
+    ]
+  },
+  "permanent_cooking_water_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "stew_01"
+    ]
+  },
+  "permanent_cooking_water_04": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "stew_02"
+    ]
+  },
+  "permanent_cooking_fry_01": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "fry"
+    ]
+  },
+  "permanent_cooking_fry_02": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "chicken_01"
+    ]
+  },
+  "permanent_cooking_preserve_01": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "smoke_food_01"
+    ]
+  },
+  "permanent_cooking_preserve_02": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "dry_food_01"
+    ]
+  },
+  "permanent_cooking_preserve_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "salt_food_01"
+    ]
+  },
+  "permanent_cooking_preserve_04": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "sausage_01"
+    ]
+  },
+  "permanent_cooking_preserve_05": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "can_food_01"
+    ]
+  },
+  "permanent_cooking_bake_02": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "bread_02"
+    ]
+  },
+  "permanent_cooking_bake_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "cake_01"
+    ]
+  },
+  "permanent_constructing_roof_modular_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "roof_modular"
+    ]
+  },
+  "permanent_constructing_modular_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "modular",
+      "modular_bm"
+    ]
+  },
+  "permanent_constructing_cage_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "cage_01_4"
+    ]
+  },
+  "permanent_constructing_cage_02": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "cage_01_6"
+    ]
+  },
+  "permanent_constructing_fur_table_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "fur_table_01"
+    ]
+  },
+  "permanent_constructing_fur_table_02": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "fur_table_02"
+    ]
+  },
+  "permanent_constructing_fur_table_03": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "fur_table_03"
+    ]
+  },
+  "permanent_constructing_kitchen_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "camp_furnace_01",
+      "furnace_01"
+    ]
+  },
+  "permanent_constructing_kitchen_02": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "kitchen_01"
+    ]
+  },
+  "permanent_constructing_kitchen_03": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "kitchen_02"
+    ]
+  },
+  "permanent_constructing_kiln_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "camp_kiln_01",
+      "kiln_01"
+    ]
+  },
+  "permanent_constructing_kiln_02": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "camp_kiln_02",
+      "kiln_02"
+    ]
+  },
+  "permanent_gathering_clay_01": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "clay"
+    ]
+  },
+  "permanent_gathering_clay_02": {
+    "event": "Collected",
+    "goal": 30,
+    "filter": "gather",
+    "prototypes": [
+      "clay"
+    ]
+  },
+  "permanent_gathering_clay_03": {
+    "event": "Collected",
+    "goal": 100,
+    "filter": "gather",
+    "prototypes": [
+      "clay"
+    ]
+  },
+  "permanent_gathering_stone_01": {
+    "event": "Collected",
+    "goal": 30,
+    "filter": "gather",
+    "prototypes": [
+      "stone"
+    ]
+  },
+  "permanent_gathering_stone_02": {
+    "event": "Collected",
+    "goal": 90,
+    "filter": "gather",
+    "prototypes": [
+      "stone"
+    ]
+  },
+  "permanent_gathering_stone_03": {
+    "event": "Collected",
+    "goal": 300,
+    "filter": "gather",
+    "prototypes": [
+      "stone"
+    ]
+  },
+  "permanent_gathering_rock_01": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "stone_big"
+    ]
+  },
+  "permanent_gathering_rock_02": {
+    "event": "Collected",
+    "goal": 20,
+    "filter": "gather",
+    "prototypes": [
+      "stone_big"
+    ]
+  },
+  "permanent_gathering_rock_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "stone_big"
+    ]
+  },
+  "permanent_gathering_stem_01": {
+    "event": "Collected",
+    "goal": 20,
+    "filter": "gather",
+    "prototypes": [
+      "stem",
+      "stem_tough",
+      "stem_fiber"
+    ]
+  },
+  "permanent_gathering_stem_02": {
+    "event": "Collected",
+    "goal": 60,
+    "filter": "gather",
+    "prototypes": [
+      "stem",
+      "stem_tough",
+      "stem_fiber"
+    ]
+  },
+  "permanent_gathering_stem_03": {
+    "event": "Collected",
+    "goal": 200,
+    "filter": "gather",
+    "prototypes": [
+      "stem",
+      "stem_tough",
+      "stem_fiber"
+    ]
+  },
+  "permanent_gathering_wood_log_01": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "wood_log",
+      "wood_log_broadleaved",
+      "wood_log_conifer",
+      "wood_log_tropical",
+      "wood_log_swamp",
+      "wood_log_oak_texture"
+    ]
+  },
+  "permanent_gathering_wood_log_02": {
+    "event": "Collected",
+    "goal": 20,
+    "filter": "gather",
+    "prototypes": [
+      "wood_log",
+      "wood_log_broadleaved",
+      "wood_log_conifer",
+      "wood_log_tropical",
+      "wood_log_swamp",
+      "wood_log_oak_texture"
+    ]
+  },
+  "permanent_gathering_wood_log_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "wood_log",
+      "wood_log_broadleaved",
+      "wood_log_conifer",
+      "wood_log_tropical",
+      "wood_log_swamp",
+      "wood_log_oak_texture"
+    ]
+  },
+  "permanent_gathering_wood_bough_01": {
+    "event": "Collected",
+    "goal": 20,
+    "filter": "gather",
+    "prototypes": [
+      "wood_bough",
+      "wood_bough_long",
+      "wood_bough_broadleaved",
+      "wood_bough_conifer"
+    ]
+  },
+  "permanent_gathering_wood_bough_02": {
+    "event": "Collected",
+    "goal": 60,
+    "filter": "gather",
+    "prototypes": [
+      "wood_bough",
+      "wood_bough_long",
+      "wood_bough_broadleaved",
+      "wood_bough_conifer"
+    ]
+  },
+  "permanent_gathering_wood_bough_03": {
+    "event": "Collected",
+    "goal": 200,
+    "filter": "gather",
+    "prototypes": [
+      "wood_bough",
+      "wood_bough_long",
+      "wood_bough_broadleaved",
+      "wood_bough_conifer"
+    ]
+  },
+  "permanent_butchery_meat_01": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "carcass",
+    "prototypes": [
+      "tendon",
+      "organ",
+      "poison_sac",
+      "clam",
+      "crab_coconut",
+      "meat",
+      "meat_tutorial",
+      "meat_lizard",
+      "meat_belley",
+      "meat_breast",
+      "meat_serloin",
+      "s02_meat",
+      "s02_meat_rotten",
+      "s02_liver",
+      "clam_product",
+      "meat_tenderloin"
+    ]
+  },
+  "permanent_butchery_meat_02": {
+    "event": "Collected",
+    "goal": 30,
+    "filter": "carcass",
+    "prototypes": [
+      "tendon",
+      "organ",
+      "poison_sac",
+      "clam",
+      "crab_coconut",
+      "meat",
+      "meat_tutorial",
+      "meat_lizard",
+      "meat_belley",
+      "meat_breast",
+      "meat_serloin",
+      "s02_meat",
+      "s02_meat_rotten",
+      "s02_liver",
+      "clam_product",
+      "meat_tenderloin"
+    ]
+  },
+  "permanent_butchery_meat_03": {
+    "event": "Collected",
+    "goal": 100,
+    "filter": "carcass",
+    "prototypes": [
+      "tendon",
+      "organ",
+      "poison_sac",
+      "clam",
+      "crab_coconut",
+      "meat",
+      "meat_tutorial",
+      "meat_lizard",
+      "meat_belley",
+      "meat_breast",
+      "meat_serloin",
+      "s02_meat",
+      "s02_meat_rotten",
+      "s02_liver",
+      "clam_product",
+      "meat_tenderloin"
+    ]
+  },
+  "permanent_butchery_bone_leg_01": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "carcass",
+    "prototypes": [
+      "bone_leg",
+      "bone_leg_thick",
+      "bone_leg_carni",
+      "bone_leg_herv",
+      "bone_leg_normal"
+    ]
+  },
+  "permanent_butchery_bone_leg_02": {
+    "event": "Collected",
+    "goal": 30,
+    "filter": "carcass",
+    "prototypes": [
+      "bone_leg",
+      "bone_leg_thick",
+      "bone_leg_carni",
+      "bone_leg_herv",
+      "bone_leg_normal"
+    ]
+  },
+  "permanent_butchery_bone_leg_03": {
+    "event": "Collected",
+    "goal": 100,
+    "filter": "carcass",
+    "prototypes": [
+      "bone_leg",
+      "bone_leg_thick",
+      "bone_leg_carni",
+      "bone_leg_herv",
+      "bone_leg_normal"
+    ]
+  },
+  "permanent_butchery_leather_01": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "carcass",
+    "prototypes": [
+      "leather_raw_fur_narrow",
+      "leather_raw",
+      "leather_raw_fur",
+      "leather_raw_armored",
+      "leather_raw_fur_wide",
+      "leather_raw_hard"
+    ]
+  },
+  "permanent_butchery_leather_02": {
+    "event": "Collected",
+    "goal": 30,
+    "filter": "carcass",
+    "prototypes": [
+      "leather_raw_fur_narrow",
+      "leather_raw",
+      "leather_raw_fur",
+      "leather_raw_armored",
+      "leather_raw_fur_wide",
+      "leather_raw_hard"
+    ]
+  },
+  "permanent_butchery_leather_03": {
+    "event": "Collected",
+    "goal": 100,
+    "filter": "carcass",
+    "prototypes": [
+      "leather_raw_fur_narrow",
+      "leather_raw",
+      "leather_raw_fur",
+      "leather_raw_armored",
+      "leather_raw_fur_wide",
+      "leather_raw_hard"
+    ]
+  },
+  "permanent_farming_seed_01": {
+    "event": "Farmed",
+    "goal": 4,
+    "prototypes": [
+      "corn_seed"
+    ]
+  },
+  "permanent_farming_seed_03": {
+    "event": "Farmed",
+    "goal": 4,
+    "prototypes": [
+      "wheat_seed"
+    ]
+  },
+  "permanent_farming_seed_04": {
+    "event": "Farmed",
+    "goal": 4,
+    "prototypes": [
+      "rice_seed"
+    ]
+  },
+  "permanent_farming_seed_05": {
+    "event": "Farmed",
+    "goal": 4,
+    "prototypes": [
+      "teatree_seed"
+    ]
+  },
+  "permanent_farming_seed_06": {
+    "event": "Farmed",
+    "goal": 4,
+    "prototypes": [
+      "coffee_seed"
+    ]
+  },
+  "tyrano_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "biome": 7
+  },
+  "tyrano_02": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2171
+    ]
+  },
+  "tyrano_03": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2170
+    ]
+  },
+  "permanent_hunt_horseshoecrab_01": {
+    "event": "Hunted",
+    "goal": 10,
+    "entity_types": [
+      2171
+    ]
+  },
+  "permanent_hunt_andrewsarcus_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2170
+    ]
+  },
+  "permanent_hunt_volcanic_skuncodus_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2174
+    ]
+  },
+  "permanent_hunt_volcanic_eutaraptor_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2175
+    ]
+  },
+  "permanent_hunt_volcanic_hadrosaurus_01": {
+    "event": "Hunted",
+    "goal": 3,
+    "entity_types": [
+      2177
+    ]
+  },
+  "permanent_hunt_kasmosaurus_01": {
+    "event": "Hunted",
+    "goal": 3,
+    "entity_types": [
+      2178
+    ]
+  },
+  "permanent_hunt_amargasaurus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2179
+    ]
+  },
+  "permanent_hunt_white_stripe_iguana_01": {
+    "event": "Hunted",
+    "goal": 5,
+    "entity_types": [
+      2176
+    ]
+  },
+  "permanent_hunt_red_dotted_iguana_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2172
+    ]
+  },
+  "permanent_hunt_tyranosaurus_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2005
+    ]
+  },
+  "permanent_armorcrafting_settler_05": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_builder_02"
+    ]
+  },
+  "permanent_armorcrafting_settler_06": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "hat_builder_02"
+    ]
+  },
+  "permanent_armorcrafting_explorer_05": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_explorer_04"
+    ]
+  },
+  "permanent_armorcrafting_explorer_06": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "hat_explorer_04"
+    ]
+  },
+  "permanent_armorcrafting_hunter_05": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "clothes_hunter_04"
+    ]
+  },
+  "permanent_armorcrafting_hunter_06": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "hat_hunter_04"
+    ]
+  },
+  "permanent_armorcrafting_gloves_04": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "gloves_volcanic_heat"
+    ]
+  },
+  "permanent_armorcrafting_shoes_04": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "shoes_volcanic_heat"
+    ]
+  },
+  "permanent_armorcrafting_shoes_05": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "shoes_lavaproof"
+    ]
+  },
+  "permanent_cooking_fire_05": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "steak_meat"
+    ]
+  },
+  "permanent_cooking_fire_06": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "steak_set_meal"
+    ]
+  },
+  "permanent_constructing_fur_table_04": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "fur_table_jewel"
+    ]
+  },
+  "permanent_constructing_kitchen_04": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "kitchen_04"
+    ]
+  },
+  "permanent_constructing_kiln_03": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "kiln_04"
+    ]
+  },
+  "permanent_constructing_volc_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "kitchen_table_05"
+    ]
+  },
+  "permanent_constructing_volc_02": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "bench_02"
+    ]
+  },
+  "permanent_constructing_volc_mud_02": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "statue_02_b"
+    ]
+  },
+  "permanent_constructing_volc_mud_03": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "statue_02_c"
+    ]
+  },
+  "permanent_constructing_volc_mud_04": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "statue_02_d"
+    ]
+  },
+  "permanent_process_volc_glassexploit_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "jewel_craft_extraction"
+    ]
+  },
+  "permanent_process_volc_glassexploit_02": {
+    "event": "Crafted",
+    "goal": 5,
+    "recipes": [
+      "jewel_craft_extraction"
+    ]
+  },
+  "permanent_process_volc_glassexploit_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "jewel_craft_extraction"
+    ]
+  },
+  "permanent_process_volc_glassexploit_04": {
+    "event": "Crafted",
+    "goal": 25,
+    "recipes": [
+      "jewel_craft_extraction"
+    ]
+  },
+  "permanent_process_volc_glassexploit_05": {
+    "event": "Crafted",
+    "goal": 100,
+    "recipes": [
+      "jewel_craft_extraction"
+    ]
+  },
+  "permanent_gathering_clay_04": {
+    "event": "Collected",
+    "goal": 100,
+    "filter": "gather",
+    "prototypes": [
+      "clay"
+    ]
+  },
+  "permanent_gathering_wood_log_04": {
+    "event": "Collected",
+    "goal": 100,
+    "filter": "gather",
+    "prototypes": [
+      "wood_log",
+      "wood_log_broadleaved",
+      "wood_log_conifer",
+      "wood_log_tropical",
+      "wood_log_swamp",
+      "wood_log_oak_texture"
+    ]
+  },
+  "permanent_gathering_wood_bough_04": {
+    "event": "Collected",
+    "goal": 200,
+    "filter": "gather",
+    "prototypes": [
+      "wood_bough",
+      "wood_bough_long",
+      "wood_bough_broadleaved",
+      "wood_bough_conifer"
+    ]
+  },
+  "permanent_gathering_black_iron_01": {
+    "event": "Collected",
+    "goal": 5,
+    "filter": "gather",
+    "prototypes": [
+      "ore_iron_black"
+    ]
+  },
+  "permanent_gathering_black_iron_02": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "ore_iron_black"
+    ]
+  },
+  "permanent_gathering_black_iron_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "ore_iron_black"
+    ]
+  },
+  "permanent_gathering_hard_lava_01": {
+    "event": "Collected",
+    "goal": 5,
+    "filter": "gather",
+    "prototypes": [
+      "lava_dried"
+    ]
+  },
+  "permanent_gathering_hard_lava_02": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "lava_dried"
+    ]
+  },
+  "permanent_gathering_hard_lava_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "lava_dried"
+    ]
+  },
+  "permanent_gathering_sulphur_01": {
+    "event": "Collected",
+    "goal": 5,
+    "filter": "gather",
+    "prototypes": [
+      "sulphur"
+    ]
+  },
+  "permanent_gathering_sulphur_02": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "sulphur"
+    ]
+  },
+  "permanent_gathering_sulphur_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "sulphur"
+    ]
+  },
+  "permanent_gathering_lava_01": {
+    "event": "Collected",
+    "goal": 5,
+    "filter": "gather",
+    "prototypes": [
+      "lava"
+    ]
+  },
+  "permanent_gathering_lava_02": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "lava"
+    ]
+  },
+  "permanent_gathering_lava_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "lava"
+    ]
+  },
+  "permanent_gathering_granite_01": {
+    "event": "Collected",
+    "goal": 5,
+    "filter": "gather",
+    "prototypes": [
+      "granite"
+    ]
+  },
+  "permanent_gathering_granite_02": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "granite"
+    ]
+  },
+  "permanent_gathering_granite_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "granite"
+    ]
+  },
+  "permanent_gathering_basalt_01": {
+    "event": "Collected",
+    "goal": 5,
+    "filter": "gather",
+    "prototypes": [
+      "basalt"
+    ]
+  },
+  "permanent_gathering_basalt_02": {
+    "event": "Collected",
+    "goal": 10,
+    "filter": "gather",
+    "prototypes": [
+      "basalt"
+    ]
+  },
+  "permanent_gathering_basalt_03": {
+    "event": "Collected",
+    "goal": 50,
+    "filter": "gather",
+    "prototypes": [
+      "basalt"
+    ]
+  },
+  "permanent_farming_seed_r_love_01": {
+    "event": "Farmed",
+    "goal": 5,
+    "prototypes": [
+      "oxalis_seed_yellow",
+      "oxalis_seed_red",
+      "oxalis_seed_blue"
+    ]
+  },
+  "permanent_farming_seed_y_love_01": {
+    "event": "Farmed",
+    "goal": 5,
+    "prototypes": [
+      "oxalis_seed_yellow",
+      "oxalis_seed_red",
+      "oxalis_seed_blue"
+    ]
+  },
+  "permanent_farming_seed_b_love_01": {
+    "event": "Farmed",
+    "goal": 5,
+    "prototypes": [
+      "oxalis_seed_yellow",
+      "oxalis_seed_red",
+      "oxalis_seed_blue"
+    ]
+  },
+  "permanent_farming_seed_taro_01": {
+    "event": "Farmed",
+    "goal": 5,
+    "prototypes": [
+      "taro_seed"
+    ]
+  },
+  "permanent_cooking_bake_01": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "bread_01"
+    ]
+  },
+  "permanent_farming_seed_02": {
+    "event": "Farmed",
+    "goal": 4,
+    "prototypes": [
+      "potato_seed"
+    ]
+  },
+  "permanent_constructing_volc_mud_01": {
+    "event": "Built",
+    "goal": 1,
+    "recipes": [
+      "statue_02_a"
+    ]
+  },
+  "permanent_hunt_megaloceros_01": {
+    "event": "Hunted",
+    "goal": 1,
+    "entity_types": [
+      2013,
+      2063,
+      2064,
+      2164,
+      2165,
+      2166
+    ]
+  },
+  "permanent_process_volc_lava_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "breaking_solid_lava"
+    ]
+  },
+  "permanent_process_volc_lava_02": {
+    "event": "Crafted",
+    "goal": 5,
+    "recipes": [
+      "breaking_solid_lava"
+    ]
+  },
+  "permanent_process_volc_lava_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "breaking_solid_lava"
+    ]
+  },
+  "permanent_process_volc_lava_04": {
+    "event": "Crafted",
+    "goal": 25,
+    "recipes": [
+      "breaking_solid_lava"
+    ]
+  },
+  "permanent_process_volc_lava_05": {
+    "event": "Crafted",
+    "goal": 100,
+    "recipes": [
+      "breaking_solid_lava"
+    ]
+  },
+  "permanent_process_volc_jewel_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "jewel_polishing"
+    ]
+  },
+  "permanent_process_volc_jewel_02": {
+    "event": "Crafted",
+    "goal": 5,
+    "recipes": [
+      "jewel_polishing"
+    ]
+  },
+  "permanent_process_volc_jewel_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "jewel_polishing"
+    ]
+  },
+  "permanent_process_volc_jewel_04": {
+    "event": "Crafted",
+    "goal": 25,
+    "recipes": [
+      "jewel_polishing"
+    ]
+  },
+  "permanent_process_volc_jewel_05": {
+    "event": "Crafted",
+    "goal": 100,
+    "recipes": [
+      "jewel_polishing"
+    ]
+  },
+  "permanent_process_volc_jewelmodify1_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "jewel_grinding_01"
+    ]
+  },
+  "permanent_process_volc_jewelmodify1_02": {
+    "event": "Crafted",
+    "goal": 5,
+    "recipes": [
+      "jewel_grinding_01"
+    ]
+  },
+  "permanent_process_volc_jewelmodify1_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "jewel_grinding_01"
+    ]
+  },
+  "permanent_process_volc_jewelmodify1_04": {
+    "event": "Crafted",
+    "goal": 25,
+    "recipes": [
+      "jewel_grinding_01"
+    ]
+  },
+  "permanent_process_volc_jewelmodify1_05": {
+    "event": "Crafted",
+    "goal": 100,
+    "recipes": [
+      "jewel_grinding_01"
+    ]
+  },
+  "permanent_process_volc_jewelmodify2_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "jewel_grinding_02"
+    ]
+  },
+  "permanent_process_volc_jewelmodify2_02": {
+    "event": "Crafted",
+    "goal": 5,
+    "recipes": [
+      "jewel_grinding_02"
+    ]
+  },
+  "permanent_process_volc_jewelmodify2_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "jewel_grinding_02"
+    ]
+  },
+  "permanent_process_volc_jewelmodify2_04": {
+    "event": "Crafted",
+    "goal": 25,
+    "recipes": [
+      "jewel_grinding_02"
+    ]
+  },
+  "permanent_process_volc_jewelmodify2_05": {
+    "event": "Crafted",
+    "goal": 100,
+    "recipes": [
+      "jewel_grinding_02"
+    ]
+  },
+  "permanent_process_volc_glass_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "jewel_craft_eyes"
+    ]
+  },
+  "permanent_process_volc_glass_02": {
+    "event": "Crafted",
+    "goal": 5,
+    "recipes": [
+      "jewel_craft_eyes"
+    ]
+  },
+  "permanent_process_volc_glass_03": {
+    "event": "Crafted",
+    "goal": 10,
+    "recipes": [
+      "jewel_craft_eyes"
+    ]
+  },
+  "permanent_process_volc_glass_04": {
+    "event": "Crafted",
+    "goal": 25,
+    "recipes": [
+      "jewel_craft_eyes"
+    ]
+  },
+  "permanent_process_volc_glass_05": {
+    "event": "Crafted",
+    "goal": 100,
+    "recipes": [
+      "jewel_craft_eyes"
+    ]
+  },
+  "permanent_armorcrafting_repair_modern_clothes_01": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "repair_modern_clothes_01"
+    ]
+  },
+  "permanent_armorcrafting_repair_modern_clothes_02": {
+    "event": "Crafted",
+    "goal": 1,
+    "recipes": [
+      "remodel_modern_clothes_01"
+    ]
+  }
+}

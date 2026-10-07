@@ -1,0 +1,2030 @@
+{
+  "daily": [
+    {
+      "prefix": "daily_armorcrafting_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_armorcrafting_a_01",
+      "subject": "[Diário] Criação de Roupas e Acessórios",
+      "description": "Crie roupas ou acessórios 3 vezes."
+    },
+    {
+      "prefix": "daily_butchery_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_butchery_a_01",
+      "subject": "[Diário] Esquartejamento",
+      "description": "Esquarteje 10 vezes."
+    },
+    {
+      "prefix": "daily_constructing_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_constructing_a_01",
+      "subject": "[Diário] Estruturar Construção",
+      "description": "Edifique 2 construções."
+    },
+    {
+      "prefix": "daily_cooking_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_cooking_a_01",
+      "subject": "[Diário] Culinária",
+      "description": "Cozinhar 10 vezes."
+    },
+    {
+      "prefix": "daily_cooking_b",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_cooking_b_02",
+      "subject": "[Diário] Processamento de Comida",
+      "description": "Processe alimentos 5 vezes."
+    },
+    {
+      "prefix": "daily_farming_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_farming_a_01",
+      "subject": "[Diário] Cultivo",
+      "description": "Cultivar 10 vezes."
+    },
+    {
+      "prefix": "daily_gathering_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_gathering_a_01",
+      "subject": "[Diário] Coleta e Mineração",
+      "description": "Colete ou minere 20 vezes."
+    },
+    {
+      "prefix": "daily_hunting_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_hunting_a_01",
+      "subject": "[Diário] Caça Animal",
+      "description": "Cace 10 animais."
+    },
+    {
+      "prefix": "daily_hunting_b",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_hunting_b_01",
+      "subject": "[Diário] Caça Animal",
+      "description": "Cace 10 animais."
+    },
+    {
+      "prefix": "daily_hunting_c",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_hunting_c_01",
+      "subject": "[Diário] Caça Animal",
+      "description": "Cace 10 animais."
+    },
+    {
+      "prefix": "daily_hunting_d",
+      "count": 2,
+      "live": 0,
+      "sample": "daily_hunting_d_01",
+      "subject": "[Diário] Caça em Mares Temperados",
+      "description": "Cace 5 animais numa Ilha Instável em um mar temperado."
+    },
+    {
+      "prefix": "daily_hunting_e",
+      "count": 2,
+      "live": 0,
+      "sample": "daily_hunting_e_01",
+      "subject": "[Diário] Caça em Mares da Tundra",
+      "description": "Cace 5 animais numa Ilha Instável em um mar da tundra."
+    },
+    {
+      "prefix": "daily_hunting_f",
+      "count": 2,
+      "live": 0,
+      "sample": "daily_hunting_f_01",
+      "subject": "[Diário] Caça em Mares Pantanosos",
+      "description": "Cace 5 animais numa Ilha Instável em um mar pantanoso."
+    },
+    {
+      "prefix": "daily_hunting_g",
+      "count": 1,
+      "live": 0,
+      "sample": "daily_hunting_g_01",
+      "subject": "[Diário] Caça em Mares Nevados",
+      "description": "Cace 5 animais numa Ilha Instável em um mar nevado."
+    },
+    {
+      "prefix": "daily_hunting_h",
+      "count": 1,
+      "live": 0,
+      "sample": "daily_hunting_h_01",
+      "subject": "[Diário] Caçada no Mar Vulcânico",
+      "description": "Cace 5 animais numa Ilha Instável em um mar vulcânico."
+    },
+    {
+      "prefix": "daily_process_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_process_a_01",
+      "subject": "[Diário] Processamento de Materiais",
+      "description": "Processe materiais 10 vezes."
+    },
+    {
+      "prefix": "daily_process_b",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_process_b_01",
+      "subject": "[Diário] Aparação de Materiais",
+      "description": "Apare materiais 4 vezes."
+    },
+    {
+      "prefix": "daily_weaponcrafting_a",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_weaponcrafting_a_01",
+      "subject": "[Diário] Criação de Armas",
+      "description": "Criar 5 armas."
+    },
+    {
+      "prefix": "daily_weaponcrafting_b",
+      "count": 1,
+      "live": 1,
+      "sample": "daily_weaponcrafting_b_01",
+      "subject": "[Diário] Criação de Ferramentas",
+      "description": "Crie 5 ferramentas."
+    },
+    {
+      "prefix": "mission_finish",
+      "count": 5,
+      "live": 0,
+      "sample": "mission_finish_1",
+      "subject": "[Diário] Missão de Novato",
+      "description": "Conclua 1 missão recebida na Torre de Comunicação."
+    },
+    {
+      "prefix": "pvp_daily",
+      "count": 3,
+      "live": 0,
+      "sample": "pvp_daily_01",
+      "subject": "[Daily] Comutador da Ilha da Luta",
+      "description": "Entre na Ilha da Luta."
+    }
+  ],
+  "weekly": [
+    {
+      "prefix": "great_succes_cook",
+      "count": 3,
+      "live": 0,
+      "sample": "great_succes_cook_01",
+      "subject": "Especialista em Culinária I",
+      "description": "Execute uma culinária perfeita 1 vez."
+    },
+    {
+      "prefix": "great_succes_craft",
+      "count": 3,
+      "live": 0,
+      "sample": "great_succes_craft_01",
+      "subject": "Especialista em Criação I",
+      "description": "Execute uma alfaiataria, costura, criação de armas, construção ou criação de móveis perfeita 1 vez."
+    },
+    {
+      "prefix": "great_succes_farm",
+      "count": 3,
+      "live": 0,
+      "sample": "great_succes_farm_01",
+      "subject": "Especialista em Cultivo I",
+      "description": "Execute um cultivo perfeito 1 vez."
+    },
+    {
+      "prefix": "great_succes_process",
+      "count": 3,
+      "live": 0,
+      "sample": "great_succes_process_01",
+      "subject": "Especialista em Processamento I",
+      "description": "Execute processamento de metal e artesanato perfeitos 1 vez."
+    },
+    {
+      "prefix": "unstable_mission",
+      "count": 1,
+      "live": 0,
+      "sample": "unstable_mission_01",
+      "subject": "Missão de Pioneiro Nível 40+",
+      "description": "Conclua todas as missões de pioneiro de nível 40 ou superior, em um mar."
+    },
+    {
+      "prefix": "unstable_mission_de",
+      "count": 8,
+      "live": 0,
+      "sample": "unstable_mission_de_01",
+      "subject": "Missão de Pioneiro do Deserto",
+      "description": "Conclua uma missão de pioneiro em um mar Deserto nível 30 ou superior."
+    },
+    {
+      "prefix": "unstable_mission_gr",
+      "count": 1,
+      "live": 0,
+      "sample": "unstable_mission_gr_01",
+      "subject": " Missão de Pioneiro da Pradaria",
+      "description": "Conclua todas as missões de pioneiro de nível 30 ou superior, em uma pradaria."
+    },
+    {
+      "prefix": "unstable_mission_sn",
+      "count": 8,
+      "live": 0,
+      "sample": "unstable_mission_sn_01",
+      "subject": "Missão de Pioneiro dos Campos Nevados",
+      "description": "Conclua uma missão de pioneiro em um mar Nevado nível 30 ou superior."
+    },
+    {
+      "prefix": "unstable_mission_sw",
+      "count": 8,
+      "live": 0,
+      "sample": "unstable_mission_sw_01",
+      "subject": "Missão de Pioneiro do Pântano",
+      "description": "Conclua uma missão de pioneiro em um mar de Pântano nível 30 ou superior."
+    },
+    {
+      "prefix": "unstable_mission_te",
+      "count": 1,
+      "live": 0,
+      "sample": "unstable_mission_te_01",
+      "subject": "Missão de Pioneiro Temperado",
+      "description": "Conclua uma missão de pioneiro em um mar Temperado nível 30 ou superior."
+    },
+    {
+      "prefix": "unstable_mission_tr",
+      "count": 8,
+      "live": 0,
+      "sample": "unstable_mission_tr_01",
+      "subject": "Missão de Pioneiro Tropical",
+      "description": "Conclua uma missão de pioneiro em um mar Tropical nível 30 ou superior."
+    },
+    {
+      "prefix": "unstable_mission_tu",
+      "count": 8,
+      "live": 0,
+      "sample": "unstable_mission_tu_01",
+      "subject": "Missão de Pioneiro da Tundra",
+      "description": "Conclua uma missão de pioneiro em um mar de Tundra nível 30 ou superior."
+    },
+    {
+      "prefix": "unstable_mission_vo",
+      "count": 8,
+      "live": 0,
+      "sample": "unstable_mission_vo_01",
+      "subject": "Missão de Pioneiro do Vulcão",
+      "description": "Conclua todas as missões de pioneiro de nível 30 ou superior, em um mar vulcânico."
+    },
+    {
+      "prefix": "warp_acc_allo",
+      "count": 1,
+      "live": 0,
+      "sample": "warp_acc_allo",
+      "subject": "Caçada especial",
+      "description": "Elimine 10 Alossauros trazidos pelo Acelerador de Portal."
+    }
+  ],
+  "permanent": [
+    {
+      "prefix": "advisor_achieved",
+      "count": 3,
+      "live": 0,
+      "sample": "advisor_achieved",
+      "subject": "Secundarista da Rádio Universidade",
+      "description": "Complete um curso no Guia de Carreiras."
+    },
+    {
+      "prefix": "advisor_armorcrafting_explorer_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_armorcrafting_explorer_master",
+      "subject": "Mestre em Roupas de Pioneiro",
+      "description": "Complete o trajeto Estilo Pioneiro: Roupas e Clima"
+    },
+    {
+      "prefix": "advisor_armorcrafting_hunter_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_armorcrafting_hunter_master",
+      "subject": "Mestre em Roupas de Guerreiro",
+      "description": "Complete o trajeto Estilo Guerreiro: Segurança Nacional"
+    },
+    {
+      "prefix": "advisor_armorcrafting_settler_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_armorcrafting_settler_master",
+      "subject": "Mestre em Roupas de Colono",
+      "description": "Complete o trajeto Estilo Colono: Dinâmica Social"
+    },
+    {
+      "prefix": "advisor_baking_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_baking_master",
+      "subject": "Mestre em Assar",
+      "description": "Complete o trajeto A Euforia dos Assados Fresquinhos"
+    },
+    {
+      "prefix": "advisor_combat_butchery_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_combat_butchery_master",
+      "subject": "Mestre em Esquartejamento",
+      "description": "Complete o trajeto Biologia Molecular Animal"
+    },
+    {
+      "prefix": "advisor_combat_onehand_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_combat_onehand_master",
+      "subject": "Mestre em Combate com Uma Mão",
+      "description": "Complete o trajeto Combate com Uma Mão: Psicologia Criminal"
+    },
+    {
+      "prefix": "advisor_combat_ranged_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_combat_ranged_master",
+      "subject": "Mestre em Arco e Flecha",
+      "description": "Complete o trajeto Arco e Flecha e a Teoria da Relatividade"
+    },
+    {
+      "prefix": "advisor_combat_twohand_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_combat_twohand_master",
+      "subject": "Mestre em Combate com Duas Mãos",
+      "description": "Complete o trajeto Combate com Duas Mãos: Ética do Campo de Batalha."
+    },
+    {
+      "prefix": "advisor_constructing_building_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_constructing_building_master",
+      "subject": "Mestre em Construção",
+      "description": "Complete o trajeto Arquitetura Cultural Urbana"
+    },
+    {
+      "prefix": "advisor_constructing_furniture_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_constructing_furniture_master",
+      "subject": "Mestre em Fabricação de Móveis",
+      "description": "Complete o trajeto Design de Móveis"
+    },
+    {
+      "prefix": "advisor_cooking_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_cooking_master",
+      "subject": "Mestre em Culinária",
+      "description": "Complete o trajeto Gerenciamento da Cozinha"
+    },
+    {
+      "prefix": "advisor_farming_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_farming_master",
+      "subject": "Mestre em Cultivo",
+      "description": "Complete o trajeto Colhendo a Hélice"
+    },
+    {
+      "prefix": "advisor_gathering_mineral_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_gathering_mineral_master",
+      "subject": "Mestre em Mineração",
+      "description": "Complete o trajeto Mineralogia Externa"
+    },
+    {
+      "prefix": "advisor_gathering_plants_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_gathering_plants_master",
+      "subject": "Mestre em Coleta de Plantas",
+      "description": "Complete o trajeto Ecologia Florestal"
+    },
+    {
+      "prefix": "advisor_pharmacy_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_pharmacy_master",
+      "subject": "Mestre na Fabricação de Remédios",
+      "description": "Complete o trajeto Remédios Fitoterápicos"
+    },
+    {
+      "prefix": "advisor_selected",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_selected",
+      "subject": "Calouro da Rádio Universidade",
+      "description": "Selecione um dos Guia de Carreiras e toque em <em>Iniciar Guia</em>."
+    },
+    {
+      "prefix": "advisor_weaponcrafting_axe_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_weaponcrafting_axe_master",
+      "subject": "Mestre em Fabricação de Machados",
+      "description": "Complete o trajeto Produção Avançada de Machado"
+    },
+    {
+      "prefix": "advisor_weaponcrafting_bow_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_weaponcrafting_bow_master",
+      "subject": "Mestre em Fabricação de Arcos",
+      "description": "Complete o trajeto Produção Avançada de Arcos"
+    },
+    {
+      "prefix": "advisor_weaponcrafting_hammer_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_weaponcrafting_hammer_master",
+      "subject": "Mestre em Fabricação de Martelos",
+      "description": "Complete o trajeto Produção Avançada de Arma Contundente"
+    },
+    {
+      "prefix": "advisor_weaponcrafting_sword_master",
+      "count": 1,
+      "live": 0,
+      "sample": "advisor_weaponcrafting_sword_master",
+      "subject": "Mestre em Fabricação de Espadas",
+      "description": "Complete o trajeto Produção Avançada de Espadas"
+    },
+    {
+      "prefix": "appletree",
+      "count": 1,
+      "live": 0,
+      "sample": "appletree_01",
+      "subject": "Macieira",
+      "description": "Plante uma <em>Semente de Maçã</em>."
+    },
+    {
+      "prefix": "ending_climate",
+      "count": 1,
+      "live": 0,
+      "sample": "ending_climate_01",
+      "subject": "Formando Tempestades",
+      "description": "O tempo violento está consumindo as ilhas de Durango. Alguma coisa está errada."
+    },
+    {
+      "prefix": "estate_declare",
+      "count": 1,
+      "live": 0,
+      "sample": "estate_declare",
+      "subject": "Domínio",
+      "description": "Declare um Domínio."
+    },
+    {
+      "prefix": "estate_declare_urban",
+      "count": 1,
+      "live": 0,
+      "sample": "estate_declare_urban",
+      "subject": "Domínio Civilizado",
+      "description": "Declare um Domínio em uma Ilha Civilizada."
+    },
+    {
+      "prefix": "estate_expand",
+      "count": 1,
+      "live": 0,
+      "sample": "estate_expand",
+      "subject": "Ampliar Domínio",
+      "description": "Amplie o seu Domínio em 2 ou mais espaços."
+    },
+    {
+      "prefix": "finish_epic_story",
+      "count": 1,
+      "live": 0,
+      "sample": "finish_epic_story",
+      "subject": "Registro Diário Completo",
+      "description": "Termine o <em>Capítulo 8</em> em seu<ref>ui://Story, Registro Diário</ref>."
+    },
+    {
+      "prefix": "milestone_collect_butchery",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_collect_butchery_1",
+      "subject": "Acontecimento: Esquartejamento",
+      "description": "Esquarteje um animal de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_collect_mineral",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_collect_mineral_1",
+      "subject": "Acontecimento: Mineração",
+      "description": "Colete um mineral de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_collect_plant",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_collect_plant_1",
+      "subject": "Acontecimento: Coleta de Plantas",
+      "description": "Colete uma planta de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_cooking",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_cooking_1",
+      "subject": "Acontecimento: Cozinhar",
+      "description": "Cozinhe um alimento de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_craft_armor",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_craft_armor_1",
+      "subject": "Acontecimento: Fabricação de Trajes",
+      "description": "Fabrique um Traje de Colono/Traje de Explorador/Traje de Caça de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_craft_building",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_craft_building_1",
+      "subject": "Acontecimento: Construção",
+      "description": "Construa uma construção pré-fabricada de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_craft_furniture",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_craft_furniture_1",
+      "subject": "Acontecimento: Fabricação de Móveis",
+      "description": "Construa uma caixa/mesa de trabalho de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_craft_weapon",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_craft_weapon_1",
+      "subject": "Acontecimento: Fabricação de Armas",
+      "description": "Construa uma arma completa de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_farming",
+      "count": 4,
+      "live": 0,
+      "sample": "milestone_farming_1",
+      "subject": "Acontecimento: Cultivo",
+      "description": "Plante uma semente de nível 60 ou superior"
+    },
+    {
+      "prefix": "milestone_tech_support_delicate",
+      "count": 10,
+      "live": 0,
+      "sample": "milestone_tech_support_delicate_1",
+      "subject": "Acontecimento: Suporte Técnico",
+      "description": "Alcance o nível de modificação <em>[Primoroso]</em>."
+    },
+    {
+      "prefix": "milestone_tech_support_estimate",
+      "count": 6,
+      "live": 0,
+      "sample": "milestone_tech_support_estimate_1",
+      "subject": "Acontecimento: Suporte Técnico",
+      "description": "Solicite uma estimativa da Sociedade."
+    },
+    {
+      "prefix": "milestone_tech_support_perfect",
+      "count": 6,
+      "live": 0,
+      "sample": "milestone_tech_support_perfect_1",
+      "subject": "Acontecimento: Suporte Técnico",
+      "description": "Alcance o nível de modificação <em>[Perfeito]</em>."
+    },
+    {
+      "prefix": "permanent_2nd_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_2nd_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro II",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 2."
+    },
+    {
+      "prefix": "permanent_3rd_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_3rd_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro III",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 3."
+    },
+    {
+      "prefix": "permanent_4th_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_4th_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro IV",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 4."
+    },
+    {
+      "prefix": "permanent_5th_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_5th_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro V",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 5."
+    },
+    {
+      "prefix": "permanent_6th_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_6th_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro VI",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 6."
+    },
+    {
+      "prefix": "permanent_7th_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_7th_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro VII",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 7."
+    },
+    {
+      "prefix": "permanent_8th_arch_mission_any",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_8th_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro VIII",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago com um [ffd85b][icon=icon_unstable_factor][-] <em>índice instável</em> equivalente a 8."
+    },
+    {
+      "prefix": "permanent_all_arch_mission_any",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_all_arch_mission_any_01",
+      "subject": "Profissional em Missões de Pioneiro",
+      "description": "Conclua 5 missões de pioneiro em um arquipélago instável de nível 60."
+    },
+    {
+      "prefix": "permanent_armorcrafting_any",
+      "count": 5,
+      "live": 5,
+      "sample": "permanent_armorcrafting_any_01",
+      "subject": "Criando Roupas",
+      "description": "Criar 5 peças de roupa."
+    },
+    {
+      "prefix": "permanent_armorcrafting_bag",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_armorcrafting_bag_01",
+      "subject": "Criando Bolsas",
+      "description": "Crie usando o molde de uma Bolsa de Tecido 1 vez."
+    },
+    {
+      "prefix": "permanent_armorcrafting_explorer",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_armorcrafting_explorer_01",
+      "subject": "Criando Equipamento de Exploração",
+      "description": "Crie usando o molde de um Traje de Coleta de Linho 1 vez."
+    },
+    {
+      "prefix": "permanent_armorcrafting_gloves",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_armorcrafting_gloves_01",
+      "subject": "Criando Luvas",
+      "description": "Crie usando o molde de Luvas Meio Dedo 1 vez."
+    },
+    {
+      "prefix": "permanent_armorcrafting_hunter",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_armorcrafting_hunter_01",
+      "subject": "Criando Trajes de Combate",
+      "description": "Crie usando o molde de um Traje de Batalha Antifrio 1 vez."
+    },
+    {
+      "prefix": "permanent_armorcrafting_repair_modern_clothes",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_armorcrafting_repair_modern_clothes_01",
+      "subject": "Remendando Roupas Modernas",
+      "description": "Remendar roupas modernas."
+    },
+    {
+      "prefix": "permanent_armorcrafting_settler",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_armorcrafting_settler_01",
+      "subject": "Criando Trajes de Colonos",
+      "description": "Crie usando o molde de um Traje Casual 1 vez."
+    },
+    {
+      "prefix": "permanent_armorcrafting_shoes",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_armorcrafting_shoes_01",
+      "subject": "Criando Sapatos",
+      "description": "Crie usando o molde de Sandálias de Couro 1 vez."
+    },
+    {
+      "prefix": "permanent_butchery_bone_leg",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_butchery_bone_leg_01",
+      "subject": "Coletando Ossos da Perna",
+      "description": "Coletar 10 ossos de perna."
+    },
+    {
+      "prefix": "permanent_butchery_leather",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_butchery_leather_01",
+      "subject": "Coletando Couro",
+      "description": "Coletar couro 10 vezes."
+    },
+    {
+      "prefix": "permanent_butchery_meat",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_butchery_meat_01",
+      "subject": "Coletando Carne",
+      "description": "Coletar carne 10 vezes."
+    },
+    {
+      "prefix": "permanent_cold_resist_lvup",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_cold_resist_lvup_01",
+      "subject": "Evoluindo a Resistência Física ao Frio",
+      "description": "Alcance o nível 5 de resistência física ao frio."
+    },
+    {
+      "prefix": "permanent_constructing_any",
+      "count": 5,
+      "live": 5,
+      "sample": "permanent_constructing_any_01",
+      "subject": "Construindo Estruturas",
+      "description": "Edifique uma construção 5 vezes."
+    },
+    {
+      "prefix": "permanent_constructing_cage",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_constructing_cage_01",
+      "subject": "Construindo o Curral",
+      "description": "Construir um curral pequeno."
+    },
+    {
+      "prefix": "permanent_constructing_fur_table",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_constructing_fur_table_01",
+      "subject": "Criando a Mesa de Trabalho",
+      "description": "Criar uma mesa de trabalho básica."
+    },
+    {
+      "prefix": "permanent_constructing_kiln",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_constructing_kiln_01",
+      "subject": "Criando a Fornalha",
+      "description": "Construir a fornalha básica."
+    },
+    {
+      "prefix": "permanent_constructing_kitchen",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_constructing_kitchen_01",
+      "subject": "Construindo a Cozinha",
+      "description": "Criar um forno."
+    },
+    {
+      "prefix": "permanent_constructing_modular",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_constructing_modular_01",
+      "subject": "Construindo Casas",
+      "description": "Construa uma casa."
+    },
+    {
+      "prefix": "permanent_constructing_roof_modular",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_constructing_roof_modular_01",
+      "subject": "Construindo Toldos",
+      "description": "Construa um toldo."
+    },
+    {
+      "prefix": "permanent_constructing_volc",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_constructing_volc_01",
+      "subject": "Debaixo da Sombra da Árvore de Freixo I",
+      "description": "Construa uma mesa de madeira de árvore de freixo."
+    },
+    {
+      "prefix": "permanent_constructing_volc_mud",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_constructing_volc_mud_01",
+      "subject": "Colecionador de Esculturas de Barro I",
+      "description": "Construa uma escultura de barro de Skunkodus Sulfúrico."
+    },
+    {
+      "prefix": "permanent_cooking_any",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_cooking_any_01",
+      "subject": "Culinária",
+      "description": "Cozinhar 5 vezes."
+    },
+    {
+      "prefix": "permanent_cooking_bake",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_cooking_bake_01",
+      "subject": "A Arte de Assar",
+      "description": "Crie usando a receita de um Pão 10 vezes."
+    },
+    {
+      "prefix": "permanent_cooking_fire",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_cooking_fire_01",
+      "subject": "Cozinhando na Grelha",
+      "description": "Grelhar 10 espetos."
+    },
+    {
+      "prefix": "permanent_cooking_fry",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_cooking_fry_01",
+      "subject": "Fritando Alimentos",
+      "description": "Fritar alimentos 10 vezes."
+    },
+    {
+      "prefix": "permanent_cooking_preserve",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_cooking_preserve_01",
+      "subject": "Preservando Alimentos",
+      "description": "Cozinhar alimentos defumados 10 vezes."
+    },
+    {
+      "prefix": "permanent_cooking_water",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_cooking_water_01",
+      "subject": "Fervendo Alimentos",
+      "description": "Cozinhar alimentos ferventados 10 vezes."
+    },
+    {
+      "prefix": "permanent_farming_any",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_farming_any_01",
+      "subject": "Cultivo",
+      "description": "Cultivar 5 vezes."
+    },
+    {
+      "prefix": "permanent_farming_seed",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_farming_seed_01",
+      "subject": "Plantando Sementes",
+      "description": "Plantar 4 sementes de milho."
+    },
+    {
+      "prefix": "permanent_farming_seed_b_love",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_farming_seed_b_love_01",
+      "subject": "Cultivo em Ilha Vulcânica III",
+      "description": "Plante 5 sementes de oxalis azul."
+    },
+    {
+      "prefix": "permanent_farming_seed_r_love",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_farming_seed_r_love_01",
+      "subject": "Cultivo em Ilha Vulcânica I",
+      "description": "Plante 5 sementes de oxalis vermelha."
+    },
+    {
+      "prefix": "permanent_farming_seed_taro",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_farming_seed_taro_01",
+      "subject": "Cultivo em Ilha Vulcânica IV",
+      "description": "Plante 5 sementes de taro."
+    },
+    {
+      "prefix": "permanent_farming_seed_y_love",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_farming_seed_y_love_01",
+      "subject": "Cultivo em Ilha Vulcânica II",
+      "description": "Plante 5 sementes de oxalis amarela."
+    },
+    {
+      "prefix": "permanent_gale_resist_lvup",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_gale_resist_lvup_01",
+      "subject": "Evoluindo a Resistência Física ao Vento",
+      "description": "Alcance o nível 5 de resistência física ao vento."
+    },
+    {
+      "prefix": "permanent_gathering_any",
+      "count": 4,
+      "live": 4,
+      "sample": "permanent_gathering_any_01",
+      "subject": "Coletando e Minerando",
+      "description": "Coletar ou minerar 50 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_basalt",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_basalt_01",
+      "subject": "Coleta de Basalto I",
+      "description": "Colete basalto 5 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_black_iron",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_black_iron_01",
+      "subject": "Coleta de Minério de Ferro Preto I",
+      "description": "Colete minério de ferro preto 5 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_clay",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_gathering_clay_01",
+      "subject": "Coletando Lama",
+      "description": "Coletar lama 10 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_granite",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_granite_01",
+      "subject": "Coleta de Granito I",
+      "description": "Colete granito 5 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_hard_lava",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_hard_lava_01",
+      "subject": "Coleta de Lava Endurecida I",
+      "description": "Colete lava endurecida 5 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_lava",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_lava_01",
+      "subject": "Coleta de Lava I",
+      "description": "Colete lava 5 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_love_flower",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_love_flower_01",
+      "subject": "Vida em um Lugar Árido I",
+      "description": "Colete oxalis selvagem 15 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_rock",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_rock_01",
+      "subject": "Mineração de Pedregulho",
+      "description": "Minerar 10 pedregulhos."
+    },
+    {
+      "prefix": "permanent_gathering_seed_box",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_seed_box_01",
+      "subject": "Achados e Perdidos I",
+      "description": "Colete sementes em pacotes perdidos 1 vez."
+    },
+    {
+      "prefix": "permanent_gathering_seed_dump",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_seed_dump_01",
+      "subject": "Achados e Passados I",
+      "description": "Colete sementes em esterco de animal 1 vez."
+    },
+    {
+      "prefix": "permanent_gathering_stem",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_stem_01",
+      "subject": "Coletando Caules de Plantas",
+      "description": "Coletar 20 caules de plantas."
+    },
+    {
+      "prefix": "permanent_gathering_stone",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_stone_01",
+      "subject": "Coletando Seixos",
+      "description": "Coletar 30 seixos."
+    },
+    {
+      "prefix": "permanent_gathering_sulphur",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_gathering_sulphur_01",
+      "subject": "Coleta de Enxofre I",
+      "description": "Colete enxofre 5 vezes."
+    },
+    {
+      "prefix": "permanent_gathering_wood_bough",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_gathering_wood_bough_01",
+      "subject": "Coletando Galhos",
+      "description": "Coletar 20 galhos."
+    },
+    {
+      "prefix": "permanent_gathering_wood_log",
+      "count": 4,
+      "live": 0,
+      "sample": "permanent_gathering_wood_log_01",
+      "subject": "Coletando Troncos",
+      "description": "Coletar 10 troncos."
+    },
+    {
+      "prefix": "permanent_heat_resist_lvup",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_heat_resist_lvup_01",
+      "subject": "Evoluindo a Resistência Física ao Calor",
+      "description": "Alcance o nível 5 de resistência física ao calor."
+    },
+    {
+      "prefix": "permanent_humid_resist_lvup",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_humid_resist_lvup_01",
+      "subject": "Evoluindo a Resistência Física à Umidade",
+      "description": "Alcance o nível 5 de resistência física à umidade."
+    },
+    {
+      "prefix": "permanent_hunt_amargasaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_amargasaurus_01",
+      "subject": "Caça ao Amargassauro",
+      "description": "Cace 1 Amargassauro."
+    },
+    {
+      "prefix": "permanent_hunt_andrewsarcus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_andrewsarcus_01",
+      "subject": "Caça ao Andrewsarchus",
+      "description": "Cace 5 Andrewsarchus."
+    },
+    {
+      "prefix": "permanent_hunt_ankylosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_ankylosaurus_01",
+      "subject": "Caçando o Anquilossauro",
+      "description": "Caçar 1 Anquilossauro."
+    },
+    {
+      "prefix": "permanent_hunt_any_animal",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_hunt_any_animal_01",
+      "subject": "Caçando Animais",
+      "description": "Caçar 20 animais."
+    },
+    {
+      "prefix": "permanent_hunt_apatosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_apatosaurus_01",
+      "subject": "Caçando o Apatossauro",
+      "description": "Cace 1 Apatossauro."
+    },
+    {
+      "prefix": "permanent_hunt_brachio",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_brachio_01",
+      "subject": "Caçando o Braquiossauro",
+      "description": "Caçar 1 Braquiossauro."
+    },
+    {
+      "prefix": "permanent_hunt_compso",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_compso_01",
+      "subject": "Caçando o Compsognato",
+      "description": "Caçar 20 Compsognatos."
+    },
+    {
+      "prefix": "permanent_hunt_horseshoecrab",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_horseshoecrab_01",
+      "subject": "Caça ao Caranguejo-Ferradura",
+      "description": "Cace 10 caranguejos-ferradura."
+    },
+    {
+      "prefix": "permanent_hunt_kasmosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_kasmosaurus_01",
+      "subject": "Caça ao Chasmossauro de Cinza Vulcânica",
+      "description": "Cace 3 Chasmossauros de Cinza Vulcânica."
+    },
+    {
+      "prefix": "permanent_hunt_mammoth",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_mammoth_01",
+      "subject": "Caçando o Mamute",
+      "description": "Caçar 1 Mamute."
+    },
+    {
+      "prefix": "permanent_hunt_megaloceros",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_megaloceros_01",
+      "subject": "Caçando o Megaloceros",
+      "description": "Caçar 1 Megaloceros."
+    },
+    {
+      "prefix": "permanent_hunt_ornithomimus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_ornithomimus_01",
+      "subject": "Caçando o Ornitomimo",
+      "description": "Caçar 1 Ornitomimo."
+    },
+    {
+      "prefix": "permanent_hunt_parasaurolophus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_parasaurolophus_01",
+      "subject": "Caçando o Parassaurolofo",
+      "description": "Caçar 1 Parassaurolofo."
+    },
+    {
+      "prefix": "permanent_hunt_phenacodus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_phenacodus_01",
+      "subject": "Caçando o Phenacodus",
+      "description": "Caçar 10 Phenacodus."
+    },
+    {
+      "prefix": "permanent_hunt_raptor",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_raptor_01",
+      "subject": "Caçando o Velociraptor",
+      "description": "Caçar 5 Velociraptores."
+    },
+    {
+      "prefix": "permanent_hunt_red_dotted_iguana",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_red_dotted_iguana_01",
+      "subject": "Caça à Iguana de Manchas Vermelhas",
+      "description": "Cace 1 iguana de manchas vermelhas."
+    },
+    {
+      "prefix": "permanent_hunt_sabertooth",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_sabertooth_01",
+      "subject": "Caçando o Dente-de-sabre",
+      "description": "Caçar 1 Dente-de-sabre."
+    },
+    {
+      "prefix": "permanent_hunt_stegosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_stegosaurus_01",
+      "subject": "Caçando o Estegossauro",
+      "description": "Caçar 1 Estegossauro."
+    },
+    {
+      "prefix": "permanent_hunt_tarbosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_tarbosaurus_01",
+      "subject": "Caçando o Tarbossauro",
+      "description": "Caçar 1 Tarbossauro."
+    },
+    {
+      "prefix": "permanent_hunt_triceratops",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_triceratops_01",
+      "subject": "Caçando o Triceratops",
+      "description": "Caçar 1 Triceratops."
+    },
+    {
+      "prefix": "permanent_hunt_tyranosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_tyranosaurus_01",
+      "subject": "Caça ao Tiranossauro",
+      "description": "Cace 1 Tiranossauro."
+    },
+    {
+      "prefix": "permanent_hunt_volcanic_eutaraptor",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_volcanic_eutaraptor_01",
+      "subject": "Caça ao Utahraptor de Cabeça Preta",
+      "description": "Cace 5 Utahraptores de Cabeça Preta."
+    },
+    {
+      "prefix": "permanent_hunt_volcanic_hadrosaurus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_volcanic_hadrosaurus_01",
+      "subject": "Caça ao Hadrossauro de Lava",
+      "description": "Cace 3 Hadrossauros de Lava."
+    },
+    {
+      "prefix": "permanent_hunt_volcanic_skuncodus",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_volcanic_skuncodus_01",
+      "subject": "Caça a Skunkodus Sulfúrico",
+      "description": "Cace 5 Skunkodus Sulfúricos."
+    },
+    {
+      "prefix": "permanent_hunt_white_stripe_iguana",
+      "count": 1,
+      "live": 0,
+      "sample": "permanent_hunt_white_stripe_iguana_01",
+      "subject": "Caça à Iguana de Listras Brancas",
+      "description": "Cace 5 iguanas de listras brancas."
+    },
+    {
+      "prefix": "permanent_level_character",
+      "count": 12,
+      "live": 12,
+      "sample": "permanent_level_character_05",
+      "subject": "Subir Nível do Personagem",
+      "description": "Chegar ao nível de personagem 5."
+    },
+    {
+      "prefix": "permanent_level_skill_armorcrafting",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_armorcrafting_10",
+      "subject": "Subiu de Nível de Alfaiataria",
+      "description": "Chegar ao nível 10 da habilidade de alfaiataria."
+    },
+    {
+      "prefix": "permanent_level_skill_butchery",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_butchery_10",
+      "subject": "Subiu de Nível de Esquartejamento",
+      "description": "Chegar ao nível 10 da habilidade de esquartejamento."
+    },
+    {
+      "prefix": "permanent_level_skill_constructing",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_constructing_10",
+      "subject": "Subiu de Nível de Construir",
+      "description": "Chegar ao nível 10 da habilidade de construção."
+    },
+    {
+      "prefix": "permanent_level_skill_cooking",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_cooking_10",
+      "subject": "Subiu de Nível de Cozinhar",
+      "description": "Chegar ao nível 10 da habilidade de cozinhar."
+    },
+    {
+      "prefix": "permanent_level_skill_defense",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_defense_10",
+      "subject": "Subiu de Nível de Defesa",
+      "description": "Chegar ao nível 10 da habilidade de defesa."
+    },
+    {
+      "prefix": "permanent_level_skill_farming",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_farming_10",
+      "subject": "Subiu de Nível de Cultivo",
+      "description": "Chegar ao nível 10 da habilidade de cultivo."
+    },
+    {
+      "prefix": "permanent_level_skill_gathering",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_gathering_10",
+      "subject": "Subiu de Nível de Coleta",
+      "description": "Chegar ao nível 10 da habilidade de coleta."
+    },
+    {
+      "prefix": "permanent_level_skill_melee_combat",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_melee_combat_10",
+      "subject": "Subiu de Nível de Corpo a Corpo",
+      "description": "Chegar ao nível 10 da habilidade corpo a corpo."
+    },
+    {
+      "prefix": "permanent_level_skill_process",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_process_10",
+      "subject": "Subiu de Nível de Processamento",
+      "description": "Chegar ao nível 10 da habilidade de processamento."
+    },
+    {
+      "prefix": "permanent_level_skill_ranged_combat",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_ranged_combat_10",
+      "subject": "Subiu de Nível de Arco e Flecha",
+      "description": "Chegar ao nível 10 da habilidade de arco e flecha."
+    },
+    {
+      "prefix": "permanent_level_skill_weaponcrafting",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_level_skill_weaponcrafting_10",
+      "subject": "Subiu de Nível de Criação de Ferramentas/Armas",
+      "description": "Chegar ao nível 10 da habilidade de criação de ferramentas/armas."
+    },
+    {
+      "prefix": "permanent_process_volc_glass",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_process_volc_glass_01",
+      "subject": "Visão Perfeita I",
+      "description": "Crie óculos 1 vez."
+    },
+    {
+      "prefix": "permanent_process_volc_glassexploit",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_process_volc_glassexploit_01",
+      "subject": "Não Desperdice I",
+      "description": "Desmanche óculos primorosos 1 vez."
+    },
+    {
+      "prefix": "permanent_process_volc_jewel",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_process_volc_jewel_01",
+      "subject": "Segredos Cristalinos I",
+      "description": "Extraia uma gema 1 vez."
+    },
+    {
+      "prefix": "permanent_process_volc_jewelmodify1",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_process_volc_jewelmodify1_01",
+      "subject": "Manuseie com Cuidado I",
+      "description": "Faça polimento suave de gema 1 vez."
+    },
+    {
+      "prefix": "permanent_process_volc_jewelmodify2",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_process_volc_jewelmodify2_01",
+      "subject": "Diamante Bruto I",
+      "description": "Faça polimento pesado de gema 1 vez."
+    },
+    {
+      "prefix": "permanent_process_volc_lava",
+      "count": 5,
+      "live": 0,
+      "sample": "permanent_process_volc_lava_01",
+      "subject": "Destruidor de Lava de Cabeça Fria I",
+      "description": "Quebre lava endurecida 1 vez."
+    },
+    {
+      "prefix": "permanent_sun_resist_lvup",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_sun_resist_lvup_01",
+      "subject": "Evoluindo a Resistência Física ao Sol Escaldante",
+      "description": "Alcance o nível 5 de resistência física ao sol escaldante."
+    },
+    {
+      "prefix": "permanent_tech_support",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_tech_support_01",
+      "subject": "Recebendo Suporte Técnico",
+      "description": "Receba Suporte Técnico da Sociedade para o seu equipamento."
+    },
+    {
+      "prefix": "permanent_volcanic_resist_lvup",
+      "count": 6,
+      "live": 0,
+      "sample": "permanent_volcanic_resist_lvup_01",
+      "subject": "Evoluindo a Resistência Física Térmica I",
+      "description": "Alcance nível 5 de resistência física térmica."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_any",
+      "count": 6,
+      "live": 6,
+      "sample": "permanent_weaponcrafting_any_01",
+      "subject": "Criação de Armas",
+      "description": "Criar 5 armas."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_bow",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_bow_01",
+      "subject": "Criando o Arco",
+      "description": "Crie usando o molde de um Arco Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_crossbow",
+      "count": 2,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_crossbow_01",
+      "subject": "Criando a Besta",
+      "description": "Crie usando o molde de uma Besta Melhorada 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_onehand_axe",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_onehand_axe_01",
+      "subject": "Criando o Machado de Uma Mão",
+      "description": "Crie usando o molde de um Machado de Uma Mão Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_onehand_hammer",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_onehand_hammer_01",
+      "subject": "Criando o Martelo de Uma Mão",
+      "description": "Crie usando o molde de um Martelo de Uma Mão Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_onehand_sword",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_onehand_sword_01",
+      "subject": "Criando a Faca de Uma Mão",
+      "description": "Crie usando o molde de uma Faca de Uma Mão Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_spear",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_spear_01",
+      "subject": "Criando a Lança",
+      "description": "Crie usando o molde de uma Lança Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_twohand_axe",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_twohand_axe_01",
+      "subject": "Criando o Machado de Duas Mãos",
+      "description": "Crie usando o molde de um Machado de Duas Mãos Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_twohand_hammer",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_twohand_hammer_01",
+      "subject": "Criando o Martelo de Duas Mãos",
+      "description": "Crie usando o molde de um Martelo de Duas Mãos Padrão 1 vez."
+    },
+    {
+      "prefix": "permanent_weaponcrafting_twohand_sword",
+      "count": 3,
+      "live": 0,
+      "sample": "permanent_weaponcrafting_twohand_sword_01",
+      "subject": "Criando a Faca de Duas Mãos",
+      "description": "Crie usando o molde de uma Faca de Duas Mãos Padrão 1 vez."
+    },
+    {
+      "prefix": "pvp_island",
+      "count": 14,
+      "live": 0,
+      "sample": "pvp_island_01",
+      "subject": "Entre na Ilha da Luta",
+      "description": "Entre na Ilha da Luta."
+    },
+    {
+      "prefix": "pvp_island_win",
+      "count": 16,
+      "live": 0,
+      "sample": "pvp_island_win_01",
+      "subject": "Vença uma Luta",
+      "description": "Torne-se o último em pé na Ilha da Luta."
+    },
+    {
+      "prefix": "taming_animal_zebra",
+      "count": 1,
+      "live": 1,
+      "sample": "taming_animal_zebra",
+      "subject": "Capture um Zebraceratops",
+      "description": "Capture um Zebraceratops."
+    },
+    {
+      "prefix": "tyrano",
+      "count": 3,
+      "live": 0,
+      "sample": "tyrano_01",
+      "subject": "Sem Tempo para Isso",
+      "description": "Cace 1 animal em uma ilha vulcânica."
+    },
+    {
+      "prefix": "warp_acc_de",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_de_01",
+      "subject": "Acelerador de Portal de Deserto",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável de deserto, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_gr",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_gr_01",
+      "subject": "Acelerador de Portal de Pradaria",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável de pradaria, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_phase",
+      "count": 4,
+      "live": 0,
+      "sample": "warp_acc_phase_01",
+      "subject": "Aceleração do Portal Nível 1",
+      "description": "Verifique as recompensas de um Acelerador de Portal Nível 1+ bem-sucedido."
+    },
+    {
+      "prefix": "warp_acc_repeat",
+      "count": 6,
+      "live": 0,
+      "sample": "warp_acc_repeat_005",
+      "subject": "Atividade de Aceleração do Portal",
+      "description": "Verifique as recompensas de um Acelerador de Portal Nível 3+ bem-sucedido, em um arquipélago nível 60, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_sn",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_sn_01",
+      "subject": "Acelerador de Portal de Campo Nevado",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável nevada, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_sw",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_sw_01",
+      "subject": "Acelerador de Portal de Pântano",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável de pântano, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_te",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_te_01",
+      "subject": "Acelerador de Portal Temperado",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável de temperado, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_tr",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_tr_01",
+      "subject": "Acelerador de Portal Tropical",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável tropical, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_tu",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_tu_01",
+      "subject": "Acelerador de Portal de Tundra",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável de tundra, 5 vezes."
+    },
+    {
+      "prefix": "warp_acc_vo",
+      "count": 2,
+      "live": 0,
+      "sample": "warp_acc_vo_01",
+      "subject": "Acelerador de Portal Vulcânico",
+      "description": "Verifique as recompensas de um Acelerador de Portal, em uma Ilha Instável vulcânica, 5 vezes."
+    }
+  ],
+  "sunset": [
+    {
+      "prefix": "mainstory_chapter1",
+      "count": 6,
+      "live": 0,
+      "sample": "mainstory_chapter1_1",
+      "subject": "Visite a Ilha Domada de K",
+      "description": "Fale com K em sua Ilha Domada."
+    },
+    {
+      "prefix": "mainstory_chapter2",
+      "count": 18,
+      "live": 0,
+      "sample": "mainstory_chapter2_1",
+      "subject": "Visite a Ilha Domada",
+      "description": "Vá para uma Ilha Domada."
+    },
+    {
+      "prefix": "mainstory_chapter3",
+      "count": 15,
+      "live": 0,
+      "sample": "mainstory_chapter3_1",
+      "subject": "Entrega Especial para K",
+      "description": "Fale com K em sua Ilha Domada."
+    },
+    {
+      "prefix": "mainstory_chapter4",
+      "count": 17,
+      "live": 0,
+      "sample": "mainstory_chapter4_1",
+      "subject": "A Ira de K",
+      "description": "Fale com K."
+    },
+    {
+      "prefix": "mainstory_chapter5",
+      "count": 12,
+      "live": 0,
+      "sample": "mainstory_chapter5_1",
+      "subject": "Espalhando a Verdade",
+      "description": "Fale com K em sua Ilha Domada."
+    },
+    {
+      "prefix": "mainstory_chapter6",
+      "count": 19,
+      "live": 0,
+      "sample": "mainstory_chapter6_1",
+      "subject": "Situação",
+      "description": "Fale com K em sua Ilha Domada."
+    },
+    {
+      "prefix": "mainstory_chapter7",
+      "count": 10,
+      "live": 0,
+      "sample": "mainstory_chapter7_1",
+      "subject": "Verifique o Documento",
+      "description": "Fale com K em sua Ilha Domada."
+    },
+    {
+      "prefix": "mainstory_chapter8",
+      "count": 3,
+      "live": 0,
+      "sample": "mainstory_chapter8_1",
+      "subject": "A Batalha Final II",
+      "description": "Vá para a <em>primeira ilha do arquipélago 5</em>, no mar instável tropical de nível 18, onde fica a <em>Central de Comunicação Gigante</em>."
+    },
+    {
+      "prefix": "mainstory_start",
+      "count": 1,
+      "live": 0,
+      "sample": "mainstory_start",
+      "subject": "Chegue ao nível 20",
+      "description": "Chegue ao nível de personagem 20."
+    }
+  ],
+  "story": [
+    {
+      "prefix": "story_custom_event_meet_k",
+      "count": 1,
+      "live": 0,
+      "sample": "story_custom_event_meet_k",
+      "subject": "O Curioso Caso de K",
+      "description": "Encontre-se com a K na praia mais ao norte."
+    },
+    {
+      "prefix": "story_enter_outpost",
+      "count": 1,
+      "live": 0,
+      "sample": "story_enter_outpost",
+      "subject": "Explorando Ilha Domada",
+      "description": "Entre em uma Ilha Instável de nível 60 e concorra com outros pioneiros para obter recursos valiosos."
+    },
+    {
+      "prefix": "story_enter_personal",
+      "count": 1,
+      "live": 0,
+      "sample": "story_enter_personal",
+      "subject": "Um Pequeno Passo",
+      "description": "Acostume-se com o mundo de Durango completando as missões que a K lhe der."
+    },
+    {
+      "prefix": "story_enter_risky",
+      "count": 1,
+      "live": 0,
+      "sample": "story_enter_risky",
+      "subject": "Pioneiro Novato",
+      "description": "Declare o seu Domínio pessoal e parta para uma Ilha Instável."
+    },
+    {
+      "prefix": "story_enter_safehouse",
+      "count": 1,
+      "live": 0,
+      "sample": "story_enter_safehouse",
+      "subject": "Recruta Novo",
+      "description": "Você precisa escapar de Ancora. Construa uma jangada."
+    },
+    {
+      "prefix": "story_enter_urban",
+      "count": 1,
+      "live": 0,
+      "sample": "story_enter_urban",
+      "subject": "A Cidade Grande!",
+      "description": "Vá para uma Ilha Civilizada para reingressar na civilização."
+    },
+    {
+      "prefix": "story_level",
+      "count": 7,
+      "live": 0,
+      "sample": "story_level_16",
+      "subject": "Explorador Novato",
+      "description": "Alcance o nível 16 e construa confiança com as organizações."
+    },
+    {
+      "prefix": "story_pioneer_grade",
+      "count": 1,
+      "live": 0,
+      "sample": "story_pioneer_grade_03",
+      "subject": "Crescente Onda de Energia de Portal",
+      "description": "Alcance o nível de pioneiro 3. Mais Arquipélagos desafiadores e instáveis aguardam você."
+    },
+    {
+      "prefix": "story_try_tech_support",
+      "count": 1,
+      "live": 0,
+      "sample": "story_try_tech_support",
+      "subject": "O Incrível Poder da Tecnologia",
+      "description": "Adquira Fragmentos de Código. O zelador entrará em contato."
+    },
+    {
+      "prefix": "storyquest",
+      "count": 8,
+      "live": 0,
+      "sample": "storyquest_01",
+      "subject": "33 de Agosto",
+      "description": "Vá para sua Ilha Domada e ouça as pistas sobre 33 de Agosto."
+    }
+  ],
+  "returner": [
+    {
+      "prefix": "returner_butchery_bone_leg",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_butchery_bone_leg",
+      "subject": "Coletando Materiais de Processamento",
+      "description": "Colete 10 ossos de perna."
+    },
+    {
+      "prefix": "returner_butchery_bone_tooth",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_butchery_bone_tooth",
+      "subject": "Coletando Materiais de Processamento",
+      "description": "Colete dentes."
+    },
+    {
+      "prefix": "returner_butchery_leather",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_butchery_leather",
+      "subject": "Coletando Materiais de Processamento",
+      "description": "Coletar couro 5 vezes."
+    },
+    {
+      "prefix": "returner_constructing_basket",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_constructing_basket",
+      "subject": "Construindo Móveis",
+      "description": "Construa uma cesta."
+    },
+    {
+      "prefix": "returner_constructing_chair_01_wood",
+      "count": 3,
+      "live": 0,
+      "sample": "returner_constructing_chair_01_wood_02",
+      "subject": "Construindo Móveis",
+      "description": "Construa uma cadeira de parque de madeira."
+    },
+    {
+      "prefix": "returner_constructing_chair_bark",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_constructing_chair_bark_02",
+      "subject": "Construindo Móveis",
+      "description": "Construa uma cadeira de tronco longo."
+    },
+    {
+      "prefix": "returner_constructing_farm_tile",
+      "count": 2,
+      "live": 0,
+      "sample": "returner_constructing_farm_tile_01",
+      "subject": "Construindo Campos",
+      "description": "Construa um campo pequeno."
+    },
+    {
+      "prefix": "returner_constructing_fur_box",
+      "count": 2,
+      "live": 0,
+      "sample": "returner_constructing_fur_box_01",
+      "subject": "Construindo Móveis",
+      "description": "Construa uma caixa pequena."
+    },
+    {
+      "prefix": "returner_constructing_road1",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_constructing_road1",
+      "subject": "Construindo Estradas",
+      "description": "Construa uma estrada de terra 2 vezes."
+    },
+    {
+      "prefix": "returner_constructing_road2",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_constructing_road2",
+      "subject": "Construindo Estradas",
+      "description": "Construa uma estrada de pedra 2 vezes."
+    },
+    {
+      "prefix": "returner_constructing_torch_stand",
+      "count": 2,
+      "live": 0,
+      "sample": "returner_constructing_torch_stand_0",
+      "subject": "Construindo Postes de Luz",
+      "description": "Construa um poste de luz de vela."
+    },
+    {
+      "prefix": "returner_cooking_bread",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_cooking_bread_01",
+      "subject": "A Arte de Assar",
+      "description": "Asse 6 fatias de pão usando a receita de pão."
+    },
+    {
+      "prefix": "returner_cooking_butter",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_cooking_butter",
+      "subject": "A Arte de Cozinhar",
+      "description": "Faça manteiga."
+    },
+    {
+      "prefix": "returner_cooking_rice_cake",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_cooking_rice_cake",
+      "subject": "A Arte de Cozinhar",
+      "description": "Faça bolinhos de arroz."
+    },
+    {
+      "prefix": "returner_cooking_rice_steamed",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_cooking_rice_steamed",
+      "subject": "A Arte de Cozinhar",
+      "description": "Faça arroz cozido 3 vezes."
+    },
+    {
+      "prefix": "returner_cooking_skewer",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_cooking_skewer",
+      "subject": "Cozinhando na Grelha",
+      "description": "Grelhe 3 espetos."
+    },
+    {
+      "prefix": "returner_estate_declare",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_estate_declare",
+      "subject": "Domínio",
+      "description": "Declare um Domínio."
+    },
+    {
+      "prefix": "returner_estate_expand",
+      "count": 3,
+      "live": 0,
+      "sample": "returner_estate_expand_01",
+      "subject": "Ampliar Domínio",
+      "description": "Aumente seu Domínio para 2 seções."
+    },
+    {
+      "prefix": "returner_farming_any",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_farming_any",
+      "subject": "Cultivo",
+      "description": "Cultivar 5 vezes."
+    },
+    {
+      "prefix": "returner_gathering_metal",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_gathering_metal",
+      "subject": "Coletando Materiais de Processamento",
+      "description": "Colete metal 5 vezes."
+    },
+    {
+      "prefix": "returner_level_character",
+      "count": 6,
+      "live": 0,
+      "sample": "returner_level_character_15",
+      "subject": "Subir Nível do Personagem",
+      "description": "Chegar ao nível de personagem 15."
+    },
+    {
+      "prefix": "returner_level_skill_armorcrafting",
+      "count": 3,
+      "live": 0,
+      "sample": "returner_level_skill_armorcrafting_20",
+      "subject": "Subiu de Nível de Alfaiataria",
+      "description": "Chegar ao nível 20 da habilidade de alfaiataria."
+    },
+    {
+      "prefix": "returner_level_skill_constructing",
+      "count": 3,
+      "live": 0,
+      "sample": "returner_level_skill_constructing_20",
+      "subject": "Subiu de Nível de Construir",
+      "description": "Chegar ao nível 20 da habilidade de construção."
+    },
+    {
+      "prefix": "returner_level_skill_cooking",
+      "count": 3,
+      "live": 0,
+      "sample": "returner_level_skill_cooking_20",
+      "subject": "Subiu de Nível de Cozinhar",
+      "description": "Chegar ao nível 20 da habilidade de cozinhar."
+    },
+    {
+      "prefix": "returner_level_skill_melee_combat",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_level_skill_melee_combat_20",
+      "subject": "Subiu de Nível de Corpo a Corpo",
+      "description": "Chegar ao nível 20 da habilidade corpo a corpo."
+    },
+    {
+      "prefix": "returner_level_skill_ranged_combat",
+      "count": 2,
+      "live": 0,
+      "sample": "returner_level_skill_ranged_combat_20",
+      "subject": "Subiu de Nível de Arco e Flecha",
+      "description": "Chegar ao nível 20 da habilidade de arco e flecha."
+    },
+    {
+      "prefix": "returner_level_skill_weaponcrafting",
+      "count": 3,
+      "live": 0,
+      "sample": "returner_level_skill_weaponcrafting_20",
+      "subject": "Subiu de Nível de Criação de Ferramentas/Armas",
+      "description": "Chegar ao nível 20 da habilidade de criação de ferramentas/armas."
+    },
+    {
+      "prefix": "returner_process_metal_stick",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_process_metal_stick",
+      "subject": "Coletando Materiais de Processamento",
+      "description": "Crie 3 bastões de metal."
+    },
+    {
+      "prefix": "returner_process_nail_metal",
+      "count": 1,
+      "live": 0,
+      "sample": "returner_process_nail_metal",
+      "subject": "Coletando Materiais de Processamento",
+      "description": "Crie 4 pregos de metal."
+    }
+  ]
+}

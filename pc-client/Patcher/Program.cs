@@ -1,6 +1,55 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
+if (args.Length == 3 && args[0] is "--gameplay-ui" or "--discovery-cache")
+{
+    using var cacheResolver = new DefaultAssemblyResolver();
+    cacheResolver.AddSearchDirectory(Path.GetDirectoryName(Path.GetFullPath(args[1]))!);
+    using var input = AssemblyDefinition.ReadAssembly(args[1], new ReaderParameters { InMemory = true, AssemblyResolver = cacheResolver });
+    var before = input.MainModule.Types.SelectMany(Flatten).SelectMany(t => t.Methods).Where(m => m.HasBody)
+        .ToDictionary(m => m.FullName, Signature);
+    var map = input.MainModule.Types.Single(t => t.FullName == "MapSystem");
+    var changed = new HashSet<string>();
+    foreach (string name in new[] { "OnReady", "GetDiscoveryInfos" })
+    {
+        var method = map.Methods.Single(m => m.Name == name);
+        var requests = method.Body.Instructions.Where(i => i.Operand is MethodReference r && r.Name == "Request" &&
+            r.DeclaringType.FullName.Contains("AsyncCachedDictionary") && r.Parameters.Count == 3 &&
+            r.Parameters[2].ParameterType.FullName == "System.Boolean").ToArray();
+        if (requests.Length != 1 || requests[0].Previous.OpCode != OpCodes.Ldc_I4_0)
+            throw new InvalidOperationException("Unexpected discovery request IL: " + name);
+        requests[0].Previous.OpCode = OpCodes.Ldc_I4_1; // refresh só nestas consultas
+        changed.Add(method.FullName);
+    }
+    // A imagem anunciada no índice pode faltar ou carregar sem suas texturas.
+    // A carreira usa as dicas textuais; CardNewsPopup continua intacto para os
+    // outros menus. Substituir somente a chamada instance.Load(string),
+    // consumindo ambos os argumentos e mantendo seu resultado bool na pilha.
+    var guide = input.MainModule.Types.Single(t => t.FullName == "Durango.UI.LearningGuideGroup");
+    var hints = guide.Methods.Single(m => m.Name == "ShowHintPopup" && m.Parameters.Count == 1 &&
+        m.Parameters[0].ParameterType.FullName == "Durango.Logic.LearningGuide.Advice");
+    var loads = hints.Body.Instructions.Where(i => i.Operand is MethodReference r &&
+        r.DeclaringType.FullName == "Durango.UI.Popup.CardNewsPopup" && r.Name == "Load").ToArray();
+    if (loads.Length != 1 || loads[0].Operand is not MethodReference load || !load.HasThis ||
+        load.Parameters.Count != 1 || load.ReturnType.FullName != "System.Boolean")
+        throw new InvalidOperationException("Unexpected career hint IL");
+    var hintIl = hints.Body.GetILProcessor();
+    hintIl.InsertBefore(loads[0], Instruction.Create(OpCodes.Pop));
+    hintIl.InsertBefore(loads[0], Instruction.Create(OpCodes.Pop));
+    loads[0].OpCode = OpCodes.Ldc_I4_0;
+    loads[0].Operand = null;
+    changed.Add(hints.FullName);
+    input.Write(args[2]);
+    using var output = AssemblyDefinition.ReadAssembly(args[2]);
+    foreach (var method in output.MainModule.Types.SelectMany(Flatten).SelectMany(t => t.Methods).Where(m => m.HasBody))
+        if (!changed.Contains(method.FullName) && before[method.FullName] != Signature(method))
+            throw new InvalidOperationException("Unrelated method changed: " + method.FullName);
+    if (input.FullName != output.FullName || input.MainModule.RuntimeVersion != output.MainModule.RuntimeVersion)
+        throw new InvalidOperationException("Assembly identity changed");
+    Console.WriteLine("PASS: discovery queries refresh cache; career hints use text. Only three UI methods changed.");
+    return;
+}
+
 bool estateOnly = args.Length == 4 && args[3] == "--estate-only";
 if (args.Length != 3 && !estateOnly) throw new ArgumentException("input-assembly bridge-assembly output-assembly [--estate-only]");
 using var resolver = new DefaultAssemblyResolver();

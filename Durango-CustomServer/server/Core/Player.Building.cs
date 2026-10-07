@@ -631,7 +631,7 @@ public partial class Player
         // [7 ก.ย. 2026] ให้ exp ตอนกด "สำเร็จ" จริง — ไม่ให้ตอนจองหลุม/ใส่วัสดุ
         AddExpForAction(SkillTuning.BuildWeight, Shared.Skill.Category.Constructing,
                         $"Construir {blueprint.Id}");
-        NoteQuestEvent(Shared.Quest.QuestEventType.Built);
+        NoteQuestEvent(Shared.Quest.QuestEventType.Built, context: QuestActionContext(blueprint.Id));
 
         Console.WriteLine($"[สร้าง] {Short(EntityId)} ทำให้ {blueprint.Id} สมบูรณ์แล้ว");
 

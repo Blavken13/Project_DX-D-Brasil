@@ -35,7 +35,7 @@ public static class QuestCatalog
         public const string Process = "process";
     }
 
-    static readonly Regex FirstNumber = new(@"(\d+)", RegexOptions.Compiled);
+    static readonly Regex FirstNumber = new(@"(\d+(?:[.,]\d{3})*)", RegexOptions.Compiled);
     static readonly Dictionary<string, QuestDef> ById = new(StringComparer.Ordinal);
     static readonly Dictionary<string, List<QuestDef>> ByCategory = new(StringComparer.Ordinal);
 
@@ -52,6 +52,7 @@ public static class QuestCatalog
         InductionRewardTuning.Load();
 
         var raw = Json.ReadFromFile<Dictionary<string, QuestAssetRow>>("quests/quests_for_client");
+        var objectives = Json.ReadFromFile<Dictionary<string, QuestObjective>>("quests/objectives_server") ?? new();
         if (raw == null || raw.Count == 0)
         {
             Console.WriteLine("[เควส] ไม่พบ quests/quests_for_client — แคตตาล็อกว่าง");
@@ -64,6 +65,14 @@ public static class QuestCatalog
         {
             if (string.IsNullOrEmpty(pair.Key) || pair.Value == null) continue;
             QuestDef def = FromAsset(pair.Key, pair.Value);
+            if (objectives.TryGetValue(def.Id, out var objective) &&
+                (def.Category == DailyCategory || def.Category == AchievementCategory) &&
+                Enum.TryParse<QuestEventType>(objective.Event, out var objectiveEvent) && objectiveEvent != QuestEventType.Invalid && objective.Goal > 0)
+            {
+                def.Objective = objective;
+                def.Event = objectiveEvent; def.Filter = objective.Filter ?? "";
+                def.GoalCount = objective.Goal; def.IsLive = true; def.UnknownReason = "";
+            }
             ById[def.Id] = def;
             if (!ByCategory.TryGetValue(def.Category, out List<QuestDef> list))
             {
@@ -156,7 +165,8 @@ public static class QuestCatalog
         if (string.IsNullOrEmpty(description)) return 1;
         Match m = FirstNumber.Match(description);
         if (!m.Success) return 1;
-        return int.TryParse(m.Groups[1].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) && n > 0
+        string number = m.Groups[1].Value.Replace(".", "").Replace(",", "");
+        return int.TryParse(number, NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) && n > 0
             ? n
             : 1;
     }
@@ -335,11 +345,23 @@ public static class QuestCatalog
     /// <paramref name="detail"/> is carcass/gather for Collected, or the recipe
     /// <c>category</c> string for Crafted.
     /// </summary>
-    public static bool Matches(QuestDef def, QuestEventType ev, string detail)
+    public static bool Matches(QuestDef def, QuestEventType ev, string detail, QuestEventContext context = null)
     {
         if (def == null || !def.IsLive || ev == QuestEventType.Invalid || def.Event != ev) return false;
+        var objective = def.Objective;
+        if (objective != null)
+        {
+            if (context == null) return false;
+            // Snapshot objectives are recalculated from server state, never from a client/event counter.
+            if (!string.IsNullOrEmpty(objective.Snapshot)) return false;
+            if (objective.Biome >= 0 && context?.Biome != objective.Biome) return false;
+            if (objective.Role >= 0 && context?.Role != objective.Role) return false;
+            if (objective.EntityTypes?.Length > 0 && (context == null || !objective.EntityTypes.Contains(context.EntityType))) return false;
+            if (objective.Recipes?.Length > 0 && (context == null || !objective.Recipes.Contains(context.RecipeId, StringComparer.Ordinal))) return false;
+            if (objective.Prototypes?.Length > 0 && (context?.Products == null || !context.Products.Any(p => objective.Prototypes.Contains(p.Prototype, StringComparer.Ordinal)))) return false;
+        }
         if (string.IsNullOrEmpty(def.Filter)) return true;
-        if (ev == QuestEventType.Collected || ev == QuestEventType.AnimalTamed)
+        if (ev == QuestEventType.Collected || ev == QuestEventType.AnimalTamed || ev == QuestEventType.EstateManaged)
         {
             return string.Equals(def.Filter, detail, StringComparison.OrdinalIgnoreCase);
         }
@@ -427,6 +449,31 @@ public sealed class QuestDef
     public int Order;
     public int RewardTier = 1;
     public int LevelCategory = -2; // -2 contador; -1 nível do personagem; demais: categoria de skill.
+    public QuestObjective Objective;
+}
+
+public sealed class QuestObjective
+{
+    [JsonProperty("event")] public string Event;
+    [JsonProperty("goal")] public int Goal;
+    [JsonProperty("filter")] public string Filter;
+    [JsonProperty("biome")] public int Biome = -1;
+    [JsonProperty("role")] public int Role = -1;
+    [JsonProperty("entity_types")] public int[] EntityTypes;
+    [JsonProperty("recipes")] public string[] Recipes;
+    [JsonProperty("prototypes")] public string[] Prototypes;
+    [JsonProperty("snapshot")] public string Snapshot;
+    [JsonProperty("courses")] public string[] Courses;
+}
+
+/// <summary>Metadata captured after a successful action by the server.</summary>
+public sealed class QuestEventContext
+{
+    public int Biome = -1;
+    public int Role = -1;
+    public int EntityType = -1;
+    public string RecipeId;
+    public Messages.Item[] Products;
 }
 
 /// <summary>Plain progress row used by tests and by <see cref="Durango.Online.Player.QuestStore"/>.</summary>

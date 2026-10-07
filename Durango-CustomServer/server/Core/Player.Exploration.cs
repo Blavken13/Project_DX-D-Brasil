@@ -7,6 +7,12 @@ namespace Durango.Online;
 
 public partial class Player
 {
+    private float AnimalDiscoveryRate(string templateId)
+    {
+        var animals = BuildDiscoveryInfo(templateId).AnimalTypes;
+        return animals.Length == 0 ? 0 : (float)animals.Count(a => a.Item2) / animals.Length;
+    }
+
     private DefoggedChunks ExploredMapChunks(string region, int width, int height)
     {
         if (_context.ExploredChunks?.TryGetValue(region, out var found) != true)

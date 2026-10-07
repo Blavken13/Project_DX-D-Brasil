@@ -59,6 +59,7 @@ public static class DataStore
 
         // merge blueprint×artifact (เทียบเท่า RecipeContainer ฝั่ง client)
         BlueprintStore.Initialize(artifacts, blueprints);
+        Durango.Online.LearningGuideCatalog.Load();
 
         Report("prototype_data", prototypes, counts, 0);
         Report("constants", new Dictionary<string, int> { { "ok", constants != null ? 1 : 0 } }, counts, 1);

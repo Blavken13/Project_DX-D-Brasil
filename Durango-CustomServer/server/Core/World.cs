@@ -148,7 +148,7 @@ public partial class World
         };
         InitializeWildStructureExpirations();
         // Saves antigos podem conter spots parcialmente coletados sem fila de renovação.
-        foreach (var key in _context.NaturalHarvests.Keys.ToArray()) ScheduleTutorialRefresh(key);
+        foreach (var key in _context.NaturalHarvests.Keys.ToArray()) ScheduleNaturalRefresh(key);
     }
 
     /// <summary>
@@ -1238,12 +1238,11 @@ public partial class World
             _context.NaturalHarvests[targetKey] = list;
         }
         list.Add(generatorId);
-        ScheduleTutorialRefresh(targetKey);
+        ScheduleNaturalRefresh(targetKey);
     }
 
-    private void ScheduleTutorialRefresh(string key)
+    private void ScheduleNaturalRefresh(string key)
     {
-        if (!IsTutorialIsland) return;
         var coordinates = key.Split(',');
         if (coordinates.Length != 2 || !int.TryParse(coordinates[0], out int x) || !int.TryParse(coordinates[1], out int y)) return;
         if (_context.NaturalRegrow.Exists(e => e != null && e.X == x && e.Y == y)) return;
@@ -1270,7 +1269,7 @@ public partial class World
         if (!IsTutorialIsland || !DataHelper.IsNaturalObject(type)) return;
         string key = $"{tile.x},{tile.y}";
         _observedTutorialNaturals.TryAdd(key, type);
-        if (HarvestedGenerators(key).Count > 0) ScheduleTutorialRefresh(key);
+        if (HarvestedGenerators(key).Count > 0) ScheduleNaturalRefresh(key);
     }
 
     public void ForgetHarvests(string targetKey) => _context.NaturalHarvests.Remove(targetKey);

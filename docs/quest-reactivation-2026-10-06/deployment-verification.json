@@ -1,0 +1,20 @@
+{
+  "release": "d686b77f7d58dfc261a483462c6a1a519b030613",
+  "healthy": true,
+  "accounts_preserved": 53,
+  "characters_preserved": 63,
+  "backup": "/opt/durango/backups/state-pre-d686b77-20261007T011110Z.tar.gz",
+  "backup_files_sha256_verified": 229,
+  "stopped_state_preserved_before_start": true,
+  "public_assets_verified": true,
+  "pt_br_texts_checked": 831,
+  "final_linux_assertions": {
+    "reactivation": 1703,
+    "catalog": 127,
+    "rewards": 142,
+    "progression": 104,
+    "skill_points": 101,
+    "tester_bugs": 106,
+    "volcanic_food": 73
+  }
+}

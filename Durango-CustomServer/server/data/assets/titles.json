@@ -471,14 +471,14 @@
       "7": 0
     },
     "modifiers": {
-      "max_health_plus": 40.0
+      "max_health_plus": 40
     },
     "reward_from": "advisor",
     "description": {
-      "기초사냥전술 과정을 완료하였다.": null
+      "Táticas Básicas de Caça - concluído.": null
     },
     "name": {
-      "기초사냥전술": null
+      "Táticas Básicas de Caça": null
     }
   },
   "combat_melee_onehand_2": {
@@ -497,10 +497,10 @@
     },
     "reward_from": "advisor",
     "description": {
-      "한손전투와 마음읽기 과정을 완료하였다.": null
+      "Combate com Uma Mão: Compreenda o Inimigo - concluído.": null
     },
     "name": {
-      "한손전투와 마음읽기": null
+      "Combate com Uma Mão: Compreenda o Inimigo": null
     }
   },
   "combat_melee_onehand_3": {
@@ -515,14 +515,14 @@
       "7": 0
     },
     "modifiers": {
-      "life_recovery": 1.0
+      "life_recovery": 1
     },
     "reward_from": "advisor",
     "description": {
-      "한손전투와 인지심리 과정을 완료하였다.": null
+      "Combate com Uma Mão: Psicologia Cognitiva - concluído.": null
     },
     "name": {
-      "한손전투와 인지심리": null
+      "Combate com Uma Mão: Psicologia Cognitiva": null
     }
   },
   "combat_melee_onehand_4": {
@@ -541,10 +541,10 @@
     },
     "reward_from": "advisor",
     "description": {
-      "한손전투와 범죄심리 과정을 완료하였다.": null
+      "Combate com Uma Mão: Psicologia Criminal - concluído.": null
     },
     "name": {
-      "한손전투와 범죄심리": null
+      "Combate com Uma Mão: Psicologia Criminal": null
     }
   },
   "combat_melee_twohand_2": {
@@ -559,14 +559,14 @@
       "7": 0
     },
     "modifiers": {
-      "max_health_plus": 60.0
+      "max_health_plus": 60
     },
     "reward_from": "advisor",
     "description": {
-      "양손전투와 비판적사고 과정을 완료하였다.": null
+      "Combate com Duas Mãos: Raciocínio Crítico - concluído.": null
     },
     "name": {
-      "양손전투와 비판적사고": null
+      "Combate com Duas Mãos: Raciocínio Crítico": null
     }
   },
   "combat_melee_twohand_3": {
@@ -581,14 +581,14 @@
       "7": 0
     },
     "modifiers": {
-      "max_health_plus": 80.0
+      "max_health_plus": 80
     },
     "reward_from": "advisor",
     "description": {
-      "양손전투와 운동철학 과정을 완료하였다.": null
+      "Combate com Duas Mãos: Doutrina do Guerreiro - concluído.": null
     },
     "name": {
-      "양손전투와 운동철학": null
+      "Combate com Duas Mãos: Doutrina do Guerreiro": null
     }
   },
   "combat_melee_twohand_4": {
@@ -603,14 +603,14 @@
       "7": 0
     },
     "modifiers": {
-      "max_health_plus": 100.0
+      "max_health_plus": 100
     },
     "reward_from": "advisor",
     "description": {
-      "양손전투와 전투윤리 과정을 완료하였다.": null
+      "Combate com Duas Mãos: Ética do Campo de Batalha - concluído.": null
     },
     "name": {
-      "양손전투와 전투윤리": null
+      "Combate com Duas Mãos: Ética do Campo de Batalha": null
     }
   },
   "combat_ranged_2": {
@@ -625,14 +625,14 @@
       "7": 0
     },
     "modifiers": {
-      "accuracy_plus": 3.0
+      "accuracy_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "궁술과 미적분학 과정을 완료하였다.": null
+      "Arco e Flecha e Cálculo - concluído.": null
     },
     "name": {
-      "궁술과 미적분학": null
+      "Arco e Flecha e Cálculo": null
     }
   },
   "combat_ranged_3": {
@@ -647,14 +647,14 @@
       "7": 0
     },
     "modifiers": {
-      "accuracy_plus": 4.0
+      "accuracy_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "궁술과 고전역학 과정을 완료하였다.": null
+      "Arco e Flecha e Mecânica Clássica - concluído.": null
     },
     "name": {
-      "궁술과 고전역학": null
+      "Arco e Flecha e Mecânica Clássica": null
     }
   },
   "combat_ranged_4": {
@@ -669,14 +669,14 @@
       "7": 0
     },
     "modifiers": {
-      "accuracy_plus": 5.0
+      "accuracy_plus": 5
     },
     "reward_from": "advisor",
     "description": {
-      "궁술과 상대성이론 과정을 완료하였다.": null
+      "Arco e Flecha e a Teoria da Relatividade - concluído.": null
     },
     "name": {
-      "궁술과 상대성이론": null
+      "Arco e Flecha e a Teoria da Relatividade": null
     }
   },
   "combat_butchery_2": {
@@ -691,14 +691,14 @@
       "7": 0
     },
     "modifiers": {
-      "butchering_plus": 2.0
+      "butchering_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "동물 해부학 과정을 완료하였다.": null
+      "Anatomia Animal - concluído.": null
     },
     "name": {
-      "동물 해부학": null
+      "Anatomia Animal": null
     }
   },
   "combat_butchery_3": {
@@ -713,14 +713,14 @@
       "7": 0
     },
     "modifiers": {
-      "butchering_plus": 3.0
+      "butchering_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "동물 해부실습 과정을 완료하였다.": null
+      "Laboratório de Dissecação de Animais - concluído.": null
     },
     "name": {
-      "동물 해부실습": null
+      "Laboratório de Dissecação de Animais": null
     }
   },
   "combat_butchery_4": {
@@ -735,14 +735,14 @@
       "7": 0
     },
     "modifiers": {
-      "butchering_plus": 4.0
+      "butchering_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "동물 분자영양학 과정을 완료하였다.": null
+      "Biologia Molecular Animal - concluído.": null
     },
     "name": {
-      "동물 분자영양학": null
+      "Biologia Molecular Animal": null
     }
   },
   "weaponcrafting_basic_1": {
@@ -757,14 +757,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 1.0
+      "weaponcraft_plus": 1
     },
     "reward_from": "advisor",
     "description": {
-      "무기제작개론 과정을 완료하였다.": null
+      "Conjunto de Confecção de Armas 101 - concluído.": null
     },
     "name": {
-      "무기제작개론": null
+      "Confecção de Armas 101": null
     }
   },
   "weaponcrafting_sword_2": {
@@ -779,14 +779,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 2.0
+      "weaponcraft_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "도검 제작공정 기초 과정을 완료하였다.": null
+      "Produção Básica de Espadas - concluído.": null
     },
     "name": {
-      "도검 제작공정 기초": null
+      "Produção Básica de Espadas": null
     }
   },
   "weaponcrafting_sword_3": {
@@ -801,14 +801,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 3.0
+      "weaponcraft_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "도검 제작공정 숙련 과정을 완료하였다.": null
+      "Produção Intermediária de Espadas - concluído.": null
     },
     "name": {
-      "도검 제작공정 숙련": null
+      "Produção Intermediária de Espadas": null
     }
   },
   "weaponcrafting_sword_4": {
@@ -823,14 +823,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 4.0
+      "weaponcraft_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "도검 제작공정 전문 과정을 완료하였다.": null
+      "Produção Avançada de Espadas - concluído.": null
     },
     "name": {
-      "도검 제작공정 전문": null
+      "Produção Avançada de Espadas": null
     }
   },
   "weaponcrafting_axe_2": {
@@ -845,14 +845,14 @@
       "7": 0
     },
     "modifiers": {
-      "smith_plus": 2.0
+      "smith_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "도끼 제작공정 기초 과정을 완료하였다.": null
+      "Produção Básica de Machados - concluído.": null
     },
     "name": {
-      "도끼 제작공정 기초": null
+      "Produção Básica de Machados": null
     }
   },
   "weaponcrafting_axe_3": {
@@ -867,14 +867,14 @@
       "7": 0
     },
     "modifiers": {
-      "smith_plus": 3.0
+      "smith_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "도끼 제작공정 숙련 과정을 완료하였다.": null
+      "Produção Intermediária de Machados - concluído.": null
     },
     "name": {
-      "도끼 제작공정 숙련": null
+      "Produção intermediária de Machados": null
     }
   },
   "weaponcrafting_axe_4": {
@@ -889,14 +889,14 @@
       "7": 0
     },
     "modifiers": {
-      "smith_plus": 4.0
+      "smith_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "도끼 제작공정 전문 과정을 완료하였다.": null
+      "Produção Avançada de Machados - concluído.": null
     },
     "name": {
-      "도끼 제작공정 전문": null
+      "Produção Avançada de Machados": null
     }
   },
   "weaponcrafting_hammer_2": {
@@ -911,14 +911,14 @@
       "7": 0
     },
     "modifiers": {
-      "handicraft_plus": 2.0
+      "handicraft_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "둔기 제작공정 기초 과정을 완료하였다.": null
+      "Produção Básica de Armas Contundentes - concluído.": null
     },
     "name": {
-      "둔기 제작공정 기초": null
+      "Produção Básica de Armas Contundentes": null
     }
   },
   "weaponcrafting_hammer_3": {
@@ -933,14 +933,14 @@
       "7": 0
     },
     "modifiers": {
-      "handicraft_plus": 3.0
+      "handicraft_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "둔기 제작공정 숙련 과정을 완료하였다.": null
+      "Produção Intermediária de Armas Contundentes - concluído.": null
     },
     "name": {
-      "둔기 제작공정 숙련": null
+      "Produção Intermediária de Armas Contundentes": null
     }
   },
   "weaponcrafting_hammer_4": {
@@ -955,14 +955,14 @@
       "7": 0
     },
     "modifiers": {
-      "handicraft_plus": 4.0
+      "handicraft_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "둔기 제작공정 전문 과정을 완료하였다.": null
+      "Produção Avançada de Armas Contundentes - concluído.": null
     },
     "name": {
-      "둔기 제작공정 전문": null
+      "Produção Avançada de Armas Contundentes": null
     }
   },
   "weaponcrafting_bow_2": {
@@ -977,14 +977,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 2.0
+      "weaponcraft_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "활 제작공정 기초 과정을 완료하였다.": null
+      "Produção Básica de Arcos - concluído.": null
     },
     "name": {
-      "활 제작공정 기초": null
+      "Produção Básica de Arcos ": null
     }
   },
   "weaponcrafting_bow_3": {
@@ -999,14 +999,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 3.0
+      "weaponcraft_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "활 제작공정 숙련 과정을 완료하였다.": null
+      "Produção Intermediária de Arcos - concluído.": null
     },
     "name": {
-      "활 제작공정 숙련": null
+      "Produção intermediária de Arcos": null
     }
   },
   "weaponcrafting_bow_4": {
@@ -1021,14 +1021,14 @@
       "7": 0
     },
     "modifiers": {
-      "weaponcraft_plus": 4.0
+      "weaponcraft_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "활 제작공정 전문 과정을 완료하였다.": null
+      "Produção Avançada de Arcos - concluído.": null
     },
     "name": {
-      "활 제작공정 전문": null
+      "Produção Avançada de Arcos": null
     }
   },
   "armorcrafting_basic_1": {
@@ -1043,14 +1043,14 @@
       "7": 0
     },
     "modifiers": {
-      "armorcraft_plus": 1.0
+      "armorcraft_plus": 1
     },
     "reward_from": "advisor",
     "description": {
-      "의상제작입문 과정을 완료하였다.": null
+      "Alfaiataria 101 - concluído.": null
     },
     "name": {
-      "의상제작입문": null
+      "Alfaiataria 101": null
     }
   },
   "armorcrafting_basic_2": {
@@ -1065,14 +1065,14 @@
       "7": 0
     },
     "modifiers": {
-      "armorcraft_plus": 2.0
+      "armorcraft_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "의류소재의 이해 과정을 완료하였다.": null
+      "Os Materiais de Alfaiataria e Você - concluído.": null
     },
     "name": {
-      "의류소재의 이해": null
+      "Os Materiais de Alfaiataria e Você": null
     }
   },
   "armorcrafting_settler_3": {
@@ -1087,14 +1087,14 @@
       "7": 0
     },
     "modifiers": {
-      "tailor_plus": 3.0
+      "tailor_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "정착의류와 일반사회학 과정을 완료하였다.": null
+      "Estilo Colono: Sociologia Geral - concluído.": null
     },
     "name": {
-      "정착의류와 일반사회학": null
+      "Estilo Colono: Sociologia Geral": null
     }
   },
   "armorcrafting_settler_4": {
@@ -1109,14 +1109,14 @@
       "7": 0
     },
     "modifiers": {
-      "tailor_plus": 4.0
+      "tailor_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "정착의류와 사회조직론 과정을 완료하였다.": null
+      "Estilo Colono: Dinâmica Social - concluído.": null
     },
     "name": {
-      "정착의류와 사회조직론": null
+      "Estilo Colono: Dinâmica Social": null
     }
   },
   "armorcrafting_explorer_3": {
@@ -1131,14 +1131,14 @@
       "7": 0
     },
     "modifiers": {
-      "armorcraft_plus": 3.0
+      "armorcraft_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "탐험의류와 지리학입문 과정을 완료하였다.": null
+      "Estilo Pioneiro: Roupas e Geografia - concluído.": null
     },
     "name": {
-      "탐험의류와 지리학입문": null
+      "Estilo Pioneiro: Roupas e Geografia": null
     }
   },
   "armorcrafting_explorer_4": {
@@ -1153,14 +1153,14 @@
       "7": 0
     },
     "modifiers": {
-      "armorcraft_plus": 4.0
+      "armorcraft_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "탐험의류와 기후지리학 과정을 완료하였다.": null
+      "Estilo Pioneiro: Roupas e Clima - concluído.": null
     },
     "name": {
-      "탐험의류와 기후지리학": null
+      "Estilo Pioneiro: Roupas e Clima": null
     }
   },
   "armorcrafting_hunter_3": {
@@ -1175,14 +1175,14 @@
       "7": 0
     },
     "modifiers": {
-      "handicraft_plus": 3.0
+      "handicraft_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "전투의류와 지구전쟁사 과정을 완료하였다.": null
+      "Estilo Guerreiro: A História da Guerra - concluído.": null
     },
     "name": {
-      "전투의류와 지구전쟁사": null
+      "Estilo Guerreiro: A História da Guerra": null
     }
   },
   "armorcrafting_hunter_4": {
@@ -1197,14 +1197,14 @@
       "7": 0
     },
     "modifiers": {
-      "handicraft_plus": 4.0
+      "handicraft_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "전투의류와 국가안보론 과정을 완료하였다.": null
+      "Estilo Guerreiro: Segurança Nacional - concluído.": null
     },
     "name": {
-      "전투의류와 국가안보론": null
+      "Estilo Guerreiro: Segurança Nacional": null
     }
   },
   "cooking_basic_1": {
@@ -1219,14 +1219,14 @@
       "7": 0
     },
     "modifiers": {
-      "cook_plus": 1.0
+      "cook_plus": 1
     },
     "reward_from": "advisor",
     "description": {
-      "생존요리의 세계 과정을 완료하였다.": null
+      "Despensa da Natureza - concluído.": null
     },
     "name": {
-      "생존요리의 세계": null
+      "A Despensa da Natureza": null
     }
   },
   "cooking_basic_2": {
@@ -1241,14 +1241,14 @@
       "7": 0
     },
     "modifiers": {
-      "cook_plus": 2.0
+      "cook_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "논리적 식품가공 과정을 완료하였다.": null
+      "A Logística da Culinária - concluído.": null
     },
     "name": {
-      "논리적 식품가공": null
+      "A Logística da Culinária": null
     }
   },
   "cooking_cooking_3": {
@@ -1263,14 +1263,14 @@
       "7": 0
     },
     "modifiers": {
-      "cook_plus": 3.0
+      "cook_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "음식과 인류문화 과정을 완료하였다.": null
+      "A Cultura da Gastronomia - concluído.": null
     },
     "name": {
-      "음식과 인류문화": null
+      "A Cultura da Gastronomia": null
     }
   },
   "cooking_cooking_4": {
@@ -1285,14 +1285,14 @@
       "7": 0
     },
     "modifiers": {
-      "cook_plus": 4.0
+      "cook_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "주방행동론 과정을 완료하였다.": null
+      "Gerenciamento da Cozinha - concluído.": null
     },
     "name": {
-      "주방행동론": null
+      "Gerenciamento da Cozinha": null
     }
   },
   "cooking_baking_3": {
@@ -1307,14 +1307,14 @@
       "7": 0
     },
     "modifiers": {
-      "cook_plus": 3.0
+      "cook_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "제빵기능사 2급 과정을 완료하였다.": null
+      "O Básico dos Assados Fresquinhos - concluído.": null
     },
     "name": {
-      "제빵기능사 2급": null
+      "O Básico dos Assados Fresquinhos": null
     }
   },
   "cooking_baking_4": {
@@ -1329,14 +1329,14 @@
       "7": 0
     },
     "modifiers": {
-      "cook_plus": 4.0
+      "cook_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "제빵기능사 1급 과정을 완료하였다.": null
+      "A Euforia dos Assados Fresquinhos - concluído.": null
     },
     "name": {
-      "제빵기능사 1급": null
+      "A Euforia dos Assados Fresquinhos": null
     }
   },
   "cooking_pharmacy_3": {
@@ -1351,14 +1351,14 @@
       "7": 0
     },
     "modifiers": {
-      "max_energy_plus": 20.0
+      "max_energy_plus": 20
     },
     "reward_from": "advisor",
     "description": {
-      "약학개론 과정을 완료하였다.": null
+      "Diversão com Medicamentos - concluído.": null
     },
     "name": {
-      "약학개론": null
+      "Diversão com Medicamentos": null
     }
   },
   "cooking_pharmacy_4": {
@@ -1373,14 +1373,14 @@
       "7": 0
     },
     "modifiers": {
-      "max_energy_plus": 30.0
+      "max_energy_plus": 30
     },
     "reward_from": "advisor",
     "description": {
-      "자연생약학 과정을 완료하였다.": null
+      "Remédios Fitoterápicos - concluído.": null
     },
     "name": {
-      "자연생약학": null
+      "Remédios Fitoterápicos": null
     }
   },
   "constructing_basic_1": {
@@ -1395,14 +1395,14 @@
       "7": 0
     },
     "modifiers": {
-      "furnishing_plus": 1.0
+      "furnishing_plus": 1
     },
     "reward_from": "advisor",
     "description": {
-      "생활건축실습 과정을 완료하였다.": null
+      "Arquitetura Natural - concluído.": null
     },
     "name": {
-      "생활건축실습": null
+      "Arquitetura Natural": null
     }
   },
   "constructing_basic_2": {
@@ -1417,14 +1417,14 @@
       "7": 0
     },
     "modifiers": {
-      "furnishing_plus": 2.0
+      "furnishing_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "건축학개론 과정을 완료하였다.": null
+      "Arquitetura 101 - concluído.": null
     },
     "name": {
-      "건축학개론": null
+      "Arquitetura 101": null
     }
   },
   "constructing_furniture_3": {
@@ -1439,14 +1439,14 @@
       "7": 0
     },
     "modifiers": {
-      "furnishing_plus": 3.0
+      "furnishing_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "가구제작의 이해 과정을 완료하였다.": null
+      "Fabricando Mobília - concluído.": null
     },
     "name": {
-      "가구제작의 이해": null
+      "Fabricando Mobília": null
     }
   },
   "constructing_furniture_4": {
@@ -1461,14 +1461,14 @@
       "7": 0
     },
     "modifiers": {
-      "furnishing_plus": 4.0
+      "furnishing_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "가구개발공학 과정을 완료하였다.": null
+      "Design de Móveis - concluído.": null
     },
     "name": {
-      "가구개발공학": null
+      "Design de Móveis": null
     }
   },
   "constructing_building_3": {
@@ -1483,14 +1483,14 @@
       "7": 0
     },
     "modifiers": {
-      "construction_plus": 3.0
+      "construction_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "마을설계와 법규 과정을 완료하였다.": null
+      "Regulamentações Municipais - concluído.": null
     },
     "name": {
-      "마을설계와 법규": null
+      "Regulamentações Municipais": null
     }
   },
   "constructing_building_4": {
@@ -1505,14 +1505,14 @@
       "7": 0
     },
     "modifiers": {
-      "construction_plus": 4.0
+      "construction_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "도시건축과 인문 과정을 완료하였다.": null
+      "Arquitetura Cultural Urbana - concluído.": null
     },
     "name": {
-      "도시건축과 인문": null
+      "Arquitetura Cultural Urbana": null
     }
   },
   "gathering_basic_1": {
@@ -1527,14 +1527,14 @@
       "7": 7
     },
     "modifiers": {
-      "gathering_plus": 1.0
+      "gathering_plus": 1
     },
     "reward_from": "advisor",
     "description": {
-      "채집의 이해 과정을 완료하였다.": null
+      "Os Princípios da Horticultura - concluído.": null
     },
     "name": {
-      "채집의 이해": null
+      "Os Princípios da Horticultura": null
     }
   },
   "gathering_basic_2": {
@@ -1549,14 +1549,14 @@
       "7": 10
     },
     "modifiers": {
-      "gathering_plus": 2.0
+      "gathering_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "채집과 생물과학 과정을 완료하였다.": null
+      "Horticultura e Biologia - concluído.": null
     },
     "name": {
-      "채집과 생물과학": null
+      "Horticultura e Biologia": null
     }
   },
   "gathering_plants_3": {
@@ -1571,14 +1571,14 @@
       "7": 23
     },
     "modifiers": {
-      "gathering_plus": 3.0
+      "gathering_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "응용식물학 과정을 완료하였다.": null
+      "Botânica Aplicada - concluído.": null
     },
     "name": {
-      "응용식물학": null
+      "Botânica Aplicada": null
     }
   },
   "gathering_plants_4": {
@@ -1593,14 +1593,14 @@
       "7": 30
     },
     "modifiers": {
-      "gathering_plus": 4.0
+      "gathering_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "산림생태학 과정을 완료하였다.": null
+      "Ecologia Florestal - concluído.": null
     },
     "name": {
-      "산림생태학": null
+      "Ecologia Florestal": null
     }
   },
   "gathering_mineral_3": {
@@ -1615,14 +1615,14 @@
       "7": 15
     },
     "modifiers": {
-      "mining_plus": 3.0
+      "mining_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "광물과 지구화학 과정을 완료하였다.": null
+      "Mineralogia e Geoquímica - concluído.": null
     },
     "name": {
-      "광물과 지구화학": null
+      "Mineralogia e Geoquímica": null
     }
   },
   "gathering_mineral_4": {
@@ -1637,14 +1637,14 @@
       "7": 20
     },
     "modifiers": {
-      "mining_plus": 4.0
+      "mining_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "특수광물학 과정을 완료하였다.": null
+      "Mineralogia Externa - concluído.": null
     },
     "name": {
-      "특수광물학": null
+      "Mineralogia Externa": null
     }
   },
   "farming_basic_1": {
@@ -1659,14 +1659,14 @@
       "7": 0
     },
     "modifiers": {
-      "farming_plus": 1.0
+      "farming_plus": 1
     },
     "reward_from": "advisor",
     "description": {
-      "농사의 기본 과정을 완료하였다.": null
+      "Básico do Cultivo - concluído.": null
     },
     "name": {
-      "농사의 기본": null
+      "O Básico do Cultivo": null
     }
   },
   "farming_basic_2": {
@@ -1681,14 +1681,14 @@
       "7": 0
     },
     "modifiers": {
-      "farming_plus": 2.0
+      "farming_plus": 2
     },
     "reward_from": "advisor",
     "description": {
-      "농사와 실전 과정을 완료하였다.": null
+      "Da Semente ao Caule - concluído.": null
     },
     "name": {
-      "농사와 실전": null
+      "Da Semente ao Caule": null
     }
   },
   "farming_basic_3": {
@@ -1703,14 +1703,14 @@
       "7": 0
     },
     "modifiers": {
-      "farming_plus": 3.0
+      "farming_plus": 3
     },
     "reward_from": "advisor",
     "description": {
-      "농업과 미래사회 과정을 완료하였다.": null
+      "Agroflorestal - concluído.": null
     },
     "name": {
-      "농업과 미래사회": null
+      "Agroflorestal": null
     }
   },
   "farming_basic_4": {
@@ -1725,14 +1725,14 @@
       "7": 0
     },
     "modifiers": {
-      "farming_plus": 4.0
+      "farming_plus": 4
     },
     "reward_from": "advisor",
     "description": {
-      "작물생산농업학 과정을 완료하였다.": null
+      "Colhendo a Hélice - concluído.": null
     },
     "name": {
-      "작물생산농업학": null
+      "Colhendo a Hélice": null
     }
   },
   "rescue_01": {
@@ -1960,10 +1960,10 @@
       "7": 30
     },
     "modifiers": {
-      "max_health_plus": 150.0,
-      "life_recovery": 2.0,
-      "accuracy_plus": 20.0,
-      "max_energy_plus": 50.0
+      "max_health_plus": 150,
+      "life_recovery": 2,
+      "accuracy_plus": 20,
+      "max_energy_plus": 50
     },
     "reward_from": "undefined",
     "description": {
@@ -2025,8 +2025,8 @@
       "7": 30
     },
     "modifiers": {
-      "max_health_plus": 150.0,
-      "accuracy_plus": 40.0
+      "max_health_plus": 150,
+      "accuracy_plus": 40
     },
     "reward_from": "undefined",
     "description": {

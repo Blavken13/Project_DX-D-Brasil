@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Durango.Network;
 using Durango.Utils;
 using Messages;
@@ -604,10 +605,13 @@ public partial class Player
     {
         if (!string.IsNullOrEmpty(msg.TitleId))
         {
-            // ไม่มีฉายาไหนที่เซิร์ฟเคยมอบให้ (GetTitles ตอบชุดว่าง) ⇒ ใส่ได้เท่ากับแจกฟรี
-            Console.WriteLine($"[ฉายา] {Short(EntityId)} ขอใส่ฉายา '{msg.TitleId}' — ยังไม่ได้รับฉายานี้");
-            Send(new Abort { Text = "Você ainda não recebeu este título." }, seq);
-            return;
+            if (!EarnedGuideTitles().Contains(msg.TitleId, StringComparer.Ordinal))
+            { Send(new Abort { Text = "Você ainda não recebeu este título." }, seq); return; }
+            _context.AppearPlayer.Title.EntityId = EntityId;
+            _context.AppearPlayer.Title.TitleId = msg.TitleId;
+            _context.AppearPlayer.Title._Title = LearningGuideCatalog.Titles[msg.TitleId].Name;
+            _world.BroadCast(_context.AppearPlayer.Title);
+            SendFullStatistics(); OnContextChanged(); return;
         }
 
         if (string.IsNullOrEmpty(_context.AppearPlayer.Title.TitleId)) return;   // ไม่มีอะไรให้ถอด
@@ -621,6 +625,7 @@ public partial class Player
         // ฝั่งเกมรับด้วย handler กลาง On<Messages.Title> (client/PlayerManager.cs:363-371)
         // ⇒ ต้องกระจายให้ทุกคนบนเกาะ ไม่ใช่ตอบเฉพาะเจ้าตัว (คนอื่นจะเห็นฉายาเก่าค้างอยู่)
         _world.BroadCast(_context.AppearPlayer.Title);
+        SendFullStatistics();
         OnContextChanged();
         Console.WriteLine($"[ฉายา] {Short(EntityId)} ถอดฉายาออก");
     }

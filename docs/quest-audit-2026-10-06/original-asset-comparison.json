@@ -1,0 +1,183 @@
+{
+  "original_pc_text_assets": 280,
+  "original_apk_text_assets": 280,
+  "original_pc_quest_related_text_assets": 35,
+  "original_apk_quest_related_text_assets": 35,
+  "comparisons": [
+    {
+      "name": "quests_for_client",
+      "original_pc_bytes": 739797,
+      "original_apk_bytes": 739797,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\quests\\quests_for_client.json",
+      "server_bytes": 739797,
+      "server_hash": "19a7bd7d282ec63b10a23dff32e0312852358209c1c6d662e9a55bd9171f9225",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "epics_for_client",
+      "original_pc_bytes": 12349,
+      "original_apk_bytes": 12349,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\quests\\epics_for_client.json",
+      "server_bytes": 12349,
+      "server_hash": "b646f0fe5aa380a3e7deb4e0386870d5786483ac591bc299581641f207fbe5a2",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "archipelago_todos_client",
+      "original_pc_bytes": 399076,
+      "original_apk_bytes": 399076,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\quests\\archipelago_todos_client.json",
+      "server_bytes": 399076,
+      "server_hash": "1463f4871088d543ab7636a426027e0537cd874df33ca8b9e2d652b86d7839dc",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "region_co_op_todos_client",
+      "original_pc_bytes": 3473,
+      "original_apk_bytes": 3473,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\quests\\region_co_op_todos_client.json",
+      "server_bytes": 3473,
+      "server_hash": "fb8e8f07823112d8dd65d661ead8ed8c87e64d9ebcbe8fb9d2406181c1406801",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "advices",
+      "original_pc_bytes": 153350,
+      "original_apk_bytes": 153350,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\advices.json",
+      "server_bytes": 154798,
+      "server_hash": "b04979b2e03f13691cba64a0ba2b3aeb7244d5c41955cd780302a215af7f62dd",
+      "byte_equal_to_original": false,
+      "json_equal_to_original": false
+    },
+    {
+      "name": "factions",
+      "original_pc_bytes": 22221,
+      "original_apk_bytes": 22221,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\factions.json",
+      "server_bytes": 22221,
+      "server_hash": "cf588e44afb5ab2501a327ea16ad2cc1d3a20cd92ed0c86baea6b291edb93ab9",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "faction_talks",
+      "original_pc_bytes": 621526,
+      "original_apk_bytes": 621526,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\faction_talks.json",
+      "server_bytes": 621526,
+      "server_hash": "704dbb46baffa3d3c158606cd079637dead5fc95a27a2f810c166c0092955981",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "faction_messenger_jobs",
+      "original_pc_bytes": 2377,
+      "original_apk_bytes": 2377,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\faction_messenger_jobs.json",
+      "server_bytes": 2377,
+      "server_hash": "21db5889ee56b706a6d68454ce414fba4ce13621fdc996336b7f898062bc7366",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "archipelago_templates",
+      "original_pc_bytes": 33459,
+      "original_apk_bytes": 33459,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\archipelago_templates.json",
+      "server_bytes": 33459,
+      "server_hash": "35e3b96fc6c37af9df84e5c62b3313ed91ea8f1f2c6d9626c3e1d26d662cb239",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": null
+    },
+    {
+      "name": "pioneer",
+      "original_pc_bytes": 8721,
+      "original_apk_bytes": 8721,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\pioneer.json",
+      "server_bytes": 8721,
+      "server_hash": "f964e171a0cbb674efe94d7a03777cb604fd176fb458c05752cdbcdf1bfbaf1b",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "pioneer_grade_rewards",
+      "original_pc_bytes": 4221,
+      "original_apk_bytes": 4221,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\pioneer_grade_rewards.json",
+      "server_bytes": 4221,
+      "server_hash": "fed2f5af3bf79d9f6b33d459fadeac8329756e6856ff1211dfcf45b5988877fd",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "advice_categories",
+      "original_pc_bytes": 4493,
+      "original_apk_bytes": 4493,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\advice_categories.json",
+      "server_bytes": 4493,
+      "server_hash": "1d5646b22d5f15fa4feb0a67f79b17e245c73f6ff02dfced953968947f34f36e",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    },
+    {
+      "name": "titles",
+      "original_pc_bytes": 38899,
+      "original_apk_bytes": 38899,
+      "original_pc_apk_payload_equal": true,
+      "server_file": "Durango-CustomServer\\server\\data\\assets\\titles.json",
+      "server_bytes": 38899,
+      "server_hash": "9d33b2456e2d04d6da05a8ddee9f081bc312efc71b0f4befe1e893c488e97f38",
+      "byte_equal_to_original": true,
+      "json_equal_to_original": true
+    }
+  ],
+  "additional_original_tables": [
+    {
+      "name": "rewards",
+      "entries": 1321,
+      "row_fields": [
+        "category",
+        "category_level",
+        "type",
+        "sub_skill_category",
+        "name",
+        "seed_id",
+        "recipe_ids",
+        "blueprint_ids",
+        "modifiers",
+        "action_ids",
+        "modifier",
+        "value",
+        "weapon_tag_ids",
+        "entity_types"
+      ],
+      "quest_catalog_ids_present": 0
+    },
+    {
+      "name": "season2_rewards_client",
+      "entries": 3,
+      "row_fields": [
+        "0",
+        "1"
+      ],
+      "quest_catalog_ids_present": 0
+    }
+  ]
+}

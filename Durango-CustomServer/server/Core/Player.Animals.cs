@@ -1002,9 +1002,8 @@ public partial class Player
     /// client/MapSystem.cs:679-693 ใช้ .All(IsSuccess): true = เด้งป้าย "พบสัตว์ชนิดใหม่",
     /// false = ถอนออกจากรายการที่จำไว้แล้วลองใหม่รอบหน้า ⇒ ตอบ OK ได้เมื่อเราจำจริง ๆ เท่านั้น
     ///
-    /// ⚠️ ในทางปฏิบัติ handler นี้จะยังไม่ถูกยิงเลย เพราะ client/Durango.Logic.Map/DiscoverInfo.cs:50-60
-    /// วนดูสัตว์รอบตัวก็ต่อเมื่อ DiscoveryInfo.AnimalTypes มีรายการ แต่ Core/Player.cs:369-374
-    /// ตอบ AnimalTypes เป็นอาเรย์ว่าง ⇒ size == 0 == num แล้ว return ทิ้งก่อนถึงบรรทัดที่ยิง
+    /// A espécie é persistida por personagem/template após validar a presença
+    /// do animal a até 500 unidades, o mesmo alcance usado pelo cliente.
     /// </summary>
     private void HandleDiscoverAnimalMsg(DiscoverAnimal msg, uint seq)
     {
@@ -1013,13 +1012,22 @@ public partial class Player
             Send(new Abort { Text = "Não foi possível identificar o animal." }, seq);
             return;
         }
-        // เก็บในหน่วยความจำต่อ connection — ยังไม่มีที่เซฟ (ต้องต่อกับ DiscoveryInfo ก่อน ดูรายงาน)
-        _discoveredAnimals.Add(msg.EntityId);
+        var animal = _world.AnimalManager?.Get(msg.EntityId);
+        string templateId = _world.TerrainInfo?.region_template;
+        var position = PlayerPosition();
+        if (animal == null || animal.Captured || string.IsNullOrEmpty(templateId) ||
+            !float.IsFinite(position.x) || !float.IsFinite(position.y) ||
+            Math.Pow(animal.Position.x - position.x, 2) + Math.Pow(animal.Position.y - position.y, 2) > 500 * 500 ||
+            !BuildDiscoveryInfo(templateId).AnimalTypes.Any(p => p.Item1 == animal.EntityType))
+        {
+            Send(new Abort { Text = "Este animal não pode ser descoberto neste local." }, seq);
+            return;
+        }
+        var maps = _context.DiscoveredAnimalTypes ??= new Dictionary<string, HashSet<ushort>>();
+        if (!maps.TryGetValue(templateId, out var found)) maps[templateId] = found = new HashSet<ushort>();
+        if (found.Add(animal.EntityType)) OnContextChanged();
         Send(default(OK), seq);
     }
-
-    /// <summary>สัตว์ที่ผู้เล่นคนนี้ "เพิ่งเจอ" ในรอบการเชื่อมต่อนี้ — ยังไม่ผูกกับ DiscoveryInfo</summary>
-    private readonly HashSet<string> _discoveredAnimals = new();
 
     // ══════════════════════════════════════════════════════════════════════════════════
     //  ชั้น E — กาชา (milestone / active skill / rank)

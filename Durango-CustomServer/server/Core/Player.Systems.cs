@@ -75,6 +75,7 @@ public partial class Player
         RegisterVehicleHandlers();     // Player.Vehicle.cs   — ยานพาหนะ
         RegisterEventHandlers();       // Player.Event.cs     — อีเวนต์
         RegisterLifeHandlers();        // Player.Life.cs      — ชีวิตประจำวัน (กินน้ำ/อาบน้ำ/ฟื้นคืนชีพ/ฉายา/คลังของ/เครื่องประดับ)
+        RegisterLearningGuideHandlers(); // Validated course progress, rewards and earned titles.
 
         // ── หลังทุกระบบพร้อมแล้ว ─────────────────────────────────────────────────
         ReviveIfDeadOnLogin();         // Player.Hunting.cs   — กันตัวละครค้างตายถาวร

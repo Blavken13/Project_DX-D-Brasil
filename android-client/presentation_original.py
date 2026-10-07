@@ -8,6 +8,7 @@ import hashlib
 from pathlib import Path
 import struct
 import estate_original as estate
+import discovery_original as discovery
 
 METADATA = Path('assets/bin/Data/Managed/Metadata/global-metadata.dat')
 NATIVE = Path('lib/arm64-v8a/libil2cpp.so')
@@ -91,7 +92,7 @@ def verify(source, client):
             assert a == b
     assert set(changed) == set(REPLACEMENTS)
     # Native edits are limited to authentication, the title-door branch and
-    # the four-byte estate call redirect; every unrelated byte is preserved.
+    # the estate redirect and two discovery-cache arguments; every unrelated byte is preserved.
     expected = bytearray((source / NATIVE).read_bytes())
     expected[0x960a:0x9616] = b'libbr.so\0'.ljust(12, b'\0')
     struct.pack_into('<I', expected, 0x137b240, 0x2a1f03e0)
@@ -101,6 +102,8 @@ def verify(source, client):
     native = (client / NATIVE).read_bytes()
     if native[estate.PAID_CALL:estate.PAID_CALL + 4] == estate.branch(estate.FREE_METHOD):
         expected = bytearray(estate.patch(expected))
+    if all(native[site:site+4] == discovery.PATCHES[site] for site in discovery.SITES):
+        expected = bytearray(discovery.patch(expected))
     assert native == bytes(expected), 'Unexpected native edit'
     movie = (source / MOVIE).read_bytes()
     assert (client / MOVIE).read_bytes() == movie, 'Transition video changed'

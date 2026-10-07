@@ -228,6 +228,7 @@ public partial class Player
             value += progress * SkillTuning.AbilityPerCategory;
         }
 
+        value += SelectedGuideTitle()?.Abilities?.GetValueOrDefault((int)ability) ?? 0;
         return Math.Max(1f, Math.Min(SkillTuning.AbilityMax, value));
     }
 
@@ -260,9 +261,11 @@ public partial class Player
         int levels = Math.Max(0, _skillLevel - 1);
 
         bool changed = _survival.SetMaxBonus(SurvivalState.KeyHealth,
-                           levels * LifePerLevel + Math.Max(0f, endurance) * LifePerEndurance + ClanModifier("max_health_plus"), now);
+                           levels * LifePerLevel + Math.Max(0f, endurance) * LifePerEndurance + ClanModifier("max_health_plus")
+                           + (SelectedGuideTitle()?.Modifiers?.GetValueOrDefault("max_health_plus") ?? 0), now);
         changed |= _survival.SetMaxBonus(SurvivalState.KeyEnergy,
-                       levels * EnergyPerLevel + Math.Max(0f, will) * EnergyPerWill, now);
+                       levels * EnergyPerLevel + Math.Max(0f, will) * EnergyPerWill
+                       + (SelectedGuideTitle()?.Modifiers?.GetValueOrDefault("max_energy_plus") ?? 0), now);
 
         // ⚠️ Rebuild เปลี่ยนแค่หลอดฝั่งเซิร์ฟ — ต้อง broadcast ด้วย ไม่งั้นบนจอยังเป็นเพดานเก่า
         // จนกว่าจะมีอะไรอื่นไปสั่ง flush (client วาดจากชุด Gauge ที่ได้รับล่าสุดล้วน ๆ)

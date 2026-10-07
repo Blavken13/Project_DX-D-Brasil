@@ -1,0 +1,94 @@
+[
+  {
+    "check": "--quest-reactivation-check",
+    "passed": true,
+    "summary": "[quest-reactivation-check] 1703 verificações aprovadas",
+    "initial_local_assertions": 1700,
+    "final_verification": "Contêiner Linux isolado, imagem final publicada"
+  },
+  {
+    "check": "--quest-check",
+    "passed": true,
+    "summary": "[quest-check] ผ่าน 127 · ตก 0"
+  },
+  {
+    "check": "--quest-rewards-check",
+    "passed": true,
+    "summary": "[quest-rewards-check] 142 verificações aprovadas"
+  },
+  {
+    "check": "--progression-check",
+    "passed": true,
+    "summary": "[progression-check] PASS 104 verificacoes"
+  },
+  {
+    "check": "--tester-bugs-check",
+    "passed": true,
+    "summary": "[tester-check] PASS 106 verificações"
+  },
+  {
+    "check": "--volcanic-food-check",
+    "passed": true,
+    "summary": "[volcanic-food-check] PASS 73 verificações"
+  },
+  {
+    "check": "--sp-check",
+    "passed": true,
+    "summary": "[sp-check] PASS 101 verificações"
+  },
+  {
+    "check": "--gameplay-check",
+    "passed": true,
+    "summary": "[gameplay-check] PASS 58 verificacoes."
+  },
+  {
+    "check": "--polish-check",
+    "passed": true,
+    "summary": "[polish-check] PASS 253 verificacoes."
+  },
+  {
+    "check": "--gameplay-bugs-check",
+    "passed": true,
+    "summary": "[bugs-check] PASS"
+  },
+  {
+    "check": "--induction-check",
+    "passed": true,
+    "summary": "[induction-check] PASS 29 verificacoes"
+  },
+  {
+    "check": "--world-check",
+    "passed": true,
+    "summary": "[world-check] PASS 2787 verificacoes."
+  },
+  {
+    "check": "--social-check",
+    "passed": true,
+    "summary": "[social-check] PASS 96 verificações"
+  },
+  {
+    "check": "--premium-check",
+    "passed": true,
+    "summary": "[premium-check] PASS 52 verificações"
+  },
+  {
+    "check": "--economy-check",
+    "passed": true,
+    "summary": "[economy-check] PASS 303 verificacoes."
+  },
+  {
+    "check": "--fauna-check",
+    "passed": true,
+    "summary": "[fauna-check] PASS 373 verificacoes"
+  },
+  {
+    "check": "--xp-coupon-check",
+    "passed": true,
+    "summary": "[xp-coupon-check] PASS: 178 verificações"
+  },
+  {
+    "check": "--se-check",
+    "passed": true,
+    "summary": "[se-check] ผ่าน 45 · ตก 0"
+  }
+]

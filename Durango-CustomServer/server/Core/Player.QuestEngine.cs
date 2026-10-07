@@ -147,7 +147,7 @@ public partial class Player
     /// จุดรวมจากระบบเล่นจริง — Gathering/Crafting/Building/Hunting/Farm เรียกตรงนี้
     /// <paramref name="detail"/> = gather/carcass หรือ recipe.category
     /// </summary>
-    public void NoteQuestEvent(QuestEventType ev, string detail = null, int amount = 1)
+    public void NoteQuestEvent(QuestEventType ev, string detail = null, int amount = 1, QuestEventContext context = null)
     {
         if (amount <= 0) return;
         EnsureDailyReset();
@@ -155,7 +155,7 @@ public partial class Player
         bool any = false;
         foreach (QuestDef def in QuestCatalog.Live)
         {
-            if (!QuestCatalog.IsTracked(def.Id) || !QuestCatalog.Matches(def, ev, detail)) continue;
+            if (!QuestCatalog.IsTracked(def.Id) || !QuestCatalog.Matches(def, ev, detail, context)) continue;
             QuestStore.Entry entry = QuestStore.Ensure(EntityId, def);
             if (entry == null) continue;
             var row = new QuestProgressRow
@@ -181,6 +181,14 @@ public partial class Player
             }
         }
         if (any) OnContextChanged();
+    }
+
+    QuestEventContext QuestActionContext(string recipeId = null, Item[] products = null, int entityType = -1)
+    {
+        var template = RegionCatalog.GetTemplate(_world.TerrainInfo?.region_template);
+        return new QuestEventContext { Biome = (int)(template?.Biome ?? Shared.Region.Biome.Invalid),
+            Role = (int)(template?.Role ?? Shared.Region.Role.Invalid), RecipeId = recipeId,
+            Products = products, EntityType = entityType };
     }
 
     /// <summary>
@@ -275,12 +283,18 @@ public partial class Player
     void RefreshAchievementLevels(bool save = true)
     {
         if (_skills == null || !_questsHydrated) return;
-        bool changed = false;
-        foreach (var def in QuestCatalog.InCategory(QuestCatalog.AchievementCategory).Where(d => d.IsLive && d.LevelCategory >= -1))
+        bool changed = RefreshLearningGuide(save: false);
+        foreach (var def in QuestCatalog.InCategory(QuestCatalog.AchievementCategory).Where(d => d.IsLive && (d.LevelCategory >= -1 || d.Objective?.Snapshot != null)))
         {
             var entry = QuestStore.Ensure(EntityId, def);
             if (entry.State is QuestStateEnum.Finished or QuestStateEnum.ReachTheGoal) continue;
-            int level = def.LevelCategory == -1 ? _skillLevel : CategoryState(def.LevelCategory).Level;
+            int level = def.Objective?.Snapshot switch
+            {
+                "advisor_selected" => LearningGuide.SelectedOnce ? 1 : 0,
+                "advisor_completed" => def.Objective.Courses?.Length > 0 ?
+                    LearningGuide.Completed.Count(id => def.Objective.Courses.Contains(id, StringComparer.Ordinal)) : LearningGuide.Completed.Count,
+                _ => def.LevelCategory == -1 ? _skillLevel : CategoryState(def.LevelCategory).Level
+            };
             int progress = Math.Min(Math.Max(0, level), def.GoalCount);
             if (progress <= entry.Progress) continue;
             QuestStore.Set(EntityId, def.Id, progress >= def.GoalCount ? QuestStateEnum.ReachTheGoal : QuestStateEnum.WorkInProgress,

@@ -709,6 +709,7 @@ public partial class Player
         Send(license.Value, seq);
         BroadcastEstateGridsAround(msg.Cell);
         Console.WriteLine($"[domínio] {Short(EntityId)} declarou {actualType} em [{msg.Cell.x},{msg.Cell.y}] → {license.Value.EstateId}");
+        NoteQuestEvent(Shared.Quest.QuestEventType.EstateManaged, "declare", context: QuestActionContext());
         OnContextChanged();
     }
 
@@ -737,6 +738,7 @@ public partial class Player
         }
         Send(license.Value, seq);
         BroadcastEstateGridsAround(msg.Cell);
+        NoteQuestEvent(Shared.Quest.QuestEventType.EstateManaged, "expand", context: QuestActionContext());
         OnContextChanged();
     }
 

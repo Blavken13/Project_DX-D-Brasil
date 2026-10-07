@@ -90,6 +90,8 @@ internal static class QuestRewardCheck
                     "etapas maiores da conquista pagam mais moedas e EXP");
                 context.Save(); Check(SafeSave.FlushPending(), "estado e carteira gravados no disco");
             }
+            // Disconnect also schedules a save; wait before competing for the file on Windows.
+            Check(SafeSave.FlushPending(), "save da desconexão concluído antes de recarregar");
             var loaded = Json.Read<PlayerContext>(File.ReadAllText(savePath));
             loaded.Initialize(savePath);
             using (var link = new EconomyProtocolCheck.Link(loaded, world, null))

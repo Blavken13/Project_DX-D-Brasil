@@ -74,7 +74,7 @@
       }
     ],
     "description": {
-      "목축과 농경의 시대가 올 때까지, 사냥으로 필요한 영양분을 얻어야 한다.": null
+      "Até que se descubra a agricultura, caçar é a melhor maneira de obter os nutrientes básicos.": null
     },
     "conditional": false,
     "required_skill": {
@@ -86,11 +86,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "기초사냥전술 세트": null
+      "Conjunto de Táticas Básicas de Caça": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Aprenda as habilidades indicadas pelo guia antes de enfrentar animais mais fortes.": null
+      },
+      {
+        "Use as ações de ataque e esquiva e acompanhe sua vida e energia durante a caça.": null
+      }
+    ],
     "name": {
-      "기초사냥전술": null
+      "Táticas Básicas de Caça": null
     }
   },
   "combat_melee_onehand_2": {
@@ -162,7 +169,7 @@
       }
     ],
     "description": {
-      "마음은 생물의 모든 행동의 근원으로, 전투 또한 마음에 그 뿌리가 있다.": null
+      "A ação é fruto do pensamento, portanto estudar a mente do adversário é essencial para o combate.": null
     },
     "conditional": false,
     "required_skill": {
@@ -178,17 +185,17 @@
     },
     "hints": [
       {
-        "<em>한손무기</em>와 <em>양손무기</em>는 액션이 다릅니다.": null
+        "<em>Armas de uma mão</em> e <em>armas de duas mãos</em> executam ações diferentes.": null
       },
       {
-        "<em>근접전</em> 계열에서 배운 액션은 기본 공격보다 좋은 것들이니 전투에서 잘 활용해서 숙련도를 높이세요.": null
+        "Todas as ações <em>corpo a corpo</em> que você pode aprender são melhores do que o seu ataque básico, então aprenda-as e use-as frequentemente.": null
       },
       {
-        "<em>방어</em> 계열에서 추가로 배울 수 있는 스킬들도 잘 활용해서 숙련도를 높여 보세요.": null
+        "Não esqueça de usar as habilidades que aprender na categoria defesa para se defender e subir o nível de categoria.": null
       }
     ],
     "name": {
-      "한손전투와 마음읽기": null
+      "Combate com Uma Mão: Compreenda o Inimigo": null
     }
   },
   "combat_melee_onehand_3": {
@@ -270,7 +277,7 @@
       }
     ],
     "description": {
-      "전투에서 중요한 정보를 인지하지 못 한다면 승리할 가능성은 위축된다.": null
+      "Se você não entender as informações que lhe são dadas durante o combate, será bem mais difícil vencer.": null
     },
     "conditional": false,
     "required_skill": {
@@ -286,17 +293,17 @@
     },
     "hints": [
       {
-        "<em>한손무기</em>는 <em>양손무기</em>에 비하여 빠르게 공격할 수 있습니다.": null
+        "Ataques com <em>arma de uma mão</em> são mais rápidos do que com <em>arma de duas mãos</em>.": null
       },
       {
-        "하지만 <em>무기의 피해량</em>은 양손무기 보다 낮아 전투에서 보다 많은 횟수의 공격을 요구합니다.": null
+        "Mas o <em>dano de arma</em> é menor do que de uma arma de duas mãos, ou seja, você terá que desferir mais ataques para conseguir o mesmo resultado.": null
       },
       {
-        "잦은 움직임을 통해 지속적으로 공격을 할 수 있도록 전투의 기회를 잡아보세요.": null
+        "Ganhe vantagem em um combate se movimentando com frequência para permitir ataques contínuos.": null
       }
     ],
     "name": {
-      "한손전투와 인지심리": null
+      "Combate com Uma Mão: Psicologia Cognitiva": null
     }
   },
   "combat_melee_onehand_4": {
@@ -378,7 +385,7 @@
       }
     ],
     "description": {
-      "다른 개척자를 공격하는 범죄자는, 무법의 판사가 되어 심판한다.": null
+      "Se criminosos atacarem pioneiros em locais sem lei, eu vou entregá-los à justiça com um juiz renegado.": null
     },
     "conditional": false,
     "required_skill": {
@@ -394,17 +401,17 @@
     },
     "hints": [
       {
-        "전투의 액션은 <em>전문화 스킬</em>을 찍어 강화할 수 있습니다.": null
+        "Você pode aprender <em>habilidades avançadas</em> para melhorar ainda mais as ações de combate.": null
       },
       {
-        "<em>무기의 레벨</em>도 레벨대에 따라 꾸준히 높여야 합니다. 직접 만들거나 장터에서 구해보세요.": null
+        "O <em>nível da sua arma</em> deve ser próximo do nível do seu personagem. Crie uma arma ou compre uma no mercado.": null
       },
       {
-        "<em>칼</em>은 상대의 방어 관통에, <em>도끼</em>는 부위 파괴에, <em>둔기</em>는 기절에 유용합니다.": null
+        "<em>Facas</em> são excelentes para penetrar armaduras, <em>machados</em> mutilam certas partes do corpo, e <em>armas contundentes</em> podem atordoar os inimigos.": null
       }
     ],
     "name": {
-      "한손전투와 범죄심리": null
+      "Combate com Uma Mão: Psicologia Criminal": null
     }
   },
   "combat_melee_twohand_2": {
@@ -476,7 +483,7 @@
       }
     ],
     "description": {
-      "비판적 사고는, 전투를 가능한 빠르게 끝내 피해를 줄인다.": null
+      "Planeje seus ataques para minimizar os seus riscos, e assim evitar danos.": null
     },
     "conditional": false,
     "required_skill": {
@@ -492,17 +499,17 @@
     },
     "hints": [
       {
-        "<em>한손무기</em>와 <em>양손무기</em>는 액션이 다릅니다.": null
+        "<em>Armas de uma mão</em> e <em>armas de duas mãos</em> executam ações diferentes.": null
       },
       {
-        "<em>근접전</em> 계열에서 배운 액션은 기본 공격보다 좋은 것들이니 전투에서 잘 활용해서 숙련도를 높이세요.": null
+        "Todas as ações <em>corpo a corpo</em> que você pode aprender são melhores do que o seu ataque básico, então aprenda-as e use-as frequentemente.": null
       },
       {
-        "<em>방어</em> 계열에서 추가로 배울 수 있는 스킬들도 잘 활용해서 숙련도를 높여 보세요.": null
+        "Não esqueça de usar as habilidades que aprender na categoria defesa para se defender e subir o nível de categoria.": null
       }
     ],
     "name": {
-      "양손전투와 비판적사고": null
+      "Combate com Duas Mãos: Raciocínio Crítico": null
     }
   },
   "combat_melee_twohand_3": {
@@ -584,7 +591,7 @@
       }
     ],
     "description": {
-      "전투는 운동 에너지가 교차하는 곳이며, 철학이 없는 공간은 없다.": null
+      "A filosofia é a base sobre a qual o guerreiro mais forte se põe de pé.": null
     },
     "conditional": false,
     "required_skill": {
@@ -600,17 +607,17 @@
     },
     "hints": [
       {
-        "<em>양손무기</em>는 <em>한손무기</em>에 비하여 공격 속도가 느립니다.": null
+        "Ataques com <em>arma de duas mãos</em> são mais lentos do que com <em>arma de uma mão</em>.": null
       },
       {
-        "하지만 <em>무기의 피해량</em>은 한손무기 보다 높아 효율적인 전투를 진행할 수 있습니다.": null
+        "Mas o <em>dano de arma</em> é maior do que de armas de uma mão, o que pode ser mais efetivo em algumas lutas.": null
       },
       {
-        "전투에서 공격 가능한 시점을 잘 파악하여 타격을 명중시킬 수 있는 기회를 잡아보세요.": null
+        "Melhore suas chances em batalha determinando a melhor hora de avançar contra seu alvo e, então, ataque!": null
       }
     ],
     "name": {
-      "양손전투와 운동철학": null
+      "Combate com Duas Mãos: Doutrina do Guerreiro": null
     }
   },
   "combat_melee_twohand_4": {
@@ -692,7 +699,7 @@
       }
     ],
     "description": {
-      "싸움에서 윤리의 목적은, 전투로 모두가 잃게 될 것을 고민하는 데 있다.": null
+      "Quando você pensa no que os seus inimigos vão perder em combate, só vai encarar as batalhas que valem a pena lutar.": null
     },
     "conditional": false,
     "required_skill": {
@@ -708,17 +715,17 @@
     },
     "hints": [
       {
-        "전투의 액션은 <em>전문화 스킬</em>을 찍어 강화할 수 있습니다.": null
+        "Você pode aprender <em>habilidades avançadas</em> para melhorar ainda mais as ações de combate.": null
       },
       {
-        "<em>무기의 레벨</em>도 레벨대에 따라 꾸준히 높여야 합니다. 직접 만들거나 장터에서 구해보세요.": null
+        "O <em>nível da sua arma</em> deve ser próximo do nível do seu personagem. Crie uma arma ou compre uma no mercado.": null
       },
       {
-        "<em>칼</em>은 상대의 방어 관통에, <em>도끼</em>는 부위 파괴에, <em>둔기</em>는 기절에 유용합니다.": null
+        "<em>Facas</em> são excelentes para penetrar armaduras, <em>machados</em> mutilam certas partes do corpo, e <em>armas contundentes</em> podem atordoar os inimigos.": null
       }
     ],
     "name": {
-      "양손전투와 전투윤리": null
+      "Combate com Duas Mãos: Ética do Campo de Batalha": null
     }
   },
   "combat_ranged_2": {
@@ -780,7 +787,7 @@
       }
     ],
     "description": {
-      "무언가를 상대에게 처음 던졌던 날에, 수학은 발전할 이유를 찾았다.": null
+      "Um motivo para estudar matemática originou-se no momento em que nossos ancestrais jogaram a primeira pedra.": null
     },
     "conditional": false,
     "required_skill": {
@@ -796,14 +803,14 @@
     },
     "hints": [
       {
-        "원거리 무기가 속하는 <em>궁술 계열</em>의 액션은 근접전 계열과 양상이 다릅니다.": null
+        "Ações de <em>longa distância</em> estão vinculadas a tipos específicos de armas e são bem diferentes de ações de curta distância.": null
       },
       {
-        "궁술 계열의 액션을 전투에서 써야, 궁술 계열의 <em>숙련도</em>가 올라갑니다.": null
+        "Use ações de longa distância para aumentar o seu <em>nível de habilidade</em>.": null
       }
     ],
     "name": {
-      "궁술과 미적분학": null
+      "Arco e Flecha e Cálculo": null
     }
   },
   "combat_ranged_3": {
@@ -870,7 +877,7 @@
       }
     ],
     "description": {
-      "전투엔 많은 물체가 있고, 역학은 여러 물체 사이에서 움직인다.": null
+      "Aprender sobre a física desbloqueia o verdadeiro potencial de cada objeto que você encontra no campo de batalha.": null
     },
     "conditional": false,
     "required_skill": {
@@ -886,17 +893,17 @@
     },
     "hints": [
       {
-        "전투 때 화면 왼쪽에 <em>태세</em>가 나옵니다. <em>태세</em>는 전투에서 싸우는 방식을 말합니다.": null
+        "Enquanto estiver em combate, a sua <em>postura</em> é exibida à esquerda. <em>Posturas</em> determinam como você está lutando.": null
       },
       {
-        "<em>태세</em>에 따라 스킬의 배치가 달라집니다.": null
+        "Cada <em>postura</em> contém um conjunto próprio de habilidades.": null
       },
       {
-        "태세는 <em>무기</em>에 따라 다릅니다. 다만, 원거리 계열의 무기는 방어 계열의 태세를 사용하지 않습니다.": null
+        "Usar <em>armas</em> diferentes pode alterar suas posturas disponíveis. Por exemplo, usar arma de longa distância evita que você utilize qualquer postura defensiva.": null
       }
     ],
     "name": {
-      "궁술과 고전역학": null
+      "Arco e Flecha e Mecânica Clássica": null
     }
   },
   "combat_ranged_4": {
@@ -963,7 +970,7 @@
       }
     ],
     "description": {
-      "별이나 화살이나 움직이는 데 작동하는 힘의 근원은 보편적이다.": null
+      "Do arco de uma flecha até o coração de uma estrela, descubra as forças profundas que guiam ambas.": null
     },
     "conditional": false,
     "required_skill": {
@@ -979,17 +986,17 @@
     },
     "hints": [
       {
-        "전투의 액션은 <em>전문화 스킬</em>을 찍어 강화할 수 있습니다.": null
+        "Você pode aprender <em>habilidades avançadas</em> para melhorar ainda mais as ações de combate.": null
       },
       {
-        "<em>무기의 레벨</em>도 레벨대에 따라 꾸준히 높여야 합니다. 직접 만들거나 장터에서 구해보세요.": null
+        "O <em>nível da sua arma</em> deve ser próximo do nível do seu personagem. Crie uma arma ou compre uma no mercado.": null
       },
       {
-        "<em>활</em>은 상대의 방어 관통에, <em>석궁</em>은 기절에 유용합니다.": null
+        "<em>Arcos</em> são excelentes para penetrar armaduras, enquanto as <em>bestas</em> podem atordoar o inimigo.": null
       }
     ],
     "name": {
-      "궁술과 상대성이론": null
+      "Arco e Flecha e a Teoria da Relatividade": null
     }
   },
   "combat_butchery_2": {
@@ -1041,7 +1048,7 @@
       }
     ],
     "description": {
-      "동물을 잘 해부해 최대한 뽑아낼수록, 잡을 일이 줄어들 것이다.": null
+      "Coletar mais partes utilizáveis de cada animal que você mata, significa ter que caçar menos animais.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1057,20 +1064,20 @@
     },
     "hints": [
       {
-        "죽은 동물에서 채집물을 얻어낼 수록 도축 계열의 <em>숙련도</em>를 높일 수 있습니다.": null
+        "Colete coisas de animais mortos para aumentar o seu <em>nível de habilidade</em> de esquartejar.": null
       },
       {
-        "초기의 도축은 돌날 같은 <em>작업용 칼</em>로 충분하지만, 뒤로 갈수록 더 좋은 도구를 만들어야 합니다.": null
+        "O esquartejamento básico pode ser executado com <em>facas de trabalho</em> simples, como uma lâmina de pedra. Mas técnicas mais avançadas vão exigir ferramentas melhores.": null
       },
       {
-        "초반의 고기, 뼈는 스킬 없이 채집할 수 있습니다. 하지만 뒤로 갈수록 <em>스킬</em>을 필요로 합니다.": null
+        "Carne e ossos simples podem ser coletados até mesmo por um açougueiro novato, mas cortes complexos vão exigir certas <em>habilidades</em>.": null
       },
       {
-        "바닷가나 야자나무에서 조개나 게를 채집해도 도축 숙련도를 높일 수 있습니다.": null
+        "Está começando? Tente coletar moluscos na praia, ou siris das palmeiras para aumentar o seu nível de habilidade de esquartejar.": null
       }
     ],
     "name": {
-      "동물 해부학": null
+      "Anatomia Animal": null
     }
   },
   "combat_butchery_3": {
@@ -1132,7 +1139,7 @@
       }
     ],
     "description": {
-      "죽은 동물을 잘 알수록, 산 동물에게 더 좋은 일을 할 수 있을 것이다.": null
+      "Estudar animais mortos desbloqueia os segredos das criaturas vivas.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1148,14 +1155,14 @@
     },
     "hints": [
       {
-        "어느 정도 숙련도가 오르면, 더 다양한 도축물을 채집해야 도축의 <em>숙련도</em>를 높일 수 있습니다.": null
+        "Depois que tiver melhorado suas habilidades, você poderá aumentar o seu <em>nível de habilidade</em> de esquartejar, e coletará uma variedade maior de partes.": null
       },
       {
-        "도축 계열에서 <em>연습</em> 스킬을 익힐수록 채집에 성공할 확률이 높아집니다.": null
+        "Estude o <em>básico</em> para ter mais chances de sucesso quando for coletar.": null
       }
     ],
     "name": {
-      "동물 해부실습": null
+      "Laboratório de Dissecação de Animais": null
     }
   },
   "combat_butchery_4": {
@@ -1222,7 +1229,7 @@
       }
     ],
     "description": {
-      "최대한 정밀하게 동물의 주검을 처리해, 그 의미를 키우고자 한다.": null
+      "Quanto mais você entender de animais, mais poderá apreciar o significado da morte deles.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1238,14 +1245,14 @@
     },
     "hints": [
       {
-        "높은 수준의 동물 자원일수록 구하기 어려우면서도, 각종 제작에서 수요가 큽니다.": null
+        "Obter partes complexas de animais pode ser difícil, mas elas são vitais para criar determinadas coisas.": null
       },
       {
-        "채집한 도축물을 <em>장터</em>에 후한 값에 팔아보세요. 그 값으로 장비를 마련할 자금 이상을 얻을 수 있을지도 모릅니다.": null
+        "Se você não tem as habilidades para usá-las, poderá vender os bens que você coletou no <em>mercado</em> para lucrar. Você pode até ganhar dinheiro suficiente para comprar equipamentos bons.": null
       }
     ],
     "name": {
-      "동물 분자영양학": null
+      "Biologia Molecular Animal": null
     }
   },
   "weaponcrafting_basic_1": {
@@ -1318,7 +1325,7 @@
       }
     ],
     "description": {
-      "비무장도 안전한 세상이 최선이나, 그렇게 되기 전까진 스스로를 무장한다.": null
+      "Em um mundo ideal, não teríamos necessidade de armas. Mas Durango está longe de ser esse mundo.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1330,11 +1337,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "무기제작개론 세트": null
+      "Conjunto de Confecção de Armas 101": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Colete pedra, madeira e ossos para fabricar suas primeiras ferramentas e armas.": null
+      },
+      {
+        "Confira os ingredientes, a ferramenta e a bancada exigidos pela receita antes de fabricar.": null
+      }
+    ],
     "name": {
-      "무기제작개론": null
+      "Confecção de Armas 101": null
     }
   },
   "weaponcrafting_sword_2": {
@@ -1396,7 +1410,7 @@
       }
     ],
     "description": {
-      "이 칼이 누군가를 억압하는 데 쓰이지 않기를 바란다.": null
+      "Uma lâmina é tão maligna quanto a pessoa que a empunha.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1412,20 +1426,20 @@
     },
     "hints": [
       {
-        "<em>부품</em>이 좋아야 완성품도 좋습니다. 무기를 구성하는 개별 부품의 레벨을 높여 보세요.": null
+        "<em>Peças</em> boas significam produtos de qualidade. Criar uma arma usando peças de qualidade resultará em uma arma de qualidade.": null
       },
       {
-        "무기엔 등급이 있습니다. 처음엔 <em>급조한</em> 무기 등급부터 시작합니다. 그 다음은 <em>보통의</em> 무기 등급입니다.": null
+        "Há diversos graus de armas. O primeiro grau é <em>improvisado</em>, seguido por <em>padrão</em>.": null
       },
       {
-        "<em>보통의</em> 등급 무기를 만들려면, 정식으로 <em>손잡이</em> 부품을 만들어야 합니다. 예전처럼 나뭇가지를 손잡이로 쓰던 시대는 지나간 거죠.": null
+        "Para criar uma arma <em>padrão</em>, você vai precisar de um <em>cabo</em> adequado. Amarrar coisas em um galho não vai servir.": null
       },
       {
-        "좋은 부품과 재료를 만들려면 <em>가공</em> 계열의 스킬이 필요합니다. 가공 계열의 활동을 해서 숙련도를 높여 보세요.": null
+        "Você vai precisar aperfeiçoar suas habilidades de <em>processamento</em> para criar peças de qualidade e refinar recursos": null
       }
     ],
     "name": {
-      "도검 제작공정 기초": null
+      "Produção Básica de Espadas": null
     }
   },
   "weaponcrafting_sword_3": {
@@ -1527,7 +1541,7 @@
       }
     ],
     "description": {
-      "듀랑고의 철을 구성하는 원소들도 그 빅뱅에서 나왔을 것이다.": null
+      "É estranho pensar que o ferro em Durango não é tão diferente daquele encontrado na Terra.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1543,20 +1557,20 @@
     },
     "hints": [
       {
-        "<em>보통의</em> 무기 등급 다음엔 <em>개선된</em> 무기 등급입니다. 더 높은 레벨의 무기를 제작할 수 있는 제작법입니다.": null
+        "O próximo grau depois de <em>padrão</em> é o <em>melhorado</em>. Essas armas de grau maior só podem ser construídas usando certas técnicas.": null
       },
       {
-        "부품 날과 부품 손잡이를 연결하는 부품도 발전이 필요합니다. <em>개선된</em> 무기 등급에서는 <em>슴베</em> 같은 연결부품이 필요합니다.": null
+        "Até as peças que conectam a lâmina ao cabo devem ser de qualidade alta. Você só pode criar equipamento de grau <em>melhorado</em> com peças de conexão especial servindo de <em>travas</em>.": null
       },
       {
-        "부품 손잡이 역시, 기존의 <em>손잡이</em>에서 나아가, <em>개선된 손잡이</em>가 필요합니다.": null
+        "O <em>cabo</em> padrão não servirá mais; apenas um <em>cabo melhorado</em> vai resolver.": null
       },
       {
-        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+        "É claro que peças de qualidade só podem ser fabricadas com recursos de qualidade. Vá até as <em>Ilhas Instáveis</em> para coletar recursos superiores. Você também pode comprá-los no <em>mercado</em> se não tiver habilidade ou tempo.": null
       }
     ],
     "name": {
-      "도검 제작공정 숙련": null
+      "Produção Intermediária de Espadas": null
     }
   },
   "weaponcrafting_sword_4": {
@@ -1638,7 +1652,7 @@
       }
     ],
     "description": {
-      "좋은 칼을 만들었으니, 사람들이 칼을 올바르게 쓰는지 감시해야 한다.": null
+      "Criar uma espada de qualidade é uma coisa; usá-la é outra.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1654,17 +1668,17 @@
     },
     "hints": [
       {
-        "<em>개선된</em> 등급의 무기보다 더 좋은 무기는 <em>프로토급</em> 등급의 무기입니다. 프로토케라톱스에서 이름을 따온 이 제작법은 더 높은 레벨대의 무기를 만들 수 있는 제작법입니다.": null
+        "O próximo grau depois de <em>melhorado</em> é o de <em>protótipo</em>. Apesar de parecer o termo usado na Terra para uma cópia malfeita de algum item, esse nível de criação é na verdade uma homenagem ao Protoceratops.": null
       },
       {
-        "부품 역시 이전의 제작법들보다 더 높은 수준의 것을 요구합니다. <em>자루</em> 같은 것이 있죠.": null
+        "Essas armas exigem peças ainda melhores do que as do nível abaixo. Os componentes como <em>hastes</em> são os mais usados.": null
       },
       {
-        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+        "Mas o grau da arma não é tudo! Há muitas outras com seus formatos e recursos exclusivos. Aprenda a <em>habilidade</em> correspondente para criá-las e aumentar o seu <em>nível de habilidade</em>.": null
       }
     ],
     "name": {
-      "도검 제작공정 전문": null
+      "Produção Avançada de Espadas": null
     }
   },
   "weaponcrafting_axe_2": {
@@ -1726,7 +1740,7 @@
       }
     ],
     "description": {
-      "목기 시대란 말이 따로 없는 건 나무가 어느 때나 보편적이기 때문이다.": null
+      "Não é que nunca tenha existido uma “Era da Madeira”, na verdade nós sempre vivemos nela.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1742,20 +1756,20 @@
     },
     "hints": [
       {
-        "<em>부품</em>이 좋아야 완성품도 좋습니다. 무기를 구성하는 개별 부품의 레벨을 높여 보세요.": null
+        "<em>Peças</em> boas significam produtos de qualidade. Criar uma arma usando peças de qualidade resultará em uma arma de qualidade.": null
       },
       {
-        "무기엔 등급이 있습니다. 처음엔 <em>급조한</em> 무기 등급부터 시작합니다. 그 다음은 <em>보통의</em> 무기 등급입니다.": null
+        "Há diversos graus de armas. O primeiro grau é <em>improvisado</em>, seguido por <em>padrão</em>.": null
       },
       {
-        "<em>보통의</em> 등급 무기를 만들려면, 정식으로 <em>손잡이</em> 부품을 만들어야 합니다. 예전처럼 나뭇가지를 손잡이로 쓰던 시대는 지나간 거죠.": null
+        "Para criar uma arma <em>padrão</em>, você vai precisar de um <em>cabo</em> adequado. Amarrar coisas em um galho não vai servir.": null
       },
       {
-        "좋은 부품과 재료를 만들려면 <em>가공</em> 계열의 스킬이 필요합니다. 가공 계열의 활동을 해서 숙련도를 높여 보세요.": null
+        "Você vai precisar aperfeiçoar suas habilidades de <em>processamento</em> para criar peças de qualidade e refinar recursos": null
       }
     ],
     "name": {
-      "도끼 제작공정 기초": null
+      "Produção Básica de Machados": null
     }
   },
   "weaponcrafting_axe_3": {
@@ -1857,7 +1871,7 @@
       }
     ],
     "description": {
-      "숲이 곡식이 익은 들판이 되려면, 탐욕만으로는 부족하다.": null
+      "Ninguém consegue transformar florestas abundantes em plantações apenas por cobiça.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1873,20 +1887,20 @@
     },
     "hints": [
       {
-        "<em>보통의</em> 무기 등급 다음엔 <em>개선된</em> 무기 등급입니다. 더 높은 레벨의 무기를 제작할 수 있는 제작법입니다.": null
+        "O próximo grau depois de <em>padrão</em> é o <em>melhorado</em>. Essas armas de grau maior só podem ser construídas usando certas técnicas.": null
       },
       {
-        "부품 날과 부품 손잡이를 연결하는 부품도 발전이 필요합니다. <em>개선된</em> 무기 등급에서는 <em>슴베</em> 같은 연결부품이 필요합니다.": null
+        "Até as peças que conectam a lâmina ao cabo devem ser de qualidade alta. Você só pode criar equipamento de grau <em>melhorado</em> com peças de conexão especial servindo de <em>travas</em>.": null
       },
       {
-        "부품 손잡이 역시, 기존의 <em>손잡이</em>에서 나아가, <em>개선된 손잡이</em>가 필요합니다.": null
+        "O <em>cabo</em> padrão não servirá mais; apenas um <em>cabo melhorado</em> vai resolver.": null
       },
       {
-        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+        "É claro que peças de qualidade só podem ser fabricadas com recursos de qualidade. Vá até as <em>Ilhas Instáveis</em> para coletar recursos superiores. Você também pode comprá-los no <em>mercado</em> se não tiver habilidade ou tempo.": null
       }
     ],
     "name": {
-      "도끼 제작공정 숙련": null
+      "Produção intermediária de Machados": null
     }
   },
   "weaponcrafting_axe_4": {
@@ -1968,7 +1982,7 @@
       }
     ],
     "description": {
-      "도끼가 베어내는 숲만큼, 다른 숲을 일구는 것도 잊지 않도록 한다.": null
+      "Os melhores lenhadores sabem que plantar árvores é tão importante quanto derrubá-las.": null
     },
     "conditional": false,
     "required_skill": {
@@ -1984,17 +1998,17 @@
     },
     "hints": [
       {
-        "<em>개선된</em> 등급의 무기보다 더 좋은 무기는 <em>프로토급</em> 등급의 무기입니다. 프로토케라톱스에서 이름을 따온 이 제작법은 더 높은 레벨대의 무기를 만들 수 있는 제작법입니다.": null
+        "O próximo grau depois de <em>melhorado</em> é o de <em>protótipo</em>. Apesar de parecer o termo usado na Terra para uma cópia malfeita de algum item, esse nível de criação é na verdade uma homenagem ao Protoceratops.": null
       },
       {
-        "부품 역시 이전의 제작법들보다 더 높은 수준의 것을 요구합니다. <em>자루</em> 같은 것이 있죠.": null
+        "Essas armas exigem peças ainda melhores do que as do nível abaixo. Os componentes como <em>hastes</em> são os mais usados.": null
       },
       {
-        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+        "Mas o grau da arma não é tudo! Há muitas outras com seus formatos e recursos exclusivos. Aprenda a <em>habilidade</em> correspondente para criá-las e aumentar o seu <em>nível de habilidade</em>.": null
       }
     ],
     "name": {
-      "도끼 제작공정 전문": null
+      "Produção Avançada de Machados": null
     }
   },
   "weaponcrafting_hammer_2": {
@@ -2056,7 +2070,7 @@
       }
     ],
     "description": {
-      "찌르거나 베는 대신에, 질량만으로 승부하는 무기도 있다.": null
+      "Nem todas as armas precisam de refino.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2072,20 +2086,20 @@
     },
     "hints": [
       {
-        "<em>부품</em>이 좋아야 완성품도 좋습니다. 무기를 구성하는 개별 부품의 레벨을 높여 보세요.": null
+        "<em>Peças</em> boas significam produtos de qualidade. Criar uma arma usando peças de qualidade resultará em uma arma de qualidade.": null
       },
       {
-        "무기엔 등급이 있습니다. 처음엔 <em>급조한</em> 무기 등급부터 시작합니다. 그 다음은 <em>보통의</em> 무기 등급입니다.": null
+        "Há diversos graus de armas. O primeiro grau é <em>improvisado</em>, seguido por <em>padrão</em>.": null
       },
       {
-        "<em>보통의</em> 등급 무기를 만들려면, 정식으로 <em>손잡이</em> 부품을 만들어야 합니다. 예전처럼 나뭇가지를 손잡이로 쓰던 시대는 지나간 거죠.": null
+        "Para criar uma arma <em>padrão</em>, você vai precisar de um <em>cabo</em> adequado. Amarrar coisas em um galho não vai servir.": null
       },
       {
-        "좋은 부품과 재료를 만들려면 <em>가공</em> 계열의 스킬이 필요합니다. 가공 계열의 활동을 해서 숙련도를 높여 보세요.": null
+        "Você vai precisar aperfeiçoar suas habilidades de <em>processamento</em> para criar peças de qualidade e refinar recursos": null
       }
     ],
     "name": {
-      "둔기 제작공정 기초": null
+      "Produção Básica de Armas Contundentes": null
     }
   },
   "weaponcrafting_hammer_3": {
@@ -2187,7 +2201,7 @@
       }
     ],
     "description": {
-      "사신조차도 둔기가 주는 고통엔 익숙해질 수가 없다.": null
+      "Até o deus da guerra não aguenta uma pancada forte.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2203,20 +2217,20 @@
     },
     "hints": [
       {
-        "<em>보통의</em> 무기 등급 다음엔 <em>개선된</em> 무기 등급입니다. 더 높은 레벨의 무기를 제작할 수 있는 제작법입니다.": null
+        "O próximo grau depois de <em>padrão</em> é o <em>melhorado</em>. Essas armas de grau maior só podem ser construídas usando certas técnicas.": null
       },
       {
-        "부품 날과 부품 손잡이를 연결하는 부품도 발전이 필요합니다. <em>개선된</em> 무기 등급에서는 <em>슴베</em> 같은 연결부품이 필요합니다.": null
+        "Até as peças que conectam a lâmina ao cabo devem ser de qualidade alta. Você só pode criar equipamento de grau <em>melhorado</em> com peças de conexão especial servindo de <em>travas</em>.": null
       },
       {
-        "부품 손잡이 역시, 기존의 <em>손잡이</em>에서 나아가, <em>개선된 손잡이</em>가 필요합니다.": null
+        "O <em>cabo</em> padrão não servirá mais; apenas um <em>cabo melhorado</em> vai resolver.": null
       },
       {
-        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+        "É claro que peças de qualidade só podem ser fabricadas com recursos de qualidade. Vá até as <em>Ilhas Instáveis</em> para coletar recursos superiores. Você também pode comprá-los no <em>mercado</em> se não tiver habilidade ou tempo.": null
       }
     ],
     "name": {
-      "둔기 제작공정 숙련": null
+      "Produção Intermediária de Armas Contundentes": null
     }
   },
   "weaponcrafting_hammer_4": {
@@ -2298,7 +2312,7 @@
       }
     ],
     "description": {
-      "개척자들의 둔기가 상대를 부수기 보단 편견을 부수길 기원해본다.": null
+      "Tomara que os pioneiros usem essas armas para matar o preconceito... e não outras pessoas.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2314,17 +2328,17 @@
     },
     "hints": [
       {
-        "<em>개선된</em> 등급의 무기보다 더 좋은 무기는 <em>프로토급</em> 등급의 무기입니다. 프로토케라톱스에서 이름을 따온 이 제작법은 더 높은 레벨대의 무기를 만들 수 있는 제작법입니다.": null
+        "O próximo grau depois de <em>melhorado</em> é o de <em>protótipo</em>. Apesar de parecer o termo usado na Terra para uma cópia malfeita de algum item, esse nível de criação é na verdade uma homenagem ao Protoceratops.": null
       },
       {
-        "부품 역시 이전의 제작법들보다 더 높은 수준의 것을 요구합니다. <em>자루</em> 같은 것이 있죠.": null
+        "Essas armas exigem peças ainda melhores do que as do nível abaixo. Os componentes como <em>hastes</em> são os mais usados.": null
       },
       {
-        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+        "Mas o grau da arma não é tudo! Há muitas outras com seus formatos e recursos exclusivos. Aprenda a <em>habilidade</em> correspondente para criá-las e aumentar o seu <em>nível de habilidade</em>.": null
       }
     ],
     "name": {
-      "둔기 제작공정 전문": null
+      "Produção Avançada de Armas Contundentes": null
     }
   },
   "weaponcrafting_bow_2": {
@@ -2376,7 +2390,7 @@
       }
     ],
     "description": {
-      "거리를 두고 싸우는 건 인간의 육체가 지닌 단점을 보완해준다.": null
+      "Armas de longo alcance ajudam a superar as limitações do corpo humano.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2392,20 +2406,20 @@
     },
     "hints": [
       {
-        "최초의 <em>원거리 무기</em>는 근거리 무기에 비해 상대적으로 요구되는 계열 레벨의 수준이 높습니다.": null
+        "Para usar a sua primeira <em>arma de longa distância</em> você vai precisar de um nível de categoria de habilidade maior do que a maioria das arma de corpo a corpo.": null
       },
       {
-        "원거리 무기는 여러 <em>부품</em>으로 구성됩니다. 부품이 좋을수록 더 높은 레벨의 원거리 무기를 만들 수 있습니다.": null
+        "As armas de longa distância são construídas com diversas <em>peças</em> complexas. Quanto melhores as peças, mais alto será o nível da arma resultante.": null
       },
       {
-        "특히 원거리 무기는 다양한 <em>가공</em> 스킬을 필요로 합니다. 가공 스킬을 배워서 <em>숙련도</em>를 높여보세요.": null
+        "Você deve usar os materiais de <em>processamento</em> se quiser criar sua própria arma de longa distância do zero. Quanto mais itens processar, maior será o seu <em>nível de habilidade</em> de processamento.": null
       },
       {
-        "직접 만들지 않고 <em>장터</em>에서 구할 수도 있습니다.": null
+        "Ou você pode simplesmente comprar uma arma de longa distância no <em>mercado</em> sem ter que criar nada.": null
       }
     ],
     "name": {
-      "활 제작공정 기초": null
+      "Produção Básica de Arcos ": null
     }
   },
   "weaponcrafting_bow_3": {
@@ -2497,7 +2511,7 @@
       }
     ],
     "description": {
-      "총은 활이라는 위대한 선임자가 있지 않았다면 상상하지 못 했을 것이다.": null
+      "A arma deve muito ao seu tatatataravô: o arco.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2513,17 +2527,17 @@
     },
     "hints": [
       {
-        "활은 근거리 무기에 비해 고급 기술입니다. 그 때문에 첫 등급이 <em>보통의</em> 무기 등급입니다.": null
+        "Os arcos são mais avançados do que a maioria das armas corpo a corpo. É por isso que o seu primeiro arco será do grau <em>padrão</em>.": null
       },
       {
-        "석궁은 <em>개선된</em> 무기 등급부터 시작합니다. 그만큼 요구되는 부품의 레벨이나 스킬 등이 많습니다.": null
+        "Ás bestas são até mais complexas, por isso o menor grau delas é o de <em>melhorado</em>. Para criar uma besta são necessários diversas habilidades e itens avançados.": null
       },
       {
-        "이런 좋은 부품을 만들려면, 그만큼 좋은 재료가 필요합니다. <em>불안정섬</em>에 가서 좋은 재료를 구하거나, <em>장터</em>를 이용해보세요.": null
+        "É claro que peças de qualidade só podem ser fabricadas com recursos de qualidade. Vá até as <em>Ilhas Instáveis</em> para coletar recursos superiores. Você também pode comprá-los no <em>mercado</em> se não tiver habilidade ou tempo.": null
       }
     ],
     "name": {
-      "활 제작공정 숙련": null
+      "Produção intermediária de Arcos": null
     }
   },
   "weaponcrafting_bow_4": {
@@ -2595,7 +2609,7 @@
       }
     ],
     "description": {
-      "모든 개척자가 활을 한 장씩 들고 다닌다면 매너가 탄생할 것이다.": null
+      "Se cada pioneiro tivesse um arco, as pessoas seriam mais educadas.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2611,14 +2625,14 @@
     },
     "hints": [
       {
-        "프로토케라톱스에서 그 이름을 딴 <em>프로토급</em> 활과 석궁도 존재합니다. 좋은 제작법이니만큼 요구되는 부품의 조건이 높습니다.": null
+        "Há também arcos e bestas de grau de <em>protótipo</em>, um nome inspirado pelo Protoceratops. Por ser uma arma de grau alto, ela precisa de peças de alta qualidade.": null
       },
       {
-        "등급에 속하는 무기 이외에도, 독특한 모양과 능력을 갖춘 다양한 무기가 있습니다. <em>스킬</em>을 배워서 만들고 <em>숙련도</em>를 높여 보세요.": null
+        "Mas o grau da arma não é tudo! Há muitas outras com seus formatos e recursos exclusivos. Aprenda a <em>habilidade</em> correspondente para criá-las e aumentar o seu <em>nível de habilidade</em>.": null
       }
     ],
     "name": {
-      "활 제작공정 전문": null
+      "Produção Avançada de Arcos": null
     }
   },
   "armorcrafting_basic_1": {
@@ -2686,7 +2700,7 @@
       }
     ],
     "description": {
-      "개척자는 옷을 입음으로써 거친 야생을 다스리려는 첫 충동을 느낀다.": null
+      "Criar as suas próprias roupas é a forma mais básica de dominar a natureza.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2698,11 +2712,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "의상제작입문 세트": null
+      "Conjunto de Alfaiataria 101": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Colete fibras e obtenha couro pela caça para fabricar roupas.": null
+      },
+      {
+        "Aprenda as habilidades indicadas e confira os materiais exigidos por cada receita.": null
+      }
+    ],
     "name": {
-      "의상제작입문": null
+      "Alfaiataria 101": null
     }
   },
   "armorcrafting_basic_2": {
@@ -2829,7 +2850,7 @@
       }
     ],
     "description": {
-      "개척자의 옷은 그 시대와 그 장소에 걸맞는 재료로 만들어야 한다.": null
+      "A vestimenta de um pioneiro deve ser feita de materiais adequados ao clima e local.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2845,20 +2866,20 @@
     },
     "hints": [
       {
-        "<em>실</em>은 옷의 근원입니다. 아마 같은 식물에서 <em>실</em>을 얻을 수 있습니다.": null
+        "Os <em>fios</em> são a base da maioria das roupas. Você pode obter <em>fios</em> de linho e outras plantas similares.": null
       },
       {
-        "다양한 옷을 만들기 위해선 다양한 재료가 필요합니다. 스스로 <em>채집</em>이나 <em>도축</em> 계열의 스킬을 배우는 방법도 있고, <em>장터</em>를 이용하는 방법도 있습니다.": null
+        "Se você vai talhar uma variedade de roupas, vai precisar de diversos materiais. Você pode coletá-los usando habilidades como <em>coleta</em> ou <em>esquartejamento</em>. Não tem tempo ou talento? Compre-os no <em>mercado</em>.": null
       },
       {
-        "장갑이나 샌들 같은 장신구를 만드는 것도 옷 제작 계열의 <em>숙련도</em>를 높이는 데 도움이 됩니다.": null
+        "Crie acessórios como luvas e sandálias para aumentar o <em>nível de habilidade</em> de alfaiataria.": null
       },
       {
-        "<em>가방</em>을 만들어 장착하면, 소지할 수 있는 아이템의 양이 늘어납니다.": null
+        "Você também pode criar e equipar <em>bolsas</em> para carregar mais itens.": null
       }
     ],
     "name": {
-      "의류소재의 이해": null
+      "Os Materiais de Alfaiataria e Você": null
     }
   },
   "armorcrafting_settler_3": {
@@ -2975,7 +2996,7 @@
       }
     ],
     "description": {
-      "사람들이 비슷한 옷을 갖춰 입을 때 사회는 예절을 논한다.": null
+      "Depois que resolvermos o problema da nudez, as pessoas vão poder se preocupar com etiqueta.": null
     },
     "conditional": false,
     "required_skill": {
@@ -2991,17 +3012,17 @@
     },
     "hints": [
       {
-        "정착자들은 다양한 섬에서 획득한 자원을 가공해 도구와 무기, 의류와 건축물을 만들어냅니다.": null
+        "Os colonos podem processar os recursos que adquirem em outras ilhas para criar ferramentas, armas, roupas e construções.": null
       },
       {
-        "이들이 작업하는데 긍정적인 효과를 주는 옷 제작법을 <em>옷 제작</em> 계열의 스킬로 배울 수 있습니다.": null
+        "Você pode deixá-los ainda melhores nessas tarefas criando roupas especiais com a habilidade <em>alfaiataria</em>.": null
       },
       {
-        "고급 의류일수록 고급 재료 뿐만 아니라, 의상을 만드는 <em>건축물</em>이 필요합니다. 직접 <em>건설</em> 계열의 스킬을 배워 만들어 쓸 수도 있고, <em>캠프</em>의 것을 쓸 수도 있습니다.": null
+        "Criar roupas avançadas exige mais do que apenas materiais de grau alto. Você também vai precisar de <em>construções</em> especializadas em alfaiataria. Você pode construir a sua com a habilidade <em>construção</em> ou usar as instalações do <em>acampamento</em>.": null
       }
     ],
     "name": {
-      "정착의류와 일반사회학": null
+      "Estilo Colono: Sociologia Geral": null
     }
   },
   "armorcrafting_settler_4": {
@@ -3113,7 +3134,7 @@
       }
     ],
     "description": {
-      "고정된 곳에서 일하는 사람들은 비슷한 정치적 입장을 형성한다.": null
+      "Aqueles que trabalham juntos tendem a desenvolver crenças políticas semelhantes.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3129,14 +3150,14 @@
     },
     "hints": [
       {
-        "고급 옷 제작법일수록 다양한 효과와 높은 능력치를 지니게 됩니다. <em>의상 수리키트</em>를 만들어 이런 옷의 떨어진 <em>내구도</em>를 회복할 수 있습니다.": null
+        "Quanto mais avançadas as suas técnicas de alfaiataria ficarem, mais benefícios e estatísticas as suas roupas terão. Você pode até criar <em>kits de reparo de roupas</em> para restaurar roupas quando a <em>durabilidade</em> delas ficar baixa.": null
       },
       {
-        "좋은 옷을 만들면 <em>장터</em>에 올려 좋은 값을 받고 팔 수도 있고, 다른 개척자들을 지원할 수 있습니다.": null
+        "Está ficando sem dinheiro? Venda as suas criações no <em>mercado</em> para ter lucro e ainda vestir os seus amigos pioneiros.": null
       }
     ],
     "name": {
-      "정착의류와 사회조직론": null
+      "Estilo Colono: Dinâmica Social": null
     }
   },
   "armorcrafting_explorer_3": {
@@ -3248,7 +3269,7 @@
       }
     ],
     "description": {
-      "새로운 것을 찾는 사람들은 지리에 탁월한 감수성을 갖게 된다.": null
+      "A moda tem origem na geografia.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3264,17 +3285,17 @@
     },
     "hints": [
       {
-        "탐험가들은 불안정섬 등 오지를 돌아다니며, 자신을 숨기고 귀중한 자원을 찾고 안정해역으로 옮깁니다.": null
+        "Os pioneiros andam por diversos cenários geográficos em busca de recursos valiosos, e precisam de uma ampla variedade de roupas.": null
       },
       {
-        "이들의 탐험에 긍정적인 효과를 주는 옷 제작법을 <em>옷 제작</em> 계열의 스킬로 배울 수 있습니다.": null
+        "Com a habilidade <em>alfaiataria</em>, você vai aprender a criar roupas que vão ajudar em suas explorações.": null
       },
       {
-        "고급 의류일수록 고급 재료 뿐만 아니라, 의상을 만드는 <em>건축물</em>이 필요합니다. 직접 <em>건설</em> 계열의 스킬을 배워 만들어 쓸 수도 있고, <em>캠프</em>의 것을 쓸 수도 있습니다.": null
+        "Criar roupas avançadas exige mais do que apenas materiais de grau alto. Você também vai precisar de <em>construções</em> especializadas em alfaiataria. Você pode construir a sua com a habilidade <em>construção</em> ou usar as instalações do <em>acampamento</em>.": null
       }
     ],
     "name": {
-      "탐험의류와 지리학입문": null
+      "Estilo Pioneiro: Roupas e Geografia": null
     }
   },
   "armorcrafting_explorer_4": {
@@ -3376,7 +3397,7 @@
       }
     ],
     "description": {
-      "옷은 개척자가 태어난 기후 너머로 탐험할 수 있게 하는 길이다.": null
+      "O equipamento correto permite que os pioneiros explorem além do seu clima nativo.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3392,14 +3413,14 @@
     },
     "hints": [
       {
-        "고급 옷 제작법일수록 다양한 효과와 높은 능력치를 지니게 됩니다. <em>의상 수리키트</em>를 만들어 이런 옷의 떨어진 <em>내구도</em>를 회복할 수 있습니다.": null
+        "Quanto mais avançadas as suas técnicas de alfaiataria ficarem, mais benefícios e estatísticas as suas roupas terão. Você pode até criar <em>kits de reparo de roupas</em> para restaurar roupas quando a <em>durabilidade</em> delas ficar baixa.": null
       },
       {
-        "좋은 옷을 만들면 <em>장터</em>에 올려 좋은 값을 받고 팔 수도 있고, 다른 개척자들을 지원할 수 있습니다.": null
+        "Está ficando sem dinheiro? Venda as suas criações no <em>mercado</em> para ter lucro e ainda vestir os seus amigos pioneiros.": null
       }
     ],
     "name": {
-      "탐험의류와 기후지리학": null
+      "Estilo Pioneiro: Roupas e Clima": null
     }
   },
   "armorcrafting_hunter_3": {
@@ -3501,7 +3522,7 @@
       }
     ],
     "description": {
-      "폭력이 세상을 다스릴지라도, 누군가는 사람을 살릴 옷을 만든다.": null
+      "Quando o mundo é dominado pela violência, o alfaiate usa suas agulhas para proteger aqueles que ama.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3517,17 +3538,17 @@
     },
     "hints": [
       {
-        "전투원들은 야생동물이나 적대적인 개척자와 싸워서 상대의 전투 능력을 분쇄합니다.": null
+        "Seja lutando contra a vida selvagem ou com outros pioneiros, todo explorador precisa de uma vestimenta de combate apropriada.": null
       },
       {
-        "이들의 전투에 긍정적인 효과를 주는 옷 제작법을 <em>옷 제작</em> 계열의 스킬로 배울 수 있습니다.": null
+        "Com a habilidade <em>alfaiataria</em>, você aprende a criar roupas que proporcionam uma vantagem no combate.": null
       },
       {
-        "고급 의류일수록 고급 재료 뿐만 아니라, 의상을 만드는 <em>건축물</em>이 필요합니다. 직접 <em>건설</em> 계열의 스킬을 배워 만들어 쓸 수도 있고, <em>캠프</em>의 것을 쓸 수도 있습니다.": null
+        "Criar roupas avançadas exige mais do que apenas materiais de grau alto. Você também vai precisar de <em>construções</em> especializadas em alfaiataria. Você pode construir a sua com a habilidade <em>construção</em> ou usar as instalações do <em>acampamento</em>.": null
       }
     ],
     "name": {
-      "전투의류와 지구전쟁사": null
+      "Estilo Guerreiro: A História da Guerra": null
     }
   },
   "armorcrafting_hunter_4": {
@@ -3634,7 +3655,7 @@
       }
     ],
     "description": {
-      "옷에 달린 장식과 죽으면 그 위에 덮일 깃발 때문에 사람들은 싸우다 죽는다.": null
+      "Quando as pessoas lutam até a morte por seus países, representar o seu lar através de roupas torna-se uma questão de orgulho nacional.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3650,14 +3671,14 @@
     },
     "hints": [
       {
-        "고급 옷 제작법일수록 다양한 효과와 높은 능력치를 지니게 됩니다. <em>의상 수리키트</em>를 만들어 이런 옷의 떨어진 <em>내구도</em>를 회복할 수 있습니다.": null
+        "Quanto mais avançadas as suas técnicas de alfaiataria ficarem, mais benefícios e estatísticas as suas roupas terão. Você pode até criar <em>kits de reparo de roupas</em> para restaurar roupas quando a <em>durabilidade</em> delas ficar baixa.": null
       },
       {
-        "좋은 옷을 만들면 <em>장터</em>에 올려 좋은 값을 받고 팔 수도 있고, 다른 개척자들을 지원할 수 있습니다.": null
+        "Está ficando sem dinheiro? Venda as suas criações no <em>mercado</em> para ter lucro e ainda vestir os seus amigos pioneiros.": null
       }
     ],
     "name": {
-      "전투의류와 국가안보론": null
+      "Estilo Guerreiro: Segurança Nacional": null
     }
   },
   "cooking_basic_1": {
@@ -3745,7 +3766,7 @@
       }
     ],
     "description": {
-      "야생의 먹거리는 위험하지만, 요리는 위험을 없애고 반가움으로 맛을 낸다.": null
+      "Comer alimentos silvestres pode ser tão perigoso quanto coletá-los, mas a culinária pode deixá-los seguros e deliciosos.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3757,11 +3778,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "생존요리의 세계 세트": null
+      "Conjunto da Despensa da Natureza": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Obtenha carne pela caça ou peixe pela pesca para preparar alimentos.": null
+      },
+      {
+        "Confira os ingredientes, os utensílios e a bancada exigidos. Bolinhos prontos não servem para fabricar outros bolinhos.": null
+      }
+    ],
     "name": {
-      "생존요리의 세계": null
+      "A Despensa da Natureza": null
     }
   },
   "cooking_basic_2": {
@@ -3818,7 +3846,7 @@
       }
     ],
     "description": {
-      "요리는 개척자의 활동 시간을 고정하고 시간을 논리적으로 쓰게 한다.": null
+      "Planejar a sua rotina na cozinha serve para você melhorar o uso do seu tempo.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3834,17 +3862,17 @@
     },
     "hints": [
       {
-        "요리를 할 수 있는 환경도 중요합니다. <em>캠프</em>의 여러 건축물에서 요리를 할 수도 있고, 직접 건설을 배워 요리용 건축물을 지을 수도 있습니다.": null
+        "O local onde você cozinha é tão importante quanto o que você cozinha. Você pode usar uma das construções do <em>acampamento</em>, ou criar a sua própria área para cozinhar, usando a habilidade construção.": null
       },
       {
-        "<em>건강</em>을 회복할 수 있는 <em>약</em>도 넓게 보면 요리의 방법론을 취하고 있기에, 약을 만들면 요리의 <em>숙련도</em>가 올라갑니다.": null
+        "Pode parecer estranho, mas criar <em>remédios</em> que restauram <em>saúde</em> também vale como cozinhar. Portanto, criar remédios também aumenta o seu <em>nível de habilidade</em> de cozinhar.": null
       },
       {
-        "<em>향신료</em>를 만드는 것도 요리의 숙련도 향상에 도움이 됩니다.": null
+        "Até mesmo criar <em>temperos</em> vai ajudar a melhorar a sua habilidade de cozinhar.": null
       }
     ],
     "name": {
-      "논리적 식품가공": null
+      "A Logística da Culinária": null
     }
   },
   "cooking_cooking_3": {
@@ -3906,7 +3934,7 @@
       }
     ],
     "description": {
-      "처음엔 누군가의 단순한 맛 취향이겠지만, 나중엔 전통 요리가 될 것이다.": null
+      "O que começa como uma iguaria regional pode se tornar um prato tradicional.": null
     },
     "conditional": false,
     "required_skill": {
@@ -3922,17 +3950,17 @@
     },
     "hints": [
       {
-        "다양한 요리 방법을 <em>스킬</em>로 배워보고, 어떤 요리가 어떤 활동에 도움이 되는지를 연구해보세요.": null
+        "Você pode aprender uma grande variedade de receitas na árvore de <em>habilidades</em>. Veja cada um dos pratos para descobrir como eles podem lhe ajudar em Durango.": null
       },
       {
-        "고급 요리법일수록 다양한 재료와 다양한 작업대(건축물)을 필요로 합니다.": null
+        "Receitas mais avançadas vão naturalmente exigir materiais de alto nível e uma diversidade de mesas de trabalho especializadas (construções).": null
       },
       {
-        "요리도구는 <em>무기/도구 제작<em> 계열에서, 건축물은 <em>건설</em> 계열에서 스킬을 배울 수 있습니다.": null
+        "Aprenda a fazer as suas ferramentas de cozinha com a categoria de habilidade <em>criação de armas/ferramentas<em>, e construa os dispositivos necessários (forno etc.) explorando a categoria de habilidade <em>construção</em>.": null
       }
     ],
     "name": {
-      "음식과 인류문화": null
+      "A Cultura da Gastronomia": null
     }
   },
   "cooking_cooking_4": {
@@ -4004,7 +4032,7 @@
       }
     ],
     "description": {
-      "왔노라. 보았노라. 먹었노라.": null
+      "Cozinhas e conquistas têm as mesmas regras: Vim, vi e venci.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4020,14 +4048,14 @@
     },
     "hints": [
       {
-        "요리법을 조합하여 새로운 <em>요리</em>를 만들면, 세상에 없던 새로운 게 생깁니다. 최고의 요리사는 최고의 개척자랍니다.": null
+        "Você pode combinar receitas para <em>cozinhar</em> pratos exclusivos que vão originar novos estilos culinários. Os pioneiros mais destemidos tornam-se os melhores chefs de cozinha.": null
       },
       {
-        "새롭고 뛰어난 요리를 만들려면, 높은 수준의 재료가 필요합니다. 직접 <em>불안정섬</em>에 갈 수도 있고, <em>장터</em>에서 구할 수도 있습니다.": null
+        "Se você quer criar pratos novos e maravilhosos, terá que buscar ingredientes de alta qualidade. Eles podem ser encontrados nas <em>Ilhas Instáveis</em> ou então comprados no <em>mercado</em>.": null
       }
     ],
     "name": {
-      "주방행동론": null
+      "Gerenciamento da Cozinha": null
     }
   },
   "cooking_baking_3": {
@@ -4074,7 +4102,7 @@
       }
     ],
     "description": {
-      "가루로 만든 음식은 그만큼 여러 곳에서 기술 진보가 이뤄졌음을 뜻한다.": null
+      "Alimentos em pó eram coisas comuns na Terra, mas aqui em Durango, ele são o resultado de importantes avanços tecnológicos.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4090,14 +4118,14 @@
     },
     "hints": [
       {
-        "제빵은 곡물을 원래의 형태를 잃게 하고, 가루내어 더 높은 수준의 효율을 뽑을 수 있게 유도하는 요리법입니다. 요리 계열에서 <em>스킬</em>을 배울 수 있습니다.": null
+        "Assar a farinha de trigo a transforma em algo incrível, e também permite que você retire mais nutrientes de grãos comuns. Você pode encontrar essa <em>habilidade</em> na categoria cozinhar.": null
       },
       {
-        "잘 만들어진 요리를 <em>장터</em>에 올려 판다면, 많은 사람들에게 도움이 될 것입니다.": null
+        "Quer ganhar um dinheirinho? Compartilhe suas obras-primas culinárias com as outras pessoas em Durango. Basta colocá-las à venda no <em>mercado</em>.": null
       }
     ],
     "name": {
-      "제빵기능사 2급": null
+      "O Básico dos Assados Fresquinhos": null
     }
   },
   "cooking_baking_4": {
@@ -4159,7 +4187,7 @@
       }
     ],
     "description": {
-      "배고픔에서 배부름으로, 배부름에서 맛있음으로 혁신은 행진한다.": null
+      "A inovação cobre o vazio entre a fome e a satisfação, e a satisfação ganha da gula.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4175,14 +4203,14 @@
     },
     "hints": [
       {
-        "좋은 효과가 있는 것도 중요하지만, 맛있는 음식은 맛있는 음식대로 영원히 이어질 만한 가치가 있습니다.": null
+        "Obter bônus dos alimentos é algo maravilhoso, mas compartilhar os seus pratos deliciosos com o resto do mundo é melhor ainda.": null
       },
       {
-        "요리 과정은 복잡해집니다. 다양한 스킬을 갖고 직접 재료를 구하고 설비를 구축할 수도 있고, <em>장터</em>를 이용할 수도 있습니다.": null
+        "Preparar esses pratos é metade ciência metade arte. Aperfeiçoe suas habilidades para encher a sua despensa e mobiliar a cozinha, ou pague a alguém que faça isso no <em>mercado</em>.": null
       }
     ],
     "name": {
-      "제빵기능사 1급": null
+      "A Euforia dos Assados Fresquinhos": null
     }
   },
   "cooking_pharmacy_3": {
@@ -4239,7 +4267,7 @@
       }
     ],
     "description": {
-      "약재를 찾는 건, 개척자들이 운명에 순응하지 않기 때문이다.": null
+      "A medicina nasceu quando os pioneiros se recusaram a aceitar seus destinos.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4255,20 +4283,20 @@
     },
     "hints": [
       {
-        "<em>약</em>은 자연의 재료를 화학적, 물리적으로 가공하여, 생물의 몸에 도움이 되는 것으로 만든단 점에서 <em>요리</em>와 비슷합니다. 그래서 약을 만들면 요리의 <em>숙련도</em>가 오릅니다.": null
+        "A<em>medicina</em> é parecida com a habilidade <em>culinária</em> no que diz respeito ao processamento de materiais naturais física e quimicamente para que eles sejam mais úteis às criaturas vivas. Portanto, quando você cria remédios também aumenta o <em>nível de habilidade</em> de culinária.": null
       },
       {
-        "약은 여러 종류가 있습니다. 전투에 참여하는 <em>동물</em>을 회복하는 약, 중독을 해독하는 약 등 다양합니다.": null
+        "Há muitos tipos de remédios, com uma grande variedade de propósitos. Alguns curam <em>animais</em> feridos em combate, outros podem desintoxicar alguém.": null
       },
       {
-        "<em>에너지</em>를 회복하는 건 음식의 역할이지만, <em>건강</em>을 회복하는 건 약의 역할입니다.": null
+        "Os alimentos restauram a <em>energia</em>, mas são os remédios que restauram a <em>saúde</em>.": null
       },
       {
-        "여러 대상을 염색할 수 있는 <em>염색약</em>도 요리 계열의 약 제조 스킬에서 배울 수 있습니다.": null
+        "As técnicas para criar uma <em>tintura</em> capaz de pintar diversos alvos também estão incluídas no ramo de medicina da categoria de habilidade culinária.": null
       }
     ],
     "name": {
-      "약학개론": null
+      "Diversão com Medicamentos": null
     }
   },
   "cooking_pharmacy_4": {
@@ -4325,7 +4353,7 @@
       }
     ],
     "description": {
-      "모든 물질은 화학작용으로 소통하고 개척자도 이에 동참한다.": null
+      "Misturar ingredientes naturais para curar o corpo humano é a comunhão perfeita com a natureza.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4341,14 +4369,14 @@
     },
     "hints": [
       {
-        "개척자들의 수명은 위생과 의료에 직결되어 있습니다. 다양한 <em>약</em>을 만드는 건, 개척자들이 갖은 위협에도 나아갈 수 있는 힘이 됩니다.": null
+        "O tempo de vida dos pioneiros que sobrevivem ao primeiro ano é determinado em grande parte pela higiene e cuidados médicos. Ter os <em>remédios</em> corretos faz muita diferença.": null
       },
       {
-        "다양한 도구와 재료가 필요한 만큼 관련된 스킬 계열도 챙기는 게 좋습니다.": null
+        "Você vai precisar de ferramentas e materiais únicos, por isso mantenha as suas categorias de habilidade bem treinadas se quiser ser autossuficiente.": null
       }
     ],
     "name": {
-      "자연생약학": null
+      "Remédios Fitoterápicos": null
     }
   },
   "constructing_basic_1": {
@@ -4436,7 +4464,7 @@
       }
     ],
     "description": {
-      "건축은 물과 바람이 만든 지리적 조건에서 벗어나는 인간적인 발돋움이다.": null
+      "O vento e a água podem trabalhar a terra, mas apenas a mão do homem pode dominá-la.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4448,11 +4476,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "생활건축실습 세트": null
+      "Conjunto de Arquitetura Natural": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Colete os materiais pedidos pela construção e escolha um local permitido.": null
+      },
+      {
+        "Aprenda as habilidades indicadas para liberar as receitas e instalações do guia.": null
+      }
+    ],
     "name": {
-      "생활건축실습": null
+      "Arquitetura Natural": null
     }
   },
   "constructing_basic_2": {
@@ -4554,7 +4589,7 @@
       }
     ],
     "description": {
-      "흙과 암석, 목재가 서로에게 미치는 힘을 이해할수록 공간은 넓어진다.": null
+      "Aprender o complexo relacionamento entre o solo, as rochas e os tipos de madeira vai ampliar o seu horizonte arquitetônico.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4570,17 +4605,17 @@
     },
     "hints": [
       {
-        "개척자들이 해야 할 작업은 정말 많습니다. 그만큼 다양한 건축물 <em>작업대</em>가 존재합니다. 이런 작업대를 짓다 보면 <em>숙련도</em>가 올라가게 됩니다.": null
+        "Os pioneiros são empreendedores. Não é de se espantar que existam tantos tipos diferentes de <em>mesas de trabalho</em>. Criá-las aumenta o seu <em>nível de habilidade</em> de construção.": null
       },
       {
-        "작업대는 자신이 무언가를 제작하는 데 쓸 수도 있고, 다른 개척자가 쓸 수 있게 공개할 수도 있습니다. 건축가가 개척자 사이에서 중요한 이유입니다.": null
+        "Apesar da sua mesa de trabalho ser vital para os seus projetos, você também pode disponibilizá-la para outros pioneiros. É por isso que os arquitetos têm uma posição de prestígio na cultura Durangoniana.": null
       },
       {
-        "건축 스킬의 수준이 높아질수록 요구되는 재료의 수준도 높기 때문에 <em>가공</em> 등의 스킬 계열도 함께 챙기는 게 좋습니다.": null
+        "À medida que a sua habilidade de construção aumenta, o nível dos materiais também aumenta. É por isso que recomendamos manter a sua habilidade de <em>processamento</em> alta.": null
       }
     ],
     "name": {
-      "건축학개론": null
+      "Arquitetura 101": null
     }
   },
   "constructing_furniture_3": {
@@ -4682,7 +4717,7 @@
       }
     ],
     "description": {
-      "목적을 갖춘 가구를 만들 때 인간의 삶은 더 풍성해진다.": null
+      "Criar um móvel útil enriquece a sua vida.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4698,17 +4733,17 @@
     },
     "hints": [
       {
-        "가구는 한 자리에서 머무는 도구입니다. 가구를 만들어 <em>사유지</em> 등 다양한 환경을 인간적인 공간으로 바꿀 수 있습니다.": null
+        "Pense nos móveis como uma ferramenta fixa. Use-os para transformar o seu <em>Domínio</em> em um espaço mais habitável.": null
       },
       {
-        "건설의 복잡도가 증가할수록 들어가는 재료와 건설법의 복잡도 역시 증가합니다. 다양한 건설 자재와 건설법 <em>스킬</em>을 건설 계열에서 배워보세요.": null
+        "À medida que a complexidade da construção aumenta, a complexidade dos materiais e da planta também aumenta. Você pode aprender as <em>habilidades</em> necessárias na categoria de habilidade de construção.": null
       },
       {
-        "건설에 필요한 물질을 다루는 기술은 <em>가공</em>과도 연관성이 높습니다. 재료를 가공하는 과정도 거쳐보세요.": null
+        "Muitas das tecnologias necessárias para criar materiais de construção utilizáveis podem ser encontradas em <em>processamento</em>. Mantenha o seu nível de habilidade alto para evitar gargalos.": null
       }
     ],
     "name": {
-      "가구제작의 이해": null
+      "Fabricando Mobília": null
     }
   },
   "constructing_furniture_4": {
@@ -4815,7 +4850,7 @@
       }
     ],
     "description": {
-      "가구를 만드는 기술은 서로 영향을 주며 발전하고 산업의 밑그림이 된다.": null
+      "Encontrar inspiração em outros itens de mobília ajuda a desenvolver o futuro da indústria.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4831,14 +4866,14 @@
     },
     "hints": [
       {
-        "높은 수준의 가구들은 옷 제작, 무기/도구 제작, 요리, 가공 등 다양한 제작 활동과 의존성이 높습니다. <em>스킬</em>을 배워 다른 활동에 긍정적인 영향력을 행사해 보세요.": null
+        "A criação de mobília de alta qualidade depende de muitas outras habilidades, como alfaiataria, criação de armas/ferramentas, culinária e processamento. Aperfeiçoar essas <em>habilidades</em> vai deixar você melhor em várias outras.": null
       },
       {
-        "<em>장터</em>를 이용해 높은 수준의 가구를 만드는 데 필요한 것을 구할 수도 있고, 직접 관련 스킬을 배워서 구할 수도 있습니다.": null
+        "Você pode conseguir o que precisa para criar móveis de alto nível no <em>mercado</em>, ou aprendendo a habilidade correspondente por conta própria.": null
       }
     ],
     "name": {
-      "가구개발공학": null
+      "Design de Móveis": null
     }
   },
   "constructing_building_3": {
@@ -4965,7 +5000,7 @@
       }
     ],
     "description": {
-      "건축물은 모여서 마을을 이루고, 집중된 인구는 법의 태동으로 이어진다.": null
+      "As construções levam as vilas e os aldeões às leis.": null
     },
     "conditional": false,
     "required_skill": {
@@ -4981,17 +5016,17 @@
     },
     "hints": [
       {
-        "마을은 서로 다른 집과 벽, 담이 이어지면서 형성됩니다. 이런 마을이 세워지는 데는 건축가들의 의지가 중요합니다.": null
+        "Salões e saguões são a base de qualquer vila de sucesso. E por isso, os arquitetos servem como médicos da vila.": null
       },
       {
-        "정해진 면적의 건축물과 달리 <em>조립식 건축</em>스킬은 원하는 면적의 건축물을 지을 수 있게 합니다. ": null
+        "Diferente de muitas construções, a habilidade <em>construção pré-fabricada</em> deixa você construir edifícios de qualquer tamanho. ": null
       },
       {
-        "창문이나 문과 각종 실내 가구를 구하거나 만들어서 <em>실내</em>에 설치할 수도 있습니다.": null
+        "Você pode comprar ou criar janelas, portas e diversos móveis de interior para colocar <em>dentro</em> da sua construção.": null
       }
     ],
     "name": {
-      "마을설계와 법규": null
+      "Regulamentações Municipais": null
     }
   },
   "constructing_building_4": {
@@ -5098,7 +5133,7 @@
       }
     ],
     "description": {
-      "도시가 생기며 떨어져 있던 사람들이 만나면, 그 상호작용은 문화가 된다.": null
+      "Depois que uma cidade atrai muitas pessoas de diferentes origens, essas pessoas criam cultura.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5114,14 +5149,14 @@
     },
     "hints": [
       {
-        "도시를 이루는 데는 건축가의 많은 노고가 필요합니다. 그만큼 다양한 <em>스킬</em>을 배우고 <em>숙련도</em>를 쌓야아 합니다.": null
+        "Muitos arquitetos devem trabalhar juntos para criar uma cidade. Você terá de aprender uma grande variedade de <em>habilidades</em> e manter os <em>níveis de habilidade</em> delas altos.": null
       },
       {
-        "섬마다 도시가 어떻게 생기고 발전하는지 그 과정에 동참해 보십시오. 훗날, 도시에 도착한 사람들이 도시를 세운 개척자가 누구인지 물을 때 대답해주십시오.": null
+        "Integre-se e ajude na fundação de uma cidade. Em seguida, quando outros pioneiros chegarem e perguntarem “quem construiu essa cidade incrível”, você pode responder orgulhosamente: “Fui eu.”": null
       }
     ],
     "name": {
-      "도시건축과 인문": null
+      "Arquitetura Cultural Urbana": null
     }
   },
   "gathering_basic_1": {
@@ -5179,7 +5214,7 @@
       }
     ],
     "description": {
-      "자연을 해치지 않고, 생존에 필요한 자원을 얻는다.": null
+      "Aprenda a conseguir o que você precisa para sobreviver sem causar nenhum dano à natureza.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5191,11 +5226,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "채집의 이해 세트": null
+      "Conjunto dos Princípios da Horticultura": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Toque no recurso para conferir as partes disponíveis e a ferramenta exigida.": null
+      },
+      {
+        "O nível dos materiais obtidos acompanha sua habilidade de Coleta, até o limite do recurso.": null
+      }
+    ],
     "name": {
-      "채집의 이해": null
+      "Os Princípios da Horticultura": null
     }
   },
   "gathering_basic_2": {
@@ -5267,7 +5309,7 @@
       }
     ],
     "description": {
-      "거듭되는 관찰은 인지 능력을 강화하고, 지식은 과학으로 이어진다.": null
+      "Anotar suas observações e reagir de acordo é uma forma simples de ciência.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5283,17 +5325,17 @@
     },
     "hints": [
       {
-        "자연의 다양한 자원들은 섬세한 이해가 있어야 채집에 성공할 수 있습니다. 채집 계열에서 해당 자원의 채집 <em>스킬</em>을 배워보세요.": null
+        "Uma boa compreensão da natureza vai ajudar você a coletar diversos recursos. Para coletar um recurso específico, basta aprender a coleta do recurso na categoria de <em>habilidade</em> relevante de coleta.": null
       },
       {
-        "채집물의 <em>레벨</em>에 따라서 요구되는 도구의 레벨대도 달라집니다. 자신의 도구가 맞는지, 더 상위 등급의 도구가 필요한 것은 아닌지 확인해 보세요.": null
+        "O <em>nível</em> dos recursos que você está tentando coletar pode exigir um nível mínimo da ferramenta usada para coletá-los. Se estiver tendo problemas, veja se você e a sua ferramenta são do nível necessário para a tarefa.": null
       },
       {
-        "<em>불안정섬</em>에서 채집을 하다 보면 더 넓은 범위의 보관공간이 필요합니다. <em>가방</em>을 구해 장착하고, 기후에 맞는 옷차림도 챙겨보세요.": null
+        "Quando você chegar a uma das <em>Ilha Instável</em>, vai precisar de mais espaço no inventário. Equipe uma <em>bolsa</em> para carregar mais itens, e depois vista roupas mais apropriadas ao clima.": null
       }
     ],
     "name": {
-      "채집과 생물과학": null
+      "Horticultura e Biologia": null
     }
   },
   "gathering_plants_3": {
@@ -5375,7 +5417,7 @@
       }
     ],
     "description": {
-      "길들일 수 없는 식물이라 하여도, 이용할 수 없는 것은 아니다.": null
+      "Só porque você não pode cultivar uma planta não quer dizer que não pode usá-la.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5391,14 +5433,14 @@
     },
     "hints": [
       {
-        "식물을 알면 알수록, 식물의 복잡함과 다양성을 알게 됩니다. 이에 접근할 수 있는 능력을 <em>스킬</em>로 배워보세요.": null
+        "Aprender sobre plantas vai ajudar você a apreciar a fundo a complexidade e diversidade delas. Aprender essa <em>habilidade</em> mostra esse conhecimento.": null
       },
       {
-        "옷이나 무기, 도구, 요리를 제작하는 개척자들에겐 다양한 식물자원이 필요합니다. <em>장터</em>에서 채집한 것을 팔고, 채집에 필요한 것들을 살 수 있습니다.": null
+        "Os pioneiros que criam roupas, armas, ferramentas e alimentos usam recursos com base em plantas. Você pode vender o que coletou e comprar o que precisa no <em>mercado</em>.": null
       }
     ],
     "name": {
-      "응용식물학": null
+      "Botânica Aplicada": null
     }
   },
   "gathering_plants_4": {
@@ -5475,7 +5517,7 @@
       }
     ],
     "description": {
-      "거대한 복잡계로서 산림을 이해하는 건 개척자의 지식을 확장할 것이다.": null
+      "Compreender o ecossistema complexo de uma floresta vai abrir a sua mente para as maravilhas do mundo natural.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5491,14 +5533,14 @@
     },
     "hints": [
       {
-        "채집 계열에서 채집과 관련된 <em>전문화</em> 스킬을 익힐수록 채집의 효율성이 올라갑니다.": null
+        "Aprenda a <em>especialização</em> de coleta relevante para poder coletar de forma mais eficiente.": null
       },
       {
-        "<em>불안정섬</em>에서 오래 활동할 수 있도록 적절한 복장을 갖추고 도구도 주기적으로 점검하세요. 도구의 여분을 확보하는 것도 중요합니다.": null
+        "Não esqueça de vestir roupas apropriadas e manter as suas ferramentas em boas condições para poder trabalhar nas <em>Ilhas Instáveis</em> por longos períodos. Ter ferramentas sobressalentes também é uma ótima ideia.": null
       }
     ],
     "name": {
-      "산림생태학": null
+      "Ecologia Florestal": null
     }
   },
   "gathering_mineral_3": {
@@ -5570,7 +5612,7 @@
       }
     ],
     "description": {
-      "듀랑고의 오래 된 지질을 표면부터 이해해 갈 것이다.": null
+      "Que melhor lugar para começar a estudar a geologia de Durango do que na sua superfície?": null
     },
     "conditional": false,
     "required_skill": {
@@ -5586,20 +5628,20 @@
     },
     "hints": [
       {
-        "광물은 에너지를 유기물이 아닌 무기물로 저장한 형태입니다. 개척자의 역사는 어떤 광물을 썼는가에 따라 구분되어 왔습니다.": null
+        "Minerais são a forma mais básica de recursos inorgânicos. Podemos com frequência prever quais serão os talentos de um pioneiro com base nos minerais disponíveis para ele.": null
       },
       {
-        "채집 계열에서 광물과 관련된 <em>스킬</em>을 배우고, 실제로 광물을 채집하여 숙련도를 높여 보세요.": null
+        "Colete o mineral desejado aprendendo a <em>habilidade</em> relevante na categoria de coleta, e aumente seus níveis de habilidade coletando esse mineral.": null
       },
       {
-        "광물은 수요가 높습니다. <em>장터</em>에서 핵심이 되는 자원이고, 많은 부족과 단체에게도 전략 자원입니다.": null
+        "Minerais sempre são bastante procurados. Eles são recursos estratégicos para clãs e organizações, e por conta disso são os itens mais procurados no <em>mercado</em>.": null
       },
       {
-        "광물은 귀한 만큼, 채집에 적절한 레벨대나 등급의 <em>도구</em>를 갖고 있는지 확인하는 게 중요합니다.": null
+        "Sempre verifique se sua <em>ferramenta</em> tem o grau ou nível necessário para poder coletar o recurso que deseja.": null
       }
     ],
     "name": {
-      "광물과 지구화학": null
+      "Mineralogia e Geoquímica": null
     }
   },
   "gathering_mineral_4": {
@@ -5661,7 +5703,7 @@
       }
     ],
     "description": {
-      "지구와는 다른 이곳만의 광물학적인 특성을 연구할 것이다.": null
+      "Apesar de Durango compartilhar muitos atributos com a Terra, ele tem minerais que só existem aqui.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5677,14 +5719,14 @@
     },
     "hints": [
       {
-        "귀중한 광물을 채집하는 만큼, 채집의 <em>전문화</em> 스킬을 찍어서 채집에 성공할 확률을 높여 보세요.": null
+        "Depois que você começar a coletar minerais preciosos, vai querer aprender as habilidades de coleta de <em>especialização</em> para aumentar a sua taxa de sucesso.": null
       },
       {
-        "<em>불안정섬</em>에서 광물을 채집하는 데 적합한 옷차림과 도구를 준비하고, 예비 장비와 광물을 저장할 수 있는 공간 확보도 필수적입니다.": null
+        "Roupas e ferramentas adequadas, além de espaço suficiente na bolsa para equipamentos sobressalentes e minerais, são coisas essenciais quando você sai para coletar em uma <em>Ilha Instável</em>.": null
       }
     ],
     "name": {
-      "특수광물학": null
+      "Mineralogia Externa": null
     }
   },
   "farming_basic_1": {
@@ -5752,7 +5794,7 @@
       }
     ],
     "description": {
-      "늘어나는 인구는 채집 위주의 생활을 흔들고 농사로의 전환을 이끈다.": null
+      "Quando a população chega a determinado tamanho, se quiser continuar a crescer, deve evitar a coleta e favorecer a agricultura.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5764,11 +5806,18 @@
     "advisor_reward_point": 100,
     "cooperation": 1,
     "reward_items_name": {
-      "농사의 기본 세트": null
+      "Conjunto do Básico do Cultivo": null
     },
-    "hints": [],
+    "hints": [
+      {
+        "Aprenda as habilidades indicadas para liberar os cultivos e instalações de agricultura.": null
+      },
+      {
+        "Confira os materiais da receita e acompanhe as condições de crescimento e colheita da plantação.": null
+      }
+    ],
     "name": {
-      "농사의 기본": null
+      "O Básico do Cultivo": null
     }
   },
   "farming_basic_2": {
@@ -5840,7 +5889,7 @@
       }
     ],
     "description": {
-      "농경이 시작되면 해와 달, 별은 시간 속으로 걸어 들어 오게 된다.": null
+      "Para dominar a agricultura, você precisa primeiro entender o sol, a lua, e as estrelas.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5856,20 +5905,20 @@
     },
     "hints": [
       {
-        "다른 작물을 재배하려면, 농사 계열에서 <em>농사법</em> 스킬을 배워야 합니다.": null
+        "Você vai ter que aprender a habilidade da <em>prática do cultivo</em>, na categoria cultivo para poder cultivar outros tipos de plantas.": null
       },
       {
-        "야생에서 <em>종자</em>를 채집하는 스킬들도 농사법 스킬에 포함됩니다.": null
+        "As habilidades necessárias para coletar <em>sementes</em> da natureza também estão inclusas no conjunto de habilidades de prática de cultivo.": null
       },
       {
-        "상자나 크레이터 주변을 찾다 보면 작물의 종자를 구할 수 있습니다. <em>불안정섬</em>을 탐험해보세요. <em>장터</em>도 좋은 대안입니다.": null
+        "Caixas e Crateras são os melhores locais para encontrar sementes para novas plantações. Você pode encontrá-las nas <em>Ilhas Instáveis</em> ou comprá-las no <em>mercado</em> se estiver tendo problemas para encontrá-las.": null
       },
       {
-        "<em>비료</em>를 주면, 수확량이 늘어날 가능성이 높아집니다.": null
+        "Finalmente, use <em>fertilizante</em> em suas plantas para aumentar a chance de ter uma boa colheita.": null
       }
     ],
     "name": {
-      "농사와 실전": null
+      "Da Semente ao Caule": null
     }
   },
   "farming_basic_3": {
@@ -5966,7 +6015,7 @@
       }
     ],
     "description": {
-      "흙 위에 씨를 뿌리면, 언젠가 불평등도 함께 싹을 틔울 것임을 각오해야 한다.": null
+      "Equilibrar os elementos de uma fazenda bem-sucedida é tão desafiador quanto manter uma sociedade equilibrada.": null
     },
     "conditional": false,
     "required_skill": {
@@ -5982,14 +6031,14 @@
     },
     "hints": [
       {
-        "더 높은 수준의 농사를 지으려면, 더 좋은 밭, 농기구, 종자가 필요합니다. 직접 만들 수도 있고 <em>장터</em>에서 구할 수도 있습니다.": null
+        "O cultivo de alto nível vai exigir campos, sementes e ferramentas de cultivo melhores. Você pode criá-los por conta própria ou comprá-los no <em>mercado</em>.": null
       },
       {
-        "작물엔 꼭 식량만 있는 것은 아닙니다. 섬유나 약용, 관상용 등 다양한 작물을 재배할 수 있습니다.": null
+        "Nem toda planta é comestível. Algumas podem ser usadas como remédios, por suas fibras ou até como decoração.": null
       }
     ],
     "name": {
-      "농업과 미래사회": null
+      "Agroflorestal": null
     }
   },
   "farming_basic_4": {
@@ -6116,7 +6165,7 @@
       }
     ],
     "description": {
-      "작물의 특성을 익혀가면서, 언젠간 교배로 더 유리한 형질로 바꿀 것이다.": null
+      "Depois que você aprender as características únicas de uma planta, poderá refinar ainda mais as suas sementes misturando-as.": null
     },
     "conditional": false,
     "required_skill": {
@@ -6132,14 +6181,14 @@
     },
     "hints": [
       {
-        "농사 계열의 <em>전문화</em> 스킬을 배우면 농사의 성공 확률을 높일 수 있습니다.": null
+        "Aprenda habilidades de cultivo de <em>especialização</em> para aumentar a taxa de sucesso do cultivo.": null
       },
       {
-        "고급 작물일수록 <em>장터</em>에서 수요가 높습니다. 팔아보세요.": null
+        "Plantações avançadas costumam ser muito procuradas no <em>mercado</em>, então cobre um bom preço por elas.": null
       }
     ],
     "name": {
-      "작물생산농업학": null
+      "Colhendo a Hélice": null
     }
   }
 }

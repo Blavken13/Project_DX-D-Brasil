@@ -295,8 +295,8 @@ internal static class GameplayRegressionCheck
             var regularSpot = new Point2(world.EntryPoint.x + 2, world.EntryPoint.y + 2);
             world.AddNatural(regularSpot, 11002);
             world.MarkGeneratorHarvested($"{regularSpot.x},{regularSpot.y}", "leaf_small");
-            Check(worldContext.NaturalRegrow.All(e => e.X != regularSpot.x || e.Y != regularSpot.y),
-                "renovacao parcial restrita ao tutorial");
+            Check(worldContext.NaturalRegrow.Any(e => e.X == regularSpot.x && e.Y == regularSpot.y),
+                "renovacao parcial cobre ilhas comuns sem exigir esgotar todas as partes");
             SafeSave.FlushPending();
             Check(File.Exists(tutorialContext.Path), "fila de renovacao e coleta persistidas no save do mundo");
             var reloaded = Newtonsoft.Json.JsonConvert.DeserializeObject<WorldContext>(File.ReadAllText(tutorialContext.Path));

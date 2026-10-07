@@ -18,8 +18,10 @@ namespace Durango.Online;
 //  1) ต้นฉบับสุ่มหน้าตาผ่าน EditPlayerDisplayProxy (ฝั่ง UI client) — ที่นี่ตั้งค่า default เรียบ ๆ
 //     (client สร้างหน้าตาจริงเองเสมอผ่าน POST /players model_info ตอน prologue)
 //  2) blob "encyclopedia" ต้นฉบับเติม memo ที่มีข้อความทั้งหมด — เซิร์ฟไม่มีตารางภาษา เริ่มว่าง (MemoStorageDefaults)
-public class PlayerContext
-{
+public class PlayerContext
+{
+    [JsonProperty("learning_guide", NullValueHandling = NullValueHandling.Ignore)]
+    public LearningGuideSave LearningGuide;
     [JsonProperty("player_slot")]
     public int PlayerSlot;
 
@@ -34,6 +36,11 @@ public class PlayerContext
 
     [JsonProperty("mail_sequence")]
     public long MailSequence;
+
+    // Descobertas por personagem e template, como as consultas do mapa.
+    [JsonProperty("discovered_animal_types")]
+    public Dictionary<string, HashSet<ushort>> DiscoveredAnimalTypes = new();
+
 
     [JsonProperty("premium_sequence")]
     public long PremiumSequence;

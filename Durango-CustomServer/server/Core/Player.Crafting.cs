@@ -600,7 +600,8 @@ public partial class Player
             SkillTuning.CraftWeight,
             MapRecipeSkillCategory(pending.Recipe.category),
             $"Fabricar {pending.RecipeId}");
-        NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, pending.Recipe.category);
+        NoteQuestEvent(Shared.Quest.QuestEventType.Crafted, pending.Recipe.category,
+            context: QuestActionContext(pending.RecipeId, pending.Products));
         SpendCraftEnergy(pending.Recipe);
 
         FinishCraft(pending.Crafted, pending.Seq);
@@ -780,6 +781,14 @@ public partial class Player
                 if (!MatchesSlot(item.Value, slot))
                 {
                     error = $"Os materiais não atendem aos requisitos do espaço {slot.slot_id}";
+                    return false;
+                }
+                // O produto mantém a tag meat para outras receitas, mas não pode
+                // ser reciclado nesta receita de rendimento 2 -> 2 para ganhar XP.
+                if (recipe.prototype_id == "meatball_01" &&
+                    (item.Value.Prototype == "meatball_01" || item.Value.Tags?.Any(t => t.Id == "meatball") == true))
+                {
+                    error = "Use carne ou peixe como ingrediente; bolinhos de carne não podem fabricar outros bolinhos.";
                     return false;
                 }
                 materials.Add(item.Value);

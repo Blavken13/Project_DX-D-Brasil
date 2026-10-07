@@ -2,13 +2,13 @@
   "advisor_combat_onehand_master": {
     "category": "permanent",
     "description": {
-      "한손전투와 범죄심리 과목을 완료하세요": null
+      "Conclua o curso <em>Combate com Uma Mão: Psicologia Criminal</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손전투 마스터": null
+      "Mestre em Combate com Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16,13 +16,13 @@
   "advisor_combat_twohand_master": {
     "category": "permanent",
     "description": {
-      "양손전투와 전투윤리 과목을 완료하세요": null
+      "Conclua o curso <em>Combate com Duas Mãos: Ética do Campo de Batalha</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손전투 마스터": null
+      "Mestre em Combate com Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -30,13 +30,13 @@
   "advisor_combat_ranged_master": {
     "category": "permanent",
     "description": {
-      "궁술과 상대성이론 과목을 완료하세요": null
+      "Conclua o curso <em>Arco e Flecha e a Teoria da Relatividade</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 마스터": null
+      "Mestre em Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -44,13 +44,13 @@
   "advisor_combat_butchery_master": {
     "category": "permanent",
     "description": {
-      "동물 분자영양학 과목을 완료하세요": null
+      "Conclua o curso <em>Biologia Molecular Animal</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 마스터": null
+      "Mestre em Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -58,13 +58,13 @@
   "advisor_weaponcrafting_sword_master": {
     "category": "permanent",
     "description": {
-      "도검 제작공정 전문 과목을 완료하세요": null
+      "Conclua o curso <em>Produção Avançada de Espadas</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도검제작 마스터": null
+      "Mestre em Fabricação de Espadas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -72,13 +72,13 @@
   "advisor_weaponcrafting_axe_master": {
     "category": "permanent",
     "description": {
-      "도끼 제작공정 전문 과목을 완료하세요": null
+      "Conclua o curso <em>Produção Avançada de Machados</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도끼제작 마스터": null
+      "Mestre em Fabricação de Machados": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -86,13 +86,13 @@
   "advisor_weaponcrafting_hammer_master": {
     "category": "permanent",
     "description": {
-      "둔기 제작공정 전문 과목을 완료하세요": null
+      "Conclua o curso <em>Produção Avançada de Armas Contundentes</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "둔기제작 마스터": null
+      "Mestre em Fabricação de Martelos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -100,13 +100,13 @@
   "advisor_weaponcrafting_bow_master": {
     "category": "permanent",
     "description": {
-      "활 제작공정 전문 과목을 완료하세요": null
+      "Conclua o curso <em>Produção Avançada de Arcos</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "활제작 마스터": null
+      "Mestre em Fabricação de Arcos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -114,13 +114,13 @@
   "advisor_armorcrafting_settler_master": {
     "category": "permanent",
     "description": {
-      "정착의류와 사회조직론 과목을 완료하세요": null
+      "Conclua o curso <em>Estilo Colono: Dinâmica Social</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "정착의류 마스터": null
+      "Mestre em Roupas de Colono": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -128,13 +128,13 @@
   "advisor_armorcrafting_explorer_master": {
     "category": "permanent",
     "description": {
-      "탐험의류와 기후지리학 과목을 완료하세요": null
+      "Conclua o curso <em>Estilo Pioneiro: Roupas e Clima</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "탐험의류 마스터": null
+      "Mestre em Roupas de Pioneiro": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -142,13 +142,13 @@
   "advisor_armorcrafting_hunter_master": {
     "category": "permanent",
     "description": {
-      "전투의류와 국가안보론 과목을 완료하세요": null
+      "Conclua o curso <em>Estilo Guerreiro: Segurança Nacional</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "전투의류 마스터": null
+      "Mestre em Roupas de Guerreiro": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -156,13 +156,13 @@
   "advisor_cooking_master": {
     "category": "permanent",
     "description": {
-      "주방행동론 과목을 완료하세요": null
+      "Conclua o curso <em>Gerenciamento da Cozinha</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 마스터": null
+      "Mestre em Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -170,13 +170,13 @@
   "advisor_baking_master": {
     "category": "permanent",
     "description": {
-      "제빵기능사 1급 과목을 완료하세요": null
+      "Conclua o curso <em>A Euforia dos Assados Fresquinhos</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "제빵 마스터": null
+      "Mestre em Assar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -184,13 +184,13 @@
   "advisor_pharmacy_master": {
     "category": "permanent",
     "description": {
-      "자연생약학 과목을 완료하세요": null
+      "Conclua o curso <em>Remédios Fitoterápicos</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "약제조 마스터": null
+      "Mestre na Fabricação de Remédios": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -198,13 +198,13 @@
   "advisor_constructing_furniture_master": {
     "category": "permanent",
     "description": {
-      "가구개발공학 과목을 완료하세요": null
+      "Conclua o curso <em>Design de Móveis</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가구제작 마스터": null
+      "Mestre em Fabricação de Móveis": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -212,13 +212,13 @@
   "advisor_constructing_building_master": {
     "category": "permanent",
     "description": {
-      "도시건축과 인문 과목을 완료하세요": null
+      "Conclua o curso <em>Arquitetura Cultural Urbana</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 마스터": null
+      "Mestre em Construção": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -226,13 +226,13 @@
   "advisor_gathering_plants_master": {
     "category": "permanent",
     "description": {
-      "산림생태학 과목을 완료하세요": null
+      "Conclua o curso <em>Ecologia Florestal</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "식물채집 마스터": null
+      "Mestre em Coleta de Plantas": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -240,13 +240,13 @@
   "advisor_gathering_mineral_master": {
     "category": "permanent",
     "description": {
-      "특수광물학 과목을 완료하세요": null
+      "Conclua o curso <em>Mineralogia Externa</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "광물채집 마스터": null
+      "Mestre em Mineração": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -254,13 +254,13 @@
   "advisor_farming_master": {
     "category": "permanent",
     "description": {
-      "작물생산농업학 과목을 완료하세요": null
+      "Conclua o curso <em>Colhendo a Hélice</em> no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 마스터": null
+      "Mestre em Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -1080,13 +1080,13 @@
   "advisor_selected": {
     "category": "permanent",
     "description": {
-      "진로 가이드 중 하나를 선택하여 <em>가이드 시작</em>을 누르세요.": null
+      "Selecione um dos Guia de Carreiras e toque em <em>Iniciar Guia</em>.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무전기 대학 신입생": null
+      "Calouro da Rádio Universidade": null
     },
     "order": 100,
     "icon": "icon_mainhud_learningguide"
@@ -1094,13 +1094,13 @@
   "advisor_achieved": {
     "category": "permanent",
     "description": {
-      "진로 가이드 과목 중 하나를 완료하세요.": null
+      "Complete um curso no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무전기 대학 2학년": null
+      "Secundarista da Rádio Universidade": null
     },
     "order": 100,
     "icon": "icon_mainhud_learningguide"
@@ -1108,13 +1108,13 @@
   "advisor_achieved_3": {
     "category": "permanent",
     "description": {
-      "진로 가이드 과목 중 3개를 완료하세요.": null
+      "Complete 3 cursos no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무전기 대학 3학년": null
+      "Terceiranista da Rádio Universidade": null
     },
     "order": 100,
     "icon": "icon_mainhud_learningguide"
@@ -1122,13 +1122,13 @@
   "advisor_achieved_10": {
     "category": "permanent",
     "description": {
-      "진로 가이드 과목 중 10개를 완료하세요.": null
+      "Complete 10 cursos no Guia de Carreiras.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무전기 대학 4학년": null
+      "Veterano da Rádio Universidade": null
     },
     "order": 100,
     "icon": "icon_mainhud_learningguide"
@@ -1136,13 +1136,13 @@
   "estate_declare": {
     "category": "permanent",
     "description": {
-      "사유지를 선언하세요.": null
+      "Declare um Domínio.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "사유지 선언": null
+      "Domínio": null
     },
     "order": 100,
     "icon": "icon_mainhud_estate"
@@ -1150,13 +1150,13 @@
   "estate_expand": {
     "category": "permanent",
     "description": {
-      "사유지를 2칸 이상으로 확장하세요.": null
+      "Amplie o seu Domínio em 2 ou mais espaços.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "사유지 확장": null
+      "Ampliar Domínio": null
     },
     "order": 100,
     "icon": "icon_mainhud_estate"
@@ -1164,13 +1164,13 @@
   "estate_declare_urban": {
     "category": "permanent",
     "description": {
-      "도시섬에 사유지를 선언하세요.": null
+      "Declare um Domínio em uma Ilha Civilizada.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도시섬에 사유지 선언": null
+      "Domínio Civilizado": null
     },
     "order": 100,
     "icon": "icon_mainhud_estate"
@@ -1178,13 +1178,13 @@
   "permanent_level_character_05": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.5로 성장시키세요.": null
+      "Chegar ao nível de personagem 5.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1192,13 +1192,13 @@
   "permanent_level_character_10": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível de personagem 10.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1206,13 +1206,13 @@
   "permanent_level_character_15": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.15로 성장시키세요.": null
+      "Chegar ao nível de personagem 15.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1220,13 +1220,13 @@
   "permanent_level_character_20": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível de personagem 20.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1234,13 +1234,13 @@
   "permanent_level_character_25": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.25로 성장시키세요.": null
+      "Chegar ao nível de personagem 25.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1248,13 +1248,13 @@
   "permanent_level_character_30": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível de personagem 30.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1262,13 +1262,13 @@
   "permanent_level_character_35": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.35로 성장시키세요.": null
+      "Chegar ao nível de personagem 35.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1276,13 +1276,13 @@
   "permanent_level_character_40": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível de personagem 40.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1290,13 +1290,13 @@
   "permanent_level_character_45": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.45로 성장시키세요.": null
+      "Chegar ao nível de personagem 45.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1304,13 +1304,13 @@
   "permanent_level_character_50": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível de personagem 50.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1318,13 +1318,13 @@
   "permanent_level_character_55": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.55로 성장시키세요.": null
+      "Chegar ao nível de personagem 55.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1332,13 +1332,13 @@
   "permanent_level_character_60": {
     "category": "permanent",
     "description": {
-      "캐릭터를 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível de personagem 60.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "캐릭터 레벨업": null
+      "Subir Nível do Personagem": null
     },
     "order": 100,
     "icon": "quest_category_level"
@@ -1346,13 +1346,13 @@
   "permanent_level_skill_melee_combat_10": {
     "category": "permanent",
     "description": {
-      "근접전 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade corpo a corpo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "근접전 스킬 계열 레벨업": null
+      "Subiu de Nível de Corpo a Corpo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -1360,13 +1360,13 @@
   "permanent_level_skill_melee_combat_20": {
     "category": "permanent",
     "description": {
-      "근접전 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade corpo a corpo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "근접전 스킬 계열 레벨업": null
+      "Subiu de Nível de Corpo a Corpo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -1374,13 +1374,13 @@
   "permanent_level_skill_melee_combat_30": {
     "category": "permanent",
     "description": {
-      "근접전 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade corpo a corpo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "근접전 스킬 계열 레벨업": null
+      "Subiu de Nível de Corpo a Corpo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -1388,13 +1388,13 @@
   "permanent_level_skill_melee_combat_40": {
     "category": "permanent",
     "description": {
-      "근접전 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade corpo a corpo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "근접전 스킬 계열 레벨업": null
+      "Subiu de Nível de Corpo a Corpo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -1402,13 +1402,13 @@
   "permanent_level_skill_melee_combat_50": {
     "category": "permanent",
     "description": {
-      "근접전 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade corpo a corpo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "근접전 스킬 계열 레벨업": null
+      "Subiu de Nível de Corpo a Corpo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -1416,13 +1416,13 @@
   "permanent_level_skill_melee_combat_60": {
     "category": "permanent",
     "description": {
-      "근접전 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade corpo a corpo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "근접전 스킬 계열 레벨업": null
+      "Subiu de Nível de Corpo a Corpo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -1430,13 +1430,13 @@
   "permanent_level_skill_ranged_combat_10": {
     "category": "permanent",
     "description": {
-      "궁술 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de arco e flecha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 스킬 계열 레벨업": null
+      "Subiu de Nível de Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -1444,13 +1444,13 @@
   "permanent_level_skill_ranged_combat_20": {
     "category": "permanent",
     "description": {
-      "궁술 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de arco e flecha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 스킬 계열 레벨업": null
+      "Subiu de Nível de Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -1458,13 +1458,13 @@
   "permanent_level_skill_ranged_combat_30": {
     "category": "permanent",
     "description": {
-      "궁술 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de arco e flecha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 스킬 계열 레벨업": null
+      "Subiu de Nível de Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -1472,13 +1472,13 @@
   "permanent_level_skill_ranged_combat_40": {
     "category": "permanent",
     "description": {
-      "궁술 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de arco e flecha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 스킬 계열 레벨업": null
+      "Subiu de Nível de Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -1486,13 +1486,13 @@
   "permanent_level_skill_ranged_combat_50": {
     "category": "permanent",
     "description": {
-      "궁술 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de arco e flecha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 스킬 계열 레벨업": null
+      "Subiu de Nível de Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -1500,13 +1500,13 @@
   "permanent_level_skill_ranged_combat_60": {
     "category": "permanent",
     "description": {
-      "궁술 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de arco e flecha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "궁술 스킬 계열 레벨업": null
+      "Subiu de Nível de Arco e Flecha": null
     },
     "order": 100,
     "icon": "skill_category_ranged_combat"
@@ -1514,13 +1514,13 @@
   "permanent_level_skill_defense_10": {
     "category": "permanent",
     "description": {
-      "방어 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de defesa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "방어 스킬 계열 레벨업": null
+      "Subiu de Nível de Defesa": null
     },
     "order": 100,
     "icon": "skill_category_defense"
@@ -1528,13 +1528,13 @@
   "permanent_level_skill_defense_20": {
     "category": "permanent",
     "description": {
-      "방어 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de defesa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "방어 스킬 계열 레벨업": null
+      "Subiu de Nível de Defesa": null
     },
     "order": 100,
     "icon": "skill_category_defense"
@@ -1542,13 +1542,13 @@
   "permanent_level_skill_defense_30": {
     "category": "permanent",
     "description": {
-      "방어 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de defesa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "방어 스킬 계열 레벨업": null
+      "Subiu de Nível de Defesa": null
     },
     "order": 100,
     "icon": "skill_category_defense"
@@ -1556,13 +1556,13 @@
   "permanent_level_skill_defense_40": {
     "category": "permanent",
     "description": {
-      "방어 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de defesa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "방어 스킬 계열 레벨업": null
+      "Subiu de Nível de Defesa": null
     },
     "order": 100,
     "icon": "skill_category_defense"
@@ -1570,13 +1570,13 @@
   "permanent_level_skill_defense_50": {
     "category": "permanent",
     "description": {
-      "방어 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de defesa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "방어 스킬 계열 레벨업": null
+      "Subiu de Nível de Defesa": null
     },
     "order": 100,
     "icon": "skill_category_defense"
@@ -1584,13 +1584,13 @@
   "permanent_level_skill_defense_60": {
     "category": "permanent",
     "description": {
-      "방어 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de defesa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "방어 스킬 계열 레벨업": null
+      "Subiu de Nível de Defesa": null
     },
     "order": 100,
     "icon": "skill_category_defense"
@@ -1598,13 +1598,13 @@
   "permanent_level_skill_butchery_10": {
     "category": "permanent",
     "description": {
-      "도축 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de esquartejamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 스킬 계열 레벨업": null
+      "Subiu de Nível de Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -1612,13 +1612,13 @@
   "permanent_level_skill_butchery_20": {
     "category": "permanent",
     "description": {
-      "도축 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de esquartejamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 스킬 계열 레벨업": null
+      "Subiu de Nível de Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -1626,13 +1626,13 @@
   "permanent_level_skill_butchery_30": {
     "category": "permanent",
     "description": {
-      "도축 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de esquartejamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 스킬 계열 레벨업": null
+      "Subiu de Nível de Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -1640,13 +1640,13 @@
   "permanent_level_skill_butchery_40": {
     "category": "permanent",
     "description": {
-      "도축 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de esquartejamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 스킬 계열 레벨업": null
+      "Subiu de Nível de Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -1654,13 +1654,13 @@
   "permanent_level_skill_butchery_50": {
     "category": "permanent",
     "description": {
-      "도축 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de esquartejamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 스킬 계열 레벨업": null
+      "Subiu de Nível de Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -1668,13 +1668,13 @@
   "permanent_level_skill_butchery_60": {
     "category": "permanent",
     "description": {
-      "도축 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de esquartejamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "도축 스킬 계열 레벨업": null
+      "Subiu de Nível de Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -1682,13 +1682,13 @@
   "permanent_level_skill_weaponcrafting_10": {
     "category": "permanent",
     "description": {
-      "무기/도구제작 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de criação de ferramentas/armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기/도구제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Criação de Ferramentas/Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -1696,13 +1696,13 @@
   "permanent_level_skill_weaponcrafting_20": {
     "category": "permanent",
     "description": {
-      "무기/도구제작 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de criação de ferramentas/armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기/도구제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Criação de Ferramentas/Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -1710,13 +1710,13 @@
   "permanent_level_skill_weaponcrafting_30": {
     "category": "permanent",
     "description": {
-      "무기/도구제작 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de criação de ferramentas/armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기/도구제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Criação de Ferramentas/Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -1724,13 +1724,13 @@
   "permanent_level_skill_weaponcrafting_40": {
     "category": "permanent",
     "description": {
-      "무기/도구제작 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de criação de ferramentas/armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기/도구제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Criação de Ferramentas/Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -1738,13 +1738,13 @@
   "permanent_level_skill_weaponcrafting_50": {
     "category": "permanent",
     "description": {
-      "무기/도구제작 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de criação de ferramentas/armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기/도구제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Criação de Ferramentas/Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -1752,13 +1752,13 @@
   "permanent_level_skill_weaponcrafting_60": {
     "category": "permanent",
     "description": {
-      "무기/도구제작 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de criação de ferramentas/armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기/도구제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Criação de Ferramentas/Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -1766,13 +1766,13 @@
   "permanent_level_skill_armorcrafting_10": {
     "category": "permanent",
     "description": {
-      "옷제작 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de alfaiataria.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "옷제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Alfaiataria": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -1780,13 +1780,13 @@
   "permanent_level_skill_armorcrafting_20": {
     "category": "permanent",
     "description": {
-      "옷제작 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de alfaiataria.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "옷제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Alfaiataria": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -1794,13 +1794,13 @@
   "permanent_level_skill_armorcrafting_30": {
     "category": "permanent",
     "description": {
-      "옷제작 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de alfaiataria.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "옷제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Alfaiataria": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -1808,13 +1808,13 @@
   "permanent_level_skill_armorcrafting_40": {
     "category": "permanent",
     "description": {
-      "옷제작 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de alfaiataria.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "옷제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Alfaiataria": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -1822,13 +1822,13 @@
   "permanent_level_skill_armorcrafting_50": {
     "category": "permanent",
     "description": {
-      "옷제작 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de alfaiataria.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "옷제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Alfaiataria": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -1836,13 +1836,13 @@
   "permanent_level_skill_armorcrafting_60": {
     "category": "permanent",
     "description": {
-      "옷제작 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de alfaiataria.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "옷제작 스킬 계열 레벨업": null
+      "Subiu de Nível de Alfaiataria": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -1850,13 +1850,13 @@
   "permanent_level_skill_cooking_10": {
     "category": "permanent",
     "description": {
-      "요리 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de cozinhar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 스킬 계열 레벨업": null
+      "Subiu de Nível de Cozinhar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -1864,13 +1864,13 @@
   "permanent_level_skill_cooking_20": {
     "category": "permanent",
     "description": {
-      "요리 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de cozinhar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 스킬 계열 레벨업": null
+      "Subiu de Nível de Cozinhar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -1878,13 +1878,13 @@
   "permanent_level_skill_cooking_30": {
     "category": "permanent",
     "description": {
-      "요리 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de cozinhar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 스킬 계열 레벨업": null
+      "Subiu de Nível de Cozinhar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -1892,13 +1892,13 @@
   "permanent_level_skill_cooking_40": {
     "category": "permanent",
     "description": {
-      "요리 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de cozinhar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 스킬 계열 레벨업": null
+      "Subiu de Nível de Cozinhar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -1906,13 +1906,13 @@
   "permanent_level_skill_cooking_50": {
     "category": "permanent",
     "description": {
-      "요리 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de cozinhar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 스킬 계열 레벨업": null
+      "Subiu de Nível de Cozinhar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -1920,13 +1920,13 @@
   "permanent_level_skill_cooking_60": {
     "category": "permanent",
     "description": {
-      "요리 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de cozinhar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리 스킬 계열 레벨업": null
+      "Subiu de Nível de Cozinhar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -1934,13 +1934,13 @@
   "permanent_level_skill_constructing_10": {
     "category": "permanent",
     "description": {
-      "건축 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de construção.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 스킬 계열 레벨업": null
+      "Subiu de Nível de Construir": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -1948,13 +1948,13 @@
   "permanent_level_skill_constructing_20": {
     "category": "permanent",
     "description": {
-      "건축 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de construção.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 스킬 계열 레벨업": null
+      "Subiu de Nível de Construir": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -1962,13 +1962,13 @@
   "permanent_level_skill_constructing_30": {
     "category": "permanent",
     "description": {
-      "건축 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de construção.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 스킬 계열 레벨업": null
+      "Subiu de Nível de Construir": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -1976,13 +1976,13 @@
   "permanent_level_skill_constructing_40": {
     "category": "permanent",
     "description": {
-      "건축 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de construção.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 스킬 계열 레벨업": null
+      "Subiu de Nível de Construir": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -1990,13 +1990,13 @@
   "permanent_level_skill_constructing_50": {
     "category": "permanent",
     "description": {
-      "건축 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de construção.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 스킬 계열 레벨업": null
+      "Subiu de Nível de Construir": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -2004,13 +2004,13 @@
   "permanent_level_skill_constructing_60": {
     "category": "permanent",
     "description": {
-      "건축 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de construção.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건축 스킬 계열 레벨업": null
+      "Subiu de Nível de Construir": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -2018,13 +2018,13 @@
   "permanent_level_skill_process_10": {
     "category": "permanent",
     "description": {
-      "가공 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de processamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가공 스킬 계열 레벨업": null
+      "Subiu de Nível de Processamento": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -2032,13 +2032,13 @@
   "permanent_level_skill_process_20": {
     "category": "permanent",
     "description": {
-      "가공 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de processamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가공 스킬 계열 레벨업": null
+      "Subiu de Nível de Processamento": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -2046,13 +2046,13 @@
   "permanent_level_skill_process_30": {
     "category": "permanent",
     "description": {
-      "가공 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de processamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가공 스킬 계열 레벨업": null
+      "Subiu de Nível de Processamento": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -2060,13 +2060,13 @@
   "permanent_level_skill_process_40": {
     "category": "permanent",
     "description": {
-      "가공 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de processamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가공 스킬 계열 레벨업": null
+      "Subiu de Nível de Processamento": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -2074,13 +2074,13 @@
   "permanent_level_skill_process_50": {
     "category": "permanent",
     "description": {
-      "가공 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de processamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가공 스킬 계열 레벨업": null
+      "Subiu de Nível de Processamento": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -2088,13 +2088,13 @@
   "permanent_level_skill_process_60": {
     "category": "permanent",
     "description": {
-      "가공 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de processamento.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가공 스킬 계열 레벨업": null
+      "Subiu de Nível de Processamento": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -2102,13 +2102,13 @@
   "permanent_level_skill_gathering_10": {
     "category": "permanent",
     "description": {
-      "채집 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de coleta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집 스킬 계열 레벨업": null
+      "Subiu de Nível de Coleta": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -2116,13 +2116,13 @@
   "permanent_level_skill_gathering_20": {
     "category": "permanent",
     "description": {
-      "채집 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de coleta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집 스킬 계열 레벨업": null
+      "Subiu de Nível de Coleta": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -2130,13 +2130,13 @@
   "permanent_level_skill_gathering_30": {
     "category": "permanent",
     "description": {
-      "채집 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de coleta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집 스킬 계열 레벨업": null
+      "Subiu de Nível de Coleta": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -2144,13 +2144,13 @@
   "permanent_level_skill_gathering_40": {
     "category": "permanent",
     "description": {
-      "채집 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de coleta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집 스킬 계열 레벨업": null
+      "Subiu de Nível de Coleta": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -2158,13 +2158,13 @@
   "permanent_level_skill_gathering_50": {
     "category": "permanent",
     "description": {
-      "채집 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de coleta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집 스킬 계열 레벨업": null
+      "Subiu de Nível de Coleta": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -2172,13 +2172,13 @@
   "permanent_level_skill_gathering_60": {
     "category": "permanent",
     "description": {
-      "채집 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de coleta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집 스킬 계열 레벨업": null
+      "Subiu de Nível de Coleta": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -2186,13 +2186,13 @@
   "permanent_level_skill_farming_10": {
     "category": "permanent",
     "description": {
-      "농사 스킬을 Lv.10으로 성장시키세요.": null
+      "Chegar ao nível 10 da habilidade de cultivo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 스킬 계열 레벨업": null
+      "Subiu de Nível de Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -2200,13 +2200,13 @@
   "permanent_level_skill_farming_20": {
     "category": "permanent",
     "description": {
-      "농사 스킬을 Lv.20으로 성장시키세요.": null
+      "Chegar ao nível 20 da habilidade de cultivo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 스킬 계열 레벨업": null
+      "Subiu de Nível de Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -2214,13 +2214,13 @@
   "permanent_level_skill_farming_30": {
     "category": "permanent",
     "description": {
-      "농사 스킬을 Lv.30으로 성장시키세요.": null
+      "Chegar ao nível 30 da habilidade de cultivo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 스킬 계열 레벨업": null
+      "Subiu de Nível de Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -2228,13 +2228,13 @@
   "permanent_level_skill_farming_40": {
     "category": "permanent",
     "description": {
-      "농사 스킬을 Lv.40으로 성장시키세요.": null
+      "Chegar ao nível 40 da habilidade de cultivo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 스킬 계열 레벨업": null
+      "Subiu de Nível de Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -2242,13 +2242,13 @@
   "permanent_level_skill_farming_50": {
     "category": "permanent",
     "description": {
-      "농사 스킬을 Lv.50으로 성장시키세요.": null
+      "Chegar ao nível 50 da habilidade de cultivo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 스킬 계열 레벨업": null
+      "Subiu de Nível de Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -2256,13 +2256,13 @@
   "permanent_level_skill_farming_60": {
     "category": "permanent",
     "description": {
-      "농사 스킬을 Lv.60으로 성장시키세요.": null
+      "Chegar ao nível 60 da habilidade de cultivo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사 스킬 계열 레벨업": null
+      "Subiu de Nível de Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -2270,13 +2270,13 @@
   "permanent_hunt_any_animal_01": {
     "category": "permanent",
     "description": {
-      "동물을 20마리 사냥하세요.": null
+      "Caçar 20 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "동물 사냥하기": null
+      "Caçando Animais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2284,13 +2284,13 @@
   "permanent_hunt_any_animal_02": {
     "category": "permanent",
     "description": {
-      "동물을 50마리 사냥하세요.": null
+      "Caçar 50 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "동물 사냥하기": null
+      "Caçando Animais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2298,13 +2298,13 @@
   "permanent_hunt_any_animal_03": {
     "category": "permanent",
     "description": {
-      "동물을 100마리 사냥하세요.": null
+      "Caçar 100 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "동물 사냥하기": null
+      "Caçando Animais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2312,13 +2312,13 @@
   "permanent_hunt_any_animal_04": {
     "category": "permanent",
     "description": {
-      "동물을 200마리 사냥하세요.": null
+      "Caçar 200 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "동물 사냥하기": null
+      "Caçando Animais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2326,13 +2326,13 @@
   "permanent_hunt_any_animal_05": {
     "category": "permanent",
     "description": {
-      "동물을 500마리 사냥하세요.": null
+      "Caçar 500 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "동물 사냥하기": null
+      "Caçando Animais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2340,13 +2340,13 @@
   "permanent_hunt_any_animal_06": {
     "category": "permanent",
     "description": {
-      "동물을 1000마리 사냥하세요.": null
+      "Caçar 1.000 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "동물 사냥하기": null
+      "Caçando Animais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2354,13 +2354,13 @@
   "permanent_hunt_compso_01": {
     "category": "permanent",
     "description": {
-      "콤프소그나투스를 20마리 사냥하세요.": null
+      "Caçar 20 Compsognatos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "콤프소그나투스 사냥하기": null
+      "Caçando o Compsognato": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2368,13 +2368,13 @@
   "permanent_hunt_phenacodus_01": {
     "category": "permanent",
     "description": {
-      "페나코두스를 10마리 사냥하세요.": null
+      "Caçar 10 Phenacodus.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "페나코두스 사냥하기": null
+      "Caçando o Phenacodus": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2382,13 +2382,13 @@
   "permanent_hunt_raptor_01": {
     "category": "permanent",
     "description": {
-      "랩터를 5마리 사냥하세요.": null
+      "Caçar 5 Velociraptores.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "랩터 사냥하기": null
+      "Caçando o Velociraptor": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2396,13 +2396,13 @@
   "permanent_hunt_megaloceros_01": {
     "category": "permanent",
     "description": {
-      "메갈로케로스를 1마리 사냥하세요.": null
+      "Caçar 1 Megaloceros.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "메갈로케로스 사냥하기": null
+      "Caçando o Megaloceros": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2410,13 +2410,13 @@
   "permanent_hunt_ornithomimus_01": {
     "category": "permanent",
     "description": {
-      "오르니토미무스를 1마리 사냥하세요.": null
+      "Caçar 1 Ornitomimo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "오르니토미무스 사냥하기": null
+      "Caçando o Ornitomimo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2424,13 +2424,13 @@
   "permanent_hunt_parasaurolophus_01": {
     "category": "permanent",
     "description": {
-      "파라사우롤로푸스를 1마리 사냥하세요.": null
+      "Caçar 1 Parassaurolofo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "파라사우롤로푸스 사냥하기": null
+      "Caçando o Parassaurolofo": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2438,13 +2438,13 @@
   "permanent_hunt_stegosaurus_01": {
     "category": "permanent",
     "description": {
-      "스테고사우루스를 1마리 사냥하세요.": null
+      "Caçar 1 Estegossauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "스테고사우루스 사냥하기": null
+      "Caçando o Estegossauro": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2452,13 +2452,13 @@
   "permanent_hunt_sabertooth_01": {
     "category": "permanent",
     "description": {
-      "스밀로돈를 1마리 사냥하세요.": null
+      "Caçar 1 Dente-de-sabre.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "스밀로돈 사냥하기": null
+      "Caçando o Dente-de-sabre": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2466,13 +2466,13 @@
   "permanent_hunt_ankylosaurus_01": {
     "category": "permanent",
     "description": {
-      "안킬로사우루스를 1마리 사냥하세요.": null
+      "Caçar 1 Anquilossauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "안킬로사우루스 사냥하기": null
+      "Caçando o Anquilossauro": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2480,13 +2480,13 @@
   "permanent_hunt_triceratops_01": {
     "category": "permanent",
     "description": {
-      "트리케라톱스를 1마리 사냥하세요.": null
+      "Caçar 1 Triceratops.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "트리케라톱스 사냥하기": null
+      "Caçando o Triceratops": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2494,13 +2494,13 @@
   "permanent_hunt_mammoth_01": {
     "category": "permanent",
     "description": {
-      "매머드를 1마리 사냥하세요.": null
+      "Caçar 1 Mamute.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "매머드 사냥하기": null
+      "Caçando o Mamute": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2508,13 +2508,13 @@
   "permanent_hunt_brachio_01": {
     "category": "permanent",
     "description": {
-      "브라키오사우루스를 1마리 사냥하세요.": null
+      "Caçar 1 Braquiossauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "브라키오사우루스 사냥하기": null
+      "Caçando o Braquiossauro": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2522,13 +2522,13 @@
   "permanent_hunt_tarbosaurus_01": {
     "category": "permanent",
     "description": {
-      "타르보사우루스를 1마리 사냥하세요.": null
+      "Caçar 1 Tarbossauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "타르보사우루스 사냥하기": null
+      "Caçando o Tarbossauro": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2536,13 +2536,13 @@
   "permanent_hunt_apatosaurus_01": {
     "category": "permanent",
     "description": {
-      "아파토사우루스를 1마리 사냥하세요.": null
+      "Cace 1 Apatossauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "아파토사우루스 사냥하기": null
+      "Caçando o Apatossauro": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -2550,13 +2550,13 @@
   "permanent_weaponcrafting_any_01": {
     "category": "permanent",
     "description": {
-      "무기를 5번 제작하세요.": null
+      "Criar 5 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기 제작하기": null
+      "Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2564,13 +2564,13 @@
   "permanent_weaponcrafting_any_02": {
     "category": "permanent",
     "description": {
-      "무기를 10번 제작하세요.": null
+      "Criar 10 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기 제작하기": null
+      "Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2578,13 +2578,13 @@
   "permanent_weaponcrafting_any_03": {
     "category": "permanent",
     "description": {
-      "무기를 20번 제작하세요.": null
+      "Criar 20 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기 제작하기": null
+      "Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2592,13 +2592,13 @@
   "permanent_weaponcrafting_any_04": {
     "category": "permanent",
     "description": {
-      "무기를 50번 제작하세요.": null
+      "Criar 50 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기 제작하기": null
+      "Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2606,13 +2606,13 @@
   "permanent_weaponcrafting_any_05": {
     "category": "permanent",
     "description": {
-      "무기를 100번 제작하세요.": null
+      "Criar 100 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기 제작하기": null
+      "Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2620,13 +2620,13 @@
   "permanent_weaponcrafting_any_06": {
     "category": "permanent",
     "description": {
-      "무기를 200번 제작하세요.": null
+      "Criar 200 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "무기 제작하기": null
+      "Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2634,13 +2634,13 @@
   "permanent_weaponcrafting_onehand_sword_01": {
     "category": "permanent",
     "description": {
-      "보통의 한손칼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Faca de Uma Mão Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손칼 제작하기": null
+      "Criando a Faca de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2648,13 +2648,13 @@
   "permanent_weaponcrafting_onehand_sword_02": {
     "category": "permanent",
     "description": {
-      "개선된 한손칼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Faca de Uma Mão Melhorada 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손칼 제작하기": null
+      "Criando a Faca de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2662,13 +2662,13 @@
   "permanent_weaponcrafting_onehand_sword_03": {
     "category": "permanent",
     "description": {
-      "프로토급 한손칼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Faca de Uma Mão da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손칼 제작하기": null
+      "Criando a Faca de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2676,13 +2676,13 @@
   "permanent_weaponcrafting_twohand_sword_01": {
     "category": "permanent",
     "description": {
-      "보통의 양손칼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Faca de Duas Mãos Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손칼 제작하기": null
+      "Criando a Faca de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2690,13 +2690,13 @@
   "permanent_weaponcrafting_twohand_sword_02": {
     "category": "permanent",
     "description": {
-      "개선된 양손칼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Faca de Duas Mãos Melhorada 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손칼 제작하기": null
+      "Criando a Faca de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2704,13 +2704,13 @@
   "permanent_weaponcrafting_twohand_sword_03": {
     "category": "permanent",
     "description": {
-      "프로토급 양손칼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Faca de Duas Mãos da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손칼 제작하기": null
+      "Criando a Faca de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2718,13 +2718,13 @@
   "permanent_weaponcrafting_onehand_axe_01": {
     "category": "permanent",
     "description": {
-      "보통의 한손도끼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Machado de Uma Mão Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손도끼 제작하기": null
+      "Criando o Machado de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2732,13 +2732,13 @@
   "permanent_weaponcrafting_onehand_axe_02": {
     "category": "permanent",
     "description": {
-      "개선된 한손도끼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Machado de Uma Mão Melhorado 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손도끼 제작하기": null
+      "Criando o Machado de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2746,13 +2746,13 @@
   "permanent_weaponcrafting_onehand_axe_03": {
     "category": "permanent",
     "description": {
-      "프로토급 한손도끼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Machado de Uma Mão da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손도끼 제작하기": null
+      "Criando o Machado de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2760,13 +2760,13 @@
   "permanent_weaponcrafting_twohand_axe_01": {
     "category": "permanent",
     "description": {
-      "보통의 양손도끼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Machado de Duas Mãos Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손도끼 제작하기": null
+      "Criando o Machado de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2774,13 +2774,13 @@
   "permanent_weaponcrafting_twohand_axe_02": {
     "category": "permanent",
     "description": {
-      "개선된 양손도끼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Machado de Duas Mãos Melhorado 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손도끼 제작하기": null
+      "Criando o Machado de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2788,13 +2788,13 @@
   "permanent_weaponcrafting_twohand_axe_03": {
     "category": "permanent",
     "description": {
-      "프로토급 양손도끼 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Machado de Duas Mãos da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손도끼 제작하기": null
+      "Criando o Machado de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2802,13 +2802,13 @@
   "permanent_weaponcrafting_onehand_hammer_01": {
     "category": "permanent",
     "description": {
-      "보통의 한손망치 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Martelo de Uma Mão Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손망치 제작하기": null
+      "Criando o Martelo de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2816,13 +2816,13 @@
   "permanent_weaponcrafting_onehand_hammer_02": {
     "category": "permanent",
     "description": {
-      "개선된 한손망치 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Martelo de Uma Mão Melhorado 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손망치 제작하기": null
+      "Criando o Martelo de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2830,13 +2830,13 @@
   "permanent_weaponcrafting_onehand_hammer_03": {
     "category": "permanent",
     "description": {
-      "프로토급 한손망치 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Martelo de Uma Mão da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "한손망치 제작하기": null
+      "Criando o Martelo de Uma Mão": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2844,13 +2844,13 @@
   "permanent_weaponcrafting_twohand_hammer_01": {
     "category": "permanent",
     "description": {
-      "보통의 양손망치 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Martelo de Duas Mãos Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손망치 제작하기": null
+      "Criando o Martelo de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2858,13 +2858,13 @@
   "permanent_weaponcrafting_twohand_hammer_02": {
     "category": "permanent",
     "description": {
-      "개선된 양손망치 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Martelo de Duas Mãos Melhorado 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손망치 제작하기": null
+      "Criando o Martelo de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2872,13 +2872,13 @@
   "permanent_weaponcrafting_twohand_hammer_03": {
     "category": "permanent",
     "description": {
-      "프로토급 양손망치 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Martelo de Duas Mãos da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "양손망치 제작하기": null
+      "Criando o Martelo de Duas Mãos": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2886,13 +2886,13 @@
   "permanent_weaponcrafting_spear_01": {
     "category": "permanent",
     "description": {
-      "보통의 창 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Lança Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "장창 제작하기": null
+      "Criando a Lança": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2900,13 +2900,13 @@
   "permanent_weaponcrafting_spear_02": {
     "category": "permanent",
     "description": {
-      "개선된 창 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Lança Melhorada 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "장창 제작하기": null
+      "Criando a Lança": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2914,13 +2914,13 @@
   "permanent_weaponcrafting_spear_03": {
     "category": "permanent",
     "description": {
-      "프로토급 창 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Lança da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "장창 제작하기": null
+      "Criando a Lança": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2928,13 +2928,13 @@
   "permanent_weaponcrafting_bow_01": {
     "category": "permanent",
     "description": {
-      "보통의 활 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Arco Padrão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "활 제작하기": null
+      "Criando o Arco": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2942,13 +2942,13 @@
   "permanent_weaponcrafting_bow_02": {
     "category": "permanent",
     "description": {
-      "개선된 활 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Arco Melhorado 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "활 제작하기": null
+      "Criando o Arco": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2956,13 +2956,13 @@
   "permanent_weaponcrafting_bow_03": {
     "category": "permanent",
     "description": {
-      "프로토급 활 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Arco da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "활 제작하기": null
+      "Criando o Arco": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2970,13 +2970,13 @@
   "permanent_weaponcrafting_crossbow_01": {
     "category": "permanent",
     "description": {
-      "개선된 석궁 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Besta Melhorada 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "석궁 제작하기": null
+      "Criando a Besta": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2984,13 +2984,13 @@
   "permanent_weaponcrafting_crossbow_02": {
     "category": "permanent",
     "description": {
-      "프로토급 석궁 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Besta da classe PRO 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "석궁 제작하기": null
+      "Criando a Besta": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -2998,13 +2998,13 @@
   "permanent_armorcrafting_any_01": {
     "category": "permanent",
     "description": {
-      "의상을 5번 제작하세요.": null
+      "Criar 5 peças de roupa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "의상 제작하기": null
+      "Criando Roupas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3012,13 +3012,13 @@
   "permanent_armorcrafting_any_02": {
     "category": "permanent",
     "description": {
-      "의상을 10번 제작하세요.": null
+      "Criar 10 peças de roupa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "의상 제작하기": null
+      "Criando Roupas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3026,13 +3026,13 @@
   "permanent_armorcrafting_any_03": {
     "category": "permanent",
     "description": {
-      "의상을 20번 제작하세요.": null
+      "Criar 20 peças de roupa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "의상 제작하기": null
+      "Criando Roupas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3040,13 +3040,13 @@
   "permanent_armorcrafting_any_04": {
     "category": "permanent",
     "description": {
-      "의상을 50번 제작하세요.": null
+      "Criar 50 peças de roupa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "의상 제작하기": null
+      "Criando Roupas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3054,13 +3054,13 @@
   "permanent_armorcrafting_any_05": {
     "category": "permanent",
     "description": {
-      "의상을 100번 제작하세요.": null
+      "Criar 100 peças de roupa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "의상 제작하기": null
+      "Criando Roupas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3068,13 +3068,13 @@
   "permanent_armorcrafting_repair_modern_clothes_01": {
     "category": "permanent",
     "description": {
-      "현대 옷을 수선하세요.": null
+      "Remendar roupas modernas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "현대옷 수선하기": null
+      "Remendando Roupas Modernas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3082,13 +3082,13 @@
   "permanent_armorcrafting_repair_modern_clothes_02": {
     "category": "permanent",
     "description": {
-      "수선된 현대 옷을 개조하세요.": null
+      "Modificar roupas modernas remendadas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "현대옷 개조하기": null
+      "Modificando Roupa Modernas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3096,13 +3096,13 @@
   "permanent_armorcrafting_settler_01": {
     "category": "permanent",
     "description": {
-      "편한 옷 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje Casual 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "정착복 제작하기": null
+      "Criando Trajes de Colonos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3110,13 +3110,13 @@
   "permanent_armorcrafting_settler_02": {
     "category": "permanent",
     "description": {
-      "우아한 작업복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Roupa de Trabalho Elegante 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "정착복 제작하기": null
+      "Criando Trajes de Colonos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3124,13 +3124,13 @@
   "permanent_armorcrafting_settler_03": {
     "category": "permanent",
     "description": {
-      "멋쟁이 작업복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Roupa de Trabalho Chique 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "정착복 제작하기": null
+      "Criando Trajes de Colonos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3138,13 +3138,13 @@
   "permanent_armorcrafting_settler_04": {
     "category": "permanent",
     "description": {
-      "아방가르드 옷 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Vanguarda 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "정착복 제작하기": null
+      "Criando Trajes de Colonos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3152,13 +3152,13 @@
   "permanent_armorcrafting_explorer_01": {
     "category": "permanent",
     "description": {
-      "아마 채집복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Coleta de Linho 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "탐험복 제작하기": null
+      "Criando Equipamento de Exploração": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3166,13 +3166,13 @@
   "permanent_armorcrafting_explorer_02": {
     "category": "permanent",
     "description": {
-      "자루 탐험복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Exploração Livre 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "탐험복 제작하기": null
+      "Criando Equipamento de Exploração": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3180,13 +3180,13 @@
   "permanent_armorcrafting_explorer_03": {
     "category": "permanent",
     "description": {
-      "돈맥 탐험복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Explorador Perito 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "탐험복 제작하기": null
+      "Criando Equipamento de Exploração": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3194,13 +3194,13 @@
   "permanent_armorcrafting_explorer_04": {
     "category": "permanent",
     "description": {
-      "전투 수색복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Busca de Combate 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "탐험복 제작하기": null
+      "Criando Equipamento de Exploração": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3208,13 +3208,13 @@
   "permanent_armorcrafting_hunter_01": {
     "category": "permanent",
     "description": {
-      "방한 전투복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Batalha Antifrio 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "전투복 제작하기": null
+      "Criando Trajes de Combate": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3222,13 +3222,13 @@
   "permanent_armorcrafting_hunter_02": {
     "category": "permanent",
     "description": {
-      "정장 뼈갑옷 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Armadura Formal de Osso 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "전투복 제작하기": null
+      "Criando Trajes de Combate": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3236,13 +3236,13 @@
   "permanent_armorcrafting_hunter_03": {
     "category": "permanent",
     "description": {
-      "근접 전투복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Combate Corpo a Corpo 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "전투복 제작하기": null
+      "Criando Trajes de Combate": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3250,13 +3250,13 @@
   "permanent_armorcrafting_hunter_04": {
     "category": "permanent",
     "description": {
-      "처형인 예복 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Traje de Carrasco 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "전투복 제작하기": null
+      "Criando Trajes de Combate": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3264,13 +3264,13 @@
   "permanent_armorcrafting_gloves_01": {
     "category": "permanent",
     "description": {
-      "반장갑 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de Luvas Meio Dedo 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "장갑 제작하기": null
+      "Criando Luvas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3278,13 +3278,13 @@
   "permanent_armorcrafting_gloves_02": {
     "category": "permanent",
     "description": {
-      "손장갑 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de Luvas Protetoras 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "장갑 제작하기": null
+      "Criando Luvas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3292,13 +3292,13 @@
   "permanent_armorcrafting_gloves_03": {
     "category": "permanent",
     "description": {
-      "뼈갑 장갑 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de Luvas de Ossos 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "장갑 제작하기": null
+      "Criando Luvas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3306,13 +3306,13 @@
   "permanent_armorcrafting_shoes_01": {
     "category": "permanent",
     "description": {
-      "가죽 샌들 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de Sandálias de Couro 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "신발 제작하기": null
+      "Criando Sapatos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3320,13 +3320,13 @@
   "permanent_armorcrafting_shoes_02": {
     "category": "permanent",
     "description": {
-      "가죽 장화 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de Botas de Couro 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "신발 제작하기": null
+      "Criando Sapatos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3334,13 +3334,13 @@
   "permanent_armorcrafting_shoes_03": {
     "category": "permanent",
     "description": {
-      "뼈갑 장화 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de Botas de Osso 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "신발 제작하기": null
+      "Criando Sapatos": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3348,13 +3348,13 @@
   "permanent_armorcrafting_bag_01": {
     "category": "permanent",
     "description": {
-      "천 가방 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Bolsa de Tecido 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가방 제작하기": null
+      "Criando Bolsas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3362,13 +3362,13 @@
   "permanent_armorcrafting_bag_02": {
     "category": "permanent",
     "description": {
-      "보조 가방 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de uma Mochila Secundária 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가방 제작하기": null
+      "Criando Bolsas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3376,13 +3376,13 @@
   "permanent_armorcrafting_bag_03": {
     "category": "permanent",
     "description": {
-      "등 가방 제작법으로 1회 제작하세요.": null
+      "Crie usando o molde de um Mochilão 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가방 제작하기": null
+      "Criando Bolsas": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -3390,13 +3390,13 @@
   "permanent_cooking_any_01": {
     "category": "permanent",
     "description": {
-      "요리를 5번 하세요.": null
+      "Cozinhar 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리하기": null
+      "Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3404,13 +3404,13 @@
   "permanent_cooking_any_02": {
     "category": "permanent",
     "description": {
-      "요리를 10번 하세요.": null
+      "Cozinhar 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리하기": null
+      "Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3418,13 +3418,13 @@
   "permanent_cooking_any_03": {
     "category": "permanent",
     "description": {
-      "요리를 20번 하세요.": null
+      "Cozinhar 20 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리하기": null
+      "Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3432,13 +3432,13 @@
   "permanent_cooking_any_04": {
     "category": "permanent",
     "description": {
-      "요리를 50번 하세요.": null
+      "Cozinhar 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리하기": null
+      "Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3446,13 +3446,13 @@
   "permanent_cooking_any_05": {
     "category": "permanent",
     "description": {
-      "요리를 100번 하세요.": null
+      "Cozinhar 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리하기": null
+      "Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3460,13 +3460,13 @@
   "permanent_cooking_any_06": {
     "category": "permanent",
     "description": {
-      "요리를 200번 하세요.": null
+      "Cozinhar 200 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "요리하기": null
+      "Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3474,13 +3474,13 @@
   "permanent_cooking_fire_01": {
     "category": "permanent",
     "description": {
-      "꼬치구이 조리법으로 10번 요리하세요.": null
+      "Grelhar 10 espetos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "구이 요리하기": null
+      "Cozinhando na Grelha": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3488,13 +3488,13 @@
   "permanent_cooking_fire_02": {
     "category": "permanent",
     "description": {
-      "돌판구이 조리법으로 10번 요리하세요.": null
+      "Grelhar 10 chapas de pedra de churrasco.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "구이 요리하기": null
+      "Cozinhando na Grelha": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3502,13 +3502,13 @@
   "permanent_cooking_fire_03": {
     "category": "permanent",
     "description": {
-      "로스트 조리법으로 10번 요리하세요.": null
+      "Cozinhar 10 assados.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "구이 요리하기": null
+      "Cozinhando na Grelha": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3516,13 +3516,13 @@
   "permanent_cooking_fire_04": {
     "category": "permanent",
     "description": {
-      "석쇠구이 조리법으로 10번 요리하세요.": null
+      "Cozinhar 10 grelhados.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "구이 요리하기": null
+      "Cozinhando na Grelha": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3530,13 +3530,13 @@
   "permanent_cooking_water_01": {
     "category": "permanent",
     "description": {
-      "삶기 조리법으로 10번 요리하세요.": null
+      "Cozinhar alimentos ferventados 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "끓이는 요리하기": null
+      "Fervendo Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3544,13 +3544,13 @@
   "permanent_cooking_water_02": {
     "category": "permanent",
     "description": {
-      "찌기 조리법으로 10번 요리하세요.": null
+      "Cozinhar alimentos no vapor 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "끓이는 요리하기": null
+      "Fervendo Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3558,13 +3558,13 @@
   "permanent_cooking_water_03": {
     "category": "permanent",
     "description": {
-      "스튜 조리법으로 10번 요리하세요.": null
+      "Cozinhar 10 guisados.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "끓이는 요리하기": null
+      "Fervendo Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3572,13 +3572,13 @@
   "permanent_cooking_water_04": {
     "category": "permanent",
     "description": {
-      "건더기 스튜 조리법으로 10번 요리하세요.": null
+      "Cozinhar 10 guisados grossos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "끓이는 요리하기": null
+      "Fervendo Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3586,13 +3586,13 @@
   "permanent_cooking_fry_01": {
     "category": "permanent",
     "description": {
-      "튀기기 조리법으로 10번 요리하세요.": null
+      "Fritar alimentos 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "튀김 요리하기": null
+      "Fritando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3600,13 +3600,13 @@
   "permanent_cooking_fry_02": {
     "category": "permanent",
     "description": {
-      "치킨 조리법으로 10번 요리하세요.": null
+      "Fritar frango 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "튀김 요리하기": null
+      "Fritando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3614,13 +3614,13 @@
   "permanent_cooking_preserve_01": {
     "category": "permanent",
     "description": {
-      "훈제 조리법으로 10번 요리하세요.": null
+      "Cozinhar alimentos defumados 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "보존 요리하기": null
+      "Preservando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3628,13 +3628,13 @@
   "permanent_cooking_preserve_02": {
     "category": "permanent",
     "description": {
-      "건조식품 조리법으로 10번 요리하세요.": null
+      "Cozinhar alimentos desidratados 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "보존 요리하기": null
+      "Preservando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3642,13 +3642,13 @@
   "permanent_cooking_preserve_03": {
     "category": "permanent",
     "description": {
-      "염장 조리법으로 10번 요리하세요.": null
+      "Preservar alimentos em conserva 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "보존 요리하기": null
+      "Preservando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3656,13 +3656,13 @@
   "permanent_cooking_preserve_04": {
     "category": "permanent",
     "description": {
-      "소시지 조리법으로 10번 요리하세요.": null
+      "Cozinhar linguiça 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "보존 요리하기": null
+      "Preservando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3670,13 +3670,13 @@
   "permanent_cooking_preserve_05": {
     "category": "permanent",
     "description": {
-      "급조 통조림을 10번 제작하세요.": null
+      "Criar comida enlatada improvisada 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "보존 요리하기": null
+      "Preservando Alimentos": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3684,13 +3684,13 @@
   "permanent_cooking_bake_01": {
     "category": "permanent",
     "description": {
-      "빵 제작법으로 10번 제작하세요.": null
+      "Crie usando a receita de um Pão 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "제빵/제과 만들기": null
+      "A Arte de Assar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3698,13 +3698,13 @@
   "permanent_cooking_bake_02": {
     "category": "permanent",
     "description": {
-      "내용물을 넣은 빵 제작법으로 10번 제작하세요.": null
+      "Crie usando a receita de um Pão Recheado 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "제빵/제과 만들기": null
+      "A Arte de Assar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3712,13 +3712,13 @@
   "permanent_cooking_bake_03": {
     "category": "permanent",
     "description": {
-      "케이크 제작법으로 10번 제작하세요.": null
+      "Crie usando a receita de um Bolo 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "제빵/제과 만들기": null
+      "A Arte de Assar": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -3726,13 +3726,13 @@
   "permanent_constructing_any_01": {
     "category": "permanent",
     "description": {
-      "건설을 5번 하세요": null
+      "Edifique uma construção 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건설하기": null
+      "Construindo Estruturas": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3740,13 +3740,13 @@
   "permanent_constructing_any_02": {
     "category": "permanent",
     "description": {
-      "건설을 10번 하세요": null
+      "Edifique uma construção 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건설하기": null
+      "Construindo Estruturas": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3754,13 +3754,13 @@
   "permanent_constructing_any_03": {
     "category": "permanent",
     "description": {
-      "건설을 20번 하세요": null
+      "Edifique uma construção 20 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건설하기": null
+      "Construindo Estruturas": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3768,13 +3768,13 @@
   "permanent_constructing_any_04": {
     "category": "permanent",
     "description": {
-      "건설을 50번 하세요": null
+      "Edifique uma construção 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건설하기": null
+      "Construindo Estruturas": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3782,13 +3782,13 @@
   "permanent_constructing_any_05": {
     "category": "permanent",
     "description": {
-      "건설을 100번 하세요": null
+      "Edifique uma construção 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "건설하기": null
+      "Construindo Estruturas": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3796,13 +3796,13 @@
   "permanent_constructing_roof_modular_01": {
     "category": "permanent",
     "description": {
-      "막사를 건설하세요.": null
+      "Construa um toldo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "막사 건설하기": null
+      "Construindo Toldos": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3810,13 +3810,13 @@
   "permanent_constructing_modular_01": {
     "category": "permanent",
     "description": {
-      "벽집을 건설하세요.": null
+      "Construa uma casa.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "벽집 건설하기": null
+      "Construindo Casas": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3824,13 +3824,13 @@
   "permanent_constructing_cage_01": {
     "category": "permanent",
     "description": {
-      "소형축사를 건설하세요.": null
+      "Construir um curral pequeno.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "축사 건설하기": null
+      "Construindo o Curral": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3838,13 +3838,13 @@
   "permanent_constructing_cage_02": {
     "category": "permanent",
     "description": {
-      "중형축사를 건설하세요.": null
+      "Construir um curral médio.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "축사 건설하기": null
+      "Construindo o Curral": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3852,13 +3852,13 @@
   "permanent_constructing_fur_table_01": {
     "category": "permanent",
     "description": {
-      "기초작업대를 제작하세요.": null
+      "Criar uma mesa de trabalho básica.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "작업대 제작하기": null
+      "Criando a Mesa de Trabalho": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3866,13 +3866,13 @@
   "permanent_constructing_fur_table_02": {
     "category": "permanent",
     "description": {
-      "수련작업대를 제작하세요.": null
+      "Criar uma mesa de trabalho de artífice.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "작업대 제작하기": null
+      "Criando a Mesa de Trabalho": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3880,13 +3880,13 @@
   "permanent_constructing_fur_table_03": {
     "category": "permanent",
     "description": {
-      "기술작업대를 제작하세요.": null
+      "Criar uma mesa de trabalho de especialista.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "작업대 제작하기": null
+      "Criando a Mesa de Trabalho": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3894,13 +3894,13 @@
   "permanent_constructing_kitchen_01": {
     "category": "permanent",
     "description": {
-      "아궁이를 건설하세요.": null
+      "Criar um forno.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "주방가구 제작하기": null
+      "Construindo a Cozinha": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3908,13 +3908,13 @@
   "permanent_constructing_kitchen_02": {
     "category": "permanent",
     "description": {
-      "부뚜막을 건설하세요.": null
+      "Criar um fogão.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "주방가구 제작하기": null
+      "Construindo a Cozinha": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3922,13 +3922,13 @@
   "permanent_constructing_kitchen_03": {
     "category": "permanent",
     "description": {
-      "부엌을 건설하세요.": null
+      "Construir uma cozinha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "주방가구 제작하기": null
+      "Construindo a Cozinha": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3936,13 +3936,13 @@
   "permanent_constructing_kiln_01": {
     "category": "permanent",
     "description": {
-      "기본가마를 건설하세요.": null
+      "Construir a fornalha básica.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가마 제작하기": null
+      "Criando a Fornalha": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3950,13 +3950,13 @@
   "permanent_constructing_kiln_02": {
     "category": "permanent",
     "description": {
-      "상급가마를 건설하세요.": null
+      "Construir uma fornalha avançada.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가마 제작하기": null
+      "Criando a Fornalha": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -3964,13 +3964,13 @@
   "permanent_gathering_any_01": {
     "category": "permanent",
     "description": {
-      "채집 또는 채광을 50번 하세요.": null
+      "Coletar ou minerar 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집/채광하기": null
+      "Coletando e Minerando": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -3978,13 +3978,13 @@
   "permanent_gathering_any_02": {
     "category": "permanent",
     "description": {
-      "채집 또는 채광을 100번 하세요.": null
+      "Coletar ou minerar 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집/채광하기": null
+      "Coletando e Minerando": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -3992,13 +3992,13 @@
   "permanent_gathering_any_03": {
     "category": "permanent",
     "description": {
-      "채집 또는 채광을 300번 하세요.": null
+      "Coletar ou minerar 300 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집/채광하기": null
+      "Coletando e Minerando": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4006,13 +4006,13 @@
   "permanent_gathering_any_04": {
     "category": "permanent",
     "description": {
-      "채집 또는 채광을 1000번 하세요.": null
+      "Coletar ou minerar 1.000 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "채집/채광하기": null
+      "Coletando e Minerando": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4020,13 +4020,13 @@
   "permanent_gathering_clay_01": {
     "category": "permanent",
     "description": {
-      "진흙을 10번 채집하세요.": null
+      "Coletar lama 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "진흙 채집하기": null
+      "Coletando Lama": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4034,13 +4034,13 @@
   "permanent_gathering_clay_02": {
     "category": "permanent",
     "description": {
-      "진흙을 30번 채집하세요.": null
+      "Coletar lama 30 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "진흙 채집하기": null
+      "Coletando Lama": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4048,13 +4048,13 @@
   "permanent_gathering_clay_03": {
     "category": "permanent",
     "description": {
-      "진흙을 100번 채집하세요.": null
+      "Coletar lama 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "진흙 채집하기": null
+      "Coletando Lama": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4062,13 +4062,13 @@
   "permanent_gathering_stone_01": {
     "category": "permanent",
     "description": {
-      "돌멩이를 30번 채집하세요.": null
+      "Coletar 30 seixos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "돌멩이 채집하기": null
+      "Coletando Seixos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4076,13 +4076,13 @@
   "permanent_gathering_stone_02": {
     "category": "permanent",
     "description": {
-      "돌멩이를 90번 채집하세요.": null
+      "Coletar 90 seixos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "돌멩이 채집하기": null
+      "Coletando Seixos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4090,13 +4090,13 @@
   "permanent_gathering_stone_03": {
     "category": "permanent",
     "description": {
-      "돌멩이를 300번 채집하세요.": null
+      "Coletar 300 seixos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "돌멩이 채집하기": null
+      "Coletando Seixos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4104,13 +4104,13 @@
   "permanent_gathering_rock_01": {
     "category": "permanent",
     "description": {
-      "바위를 10번 채광하세요.": null
+      "Minerar 10 pedregulhos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "바위 채광하기": null
+      "Mineração de Pedregulho": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4118,13 +4118,13 @@
   "permanent_gathering_rock_02": {
     "category": "permanent",
     "description": {
-      "바위를 20번 채광하세요.": null
+      "Minerar 20 pedregulhos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "바위 채광하기": null
+      "Mineração de Pedregulho": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4132,13 +4132,13 @@
   "permanent_gathering_rock_03": {
     "category": "permanent",
     "description": {
-      "바위를 50번 채광하세요.": null
+      "Minerar 50 pedregulhos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "바위 채광하기": null
+      "Mineração de Pedregulho": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4146,13 +4146,13 @@
   "permanent_gathering_stem_01": {
     "category": "permanent",
     "description": {
-      "식물 줄기를 20번 채집하세요.": null
+      "Coletar 20 caules de plantas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "식물 줄기 채집하기": null
+      "Coletando Caules de Plantas": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4160,13 +4160,13 @@
   "permanent_gathering_stem_02": {
     "category": "permanent",
     "description": {
-      "식물 줄기를 60번 채집하세요.": null
+      "Coletar 60 caules de plantas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "식물 줄기 채집하기": null
+      "Coletando Caules de Plantas": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4174,13 +4174,13 @@
   "permanent_gathering_stem_03": {
     "category": "permanent",
     "description": {
-      "식물 줄기를 200번 채집하세요.": null
+      "Coletar 20 caules de plantas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "식물 줄기 채집하기": null
+      "Coletando Caules de Plantas": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4188,13 +4188,13 @@
   "permanent_gathering_wood_log_01": {
     "category": "permanent",
     "description": {
-      "통나무를 10번 채집하세요.": null
+      "Coletar 10 troncos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "통나무 채집하기": null
+      "Coletando Troncos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4202,13 +4202,13 @@
   "permanent_gathering_wood_log_02": {
     "category": "permanent",
     "description": {
-      "통나무를 20번 채집하세요.": null
+      "Coletar 20 troncos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "통나무 채집하기": null
+      "Coletando Troncos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4216,13 +4216,13 @@
   "permanent_gathering_wood_log_03": {
     "category": "permanent",
     "description": {
-      "통나무를 50번 채집하세요.": null
+      "Coletar 50 troncos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "통나무 채집하기": null
+      "Coletando Troncos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4230,13 +4230,13 @@
   "permanent_gathering_wood_bough_01": {
     "category": "permanent",
     "description": {
-      "나뭇가지를 20번 채집하세요.": null
+      "Coletar 20 galhos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "나뭇가지 채집하기": null
+      "Coletando Galhos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4244,13 +4244,13 @@
   "permanent_gathering_wood_bough_02": {
     "category": "permanent",
     "description": {
-      "나뭇가지를 60번 채집하세요.": null
+      "Coletar 60 galhos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "나뭇가지 채집하기": null
+      "Coletando Galhos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4258,13 +4258,13 @@
   "permanent_gathering_wood_bough_03": {
     "category": "permanent",
     "description": {
-      "나뭇가지를 200번 채집하세요.": null
+      "Coletar 200 galhos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "나뭇가지 채집하기": null
+      "Coletando Galhos": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -4272,13 +4272,13 @@
   "permanent_butchery_meat_01": {
     "category": "permanent",
     "description": {
-      "고기를 10번 채집하세요.": null
+      "Coletar carne 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "고기 채집하기": null
+      "Coletando Carne": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4286,13 +4286,13 @@
   "permanent_butchery_meat_02": {
     "category": "permanent",
     "description": {
-      "고기를 30번 채집하세요.": null
+      "Coletar carne 30 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "고기 채집하기": null
+      "Coletando Carne": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4300,13 +4300,13 @@
   "permanent_butchery_meat_03": {
     "category": "permanent",
     "description": {
-      "고기를 100번 채집하세요.": null
+      "Coletar carne 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "고기 채집하기": null
+      "Coletando Carne": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4314,13 +4314,13 @@
   "permanent_butchery_bone_leg_01": {
     "category": "permanent",
     "description": {
-      "다리뼈를 10번 채집하세요.": null
+      "Coletar 10 ossos de perna.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "다리뼈 채집하기": null
+      "Coletando Ossos da Perna": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4328,13 +4328,13 @@
   "permanent_butchery_bone_leg_02": {
     "category": "permanent",
     "description": {
-      "다리뼈를 30번 채집하세요.": null
+      "Coletar 30 ossos de perna.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "다리뼈 채집하기": null
+      "Coletando Ossos da Perna": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4342,13 +4342,13 @@
   "permanent_butchery_bone_leg_03": {
     "category": "permanent",
     "description": {
-      "다리뼈를 100번 채집하세요.": null
+      "Coletar 100 ossos de perna.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "다리뼈 채집하기": null
+      "Coletando Ossos da Perna": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4356,13 +4356,13 @@
   "permanent_butchery_leather_01": {
     "category": "permanent",
     "description": {
-      "가죽을 10번 채집하세요.": null
+      "Coletar couro 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가죽 채집하기": null
+      "Coletando Couro": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4370,13 +4370,13 @@
   "permanent_butchery_leather_02": {
     "category": "permanent",
     "description": {
-      "가죽을 30번 채집하세요.": null
+      "Coletar couro 30 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가죽 채집하기": null
+      "Coletando Couro": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4384,13 +4384,13 @@
   "permanent_butchery_leather_03": {
     "category": "permanent",
     "description": {
-      "가죽을 100번 채집하세요.": null
+      "Coletar couro 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가죽 채집하기": null
+      "Coletando Couro": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -4398,13 +4398,13 @@
   "permanent_farming_any_01": {
     "category": "permanent",
     "description": {
-      "농사를 5번 하세요.": null
+      "Cultivar 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사짓기": null
+      "Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4412,13 +4412,13 @@
   "permanent_farming_any_02": {
     "category": "permanent",
     "description": {
-      "농사를 10번 하세요.": null
+      "Cultivar 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사짓기": null
+      "Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4426,13 +4426,13 @@
   "permanent_farming_any_03": {
     "category": "permanent",
     "description": {
-      "농사를 20번 하세요.": null
+      "Cultivar 20 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사짓기": null
+      "Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4440,13 +4440,13 @@
   "permanent_farming_any_04": {
     "category": "permanent",
     "description": {
-      "농사를 50번 하세요.": null
+      "Cultivar 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사짓기": null
+      "Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4454,13 +4454,13 @@
   "permanent_farming_any_05": {
     "category": "permanent",
     "description": {
-      "농사를 100번 하세요.": null
+      "Cultivar 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사짓기": null
+      "Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4468,13 +4468,13 @@
   "permanent_farming_any_06": {
     "category": "permanent",
     "description": {
-      "농사를 200번 하세요.": null
+      "Cultivar 200 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "농사짓기": null
+      "Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4482,13 +4482,13 @@
   "permanent_farming_seed_01": {
     "category": "permanent",
     "description": {
-      "옥수수 종자를 4번 심으세요.": null
+      "Plantar 4 sementes de milho.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "종자 심기": null
+      "Plantando Sementes": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4496,13 +4496,13 @@
   "permanent_farming_seed_02": {
     "category": "permanent",
     "description": {
-      "감자 종자를 4번 심으세요.": null
+      "Plantar 4 sementes de batata.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "종자 심기": null
+      "Plantando Sementes": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4510,13 +4510,13 @@
   "permanent_farming_seed_03": {
     "category": "permanent",
     "description": {
-      "밀 종자를 4번 심으세요.": null
+      "Plantar 4 sementes de trigo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "종자 심기": null
+      "Plantando Sementes": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4524,13 +4524,13 @@
   "permanent_farming_seed_04": {
     "category": "permanent",
     "description": {
-      "쌀 종자를 4번 심으세요.": null
+      "Plantar 4 sementes de arroz.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "종자 심기": null
+      "Plantando Sementes": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4538,13 +4538,13 @@
   "permanent_farming_seed_05": {
     "category": "permanent",
     "description": {
-      "차나무 종자를 4번 심으세요.": null
+      "Plantar 4 sementes de melaleuca.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "종자 심기": null
+      "Plantando Sementes": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -4552,13 +4552,13 @@
   "permanent_farming_seed_06": {
     "category": "permanent",
     "description": {
-      "커피 종자를 4번 심으세요.": null
+      "Plantar 4 sementes de café.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "종자 심기": null
+      "Plantando Sementes": null
     },
     "order": 100,
     "icon": "skill_category_farming"
@@ -5294,13 +5294,13 @@
   "taming_animal_zebra": {
     "category": "permanent",
     "description": {
-      "제브라케라톱스를 포획하세요.": null
+      "Capture um Zebraceratops.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": true,
     "subject": {
-      "제브라케라톱스 포획": null
+      "Capture um Zebraceratops": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -13716,24 +13716,18 @@
   "tyrano_01": {
     "category": "permanent",
     "description": {
-      "화산섬에서 동물 1회 사냥하세요.": null
+      "Cace 1 animal em uma ilha vulcânica.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "quest_end_messages": [
       {
-        "remote": true,
-        "image": "",
-        "hide_portrait": false,
-        "messenger": 5,
-        "message": {
-          "[89D2FF]기술부에서 엄청난 녀석을 상대하기 위한 도구를 제작중이야.\n그런 녀석이 있냐고? 바로 <em>티라노사우루스</em>일세.[-]": null
-        }
+        "remote": null
       }
     ],
     "subject": {
-      "지금 이럴 때가 아니야": null
+      "Sem Tempo para Isso": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -13741,24 +13735,18 @@
   "tyrano_02": {
     "category": "permanent",
     "description": {
-      "투구게를 5회 사냥하세요.": null
+      "Cace 5 caranguejos-ferradura.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "quest_end_messages": [
       {
-        "remote": true,
-        "image": "",
-        "hide_portrait": false,
-        "messenger": 5,
-        "message": {
-          "[89D2FF]<em>투구게</em>의 껍질이 방음효과가 있다는군.\n자네덕분에 확인해볼 수 있겠어.[-]": null
-        }
+        "remote": null
       }
     ],
     "subject": {
-      "게를 본 적이 있나": null
+      "Ferre um Cavalo, Mais um Estepe": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -13766,33 +13754,21 @@
   "tyrano_03": {
     "category": "permanent",
     "description": {
-      "앤드루사르쿠스를 5회 사냥하세요.": null
+      "Cace 5 Andrewsarchus.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "quest_end_messages": [
       {
-        "remote": true,
-        "image": "",
-        "hide_portrait": false,
-        "messenger": 5,
-        "message": {
-          "[89D2FF]앤드루사르쿠스의 이빨에 당하지 않았군.\n티라노사우루스에게 다가갈 수 있겠구먼[-]": null
-        }
+        "remote": null
       },
       {
-        "remote": true,
-        "image": "",
-        "hide_portrait": false,
-        "messenger": 5,
-        "message": {
-          "[89D2FF]자, 받게나.\n티라노사우루스와 만날 땐 반드시 이 <em>귀마개</em>를 착용하게.[-]": null
-        }
+        "remote": null
       }
     ],
     "subject": {
-      "거대한 포식자": null
+      "Predador Gigante": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -13800,13 +13776,13 @@
   "permanent_hunt_horseshoecrab_01": {
     "category": "permanent",
     "description": {
-      "투구게를 10마리 사냥하세요.": null
+      "Cace 10 caranguejos-ferradura.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "투구게 사냥하기": null
+      "Caça ao Caranguejo-Ferradura": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13814,13 +13790,13 @@
   "permanent_hunt_andrewsarcus_01": {
     "category": "permanent",
     "description": {
-      "앤드루사르쿠스를 5마리 사냥하세요.": null
+      "Cace 5 Andrewsarchus.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "앤드루사르쿠스 사냥하기": null
+      "Caça ao Andrewsarchus": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13828,13 +13804,13 @@
   "permanent_hunt_volcanic_skuncodus_01": {
     "category": "permanent",
     "description": {
-      "유황 스컹코두스를 5마리 사냥하세요.": null
+      "Cace 5 Skunkodus Sulfúricos.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "유황 스컹코두스 사냥하기": null
+      "Caça a Skunkodus Sulfúrico": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13842,13 +13818,13 @@
   "permanent_hunt_volcanic_eutaraptor_01": {
     "category": "permanent",
     "description": {
-      "검은머리 유타랍토르를 5마리 사냥하세요.": null
+      "Cace 5 Utahraptores de Cabeça Preta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "검은머리 유타랍토르 사냥하기": null
+      "Caça ao Utahraptor de Cabeça Preta": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13856,13 +13832,13 @@
   "permanent_hunt_volcanic_hadrosaurus_01": {
     "category": "permanent",
     "description": {
-      "용암 하드로사우루스를 3마리 사냥하세요.": null
+      "Cace 3 Hadrossauros de Lava.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "용암 하드로사우루스 사냥하기": null
+      "Caça ao Hadrossauro de Lava": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13870,13 +13846,13 @@
   "permanent_hunt_kasmosaurus_01": {
     "category": "permanent",
     "description": {
-      "화산재 카스모사우루스를 3마리 사냥하세요.": null
+      "Cace 3 Chasmossauros de Cinza Vulcânica.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산재 카스모사우루스 사냥하기": null
+      "Caça ao Chasmossauro de Cinza Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13884,13 +13860,13 @@
   "permanent_hunt_amargasaurus_01": {
     "category": "permanent",
     "description": {
-      "아마르가사우루스를 1마리 사냥하세요.": null
+      "Cace 1 Amargassauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "아마르가사우루스 사냥하기": null
+      "Caça ao Amargassauro": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13898,13 +13874,13 @@
   "permanent_hunt_white_stripe_iguana_01": {
     "category": "permanent",
     "description": {
-      "흰줄무늬 이구아나를 5마리 사냥하세요.": null
+      "Cace 5 iguanas de listras brancas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "흰줄무늬 이구아나 사냥하기": null
+      "Caça à Iguana de Listras Brancas": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13912,13 +13888,13 @@
   "permanent_hunt_red_dotted_iguana_01": {
     "category": "permanent",
     "description": {
-      "불점박이 이구아나를 1마리 사냥하세요.": null
+      "Cace 1 iguana de manchas vermelhas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "불점박이 이구아나 사냥하기": null
+      "Caça à Iguana de Manchas Vermelhas": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13926,13 +13902,13 @@
   "permanent_hunt_tyranosaurus_01": {
     "category": "permanent",
     "description": {
-      "티라노사우루스를 1마리 사냥하세요.": null
+      "Cace 1 Tiranossauro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "티라노사우루스 사냥하기": null
+      "Caça ao Tiranossauro": null
     },
     "order": 99,
     "icon": "skill_category_melee_combat"
@@ -13940,13 +13916,13 @@
   "permanent_armorcrafting_settler_05": {
     "category": "permanent",
     "description": {
-      "뼈주먹 건설복 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Traje de Construção de Soqueira de Osso 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 정착복 제작하기 I": null
+      "Criação de Traje de Colono de Ilha Vulcânica I": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -13954,13 +13930,13 @@
   "permanent_armorcrafting_settler_06": {
     "category": "permanent",
     "description": {
-      "뼈주먹 건설모 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Chapéu de Construção de Soqueira de Osso 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 정착복 제작하기 II": null
+      "Criação de Traje de Colono de Ilha Vulcânica II": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -13968,13 +13944,13 @@
   "permanent_armorcrafting_explorer_05": {
     "category": "permanent",
     "description": {
-      "화산폭풍 광부복 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Traje de Mineiro para Tempestade Vulcânica 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 탐험복 제작하기 I": null
+      "Criação de Equipamento de Exploração de Ilha Vulcânica I": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -13982,13 +13958,13 @@
   "permanent_armorcrafting_explorer_06": {
     "category": "permanent",
     "description": {
-      "화산폭풍 광부모 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Chapéu de Mineiro para Tempestade Vulcânica 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 탐험복 제작하기 II": null
+      "Criação de Equipamento de Exploração de Ilha Vulcânica II": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -13996,13 +13972,13 @@
   "permanent_armorcrafting_hunter_05": {
     "category": "permanent",
     "description": {
-      "화산 돌격갑옷 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Armadura contra Agressão Vulcânica 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 전투복 제작하기 I": null
+      "Criação de Traje de Combate em Ilha Vulcânica I": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -14010,13 +13986,13 @@
   "permanent_armorcrafting_hunter_06": {
     "category": "permanent",
     "description": {
-      "화산 돌격가면 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Máscara contra Agressão Vulcânica 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 전투복 제작하기 II": null
+      "Criação de Traje de Combate em Ilha Vulcânica II": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -14024,13 +14000,13 @@
   "permanent_armorcrafting_gloves_04": {
     "category": "permanent",
     "description": {
-      "열기 저항 장갑 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Luvas de Resistência Térmica 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 장갑 제작하기": null
+      "Criação de Luva de Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -14038,13 +14014,13 @@
   "permanent_armorcrafting_shoes_04": {
     "category": "permanent",
     "description": {
-      "열기 저항 장화 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Botas de Resistência Térmica 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 신발 제작하기 I": null
+      "Criação de Sapato de Ilha Vulcânica I": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -14052,13 +14028,13 @@
   "permanent_armorcrafting_shoes_05": {
     "category": "permanent",
     "description": {
-      "용암 보호 장화 제작법으로 1회 제작하세요.": null
+      "Crie usando um Padrão de Botas de Proteção contra Lava 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 신발 제작하기 II": null
+      "Criação de Sapato de Ilha Vulcânica II": null
     },
     "order": 99,
     "icon": "skill_category_armorcrafting"
@@ -14066,13 +14042,13 @@
   "permanent_cooking_fire_05": {
     "category": "permanent",
     "description": {
-      "스테이크 구이 조리법으로 10번 요리하세요.": null
+      "Cozinhe 10 bifes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 구이 요리하기 I": null
+      "Grelha de Ilha Vulcânica I": null
     },
     "order": 99,
     "icon": "skill_category_cooking"
@@ -14080,13 +14056,13 @@
   "permanent_cooking_fire_06": {
     "category": "permanent",
     "description": {
-      "스테이크 정식 조리법으로 10번 요리하세요.": null
+      "Cozinhe 10 bifes para o jantar.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 구이 요리하기 II": null
+      "Grelha de Ilha Vulcânica II": null
     },
     "order": 99,
     "icon": "skill_category_cooking"
@@ -14094,13 +14070,13 @@
   "permanent_constructing_fur_table_04": {
     "category": "permanent",
     "description": {
-      "보석 세공대를 건설하세요.": null
+      "Construa uma mesa de confecção de gemas.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 작업대 제작하기": null
+      "Criação de Mesa de Trabalho de Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14108,13 +14084,13 @@
   "permanent_constructing_kitchen_04": {
     "category": "permanent",
     "description": {
-      "용암 부엌을 건설하세요.": null
+      "Construa uma cozinha de lava.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 주방가구 제작하기": null
+      "Criação de Cozinha de Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14122,13 +14098,13 @@
   "permanent_constructing_kiln_03": {
     "category": "permanent",
     "description": {
-      "용암 가마를 건설하세요.": null
+      "Construa uma fornalha de lava.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 가마 제작하기": null
+      "Criação de Fornalha de Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14136,13 +14112,13 @@
   "permanent_constructing_volc_01": {
     "category": "permanent",
     "description": {
-      "잿나무 테이블을 건설하세요.": null
+      "Construa uma mesa de madeira de árvore de freixo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "잿나무 그늘아래 I": null
+      "Debaixo da Sombra da Árvore de Freixo I": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14150,13 +14126,13 @@
   "permanent_constructing_volc_02": {
     "category": "permanent",
     "description": {
-      "잿나무 벤치를 건설하세요.": null
+      "Construa um banco de tronco de árvore de freixo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "잿나무 그늘아래 II": null
+      "Debaixo da Sombra da Árvore de Freixo II": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14164,13 +14140,13 @@
   "permanent_constructing_volc_mud_01": {
     "category": "permanent",
     "description": {
-      "유황 스컹코두스 점토상을 건설하세요.": null
+      "Construa uma escultura de barro de Skunkodus Sulfúrico.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "점토상 수집가 I": null
+      "Colecionador de Esculturas de Barro I": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14178,13 +14154,13 @@
   "permanent_constructing_volc_mud_02": {
     "category": "permanent",
     "description": {
-      "검은머리 유타랍토르 점토상을 건설하세요.": null
+      "Construa uma escultura de barro de Utahraptor de Cabeça Preta.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "점토상 수집가 II": null
+      "Colecionador de Esculturas de Barro II": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14192,13 +14168,13 @@
   "permanent_constructing_volc_mud_03": {
     "category": "permanent",
     "description": {
-      "앤드루사르쿠스 점토상을 건설하세요.": null
+      "Construa uma escultura de barro de Andrewsarchus.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "점토상 수집가 III": null
+      "Colecionador de Esculturas de Barro III": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14206,13 +14182,13 @@
   "permanent_constructing_volc_mud_04": {
     "category": "permanent",
     "description": {
-      "화산재 카스모사우루스 점토상을 건설하세요.": null
+      "Construa uma escultura de barro de Chasmossauro de Cinza Vulcânica.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "점토상 수집가 IV": null
+      "Colecionador de Esculturas de Barro IV": null
     },
     "order": 99,
     "icon": "skill_category_constructing"
@@ -14220,13 +14196,13 @@
   "permanent_process_volc_lava_01": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 1회 부수세요.": null
+      "Quebre lava endurecida 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "냉정한 용암 파괴자 I": null
+      "Destruidor de Lava de Cabeça Fria I": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14234,13 +14210,13 @@
   "permanent_process_volc_lava_02": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 5회 부수세요.": null
+      "Quebre lava endurecida 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "냉정한 용암 파괴자 II": null
+      "Destruidor de Lava de Cabeça Fria II": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14248,13 +14224,13 @@
   "permanent_process_volc_lava_03": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 10회 부수세요.": null
+      "Quebre lava endurecida 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "냉정한 용암 파괴자 III": null
+      "Destruidor de Lava de Cabeça Fria III": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14262,13 +14238,13 @@
   "permanent_process_volc_lava_04": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 25회 부수세요.": null
+      "Quebre lava endurecida 25 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "냉정한 용암 파괴자 IV": null
+      "Destruidor de Lava de Cabeça Fria IV": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14276,13 +14252,13 @@
   "permanent_process_volc_lava_05": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 100회 부수세요.": null
+      "Quebre lava endurecida 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "냉정한 용암 파괴자 V": null
+      "Destruidor de Lava de Cabeça Fria V": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14290,13 +14266,13 @@
   "permanent_process_volc_jewel_01": {
     "category": "permanent",
     "description": {
-      "보석을 1회 추출하세요.": null
+      "Extraia uma gema 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "내 눈에만 보이는 비밀 I": null
+      "Segredos Cristalinos I": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14304,13 +14280,13 @@
   "permanent_process_volc_jewel_02": {
     "category": "permanent",
     "description": {
-      "보석을 5회 추출하세요.": null
+      "Extraia uma gema 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "내 눈에만 보이는 비밀 II": null
+      "Segredos Cristalinos II": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14318,13 +14294,13 @@
   "permanent_process_volc_jewel_03": {
     "category": "permanent",
     "description": {
-      "보석을 10회 추출하세요.": null
+      "Extraia uma gema 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "내 눈에만 보이는 비밀 III": null
+      "Segredos Cristalinos III": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14332,13 +14308,13 @@
   "permanent_process_volc_jewel_04": {
     "category": "permanent",
     "description": {
-      "보석을 25회 추출하세요.": null
+      "Extraia uma gema 25 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "내 눈에만 보이는 비밀 IV": null
+      "Segredos Cristalinos IV": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14346,13 +14322,13 @@
   "permanent_process_volc_jewel_05": {
     "category": "permanent",
     "description": {
-      "보석을 100회 추출하세요.": null
+      "Extraia uma gema 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "내 눈에만 보이는 비밀 V": null
+      "Segredos Cristalinos V": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14360,13 +14336,13 @@
   "permanent_process_volc_jewelmodify1_01": {
     "category": "permanent",
     "description": {
-      "보석을 1회 미세 연마 하세요.": null
+      "Faça polimento suave de gema 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "티나지 않게 조심조심 I": null
+      "Manuseie com Cuidado I": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14374,13 +14350,13 @@
   "permanent_process_volc_jewelmodify1_02": {
     "category": "permanent",
     "description": {
-      "보석을 5회 미세 연마 하세요.": null
+      "Faça polimento suave de gema 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "티나지 않게 조심조심 II": null
+      "Manuseie com Cuidado II": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14388,13 +14364,13 @@
   "permanent_process_volc_jewelmodify1_03": {
     "category": "permanent",
     "description": {
-      "보석을 10회 미세 연마 하세요.": null
+      "Faça polimento suave de gema 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "티나지 않게 조심조심 III": null
+      "Manuseie com Cuidado III": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14402,13 +14378,13 @@
   "permanent_process_volc_jewelmodify1_04": {
     "category": "permanent",
     "description": {
-      "보석을 25회 미세 연마 하세요.": null
+      "Faça polimento suave de gema 25 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "티나지 않게 조심조심 IV": null
+      "Manuseie com Cuidado IV": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14416,13 +14392,13 @@
   "permanent_process_volc_jewelmodify1_05": {
     "category": "permanent",
     "description": {
-      "보석을 100회 미세 연마 하세요.": null
+      "Faça polimento suave de gema 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "티나지 않게 조심조심 V": null
+      "Manuseie com Cuidado V": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14430,13 +14406,13 @@
   "permanent_process_volc_jewelmodify2_01": {
     "category": "permanent",
     "description": {
-      "보석을 1회 거친 연마 하세요.": null
+      "Faça polimento pesado de gema 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가끔은 좀 과감하게 I": null
+      "Diamante Bruto I": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14444,13 +14420,13 @@
   "permanent_process_volc_jewelmodify2_02": {
     "category": "permanent",
     "description": {
-      "보석을 5회 거친 연마 하세요.": null
+      "Faça polimento pesado de gema 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가끔은 좀 과감하게 II": null
+      "Diamante Bruto II": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14458,13 +14434,13 @@
   "permanent_process_volc_jewelmodify2_03": {
     "category": "permanent",
     "description": {
-      "보석을 10회 거친 연마 하세요.": null
+      "Faça polimento pesado de gema 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가끔은 좀 과감하게 III": null
+      "Diamante Bruto III": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14472,13 +14448,13 @@
   "permanent_process_volc_jewelmodify2_04": {
     "category": "permanent",
     "description": {
-      "보석을 25회 거친 연마 하세요.": null
+      "Faça polimento pesado de gema 25 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가끔은 좀 과감하게 IV": null
+      "Diamante Bruto IV": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14486,13 +14462,13 @@
   "permanent_process_volc_jewelmodify2_05": {
     "category": "permanent",
     "description": {
-      "보석을 100회 거친 연마 하세요.": null
+      "Faça polimento pesado de gema 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "가끔은 좀 과감하게 V": null
+      "Diamante Bruto V": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14500,13 +14476,13 @@
   "permanent_process_volc_glass_01": {
     "category": "permanent",
     "description": {
-      "안경을 1회 제작하세요.": null
+      "Crie óculos 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "이제 진짜 잘 보인다. I": null
+      "Visão Perfeita I": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14514,13 +14490,13 @@
   "permanent_process_volc_glass_02": {
     "category": "permanent",
     "description": {
-      "안경을 5회 제작하세요.": null
+      "Crie óculos 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "이제 진짜 잘 보인다. II": null
+      "Visão Perfeita II": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14528,13 +14504,13 @@
   "permanent_process_volc_glass_03": {
     "category": "permanent",
     "description": {
-      "안경을 10회 제작하세요.": null
+      "Crie óculos 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "이제 진짜 잘 보인다. III": null
+      "Visão Perfeita III": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14542,13 +14518,13 @@
   "permanent_process_volc_glass_04": {
     "category": "permanent",
     "description": {
-      "안경을 25회 제작하세요.": null
+      "Crie óculos 25 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "이제 진짜 잘 보인다. IV": null
+      "Visão Perfeita IV": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14556,13 +14532,13 @@
   "permanent_process_volc_glass_05": {
     "category": "permanent",
     "description": {
-      "안경을 100회 제작하세요.": null
+      "Crie óculos 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "이제 진짜 잘 보인다. V": null
+      "Visão Perfeita V": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14570,13 +14546,13 @@
   "permanent_process_volc_glassexploit_01": {
     "category": "permanent",
     "description": {
-      "안경세공품을 1회 분해하세요.": null
+      "Desmanche óculos primorosos 1 vez.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "버릴 게 하나도 없다. I": null
+      "Não Desperdice I": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14584,13 +14560,13 @@
   "permanent_process_volc_glassexploit_02": {
     "category": "permanent",
     "description": {
-      "안경세공품을 5회 분해하세요.": null
+      "Desmanche óculos primorosos 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "버릴 게 하나도 없다. II": null
+      "Não Desperdice II": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14598,13 +14574,13 @@
   "permanent_process_volc_glassexploit_03": {
     "category": "permanent",
     "description": {
-      "안경세공품을 10회 분해하세요.": null
+      "Desmanche óculos primorosos 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "버릴 게 하나도 없다. III": null
+      "Não Desperdice III": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14612,13 +14588,13 @@
   "permanent_process_volc_glassexploit_04": {
     "category": "permanent",
     "description": {
-      "안경세공품을 25회 분해하세요.": null
+      "Desmanche óculos primorosos 25 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "버릴 게 하나도 없다. IV": null
+      "Não Desperdice IV": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14626,13 +14602,13 @@
   "permanent_process_volc_glassexploit_05": {
     "category": "permanent",
     "description": {
-      "안경세공품을 100회 분해하세요.": null
+      "Desmanche óculos primorosos 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "버릴 게 하나도 없다. V": null
+      "Não Desperdice V": null
     },
     "order": 99,
     "icon": "recipe_trim_bone"
@@ -14640,13 +14616,13 @@
   "permanent_gathering_clay_04": {
     "category": "permanent",
     "description": {
-      "회색 진흙을 100번 채집하세요.": null
+      "Colete lama cinza 100 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 진흙 채집하기": null
+      "Coleta de Lama em Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14654,13 +14630,13 @@
   "permanent_gathering_wood_log_04": {
     "category": "permanent",
     "description": {
-      "잿나무 통나무를 100번 채집하세요.": null
+      "Colete 100 troncos de árvores de freixo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 통나무 채집하기": null
+      "Coleta de Tronco em Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14668,13 +14644,13 @@
   "permanent_gathering_wood_bough_04": {
     "category": "permanent",
     "description": {
-      "잿나무 나뭇가지를 200번 채집하세요.": null
+      "Colete 200 galhos de árvores de freixo.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 나뭇가지 채집하기": null
+      "Coleta de Galho em Ilha Vulcânica": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14682,13 +14658,13 @@
   "permanent_gathering_black_iron_01": {
     "category": "permanent",
     "description": {
-      "검은 철광석을 5번 채집하세요.": null
+      "Colete minério de ferro preto 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "검은 철광석 채집하기 I": null
+      "Coleta de Minério de Ferro Preto I": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14696,13 +14672,13 @@
   "permanent_gathering_black_iron_02": {
     "category": "permanent",
     "description": {
-      "검은 철광석을 10번 채집하세요.": null
+      "Colete minério de ferro preto 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "검은 철광석 채집하기 II": null
+      "Coleta de Minério de Ferro Preto II": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14710,13 +14686,13 @@
   "permanent_gathering_black_iron_03": {
     "category": "permanent",
     "description": {
-      "검은 철광석을 50번 채집하세요.": null
+      "Colete minério de ferro preto 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "검은 철광석 채집하기 III": null
+      "Coleta de Minério de Ferro Preto III": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14724,13 +14700,13 @@
   "permanent_gathering_hard_lava_01": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 5번 채집하세요.": null
+      "Colete lava endurecida 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "굳은 용암 채집하기 I": null
+      "Coleta de Lava Endurecida I": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14738,13 +14714,13 @@
   "permanent_gathering_hard_lava_02": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 10번 채집하세요.": null
+      "Colete lava endurecida 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "굳은 용암 채집하기 II": null
+      "Coleta de Lava Endurecida II": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14752,13 +14728,13 @@
   "permanent_gathering_hard_lava_03": {
     "category": "permanent",
     "description": {
-      "굳은 용암을 50번 채집하세요.": null
+      "Colete lava endurecida 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "굳은 용암 채집하기 III": null
+      "Coleta de Lava Endurecida III": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14766,13 +14742,13 @@
   "permanent_gathering_sulphur_01": {
     "category": "permanent",
     "description": {
-      "유황을 5번 채집하세요.": null
+      "Colete enxofre 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "유황 채집하기 I": null
+      "Coleta de Enxofre I": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14780,13 +14756,13 @@
   "permanent_gathering_sulphur_02": {
     "category": "permanent",
     "description": {
-      "유황을 10번 채집하세요.": null
+      "Colete enxofre 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "유황 채집하기 II": null
+      "Coleta de Enxofre II": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14794,13 +14770,13 @@
   "permanent_gathering_sulphur_03": {
     "category": "permanent",
     "description": {
-      "유황을 50번 채집하세요.": null
+      "Colete enxofre 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "유황 채집하기 III": null
+      "Coleta de Enxofre III": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14808,13 +14784,13 @@
   "permanent_gathering_lava_01": {
     "category": "permanent",
     "description": {
-      "용암을 5번 채집하세요.": null
+      "Colete lava 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "용암 채집하기 I": null
+      "Coleta de Lava I": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14822,13 +14798,13 @@
   "permanent_gathering_lava_02": {
     "category": "permanent",
     "description": {
-      "용암을 10번 채집하세요.": null
+      "Colete lava 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "용암 채집하기 II": null
+      "Coleta de Lava II": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14836,13 +14812,13 @@
   "permanent_gathering_lava_03": {
     "category": "permanent",
     "description": {
-      "용암을 50번 채집하세요.": null
+      "Colete lava 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "용암 채집하기 III": null
+      "Coleta de Lava III": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14850,13 +14826,13 @@
   "permanent_gathering_granite_01": {
     "category": "permanent",
     "description": {
-      "화강암을 5번 채집하세요.": null
+      "Colete granito 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화강암 채집하기 I": null
+      "Coleta de Granito I": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14864,13 +14840,13 @@
   "permanent_gathering_granite_02": {
     "category": "permanent",
     "description": {
-      "화강암을 10번 채집하세요.": null
+      "Colete granito 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화강암 채집하기 II": null
+      "Coleta de Granito II": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14878,13 +14854,13 @@
   "permanent_gathering_granite_03": {
     "category": "permanent",
     "description": {
-      "화강암을 50번 채집하세요.": null
+      "Colete granito 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화강암 채집하기 III": null
+      "Coleta de Granito III": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14892,13 +14868,13 @@
   "permanent_gathering_basalt_01": {
     "category": "permanent",
     "description": {
-      "현무암을 5번 채집하세요.": null
+      "Colete basalto 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "현무암 채집하기 I": null
+      "Coleta de Basalto I": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14906,13 +14882,13 @@
   "permanent_gathering_basalt_02": {
     "category": "permanent",
     "description": {
-      "현무암을 10번 채집하세요.": null
+      "Colete basalto 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "현무암 채집하기 II": null
+      "Coleta de Basalto II": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14920,13 +14896,13 @@
   "permanent_gathering_basalt_03": {
     "category": "permanent",
     "description": {
-      "현무암을 50번 채집하세요.": null
+      "Colete basalto 50 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "현무암 채집하기 III": null
+      "Coleta de Basalto III": null
     },
     "order": 99,
     "icon": "skill_category_gathering"
@@ -14976,13 +14952,13 @@
   "permanent_farming_seed_r_love_01": {
     "category": "permanent",
     "description": {
-      "빨간 사랑초 종자를 5번 심으세요.": null
+      "Plante 5 sementes de oxalis vermelha.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 종자 심기 I": null
+      "Cultivo em Ilha Vulcânica I": null
     },
     "order": 99,
     "icon": "skill_category_farming"
@@ -14990,13 +14966,13 @@
   "permanent_farming_seed_y_love_01": {
     "category": "permanent",
     "description": {
-      "노란 사랑초 종자를 5번 심으세요.": null
+      "Plante 5 sementes de oxalis amarela.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 종자 심기 II": null
+      "Cultivo em Ilha Vulcânica II": null
     },
     "order": 99,
     "icon": "skill_category_farming"
@@ -15004,13 +14980,13 @@
   "permanent_farming_seed_b_love_01": {
     "category": "permanent",
     "description": {
-      "파란 사랑초 종자를 5번 심으세요.": null
+      "Plante 5 sementes de oxalis azul.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 종자 심기 III": null
+      "Cultivo em Ilha Vulcânica III": null
     },
     "order": 99,
     "icon": "skill_category_farming"
@@ -15018,13 +14994,13 @@
   "permanent_farming_seed_taro_01": {
     "category": "permanent",
     "description": {
-      "타로 종자를 5번 심으세요.": null
+      "Plante 5 sementes de taro.": null
     },
     "display_on_hud": false,
     "quest_type": 2,
     "auto_finish": false,
     "subject": {
-      "화산섬 종자 심기 IV": null
+      "Cultivo em Ilha Vulcânica IV": null
     },
     "order": 99,
     "icon": "skill_category_farming"
@@ -16157,13 +16133,13 @@
   "daily_hunting_a_01": {
     "category": "daily",
     "description": {
-      "동물을 10마리 사냥하세요.": null
+      "Cace 10 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 동물 사냥하기": null
+      "[Diário] Caça Animal": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16171,13 +16147,13 @@
   "daily_hunting_b_01": {
     "category": "daily",
     "description": {
-      "동물을 10마리 사냥하세요.": null
+      "Cace 10 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 동물 사냥하기": null
+      "[Diário] Caça Animal": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16185,13 +16161,13 @@
   "daily_hunting_c_01": {
     "category": "daily",
     "description": {
-      "동물을 10마리 사냥하세요.": null
+      "Cace 10 animais.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 동물 사냥하기": null
+      "[Diário] Caça Animal": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16199,13 +16175,13 @@
   "daily_hunting_d_01": {
     "category": "daily",
     "description": {
-      "온대 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar temperado.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 온대 해역 사냥하기": null
+      "[Diário] Caça em Mares Temperados": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16213,13 +16189,13 @@
   "daily_hunting_d_02": {
     "category": "daily",
     "description": {
-      "열대 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar tropical.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 열대 해역 사냥하기": null
+      "[Diário] Caça em Mares Tropicais": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16227,13 +16203,13 @@
   "daily_hunting_e_01": {
     "category": "daily",
     "description": {
-      "툰드라 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar da tundra.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 툰드라 해역 사냥하기": null
+      "[Diário] Caça em Mares da Tundra": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16241,13 +16217,13 @@
   "daily_hunting_e_02": {
     "category": "daily",
     "description": {
-      "초원 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar gramado.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 초원 해역 사냥하기": null
+      "[Diário] Caça na Pradaria": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16255,13 +16231,13 @@
   "daily_hunting_f_01": {
     "category": "daily",
     "description": {
-      "늪 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar pantanoso.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 늪 해역 사냥하기": null
+      "[Diário] Caça em Mares Pantanosos": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16269,13 +16245,13 @@
   "daily_hunting_f_02": {
     "category": "daily",
     "description": {
-      "사막 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar do deserto.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 사막 해역 사냥하기": null
+      "[Diário] Caça em Mares do Deserto": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16283,13 +16259,13 @@
   "daily_hunting_g_01": {
     "category": "daily",
     "description": {
-      "설원 해역의 불안정섬에서 동물을 5마리 사냥하세요.": null
+      "Cace 5 animais numa Ilha Instável em um mar nevado.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 설원 해역 사냥하기": null
+      "[Diário] Caça em Mares Nevados": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16297,13 +16273,13 @@
   "daily_hunting_h_01": {
     "category": "daily",
     "description": {
-      "화산 해역의 불안정섬에서 동물을 5마리 사냥하세요. ": null
+      "Cace 5 animais numa Ilha Instável em um mar vulcânico.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 화산 해역 사냥하기": null
+      "[Diário] Caçada no Mar Vulcânico": null
     },
     "order": 100,
     "icon": "skill_category_melee_combat"
@@ -16311,13 +16287,13 @@
   "daily_weaponcrafting_a_01": {
     "category": "daily",
     "description": {
-      "무기를 5번 제작하세요.": null
+      "Criar 5 armas.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 무기 제작하기": null
+      "[Diário] Criação de Armas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -16325,13 +16301,13 @@
   "daily_weaponcrafting_b_01": {
     "category": "daily",
     "description": {
-      "도구를 5번 제작하세요.": null
+      "Crie 5 ferramentas.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 도구 제작하기": null
+      "[Diário] Criação de Ferramentas": null
     },
     "order": 100,
     "icon": "skill_category_weaponcrafting"
@@ -16339,13 +16315,13 @@
   "daily_armorcrafting_a_01": {
     "category": "daily",
     "description": {
-      "의상 또는 소품을 3번 제작하세요.": null
+      "Crie roupas ou acessórios 3 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 의상/소품 제작하기": null
+      "[Diário] Criação de Roupas e Acessórios": null
     },
     "order": 100,
     "icon": "skill_category_armorcrafting"
@@ -16353,13 +16329,13 @@
   "daily_cooking_a_01": {
     "category": "daily",
     "description": {
-      "요리를 10번 하세요.": null
+      "Cozinhar 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 요리하기": null
+      "[Diário] Culinária": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -16367,13 +16343,13 @@
   "daily_cooking_b_02": {
     "category": "daily",
     "description": {
-      "식재료를 5번 가공하세요.": null
+      "Processe alimentos 5 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 식재료 가공하기": null
+      "[Diário] Processamento de Comida": null
     },
     "order": 100,
     "icon": "skill_category_cooking"
@@ -16381,13 +16357,13 @@
   "daily_constructing_a_01": {
     "category": "daily",
     "description": {
-      "건설을 2번 하세요.": null
+      "Edifique 2 construções.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 건설하기": null
+      "[Diário] Estruturar Construção": null
     },
     "order": 100,
     "icon": "skill_category_constructing"
@@ -16395,13 +16371,13 @@
   "daily_process_a_01": {
     "category": "daily",
     "description": {
-      "재료를 10번 가공하세요.": null
+      "Processe materiais 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 재료 가공하기": null
+      "[Diário] Processamento de Materiais": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -16409,13 +16385,13 @@
   "daily_process_b_01": {
     "category": "daily",
     "description": {
-      "재료 다듬기를 4번 하세요.": null
+      "Apare materiais 4 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 재료 다듬기": null
+      "[Diário] Aparação de Materiais": null
     },
     "order": 100,
     "icon": "recipe_trim_bone"
@@ -16423,13 +16399,13 @@
   "daily_gathering_a_01": {
     "category": "daily",
     "description": {
-      "채집 또는 채광을 20번 하세요.": null
+      "Colete ou minere 20 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 채집/채광하기": null
+      "[Diário] Coleta e Mineração": null
     },
     "order": 100,
     "icon": "skill_category_gathering"
@@ -16437,13 +16413,13 @@
   "daily_butchery_a_01": {
     "category": "daily",
     "description": {
-      "도축을 10번 하세요.": null
+      "Esquarteje 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 도축하기": null
+      "[Diário] Esquartejamento": null
     },
     "order": 100,
     "icon": "skill_category_butchery"
@@ -16451,13 +16427,13 @@
   "daily_farming_a_01": {
     "category": "daily",
     "description": {
-      "농사를 10번 하세요.": null
+      "Cultivar 10 vezes.": null
     },
     "display_on_hud": false,
     "quest_type": 0,
     "auto_finish": false,
     "subject": {
-      "[일일] 농사하기": null
+      "[Diário] Cultivo": null
     },
     "order": 100,
     "icon": "skill_category_farming"

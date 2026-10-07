@@ -183,7 +183,7 @@ public partial class Player
             // e instancias da Ilha Domada. Os overrides originais ainda estao no nivel 1.
             if (template.Role is Shared.Region.Role.Safehouse or Shared.Region.Role.Personal)
                 return Math.Max(1, template.Level);
-            if (template.Role == Shared.Region.Role.Risky && template.Level > 0)
+            if (template.Role is Shared.Region.Role.Risky or Shared.Region.Role.Outpost && template.Level > 0)
                 return template.Level;
             if (template.CollectibleLevels.TryGetValue(entityType, out int nativeLevel))
                 return Math.Max(1, template.Level > 0 ? Math.Min(template.Level, nativeLevel) : nativeLevel);
@@ -564,12 +564,14 @@ public partial class Player
         if (isCarcass)
         {
             AddExpForAction(SkillTuning.ButcherWeight, Shared.Skill.Category.Butchery, "Esfolar");
-            NoteQuestEvent(Shared.Quest.QuestEventType.Collected, QuestCatalog.Filters.Carcass);
+            NoteQuestEvent(Shared.Quest.QuestEventType.Collected, QuestCatalog.Filters.Carcass,
+                context: QuestActionContext(products: items.ToArray()));
         }
         else
         {
             AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Gathering, "Coletar itens");
-            NoteQuestEvent(Shared.Quest.QuestEventType.Collected, QuestCatalog.Filters.Gather);
+            NoteQuestEvent(Shared.Quest.QuestEventType.Collected, QuestCatalog.Filters.Gather,
+                context: QuestActionContext(products: items.ToArray()));
         }
 
         if (ranOut && !isCarcass)
@@ -1188,6 +1190,13 @@ internal static class CollectibleTable
     private static string[] FamilyFallback(string collectibleId)
     {
         string id = collectibleId.ToLowerInvariant();
+        if (id.StartsWith("dump_", StringComparison.Ordinal)) return new[] { "dump" };
+        // As variantes de junco sem source_info também têm caule. Uma coleta
+        // parcial pode esgotá-lo, mas a renovação deve restaurar todas as partes.
+        if (id.StartsWith("grass_reed_lake", StringComparison.Ordinal))
+            return new[] { "stem_tough", "leaf" };
+        if (id.StartsWith("grass_reed", StringComparison.Ordinal))
+            return new[] { "stem", "leaf" };
         if (id.StartsWith("harpoon_shrimp_point_")) return new[] { "shrimp", "shrimp_big" };
         if (id.StartsWith("harpoon_fishing_point_")) return new[] { "fish", "fish_big" };
         if (id.StartsWith("tree") || id.Contains("tree") || id.StartsWith("timber") || id.StartsWith("dead"))
@@ -1420,6 +1429,13 @@ internal static class CollectibleTable
     {
         // 1) ชื่อตรงกับ prototype อยู่แล้ว
         if (PrototypeYaml.GetItemPrototype(generatorId) != null) return generatorId;
+
+        // Nomes traduzidos podem coincidir (stem / stem_tough); o id nativo
+        // distingue o junco do rio e do lago independentemente do idioma.
+        if (generatorId == "reed_lake" || generatorId.StartsWith("reed_lake_", StringComparison.Ordinal))
+            return "stem_tough";
+        if (generatorId == "reed" || generatorId.StartsWith("reed_", StringComparison.Ordinal))
+            return "stem";
 
         // Os ids de protocolo identificam a planta; o inventario usa o item generico
         // flower. Confirmados em recipes.json/source_info e generator_client_data.

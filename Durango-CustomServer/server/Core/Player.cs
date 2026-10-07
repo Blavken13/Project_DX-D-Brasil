@@ -679,8 +679,9 @@ public partial class Player
     private DiscoveryInfo BuildDiscoveryInfo(string templateId)
     {
         var animals = new List<Pair<ushort, bool>>();
-        RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(templateId)
-                                              ?? RegionCatalog.GetTemplate(_world.TerrainInfo?.region_template);
+        RegionCatalog.TemplateInfo template = RegionCatalog.GetTemplate(templateId);
+        HashSet<ushort> discovered = null;
+        _context.DiscoveredAnimalTypes?.TryGetValue(templateId ?? "", out discovered);
         if (template != null)
         {
             var seen = new HashSet<ushort>();
@@ -688,10 +689,9 @@ public partial class Player
             {
                 foreach (RegionCatalog.HerdSpawn spawn in group.Value)
                 {
-                    // ยังไม่มีที่เก็บ "เจอชนิดไหนไปแล้วบ้าง" ต่อผู้เล่น (PlayerContext ไม่มีช่อง)
-                    // ⇒ ส่ง false ไว้ก่อน ผลคือเกมพยายามค้นหาสัตว์รอบตัวทุกครั้งที่เข้าเกาะ
-                    // ซึ่งถูกต้องกว่าบอกว่าเจอครบแล้วทั้งที่ยังไม่เคยเจอ
-                    if (seen.Add(spawn.EntityType)) animals.Add(new Pair<ushort, bool>(spawn.EntityType, false));
+                    // IDs de animais mudam no respawn; a descoberta é pela espécie.
+                    if (seen.Add(spawn.EntityType)) animals.Add(new Pair<ushort, bool>(spawn.EntityType,
+                        discovered?.Contains(spawn.EntityType) == true));
                 }
             }
         }
@@ -1567,6 +1567,7 @@ public partial class Player
             // target ไม่ตรง (client/GatheringSystem.cs:202) — กดแล้วไม่มีอะไรเกิดขึ้นแทนที่จะพัง
             // (client/InteractionSystem.cs:486 Gathering(menu.Id) → FindGatheringData(null) → null)
             msg.Collectible = BuildCollectibleFor(touch.EntityId, touch.EntityType, touch.Tile);
+            msg.Level = CurrentGatheringLevel(touch.EntityType);
             var naturalInteractions = new List<int> { (int)Shared.System.Interaction.Collect };
             if (flag)
             {
@@ -2005,7 +2006,7 @@ public partial class Player
         });
 
         AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "Cultivar");
-        NoteQuestEvent(Shared.Quest.QuestEventType.Farmed);
+        NoteQuestEvent(Shared.Quest.QuestEventType.Farmed, context: QuestActionContext(products: new[] { seed }));
         OnContextChanged();
     }
 

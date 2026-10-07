@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Durango.Network;
 using Durango.Utils;
 using Messages;
@@ -28,6 +29,11 @@ public partial class Player
 {
     private void RegisterMapHandlers()
     {
+        _connection.Recv(delegate(GetDiscoveryRates msg, PacketHeader header)
+        {
+            Send(new DiscoveryRates { Rates = (msg.TemplateIds ?? Array.Empty<string>())
+                .Select(id => new Pair<string, float>(id, AnimalDiscoveryRate(id))).ToArray() }, header.Seq);
+        });
         // จำนวนจุดสำคัญของเกาะ — client/Durango.UI.Popup/RouteInfoTooltip.cs:78-79
         // ⚠️ Tooltip.Show() ถูกเรียกจาก callback ของตัวนี้เท่านั้น (RouteInfoTooltip.cs:147-152)
         // ไม่ตอบ = tooltip ไม่โผล่ = ไม่มีปุ่ม "ออกเรือ" ให้กด = เดินทางไม่ได้เลย โดยไม่มี error

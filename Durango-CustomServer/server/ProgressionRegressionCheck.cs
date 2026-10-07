@@ -45,8 +45,8 @@ internal static class ProgressionRegressionCheck
             {
                 var player = link.Player; world.AddPlayer(player); player.ContextChanged += context.Save;
                 var skills = Field<SkillSave>(player, "_skills");
-                Check((int)Call(player, "TotalSkillPoints") == SkillDataStore.InitialSkillPoints,
-                    "nivel 1 mantem pontos iniciais");
+                Check((int)Call(player, "TotalSkillPoints") == 23,
+                    "nivel 1 recebe 15 SP originais mais 50% arredondados para cima");
                 int level60 = (int)typeof(Player).GetMethod("ExpForLevel", BindingFlags.Static | BindingFlags.NonPublic)
                     .Invoke(null, new object[] { 60 });
                 player.AddExp(level60 - skills.Exp, "cheat");
@@ -58,8 +58,8 @@ internal static class ProgressionRegressionCheck
                 Check(gathering.Level == 40 && gathering.Exp == 12 &&
                     link.Messages.OfType<SkillCategoryExperienced>().Last().Exp == 12,
                     "atividade normal concede 12 pontos à barra da habilidade pelo protocolo");
-                Check((int)Call(player, "TotalSkillPoints") == SkillDataStore.InitialSkillPoints + 59 * 5,
-                    "nivel 60 recebe cinco pontos por nivel, inclusive retroativos");
+                Check((int)Call(player, "TotalSkillPoints") == SkillTuning.TotalSkillPointsForLevel(60),
+                    "nivel 60 acumula tabela original e bonus Alpha, inclusive retroativos");
                 var construction = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Constructing);
                 var weapons = (SkillCategorySave)Call(player, "CategoryState", (int)Category.Weaponcrafting);
                 construction.Level = weapons.Level = 60;

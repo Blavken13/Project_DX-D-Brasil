@@ -100,6 +100,22 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--quest-reactivation-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return QuestReactivationCheck.Run(dataDir);
+                case "--sp-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return SkillPointsCheck.Run(dataDir);
+                case "--volcanic-food-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return VolcanicFoodCheck.Run(dataDir);
+                case "--tester-bugs-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return TesterReportedBugsCheck.Run(dataDir);
                 case "--xp-coupon-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
@@ -297,6 +313,9 @@ internal static class Program
                     Console.WriteLine("  --localization-check [--data <dir>] Valida textos brasileiros, nomes, descricoes e prioridade de idioma");
                     Console.WriteLine("  --polish-check [--data <dir>] Valida pacotes, durabilidade, niveis, expansao e limpeza de construcoes");
                     Console.WriteLine("  --gameplay-bugs-check [--data <dir>] Valida extensao de materiais, descarte, instalacoes selvagens, nivel de mesas e respawn");
+                    Console.WriteLine("  --sp-check [--data <dir>] Valida tabela de SP, bonus Alpha e retroativos em saves temporarios");
+                    Console.WriteLine("  --volcanic-food-check [--data <dir>] Valida comida, tempestade e continuidade das barras em saves temporarios");
+                    Console.WriteLine("  --tester-bugs-check [--data <dir>] Valida bolinhos, recursos das ilhas, dicas e persistencia de descobertas em saves temporarios");
                     Console.WriteLine("  --android-assets-check [--assetbundles-android <dir>] Audita catálogo, preload e dependências sem abrir o servidor");
                     Console.WriteLine("DurangoServerNx — เซิร์ฟแท้พอร์ตตรง · มือถือก่อน");
                     Console.WriteLine("  --quest-check [--data <dir>]  ตรวจแคตตาล็อก Daily เฟส 1 (ไม่ต้องเปิดเซิร์ฟ)");
