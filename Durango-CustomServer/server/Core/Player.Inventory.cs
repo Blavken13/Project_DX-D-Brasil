@@ -60,14 +60,10 @@ public partial class Player
     private const string DefaultWarehouseSection = "Armazém";
 
     /// <summary>
-    /// **ค่าของเรา** — ไอเทมที่ถูก "ล็อก" ของผู้เล่นคนนี้ เก็บในหน่วยความจำต่อ connection
-    ///
-    /// ต่อใหม่แล้วหลุด เพราะทางเดียวที่ client รู้จักรายการล็อกคือ InventoryInfos.LockedItemIds
-    /// (client/InventorySystem.cs:237 UpdateLockedItems) ซึ่งถูกส่งครั้งแรกจาก Core/Player.cs
-    /// SendInventory — ไฟล์นั้นอยู่นอกขอบเขต จึงยังเสียบค่าที่โหลดจากเซฟเข้าไปไม่ได้
-    /// เก็บลงไฟล์ตอนนี้ = ข้อมูลที่ไม่มีใครอ่าน จึงยังไม่ทำ
+    /// Bloqueios pertencem ao save do personagem, inclusive após viagem e reconexão.
+    /// SendInventory e SendInventoryInfos enviam a mesma lista ao cliente.
     /// </summary>
-    private readonly HashSet<string> _lockedItemIds = new();
+    private HashSet<string> _lockedItemIds => _context.LockedItemIds ??= new();
 
     private void RegisterInventoryHandlers()
     {
@@ -278,6 +274,7 @@ public partial class Player
             if (msg.Lock && _context.InventoryItems.Any(it => it.Id == id)) _lockedItemIds.Add(id);
             else if (!msg.Lock) _lockedItemIds.Remove(id);
         }
+        OnContextChanged();
         SendInventoryInfos();
     }
 

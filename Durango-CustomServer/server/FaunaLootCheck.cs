@@ -67,7 +67,15 @@ internal static class FaunaLootCheck
                             id + ": atributos de combate usam nível 60 além do número exibido");
                         animal.IsAlive = false; animal.Life = 0; animal.DiedAt = 1;
                         AnimalManager.Animal revived = null;
-                        manager.Process(1 + AnimalManager.CorpseDisposeDelay, _ => { }, a => revived = a);
+                        int expired = 0;
+                        manager.Process(1 + AnimalManager.CorpseDisposeDelay - .1, _ => { }, a => revived = a, _ => expired++);
+                        Check(!animal.CorpseDisposed && !animal.IsAlive, id + ": corpo dura quatro minutos");
+                        manager.Process(1 + AnimalManager.CorpseDisposeDelay, _ => { }, a => revived = a, _ => expired++);
+                        Check(animal.CorpseDisposed && !animal.IsAlive && expired == 1 && revived == null,
+                            id + ": corpo desaparece sem reviver aos quatro minutos");
+                        manager.Process(1 + AnimalManager.RespawnDelay - .1, _ => { }, a => revived = a, _ => expired++);
+                        Check(!animal.IsAlive && expired == 1, id + ": sem respawn antecipado ou descarte duplicado");
+                        manager.Process(1 + AnimalManager.RespawnDelay, _ => { }, a => revived = a);
                         Check(revived == animal && animal.IsAlive && animal.CombatLevel == 60 && animal.Life == animal.LifeMax,
                             id + ": respawn conserva nível da ilha e restaura vida");
                         var reopened = new AnimalManager(terrain, template);
@@ -205,5 +213,38 @@ internal static class FaunaLootCheck
         Check(context.InventoryItems.Count > before, "id inexistente nao permite tratar carcaca como recurso natural");
         skill.Level = 10;
         Check(Menu().Generators.Single(g => g.Id == "meat").Level == 10, "menu nao vaza nivel de outra consulta pelo cache");
+
+        skill.Level = 28;
+        var remaining = Menu().Generators.First(g => g.Enabled && g.Amount > 0);
+        int harvested = world.HarvestedGenerators(animal.EntityId).Count;
+        replies = link.Messages.OfType<Collected>().Count();
+        timer = link.Request<Collect, Messages.Timer>(new Collect
+            { EntityId = animal.EntityId, Tile = tile, GeneratorId = remaining.Id });
+        Check(animal.ActiveCollectors == 1, "coleta reserva protecao do corpo");
+        world.AnimalManager.Process(animal.DiedAt + AnimalManager.RespawnDelay + 1, _ => { });
+        Check(!animal.IsAlive && !animal.CorpseDisposed &&
+            world.HarvestedGenerators(animal.EntityId).Count == harvested + 1,
+            "corpo nao desaparece nem renova loot durante coleta, mesmo apos cinco minutos");
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
+        link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
+        Check(animal.ActiveCollectors == 0 && world.HarvestedGenerators(animal.EntityId).Count == harvested + 1,
+            "concluir coleta libera protecao sem renovar recursos");
+
+        // Cancelamento/viagem deve liberar a proteção e devolver somente a reserva cancelada.
+        remaining = Menu().Generators.First(g => g.Enabled && g.Amount > 0);
+        timer = link.Request<Collect, Messages.Timer>(new Collect
+            { EntityId = animal.EntityId, Tile = tile, GeneratorId = remaining.Id });
+        Call(link.Player, "ClearCollectTimers");
+        Check(animal.ActiveCollectors == 0 && world.HarvestedGenerators(animal.EntityId).Count == harvested + 1,
+            "cancelar coleta libera corpo e devolve reserva, preservando loot ja coletado");
+        world.AnimalManager.Process(animal.DiedAt + AnimalManager.CorpseDisposeDelay, _ => { },
+            a => Call(world, "OnAnimalRespawned", a), a => Call(world, "OnCorpseDisposed", a));
+        Check(animal.CorpseDisposed && !animal.IsAlive && Menu().Generators.Length == 0,
+            "corpo expirado nao oferece recursos");
+        link.Request<Collect, Abort>(new Collect { EntityId = animal.EntityId, Tile = tile, GeneratorId = "meat" });
+        world.AnimalManager.Process(animal.DiedAt + AnimalManager.RespawnDelay, _ => { },
+            a => Call(world, "OnAnimalRespawned", a));
+        Check(animal.IsAlive && !animal.CorpseDisposed && Menu().Generators.Length == 0,
+            "dino reaparece vivo aos cinco minutos e nao oferece loot antes de nova morte");
     }
 }

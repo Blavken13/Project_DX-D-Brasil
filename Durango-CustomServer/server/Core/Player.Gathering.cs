@@ -211,7 +211,8 @@ public partial class Player
 
         // ซากสัตว์แล่ได้กี่ครั้งขึ้นกับเลเวลตัวมัน — ตัวใหญ่/เลเวลสูงให้ของมากกว่า
         AnimalManager.Animal animal = _world.AnimalManager?.Get(entityId);
-        if (animal?.Captured == true) return new Collectible { EntityId = entityId, Generators = Array.Empty<Generator>() };
+        if (animal != null && (animal.IsAlive || animal.Captured || animal.CorpseDisposed || animal.Butchered))
+            return new Collectible { EntityId = entityId, Generators = Array.Empty<Generator>() };
         if (animal == null) _world.ObserveTutorialNatural(tile, entityType);
         int animalLevel = animal != null && !animal.IsAlive ? animal.CombatLevel : 0;
 
@@ -235,7 +236,8 @@ public partial class Player
     {
         if (TrySendGroundCollectible(msg.EntityId, seq)) return;
         if (TrySendFarmCollectible(msg.EntityId, seq)) return;
-        if (_world.AnimalManager?.Get(msg.EntityId)?.Captured == true)
+        if (_world.AnimalManager?.Get(msg.EntityId) is { } unavailable &&
+            (unavailable.IsAlive || unavailable.Captured || unavailable.CorpseDisposed || unavailable.Butchered))
         { Send(new Collectible { EntityId = msg.EntityId, Generators = Array.Empty<Generator>() }, seq); return; }
 
         _touchedNaturals.TryGetValue(msg.Tile, out ushort entityType);
@@ -261,7 +263,7 @@ public partial class Player
         // ซากสัตว์: ฝั่งเกมส่ง Tile มาเป็น (-1,-1) เพราะสัตว์ไม่ได้อยู่กลางช่องเหมือนต้นไม้
         // ⇒ ถ้าหาด้วย tile ไม่เจอ ให้ลองหาด้วย EntityId (สัตว์มี id จริง ต่างจากของธรรมชาติ)
         AnimalManager.Animal carcass = _world.AnimalManager?.Get(msg.EntityId);
-        if (carcass != null && (carcass.IsAlive || carcass.Captured || carcass.Butchered))
+        if (carcass != null && (carcass.IsAlive || carcass.Captured || carcass.CorpseDisposed || carcass.Butchered))
         { RejectCollect(seq, "Este animal nao possui um cadaver disponivel para coleta.", msg); return; }
         if (carcass != null && carcass.IsAlive) carcass = null;         // ยังไม่ตาย = ชำแหละไม่ได้
         if (carcass != null && carcass.Butchered) carcass = null;       // ชำแหละไปแล้ว = ไม่มีอะไรเหลือ
@@ -586,7 +588,6 @@ public partial class Player
             {
                 carcass.Butchered = true;
             }
-            _world.ForgetHarvests(harvestKey);
         }
 
         FinishCollect(collected, seq);
@@ -622,26 +623,40 @@ public partial class Player
 
         long generation = _world.NaturalGeneration(tile);
         double deathAt = isCarcass ? _world.AnimalManager.Get(entityId)?.DiedAt ?? 0 : 0;
+        var protectedCarcass = isCarcass ? _world.AnimalManager.Get(entityId) : null;
+        if (protectedCarcass != null) protectedCarcass.ActiveCollectors++;
+        bool released = false;
+        void Release()
+        {
+            if (released) return;
+            released = true;
+            if (protectedCarcass != null) protectedCarcass.ActiveCollectors--;
+        }
         bool IsCurrent()
         {
             if (!isCarcass) return _world.NaturalGeneration(tile) == generation;
             var carcass = _world.AnimalManager.Get(entityId);
-            return carcass != null && !carcass.IsAlive && !carcass.Captured && !carcass.Butchered && carcass.DiedAt == deathAt;
+            return carcass != null && !carcass.IsAlive && !carcass.Captured && !carcass.CorpseDisposed && !carcass.Butchered && carcass.DiedAt == deathAt;
         }
         void Cancel()
         {
+            Release();
             if (IsCurrent()) UnreserveGenerator(harvestKey, generatorId);
             Send(new Abort { Text = "Coleta interrompida ou recurso renovado. Selecione o spot novamente." }, seq);
             Send(default(ReplySequenceMark), seq);
         }
         _pendingCollects.Add(new PendingCollect(Gauge.CurrentTime + duration, () =>
         {
-            if (!IsCurrent() || !_context.AppearPlayer.IsAlive || !IsWithinCollectRange(tile))
+            try
             {
-                Cancel();
-                return;
+                if (!IsCurrent() || !_context.AppearPlayer.IsAlive || !IsWithinCollectRange(tile))
+                {
+                    Cancel();
+                    return;
+                }
+                CompleteCollectAfterDelay(collected, items, seq, harvestKey, tile, entityId, isCarcass, ranOut, toolItemId);
             }
-            CompleteCollectAfterDelay(collected, items, seq, harvestKey, tile, entityId, isCarcass, ranOut, toolItemId);
+            finally { Release(); }
         }, Cancel));
     }
 

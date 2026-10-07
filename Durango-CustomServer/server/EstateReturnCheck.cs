@@ -36,12 +36,25 @@ internal static class EstateReturnCheck
     {
         using (var link = new EconomyProtocolCheck.Link(context, hunt, null, true))
         {
+            link.Player.ContextChanged += context.Save;
+            var important = context.InventoryItems.FirstOrDefault(i => context.LockedItemIds.Contains(i.Id));
+            if (important.Id == null)
+            {
+                important = Cheats.MakeItem("axe_onehand_loose_stone", 30).Value;
+                context.InventoryItems.Add(important);
+            }
+            link.Send(new LockOrUnlockItems { Lock = true, ItemIds = new[] { important.Id } });
+            link.PumpUntil(() => link.Messages.OfType<InventoryInfos>().Any(i =>
+                i.LockedItemIds?.Contains(important.Id) == true));
+            Check(context.LockedItemIds.Contains(important.Id), "bloqueio pertence ao save do personagem");
             link.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = type });
             link.PumpUntil(() => link.Messages.OfType<Emigrated>().Any());
             Check(context.PendingEstateArrival?.EstateId == estateId, "retorno grava somente o dominio do dono: " + context.EntityId);
         }
         SafeSave.FlushPending();
         var loaded = PlayerContext.Load(context.Path);
+        Check(loaded.LockedItemIds.SetEquals(context.LockedItemIds) && loaded.LockedItemIds.Count > 0,
+            "viagem e recarga do save preservam itens bloqueados: " + context.EntityId);
         Check(loaded.RegionId == context.RegionId && loaded.PendingEstateArrival?.EstateId == estateId,
             "destino e chegada sobrevivem a reconexao: " + context.EntityId);
         return loaded;
@@ -49,6 +62,19 @@ internal static class EstateReturnCheck
     private static void Arrival(PlayerContext context, World world, string estateId)
     {
         using var link = new EconomyProtocolCheck.Link(context, world, null, true);
+        link.PumpUntil(() => link.Messages.OfType<Inventory>().Any());
+        Check(link.Messages.OfType<Inventory>().Last().InventoryInfos.LockedItemIds.ToHashSet()
+            .SetEquals(context.LockedItemIds), "inventario inicial restaura bloqueios na ilha de destino");
+        var locked = context.InventoryItems.FirstOrDefault(i => context.LockedItemIds.Contains(i.Id));
+        // As duas variantes do protocolo representam dropar no chão e destruir.
+        var dump = typeof(Player).GetMethod("DumpItemsToGround", System.Reflection.BindingFlags.Instance |
+            System.Reflection.BindingFlags.NonPublic);
+        if (locked.Id != null)
+        {
+            dump.Invoke(link.Player, new object[] { new DumpItems { ItemIds = new[] { locked.Id }, Tile = world.EntryPoint } });
+            dump.Invoke(link.Player, new object[] { new DumpItems { ItemIds = new[] { locked.Id } } });
+            Check(context.InventoryItems.Any(i => i.Id == locked.Id), "item bloqueado nao pode ser dropado ou destruido apos viagem");
+        }
         Point2 tile = Position(link.Messages.OfType<AppearPlayer>().First());
         if (estateId == null)
             Check(tile.Equals(world.EntryPoint), "jogador sem dominio chega ao bote: " + context.EntityId);

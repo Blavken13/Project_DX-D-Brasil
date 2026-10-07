@@ -139,7 +139,7 @@ internal static class GameplayBugsCheck
 
             var animal = world.AnimalManager.All.First();
             animal.Life = animal.LifeMax; animal.IsAlive = true;
-            Call(world, "OnCorpseDisposed", animal);
+            Call(world, "OnAnimalRespawned", animal);
             Call(link.Player, "SyncAnimalVisibility");
             link.PumpUntil(() => link.Messages.OfType<Survival>().Any(m => m.EntityId == animal.EntityId));
             Check(link.Messages.OfType<Survival>().Last(m => m.EntityId == animal.EntityId).Life.Get() == animal.LifeMax,

@@ -1805,6 +1805,7 @@ public partial class Player
     {
         if (_detached) return;
         _detached = true;
+        ClearCollectTimers();
 
         _world.ArtifactAppeared -= World_ArtifactAppeared;
         _world.ArtifactDisappeared -= World_ArtifactDisappeared;
@@ -2170,6 +2171,8 @@ public partial class Player
         msg.InventoryInfos.EntityId = EntityId;
         msg.InventoryItems.EntityId = EntityId;
         msg.InventoryInfos.MaxSize = CurrentInventoryCapacity;
+        msg.InventoryInfos.LockedItemIds = _lockedItemIds.ToArray();
+        msg.InventoryInfos.ProtectedItems = new ProtectedItems { ItemIds = Array.Empty<string>() };
         msg.InventoryItems.Items = _context.InventoryItems.ToArray();
         // [7 ก.ย. 2026] ⚠️ เส้นนี้คือ inventory "ของตัวผู้เล่นเอง" ที่ส่งตอนเข้าเกม
         // เดิมไม่เคยใส่ Wallet เลย ⇒ ฝั่งเกมได้ค่า default (null) แล้วยอดเงินเป็น 0 ตลอด

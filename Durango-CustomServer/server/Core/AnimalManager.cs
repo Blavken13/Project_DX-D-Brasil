@@ -125,8 +125,10 @@ public class AnimalManager
         /// </summary>
         public bool Butchered;
 
-        /// <summary>เวลาที่ตาย (Gauge.CurrentTime) — 0 คือยังไม่ตาย · ครบ 180 วิ แล้วซากหาย</summary>
+        /// <summary>Instante da morte; corpo expira em 240 s, respawn em 300 s, aguardando coletas.</summary>
         public double DiedAt;
+        public bool CorpseDisposed;
+        public int ActiveCollectors;
 
         /// <summary>พิมพ์เวลาถอยหลังของซากตัวนี้ครั้งล่าสุดเมื่อไร (แยกรายตัว ไม่งั้นตัวเดียวบังตัวอื่น)</summary>
         public double LastCorpseLogAt;
@@ -415,7 +417,8 @@ public class AnimalManager
     /// [7 ก.ย. 2026] ซากตัวนี้ครบเวลาแล้ว — ผู้เรียกต้องบอกฝั่งเกมให้ลบออกจากจอ
     /// แล้วส่งตัวใหม่เข้าไปแทน (ดู World.Process)
     /// </param>
-    public void Process(double now, Action<Move> broadcast, Action<Animal> onCorpseGone = null)
+    public void Process(double now, Action<Move> broadcast, Action<Animal> onCorpseGone = null,
+                        Action<Animal> onCorpseExpired = null)
     {
         if (broadcast == null) return;
         foreach (Animal animal in _animals)
@@ -426,12 +429,18 @@ public class AnimalManager
             // และสัตว์ร่อยหรอลงเรื่อย ๆ จนเกาะไม่เหลืออะไรให้ล่า
             if (!animal.IsAlive)
             {
-                if (animal.DiedAt > 0.0 && now >= animal.DiedAt + CorpseDisposeDelay)
+                if (animal.ActiveCollectors > 0) continue;
+                if (!animal.CorpseDisposed && animal.DiedAt > 0.0 && now >= animal.DiedAt + CorpseDisposeDelay)
+                {
+                    animal.CorpseDisposed = true;
+                    onCorpseExpired?.Invoke(animal);
+                }
+                if (animal.DiedAt > 0.0 && now >= animal.DiedAt + RespawnDelay)
                 {
                     ReviveAtHome(animal);
                     onCorpseGone?.Invoke(animal);
                 }
-                else if (!animal.Captured && animal.DiedAt > 0.0 && now - animal.LastCorpseLogAt >= CorpseLogInterval)
+                else if (!animal.Captured && !animal.CorpseDisposed && animal.DiedAt > 0.0 && now - animal.LastCorpseLogAt >= CorpseLogInterval)
                 {
                     animal.LastCorpseLogAt = now;
                     double left = animal.DiedAt + CorpseDisposeDelay - now;
@@ -617,18 +626,11 @@ public class AnimalManager
         entityId != null && _byId.TryGetValue(entityId, out Animal animal) ? animal : null;
 
     /// <summary>
-    /// [7 ก.ย. 2026] ซากอยู่บนพื้นกี่วินาทีก่อนหายไป
-    /// **ข้อมูลจริง** — constants.json → herd.collectible_dispose_delay = 180
-    /// (สำรอง 180 ไว้เผื่ออ่านไฟล์ไม่ได้ ไม่ใช่ค่าที่เราตั้งเอง)
+    /// Janela da carcaça e do reaparecimento da fauna, contadas a partir da morte.
+    /// Não modifica a renovação dos recursos naturais. Coletas ativas adiam ambas as etapas.
     /// </summary>
-    public static double CorpseDisposeDelay
-    {
-        get
-        {
-            double v = Yaml.Util.Singleton<Yaml.Constants>.Instance?.Herd?.CollectibleDisposeDelay ?? 0.0;
-            return v > 0.0 ? v : 180.0;
-        }
-    }
+    public const double CorpseDisposeDelay = 240.0;
+    public const double RespawnDelay = 300.0;
 
     /// <summary>
     /// คืนชีพสัตว์ตัวนี้ที่จุดเกิดเดิม — เลือดเต็ม ล้างสถานะซากทั้งหมด
@@ -648,6 +650,8 @@ public class AnimalManager
         animal.GroggyUpdatedAt = Gauge.CurrentTime;
         animal.KnockedDownUntil = 0;
         animal.DiedAt = 0.0;
+        animal.CorpseDisposed = false;
+        animal.ActiveCollectors = 0;
         animal.LastCorpseLogAt = 0.0;
         animal.Butchered = false;
         animal.AggroTargetId = null;

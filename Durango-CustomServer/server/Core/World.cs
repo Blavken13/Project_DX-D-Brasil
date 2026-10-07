@@ -668,7 +668,7 @@ public partial class World
         // (ถ้าไม่มีใครอยู่บนเกาะก็ไม่ต้องเดิน จะได้ไม่เปลืองแรงเปล่า)
         if (_players.Count > 0)
         {
-            AnimalManager?.Process(Gauge.CurrentTime, BroadCast, OnCorpseDisposed);
+            AnimalManager?.Process(Gauge.CurrentTime, BroadCast, OnAnimalRespawned, OnCorpseDisposed);
             ProcessWeather(Gauge.CurrentTime);
             ArtifactManager?.ProcessFarming(Gauge.CurrentTime);
             ProcessRegrow(Gauge.CurrentTime);
@@ -739,14 +739,16 @@ public partial class World
     }
 
     /// <summary>
-    /// [7 ก.ย. 2026] ซากครบเวลาแล้วและสัตว์ตัวนั้นคืนชีพที่จุดเกิด — บอกฝั่งเกมให้อัปเดตตาม
-    ///
-    /// ต้องทำสามอย่างครบ ไม่งั้นเห็นผลครึ่ง ๆ:
-    ///   1. DisappearEntity — ลบซากออกจากจอ (ไม่ส่ง = ศพค้างอยู่ทั้งที่เซิร์ฟถือว่าฟื้นแล้ว)
-    ///   2. ล้างประวัติการแล่ — ไม่ล้าง = ตัวที่เกิดใหม่แล่ไม่ได้เลยเพราะระบบจำว่าเก็บครบแล้ว
-    ///   3. ให้ทุกคนลืมว่าเคยเห็นตัวนี้ — SyncAnimalVisibility จะได้ส่ง AppearAnimal ตัวใหม่ให้
+    /// Remove o corpo expirado sem reviver o animal ou renovar seus recursos.
     /// </summary>
     private void OnCorpseDisposed(AnimalManager.Animal animal)
+    {
+        BroadCast(new DisappearEntity { EntityId = animal.EntityId });
+        foreach (Player player in _players) player.ForgetAnimal(animal.EntityId);
+    }
+
+    /// <summary>Sincroniza vida restaurada e visibilidade do animal no novo ciclo.</summary>
+    private void OnAnimalRespawned(AnimalManager.Animal animal)
     {
         BroadCast(new DisappearEntity { EntityId = animal.EntityId });
         BroadCast(new Survival { EntityId = animal.EntityId,

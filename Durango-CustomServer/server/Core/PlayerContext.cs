@@ -34,6 +34,9 @@ public class PlayerContext
     [JsonProperty("inventory_items")]
     public List<Item> InventoryItems;
 
+    [JsonProperty("locked_item_ids")]
+    public HashSet<string> LockedItemIds = new();
+
     [JsonProperty("mail_sequence")]
     public long MailSequence;
 

@@ -173,7 +173,7 @@ internal static class GameplayRegressionCheck
             Check(context.InventoryItems.Count == inventoryCount + 1, "tentativa de farmar captura nao gera itens");
             Call(player, "UpdateTaming", Gauge.CurrentTime + 10);
             Check(context.InventoryItems.Count == inventoryCount + 1, "captura nao entrega animal duas vezes");
-            world.AnimalManager.Process(animal.DiedAt + AnimalManager.CorpseDisposeDelay + 1, _ => { });
+            world.AnimalManager.Process(animal.DiedAt + AnimalManager.RespawnDelay + 1, _ => { });
             Check(animal.IsAlive && !animal.Captured && !animal.Butchered && animal.CaptureOwnerId == null,
                 "fauna repoe animal capturado sem manter estado de carcaca");
 

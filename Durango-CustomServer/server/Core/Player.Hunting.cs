@@ -89,7 +89,7 @@ public partial class Player
 
         foreach (AnimalManager.Animal animal in manager.All)
         {
-            if (animal.Captured) continue;
+            if (animal.Captured || animal.CorpseDisposed) continue;
             bool inRange = animal.Tile.x >= minX && animal.Tile.x < maxX
                         && animal.Tile.y >= minY && animal.Tile.y < maxY;
 
@@ -445,7 +445,7 @@ public partial class Player
     {
         AnimalManager.Animal animal = _world.AnimalManager?.Get(touch.EntityId);
         if (animal == null) return false;
-        if (animal.Captured) { msg.Interactions = Array.Empty<int>(); return true; }
+        if (animal.Captured || animal.CorpseDisposed) { msg.Interactions = Array.Empty<int>(); return true; }
 
         AnimalTypes.Info info = AnimalTypes.Get(animal.EntityType);
         string label = info?.DisplayName ?? info?.Name;
@@ -550,6 +550,9 @@ public partial class Player
             animal.KnockedDownUntil = 0;
             animal.AttackAt = animal.AttackHitAt = animal.StandAt = 0;
             animal.DiedAt = Times.UnixTimeNow();
+            animal.CorpseDisposed = false;
+            animal.Butchered = false;
+            _world.ForgetHarvests(animal.EntityId);
             _world.BroadCast(new EntityDied { EntityId = animal.EntityId, At = animal.DiedAt });
             // ⚠️ EntityDied อย่างเดียวไม่พอ — client/AnimalBehavior.cs:830 OnDie ไม่เล่นท่าตายให้
             // (แค่เปลี่ยน layer กับไล่สีจาง) ⇒ ไม่ส่งท่ามา สัตว์ตายแล้วยังยืนท่าเดิม
