@@ -98,7 +98,7 @@ internal static class SkillXpCouponCheck
                 Check(context.InventoryItems.Any(i => i.Id == coupon.Id) && context.InventoryItems.Any(i => i.Id == spare.Id),
                     id + ": venda, recipientes, armazéns, animais e chão não retiram o cupom");
 
-                var locked = Field<HashSet<string>>(link.Player, "_lockedItemIds");
+                var locked = context.LockedItemIds;
                 locked.Add(coupon.Id);
                 link.Request<UseItem, Abort>(new UseItem { ItemId = coupon.Id });
                 Check(context.InventoryItems.Any(i => i.Id == coupon.Id), id + ": bloqueio manual preserva o cupom");

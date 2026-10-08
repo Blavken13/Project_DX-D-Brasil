@@ -74,6 +74,14 @@ public static class CraftTuning
     public const float MinCraftSeconds = 0.1f;
     public const float MaxCraftSeconds = 120f;
 
+    /// <summary>Fundição, refino e preparo de metais nas fornalhas para testers.</summary>
+    public const float MetalPreparationSeconds = 1f;
+
+    internal static bool IsMetalPreparation(CraftRecipeData recipe) =>
+        recipe?.category == "material_process" && recipe.subcategory == "process_metal" &&
+        recipe.workbench_tags != null &&
+        (recipe.workbench_tags.ContainsKey("kiln") || recipe.workbench_tags.ContainsKey("furnace"));
+
     /// <summary>
     /// **ค่าของเรา** — ความจุคิวของโต๊ะคราฟต์ที่ตอบไปใน Workbench(3000)
     /// 0 = ยังไม่รองรับการฝากคราฟต์ (ดูหมายเหตุที่ <see cref="Player.HandleGetWorkbenchMsg"/>)
@@ -533,6 +541,9 @@ public partial class Player
     /// </summary>
     private float CraftDurationSeconds(CraftRecipeData recipe)
     {
+        // Mantém reserva, Timer e entrega adiada; o bônus de habilidade não zera a espera.
+        if (CraftTuning.IsMetalPreparation(recipe)) return CraftTuning.MetalPreparationSeconds;
+
         float effort = 1f;
         if (recipe != null &&
             float.TryParse(recipe.effort, NumberStyles.Float, CultureInfo.InvariantCulture, out float parsed) &&

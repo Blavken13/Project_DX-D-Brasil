@@ -121,6 +121,12 @@ public static class GatheringTuning
     /// สั้นกว่านี้ท่าเก็บของยังเล่นไม่ทันจบ ⇒ เห็นเป็นตัวกระตุก
     /// </summary>
     public const float MinCollectSeconds = 0.5f;
+
+    /// <summary>Coletas que geram itens de nível 60 são cinco vezes mais rápidas.</summary>
+    public const float Level60DurationScale = 0.2f;
+
+    internal static float DurationScale(int itemLevel) =>
+        itemLevel == 60 ? Level60DurationScale : 1f;
 }
 
 public partial class Player
@@ -319,7 +325,7 @@ public partial class Player
             return;
         }
 
-        // O recurso conserva tempo, ferramentas e quantidade compartilhada da ilha.
+        // O recurso conserva tempo base, ferramentas e quantidade compartilhada da ilha.
         // Apenas o item recebido usa o limite da habilidade; Collect.Level nao e confiavel.
         int itemLevelCap = Math.Min(resourceLevel, carcass != null ? ButcherySkillLevel : GatheringSkillLevel);
         int itemLevel = CollectibleTable.ItemLevel(spec, resourceLevel, carcass != null ? ButcherySkillLevel : GatheringSkillLevel);
@@ -378,7 +384,8 @@ public partial class Player
         // [7 ก.ย. 2026] สกิลทำให้เก็บเร็วขึ้น — ซากใช้หมวดชำแหละ ของธรรมชาติใช้หมวดเก็บของ
         // ⚠️ เวลาที่บอก client กับที่เซิร์ฟหน่วงจริงต้องเป็นค่าเดียวกัน ไม่งั้นหลอดวิ่งไม่ตรงของ
         float gatherDuration = Math.Max(GatheringTuning.MinCollectSeconds,
-            spec.Duration * (carcass != null ? ButcheryDurationScale() : GatherDurationScale()));
+            spec.Duration * (carcass != null ? ButcheryDurationScale() : GatherDurationScale()))
+            * GatheringTuning.DurationScale(itemLevel);
 
         Send(new Messages.Timer { Duration = gatherDuration }, seq);
 
@@ -882,6 +889,7 @@ internal static class CollectibleTable
                     gen.Level = ItemLevel(live, requestedLevel, itemLevelLimit);
                     if (gen.Level > cap) gen.Enabled = false;
                 }
+                if (live != null) gen.Duration = live.Duration * GatheringTuning.DurationScale(gen.Level);
                 leveled[i] = gen;
             }
             template.Generators = leveled;
@@ -1068,7 +1076,7 @@ internal static class CollectibleTable
         Icon = spec.Icon,
         Amount = spec.Amount,
         Effort = spec.Effort,
-        Duration = spec.Duration,
+        Duration = spec.Duration * GatheringTuning.DurationScale(spec.Level),
         ToolRequirements = spec.ToolRequirements,
         Enabled = true
     };

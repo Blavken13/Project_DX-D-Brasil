@@ -47,6 +47,11 @@ internal static class GatheringLevelCheck
         int replies = link.Messages.OfType<Collected>().Count();
         var timer = link.Request<Collect, Messages.Timer>(new Collect
             { EntityId = "", Tile = tile, GeneratorId = GeneratorId, Level = clientLevel });
+        var spec = CollectibleTable.AtLevel(CollectibleTable.FindGenerator(ResourceType, GeneratorId), actionLevel);
+        float normalDuration = Math.Max(0.5f, spec.Duration * link.Player.GatherDurationScale());
+        int timingItemLevel = CollectibleTable.ItemLevel(spec, actionLevel, Skill(link).Level);
+        check(Math.Abs(timer.Duration - normalDuration * (timingItemLevel == 60 ? 0.2f : 1f)) < 0.0001f,
+            "tempo TCP usa 20% para item 60 e tempo normal nos demais níveis");
         Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
         link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
         var items = context.InventoryItems.Skip(before).ToArray();
@@ -78,7 +83,9 @@ internal static class GatheringLevelCheck
             "mesmo recurso mostra niveis diferentes conforme habilidade, sem cache entre jogadores");
         check(lowMenu.Generators.All(g => {
             var other = highMenu.Generators.Single(h => h.Id == g.Id);
-            return g.Amount == other.Amount && g.Duration == other.Duration && g.Effort == other.Effort &&
+            float baseDuration = g.Duration * (g.Level == 60 ? 5f : 1f);
+            float otherBaseDuration = other.Duration * (other.Level == 60 ? 5f : 1f);
+            return g.Amount == other.Amount && Math.Abs(baseDuration - otherBaseDuration) < 0.0001f && g.Effort == other.Effort &&
                 g.ToolRequirements.Count == other.ToolRequirements.Count &&
                 g.ToolRequirements.All(t => other.ToolRequirements.TryGetValue(t.Key, out int level) && level == t.Value);
         }), "habilidade nao altera quantidade compartilhada, tempo base ou requisitos de ferramenta");
@@ -181,6 +188,14 @@ internal static class GatheringLevelCheck
             int replies = link.Messages.OfType<Collected>().Count();
             var timer = link.Request<Collect, Messages.Timer>(new Collect { EntityId = "", Tile = tile,
                 GeneratorId = generator, Level = int.MaxValue, ToolItemId = tool.Id });
+            var spec = CollectibleTable.AtLevel(CollectibleTable.FindGenerator(type, generator), 60);
+            float normalDuration = Math.Max(0.5f, spec.Duration * link.Player.GatherDurationScale());
+            float expectedScale = skillLevel == 60 ? 0.2f : 1f;
+            check(Math.Abs(timer.Duration - normalDuration * expectedScale) < 0.0001f &&
+                Math.Abs(menu.Generators.Single(g => g.Id == generator).Duration - spec.Duration * expectedScale) < 0.0001f,
+                $"ilha 60 / Coleta {skillLevel}: {generator} usa {(skillLevel == 60 ? "20%" : "100%")} do tempo na prévia e no Timer");
+            check(context.InventoryItems.Count == before && link.Messages.OfType<Collected>().Count() == replies,
+                "coleta acelerada ainda aguarda o temporizador antes de entregar itens");
             if (deliverySkill.HasValue) Skill(link).Level = deliverySkill.Value;
             Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + 1);
             link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
@@ -194,7 +209,7 @@ internal static class GatheringLevelCheck
             check(updated.Categories[Shared.Skill.Category.Gathering].Level == Skill(link).Level,
                 "barra da habilidade recebe estado real após os 12 pontos da coleta");
         }
-        foreach (int level in new[] { 1, 10, 20, 60 })
+        foreach (int level in new[] { 1, 10, 20, 59, 60 })
         {
             Gather(11070, "leaf_small", level);
             Gather(11070, "wood_log", level);

@@ -212,7 +212,9 @@ internal static class WorkbenchCraftCheck
         skillSave.Learned = savedSkills;
         foreach (var level in categoryLevels) skillSave.Categories[level.Key].Level = level.Value;
 
-        var cases = new[] { "trim", "process", "extend_sheet", "dry", "tan", "smelt", "refine", "dye_color_r", "reform_pocket", "roast_01", "fry" }
+        var cases = new[] { "trim", "process", "extend_sheet", "dry", "tan", "smelt", "combine_metal",
+                "refine", "refine_02", "refine_03", "refine_03_t2", "refine_snowfield", "refine_04",
+                "dye_color_r", "reform_pocket", "roast_01", "fry" }
             .Select(id => (Id: id, Material: (string)null))
             .Concat(new[] { "board", "s02_board", "board_02", "board_03" }
                 .SelectMany(id => (id == "board" ? new[] { "wood", "stone", "bone", "metal" } :
@@ -270,11 +272,22 @@ internal static class WorkbenchCraftCheck
                     estimate.CraftEstimation.Value.Name == (string)PrototypeYaml.GetItemPrototype(expectedPrototype).Name,
                     id + " previa mostra tabua de " + testCase.Material + " em vez do pilar");
             }
+            double startedAt = Gauge.CurrentTime;
+            int completedBefore = link.Messages.OfType<Crafted>().Count();
             var timer = link.Request<Craft, Messages.Timer>(new Craft { RecipeId = id, Materials = materialIds,
                 ToolItemId = tool?.Id, Workbench = new PropKey { EntityId = bench.EntityId, Tile = tile },
                 ReformSlotIndex = recipe.type == CraftType.Reform ? 0 : null });
+            if (recipe.subcategory == "process_metal")
+            {
+                Check(timer.Duration == 1f, id + " anuncia exatamente 1 segundo de preparo");
+                Call(link.Player, "UpdatePendingCrafts", startedAt + 0.5);
+                Check(!context.InventoryItems.Any(i => i.Id == baseItem.Id) &&
+                    link.Messages.OfType<Crafted>().Count() == completedBefore,
+                    id + " mantém metais reservados e não conclui antes de 1 segundo");
+            }
             Call(link.Player, "UpdatePendingCrafts", Gauge.CurrentTime + timer.Duration + 1);
-            link.PumpUntil(() => context.InventoryItems.Any(i => i.Id == baseItem.Id));
+            link.PumpUntil(() => context.InventoryItems.Any(i => i.Id == baseItem.Id) &&
+                link.Messages.OfType<Crafted>().Count() > completedBefore);
             Item result = context.InventoryItems.Single(i => i.Id == baseItem.Id);
             if (id == "refine")
                 Check(result.Tags.Single(t => t.Id == "purity_high").Level == result.Level &&
@@ -339,9 +352,49 @@ internal static class WorkbenchCraftCheck
             }
             world.DestructArtifact(bench.EntityId);
         }
+        CheckMetalProducts(link, context, world, tile, catalog);
         var exhausted = Cheats.MakeItem("wood_log", 60).Value;
         exhausted.ModifiableCount = 0; exhausted.ModifiedCount = 3;
         ItemCraftModifications.Initialize(ref exhausted);
         Check(exhausted.ModifiableCount == 0, "normalizacao nao restaura usos de material ja processado");
+    }
+
+    private static void CheckMetalProducts(EconomyProtocolCheck.Link link, PlayerContext context,
+        World world, Point2 tile, Dictionary<string, CraftRecipeData> catalog)
+    {
+        foreach (string id in new[] { "copper_alloy", "leadedbronze_alloy", "freecuttingbrass_alloy", "iron_alloy",
+            "nail_metal", "nail_metal_t2", "metal_stick", "metal_stick_t2" })
+        {
+            var recipe = catalog[id];
+            var inputs = recipe.slots.ToDictionary(s => s.slot_id,
+                s => Enumerable.Range(0, s.count_min).Select(_ => Material(s)).ToArray());
+            var materials = inputs.Values.SelectMany(v => v).ToArray();
+            context.InventoryItems.AddRange(materials);
+            var toolPrototype = SingletonDict<string, List<Prototype>>.Instance.Keys.FirstOrDefault(k =>
+                PrototypeYaml.GetItemPrototype(k).Tags?.Keys.Any(t => recipe.tool_tags.ContainsKey(t)) == true);
+            Item? tool = toolPrototype == null ? null : Cheats.MakeItem(toolPrototype, 60);
+            if (tool.HasValue) context.InventoryItems.Add(tool.Value);
+            var blueprint = BlueprintStore.GetAllBlueprints().First(b => b.Components?.Contains("Workbench") == true &&
+                WorkbenchTags.Of(b.EntityType)?.Any(t => recipe.workbench_tags.TryGetValue(t.Id, out int level) && t.Level >= level) == true);
+            var bench = Cheats.MakeAppearArtifact(new[] { "prop", blueprint.EntityType.ToString() }, out _).Value;
+            bench.Tile = tile; bench.States.BuildingState = Shared.Building.BuildingState.Completed;
+            world.ConstructArtifact(bench, null, context.EntityId);
+            double startedAt = Gauge.CurrentTime;
+            int completedBefore = link.Messages.OfType<Crafted>().Count();
+            var timer = link.Request<Craft, Messages.Timer>(new Craft { RecipeId = id,
+                Materials = inputs.ToDictionary(p => p.Key, p => p.Value.Select(i => i.Id).ToArray()),
+                ToolItemId = tool?.Id, Workbench = new PropKey { EntityId = bench.EntityId, Tile = tile } });
+            Check(timer.Duration == 1f, id + " anuncia exatamente 1 segundo na fornalha");
+            Call(link.Player, "UpdatePendingCrafts", startedAt + 0.5);
+            Check(materials.All(m => context.InventoryItems.All(i => i.Id != m.Id)) &&
+                link.Messages.OfType<Crafted>().Count() == completedBefore,
+                id + " reserva os materiais e aguarda 1 segundo antes de entregar");
+            Call(link.Player, "UpdatePendingCrafts", Gauge.CurrentTime + 1.1);
+            link.PumpUntil(() => link.Messages.OfType<Crafted>().Count() > completedBefore);
+            var products = link.Messages.OfType<Crafted>().Last().Items;
+            Check(products.Length > 0 && products.All(p => p.Prototype == recipe.prototype_id &&
+                context.InventoryItems.Any(i => i.Id == p.Id)), id + " entrega o metal preparado após o prazo");
+            world.DestructArtifact(bench.EntityId);
+        }
     }
 }
