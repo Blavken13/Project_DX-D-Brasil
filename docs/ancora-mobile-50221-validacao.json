@@ -1,0 +1,100 @@
+{
+  "source_sha256": "4e49e91b49f2e66556e7c26703225c7aedb37f19611be69e9febf4da8ac98fa9",
+  "output_sha256": "742be97c31b658be28c3259c312db4ce803da110a205c386c3990a5d132243ee",
+  "shims": {
+    "risky_or_outpost": 81724256,
+    "safehouse": 81724320,
+    "urban_personal_rural": 81724348
+  },
+  "changes": [
+    {
+      "offset": 20777520,
+      "length": 4
+    },
+    {
+      "offset": 20777832,
+      "length": 4
+    },
+    {
+      "offset": 20777808,
+      "length": 4
+    },
+    {
+      "offset": 20777900,
+      "length": 4
+    },
+    {
+      "offset": 20777488,
+      "length": 4
+    },
+    {
+      "offset": 81724256,
+      "length": 120
+    },
+    {
+      "offset": 96,
+      "length": 16
+    }
+  ],
+  "button": "WarpToPort",
+  "icon": "icon_map_port",
+  "tutorial_and_offline_preserved": true,
+  "existing_shortcuts_preserved": true,
+  "emulation": [
+    {
+      "role": "hunting",
+      "valid_list": true,
+      "passed": true
+    },
+    {
+      "role": "hunting",
+      "valid_list": false,
+      "passed": true
+    },
+    {
+      "role": "outpost",
+      "valid_list": true,
+      "passed": true
+    },
+    {
+      "role": "outpost",
+      "valid_list": false,
+      "passed": true
+    },
+    {
+      "role": "safehouse",
+      "valid_list": true,
+      "passed": true
+    },
+    {
+      "role": "safehouse",
+      "valid_list": false,
+      "passed": true
+    },
+    {
+      "role": "urban_personal_rural",
+      "valid_list": true,
+      "passed": true
+    },
+    {
+      "role": "urban_personal_rural",
+      "valid_list": false,
+      "passed": true
+    }
+  ],
+  "version_code": 50221,
+  "baseline_sha256": "0ea3ff42413a5d3fc4b1bd955ad730b239d4b01e074ca7b6b944cf6ca3cb82ad",
+  "changed_files": [
+    "AndroidManifest.xml",
+    "assets/durango-br/diagnostics/build.json",
+    "lib/arm64-v8a/libil2cpp.so",
+    "lib/arm64-v8a/libnd.so"
+  ],
+  "preserved_files": 1769,
+  "diagnostic_dex_and_export_preserved": true,
+  "native_abi_50220_preserved": true,
+  "signatures_verified": true,
+  "native_zip_alignment": 16384,
+  "signing_key": "existing 50220 key",
+  "apk_sha256": "b907863d1a9b66226d9dd3542fa68afb533950a792da04d5056b3742762a7bb9"
+}

@@ -1,0 +1,7 @@
+work/
+dist/
+*.jks
+*.keystore
+*.pass
+__pycache__/
+recovered/**/recheck/

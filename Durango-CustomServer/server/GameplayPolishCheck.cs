@@ -112,11 +112,15 @@ internal static class GameplayPolishCheck
             CheckStarterResources(root, low, 10, "ilha-domada");
             var tutorial = new World(Context(root, "tutorial", "tropical_event_ancora_01"));
             using (var tutorialLink = new EconomyProtocolCheck.Link(Player(root, "tutorial-tester", tutorial.TerrainId), tutorial, null, true))
+            {
                 Check((int)Call(tutorialLink.Player, "CurrentGatheringLevel", (ushort)11009) == 1, "tutorial conserva recursos nivel 1");
+                MobileAnchorArmorCheck.Tutorial(tutorialLink, Check);
+            }
             var store = new EconomyStore(Path.Combine(root, "economy.json"), new ShopCatalog());
             var context = Player(root, "tester", highId);
             Place(context, high.EntryPoint);
             using var link = new EconomyProtocolCheck.Link(context, high, store, true);
+            MobileAnchorArmorCheck.Run(root, high, context, link, Check);
             link.Player.ContextChanged += () => context.Save();
 
             // Coleta real: pacotes mistos, sementes, roupas e armas precisam oferecer generators.

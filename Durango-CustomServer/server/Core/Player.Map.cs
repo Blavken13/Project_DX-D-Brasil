@@ -215,6 +215,19 @@ public partial class Player
             }
         }
 
+        // The native mobile anchor requires an explored Port. Expose only real
+        // ports, without discovering craters, rifts or other landmarks.
+        if (IsAncoraRegion(regionId))
+            list.RemoveAll(p => p.Type == Shared.System.PointOfInterest.Port);
+        else
+            foreach (var tile in LoadPois(regionId)?.PortPoints ?? new List<Point2>())
+                if (!list.Any(p => p.Type == Shared.System.PointOfInterest.Port && p.Tile.Equals(tile)))
+                    list.Add(ToMessage(new ExploredPoint
+                    {
+                        RegionId = regionId, X = tile.x, Y = tile.y,
+                        Type = (int)Shared.System.PointOfInterest.Port
+                    }));
+
         Send(new ExploredPOIs
         {
             POIs = list.ToArray(),
@@ -347,6 +360,11 @@ public partial class Player
             return null;
         }
     }
+
+    private bool IsAncoraRegion(string regionId) =>
+        string.Equals(TerrainFileForRegion(RegionKey(regionId)), "tropical_event_ancora_01", StringComparison.OrdinalIgnoreCase) ||
+        (string.Equals(RegionKey(regionId), LogicalRegionId(), StringComparison.OrdinalIgnoreCase) &&
+         _world.TerrainInfo?.region_template == "i01ancora180107");
 }
 
 /// <summary>

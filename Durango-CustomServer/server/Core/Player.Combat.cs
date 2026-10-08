@@ -647,6 +647,7 @@ public partial class Player
 
         // เลือดของผู้เล่น = หลอด life (players.json → survival.life ค่าสูงสุดมาจาก life.max_gauge = 300
         // ซึ่งตรงกับ body_parts.body.max_hp) ⇒ หักที่หลอดนี้ ไม่ได้เก็บ HP แยกอีกชุด
+        WearEquippedArmor();
         _survival.Add(SurvivalState.KeyLife, -value);
         FlushSurvival();
         RecordDefenseExperience(BattleDataStore.DamageableExp.hit_factor);

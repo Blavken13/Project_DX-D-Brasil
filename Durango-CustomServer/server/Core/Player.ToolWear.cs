@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Messages;
 
 namespace Durango.Online;
@@ -51,5 +52,16 @@ public partial class Player
             strongest = attack;
         }
         if (weapon.HasValue) WearTool(weapon.Value.Id, "attack");
+    }
+
+    private void WearEquippedArmor()
+    {
+        foreach (var id in _context.EquippedItems.Values.Distinct().ToArray())
+        {
+            int index = _context.InventoryItems.FindIndex(i => i.Id == id);
+            if (index < 0) continue;
+            var item = _context.InventoryItems[index];
+            if (ItemDurability.IsArmor(item.Prototype, item.Level)) WearTool(id, "defense");
+        }
     }
 }

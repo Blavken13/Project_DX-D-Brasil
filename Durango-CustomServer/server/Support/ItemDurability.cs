@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Messages;
 using Durango.Utils;
 using Newtonsoft.Json.Linq;
@@ -19,11 +20,21 @@ public static class ItemDurability
         string id = prototypeId.ToLowerInvariant();
         int tier = id.Contains("metal") || id.Contains("brass") || id.Contains("iron") || id.Contains("steel") ? 3
             : id.Contains("bone") || id.Contains("horn") || id.Contains("tusk") ? 2 : 1;
+        if (IsArmor(prototype) && tier == 1 &&
+            !(prototype.SubCategories?.Contains("clothes_novice") ?? false)) tier = 2;
         return (40 * tier + Math.Clamp(level, 1, 70) - 1) * Delta("collect", 1.6f);
     }
 
+    // equipment_avatar identifies decorative outfits in the original tables.
+    public static bool IsArmor(Prototype prototype) => prototype != null &&
+        !(prototype.Tags?.ContainsKey("equipment_avatar") ?? false) &&
+        (prototype.Category == "clothing" || (prototype.Tags?.ContainsKey("armor") ?? false));
+
+    public static bool IsArmor(string prototypeId, int level) => IsArmor(
+        PrototypeYaml.GetItemPrototype(prototypeId, level) ?? PrototypeYaml.GetItemPrototype(prototypeId));
+
     private static bool IsEquipment(Prototype prototype) =>
-        prototype.Category is "weapon/tool" or "weapon" or "tool" ||
+        IsArmor(prototype) || prototype.Category is "weapon/tool" or "weapon" or "tool" ||
         prototype.Tags != null && (prototype.Tags.ContainsKey("weapon") || prototype.Tags.ContainsKey("axe") ||
             prototype.Tags.ContainsKey("knife") || prototype.Tags.ContainsKey("hammer") ||
             prototype.Tags.ContainsKey("pickaxe") || prototype.Tags.ContainsKey("shovel") ||

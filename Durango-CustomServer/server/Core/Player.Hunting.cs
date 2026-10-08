@@ -296,6 +296,7 @@ public partial class Player
             }
         });
 
+        WearEquippedArmor();
         _survival.Add(SurvivalState.KeyLife, -value);
         FlushSurvival();
         RecordDefenseExperience(BattleDataStore.DamageableExp.hit_factor);

@@ -189,6 +189,11 @@ public partial class Player
 
     private void HandleWarpToPortMsg(uint seq)
     {
+        if (IsAncoraRegion(null))
+        {
+            Send(new Abort { Text = "O retorno à jangada fica disponível após o tutorial da ilha Âncora." }, seq);
+            return;
+        }
         TerrainPois pois = LoadPois(null);
         List<Point2> ports = pois?.PortPoints;
         if (ports == null || ports.Count == 0)
