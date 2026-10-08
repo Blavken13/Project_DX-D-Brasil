@@ -231,6 +231,7 @@ internal enum SkillRewardKind
 internal class SkillRewardJson
 {
     [JsonProperty("type")] public int Type;
+    [JsonProperty("action_ids")] public string[] ActionIds;
 
     /// <summary>รางวัลแบบหลายโมดิฟายเออร์ (type 7/10/12/17)</summary>
     [JsonProperty("modifiers")] public Dictionary<string, float> Modifiers;
@@ -772,6 +773,7 @@ public partial class Player
         }
         _context.Storage[SkillTuning.StorageKey] = blob;
         OnContextChanged();
+        if (_sentActionIds != null) SendBattleActions();
         if (!string.IsNullOrEmpty(LearningGuide.Target)) Send(BuildAdvisorTargets());
     }
 

@@ -37,6 +37,7 @@ internal static class ProgressionRegressionCheck
             TerrainLoader.TerrainDir = Path.Combine(dataDir, "terrains"); RegionCatalog.Load(Path.Combine(dataDir, "assets"));
             var wc = new WorldContext { TerrainId = "pe10gr_1" }; wc.Initialize(Path.Combine(root, "test.world"));
             var world = new World(wc);
+            CombatSkillsCheck.Run(root, world, Check);
             CraftEquipmentLevelCheck.Run(root, world, Check);
             var context = new PlayerContext { PlayerInfo = new Durango.Logic.Clusters.PlayerInfo
                 { PlayerEntityId = "progression-tester", PlayerName = "Tester", PlayerLevel = 1 } };

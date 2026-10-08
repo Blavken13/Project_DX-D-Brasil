@@ -2052,6 +2052,14 @@ public partial class Player
             string slot = PerformanceYaml.GetArmor(item.Prototype)?.Slot ?? PerformanceYaml.GetWeapon(item.Prototype)?.Slot;
             if (string.IsNullOrEmpty(slot) || slot != msg.SlotName)
             { Send(new Abort { Text = "Este item não pode ser equipado neste espaço." }, headerSeq); return; }
+            if (slot == "sub" && _context.EquippedItems.ContainsKey("both"))
+            { Send(new Abort { Text = "Não é possível equipar na mão secundária com uma arma de duas mãos." }, headerSeq); return; }
+            if (slot == "both")
+            {
+                _context.EquippedItems.Remove("main");
+                _context.EquippedItems.Remove("sub");
+            }
+            else if (slot == "main") _context.EquippedItems.Remove("both");
             _context.EquippedItems[msg.SlotName] = msg.ItemId;
         }
         else if (!_context.EquippedItems.Remove(msg.SlotName))
@@ -2187,6 +2195,10 @@ public partial class Player
 
     private Equipments UpdateEquipments()
     {
+        // Saves antigos podem conter armas de uma e duas maos simultaneamente.
+        // O cliente nativo procura "main" antes de "both"; preserva essa escolha.
+        if (_context.EquippedItems.ContainsKey("main")) _context.EquippedItems.Remove("both");
+        if (_context.EquippedItems.ContainsKey("both")) _context.EquippedItems.Remove("sub");
         Equipments result = new()
         {
             CurrentType = EquipSlotType.Slot1
@@ -2250,7 +2262,7 @@ public partial class Player
     {
         Send(UpdateEquipments(), replyOf);
         SendInventoryInfos();
-        if (_skills != null) { SendFullStatistics(); SendRecipes(0u); }
+        if (_skills != null) { SendFullStatistics(); SendRecipes(0u); SendBattleActions(); }
         SendBaseMoveSpeed();
     }
 

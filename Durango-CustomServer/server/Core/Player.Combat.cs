@@ -357,10 +357,7 @@ public partial class Player
         {
             SendBattleActions(header.Seq);
         });
-        // เล็งเป้า — client ไม่รอคำตอบ (CombatSystem.cs:155-165 Send เฉย ๆ)
-        // ถือโอกาสส่งรายการท่าชุดใหม่ตามอุปกรณ์ที่ใส่อยู่ตอนนี้ เพราะเซิร์ฟไม่มีจุดรู้ว่า
-        // ผู้เล่นเปลี่ยนอาวุธ (handler ของ Equip อยู่ใน Core/Player.cs ซึ่งระบบนี้แตะไม่ได้)
-        // client รับ Actions ซ้ำได้ปลอดภัย — ของเดิมถูกใช้ต่อ ไม่รีเซ็ตคูลดาวน์ (CombatSystem.cs:272-284)
+        // Atualiza o alvo e confirma as acoes atuais sem reiniciar cooldowns.
         _connection.Recv(delegate(SelectBattleTarget msg, PacketHeader header)
         {
             _battleTargetId = msg.EntityId;
@@ -400,43 +397,22 @@ public partial class Player
     // ── รายการท่าต่อสู้ ──────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// ประกอบ Actions(315) จากอุปกรณ์ที่ใส่อยู่
-    ///
-    /// วิธีเดียวกับที่เกมหา "ท่าที่ควรมี" ฝั่งตัวเอง (client/CombatSystem.cs:592-642
-    /// FillPlaceholderActions): tag ของของที่ใส่ → tag_allow_actions.json → default_actions +
-    /// skill_actions ⇒ ใช้ข้อมูลชุดเดียวกัน ผลที่ได้จึงตรงกับที่ UI คาดไว้
-    ///
-    /// **ค่าของเรา: ให้ท่ามือเปล่าเมื่อไม่มีอาวุธ** — ของจริงท่ามือเปล่ามาจากสกิลพื้นฐาน
-    /// (players.json → base_skills: ["combat_actions"]) ซึ่งเซิร์ฟยังไม่มีระบบสกิล
-    /// ไม่ใส่ให้ = ผู้เล่นที่ยังไม่มีอาวุธจะไม่มีปุ่มโจมตีเลย
+    /// Acoes basicas da arma + acoes aprendidas compativeis com seus tags.
+    /// FillPlaceholderActions do cliente mostra possibilidades, sem autorizar seu uso.
+    /// Sem arma, aplica as mesmas regras para bare_hands. Slots e prioridades continuam
+    /// definidos pelos dados nativos e por CombatSystem.UpdateActionSlots.
     /// </summary>
     private void SendBattleActions(uint replyOf = 0u)
     {
-        var ids = new HashSet<string>();
-        foreach (var pair in _context.EquippedItems)
-        {
-            int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
-            if (index < 0) continue;
-            Messages.Tag[] tags = _context.InventoryItems[index].Tags;
-            if (tags == null) continue;
-            foreach (Messages.Tag tag in tags) AddActionsOfTag(ids, tag.Id);
-        }
-        if (ids.Count == 0) AddActionsOfTag(ids, "bare_hands");
+        var ids = AvailableBattleActionIds();
 
-        // push ซ้ำทั้งที่ชุดท่าเหมือนเดิม = UI สร้างปุ่มใหม่ทุกครั้งที่เปลี่ยนเป้า
-        // (client/CombatSystem.cs:287 SetCurrentBattleActions → UpdateActionSlots → PlayerActionsUpdated)
-        // ⇒ ส่งเฉพาะตอนชุดเปลี่ยนจริง · replyOf > 0 คือถูกถามตรง ๆ ต้องตอบเสมอ
-        if (replyOf == 0u && _sentActionIds != null && _sentActionIds.SetEquals(ids))
-        {
-            return;
-        }
+        // Apenas envia novamente quando a lista muda; consultas sempre recebem resposta.
+        if (replyOf == 0u && _sentActionIds != null && _sentActionIds.SetEquals(ids)) return;
         _sentActionIds = ids;
-
         var statuses = new List<ActionStatus>();
         foreach (string id in ids)
         {
             BattleActionData action = BattleDataStore.Action(id);
-            if (action?.meta == null) continue;         // ท่าที่ไม่มีในไฟล์ = ท่าของสัตว์/พาหนะ ข้ามไป
             statuses.Add(new ActionStatus
             {
                 Id = id,
@@ -447,12 +423,57 @@ public partial class Player
         Send(new Actions { BattleActions = statuses.ToArray() }, replyOf);
     }
 
-    private static void AddActionsOfTag(HashSet<string> ids, string tagId)
+    private HashSet<string> LearnedBattleActionIds()
     {
-        TagAllowActionData allowed = BattleDataStore.ActionsOfTag(tagId);
+        var ids = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var (skillId, subs) in _skills?.Learned ?? new())
+        {
+            if (subs == null || subs.GetValueOrDefault(BaseSubId) <= 0) continue;
+            foreach (var (subId, level) in subs)
+            {
+                for (int lv = 1; lv <= level; lv++)
+                {
+                    var node = FindNode(skillId, subId, lv, out _);
+                    if (node == null) break;
+                    foreach (string rewardId in node.Rewards ?? Array.Empty<string>())
+                        if (SkillDataStore.Rewards.TryGetValue(rewardId, out var reward) && reward.Type == 8)
+                            ids.UnionWith(reward.ActionIds ?? Array.Empty<string>());
+                }
+            }
+        }
+        return ids;
+    }
+
+    private HashSet<string> AvailableBattleActionIds()
+    {
+        var ids = new HashSet<string>(StringComparer.Ordinal);
+        var learned = LearnedBattleActionIds();
+        bool hasWeaponActions = false;
+        foreach (var pair in _context.EquippedItems)
+        {
+            int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
+            if (index < 0) continue;
+            Messages.Tag[] tags = _context.InventoryItems[index].Tags;
+            if (tags == null) continue;
+            foreach (Messages.Tag tag in tags)
+            {
+                if (tag.Level <= 0) continue;
+                var allowed = BattleDataStore.ActionsOfTag(tag.Id);
+                if (allowed == null) continue;
+                hasWeaponActions = true;
+                AddActionsOfTag(ids, allowed, learned);
+            }
+        }
+        if (!hasWeaponActions) AddActionsOfTag(ids, BattleDataStore.ActionsOfTag("bare_hands"), learned);
+        ids.RemoveWhere(id => BattleDataStore.Action(id)?.meta == null);
+        return ids;
+    }
+
+    private static void AddActionsOfTag(HashSet<string> ids, TagAllowActionData allowed, HashSet<string> learned)
+    {
         if (allowed == null) return;
         if (allowed.default_actions != null) ids.UnionWith(allowed.default_actions);
-        if (allowed.skill_actions != null) ids.UnionWith(allowed.skill_actions);
+        if (allowed.skill_actions != null) ids.UnionWith(allowed.skill_actions.Where(learned.Contains));
     }
 
     // ── ใช้ท่า ──────────────────────────────────────────────────────────────────────
@@ -466,7 +487,8 @@ public partial class Player
             Console.WriteLine($"[combat] ไม่รู้จักท่า '{msg.ActionId}'");
             return;
         }
-        if (_sentActionIds == null || !_sentActionIds.Contains(msg.ActionId))
+        // A autorizacao usa o estado atual, mesmo que o cliente ainda tenha a barra antiga.
+        if (!AvailableBattleActionIds().Contains(msg.ActionId))
         {
             Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: ท่า '{msg.ActionId}' ไม่ได้ถูกปลดให้ผู้เล่น");
             return;
