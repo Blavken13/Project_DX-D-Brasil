@@ -20,6 +20,9 @@ namespace Durango.Online;
 //  2) blob "encyclopedia" ต้นฉบับเติม memo ที่มีข้อความทั้งหมด — เซิร์ฟไม่มีตารางภาษา เริ่มว่าง (MemoStorageDefaults)
 public class PlayerContext
 {
+    [JsonProperty("safehouse_missions", NullValueHandling = NullValueHandling.Ignore)]
+    public SafehouseMissionSave SafehouseMissions;
+
     [JsonProperty("learning_guide", NullValueHandling = NullValueHandling.Ignore)]
     public LearningGuideSave LearningGuide;
     [JsonProperty("player_slot")]

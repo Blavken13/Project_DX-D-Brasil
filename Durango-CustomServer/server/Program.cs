@@ -100,6 +100,10 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--safehouse-missions-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return SafehouseMissionCheck.Run(dataDir);
                 case "--quest-reactivation-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

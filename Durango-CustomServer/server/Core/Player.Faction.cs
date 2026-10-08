@@ -6,47 +6,8 @@ using Shared.Faction;
 
 namespace Durango.Online;
 
-// ═══════════════════════════════════════════════════════════════════════════════════
-//  กลุ่ม & ภารกิจกลุ่ม (Faction & Mission) — คำขอฝั่ง "กลุ่ม" ที่เซิร์ฟยังไม่เคยมี handler
-//
-//  ═══ ระบบนี้คืออะไร ═══
-//  "กลุ่ม" (faction) คือองค์กรในเกม 7 กลุ่ม (server/GameCode/Shared.Faction/FactionType.cs:
-//   ChlorophylForum 0 · ChamberOfPioneer 1 · TheFirm 2 · TheCommittee 3 · Lama 4 ·
-//   RescueTf 5 · SubStory 6 และกลุ่มอีเวนต์ 100/101) แต่ละกลุ่มมี "เลเวลความสนิท"
-//  ที่ไต่ด้วยแต้มมิตรภาพ แล้วปลดล็อกภารกิจประจำ/คำขอสนับสนุน/ร้านของกลุ่มตามลำดับ
-//
-//  ═══ ทำไมต้องมีไฟล์นี้ (สำคัญกว่าที่คิด) ═══
-//  ฝั่งเกมมี "ธงเริ่มระบบ" สองตัวที่ตั้งได้จากคำตอบของเซิร์ฟเท่านั้น:
-//    · IsMissionInitialized ← ตั้งใน OnMissionInfos (client/FactionSystem.cs:248)
-//      — ปิดไปแล้วโดย server/Core/Player.Missions.cs:47-52 (GetMissions → MissionInfos ว่าง)
-//    · IsFactionInitialized ← ตั้งใน OnFactions (client/FactionSystem.cs:238) ซึ่งเป็นทางเดียว
-//      **และยังไม่มีใครปิด** ⇒ นี่คือช่องโหว่ที่ไฟล์นี้มาอุด
-//  ผลของการไม่ตอบ GetFactions ไม่ได้จบแค่หน้าจอกลุ่มว่าง แต่ลามไปหยุด "บทเรียนนำทาง":
-//    client/PlayGuideSystem.cs:1105-1122 BeginNormalFlow() ถ้า IsFactionInitialized ยังเป็นเท็จ
-//    จะไม่เริ่ม flow ทันที แต่ตั้ง _checkPersonalNormalFlow = true (บรรทัด 1115) แล้วรอ
-//    event FactionsUpdated มาปลุก (client/PlayGuideSystem.cs:261-272) — ซึ่งจะไม่มีวันมาถึง
-//    ⇒ ผู้เล่นแนว Personal ไม่ได้ flow "normal_new_user"/"normal_existing_user" เลย
-//    ค้างเงียบ ๆ ไม่มี error ให้เห็น
-//
-//  ═══ ขอบเขตที่เราทำจริงได้ตอนนี้ ═══
-//  เซิร์ฟตัวนี้ยังไม่มีระบบกลุ่มจริง (ไม่มีที่เก็บแต้มมิตรภาพ/เลเวลกลุ่ม ไม่มีตัวสุ่มภารกิจ
-//  ไม่มีคำขอสนับสนุน) และข้อมูลจริงก็ไม่มีให้ด้วย — server/data/assets/costs.json
-//  **ไม่มี** บล็อกราคาของ "รับภารกิจถัดไปทันที"/"เติมจำนวนสุ่มภารกิจ" (มีแค่ estate, cargo,
-//  skill_untrain, balloon_ticket, artifact_*, clan_warphole_visit, pet_*, reform, ...)
-//  ส่วน server/data/assets/constants.json → faction.mission.shuffle มีแค่
-//  recharge_cooltime 1800 กับ max_count 3 ไม่มีราคา ⇒ ห้ามเดาตัวเลขเอง
-//
-//  จึงแบ่งการตอบเป็นสองแบบตามชนิดของคำขอ (แนวเดียวกับ server/Core/Player.Social.cs):
-//    · "คำถาม" (Get*) → ตอบโครงว่างที่ถูกชนิด เพื่อปลดธงเริ่มระบบและกัน log "ไม่มี handler"
-//    · "การกระทำ" (รับ/สุ่ม/เติม/ขอรางวัล) → ตอบ Abort พร้อมข้อความไทย เพราะทำจริงไม่ได้
-//      Abort จะไปโผล่เป็นข้อความระบบผ่าน client/GameManager.cs:269,309 DefaultAbortHandler
-//      (ห้ามส่ง default(Abort) เด็ดขาด — Text เป็น null แล้ว LimitText(null).Length แครช)
-//    · คำขอที่ฝั่งเกม "ยิงอัตโนมัติซ้ำ ๆ" → รับเงียบ ๆ ไม่ Abort (ไม่งั้นข้อความระบบสแปม)
-//
-//  ⚠️ ตอบด้วย ReplyOf = header.Seq เสมอ แม้ฝั่งเกมจะยิงแบบไม่ผูก .On<>
-//  เพราะ client/Durango.Network/Connection.cs:868-908 HandleMsg จะหาตัวจับที่ผูก seq ก่อน
-//  ถ้าไม่มีก็ตกไป global handler ตาม TypeCode เอง ⇒ ถูกทั้งสองทาง
-// ═══════════════════════════════════════════════════════════════════════════════════
+// Facções ativadas e missões de caça do tutorial. Sorteios, entregas e compras
+// sem implementação continuam respondendo explicitamente, sem consumir itens.
 
 public partial class Player
 {
@@ -138,48 +99,22 @@ public partial class Player
             }, header.Seq);
         });
 
-        // ── RecommendMissions (3621) — "ขอให้กลุ่มเสนอภารกิจชุดใหม่ให้" ───────────────────
-        // จุดยิง: client/FactionSystem.cs:457-477 รอ .On<MissionInfos> (สำเร็จ → onResult(true))
-        //   และมี .Rest(...) รับกรณีอื่น → onResult(false)
-        //   ต้นทาง: client/Durango.UI/MissionGroup.cs:58 Open() ตอนผู้เล่นคุยกับคนของกลุ่ม
-        //   และ client/FactionSystem.cs:358-371 CancelAndRecommendMission
-        //
-        // นี่คือ "การกระทำ" (สั่งให้เซิร์ฟสุ่มภารกิจใหม่) ไม่ใช่คำถาม — เราสุ่มภารกิจไม่ได้
-        // ⇒ ตอบ Abort ซึ่งจะเข้าทาง .Rest → OnRecommendMissions(false)
-        //   (client/Durango.UI/MissionGroup.cs:103-115) → OnError() ที่บรรทัด 165-169
-        //   โชว์ป้าย "ล้มเหลว" ที่ฝั่งเกมออกแบบไว้เอง + ข้อความระบบภาษาไทยของเรา
-        // เลือกทางนี้แทนการตอบ MissionInfos ว่าง เพราะกระดานภารกิจเปล่า ๆ จะหลอกให้ผู้เล่น
-        // นั่งรอภารกิจที่ไม่มีวันมา ส่วน "ป้ายล้มเหลว" สื่อความจริงตรงกว่า
+        // Oferece a etapa atual de caça na tenda do abrigo.
         _connection.Recv(delegate(RecommendMissions msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível solicitar missões" }, header.Seq);
+            RecommendSafehouseMission(msg, header.Seq);
         });
 
-        // ── AcceptMission (3623) — กดรับภารกิจที่เลือกไว้ ─────────────────────────────────
-        // จุดยิง: client/FactionSystem.cs:329-337 (static) ยิงแบบไม่ผูก .On<>
-        //   ต้นทาง: client/Durango.UI/MissionInfoPopup.cs:119 ปุ่มรับภารกิจในป๊อปอัปรายละเอียด
-        //   และเมนูปฏิสัมพันธ์ Interaction.AcceptMission (MissionGroup.cs:119-131)
-        // ของจริงเซิร์ฟจะเริ่มจับเวลาภารกิจแล้ว push MissionInfos ชุดใหม่กลับไป
-        // เราไม่มีภารกิจให้รับ (MissionInfos ที่เราส่งว่างเสมอ — Player.Missions.cs:65-72)
-        // ⇒ ตอบ Abort ให้ผู้เล่นเห็นเหตุผล ดีกว่าเงียบแล้วปุ่มเหมือนกดไม่ติด
+        // Aceita somente a missão oferecida ao personagem, na tenda próxima.
         _connection.Recv(delegate(AcceptMission msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível aceitar missões" }, header.Seq);
+            AcceptSafehouseMission(msg, header.Seq);
         });
 
-        // ── CancelMission (3624) — ยกเลิกภารกิจที่ทำค้างอยู่ ──────────────────────────────
-        // จุดยิง: client/FactionSystem.cs:339-348 รอ .On<OK> (1231) แล้วยิง GetMissions ซ้ำ
-        //   ต้นทาง: client/Durango.UI/MissionGroup.cs:141-162 เมนู "ยกเลิกภารกิจทั้งหมด"
-        //   และ client/FactionSystem.cs:358-371 CancelAndRecommendMission
-        //
-        // ตัวนี้ตอบ OK ไม่ใช่ Abort — และไม่ถือว่าโกหก เพราะสภาพหลังคำสั่งที่ฝั่งเกมคาดไว้
-        // ("ผู้เล่นไม่มีภารกิจนี้ค้างแล้ว") เป็นจริงบนเซิร์ฟเราอยู่ก่อนแล้ว:
-        // ภารกิจที่ฝั่งเกมถืออยู่ได้มาจาก MissionInfos ที่เราส่งเท่านั้น ซึ่งว่างเสมอ
-        // ⇒ ไม่มีอะไรให้ยกเลิก ⇒ ยกเลิกสำเร็จโดยปริยาย ไม่มีทางหลุดซิงก์
-        // และ OK ยังทำให้ฝั่งเกมยิง GetMissions ต่อ (บรรทัด 346) ไปรับสถานะจริงจาก
-        // server/Core/Player.Missions.cs:47-52 มาทับอีกชั้น ⇒ จบที่สถานะถูกต้องแน่นอน
+        // Cancela a missão atual sem alterar etapas já concluídas.
         _connection.Recv(delegate(CancelMission msg, PacketHeader header)
         {
+            CancelSafehouseMission(msg.MissionId);
             Send(default(OK), header.Seq);
         });
 
@@ -241,33 +176,20 @@ public partial class Player
             Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível receber a próxima missão imediatamente" }, header.Seq);
         });
 
-        // ── CheckSequenceMissionCleared (3631) — ถามว่าภารกิจตามลำดับอันนี้ผ่านแล้วหรือยัง ──
-        // จุดยิง: client/FactionSystem.cs:492-510 รอ .On<SequenceMissionCleared> (3632)
-        //   → onResult(result.Cleared) และมี .Rest(...) → onResult(false)
-        //   ต้นทาง: client/Durango.Logic.PlayGuide/MissionStartToDo.cs:24-30 — รายการสิ่งที่
-        //   ต้องทำของบทเรียนนำทาง ถ้า cleared = true จะ CallComplete() ข้ามข้อนั้นให้เลย
-        //
-        // นี่คือ "คำถาม" ⇒ ตอบตามจริง: เซิร์ฟเราไม่เคยมีภารกิจ จึงไม่มีภารกิจไหนถูกเคลียร์
-        // Cleared = false ⇒ ToDo ข้อนั้นยังค้างรอ FactionsUpdated ต่อไป (เหมือนทาง .Rest เป๊ะ)
-        // สะท้อน MissionId กลับไปตรง ๆ เพื่อให้ฝั่งเกมจับคู่คำตอบได้ถูกภารกิจ
+        // Informa a conclusão persistida usando o ID esperado pelo guia.
         _connection.Recv(delegate(CheckSequenceMissionCleared msg, PacketHeader header)
         {
             Send(new SequenceMissionCleared
             {
                 MissionId = msg.MissionId,
-                Cleared = false
+                Cleared = _context.SafehouseMissions?.Completed?.Contains(msg.MissionId ?? "") == true
             }, header.Seq);
         });
 
-        // ── SkipTutorialMission (3633) — ปุ่ม "ทำให้เสร็จทันที" ของภารกิจบทเรียน ────────────
-        // จุดยิง: client/FactionSystem.cs:350-356 RequestSkipTutorialMission ยิงแบบไม่ผูก .On<>
-        //   ต้นทาง: client/Durango.Logic.Faction/MissionToDoCollection.cs:89 — ปุ่มใน GetDetail()
-        //   ที่โผล่เมื่อ IsSkippable เท่านั้น (คือมีภารกิจบทเรียนค้างอยู่จริง)
-        // ของจริงเซิร์ฟจะปิดภารกิจให้พร้อมจ่ายรางวัล — เราไม่มีภารกิจและจ่ายรางวัลไม่ได้
-        // ⇒ Abort (ผู้เล่นกดปุ่มเอง ต้องได้คำตอบ ไม่ใช่ปุ่มด้าน)
+        // Respeita os quatro minutos de espera definidos no tutorial original.
         _connection.Recv(delegate(SkipTutorialMission msg, PacketHeader header)
         {
-            Send(new Abort { Text = FactionNotAvailableText + " — ainda não é possível pular missões do tutorial" }, header.Seq);
+            SkipSafehouseHuntingMission(msg.MissionId, header.Seq);
         });
 
         // ── SendFactionSupportRequest (725982) — ส่งของช่วยเหลือตาม "คำขอสนับสนุน" ของกลุ่ม ─

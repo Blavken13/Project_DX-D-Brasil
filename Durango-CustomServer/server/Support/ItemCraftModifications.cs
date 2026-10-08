@@ -33,6 +33,17 @@ public static class ItemCraftModifications
     public static bool Initialize(ref Item item)
     {
         Load(); bool changed = false; Item current = item;
+        // Atributos major acompanham o nível do material. Repara somente atributos
+        // presentes com evidência de processamento; nunca concede propriedades novas.
+        foreach (var modification in item.TagModifications ?? Array.Empty<Tag>())
+        {
+            int expected = TagLevel(item, modification.Id, modification.Level);
+            if (item.Level <= 0 || item.ModifiedCount <= 0 || !IsMajorTag(modification.Id) ||
+                modification.Level <= 0 || modification.Level >= expected ||
+                item.Tags?.Any(t => t.Id == modification.Id && t.Level > 0 && t.Level < expected) != true) continue;
+            SetTag(ref item, modification.Id, item.Level);
+            changed = true;
+        }
         // Never replenish an item which has already used its processing allowance.
         if (item.ModifiableCount == 0 && item.ModifiedCount == 0 && !Has(item, "eatable") &&
             _recipes.Values.Any(r => r.type == CraftType.Modify && r.deduct_modifiable_count &&
@@ -59,12 +70,14 @@ public static class ItemCraftModifications
     private static void SetTag(ref Item item, string id, int level, params string[] remove)
     {
         Load();
-        int cap = (int?)_tags[id]?["max_level"] ?? 100;
-        var tag = new Tag { Id = id, Level = Math.Clamp(level, 1, cap) };
+        var tag = new Tag { Id = id, Level = TagLevel(item, id, level) };
         item.Tags = (item.Tags ?? Array.Empty<Tag>()).Where(t => t.Id != id && !remove.Contains(t.Id)).Append(tag).ToArray();
         item.TagModifications = (item.TagModifications ?? Array.Empty<Tag>())
             .Where(t => t.Id != id && !remove.Contains(t.Id)).Append(tag).ToArray();
     }
+    private static bool IsMajorTag(string id) => (string)_tags[id]?["type"] == "major";
+    private static int TagLevel(Item item, string id, int intensity) =>
+        Math.Clamp(IsMajorTag(id) ? item.Level : intensity, 1, (int?)_tags[id]?["max_level"] ?? 100);
     private static void Increase(ref Item item, string id, int amount = 1) =>
         SetTag(ref item, id, (item.Tags ?? Array.Empty<Tag>()).Where(t => t.Id == id).Select(t => t.Level).DefaultIfEmpty(0).Max() + amount);
 
@@ -159,9 +172,12 @@ public static class ItemCraftModifications
         }
         else if (id == "combine_metal") Increase(ref item, "hardness_hard");
         else if (id.StartsWith("refine"))
-            Increase(ref item, id switch { "refine" => "purity_high", "refine_02" => "hardness_hard",
+        {
+            string property = id switch { "refine" => "purity_high", "refine_02" => "hardness_hard",
                 "refine_03" or "refine_03_t2" => "structure_compact", "refine_snowfield" => "cold_resistant",
-                "refine_04" => "surface_dense_volcanic", _ => "purity_high" });
+                "refine_04" => "surface_dense_volcanic", _ => "purity_high" };
+            Increase(ref item, property);
+        }
         else if (id.StartsWith("jewel_"))
         {
             SetTag(ref item, "jewel_polished", item.Level, "jewel_gemstone");

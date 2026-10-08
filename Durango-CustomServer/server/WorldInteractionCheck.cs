@@ -233,6 +233,18 @@ internal static class WorldInteractionCheck
             }
 
             var portals = world.ArtifactManager.Enumerable(a => BlueprintStore.GetBlueprint(a.EntityType)?.Components?.Contains("Warphole") == true).Take(2).ToArray();
+            foreach (ushort type in new ushort[] { 9100, 9115, 6040, 6301, 6343, 6346, 6352 })
+            {
+                var radioMenu = link.Request<Touch, Touched>(new Touch
+                    { EntityId = "radio-check-" + type, EntityType = type, Tile = fishTile });
+                bool functional = BlueprintStore.GetBlueprint(type).Components.Contains("FactionCenter");
+                Check(radioMenu.Interactions.Contains((int)Interaction.AcceptMission) == functional,
+                    "tenda oferece missões somente com FactionCenter: " + type);
+            }
+            var unavailableMission = link.Request<RecommendMissions, Abort>(new RecommendMissions
+                { EntityId = "radio-check-9100", Tile = fishTile });
+            Check(!string.IsNullOrWhiteSpace(unavailableMission.Text),
+                "solicitação a tenda inexistente retorna mensagem explícita");
             foreach (var portal in portals)
             {
                 Place(context, portal.Tile);

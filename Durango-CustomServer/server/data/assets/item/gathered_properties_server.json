@@ -1,0 +1,26 @@
+{
+  "chance": 0.35,
+  "second_property_chance": 0.25,
+  "max_intensity": 3,
+  "rules": [
+    {
+      "materials": ["bone", "wood", "stone", "ore", "metal"],
+      "groups": [
+        ["hardness_hard", "hardness_soft"],
+        ["weight_light", "weight_heavy"],
+        ["density_high", "density_low"]
+      ]
+    },
+    {
+      "materials": ["leather", "fiber", "feather", "leaf", "flower"],
+      "groups": [
+        ["fiber_tough", "fiber_tender"],
+        ["weight_light", "weight_heavy"]
+      ]
+    },
+    {
+      "materials": ["meat", "fish", "fruit", "grain", "vegetable", "organ"],
+      "groups": [["fiber_tender_food", "fiber_tough_food"]]
+    }
+  ]
+}

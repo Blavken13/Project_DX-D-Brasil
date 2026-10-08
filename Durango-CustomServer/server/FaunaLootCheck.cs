@@ -189,7 +189,7 @@ internal static class FaunaLootCheck
         Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
         link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
         var collected = link.Messages.OfType<Collected>().Last();
-        Check(context.InventoryItems.Skip(before).All(i => i.Prototype == "meat" && i.Level == 10 && i.Tags.All(t => t.Level == 10)) &&
+        Check(context.InventoryItems.Skip(before).All(i => i.Prototype == "meat" && i.Level == 10 && GatheredPropertiesCheck.Levels(i, 10)) &&
             context.InventoryItems.Count > before && collected.ActionInfo.RelatedCategory == Shared.Skill.Category.Butchery,
             "loot TCP limitado a esquartejamento 10 apesar de jogador e pedido nivel 60");
         Check(!collected.RanOut && !animal.Butchered && Menu().Generators.Any(g => g.Id == "leather_raw_armored"),
@@ -206,8 +206,25 @@ internal static class FaunaLootCheck
         Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
         link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
         Check(context.InventoryItems.Count > before && context.InventoryItems.Skip(before).All(i =>
-            i.Prototype == "leather_raw_armored" && i.Level == 28 && i.Tags.All(t => t.Level == 28)),
+            i.Prototype == "leather_raw_armored" && i.Level == 28 && GatheredPropertiesCheck.Levels(i, 28)),
             "mesma carcaca entrega outro tipo de loot, com tags e nivel corretos");
+        link.Player.GatheredPropertyRoll = () => 0;
+        var boneSpec = CollectibleTable.FindGenerator(animal.EntityType, "bone_leg_thick");
+        string boneToolPrototype = SingletonDict<string, List<Prototype>>.Instance.Keys.First(k =>
+            PrototypeYaml.GetItemPrototype(k).Tags?.Keys.Any(boneSpec.ToolRequirements.ContainsKey) == true);
+        var boneTool = Cheats.MakeItem(boneToolPrototype, 60).Value;
+        context.InventoryItems.Add(boneTool);
+        before = context.InventoryItems.Count;
+        replies = link.Messages.OfType<Collected>().Count();
+        timer = link.Request<Collect, Messages.Timer>(new Collect { EntityId = animal.EntityId, Tile = tile,
+            GeneratorId = "bone_leg_thick", Level = 60, ToolItemId = boneTool.Id });
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + timer.Duration + .1);
+        link.PumpUntil(() => link.Messages.OfType<Collected>().Count() > replies);
+        Check(context.InventoryItems.Count > before && context.InventoryItems.Skip(before).All(i =>
+            i.TagModifications.Any(t => t.Id == "hardness_hard") && i.TagModifications.Any(t => t.Id == "weight_light")) &&
+            link.Messages.OfType<Collected>().Last().Items.All(i => i.Tags.Any(t => t.Id == "hardness_hard")),
+            "ossos TCP recebem propriedades sorteadas no inventario e no pacote do cliente");
+        link.Player.GatheredPropertyRoll = System.Random.Shared.NextDouble;
         link.Request<Touch, Touched>(new Touch { EntityId = animal.EntityId, EntityType = animal.EntityType, Tile = tile });
         link.Request<Collect, Abort>(new Collect { EntityId = "missing-corpse", Tile = tile, GeneratorId = "leather_raw_armored" });
         Check(context.InventoryItems.Count > before, "id inexistente nao permite tratar carcaca como recurso natural");

@@ -19,6 +19,97 @@ internal static class WorkbenchCraftCheck
         .GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(target, args);
     private static bool Matches(Dictionary<string, string> actual, Dictionary<string, int> filter) =>
         filter == null || filter.Count == 0 || filter.Any(p => actual.ContainsKey(p.Key));
+    private static bool Suitable(Item item, CraftRecipeSlotData slot) => (bool)typeof(Player)
+        .GetMethod("MatchesSlot", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { item, slot });
+
+    private static void CheckAllRecipeMaterialFilters(Dictionary<string, CraftRecipeData> catalog)
+    {
+        int cases = 0, slots = 0;
+        static Dictionary<string, int> Filter(Dictionary<string, int> tags) =>
+            tags == null || (tags.Count == 1 && tags.ContainsKey("bare_hands")) ? new() : tags;
+        void Assert(bool condition, string id, string slot, string scenario)
+        {
+            if (!condition) throw new InvalidOperationException(id + "/" + slot + ": " + scenario);
+            cases++;
+        }
+        foreach (var (id, recipe) in catalog)
+        foreach (var slot in recipe.slots ?? Array.Empty<CraftRecipeSlotData>())
+        {
+            slots++;
+            var groups = new[] { Filter(slot.required_tags), Filter(slot.required_materials) };
+            var requirements = new Dictionary<string, int>();
+            foreach (var group in groups)
+                foreach (var pair in group) requirements[pair.Key] = Math.Max(requirements.GetValueOrDefault(pair.Key), pair.Value);
+            Item Material(int extra) => new() { Level = 60,
+                Tags = requirements.Select(p => new Tag { Id = p.Key, Level = p.Value + extra }).ToArray() };
+            Assert(Suitable(Material(0), slot), id, slot.slot_id, "atributos no mínimo devem ser aceitos");
+            Assert(Suitable(Material(5), slot), id, slot.slot_id, "atributos acima do mínimo devem ser aceitos");
+            foreach (var group in groups.Where(g => g.Count > 0))
+            {
+                Item missing = Material(0);
+                missing.Tags = missing.Tags.Where(t => !group.ContainsKey(t.Id)).ToArray();
+                Assert(!Suitable(missing, slot), id, slot.slot_id, "grupo obrigatório ausente deve ser recusado");
+                Item low = Material(0);
+                low.Tags = low.Tags.Select(t => group.TryGetValue(t.Id, out int required)
+                    ? new Tag { Id = t.Id, Level = required - 1 } : t).ToArray();
+                Assert(!Suitable(low, slot), id, slot.slot_id, "nível nominal 60 não substitui propriedade abaixo do mínimo");
+                foreach (var alternative in group)
+                {
+                    Item oneAlternative = Material(0);
+                    oneAlternative.Tags = oneAlternative.Tags.Where(t => !group.ContainsKey(t.Id) || t.Id == alternative.Key).ToArray();
+                    // Se os grupos compartilham tags, mantém os requisitos do outro
+                    // grupo sem introduzir outra alternativa deste grupo.
+                    bool otherSatisfied = groups.All(g => g.Count == 0 || g.Any(p =>
+                        oneAlternative.Tags.Any(t => t.Id == p.Key && t.Level >= p.Value)));
+                    if (otherSatisfied) Assert(Suitable(oneAlternative, slot), id, slot.slot_id, "alternativa OR válida deve ser aceita");
+                }
+            }
+        }
+        Check(slots == catalog.Values.Sum(r => r.slots?.Length ?? 0), "auditoria cobre todos os slots das receitas");
+        Console.WriteLine($"[bench-check] Filtros: {catalog.Count} receitas, {slots} slots, {cases} verificações aprovadas.");
+    }
+
+    private static void CheckPurityMaterialLevels(Dictionary<string, CraftRecipeData> catalog)
+    {
+        var bowSlot = catalog["bowstick_metal_01"].slots.Single(s => s.slot_id == "base");
+        Check(bowSlot.required_materials["purity_high"] == 55, "regressão usa a receita real do limbo de arco nível 55");
+        foreach (int level in new[] { 54, 55, 60 })
+        {
+            Item metal = Cheats.MakeItem("ore_iron", level).Value;
+            string id = metal.Id;
+            Check(ItemCraftModifications.Apply(ref metal, "smelt", catalog["smelt"], new(), null, out _), "funde metal nível " + level);
+            Check(ItemCraftModifications.Apply(ref metal, "refine", catalog["refine"], new(), null, out _), "refina metal nível " + level);
+            Check(metal.Tags.Single(t => t.Id == "purity_high").Level == level &&
+                metal.TagModifications.Single(t => t.Id == "purity_high").Level == level,
+                "pureza acompanha nível do metal em atributos e modificações: " + level);
+            Check(Suitable(metal, bowSlot) == (level >= 55), "receita distingue material abaixo, igual e acima do mínimo: " + level);
+            Check(metal.Id == id && metal.Level == level, "refinar preserva identidade e nível: " + level);
+            int hardnessBefore = metal.Tags.Where(t => t.Id == "hardness_hard").Select(t => t.Level).DefaultIfEmpty(0).Max();
+            Check(ItemCraftModifications.Apply(ref metal, "refine_02", catalog["refine_02"], new(), null, out _), "tratamento de dureza continua disponível");
+            int hardness = metal.Tags.Single(t => t.Id == "hardness_hard").Level;
+            Check(hardness == hardnessBefore + 1, "propriedade minor conserva incremento de intensidade");
+            metal.ModifiedCount = 2;
+            metal.ModifiableCount = 1;
+            // Reproduz um save afetado: nível nominal correto, pureza gravada como 1.
+            metal.Tags = metal.Tags.Select(t => t.Id == "purity_high" ? new Tag { Id = t.Id, Level = 1 } : t).ToArray();
+            metal.TagModifications = metal.TagModifications.Select(t => t.Id == "purity_high" ? new Tag { Id = t.Id, Level = 1 } : t).ToArray();
+            var inventory = new List<Item> { Json.Read<Item>(Json.Write(metal)) };
+            ItemExtRepair.Normalize(inventory, "Teste de pureza");
+            var repaired = inventory.Single();
+            Check(repaired.Tags.Single(t => t.Id == "purity_high").Level == level && Suitable(repaired, bowSlot) == (level >= 55),
+                "carregamento de save repara material antigo sem aceitar nível insuficiente: " + level);
+            Check(repaired.Id == id && repaired.ModifiedCount == 2 && repaired.ModifiableCount == 1 &&
+                repaired.Tags.Single(t => t.Id == "hardness_hard").Level == hardness,
+                "reparo preserva usos, identidade e propriedades minor");
+            string before = Json.Write(repaired);
+            Check(!ItemCraftModifications.Initialize(ref repaired) && Json.Write(repaired) == before, "reparo é idempotente");
+        }
+        var ordinary = Cheats.MakeItem("ore_iron", 60).Value;
+        Check(!Suitable(ordinary, bowSlot) && !ordinary.Tags.Any(t => t.Id == "purity_high"), "minério sem refinamento permanece inelegível");
+        var untreated = Cheats.MakeItem("metal_iron", 60).Value;
+        ItemCraftModifications.Initialize(ref untreated);
+        Check(!Suitable(untreated, bowSlot), "metal não refinado não ganha pureza por normalização");
+    }
     private static Item Material(CraftRecipeSlotData slot)
     {
         var prototype = SingletonDict<string, List<Prototype>>.Instance.Keys.FirstOrDefault(k =>
@@ -37,6 +128,8 @@ internal static class WorkbenchCraftCheck
     internal static void Run(EconomyProtocolCheck.Link link, PlayerContext context, World world, Point2 tile)
     {
         var catalog = Json.ReadFromFile<Dictionary<string, CraftRecipeData>>("item/recipes");
+        CheckPurityMaterialLevels(catalog);
+        CheckAllRecipeMaterialFilters(catalog);
         Check(catalog.Keys.All(CraftRecipeStore.CraftableIds().Contains), "catalogo inclui criacao, processamento e melhorias");
         foreach (var (id, recipe) in catalog.Where(p => p.Value.workbench_tags?.Count > 0))
             Check(BlueprintStore.GetAllBlueprints().Any(b => b.Components?.Contains("Workbench") == true &&
@@ -54,6 +147,25 @@ internal static class WorkbenchCraftCheck
                 id + " nao altera original durante estimativa e preserva identidade/nivel");
             var tags = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("tags");
             Check((result.TagModifications ?? Array.Empty<Tag>()).All(t => tags[t.Id] != null), id + " usa atributos existentes no cliente");
+            var major = (result.TagModifications ?? Array.Empty<Tag>())
+                .Where(t => (string)tags[t.Id]?["type"] == "major").ToArray();
+            if (major.Length > 0)
+            {
+                Check(major.All(t => t.Level == Math.Clamp(result.Level, 1, (int?)tags[t.Id]?["max_level"] ?? 100)),
+                    id + " gera propriedades major no nível do material");
+                var legacy = Json.Read<Item>(Json.Write(result));
+                var ids = major.Select(t => t.Id).ToHashSet();
+                legacy.ModifiedCount = Math.Max(1, legacy.ModifiedCount);
+                legacy.TagModifications = legacy.TagModifications.Select(t => ids.Contains(t.Id) ? new Tag { Id = t.Id, Level = 1 } : t).ToArray();
+                legacy.Tags = legacy.Tags.Select(t => ids.Contains(t.Id) ? new Tag { Id = t.Id, Level = 1 } : t).ToArray();
+                ItemCraftModifications.Initialize(ref legacy);
+                Check(major.All(t => legacy.Tags.Any(a => a.Id == t.Id && a.Level == t.Level) &&
+                    legacy.TagModifications.Any(a => a.Id == t.Id && a.Level == t.Level)),
+                    id + " repara propriedades processadas em saves antigos");
+                Check(result.TagModifications.Where(t => !ids.Contains(t.Id)).All(t =>
+                    legacy.TagModifications.Any(a => a.Id == t.Id && a.Level == t.Level)),
+                    id + " reparo não altera atributos de intensidade");
+            }
         }
         var skillSave = (SkillSave)typeof(Player).GetField("_skills", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(link.Player);
         foreach (var unlock in CraftingAbilityRecipes.All)
@@ -164,6 +276,10 @@ internal static class WorkbenchCraftCheck
             Call(link.Player, "UpdatePendingCrafts", Gauge.CurrentTime + timer.Duration + 1);
             link.PumpUntil(() => context.InventoryItems.Any(i => i.Id == baseItem.Id));
             Item result = context.InventoryItems.Single(i => i.Id == baseItem.Id);
+            if (id == "refine")
+                Check(result.Tags.Single(t => t.Id == "purity_high").Level == result.Level &&
+                    Suitable(result, catalog["bowstick_metal_01"].slots.Single(s => s.slot_id == "base")),
+                    "refinamento pelo TCP gera metal elegível para limbo de arco nível 55");
             if (testCase.Material != null)
             {
                 var prototype = PrototypeYaml.GetItemPrototype("board_" + testCase.Material);

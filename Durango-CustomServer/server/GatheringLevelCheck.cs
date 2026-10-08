@@ -52,7 +52,7 @@ internal static class GatheringLevelCheck
         var items = context.InventoryItems.Skip(before).ToArray();
         var reply = link.Messages.OfType<Collected>().Last();
         check(items.Length > 0 && items.All(i => i.Level == expectedLevel &&
-            i.Tags.All(t => t.Level == expectedLevel)) && reply.Items.All(i => i.Level == expectedLevel),
+            GatheredPropertiesCheck.Levels(i, expectedLevel)) && reply.Items.All(i => i.Level == expectedLevel),
             $"coleta TCP entrega itens e tags nivel {expectedLevel} mesmo com cliente enviando {clientLevel}");
         check(reply.ActionInfo.ActionLevel == actionLevel && reply.ActionInfo.PotentialLevel == expectedLevel &&
             reply.ActionInfo.RelatedCategory == Shared.Skill.Category.Gathering,

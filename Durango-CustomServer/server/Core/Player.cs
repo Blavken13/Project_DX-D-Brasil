@@ -1430,6 +1430,9 @@ public partial class Player
                 //  → Open(entityId, tile, RouteType.Normal) → ยิง GetRoutes มาที่เซิร์ฟ)
                 // เกมไม่ได้ดู components เอง มันเชื่อรายการที่เซิร์ฟส่งมาใน Touched.Interactions ล้วน ๆ
                 if (blueprint.Components.Contains("Port")) list.Add(Shared.System.Interaction.SailingRoutes);
+                // A tenda abre MissionGroup somente quando Touched anuncia esta ação.
+                if (blueprint.Components.Contains("FactionCenter"))
+                    list.Add(Shared.System.Interaction.AcceptMission);
                 if (blueprint.Components.Contains("Warphole")) list.Add(Shared.System.Interaction.Warp);
                 if (touched?.States.Crack is { } crack &&
                     (!crack.ActivatedUntil.HasValue || crack.ActivatedUntil.Value <= Gauge.CurrentTime))

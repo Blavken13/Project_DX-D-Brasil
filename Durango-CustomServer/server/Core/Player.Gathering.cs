@@ -149,6 +149,7 @@ public partial class Player
     /// </summary>
     private sealed record PendingCollect(double DueAt, Action Complete, Action Cancel);
     private readonly List<PendingCollect> _pendingCollects = new();
+    internal Func<double> GatheredPropertyRoll { get; set; } = System.Random.Shared.NextDouble;
     // Mantido para os timers de agricultura, que compartilham a rotina de encerramento.
     private readonly List<System.Threading.Timer> _collectTimers = new();
 
@@ -549,6 +550,19 @@ public partial class Player
             Send(new Abort { Text = "Não há espaço na mochila para esta coleta. Libere espaço e tente novamente." }, seq);
             Send(default(ReplySequenceMark), seq);
             return;
+        }
+        // Sorteia apenas na entrega, após corrigir nível e validar capacidade.
+        // Inclui os itens adicionais de habilidade/premium sem alterar suas quantidades.
+        double propertyBonus = CollectModifiers().GetValueOrDefault("random_tag_mul");
+        var propertyTool = FindInventoryItem(toolItemId);
+        if (propertyTool.HasValue)
+            propertyBonus += (propertyTool.Value.Performance ?? Array.Empty<Performance>())
+                .Where(p => p.Id == "modifiers").Sum(p => p.Nums?.GetValueOrDefault("random_tag_mul_on_tool") ?? 0);
+        for (int index = 0; index < items.Count; index++)
+        {
+            var item = items[index];
+            GatheredItemProperties.Apply(ref item, GatheredPropertyRoll, propertyBonus);
+            items[index] = item;
         }
         collected.Items = items.ToArray();
         AddItems(items);
