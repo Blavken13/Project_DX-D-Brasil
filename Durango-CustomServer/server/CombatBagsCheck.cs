@@ -59,6 +59,17 @@ internal static class CombatBagsCheck
             Check(rolled.Tags.Single(t => t.Id == "pocket").Level == 30, "normalização preserva atributo próprio sem evidência do erro antigo");
             var back = Cheats.MakeItem("bag_back", 60).Value;
             Check(back.Tags.Single(t => t.Id == "pocket").Level == 15, "mochila de costas usa seu atributo próprio em vez do nível do item");
+            foreach (var (prototype, level) in new[] { ("bag_back", 60), ("bag_fabric", 15),
+                ("bag_leaf", 30), ("bag_cross", 34), ("clothes_builder_01", 59), ("clothes_linen_01", 29) })
+            {
+                var existing = Cheats.MakeItem(prototype, level).Value;
+                existing.Tags = existing.Tags.Select(t => t.Id == "pocket" ? new Tag { Id = t.Id, Level = level } : t).ToArray();
+                ItemCraftModifications.Initialize(ref existing);
+                Check(existing.Tags.Single(t => t.Id == "pocket").Level == level,
+                    prototype + ": preserva armazenamento antigo igual ao nível do item");
+                Check(!ItemCraftModifications.Initialize(ref existing) && existing.Tags.Single(t => t.Id == "pocket").Level == level,
+                    prototype + ": recarregar não reduz o armazenamento preservado");
+            }
             foreach (string recipeId in new[] { "reform_pocket", "reform_pocket_t2" })
             {
                 var bag = Cheats.MakeItem("bag_back", 60).Value;
@@ -80,6 +91,27 @@ internal static class CombatBagsCheck
             context.Save(); SafeSave.FlushPending();
             var loaded = PlayerContext.Load(context.Path);
             Check(Player.InventoryCapacity(loaded) == player.CurrentInventoryCapacity, "capacidade e bolso 60 preservados no save");
+            var existingBag = Cheats.MakeItem("bag_back", 60).Value;
+            existingBag.Tags = existingBag.Tags.Select(t => t.Id == "pocket" ? new Tag { Id = t.Id, Level = 60 } : t).ToArray();
+            var existingClothes = Cheats.MakeItem("clothes_builder_01", 59).Value;
+            existingClothes.Tags = existingClothes.Tags.Select(t => t.Id == "pocket" ? new Tag { Id = t.Id, Level = 59 } : t).ToArray();
+            context.InventoryItems.AddRange(new[] { existingBag, existingClothes });
+            context.EquippedItems.Clear();
+            context.EquippedItems["bag"] = existingBag.Id; context.EquippedItems["body"] = existingClothes.Id;
+            context.Save(); SafeSave.FlushPending(); loaded = PlayerContext.Load(context.Path);
+            Check(loaded.InventoryItems.Single(i => i.Id == existingBag.Id).Tags.Single(t => t.Id == "pocket").Level == 60 &&
+                loaded.InventoryItems.Single(i => i.Id == existingClothes.Id).Tags.Single(t => t.Id == "pocket").Level == 59,
+                "save e reconexão preservam armazenamento das bolsas e trajes anteriores ao patch");
+            Check(Player.InventoryCapacity(loaded) == Player.InventoryMaxSize + 360 + 354,
+                "itens antigos equipados mantêm sua capacidade real após reconexão");
+            var existingMaterials = new Dictionary<string, Item[]> { ["base"] = new[] { existingBag },
+                ["thread"] = new[] { Cheats.MakeItem("thread", 60).Value } };
+            Check(ItemCraftModifications.Apply(ref existingBag, "reform_pocket", CraftRecipeStore.Get("reform_pocket"), existingMaterials, 0, out _) &&
+                existingBag.Tags.Single(t => t.Id == "pocket").Level == 60 && existingBag.Tags.Single(t => t.Id == "reform_pocket").Level == 60,
+                "melhoria de bolso preserva armazenamento antigo e adiciona seu efeito separado");
+            context.InventoryItems[context.InventoryItems.FindIndex(i => i.Id == existingBag.Id)] = existingBag;
+            Check(player.CurrentInventoryCapacity == Player.InventoryMaxSize + 360 + 354 + 360,
+                "capacidade antiga e melhoria de bolso somadas uma vez");
 
             var ordinary = new BattleAttackInfo { damage_bonus = 1 };
             Check(CombatDamage.Calculate(100, ordinary, 300) == 25, "defesa 300 reduz ataque 100 para 25 sem piso artificial de 1");

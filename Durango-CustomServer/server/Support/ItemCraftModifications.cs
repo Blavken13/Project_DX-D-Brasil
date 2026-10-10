@@ -36,9 +36,9 @@ public static class ItemCraftModifications
         if (item.TagModifications?.Any(t => t.Id == "pocket") != true && item.Tags?.Any(t => t.Id == "pocket") == true)
         {
             int pocket = BagPocketLevels.Of(item.Prototype, item.Level);
-            // The old factory replaced the prototype's storage intensity with
-            // the item level. Preserve independently rolled/modified pockets.
-            if (item.Tags.Any(t => t.Id == "pocket" && t.Level == current.Level && t.Level != pocket))
+            // Legacy items may legitimately retain a higher saved intensity.
+            // Repair undersized pockets without reducing existing storage.
+            if (item.Tags.Any(t => t.Id == "pocket" && t.Level == current.Level && t.Level < pocket))
             {
                 item.Tags = item.Tags.Select(t => t.Id == "pocket" ? new Tag { Id = t.Id, Level = pocket } : t).ToArray();
                 changed = true;
