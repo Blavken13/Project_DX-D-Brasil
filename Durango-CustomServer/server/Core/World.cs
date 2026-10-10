@@ -122,10 +122,12 @@ public partial class World
         _chunkData = new ChunkData[NumChunksX, NumChunksY];
         AssignChunkData();
         PlaceTerrainPois();
+        RestoreCraterMechanics();
         PlaceTutorialSceneArtifacts();
         PlaceSafehouseSceneArtifacts();
         PopulateSafehouseResources();
         PopulateFlowerResources();
+        PopulateCraterMinerals();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
         AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
         AnimalManager.GroggyStateChanged += animal =>
@@ -935,6 +937,9 @@ public partial class World
     public void ConstructArtifact(AppearArtifact artifact, AddOns? addon, string ownerEntityId = null)
     {
         ArtifactManager.AddArtifact(artifact);
+        // AddArtifact normaliza uma cópia do struct. Publicar a versão armazenada
+        // garante cook na fogueira nova, sem exigir sair e voltar à ilha.
+        artifact = ArtifactManager.Get(artifact.EntityId).Value;
         // จำว่าใครสร้าง — ไม่จำ = ไม่มีใครเป็นเจ้าของ แล้วรื้อไม่ได้ (ดู WorldContext.ArtifactOwners)
         ArtifactManager.SetOwner(artifact.EntityId, ownerEntityId);
         TrackWildStructure(artifact.EntityId, ownerEntityId);

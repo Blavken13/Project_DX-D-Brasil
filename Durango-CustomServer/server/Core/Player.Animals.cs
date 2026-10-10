@@ -163,12 +163,6 @@ public partial class Player
             (1, 60), (2, 30), (3, 10)
         };
 
-        /// <summary>
-        /// **ค่าของเรา** — จำนวนแท็กที่เอามาให้เลือกดูตอน GetMilestoneCandidate
-        /// (ข้อมูลจริงไม่ได้บอกว่าโชว์กี่ตัว — client วาดตามจำนวนที่ส่งไป)
-        /// </summary>
-        public const int MilestoneCandidateCount = 5;
-
         /// <summary>ตัวสุ่มของระบบนี้ — ตัวเดียวทั้งโปรเซส เพราะ handler ทุกตัวอยู่ main loop เส้นเดียว</summary>
         public static readonly Random Rng = new();
 
@@ -642,6 +636,7 @@ public partial class Player
     /// </summary>
     private void DespawnPet(PetStore.Entry entry)
     {
+        if (_petBattle?.Entry == entry) StopPetCombat();
         if (_context.AppearPlayer.Display.BoardingOn == Shared.Display.BoardingOn.Pet &&
             _context.AppearPlayer.Display.VehicleEntityId == entry.Pet.EntityId)
         {
@@ -688,6 +683,7 @@ public partial class Player
         }
         else if (_context.AppearPlayer.Display.BoardingOn != Shared.Display.BoardingOn.Pet) return;
         entry.Pet.IsBoarding = boarding;
+        if (boarding) StopPetCombat();
         _world.BroadCast(entry.Pet);
         _context.AppearPlayer.Display.BoardingOn = boarding ? Shared.Display.BoardingOn.Pet : Shared.Display.BoardingOn.None;
         _context.AppearPlayer.Display.VehicleEntityId = boarding ? entry.Pet.EntityId : string.Empty;
@@ -1049,12 +1045,11 @@ public partial class Player
             Send(new Abort { Text = "Este animal não foi encontrado." }, seq);
             return;
         }
-        // สุ่มหยิบมาโชว์ N ตัวจากพูลจริง — ความน่าจะเป็นที่ส่งไปเท่ากันทุกตัว (1/จำนวนแท็กทั้งหมด)
-        // ซึ่งตรงกับวิธีสุ่มจริงใน RollMilestoneTag() ⇒ ตัวเลขที่ผู้เล่นเห็นไม่หลอก
+        // A roda precisa conter todos os resultados sorteáveis. O cliente fecha
+        // como falha se SelectedTagId não pertence às opções anunciadas.
         int total = Math.Max(1, PetTables.MilestoneTags.Count);
         Pair<string, float>[] pool = PetTables.MilestoneTags
             .OrderBy(_ => PetTuning.Rng.Next())
-            .Take(PetTuning.MilestoneCandidateCount)
             .Select(t => new Pair<string, float>(t.Id, 1f / total))
             .ToArray();
         Send(new MilestoneCandidates { Result = pool, Original = pool }, seq);
@@ -1099,6 +1094,8 @@ public partial class Player
 
         Money retry = PetTables.Costs.MilestoneRetryCost(entry.Pet.Statistics.Level, entry.MilestoneRedrawCount + 1);
         entry.Pet.Stat.RetryCost = retry;
+        entry.Pet.Stat.LastMilestoneAccepted = false;
+        OnContextChanged();
         Send(new MilestoneResult
         {
             SelectedTagId = tagId,
@@ -1138,8 +1135,10 @@ public partial class Player
         entry.Pet.Stat.LastMilestoneAccepted = true;
         entry.PendingMilestoneTag = null;
         entry.PendingMilestoneTagLevel = 0;
+        entry.PendingMilestoneSlot = -1;
         entry.MilestoneRedrawCount = 0;
         RecalcPetStats(entry);
+        OnContextChanged();
 
         Send(new MilestoneResult
         {
@@ -1292,8 +1291,19 @@ public partial class Player
     /// <summary>คิดค่าสถานะทั้งชุดใหม่จากเลเวล+แท็กปัจจุบัน (เรียกหลังแท็ก/แรงก์/เลเวลเปลี่ยน)</summary>
     private static void RecalcPetStats(PetStore.Entry entry)
     {
+        double now = Times.UnixTimeNow();
+        float life = entry.Pet.Stat.Life?.Get(now) ?? entry.LifeMax;
+        float hungry = entry.Pet.Stat.Hungry?.Get(now) ?? entry.HungryMax;
         entry.Pet.Statistics.DerivedAbilities =
             PetFactory.DerivedOf(entry.Pet.EntityType, entry.Pet.Statistics.Level, entry.Pet.Stat.Tags);
+        var derived = entry.Pet.Statistics.DerivedAbilities;
+        entry.LifeMax = derived.GetValueOrDefault(Derived.LifeMax);
+        entry.HungryMax = derived.GetValueOrDefault(Derived.HungryMax);
+        entry.HungryVelocity = derived.GetValueOrDefault(Derived.HungryVelocity);
+        entry.Pet.Stat.Life = PetFactory.TrendGauge(entry.LifeMax,
+            life > 0 ? derived.GetValueOrDefault(Derived.LifeVelocity) : 0, life, now);
+        entry.Pet.Stat.Hungry = PetFactory.HungryGauge(entry.HungryMax, entry.HungryVelocity, hungry, now);
+        entry.Pet.Stat.AgingUntil = entry.Pet.Stat.AgingSince + derived.GetValueOrDefault(Derived.LifeSpan);
         entry.Pet.Statistics.RequiredExp =
             PetTables.RequiredExp(entry.Pet.EntityType, entry.Pet.Statistics.Level);
     }
@@ -1574,6 +1584,11 @@ public partial class Player
                 [Derived.InventoryCapacity] = perf?.Capacity ?? 0f,
                 [Derived.HungryMax] = perf?.HungryMax ?? 0f,
                 [Derived.LifeMax] = animal?.LifeMax ?? 0f,
+                [Derived.LifeVelocity] = animal?.SurvivalValue("life", "velocity") ?? 0f,
+                [Derived.StaminaMax] = animal?.SurvivalValue("stamina", "max") ?? 0f,
+                [Derived.StaminaVelocity] = animal?.SurvivalValue("stamina", "velocity") ?? 0f,
+                [Derived.HungryVelocity] = perf?.HungryVelocity ?? 0f,
+                [Derived.AnimalProductQuantity] = CageTuning.AnimalProductQuantityBase,
                 [Derived.Attack] = animal?.Attack(level) ?? 0f,
                 [Derived.Defense] = animal?.Defense(level) ?? 0f,
                 [Derived.Accuracy] = animal?.Accuracy(level) ?? 0f,
@@ -1581,15 +1596,23 @@ public partial class Player
             };
             if (tags != null && tags.Count > 0)
             {
+                var plus = new Dictionary<Derived, float>();
+                var ratio = new Dictionary<Derived, float>();
                 foreach (KeyValuePair<string, int> tag in tags)
                 {
+                    if (tag.Value <= 0) continue;
                     PetTables.MilestoneTag def = PetTables.MilestoneTagOf(tag.Key);
                     if (def == null) continue;
                     float amount = def.Amount(tag.Value);
                     if (def.Target == Derived.Invalid) continue;
-                    if (def.IsRatio) d[def.Target] = d.GetValueOrDefault(def.Target) * (1f + amount);
-                    else d[def.Target] = d.GetValueOrDefault(def.Target) + amount;
+                    var bonuses = def.IsRatio ? ratio : plus;
+                    bonuses[def.Target] = bonuses.GetValueOrDefault(def.Target) + amount;
                 }
+                // Bônus somados antes da amplificação, independentemente da ordem no save.
+                foreach (Derived target in plus.Keys.Concat(ratio.Keys).Distinct())
+                    d[target] = (d.GetValueOrDefault(target) + plus.GetValueOrDefault(target)) *
+                        Math.Max(0f, 1f + ratio.GetValueOrDefault(target));
+                d[Derived.HungryVelocity] = Math.Min(0f, d[Derived.HungryVelocity]);
             }
             // แปลงหน่วยครั้งเดียวท้ายสุด — ต้องรันแม้ไม่มีแท็ก ไม่งั้น LifeSpan ค้างเป็น "วัน" (บั๊ก 30초)
             ToWireUnits(d);
@@ -1650,17 +1673,22 @@ public partial class Player
         /// ส่งจุดสองจุด: ตอนนี้ กับตอนที่หลอดจะถึงศูนย์ — client เดินหลอดเองระหว่างสองจุดนั้น
         /// </summary>
         public static Gauge HungryGauge(float max, float velocity, float current, double now)
+            => TrendGauge(max, velocity, current, now);
+
+        public static Gauge TrendGauge(float max, float velocity, float current, double now)
         {
-            float cur = Math.Clamp(current, 0f, Math.Max(max, 1f));
-            if (velocity >= 0f)
+            max = Math.Max(0f, max);
+            float cur = Math.Clamp(current, 0f, max);
+            if (velocity == 0f || (velocity > 0f && cur >= max) || (velocity < 0f && cur <= 0f))
             {
                 return new Gauge(max, 0f, new[] { new GaugeNode(now, cur) });
             }
-            double secondsToEmpty = cur / -velocity;
+            float target = velocity > 0f ? max : 0f;
+            double secondsToLimit = (target - cur) / velocity;
             return new Gauge(max, 0f, new[]
             {
                 new GaugeNode(now, cur),
-                new GaugeNode(now + secondsToEmpty, 0f)
+                new GaugeNode(now + secondsToLimit, target)
             });
         }
 
@@ -1717,6 +1745,14 @@ public partial class Player
 
             public string PetName => PetNameText ?? string.Empty;
             public float HungryMax { get; set; }
+
+            public ReinPerf AtLevel(int level)
+            {
+                var result = (ReinPerf)MemberwiseClone();
+                result.HungryMax = PetFormula.TryEval(HungryMaxExpr,
+                    new Dictionary<string, double> { ["level"] = level }, out double value) ? (float)value : 0f;
+                return result;
+            }
         }
 
         // ── entity_types/animal.json ────────────────────────────────────────────────
@@ -1727,6 +1763,13 @@ public partial class Player
             [JsonProperty("defense")] public string DefenseExpr { get; set; }
             [JsonProperty("accuracy")] public string AccuracyExpr { get; set; }
             [JsonProperty("survival")] public Dictionary<string, Dictionary<string, object>> Survival { get; set; }
+
+            public float SurvivalValue(string gauge, string field)
+            {
+                if (Survival?.GetValueOrDefault(gauge)?.GetValueOrDefault(field) is not { } raw) return 0f;
+                return float.TryParse(Convert.ToString(raw, CultureInfo.InvariantCulture),
+                    NumberStyles.Float, CultureInfo.InvariantCulture, out float value) ? value : 0f;
+            }
 
             /// <summary>
             /// สูตรของ animal.json ใช้ตัวแปร combat_level กับ unstable_factor
@@ -1900,7 +1943,7 @@ public partial class Player
         public static ReinPerf PerfOf(ushort petEntityType, int level)
         {
             EnsurePerf(level);
-            return _perfByPet.GetValueOrDefault(petEntityType);
+            return _perfByPet.GetValueOrDefault(petEntityType)?.AtLevel(level);
         }
 
         private static void EnsurePerf(int level)
@@ -1914,8 +1957,6 @@ public partial class Player
             {
                 ReinPerf perf = PetLevelRange.Pick(pair.Value, level);
                 if (perf == null || perf.PetEntityType <= 0) continue;
-                perf.HungryMax = PetFormula.TryEval(perf.HungryMaxExpr,
-                    new Dictionary<string, double> { { "level", level } }, out double hm) ? (float)hm : 0f;
                 _perfByPet[(ushort)perf.PetEntityType] = perf;
             }
         }
@@ -1997,8 +2038,11 @@ public partial class Player
             "hungry_max_amplifier" or "hungry_max_plus" => Derived.HungryMax,
             "life_max_amplifier" or "life_max_plus" => Derived.LifeMax,
             "life_span_plus" => Derived.LifeSpan,
-            // ที่เหลือ (stamina_*, life_regen_*, hungry_velocity_*, product_quantity_*) ยังไม่มีช่อง
-            // ใน PetStatistics ที่ client อ่าน ⇒ เก็บแท็กไว้แต่ยังไม่ให้ผลกับตัวเลขบนจอ
+            "hungry_velocity_amplifier" or "hungry_velocity_plus" => Derived.HungryVelocity,
+            "stamina_max_amplifier" or "stamina_max_plus" => Derived.StaminaMax,
+            "stamina_regen_amplifier" or "stamina_regen_plus" => Derived.StaminaVelocity,
+            "life_regen_amplifier" or "life_regen_plus" => Derived.LifeVelocity,
+            "product_quantity_amplifier" or "product_quantity_plus" => Derived.AnimalProductQuantity,
             _ => Derived.Invalid
         };
 

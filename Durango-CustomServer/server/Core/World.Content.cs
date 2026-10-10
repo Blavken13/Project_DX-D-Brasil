@@ -14,6 +14,21 @@ public partial class World
     public bool ReserveCrater(string id) => id != null && _reservedCraters.Add(id);
     public void ReleaseCrater(string id) => _reservedCraters.Remove(id);
 
+    private void RestoreCraterMechanics()
+    {
+        bool repaired = false;
+        foreach (var crater in ArtifactManager.Enumerable(a => a.IsAlive && a.EntityType == 7037).ToArray())
+        {
+            if (ArtifactManager.RestoreCrack(crater.EntityId, MakeClosedCrack(RegionLevel)))
+            {
+                ArtifactManager.SetDisplayPart(crater.EntityId, "common", BlueprintStore.GetBlueprint(7037).DefaultLook);
+                repaired = true;
+            }
+        }
+        if (repaired) Save();
+        ProcessCraterStates(Gauge.CurrentTime);
+    }
+
     public bool ActivateCrater(string id, double now)
     {
         ProcessCraterStates(now);
@@ -21,11 +36,7 @@ public partial class World
             crack.ActivatedUntil > now) return false;
         // As tabelas de biocoms não estão no pacote. Usar os recursos nativos
         // do próprio mapa, preservando terreno, spots e construções existentes.
-        var types = NaturalInfo.FromBytes(_terrainData.Garden ?? Array.Empty<byte>()).Select(n => n.EntityType)
-            .Concat(RegionCatalog.GetTemplate(_terrainData.Info?.region_template)?.CollectibleLevels.Keys ?? Enumerable.Empty<ushort>())
-            .Distinct().Where(t => t is >= 10000 and < 20000 && t is not (15001 or 15002 or 15004 or 15005 or 15006) &&
-                !IsFishingNatural(t) && CollectibleTable.GeneratorCount(t) > 0)
-            .OrderBy(t => t).ToArray();
+        var types = CraterMineralTypes(crater.Tile);
         if (types.Length == 0) return false;
         var spots = new List<NaturalInfo>();
         for (int radius = 7; radius <= 19 && spots.Count < 12; radius += 4)
@@ -93,6 +104,78 @@ public partial class World
         return !ArtifactManager.Enumerable(_ => true).Any(a =>
             Math.Abs(a.Tile.x - tile.x) <= Math.Max(1, a.Size.x) + clearance &&
             Math.Abs(a.Tile.y - tile.y) <= Math.Max(1, a.Size.y) + clearance);
+    }
+
+    public ushort GatheringTypeAt(Point2 tile, ushort entityType)
+    {
+        string collectible = DataHelper.GetBiomeSpriteInfo(entityType)?.CollectibleId;
+        if (collectible is not ("rock" or "stone")) return entityType;
+        if (WorldStatusRules.UnmaskBiome(BiomeAt(tile)) == Biome.Desert &&
+            ArtifactManager.Enumerable(a => a.IsAlive && a.EntityType == 7037)
+                .Any(c => NearCrater(tile, c.Tile))) return 13048; // native obsidian
+        return entityType;
+    }
+
+    private static bool NearCrater(Point2 tile, Point2 crater) =>
+        Math.Max(Math.Abs(tile.x - crater.x), Math.Abs(tile.y - crater.y)) <= 24;
+
+    private static bool IsCraterMineral(ushort type)
+    {
+        string id = DataHelper.GetBiomeSpriteInfo(type)?.CollectibleId;
+        return id != null && (id.StartsWith("ore_", StringComparison.Ordinal) ||
+            id.StartsWith("jewel_", StringComparison.Ordinal) || id.StartsWith("rock", StringComparison.Ordinal) ||
+            id.StartsWith("stone", StringComparison.Ordinal) || id.StartsWith("basalt", StringComparison.Ordinal) ||
+            id.StartsWith("granite", StringComparison.Ordinal) || id is "obsidian" or "sulphur") &&
+            CollectibleTable.AllSpecs(type).Any(s => PrototypeYaml.GetItemPrototype(s.PrototypeId)?.Category == "mineral");
+    }
+
+    private ushort[] CraterMineralTypes(Point2 crater)
+    {
+        var native = NaturalInfo.FromBytes(_terrainData.Garden ?? Array.Empty<byte>())
+            .Where(n => IsCraterMineral(n.EntityType)).ToArray();
+        var near = native.Where(n => NearCrater(new Point2(n.X, n.Y), crater)).ToArray();
+        ushort Resolve(NaturalInfo n) => GatheringTypeAt(new Point2(n.X, n.Y), n.EntityType);
+        bool Specific(ushort type) => DataHelper.GetBiomeSpriteInfo(type)?.CollectibleId is { } id &&
+            id is not ("rock" or "stone") && !id.StartsWith("rock", StringComparison.Ordinal) &&
+            !id.StartsWith("stone", StringComparison.Ordinal);
+        var types = near.Select(Resolve).Where(Specific).ToArray();
+        if (types.Length == 0) types = native.Select(Resolve).Where(Specific).ToArray();
+        if (types.Length == 0) types = near.Select(Resolve).ToArray();
+        if (types.Length == 0) types = native.Select(Resolve).ToArray();
+        return types.Distinct().OrderBy(t => t)
+            .GroupBy(t => DataHelper.GetBiomeSpriteInfo(t).CollectibleId).Select(g => g.First()).ToArray();
+    }
+
+    private void PopulateCraterMinerals()
+    {
+        if (_context.CraterMineralEcologyVersion >= 1 || IsTutorialIsland) return;
+        var current = new List<NaturalInfo>();
+        foreach (var chunk in _chunkData) current.AddRange(NaturalInfo.FromBytes(chunk.Garden ?? Array.Empty<byte>()));
+        foreach (var crater in ArtifactManager.Enumerable(a => a.IsAlive && a.EntityType == 7037).ToArray())
+        foreach (ushort type in CraterMineralTypes(crater.Tile))
+        {
+            string collectible = DataHelper.GetBiomeSpriteInfo(type).CollectibleId;
+            int count = current.Count(n => NearCrater(new Point2(n.X, n.Y), crater.Tile) &&
+                DataHelper.GetBiomeSpriteInfo(GatheringTypeAt(new Point2(n.X, n.Y), n.EntityType))?.CollectibleId == collectible);
+            // Harvested spots already have a regrowth timer; never replace them.
+            count += _context.NaturalRegrow.Count(n => NearCrater(new Point2(n.X, n.Y), crater.Tile) &&
+                NaturalTypeAt(new Point2(n.X, n.Y)) == 0 && DataHelper.GetBiomeSpriteInfo(n.EntityType)?.CollectibleId == collectible);
+            for (int radius = 8; radius <= 20 && count < 3; radius += 4)
+            for (int dy = -radius; dy <= radius && count < 3; dy += 4)
+            for (int dx = -radius; dx <= radius && count < 3; dx += 4)
+            {
+                if (Math.Max(Math.Abs(dx), Math.Abs(dy)) != radius) continue;
+                var tile = new Point2(crater.Tile.x + dx, crater.Tile.y + dy);
+                if (!CanPlaceSystemContent(tile) || NaturalTypeAt(tile) != 0 || _removedNatural.Contains(tile) ||
+                    _context.NaturalRegrow.Any(n => n.X == tile.x && n.Y == tile.y) ||
+                    current.Any(n => Math.Abs(n.X - tile.x) <= 1 && Math.Abs(n.Y - tile.y) <= 1)) continue;
+                AddNatural(tile, type);
+                current.Add(new NaturalInfo { X = (ushort)tile.x, Y = (ushort)tile.y, EntityType = type });
+                count++;
+            }
+        }
+        _context.CraterMineralEcologyVersion = 1;
+        Save();
     }
 
     private void PopulateSafehouseResources()

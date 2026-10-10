@@ -53,7 +53,7 @@ public static class Cheats
         {
             list.Add(new Messages.Tag
             {
-                Level = level,
+                Level = tag.Key == "pocket" ? BagPocketLevels.Of(prototypeId, level) : level,
                 Id = tag.Key
             });
         }

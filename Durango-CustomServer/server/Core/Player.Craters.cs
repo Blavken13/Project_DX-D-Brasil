@@ -61,6 +61,14 @@ public partial class Player
         _world.ReleaseCrater(pending.EntityId);
     }
 
+    private void InterruptCraterInvestment()
+    {
+        if (_pendingCrater is not { } pending) return;
+        CancelCraterInvestment();
+        Send(new Abort { Text = "Indução interrompida pelo movimento. As pedras foram preservadas." }, pending.Sequence);
+        Send(default(ReplySequenceMark), pending.Sequence);
+    }
+
     private void UpdateCraterInvestment(double now)
     {
         if (_pendingCrater is not { } pending || now < pending.DueAt) return;

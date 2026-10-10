@@ -694,12 +694,12 @@ public class AnimalManager
         if (template?.Role == Shared.Region.Role.Safehouse)
         {
             const ushort compsognathus = 2015;
-            const ushort zebraceratops = 2027;
+            const ushort cowardRaptor = 2051;
 
             int wantedTotal = WorldTuning.SafehouseAnimalCount;
-            int wantedZebra = Math.Min(wantedTotal, WorldTuning.SafehouseZebraceratopsCount);
+            int wantedRaptor = Math.Min(wantedTotal, WorldTuning.SafehouseRaptorCount);
             int wantedCompso = Math.Min(
-                wantedTotal - wantedZebra,
+                wantedTotal - wantedRaptor,
                 WorldTuning.SafehouseCompsognathusCount);
             int safehouseLevel = Math.Max(1, template.Level);
 
@@ -735,12 +735,12 @@ public class AnimalManager
 
             int cursor = 0;
             int compsoPlaced = 0;
-            int zebraPlaced = 0;
+            int raptorPlaced = 0;
 
             foreach ((ushort type, int speciesTarget) in new[]
             {
                 (compsognathus, wantedCompso),
-                (zebraceratops, wantedZebra)
+                (cowardRaptor, wantedRaptor)
             })
             {
                 int placedForSpecies = 0;
@@ -757,13 +757,13 @@ public class AnimalManager
                 }
 
                 if (type == compsognathus) compsoPlaced = placedForSpecies;
-                else if (type == zebraceratops) zebraPlaced = placedForSpecies;
+                else if (type == cowardRaptor) raptorPlaced = placedForSpecies;
             }
 
             Console.WriteLine(
                 $"[safehouse] fauna: compso={compsoPlaced}/{wantedCompso} " +
-                $"zebraceratops={zebraPlaced}/{wantedZebra} lv={safehouseLevel} " +
-                $"total={compsoPlaced + zebraPlaced}/{wantedTotal} candidatos={candidates.Count}");
+                $"raptor_medroso={raptorPlaced}/{wantedRaptor} lv={safehouseLevel} " +
+                $"total={compsoPlaced + raptorPlaced}/{wantedTotal} candidatos={candidates.Count}");
             return;
         }
         if (terrain == null || template == null || template.Herds.Count == 0) return;

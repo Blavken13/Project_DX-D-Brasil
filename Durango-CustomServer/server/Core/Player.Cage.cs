@@ -827,6 +827,7 @@ public partial class Player
             ? lm
             : inCage.Stat.Life?.Max(Times.UnixTimeNow()) ?? 0f;
         EnsureHungryBounds(entry);
+        RecalcPetStats(entry);
         PetStore.Add(EntityId, entry);
         Console.WriteLine($"[กรง] กู้ {inCage.Name} กลับเข้ารายการสัตว์ของ {ShortId()} (สโตร์ว่างหลังรีสตาร์ต)");
         return entry;

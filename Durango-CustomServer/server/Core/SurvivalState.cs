@@ -355,6 +355,7 @@ public sealed class SurvivalState
     public float ValueAt(string key, double at)
     {
         if (key == KeyFatigue && _fatigueDisabled) return 0;
+        if (_pendingSets.Contains(key)) return _values.GetValueOrDefault(key);
         Gauge g = GaugeOf(key);
         if (g?.Determination != null && g.Determination.Length > 0) return g.Get(at);
         return _values.TryGetValue(key, out float v) ? v : 0f;

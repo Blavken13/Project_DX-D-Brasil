@@ -578,7 +578,7 @@ public partial class Player
             Items = new[] { item },
             RemovedItemIds = kits.ToArray()
         });
-        Send(new Messages.Timer { Duration = ItemConstants.RepairItemTime }, seq);
+        ScheduleInterruptibleAction(ItemConstants.RepairItemTime, seq);
         OnContextChanged();
     }
 

@@ -33,6 +33,8 @@ public static class RegionCatalog
         public bool Active;
         public int AvailableLevel;
         public Role Role = Role.Rural;
+        public HashSet<string> Tags = new(StringComparer.Ordinal);
+        public bool AllowsPvp => Role == Role.Outpost || Role == Role.Instance && Tags.Contains("pvpisland");
         public Biome Biome = Biome.Invalid;
         public double ExpiresIn;
         public Dictionary<ushort, int> CollectibleLevels = new();
@@ -133,6 +135,8 @@ public static class RegionCatalog
                             if (ushort.TryParse(level.Name, out var type) && (int?)level.Value > 0)
                                 info.CollectibleLevels[type] = (int)level.Value;
                     info.Weather = (string)o["weather"];
+                    if (o["tags"] is JArray tags)
+                        info.Tags.UnionWith(tags.Values<string>().Where(t => t != null));
                     if ((int?)o["role"] is { } roleValue && Enum.IsDefined(typeof(Role), roleValue))
                     {
                         info.Role = (Role)roleValue;

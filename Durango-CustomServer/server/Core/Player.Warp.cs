@@ -61,13 +61,11 @@ namespace Durango.Online;
 public partial class Player
 {
     /// <summary>
-    /// นาฬิกาที่รอย้ายตัวผู้เล่นเมื่อครบเวลาวาร์ป
-    ///
-    /// ⚠️ ต่างจากระบบคราฟต์/ก่อสร้างตรงที่ callback ตัวนี้ **แก้สถานะผู้เล่นจริง**
-    /// (ตำแหน่งใน context) ไม่ใช่แค่ Send — ทำแบบนั้นได้เพราะสิ่งที่แก้เป็นของผู้เล่นคนนี้คนเดียว
-    /// ไม่มีใครอื่นอ่าน/เขียนพร้อมกัน และ Connection.Send ล็อกของมันเองอยู่แล้ว
+    /// Retornos concluem no loop principal, permitindo cancelar antes do
+    /// deslocamento e encerrar o timer do cliente pela mesma sequência.
     /// </summary>
-    private readonly List<System.Threading.Timer> _warpTimers = new();
+    private sealed record PendingReturnWarp(Point2 Tile, uint Seq, double DueAt);
+    private readonly List<PendingReturnWarp> _pendingReturnWarps = new();
 
     /// <summary>**ค่าของเรา** — วาร์ปค้างพร้อมกันได้กี่คิว (กันยิงรัวจองหน่วยความจำ)</summary>
     private const int MaxConcurrentWarps = 3;
@@ -283,16 +281,13 @@ public partial class Player
             return;
         }
         // เพดานจำนวนคิววาร์ปที่ค้างพร้อมกัน — **ค่าของเรา** กันยิงรัวจนจอง timer ไม่จำกัด
-        lock (_warpTimers)
+        if (_pendingTravelWarp != null || _pendingReturnWarps.Count >= MaxConcurrentWarps)
         {
-            if (_pendingTravelWarp != null || _warpTimers.Count >= MaxConcurrentWarps)
-            {
-                Send(new Abort { Text = "Você já está se teleportando." }, seq);
-                return;
-            }
+            Send(new Abort { Text = "Você já está se teleportando." }, seq);
+            return;
         }
-
         float duration = Math.Max(0f, WarpTuning.WarpTime);
+        Send(default(ReplySequenceMark), seq);
         Send(new Messages.Timer { Duration = duration }, seq);
 
         Console.WriteLine($"[วาร์ป] {Short(EntityId)} {what} → [{tile.x},{tile.y}] (รอ {duration:0.#} วิ)");
@@ -300,29 +295,24 @@ public partial class Player
         if (duration <= 0f)
         {
             FinishWarp(tile);
+            Send(default(ReplySequenceMark), seq);
             return;
         }
 
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(delegate
-        {
-            try
-            {
-                FinishWarp(tile);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[วาร์ป] ย้ายตัวไม่สำเร็จ: {e.Message}");
-            }
-            finally
-            {
-                lock (_warpTimers) { _warpTimers.Remove(timer); }
-                timer?.Dispose();
-            }
-        }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+        _pendingReturnWarps.Add(new PendingReturnWarp(tile, seq, Gauge.CurrentTime + duration));
+    }
 
-        lock (_warpTimers) { _warpTimers.Add(timer); }
-        timer.Change((int)(duration * 1000f), System.Threading.Timeout.Infinite);
+    private void UpdateReturnWarps(double now)
+    {
+        for (int i = _pendingReturnWarps.Count - 1; i >= 0; i--)
+        {
+            var pending = _pendingReturnWarps[i];
+            if (now < pending.DueAt) continue;
+            _pendingReturnWarps.RemoveAt(i);
+            if (_context.AppearPlayer.IsAlive) FinishWarp(pending.Tile);
+            else Send(new Abort { Text = "Teleporte interrompido." }, pending.Seq);
+            Send(default(ReplySequenceMark), pending.Seq);
+        }
     }
 
     /// <summary>
@@ -346,11 +336,13 @@ public partial class Player
 
     private void ClearWarpTimers()
     {
-        lock (_warpTimers)
+        foreach (var pending in _pendingReturnWarps)
         {
-            foreach (System.Threading.Timer timer in _warpTimers) timer.Dispose();
-            _warpTimers.Clear();
+            Send(new Abort { Text = "Teleporte interrompido pelo movimento." }, pending.Seq);
+            Send(default(ReplySequenceMark), pending.Seq);
         }
+        _pendingReturnWarps.Clear();
+        CancelPendingTravelWarp();
     }
 
     // ── ชุดจุดสำคัญที่ฝั่งเกมใช้เปิด/ปิดปุ่มบนแผนที่ ──────────────────────────────────

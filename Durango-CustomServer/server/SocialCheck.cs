@@ -298,7 +298,9 @@ internal static class SocialCheck
                 var restoredPublic = returning.Request<GetEstateLicenses, EstateLicenses>(default).ClanEstate;
                 Check(restoredPublic?.EstateId == publicLicense.EstateId && restoredPublic?.Size == 2,
                     "licença pública localizada de outra ilha após recarregar os mundos");
-                returning.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = OwnerType.ClanEstate });
+                var returnTimer = returning.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = OwnerType.ClanEstate });
+                Check(!returning.Messages.OfType<Emigrated>().Any(), "retorno aguarda conclusao do timer antes de trocar de ilha");
+                Call(returning.Player, "UpdatePendingCollects", Gauge.CurrentTime + returnTimer.Duration + .1);
                 returning.PumpUntil(() => returning.Messages.OfType<Emigrated>().Any());
                 Check(traveler.RegionId == WorldRegistry.DefaultSharedTamedRegionId && traveler.PendingEstateArrival?.EstateId == publicLicense.EstateId,
                     "retorno ao enclave aponta para terreno público do clã");

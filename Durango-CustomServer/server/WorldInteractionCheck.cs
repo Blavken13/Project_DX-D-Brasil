@@ -108,7 +108,9 @@ internal static class WorldInteractionCheck
             Check(wc.AddedNatural.Select(n => n.EntityType).Distinct().Count() >= 15, "recursos variados do template nativo");
             Check(wc.AddedNatural.All(n => world.CanPlaceSystemContent(new Point2(n.X, n.Y))), "spots preservam edificios e entrada");
             Check(world.AnimalManager.All.Count() == WorldTuning.SafehouseAnimalCount && world.AnimalManager.All.All(a => a.DefensiveOnly &&
-                AnimalTypes.Get(a.EntityType).BaseScale <= 1 && a.CombatLevel <= 5), "quarenta dinos pequenos de baixo nivel no refugio");
+                a.EntityType is 2015 or 2051 && a.CombatLevel == Math.Max(1, RegionCatalog.GetTemplate(world.TerrainInfo.region_template).Level)) &&
+                world.AnimalManager.All.Count(a => a.EntityType == 2051) == WorldTuning.SafehouseRaptorCount,
+                "fauna defensiva do refugio respeita especies, quantidades e nivel configurados");
             Check(world.AnimalManager.All.All(a => !(a.HomeTile.x is >= 88 and <= 145 && a.HomeTile.y is >= 70 and <= 138)),
                 "fauna distribuida fora da area central da safehouse");
             var context = Player(root, "tester");

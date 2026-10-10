@@ -100,6 +100,14 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--world-combat-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return WorldCombatCheck.Run(dataDir);
+                case "--volcano-crater-check":
+                    for (int j = i + 1; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return VolcanoCraterCheck.Run(dataDir);
                 case "--safehouse-missions-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
@@ -162,6 +170,14 @@ internal static class Program
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
                     return PetFeedingCheck.Run(dataDir);
+                case "--reported-gameplay-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return ReportedGameplayCheck.Run(dataDir);
+                case "--combat-bags-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return CombatBagsCheck.Run(dataDir);
                 case "--estate-return-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

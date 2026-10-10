@@ -623,6 +623,9 @@ public partial class Player
     /// Nenhum produto/EXP/energia é concedido.
     /// </summary>
     private void CancelPendingCraft()
+        => CancelPendingCraftAndNotify(false);
+
+    private void CancelPendingCraftAndNotify(bool notify)
     {
         PendingCraft pending = _pendingCraft;
         if (pending == null) return;
@@ -635,8 +638,17 @@ public partial class Player
                 _context.InventoryItems.Add(item);
             }
         }
+        if (notify)
+        {
+            Send(new InventoryUpdated { EntityId = EntityId, Items = pending.ReservedMaterials ?? Array.Empty<Item>() });
+        }
         if ((pending.ReservedMaterials ?? Array.Empty<Item>()).Any(item => _context.EquippedItems.ContainsValue(item.Id))) SendEquipments();
         OnContextChanged();
+        if (notify)
+        {
+            Send(new Abort { Text = "Fabricação interrompida pelo movimento. Os materiais foram devolvidos." }, pending.Seq);
+            Send(default(ReplySequenceMark), pending.Seq);
+        }
     }
 
     /// <summary>Envia o resultado e fecha a sequência de respostas do Craft.</summary>
@@ -1260,7 +1272,7 @@ public partial class Player
         var tags = new Dictionary<string, int>();
         if (prototype.Tags != null)
         {
-            foreach (var tag in prototype.Tags) tags[tag.Key] = level;
+            foreach (var tag in prototype.Tags) tags[tag.Key] = tag.Key == "pocket" ? BagPocketLevels.Of(prototypeId, level) : level;
         }
         Send(new CraftEstimationInfo
         {

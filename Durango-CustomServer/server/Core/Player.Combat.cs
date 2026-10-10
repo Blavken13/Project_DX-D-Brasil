@@ -104,6 +104,7 @@ public class BattleActionMeta
     public int stamina;
     public float cooltime;
     public float action_length;
+    public float? playback_rate;
 
     /// <summary>
     /// ระยะที่ใช้ท่าได้ — **ต้องเป็น nullable**: ท่าหลบสามตัว (onehand_dodge/twohand_dodge/
@@ -117,6 +118,11 @@ public class BattleActionMeta
 
 public class BattleAttackInfo
 {
+    public float attack_time;
+    public float damage_time;
+    public float radius;
+    public float[] rect_half_size;
+    public float[] offset;
     public float damage_bonus;
     public float armor_penetration;
     public float accuracy_ratio;
@@ -135,6 +141,7 @@ public class TagAllowActionData
 /// <summary>ค่าต่อสู้ของผู้เล่นจาก data/assets/entity_types/players.json → "player"</summary>
 public class PlayerBattleStats
 {
+    public float bound_radius = 50;
     public int attack;
     public int defense;
     public int dodge;
@@ -175,6 +182,9 @@ public class ReviveImmediatelyData
 /// <summary>เฉพาะสองบล็อกที่ระบบต่อสู้ใช้จาก constants.json (Support/YamlConstants.cs พอร์ตมาไม่ครบ)</summary>
 public class CombatConstantsData
 {
+    public float pvp_raw_damage_multiplier = .15f;
+    public float pvp_melee_damage_multiplier = .8f;
+    public float pvp_range_damage_multiplier = .35f;
     public DeathPenaltyData death_penalty;
     public ReviveImmediatelyData revive_immediately;
     public DamageableExpData damageable_exp;
@@ -291,6 +301,13 @@ public static class BattleDataStore
         get { EnsureLoaded(); return _constants.revive_immediately; }
     }
 
+    public static float PvpDamageScale(BattleAttackInfo hit)
+    {
+        EnsureLoaded();
+        return _constants.pvp_raw_damage_multiplier *
+            (hit.damage_type == DamageType.Ranged ? _constants.pvp_range_damage_multiplier : _constants.pvp_melee_damage_multiplier);
+    }
+
     public static string WeaponAttackType(string prototypeId)
     {
         EnsureLoaded();
@@ -384,6 +401,8 @@ public partial class Player
 
         _connection.ConnetionClosed += delegate
         {
+            CancelBattleHits();
+            StopPetCombat();
             lock (LivePlayers)
             {
                 if (LivePlayers.TryGetValue(EntityId, out Player current) && ReferenceEquals(current, this))
@@ -451,6 +470,7 @@ public partial class Player
         bool hasWeaponActions = false;
         foreach (var pair in _context.EquippedItems)
         {
+            if (pair.Key is not ("main" or "both")) continue;
             int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
             if (index < 0) continue;
             Messages.Tag[] tags = _context.InventoryItems[index].Tags;
@@ -495,6 +515,7 @@ public partial class Player
         }
 
         double now = Gauge.CurrentTime;
+        if (now < _battleAnimationUntil && action.attack_info?.Length > 0) return;
         if (_battleActionReadyAt.TryGetValue(msg.ActionId, out double readyAt) &&
             now < readyAt)
         {
@@ -519,29 +540,17 @@ public partial class Player
             _survival.Add(SurvivalState.KeyStamina, -staminaCost);
             FlushSurvival();
         }
-        SetBattleMode(true, msg.TargetEntityId);
+        string targetId = msg.TargetEntityId ?? _battleTargetId;
+        SetBattleMode(true, targetId);
         if (action.defense_info != null && action.meta.skill_category == Shared.Skill.Category.Defense)
         {
+            CancelBattleHits();
             BeginDefenseAction(action, now);
             return;
         }
         ClearDefenseAction();
 
-        BattleAttackInfo attack = action.attack_info != null && action.attack_info.Length > 0
-            ? action.attack_info[0]
-            : null;
-        if (attack == null) return;                          // ท่าหลบ (onehand_dodge ฯลฯ) ไม่มีดาเมจ
-
-        string targetId = msg.TargetEntityId ?? _battleTargetId;
-        Console.WriteLine($"[combat] {Short(EntityId)} ใช้ท่า {msg.ActionId} → เป้า '{targetId ?? "(ไม่มี)"}'");
-        Player victim = TryResolveVictim(targetId);
-        if (victim != null)
-        {
-            victim.ReceiveAttack(this, attack, msg.StartAt);
-            return;
-        }
-        // ไม่ใช่ผู้เล่น ⇒ ลองสัตว์ป่า (รอยต่ออยู่ที่ Core/Player.Hunting.cs)
-        TryAttackAnimal(targetId, attack, msg.StartAt);
+        QueueBattleHits(action, targetId, now);
     }
 
     /// <summary>
@@ -560,10 +569,10 @@ public partial class Player
         // คนละเกาะตีกันไม่ได้ (แต่ละเกาะเป็นคนละ World — ดู Core/GameServer.cs:42-43 WorldOf)
         if (other == null || !ReferenceEquals(other._world, _world)) return null;
 
-        // TEMP ALPHA: PvP ยังไม่มี Savage/SafeZone/Clan/Party rules authoritative.
-        // ปลอดภัยกว่าปล่อย player damage global จนกว่า A8 จะเปิด PvP เฉพาะพื้นที่ที่ถูกต้อง.
-        Console.WriteLine($"[combat] ปฏิเสธ PvP {Short(EntityId)} → {Short(other.EntityId)}: PvP ยังไม่เปิด");
-        return null;
+        return other._context.AppearPlayer.IsAlive &&
+            RegionCatalog.GetTemplate(_world.TerrainInfo.region_template)?.AllowsPvp == true &&
+            !PartyStore.SameTeam(EntityId, other.EntityId) && !ClanStore.CombatAllies(EntityId, other.EntityId)
+            ? other : null;
     }
 
     // ── ความเสียหาย ────────────────────────────────────────────────────────────────
@@ -587,16 +596,15 @@ public partial class Player
     /// ตัดสินโดน/พลาด: accuracy(100) เทียบ dodge(0) จากไฟล์จริง ⇒ ค่าปัจจุบันคือ "โดนเสมอ"
     /// </summary>
     private void ReceiveAttack(Player attacker, BattleAttackInfo attack, double startAt)
+        => ReceiveCombatHit(attacker, attacker.EntityId, attacker.CurrentAttackPower(),
+            attacker.CurrentDerivedAccuracy(), attacker.CurrentAttackType(), attack, startAt, wearWeapon: true);
+
+    private void ReceiveCombatHit(Player owner, string attackerId, float power, float accuracy,
+        AttackType attackType, BattleAttackInfo attack, double startAt, bool wearWeapon)
     {
         if (!_context.AppearPlayer.IsAlive) return;
         PlayerBattleStats stats = BattleDataStore.Stats;
-        string damageKind = DominantAtkRatio(attack);
-        float defenseRatio = 1f;
-        if (stats.body_parts != null && stats.body_parts.TryGetValue("body", out PlayerBodyPart body)
-            && body.defense_ratio != null && body.defense_ratio.TryGetValue(damageKind, out float ratio))
-        {
-            defenseRatio = ratio;
-        }
+        var resistances = stats.body_parts?.GetValueOrDefault("body")?.defense_ratio;
         float directionRatio = 1f;
         if (stats.damage_ratio_table != null
             && stats.damage_ratio_table.TryGetValue(CombatTuning.HitDirection.ToString().ToLowerInvariant(), out float dir))
@@ -604,27 +612,21 @@ public partial class Player
             directionRatio = dir;
         }
 
-        float bonus = attack.damage_bonus > 0f ? attack.damage_bonus : 1f;
-        // [7 ก.ย. 2026] สกิลหมวดต่อสู้เพิ่มดาเมจที่ตีออก · หมวดป้องกันลดดาเมจที่รับ
-        // (ดู Player.SkillEffects.cs — คนละสายกับ Derived ที่มาจาก modifiers ของสกิลรายตัว)
-        float raw = attacker.CurrentAttackPower() * bonus * attacker.OutgoingDamageScale();
-        // เกราะ/หลบใช้ค่า Derived ของผู้ถูกตีหลังรวมสกิล ไม่ใช่ค่าฐานดิบอย่างเดียว
-        float baseDefense = CurrentDerivedDefense();
-        float defense = baseDefense * defenseRatio * (1f - Math.Clamp(attack.armor_penetration, 0f, 1f));
-        int value = Math.Max(CombatTuning.MinDamage,
-                             (int)Math.Round((raw - defense) * directionRatio * DamageTakenScale()));
+        int value = CombatDamage.Calculate(power, attack, CurrentDerivedDefense(),
+            resistances, (wearWeapon ? owner.OutgoingDamageScale() : 1) * directionRatio * DamageTakenScale() * BattleDataStore.PvpDamageScale(attack));
+        if (value <= 0) return;
 
         // โดนหรือหลบ — ใช้ Derived.Dodge / Accuracy ของทั้งสองฝ่ายหลังรวมสกิล
         float myDodge = CurrentDerivedDodge();
-        float atkAccuracy = attacker.CurrentDerivedAccuracy();
-        bool activeDefense = HasActiveDefense(Gauge.CurrentTime);
+        float atkAccuracy = accuracy;
+        bool activeDefense = HasActiveDefense(startAt > 0 ? startAt : Gauge.CurrentTime);
         bool dodged = activeDefense || myDodge > 0 && myDodge * (attack.accuracy_ratio > 0f ? attack.accuracy_ratio : 1f)
                       > atkAccuracy;
 
         var damaged = new Damaged
         {
             VictimId = EntityId,
-            AttackerId = attacker.EntityId,
+            AttackerId = attackerId,
             EventAt = startAt > 0.0 ? startAt : Times.UnixTimeNow(),
             Damage = new Damage
             {
@@ -632,13 +634,13 @@ public partial class Player
                 Value = dodged ? 0 : value,
                 Part = BodyPart.Body,                    // players.json → body_parts มีแค่ "body"
                 Direction = CombatTuning.HitDirection,
-                AttackType = attacker.CurrentAttackType(),
+                AttackType = attackType,
                 Effects = DamageEffects.None
             }
         };
         _world.BroadCast(damaged);
-        attacker.WearEquippedWeapon();
-        SetBattleMode(true, attacker.EntityId);
+        if (wearWeapon) owner.WearEquippedWeapon();
+        SetBattleMode(true, owner.EntityId);
         if (dodged)
         {
             RecordSuccessfulDefense(activeDefense);
@@ -694,11 +696,12 @@ public partial class Player
         float best = 0f;
         foreach (var pair in _context.EquippedItems)
         {
+            if (pair.Key is not ("main" or "both")) continue;
             int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
             if (index < 0) continue;
             Item item2 = _context.InventoryItems[index];
             if (item2.Durability?.Get() <= 0) continue;
-            float attack = BattleDataStore.WeaponAttack(item2.Prototype, item2.Level);
+            float attack = EquipmentStats.Value(item2, "weapon", "attack");
             if (attack > best) best = attack;      // ถือได้หลายช่อง เอาชิ้นที่แรงสุด
         }
         return CurrentDerivedAttack() + best;
@@ -732,6 +735,7 @@ public partial class Player
     {
         foreach (var pair in _context.EquippedItems)
         {
+            if (pair.Key is not ("main" or "both")) continue;
             int index = _context.InventoryItems.FindIndex(item => item.Id == pair.Value);
             if (index < 0) continue;
             if (_context.InventoryItems[index].Durability?.Get() <= 0) continue;
@@ -767,7 +771,8 @@ public partial class Player
     /// </summary>
     private void SetBattleMode(bool on, string enemyId = null)
     {
-        if (!on) ClearDefenseAction();
+        if (!on) { ClearDefenseAction(); CancelBattleHits(); StopPetCombat(); _petEnemyId = null; }
+        else if (!string.IsNullOrEmpty(enemyId)) _petEnemyId = enemyId;
         if (on == _inBattle)
         {
             return;
@@ -829,6 +834,14 @@ public partial class Player
         if (!_context.AppearPlayer.IsAlive) return;
         ClearDefenseAction();
         _context.AppearPlayer.IsAlive = false;
+        _lavaLocations.Clear();
+        _lavaSourcePath = null;
+        ClearCollectTimers();
+        CancelPendingCraftAndNotify(true);
+        ClearBuildTimers();
+        CancelPendingTaming();
+        CancelCraterInvestment();
+        ClearWarpTimers();
         _deathCount++;
         _survival.Set(SurvivalState.KeyLife, 0f);
 

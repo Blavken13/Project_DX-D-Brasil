@@ -246,9 +246,9 @@ public partial class Player
             return true;
         }
 
-        if (!_world.ArtifactManager.ClearFarming(msg.EntityId))
+        if (!_pendingFarmHarvests.Add(msg.EntityId))
         {
-            RejectCollect(seq, "Não foi possível limpar o canteiro.", msg);
+            RejectCollect(seq, "A colheita deste canteiro já está em andamento.", msg);
             return true;
         }
 
@@ -273,7 +273,7 @@ public partial class Player
         Send(new Messages.Timer { Duration = duration }, seq);
         Console.WriteLine($"[ปลูก] {Short(EntityId)} เก็บเกี่ยว {crop.GrowsTo} ×{items.Count} " +
                           $"จาก {Short(msg.EntityId)} — รอ {duration:0.#} วิ");
-        ScheduleFarmHarvestFinish(collected, items, seq, duration);
+        ScheduleFarmHarvestFinish(collected, items, seq, duration, msg.EntityId, artifact.Tile, seed);
         OnContextChanged();
         return true;
     }
@@ -298,43 +298,28 @@ public partial class Player
         return true;
     }
 
-    private void ScheduleFarmHarvestFinish(Collected collected, List<Item> items, uint seq, float duration)
-    {
-        if (duration <= 0f || duration > GatheringTuning.MaxCollectSeconds)
-        {
-            CompleteFarmHarvestAfterDelay(collected, items, seq);
-            return;
-        }
+    private readonly HashSet<string> _pendingFarmHarvests = new();
 
-        Collected collectedCopy = collected;
-        List<Item> itemsCopy = items;
-        uint seqCopy = seq;
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(delegate
+    private void ScheduleFarmHarvestFinish(Collected collected, List<Item> items, uint seq, float duration,
+        string entityId, Point2 tile, string seed)
+    {
+        void Cancel()
         {
-            try
-            {
-                CompleteFarmHarvestAfterDelay(collectedCopy, itemsCopy, seqCopy);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[ปลูก] จบการเก็บเกี่ยวไม่สำเร็จ: {e.Message}");
-                try { FinishCollect(collectedCopy, seqCopy); } catch { /* ignore */ }
-            }
-            finally
-            {
-                lock (_collectTimers)
-                {
-                    _collectTimers.Remove(timer);
-                }
-                timer?.Dispose();
-            }
-        }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-        lock (_collectTimers)
-        {
-            _collectTimers.Add(timer);
+            _pendingFarmHarvests.Remove(entityId);
+            Send(new Abort { Text = "Colheita interrompida. A planta permanece no canteiro." }, seq);
+            Send(default(ReplySequenceMark), seq);
         }
-        timer.Change((int)(duration * 1000f), System.Threading.Timeout.Infinite);
+        void Complete()
+        {
+            if (!_context.AppearPlayer.IsAlive || !IsWithinCollectRange(tile) ||
+                !_world.ArtifactManager.TryGetMatureCrop(entityId, Gauge.CurrentTime, out string currentSeed, out _) ||
+                currentSeed != seed || !_world.ArtifactManager.ClearFarming(entityId))
+            { Cancel(); return; }
+            _pendingFarmHarvests.Remove(entityId);
+            CompleteFarmHarvestAfterDelay(collected, items, seq);
+        }
+        if (duration <= 0f || duration > GatheringTuning.MaxCollectSeconds) { Complete(); return; }
+        _pendingCollects.Add(new PendingCollect(Gauge.CurrentTime + duration, Complete, Cancel));
     }
 
     private void CompleteFarmHarvestAfterDelay(Collected collected, List<Item> items, uint seq)

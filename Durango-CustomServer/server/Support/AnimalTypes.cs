@@ -47,6 +47,8 @@ public static class AnimalTypes
         /// ถ้าไม่มีค่อยถอยไปกลางช่วง <c>scale_ranges</c>
         /// </summary>
         public float BaseScale = 1f;
+        public float BoundRadius;
+        public Dictionary<string, float> BodyDefenseRatios;
 
         /// <summary>ขนาดตัวตามข้อมูล (entity_types/animal.json → size_level) ค่าจริง 1-7</summary>
         public int SizeLevel = 1;
@@ -135,6 +137,8 @@ public static class AnimalTypes
                 GroggyDamageRatios = o["groggy_damage_ratio_table"]?.ToObject<Dictionary<string, float>>(),
                 Tamable = (bool?)o["tamable"] ?? false,
                 BaseScale = ReadScale(o),
+                BoundRadius = (float?)o["bound_radius"] ?? 0,
+                BodyDefenseRatios = o["body_parts"]?["body"]?["defense_ratio"]?.ToObject<Dictionary<string, float>>(),
                 SizeLevel = (int?)o["size_level"] ?? 1,
                 TamingResult = (string)o["taming_result"],
                 PreferredFoodTag = (string)o["preferred_food_tag"],

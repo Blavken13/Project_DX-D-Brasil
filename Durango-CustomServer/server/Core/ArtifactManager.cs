@@ -302,6 +302,16 @@ public class ArtifactManager
         return true;
     }
 
+    public bool RestoreCrack(string entityId, Crack crack)
+    {
+        if (entityId == null || !_artifacts.TryGetValue(entityId, out var artifact) ||
+            artifact.EntityType != 7037 || artifact.States.Crack.HasValue) return false;
+        artifact.States.Crack = crack;
+        _artifacts[entityId] = artifact;
+        RaiseStateUpdated(entityId, artifact.States);
+        return true;
+    }
+
     public bool UpdateCrack(string entityId, Func<Crack, Crack> mutate)
     {
         if (entityId == null || mutate == null || !_artifacts.TryGetValue(entityId, out var artifact) ||

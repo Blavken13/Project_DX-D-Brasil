@@ -156,8 +156,6 @@ public partial class Player
     private sealed record PendingCollect(double DueAt, Action Complete, Action Cancel);
     private readonly List<PendingCollect> _pendingCollects = new();
     internal Func<double> GatheredPropertyRoll { get; set; } = System.Random.Shared.NextDouble;
-    // Mantido para os timers de agricultura, que compartilham a rotina de encerramento.
-    private readonly List<System.Threading.Timer> _collectTimers = new();
 
     private void RegisterGatheringHandlers()
     {
@@ -209,6 +207,7 @@ public partial class Player
     /// </summary>
     internal Collectible BuildCollectibleFor(string entityId, ushort entityType, Point2 tile)
     {
+        entityType = _world.GatheringTypeAt(tile, entityType);
         if (entityType is 15001 or 15002 or 15004 or 15006)
             return new Collectible { EntityId = entityId, Generators = Array.Empty<Generator>() };
         // กันโตไม่รู้จบตอนเล่นยาว ๆ — ของที่แตะแล้วไม่ได้เก็บไม่มีความหมายอีกต่อไป
@@ -248,6 +247,7 @@ public partial class Player
         { Send(new Collectible { EntityId = msg.EntityId, Generators = Array.Empty<Generator>() }, seq); return; }
 
         _touchedNaturals.TryGetValue(msg.Tile, out ushort entityType);
+        if (entityType == 0) entityType = _world.GatheringTypeAt(msg.Tile, _world.NaturalTypeAt(msg.Tile));
         AnimalManager.Animal animal = _world.AnimalManager?.Get(msg.EntityId);
         if (animal != null && !animal.IsAlive) entityType = animal.EntityType;
         int animalLevel = animal != null && !animal.IsAlive ? animal.CombatLevel : 0;
@@ -263,6 +263,12 @@ public partial class Player
 
     private void HandleCollectMsg(Collect msg, uint seq)
     {
+        CheckSurvivalDeath(Gauge.CurrentTime);
+        if (!_context.AppearPlayer.IsAlive)
+        {
+            RejectCollect(seq, "Personagem morto não pode coletar recursos.", msg);
+            return;
+        }
         if (TryCollectGroundPackage(msg, seq)) return;
         // แปลงเพาะปลูกที่โตแล้วใช้ Collect ชุดเดียวกับของธรรมชาติ (ดู Player.Farm.cs)
         if (TryHandleFarmHarvest(msg, seq)) return;
@@ -280,7 +286,8 @@ public partial class Player
         {
             entityType = carcass.EntityType;
         }
-        else if (!_touchedNaturals.TryGetValue(msg.Tile, out entityType))
+        else if (!_touchedNaturals.TryGetValue(msg.Tile, out entityType) &&
+                 (entityType = _world.GatheringTypeAt(msg.Tile, _world.NaturalTypeAt(msg.Tile))) == 0)
         {
             // ไม่เคยแตะ = ไม่รู้ว่ามันคืออะไร (หรือเก็บไปแล้วเมื่อกี้) — ยกเลิกสะอาด
             RejectCollect(seq, "Este recurso natural não foi reconhecido.", msg);
@@ -414,6 +421,12 @@ public partial class Player
         FlushSurvival();
 
         // [7 ก.ย. 2026] สกิลสูงมีโอกาสได้ของเพิ่มอีกชิ้น (ดู Player.SkillEffects.cs)
+        if (!_context.AppearPlayer.IsAlive)
+        {
+            UnreserveGenerator(harvestKey, spec.Id);
+            RejectCollect(seq, "Coleta interrompida pela morte do personagem.", msg);
+            return;
+        }
         int itemCount = CollectibleTable.ItemsPerCollect;
         bool bonus = carcass != null ? RollButcheryBonus() : RollGatherBonus();
         if (bonus) itemCount++;
@@ -697,11 +710,6 @@ public partial class Player
     {
         foreach (var pending in _pendingCollects) pending.Cancel();
         _pendingCollects.Clear();
-        lock (_collectTimers)
-        {
-            foreach (var timer in _collectTimers) timer.Dispose();
-            _collectTimers.Clear();
-        }
     }
 
     // ── การตรวจเงื่อนไข ─────────────────────────────────────────────────────────────
@@ -1214,6 +1222,25 @@ internal static class CollectibleTable
         // 2) ชื่อ collectible เป็น prototype อยู่แล้ว (sulphur / basalt / granite / clay_gray …)
         if (PrototypeYaml.GetItemPrototype(collectibleId) != null) Add(collectibleId);
         // 3) ของประจำหมวด (ค่าของเรา)
+        // Native mineral aliases are independent of translated display names.
+        string mineralGenerator = collectibleId switch
+        {
+            "obsidian" => "obsidian",
+            "basalt_small" => "basalt",
+            "granite_small" => "granite",
+            "ore_iron_black_crack" => "ore_iron_black",
+            _ => null
+        };
+        if (mineralGenerator != null)
+        {
+            string prototype = ResolveGenerator(mineralGenerator);
+            if (prototype != null)
+            {
+                Add(prototype);
+                _generatorIdByCollectiblePrototype.TryAdd(GeneratorAliasKey(collectibleId, prototype), mineralGenerator);
+            }
+        }
+        if (result.Any(p => PrototypeYaml.GetItemPrototype(p)?.Category == "mineral")) return result;
         foreach (string id in FamilyFallback(collectibleId)) Add(id);
         return result;
     }
@@ -1242,12 +1269,16 @@ internal static class CollectibleTable
             return new[] { "wood_bough", "leaf_small" };
         if (id.StartsWith("mushroom"))
             return new[] { "mushroom" };
-        if (id.StartsWith("grass") || id.StartsWith("flower") || id.StartsWith("cactus") || id.StartsWith("moss"))
+        if (id.StartsWith("cactus", StringComparison.Ordinal))
+            return new[] { "cactus" };
+        if (id.StartsWith("grass") || id.StartsWith("flower") || id.StartsWith("moss"))
             return new[] { "leaf" };
         if (id.StartsWith("ore") || id.StartsWith("jewel") || id.StartsWith("silver") || id.StartsWith("metal"))
             return new[] { "ore_iron" };
+        if (id.StartsWith("basalt", StringComparison.Ordinal)) return new[] { "basalt" };
+        if (id.StartsWith("granite", StringComparison.Ordinal)) return new[] { "granite" };
         if (id.StartsWith("rock") || id.StartsWith("stone") || id.StartsWith("marble") || id.StartsWith("obsidian")
-            || id.StartsWith("granite") || id.StartsWith("basalt") || id.StartsWith("crater") || id.StartsWith("cliff"))
+            || id.StartsWith("crater") || id.StartsWith("cliff"))
             return new[] { "stone" };
         if (id.StartsWith("mud") || id.StartsWith("clay") || id.StartsWith("dirt") || id.StartsWith("sand"))
             return new[] { "clay" };
@@ -1464,6 +1495,7 @@ internal static class CollectibleTable
 
     private static string ResolveGeneratorUncached(string generatorId)
     {
+        if (generatorId == "obsidian") return "stone_obsidian";
         // 1) ชื่อตรงกับ prototype อยู่แล้ว
         if (PrototypeYaml.GetItemPrototype(generatorId) != null) return generatorId;
 

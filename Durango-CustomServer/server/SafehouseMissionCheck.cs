@@ -49,6 +49,11 @@ internal static class SafehouseMissionCheck
             RegionCatalog.Load(Path.Combine(dataDir, "assets"));
             var wc = new WorldContext { TerrainId = "grass_company_safehouse_01" };
             wc.Initialize(Path.Combine(root, "safehouse.world")); var world = new World(wc);
+            Check(world.AnimalManager.All.Count(a => a.EntityType == 2051) == WorldTuning.SafehouseRaptorCount,
+                "Safehouse inicia com os raptores medrosos configurados");
+            Check(!world.AnimalManager.All.Any(a => a.EntityType == 2027) &&
+                world.AnimalManager.All.Count(a => a.EntityType == 2015) == WorldTuning.SafehouseCompsognathusCount,
+                "raptores substituem os Sebrossaurus e preservam os compsognatos");
             var radio = world.ArtifactManager.Enumerable(a => a.EntityType == 9100).First();
             var offer = new RecommendMissions { EntityId = radio.EntityId, Tile = radio.Tile };
             var pc = NewPlayer(root, "hunter");

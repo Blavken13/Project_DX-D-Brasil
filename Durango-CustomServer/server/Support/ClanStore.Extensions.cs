@@ -9,6 +9,19 @@ namespace Durango.Online;
 
 internal static partial class ClanStore
 {
+    internal static bool CombatAllies(string first, string second)
+    {
+        lock (Gate)
+        {
+            var a = FindByMemberLocked(first);
+            var b = FindByMemberLocked(second);
+            if (a == null || b == null) return false;
+            PruneAllies();
+            return a.Id == b.Id || a.Allies.GetValueOrDefault(b.Id)?.IsAlly == true ||
+                b.Allies.GetValueOrDefault(a.Id)?.IsAlly == true;
+        }
+    }
+
     internal static bool HasPermission(ClanRecord clan, string actor, Permissions permission) =>
         clan != null && clan.Members.TryGetValue(actor, out var m) && clan.Roles.TryGetValue(m.RoleId, out var role)
         && (role.UserType == UserType.Root || (role.Permissions & permission) == permission);

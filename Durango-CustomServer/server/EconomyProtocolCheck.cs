@@ -133,6 +133,7 @@ internal static class EconomyProtocolCheck
             Receive<ToolNeeded>(); Receive<ArtifactState>(); Receive<ArtifactDisplay>();
             Receive<SkillNeeded>();
             Receive<FeedingSuccess>();
+            Receive<MilestoneCandidates>(); Receive<MilestoneResult>();
             Receive<ExploredPOIs>(); Receive<WarpCosts>(); Receive<RegionMapInfo>();
             Receive<Messages.Region>(); Receive<Routes>();
             Receive<Archipelago>(); Receive<Messages.Pet>(); Receive<AppearPet>(); Receive<DisappearPet>(); Receive<PetsInfo>();
@@ -144,6 +145,7 @@ internal static class EconomyProtocolCheck
             Receive<Recipes>(); Receive<ArtifactBlueprints>(); Receive<Skills>(); Receive<Failed>();
             Receive<CraftEstimationInfo>();
             Receive<Crafted>();
+            Receive<ArtifactBuilt>(); Receive<Occupied>();
             Receive<DiscoveryInfo>(); Receive<DiscoveryRates>();
             Receive<Actions>(); Receive<SkillCategoryExperienced>(); Receive<ExpGained>();
             Receive<AdvisorTargets>(); Receive<TargetTitle>(); Receive<AdvisorRewardPoint>(); Receive<AdviceCompletedEffect>();

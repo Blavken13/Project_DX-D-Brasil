@@ -89,7 +89,7 @@ public partial class Player
         _chunkVisited = new World.ChunkVisit[_world.NumChunksX, _world.NumChunksY];
         // ต้องสร้างก่อน Send(_context.AppearPlayer) ท้าย ctor เพราะ AppearPlayer พก Survival (182)
         // ไปด้วยเป็นลำดับที่ 11 ⇒ เส้นแนวโน้มต้องถูกสร้างใหม่ตามเวลาปัจจุบันก่อนถูกส่ง
-        _survival = new SurvivalState(_context, live: true);
+        _survival = new SurvivalState(_context, live: _context.AppearPlayer.IsAlive);
         _survival.SetFatigueDisabled(PremiumActive);
         // ⚠️ **ต้องเก็บ delegate ไว้ในฟิลด์ ห้ามใช้ lambda ลอย ๆ** — ไม่งั้นถอดออกไม่ได้
         // แล้ว World (ซึ่งอยู่ยาวกว่าผู้เล่น) จะถือ Player ที่หลุดไปแล้วไว้ตลอด
@@ -904,12 +904,18 @@ public partial class Player
         {
             WorldPosition before = _context.AppearPlayer.Move.Movements[0].Path[0].Position;
             Movement movement = movements[num];
+            _receivedMovements = movements;
+            _movementWorld = _world;
+            movement.Path = movement.Path.ToArray();
             _context.AppearPlayer.Move.Movements[0] = movement;
             int num2 = movement.Path.Length - 1;
             if (num2 >= 0)
             {
                 _context.AppearPlayer.Move.Movements[0].Path[0].Position = movement.Path[num2].Position;
             }
+            _storedMovementPath = _context.AppearPlayer.Move.Movements[0].Path;
+            _movementAnchor = _storedMovementPath[0].Position;
+            ObserveLavaMovement(movements);
             // [5 ก.ย. 2026] จับว่า "ขยับจริง" ไหม — เกมส่ง Move ตอนเปลี่ยนท่าทางด้วย ไม่ใช่แค่ตอนเดิน
             // (client/MoveMsgGenerator.cs:104-110 MotionChanged ก็ตั้ง SendMoveRequired) ⇒ ดูตำแหน่ง
             // ไม่ใช่ดูว่ามี message มา · ไม่มี message "หยุดเดิน" จึงเก็บเวลาไว้แล้วให้ Process ตัดสิน
@@ -922,6 +928,12 @@ public partial class Player
                 // สถานะ "rest" ติดแท็ก clear_on_move ในไฟล์ data (survival/status_effects.json)
                 bool wasResting = _timedStatusEffects.ContainsKey("rest");
                 if (PreserveRestDuringAttachment(movement, after)) return;
+                CancelPendingCraftAndNotify(true);
+                ClearCollectTimers();
+                ClearBuildTimers();
+                CancelPendingTaming();
+                InterruptCraterInvestment();
+                ClearWarpTimers();
                 _survival.SetResting(false);
                 _restArtifactId = null;
                 if (wasResting && ClearTimedStatusEffect("rest"))
@@ -1206,6 +1218,16 @@ public partial class Player
         {
             EntityId = touch.EntityId
         };
+        Player touchedPlayer;
+        lock (LivePlayers) LivePlayers.TryGetValue(touch.EntityId ?? string.Empty, out touchedPlayer);
+        if (touchedPlayer != null && ReferenceEquals(touchedPlayer._world, _world))
+        {
+            msg.EntityName = new Gettext(touchedPlayer._context.PlayerInfo?.PlayerName ?? touchedPlayer.EntityId);
+            msg.Interactions = TryResolveVictim(touch.EntityId) != null
+                ? new[] { (int)Shared.System.Interaction.Attack } : Array.Empty<int>();
+            Send(msg, seq);
+            return;
+        }
         // ต้นฉบับ: GameManager.ClusterMode == Mode.Editable — โหมดสร้างสรรค์ (Creative Island)
         // เซิร์ฟนี้เป็น Offline เสมอตามค่า config (Host.ClusterMode) ⇒ อินเทอร์แอกชัน Editable ถูกซ่อนตามแท้
         bool flag = Host.ClusterMode == Mode.Editable;
@@ -2199,6 +2221,7 @@ public partial class Player
         // O cliente nativo procura "main" antes de "both"; preserva essa escolha.
         if (_context.EquippedItems.ContainsKey("main")) _context.EquippedItems.Remove("both");
         if (_context.EquippedItems.ContainsKey("both")) _context.EquippedItems.Remove("sub");
+        if (_pendingBattleHits.Any(hit => hit.WeaponId != CombatWeaponId())) CancelBattleHits();
         Equipments result = new()
         {
             CurrentType = EquipSlotType.Slot1
@@ -2338,12 +2361,17 @@ public partial class Player
         UpdatePremium();
         UpdateParty();
         SyncClanBenefits();
+        UpdateSurvival();
         _connection.Process();
+        UpdatePendingBattleHits(Gauge.CurrentTime);
+        UpdatePetCombat(Gauge.CurrentTime);
         UpdatePendingCrafts(Gauge.CurrentTime);
+        UpdatePendingBuildReplies(Gauge.CurrentTime);
         UpdateTaming(Gauge.CurrentTime);
         UpdatePendingCollects(Gauge.CurrentTime);
         UpdateCraterInvestment(Gauge.CurrentTime);
         UpdateTravelWarp(Gauge.CurrentTime);
+        UpdateReturnWarps(Gauge.CurrentTime);
         // หมดอายุก่อน แล้วค่อยใส่คืนจากฝน/น้ำที่ยังอยู่ — ส่งชุดเดียว จะได้ไม่กระพริบไอคอน
         bool statusChanged = ExpireTimedStatusEffects();
         statusChanged |= SyncWorldDrivenStatusEffects();
@@ -2367,6 +2395,8 @@ public partial class Player
     private void UpdateSurvival()
     {
         double now = Gauge.CurrentTime;
+        CheckSurvivalDeath(now);
+        UpdateLavaExposure(now);
         // เกมไม่มี message "หยุดเดิน" ⇒ ถือว่าหยุดเมื่อไม่ขยับนานเกิน MoveIdleTimeout
         _survival.SetMoving(!_survival.IsResting && now - _lastMovedAt < SurvivalTuning.MoveIdleTimeout);
         if (_survival.Tick(now, out SurvivalUpdated msg))
@@ -2377,12 +2407,22 @@ public partial class Player
             // จนกว่าจะตาย แล้วกระโดดเป็น 0 ทันที
             _world.BroadCast(msg);
         }
+        CheckSurvivalDeath(now);
     }
 
     /// <summary>ส่งเส้นหลอดชุดใหม่เดี๋ยวนี้ — ใช้ตอนค่า/ความชันกระโดดแบบไม่ต่อเนื่อง (พัก/กิน/โดนตี)</summary>
     private void FlushSurvival()
     {
+        CheckSurvivalDeath(Gauge.CurrentTime);
         _world.BroadCast(_survival.Flush(Gauge.CurrentTime));   // เหตุผลเดียวกับ UpdateSurvival
+        CheckSurvivalDeath(Gauge.CurrentTime);
+    }
+
+    private void CheckSurvivalDeath(double now)
+    {
+        if (_context.AppearPlayer.IsAlive &&
+            (_survival.ValueAt(SurvivalState.KeyLife, now) <= 0 ||
+             _survival.ValueAt(SurvivalState.KeyHealth, now) <= 0)) Die();
     }
 
     public void Stop()

@@ -135,6 +135,9 @@ internal static class GameplayBugsCheck
             buildTool.Tags = blueprint.ToolTags.Select(t => new Tag { Id = t.Key, Level = Math.Max(40, t.Value) }).ToArray();
             context.InventoryItems.Add(buildTool);
             link.Request<BuildArtifact, Messages.Timer>(new BuildArtifact { EntityId = table.EntityId, ToolItemId = buildTool.Id });
+            Check(world.ArtifactManager.Get(table.EntityId).Value.States.BuildingState == Shared.Building.BuildingState.Occupied,
+                "construção aguarda o tempo ativo antes de mudar de estado");
+            Call(link.Player, "UpdatePendingBuildReplies", Gauge.CurrentTime + 121);
             Check(world.ArtifactManager.Get(table.EntityId).Value.States.Level == Math.Clamp(40, Math.Max(1, blueprint.MinLevel), blueprint.MaxLevel),
                 "mesa construida recebe nivel dos materiais em vez de nivel 1");
 

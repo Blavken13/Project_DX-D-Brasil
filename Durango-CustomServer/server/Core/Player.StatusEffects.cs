@@ -111,7 +111,9 @@ public partial class Player
         {
             // "rest" pertence ao SurvivalState. Nao duplicar a mesma velocidade aqui:
             // SetResting usa o level real do abrigo e aplica o bonus temporario do Alpha.
-            if (string.Equals(se.Id, "rest", StringComparison.OrdinalIgnoreCase)) continue;
+            // Lava is integrated along the movement path, including tile crossings.
+            if (string.Equals(se.Id, "rest", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(se.Id, "lava", StringComparison.OrdinalIgnoreCase)) continue;
 
             StatusEffectCatalog.Template t = StatusEffectCatalog.Get(se.Id, se.Level);
             if (t?.Type1Velocities == null || t.Type1Velocities.Count == 0) continue;
@@ -242,13 +244,7 @@ public partial class Player
     /// <summary>ยืนในน้ำ (มหาสมุทร/แม่น้ำ/ทะเลสาบ) → wet ตาม <c>Durango.Terrain.Util.IsWater</c></summary>
     private bool SyncStandingWaterStatusEffect()
     {
-        Movement[] movements = _context.AppearPlayer.Move.Movements;
-        if (movements == null || movements.Length == 0 ||
-            movements[0].Path == null || movements[0].Path.Length == 0)
-        {
-            return false;
-        }
-        WorldPosition pos = movements[0].Path[0].Position;
+        if (!TryPlayerPositionAt(Gauge.CurrentTime, out WorldPosition pos)) return false;
         Point2 tile = WorldStatusRules.TileFromWorldPosition(pos.x, pos.y);
         Shared.Region.Biome biome = WorldStatusRules.UnmaskBiome(_world.BiomeAt(tile));
         if (!WorldStatusRules.IsWaterBiome(biome)) return false;

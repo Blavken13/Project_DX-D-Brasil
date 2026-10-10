@@ -59,13 +59,11 @@ namespace Durango.Online;
 public partial class Player
 {
     /// <summary>
-    /// นาฬิกาที่รอส่งคำตอบตัวที่สองของชุด (Occupied / ArtifactBuilt)
-    ///
-    /// เหตุผลที่ใช้ threading timer เหมือนระบบคราฟต์: ดู <see cref="_craftTimers"/>
-    /// **ต่างกันตรงที่ระบบนี้แก้สถานะโลกด้วย** ⇒ การแก้โลกทุกอย่างทำให้เสร็จตั้งแต่ตอนรับคำขอ
-    /// บนเธรดหลักแล้ว callback จึงเหลือแค่ <c>Send</c> เหมือนกัน (ปลอดภัยข้ามเธรด)
+    /// Construções concluem no loop principal. O movimento cancela a resposta
+    /// pendente antes de alterar o estado do canteiro ou gastar energia.
     /// </summary>
-    private readonly List<System.Threading.Timer> _buildTimers = new();
+    private sealed record PendingBuild(double DueAt, System.Action Complete, System.Action Cancel, string EntityId);
+    private readonly List<PendingBuild> _pendingBuilds = new();
 
     /// <summary>
     /// **ค่าของเรา** — เพดานเวลาที่ยอมหน่วงคำตอบของขั้นตอนก่อสร้าง (วินาที)
@@ -214,7 +212,6 @@ public partial class Player
         _world.ConstructArtifact(site, null, EntityId);
         if (_world.HasTemporaryPlayerStructures)
             Send(new Info { Text = "Nesta ilha selvagem, sua construção e seu conteúdo serão removidos após 24 horas. Ilhas domadas e particulares são permanentes." });
-        SpendBuildEnergy(energy);
 
         Console.WriteLine($"[สร้าง] {Short(EntityId)} จองพื้นที่ {blueprint.Id} " +
                           $"ที่ [{site.Tile.x},{site.Tile.y}] {size.x}×{size.y} " +
@@ -232,10 +229,12 @@ public partial class Player
         Send(new Messages.Timer { Duration = duration }, seq);
         if (duration <= 0f)
         {
+            SpendBuildEnergy(energy);
             FinishOccupy(occupied, seq);
             return;
         }
-        ScheduleBuildReply(() => FinishOccupy(occupied, seq), duration, "Reservar local");
+        ScheduleBuildReply(() => { SpendBuildEnergy(energy); FinishOccupy(occupied, seq); }, duration, seq,
+            site.EntityId, () => _world.DestructArtifact(site.EntityId));
     }
 
     private void FinishOccupy(Occupied occupied, uint seq)
@@ -517,6 +516,8 @@ public partial class Player
 
     private void HandleBuildArtifactMsg(BuildArtifact msg, uint seq)
     {
+        if (_pendingBuilds.Any(p => p.EntityId == msg.EntityId))
+        { Send(new Abort { Text = "Esta construção já está em andamento." }, seq); return; }
         if (!TryGetBuildTarget(msg.EntityId, "Construir", out AppearArtifact artifact,
                                out MergedBlueprint blueprint, out string error))
         {
@@ -540,36 +541,43 @@ public partial class Player
             return;
         }
 
-        var usedMaterials = _world.ArtifactManager.GetBuildMaterials(artifact.EntityId)
-            .Values.Where(items => items != null).SelectMany(items => items).ToArray();
-        int minLevel = Math.Max(1, blueprint.MinLevel);
-        int materialLevel = usedMaterials.Length == 0 ? minLevel : (int)Math.Round(usedMaterials.Average(item => (double)item.Level));
-        _world.ArtifactManager.SetLevel(artifact.EntityId,
-            Math.Clamp(materialLevel, minLevel, Math.Max(minLevel, blueprint.MaxLevel)));
-
-        // พลังงาน: constants.json → build → building.energy (ของจริง = "1" คงที่ ไม่มีตัวแปร)
-        SpendBuildEnergy((float)Math.Max(0.0, BuildTuning.EvalByArea(BuildTuning.BuildEnergy, 1, 1.0)));
-
-        // เติมหน้าตาช่องที่ยังว่าง (ช่องที่ไฟล์ไม่มี looks จะไม่มีโมเดลของตัวเอง)
-        // ไม่เติม = บางหลังสร้างเสร็จแล้วมองไม่เห็นบนจอ (บั๊กเดียวกับที่เคยเจอมาแล้ว 43 ชนิด)
-        FillRemainingDisplayParts(artifact.EntityId, blueprint);
-
-        double now = Gauge.CurrentTime;
-        int postprocessSeconds = Math.Max(0, blueprint.PostprocessTime);
-        Postprocess? postprocess = new Postprocess
+        void CompleteBuilding()
         {
-            StartedAt = now,
-            EndsAt = now + postprocessSeconds,
-            Helpers = Array.Empty<string>(),
-            MaxHelperCount = Math.Max(0, blueprint.PostprocessHelperMax),
-            RemodelSlotId = string.Empty
-        };
+            // Valida novamente: a construção pode ter sido removida durante a espera.
+            if (!TryGetBuildTarget(msg.EntityId, "Construir", out artifact, out blueprint, out error) ||
+                artifact.States.BuildingState != BuildingState.Occupied ||
+                !CheckBuildTool(blueprint, msg.ToolItemId, out error) || !AllSlotsFilled(artifact, blueprint, out error))
+            {
+                Send(new Abort { Text = error ?? "Construção indisponível." }, seq);
+                Send(default(ReplySequenceMark), seq);
+                return;
+            }
+            var usedMaterials = _world.ArtifactManager.GetBuildMaterials(artifact.EntityId)
+                .Values.Where(items => items != null).SelectMany(items => items).ToArray();
+            int minLevel = Math.Max(1, blueprint.MinLevel);
+            int materialLevel = usedMaterials.Length == 0 ? minLevel : (int)Math.Round(usedMaterials.Average(item => (double)item.Level));
+            _world.ArtifactManager.SetLevel(artifact.EntityId,
+                Math.Clamp(materialLevel, minLevel, Math.Max(minLevel, blueprint.MaxLevel)));
 
-        _world.ArtifactManager.SetBuildingState(artifact.EntityId, BuildingState.Built, postprocess);
-        _world.Save();
+            SpendBuildEnergy((float)Math.Max(0.0, BuildTuning.EvalByArea(BuildTuning.BuildEnergy, 1, 1.0)));
+            FillRemainingDisplayParts(artifact.EntityId, blueprint);
 
-        Console.WriteLine($"[สร้าง] {Short(EntityId)} สร้าง {blueprint.Id} เสร็จ " +
-                          $"(รอมาร์มูรีอีก {postprocessSeconds} วิ)");
+            double now = Gauge.CurrentTime;
+            int postprocessSeconds = Math.Max(0, blueprint.PostprocessTime);
+            Postprocess? postprocess = new Postprocess
+            {
+                StartedAt = now,
+                EndsAt = now + postprocessSeconds,
+                Helpers = Array.Empty<string>(),
+                MaxHelperCount = Math.Max(0, blueprint.PostprocessHelperMax),
+                RemodelSlotId = string.Empty
+            };
+            _world.ArtifactManager.SetBuildingState(artifact.EntityId, BuildingState.Built, postprocess);
+            _world.Save();
+            Console.WriteLine($"[สร้าง] {Short(EntityId)} สร้าง {blueprint.Id} เสร็จ " +
+                              $"(รอมาร์มูรีอีก {postprocessSeconds} วิ)");
+            FinishBuild(new ArtifactBuilt { EntityId = artifact.EntityId, BuilderId = EntityId }, seq);
+        }
 
         // เวลาหลอด "กำลังสร้าง" — ไฟล์ไม่มีค่านี้แยก ใช้สูตรเดียวกับตอนจองพื้นที่
         // (ทั้งสองหลอดคือ "ยืนทำงานหน้าไซต์" เหมือนกัน) — **การเลือกนี้เป็นของเรา**
@@ -577,16 +585,14 @@ public partial class Player
         float duration = (float)Math.Clamp(
             BuildTuning.EvalByArea(BuildTuning.SiteDuration, area, 2 + area), 0.0, MaxBuildSeconds);
 
-        var built = new ArtifactBuilt { EntityId = artifact.EntityId, BuilderId = EntityId };
-
         Send(default(ReplySequenceMark), seq);
         Send(new Messages.Timer { Duration = duration }, seq);
         if (duration <= 0f)
         {
-            FinishBuild(built, seq);
+            CompleteBuilding();
             return;
         }
-        ScheduleBuildReply(() => FinishBuild(built, seq), duration, "Construir");
+        ScheduleBuildReply(CompleteBuilding, duration, seq, artifact.EntityId);
     }
 
     private void FinishBuild(ArtifactBuilt built, uint seq)
@@ -1191,37 +1197,31 @@ public partial class Player
         FlushSurvival();      // ค่ากระโดด ⇒ ส่งเส้นใหม่ทันที ไม่รอรอบตรวจ
     }
 
-    /// <summary>นัดส่งคำตอบตัวที่สองเมื่อครบเวลา — callback ทำแค่ Send (ดู <see cref="_buildTimers"/>)</summary>
-    private void ScheduleBuildReply(System.Action send, float duration, string what)
+    /// <summary>Agenda conclusão e cancelamento no loop principal do jogador.</summary>
+    private void ScheduleBuildReply(System.Action complete, float duration, uint seq, string entityId, System.Action rollback = null)
     {
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(delegate
+        _pendingBuilds.Add(new PendingBuild(Gauge.CurrentTime + duration, complete, () =>
         {
-            try
-            {
-                send();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[สร้าง] ส่งผล{what}ไม่สำเร็จ: {e.Message}");
-            }
-            finally
-            {
-                lock (_buildTimers) { _buildTimers.Remove(timer); }
-                timer?.Dispose();
-            }
-        }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            rollback?.Invoke();
+            Send(new Abort { Text = "Construção interrompida. Os materiais do canteiro foram preservados." }, seq);
+            Send(default(ReplySequenceMark), seq);
+        }, entityId));
+    }
 
-        lock (_buildTimers) { _buildTimers.Add(timer); }
-        timer.Change((int)(duration * 1000f), System.Threading.Timeout.Infinite);
+    private void UpdatePendingBuildReplies(double now)
+    {
+        for (int i = _pendingBuilds.Count - 1; i >= 0; i--)
+        {
+            var pending = _pendingBuilds[i];
+            if (now < pending.DueAt) continue;
+            _pendingBuilds.RemoveAt(i);
+            pending.Complete();
+        }
     }
 
     private void ClearBuildTimers()
     {
-        lock (_buildTimers)
-        {
-            foreach (System.Threading.Timer timer in _buildTimers) timer.Dispose();
-            _buildTimers.Clear();
-        }
+        foreach (var pending in _pendingBuilds) pending.Cancel();
+        _pendingBuilds.Clear();
     }
 }

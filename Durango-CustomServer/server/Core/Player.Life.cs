@@ -48,6 +48,10 @@ public partial class Player
 
     private void RegisterLifeHandlers()
     {
+        _connection.Recv(delegate(DrawWater msg, PacketHeader header)
+        {
+            HandleDrawWater(msg, header.Seq);
+        });
         // ══════════════════════════════════════════════════════════════════════════
         //  กลุ่ม 1 — ท่าทางที่ใช้เวลา: ตอบ Timer(1134) แล้วจบ
         // ══════════════════════════════════════════════════════════════════════════
@@ -67,10 +71,11 @@ public partial class Player
         // ยิงซ้ำก็ไม่ได้อะไร ⇒ ด่านฝั่งเซิร์ฟไม่คุ้มกับความเสี่ยงที่จะปฏิเสธคนที่ยืนถูกที่
         _connection.Recv(delegate(DrinkWater msg, PacketHeader header)
         {
-            Send(new Messages.Timer { Duration = LifeConstants.DrinkWaterDuration }, header.Seq);
-            // [7 ก.ย. 2026] ใส่ drink_water ตาม duration ใน status_effects.json (180 วิ)
-            ApplyTimedStatusEffect("drink_water", 1);
-            SendStatusEffects();
+            ScheduleInterruptibleAction(LifeConstants.DrinkWaterDuration, header.Seq, () =>
+            {
+                ApplyTimedStatusEffect("drink_water", 1);
+                SendStatusEffects();
+            });
         });
 
         // WashBody (3494) — client/InteractionSystem.cs:872-881 รูปแบบเดียวกับ DrinkWater เป๊ะ
@@ -78,10 +83,12 @@ public partial class Player
         // ล้าง dirty แล้วใส่ clean ตาม duration ใน status_effects.json (360 วิ)
         _connection.Recv(delegate(WashBody msg, PacketHeader header)
         {
-            Send(new Messages.Timer { Duration = LifeConstants.WashBodyDuration }, header.Seq);
-            ClearTimedStatusEffect("dirty");
-            ApplyTimedStatusEffect("clean", 1);
-            SendStatusEffects();
+            ScheduleInterruptibleAction(LifeConstants.WashBodyDuration, header.Seq, () =>
+            {
+                ClearTimedStatusEffect("dirty");
+                ApplyTimedStatusEffect("clean", 1);
+                SendStatusEffects();
+            });
         });
 
         // LookAroundMood (234789) — "มองบรรยากาศ" ในบ้านที่ตกแต่งไว้
@@ -95,7 +102,7 @@ public partial class Player
         // ⇒ ตอบเวลาให้ท่าเล่นครบ ดีกว่าเงียบแล้วตัวละครยืนค้าง
         _connection.Recv(delegate(LookAroundMood msg, PacketHeader header)
         {
-            Send(new Messages.Timer { Duration = LifeConstants.LookAroundTime }, header.Seq);
+            ScheduleInterruptibleAction(LifeConstants.LookAroundTime, header.Seq);
             // มองบรรยากาศตอนยืนในบ้าน — ใส่บัพ inside ถ้ายังไม่มี (เดินเข้าก็ใส่แล้ว)
             _insideCheckedTile = new Point2(int.MinValue, int.MinValue);
             if (SyncInsideStatusEffect()) SendStatusEffects();

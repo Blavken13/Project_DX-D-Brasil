@@ -332,7 +332,7 @@
     "TutorialNaturalRegrowSeconds": 120,
     "WildStructureLifetimeSeconds": 86400,
     "SafehouseAnimalCount": 100,
-    "SafehouseZebraceratopsCount": 50,
+    "SafehouseRaptorCount": 50,
     "SafehouseAnimalLevel": 3
   },
   "Tools": {

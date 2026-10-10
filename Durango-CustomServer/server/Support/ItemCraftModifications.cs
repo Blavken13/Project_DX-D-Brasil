@@ -33,6 +33,17 @@ public static class ItemCraftModifications
     public static bool Initialize(ref Item item)
     {
         Load(); bool changed = false; Item current = item;
+        if (item.TagModifications?.Any(t => t.Id == "pocket") != true && item.Tags?.Any(t => t.Id == "pocket") == true)
+        {
+            int pocket = BagPocketLevels.Of(item.Prototype, item.Level);
+            // The old factory replaced the prototype's storage intensity with
+            // the item level. Preserve independently rolled/modified pockets.
+            if (item.Tags.Any(t => t.Id == "pocket" && t.Level == current.Level && t.Level != pocket))
+            {
+                item.Tags = item.Tags.Select(t => t.Id == "pocket" ? new Tag { Id = t.Id, Level = pocket } : t).ToArray();
+                changed = true;
+            }
+        }
         // Atributos major acompanham o nível do material. Repara somente atributos
         // presentes com evidência de processamento; nunca concede propriedades novas.
         foreach (var modification in item.TagModifications ?? Array.Empty<Tag>())
@@ -87,7 +98,7 @@ public static class ItemCraftModifications
         Load(); error = null;
         if (recipe.type == CraftType.Reform)
         {
-            if (!Reform(ref item, id, reformIndex, out error)) return false;
+            if (!Reform(ref item, id, recipe, materials, reformIndex, out error)) return false;
             ApplyPerformance(ref item); return true;
         }
         if (id.StartsWith("dye_color_") || id.StartsWith("bleach_color_"))
@@ -274,7 +285,8 @@ public static class ItemCraftModifications
         item.Performance = blocks.ToArray();
     }
 
-    private static bool Reform(ref Item item, string id, int? requested, out string error)
+    private static bool Reform(ref Item item, string id, CraftRecipeData recipe,
+        Dictionary<string, Item[]> materials, int? requested, out string error)
     {
         error = null;
         var slots = item.ReformSlots?.ToArray() ?? Array.Empty<ReformSlot>();
@@ -283,11 +295,21 @@ public static class ItemCraftModifications
         { error = "Escolha um espaço de melhoria vazio neste equipamento."; return false; }
         if (_reforms[id]?["tags"] is not JObject effects)
         { error = "Esta melhoria não possui efeitos definidos."; return false; }
-        // Stable estimate/result using the base level within the original effect ranges.
+        // Pocket quality follows the item/material levels and the advertised
+        // recipe cap; the old 10/20 effect intensity caps are not item levels.
+        bool isPocket = id is "reform_pocket" or "reform_pocket_t2";
         int baseLevel = item.Level;
+        int pocketLimit = recipe.max_level > 0 ? recipe.max_level : 60;
+        if (isPocket)
+        {
+            var additionsMaterials = materials?.Where(p => p.Key != "base").SelectMany(p => p.Value ?? Array.Empty<Item>()).ToArray();
+            if (additionsMaterials?.Length > 0)
+                baseLevel = Math.Min(baseLevel, (int)Math.Round(additionsMaterials.Average(m => (double)m.Level)));
+            baseLevel = Math.Clamp(baseLevel, 1, pocketLimit);
+        }
         var additions = effects.Properties().Select(p => new Tag { Id = p.Name, Level = Math.Clamp(
-            (int)Math.Ceiling(baseLevel * (int)p.Value["max_level"] / 60d),
-            (int)p.Value["min_level"], (int)p.Value["max_level"]) }).ToArray();
+            isPocket ? baseLevel : (int)Math.Ceiling(baseLevel * (int)p.Value["max_level"] / 60d),
+            (int)p.Value["min_level"], isPocket ? pocketLimit : (int)p.Value["max_level"]) }).ToArray();
         slots[index] = new ReformSlot { Index = index, RecipeId = id, Tags = additions };
         item.ReformSlots = slots;
         foreach (Tag tag in additions) SetTag(ref item, tag.Id,

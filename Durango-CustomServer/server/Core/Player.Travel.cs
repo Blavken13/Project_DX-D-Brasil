@@ -84,7 +84,7 @@ public partial class Player
     /// </summary>
     private static readonly HashSet<string> WarpholeBlueprints =
         new(StringComparer.Ordinal) { "neutral_warphole", "cargo_warphole_in", "camp_warphole" };
-    private sealed record PendingTravelWarp(Point2 Tile, TeleportType Type, double DueAt);
+    private sealed record PendingTravelWarp(Point2 Tile, TeleportType Type, double DueAt, uint Seq);
     private PendingTravelWarp _pendingTravelWarp;
 
     private void RegisterTravelHandlers()
@@ -475,28 +475,26 @@ public partial class Player
             Send(new Abort { Text = "Não é possível se teleportar agora." }, seq);
             return;
         }
-        lock (_warpTimers)
+        if (_pendingTravelWarp != null || _pendingReturnWarps.Count >= MaxConcurrentWarps)
         {
-            if (_pendingTravelWarp != null || _warpTimers.Count >= MaxConcurrentWarps)
-            {
-                Send(new Abort { Text = "Você já está se teleportando." }, seq);
-                return;
-            }
+            Send(new Abort { Text = "Você já está se teleportando." }, seq);
+            return;
         }
-
         float duration = Math.Max(0f, WarpTuning.WarpTime);
 
-        // ⚠️ Timer ต้องเป็นคำตอบแรกและตัวเดียวที่ seq นี้ (กับดัก ① ที่ Player.Warp.cs:38-42)
+        // Mantém a sequência aberta para interromper o timer pelo movimento.
+        Send(default(ReplySequenceMark), seq);
         Send(new Messages.Timer { Duration = duration }, seq);
         Console.WriteLine($"[เดินทาง] {Short(EntityId)} {what} → [{tile.x},{tile.y}] (รอ {duration:0.#} วิ)");
 
         if (duration <= 0f)
         {
             FinishTravelWarp(tile, type);
+            Send(default(ReplySequenceMark), seq);
             return;
         }
 
-        _pendingTravelWarp = new PendingTravelWarp(tile, type, Gauge.CurrentTime + duration);
+        _pendingTravelWarp = new PendingTravelWarp(tile, type, Gauge.CurrentTime + duration, seq);
     }
 
     private void UpdateTravelWarp(double now)
@@ -505,6 +503,17 @@ public partial class Player
         var pending = _pendingTravelWarp;
         _pendingTravelWarp = null;
         if (_context.AppearPlayer.IsAlive) FinishTravelWarp(pending.Tile, pending.Type);
+        else Send(new Abort { Text = "Teleporte interrompido." }, pending.Seq);
+        Send(default(ReplySequenceMark), pending.Seq);
+    }
+
+    private void CancelPendingTravelWarp()
+    {
+        if (_pendingTravelWarp == null) return;
+        var pending = _pendingTravelWarp;
+        _pendingTravelWarp = null;
+        Send(new Abort { Text = "Teleporte interrompido pelo movimento." }, pending.Seq);
+        Send(default(ReplySequenceMark), pending.Seq);
     }
 
     /// <summary>

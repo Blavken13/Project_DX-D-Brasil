@@ -241,10 +241,8 @@ public partial class Player
         }
 
         const float duration = 1f; // Valor temporário do Alpha/Beta.
-        Send(new Messages.Timer { Duration = duration }, seq);
         Console.WriteLine($"[assentamento] {Short(EntityId)} retornando para {dest}");
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(_ =>
+        ScheduleInterruptibleAction(duration, seq, () =>
         {
             try
             {
@@ -261,11 +259,7 @@ public partial class Player
             {
                 Console.WriteLine($"[assentamento] falha ao retornar para {dest}: {e.Message}");
             }
-            finally
-            {
-                timer?.Dispose();
-            }
-        }, null, (int)(duration * 1000f), System.Threading.Timeout.Infinite);
+        });
     }
 
     private void HandleVisitEstate(VisitEstate msg, uint seq)
@@ -317,10 +311,8 @@ public partial class Player
         }
 
         const float duration = 1f;
-        Send(new Messages.Timer { Duration = duration }, seq);
         Console.WriteLine($"[assentamento] {Short(EntityId)} visitando {dest}");
-        System.Threading.Timer timer = null;
-        timer = new System.Threading.Timer(_ =>
+        ScheduleInterruptibleAction(duration, seq, () =>
         {
             try
             {
@@ -339,11 +331,7 @@ public partial class Player
             {
                 Console.WriteLine($"[assentamento] falha ao visitar {dest}: {e.Message}");
             }
-            finally
-            {
-                timer?.Dispose();
-            }
-        }, null, (int)(duration * 1000f), System.Threading.Timeout.Infinite);
+        });
     }
 
     private void HandleSetPersonalRegionAdmission(SetPersonalRegionAdmission msg)

@@ -490,19 +490,24 @@ public partial class Player
         AnimalManager.Animal animal = _world.AnimalManager?.Get(entityId);
         if (animal == null || !animal.IsAlive) return false;
 
-        if (!IsWithinTiles(animal.Tile, CombatTuning.MaxServerAttackRangeTiles))
+        if (!CanHitAnimal(animal, attack.radius > 0 ? attack.radius : 200, Gauge.CurrentTime))
         {
             Console.WriteLine($"[combat] ปฏิเสธ {Short(EntityId)}: สัตว์ {entityId} อยู่ไกลเกินไป");
             return true;
         }
 
-        float bonus = attack.damage_bonus > 0f ? attack.damage_bonus : 1f;
-        // [7 ก.ย. 2026] สกิลหมวดต่อสู้เพิ่มดาเมจ (ดู Player.SkillEffects.cs) — ทางเดียวกับตีผู้เล่น
-        float raw = CurrentAttackPower() * bonus * OutgoingDamageScale();
+        return ApplyAnimalAttack(animal, attack, Gauge.CurrentTime);
+    }
 
-        // เจาะเกราะจากท่า — ฟิลด์เดียวกับที่ใช้ตอนตีผู้เล่น (attack_info[0].armor_penetration)
-        float defense = animal.Defense * (1f - Math.Clamp(attack.armor_penetration, 0f, 1f));
-        int value = Math.Max(CombatTuning.MinDamage, (int)Math.Round(raw - defense));
+    private bool ApplyAnimalAttack(AnimalManager.Animal animal, BattleAttackInfo attack, double impactAt)
+        => ApplyAnimalCombatHit(animal, attack, impactAt, EntityId, CurrentAttackPower(), CurrentAttackType(), true);
+
+    private bool ApplyAnimalCombatHit(AnimalManager.Animal animal, BattleAttackInfo attack, double impactAt,
+        string attackerId, float power, AttackType attackType, bool wearWeapon)
+    {
+        int value = CombatDamage.Calculate(power, attack, animal.Defense,
+            AnimalTypes.Get(animal.EntityType)?.BodyDefenseRatios, wearWeapon ? OutgoingDamageScale() : 1);
+        if (value <= 0) return true;
 
         animal.Life = Math.Max(0f, animal.Life - value);
         bool justAngered = string.IsNullOrEmpty(animal.AggroTargetId);
@@ -531,15 +536,15 @@ public partial class Player
         _world.BroadCast(new Damaged
         {
             VictimId = animal.EntityId,
-            AttackerId = EntityId,
-            EventAt = startAt > 0.0 ? startAt : Times.UnixTimeNow(),
+            AttackerId = attackerId,
+            EventAt = impactAt,
             Damage = new Damage
             {
                 Result = DamageResult.Hit,
                 Value = value,
                 Part = BodyPart.Body,
                 Direction = CombatTuning.HitDirection,
-                AttackType = CurrentAttackType(),
+                AttackType = attackType,
                 // เหตุผลเดียวกับตอนสัตว์กัดเรา — ไม่ใส่ flag = สัตว์ไม่มีท่าเจ็บให้เห็นตอนโดนตี
                 Effects = DamageEffects.KnockBack
             }
@@ -586,7 +591,7 @@ public partial class Player
                               $"ที่ [{animal.Tile.x},{animal.Tile.y}]");
         }
 
-        WearEquippedWeapon();
+        if (wearWeapon) WearEquippedWeapon();
         return true;
     }
 
@@ -719,7 +724,7 @@ public partial class Player
         _lastTamingAt = now;
         animal.CaptureOwnerId = EntityId;
         _pendingTaming = new PendingTaming(animal.EntityId, msg.ToolItemId, now + TamingTuning.TamingTime);
-        Send(new Messages.Timer { Duration = TamingTuning.TamingTime }, seq);
+        ScheduleInterruptibleAction(TamingTuning.TamingTime, seq, cancel: CancelPendingTaming);
     }
 
     private void CancelPendingTaming()
