@@ -212,8 +212,8 @@ internal static class ReportedGameplayCheck
             } },
             new Movement { MotionName = motion, PlaybackRate = 1, Path = new[]
             {
-                new Location { Position = arrived, Time = now },
-                new Location { Position = arrived, Time = now + .01 }
+                new Location { Position = arrived, Time = now - .001 },
+                new Location { Position = arrived, Time = now }
             } }
         } });
         link.Request<GetSkills, Skills>(default);
@@ -358,14 +358,14 @@ internal static class ReportedGameplayCheck
 
         link.Request<WashBody, Messages.Timer>(default);
         var origin = context.AppearPlayer.Move.Movements[0].Path[0].Position;
-        double time = Gauge.CurrentTime;
+        var returnPath = new Location[3];
+        returnPath[0] = new Location { Position = origin, Time = Gauge.CurrentTime };
+        System.Threading.Thread.Sleep(2);
+        returnPath[1] = new Location { Position = new WorldPosition(origin.x + 20, origin.y), Time = Gauge.CurrentTime };
+        System.Threading.Thread.Sleep(2);
+        returnPath[2] = new Location { Position = origin, Time = Gauge.CurrentTime };
         link.Send(new Messages.Move { EntityId = context.EntityId, Movements = new[]
-        { new Movement { MotionName = "Walk", PlaybackRate = 1, Path = new[]
-        {
-            new Location { Position = origin, Time = time },
-            new Location { Position = new WorldPosition(origin.x + 20, origin.y), Time = time + .01 },
-            new Location { Position = origin, Time = time + .02 }
-        } } } });
+        { new Movement { MotionName = "Walk", PlaybackRate = 1, Path = returnPath } } });
         link.Request<GetSkills, Skills>(default);
         Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 121);
         Check(!statuses.Contains("clean"), "andar e voltar ao mesmo ponto tambem cancela a acao");
@@ -375,7 +375,7 @@ internal static class ReportedGameplayCheck
         var synced = context.AppearPlayer.Move.Movements[0].Path[0].Position;
         link.Send(new Messages.Move { EntityId = context.EntityId, Movements = new[]
         { new Movement { MotionName = "Stand", PlaybackRate = 1, Path = new[]
-        { new Location { Position = new WorldPosition(synced.x + 20, synced.y), Time = Gauge.CurrentTime + .1 } } } } });
+        { new Location { Position = new WorldPosition(synced.x + 20, synced.y), Time = Gauge.CurrentTime } } } } });
         link.Request<GetSkills, Skills>(default);
         Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 121);
         Check(!statuses.Contains("clean"), "deslocamento apos sincronizacao cancela mesmo sem nome de animacao de caminhada");
