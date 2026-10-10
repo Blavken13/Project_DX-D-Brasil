@@ -137,17 +137,12 @@ public partial class Player
             FlushSurvival();   // ค่ากระโดด ⇒ ส่งเส้นใหม่ทันที ไม่รอรอบตรวจ
         });
 
-        // [6 ก.ย. 2026] เริ่มออกเดิน — ฝั่งเกมยิงตอนขอบขาขึ้นของการเคลื่อนที่
-        // (client/MoveMsgGenerator.cs:92) และ **ไม่รอคำตอบเช่นกัน**
-        //
-        // ⚠️ ห้ามตอบกลับเด็ดขาด และห้าม BroadCast ต่อ — ไม่มีใครรับ Depart ในเกมเลย
-        // (grep ทั้ง client/ เจอแค่ไฟล์ struct กับจุดที่ยิง)
-        //
-        // [7 ก.ย. 2026] เดิมเคลียร์ rest ทันทีที่นี่ แต่เกมยิง Depart ตอนเปลี่ยนท่าด้วย
-        // (รวมถึงตอนกดนั่งพัก) ⇒ ไอคอน rest เด้งแล้วหายในเสี้ยววิ
-        // ⇒ อย่าเคลียร์ที่นี่ ให้ HandleMoveMsg เคลียร์เมื่อตำแหน่งเปลี่ยนจริงเท่านั้น
+        // Depart has no client receiver: it must never be replied to or broadcast.
         _connection.Recv(delegate(Depart msg, PacketHeader header)
         {
+            // MoveMsgGenerator emits Depart immediately for fresh manual input,
+            // before its delayed Move packet. Do not reply or clear attachment rest here.
+            InterruptActionsForMovement();
         });
 
         _connection.Recv(delegate(Cheat msg, PacketHeader header)
@@ -903,6 +898,7 @@ public partial class Player
         if (num >= 0)
         {
             WorldPosition before = _context.AppearPlayer.Move.Movements[0].Path[0].Position;
+            bool interruptsAction = MovedDuringPendingAction(movements, before);
             Movement movement = movements[num];
             _receivedMovements = movements;
             _movementWorld = _world;
@@ -922,18 +918,13 @@ public partial class Player
             WorldPosition after = _context.AppearPlayer.Move.Movements[0].Path[0].Position;
             if (RevealPlayerSurroundings())
                 Send(ExploredMapChunks(LogicalRegionId(), _world.NumChunksX, _world.NumChunksY));
+            if (interruptsAction) InterruptActionsForMovement();
             if (!Mathf.Approximately(before.x, after.x) || !Mathf.Approximately(before.y, after.y))
             {
                 _lastMovedAt = Gauge.CurrentTime;
                 // สถานะ "rest" ติดแท็ก clear_on_move ในไฟล์ data (survival/status_effects.json)
                 bool wasResting = _timedStatusEffects.ContainsKey("rest");
                 if (PreserveRestDuringAttachment(movement, after)) return;
-                CancelPendingCraftAndNotify(true);
-                ClearCollectTimers();
-                ClearBuildTimers();
-                CancelPendingTaming();
-                InterruptCraterInvestment();
-                ClearWarpTimers();
                 _survival.SetResting(false);
                 _restArtifactId = null;
                 if (wasResting && ClearTimedStatusEffect("rest"))

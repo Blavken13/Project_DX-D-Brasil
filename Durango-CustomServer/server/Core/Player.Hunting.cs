@@ -622,7 +622,10 @@ public partial class Player
 
     /// <summary>เวลาที่เริ่มจับครั้งล่าสุด — ใช้กับ taming_cooltime</summary>
     private double _lastTamingAt;
-    private sealed record PendingTaming(string AnimalId, string ToolId, double DueAt);
+    private sealed record PendingTaming(string AnimalId, string ToolId, double DueAt)
+    {
+        public double StartedAt { get; } = Gauge.CurrentTime;
+    }
 
     // O tackle usa dano físico 0.2 e atordoamento 5.0 nos dados originais.
     // Atordoamento não deve ser multiplicado pelo bônus de dano físico do golpe.
@@ -721,7 +724,6 @@ public partial class Player
             RejectTaming(seq, "O animal precisa estar caído e atordoado. Use um golpe de atordoamento antes de capturar.");
             return;
         }
-        _lastTamingAt = now;
         animal.CaptureOwnerId = EntityId;
         _pendingTaming = new PendingTaming(animal.EntityId, msg.ToolItemId, now + TamingTuning.TamingTime);
         ScheduleInterruptibleAction(TamingTuning.TamingTime, seq, cancel: CancelPendingTaming);
@@ -754,6 +756,9 @@ public partial class Player
         float chance = TamingChance(animal, lifeRatio);
         if (!animal.IsKnockedDown)
         { Send(new Info { Text = "A captura foi interrompida: o animal se recuperou do atordoamento." }); return; }
+        // Only a completed attempt consumes the cooldown. An interrupted animation
+        // releases the animal and leaves the capture tool available for an immediate retry.
+        _lastTamingAt = pending.StartedAt;
         bool success = TamingRng.NextDouble() < chance;
         Console.WriteLine($"[จับสัตว์] {EntityId[..Math.Min(8, EntityId.Length)]} จับ {info.Name} " +
                           $"lv{animal.CombatLevel} เลือด {lifeRatio:P0} โอกาส {chance:P0} → " +

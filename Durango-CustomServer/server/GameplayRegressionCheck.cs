@@ -148,6 +148,18 @@ internal static class GameplayRegressionCheck
             int inventoryCount = context.InventoryItems.Count;
             int deaths = link.Messages.OfType<EntityDied>().Count();
             link.Request<UseTamingAction, Messages.Timer>(new UseTamingAction { EntityId = animal.EntityId, ToolItemId = tool.Id });
+            ReportedGameplayCheck.BufferedArrival(link, context, "Barehand_Taming_A");
+            Check(animal.CaptureOwnerId == context.EntityId && context.InventoryItems.Any(i => i.Id == tool.Id),
+                "primeira doma permanece ativa apos receber fim da caminhada e pose de captura");
+            link.Send(default(Depart));
+            link.Request<GetSkills, Skills>(default);
+            Check(animal.CaptureOwnerId == null && animal.IsAlive && !animal.Captured &&
+                context.InventoryItems.Count == inventoryCount && context.InventoryItems.Any(i => i.Id == tool.Id),
+                "movimento manual interrompe doma imediatamente sem consumir ferramenta ou animal");
+            link.Request<UseTamingAction, Messages.Timer>(new UseTamingAction { EntityId = animal.EntityId, ToolItemId = tool.Id });
+            Check(animal.CaptureOwnerId == context.EntityId,
+                "doma interrompida permite nova tentativa imediata sem cooldown indevido");
+            ReportedGameplayCheck.BufferedArrival(link, context, "Barehand_Taming_A");
             world.AnimalManager.Process(animal.KnockedDownUntil + .01, _ => { });
             Check(animal.IsKnockedDown && animal.CaptureOwnerId == context.EntityId,
                 "tentativa iniciada durante queda permanece protegida ate terminar");
@@ -173,6 +185,13 @@ internal static class GameplayRegressionCheck
             Check(context.InventoryItems.Count == inventoryCount + 1, "tentativa de farmar captura nao gera itens");
             Call(player, "UpdateTaming", Gauge.CurrentTime + 10);
             Check(context.InventoryItems.Count == inventoryCount + 1, "captura nao entrega animal duas vezes");
+            var nextCapture = world.AnimalManager.SpawnAt(animal.EntityType, 1, tile);
+            nextCapture.Life = nextCapture.LifeMax * .001f;
+            nextCapture.KnockedDownUntil = Gauge.CurrentTime + 10;
+            var cooldown = link.Request<UseTamingAction, Abort>(new UseTamingAction
+                { EntityId = nextCapture.EntityId, ToolItemId = tool.Id });
+            Check(nextCapture.CaptureOwnerId == null && cooldown.Text.Contains("Aguarde"),
+                "captura concluida continua impondo cooldown em novas tentativas");
             world.AnimalManager.Process(animal.DiedAt + AnimalManager.RespawnDelay + 1, _ => { });
             Check(animal.IsAlive && !animal.Captured && !animal.Butchered && animal.CaptureOwnerId == null,
                 "fauna repoe animal capturado sem manter estado de carcaca");

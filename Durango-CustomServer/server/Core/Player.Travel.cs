@@ -84,7 +84,10 @@ public partial class Player
     /// </summary>
     private static readonly HashSet<string> WarpholeBlueprints =
         new(StringComparer.Ordinal) { "neutral_warphole", "cargo_warphole_in", "camp_warphole" };
-    private sealed record PendingTravelWarp(Point2 Tile, TeleportType Type, double DueAt, uint Seq);
+    private sealed record PendingTravelWarp(Point2 Tile, TeleportType Type, double DueAt, uint Seq)
+    {
+        public double StartedAt { get; } = Gauge.CurrentTime;
+    }
     private PendingTravelWarp _pendingTravelWarp;
 
     private void RegisterTravelHandlers()

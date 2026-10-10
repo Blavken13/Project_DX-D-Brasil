@@ -308,6 +308,7 @@ public partial class Player
     /// </summary>
     private sealed class PendingCraft
     {
+        public double StartedAt { get; } = Gauge.CurrentTime;
         public uint Seq;
         public CraftRecipeData Recipe;
         public string RecipeId;

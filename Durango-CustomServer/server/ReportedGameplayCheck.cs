@@ -196,6 +196,29 @@ internal static class ReportedGameplayCheck
     private static object Call(Player player, string method, params object[] args) => typeof(Player)
         .GetMethod(method, BindingFlags.NonPublic | BindingFlags.Instance).Invoke(player, args);
 
+    internal static void BufferedArrival(EconomyProtocolCheck.Link link, PlayerContext context, string motion)
+    {
+        var before = context.AppearPlayer.Move.Movements[0].Path[0].Position;
+        var arrived = new WorldPosition(before.x + 80, before.y);
+        double now = Gauge.CurrentTime;
+        // MoveMsgGenerator batches the end of approach before the request with the
+        // stationary action pose recorded after the request, then sends both late.
+        link.Send(new Messages.Move { EntityId = context.EntityId, Movements = new[]
+        {
+            new Movement { MotionName = "Walk", PlaybackRate = 1, Path = new[]
+            {
+                new Location { Position = before, Time = now - .5 },
+                new Location { Position = arrived, Time = now - .1 }
+            } },
+            new Movement { MotionName = motion, PlaybackRate = 1, Path = new[]
+            {
+                new Location { Position = arrived, Time = now },
+                new Location { Position = arrived, Time = now + .01 }
+            } }
+        } });
+        link.Request<GetSkills, Skills>(default);
+    }
+
     private static void Move(EconomyProtocolCheck.Link link, PlayerContext context, float distance)
     {
         var position = context.AppearPlayer.Move.Movements[0].Path[0].Position;
@@ -218,6 +241,9 @@ internal static class ReportedGameplayCheck
         Check(!context.InventoryItems.Any(i => i.Id == material.Id), "fabricação reserva o material durante o tempo ativo");
         Move(link, context, 0);
         Check(!context.InventoryItems.Any(i => i.Id == material.Id), "troca de animação sem deslocamento preserva fabricação");
+        BufferedArrival(link, context, "Craft");
+        Check(!context.InventoryItems.Any(i => i.Id == material.Id),
+            "chegada atrasada junto da animacao preserva fabricacao em andamento");
         Move(link, context, 20);
         Check(context.InventoryItems.Any(i => i.Id == material.Id && Json.Write(i) == original),
             "andar devolve o material completo com identidade e propriedades");
@@ -274,6 +300,21 @@ internal static class ReportedGameplayCheck
         plot.States.Farming = farming; state.Artifacts[plot.EntityId] = plot;
         var harvest = new Collect { EntityId = plot.EntityId, Tile = tile, GeneratorId = FarmHarvest.GeneratorId(CropYaml.Get("corn_seed")) };
         int inventoryCount = context.InventoryItems.Count;
+        int aborts = link.Messages.OfType<Abort>().Count();
+        link.Request<Collect, Messages.Timer>(harvest);
+        BufferedArrival(link, context, "Barehand_Collect_A");
+        Check(link.Messages.OfType<Abort>().Count() == aborts && context.InventoryItems.Count == inventoryCount,
+            "primeira coleta preserva timer quando caminhada anterior chega com a animacao");
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 121);
+        Check(context.InventoryItems.Count > inventoryCount && !world.ArtifactManager.Get(plot.EntityId).Value.States.Farming.HasValue,
+            "primeira coleta entrega recursos uma vez apos chegada atrasada");
+        inventoryCount = context.InventoryItems.Count;
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 122);
+        Check(context.InventoryItems.Count == inventoryCount, "primeira coleta nao duplica recursos ao atualizar timer novamente");
+        world.ArtifactManager.SeedPlant(plot.EntityId, "corn_seed", 1, Shared.Region.Biome.Grassland);
+        plot = state.Artifacts[plot.EntityId]; farming = plot.States.Farming.Value;
+        farming.GrowsUntil = Gauge.CurrentTime - 1; plot.States.Farming = farming;
+        state.Artifacts[plot.EntityId] = plot;
         link.Request<Collect, Messages.Timer>(harvest);
         link.Request<Collect, Abort>(harvest);
         Move(link, context, 20);
@@ -314,5 +355,29 @@ internal static class ReportedGameplayCheck
         Move(link, context, 20);
         Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 121);
         Check(!statuses.Contains("clean"), "andar cancela o banho sem conceder limpeza");
+
+        link.Request<WashBody, Messages.Timer>(default);
+        var origin = context.AppearPlayer.Move.Movements[0].Path[0].Position;
+        double time = Gauge.CurrentTime;
+        link.Send(new Messages.Move { EntityId = context.EntityId, Movements = new[]
+        { new Movement { MotionName = "Walk", PlaybackRate = 1, Path = new[]
+        {
+            new Location { Position = origin, Time = time },
+            new Location { Position = new WorldPosition(origin.x + 20, origin.y), Time = time + .01 },
+            new Location { Position = origin, Time = time + .02 }
+        } } } });
+        link.Request<GetSkills, Skills>(default);
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 121);
+        Check(!statuses.Contains("clean"), "andar e voltar ao mesmo ponto tambem cancela a acao");
+
+        link.Request<WashBody, Messages.Timer>(default);
+        BufferedArrival(link, context, "Stand");
+        var synced = context.AppearPlayer.Move.Movements[0].Path[0].Position;
+        link.Send(new Messages.Move { EntityId = context.EntityId, Movements = new[]
+        { new Movement { MotionName = "Stand", PlaybackRate = 1, Path = new[]
+        { new Location { Position = new WorldPosition(synced.x + 20, synced.y), Time = Gauge.CurrentTime + .1 } } } } });
+        link.Request<GetSkills, Skills>(default);
+        Call(link.Player, "UpdatePendingCollects", Gauge.CurrentTime + 121);
+        Check(!statuses.Contains("clean"), "deslocamento apos sincronizacao cancela mesmo sem nome de animacao de caminhada");
     }
 }

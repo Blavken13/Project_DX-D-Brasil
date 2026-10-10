@@ -11,7 +11,10 @@ namespace Durango.Online;
 
 public partial class Player
 {
-    private sealed record PendingCrater(string EntityId, int Amount, uint Sequence, double DueAt);
+    private sealed record PendingCrater(string EntityId, int Amount, uint Sequence, double DueAt)
+    {
+        public double StartedAt { get; } = Gauge.CurrentTime;
+    }
     private PendingCrater _pendingCrater;
 
     public int InductionStones => Math.Max(0, _context.Vouchers?.GetValueOrDefault(CrackTuning.VoucherId) ?? 0);

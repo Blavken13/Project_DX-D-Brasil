@@ -186,6 +186,11 @@ internal static class VolcanoCraterCheck
         var collect=new Collect { Tile=tile,EntityId="mineral",GeneratorId=generator,ToolItemId=pickaxe.Id };
         int before=context.InventoryItems.Count;
         var timer=link.Request<Collect,Messages.Timer>(collect);
+        int aborts=link.Messages.OfType<Abort>().Count();
+        ReportedGameplayCheck.BufferedArrival(link,context,"Pickaxe_Collect_A");
+        Check(Field<IList>(link.Player,"_pendingCollects").Count==1 &&
+            link.Messages.OfType<Abort>().Count()==aborts && context.InventoryItems.Count==before,
+            terrain+": primeira coleta de mineral nao cancela com chegada atrasada e animacao");
         Call(link.Player,"UpdatePendingCollects",Gauge.CurrentTime+timer.Duration+.1);
         link.PumpUntil(()=>context.InventoryItems.Count>before);
         Check(context.InventoryItems.Skip(before).Any(i=>i.Prototype==prototype && i.Level==world.RegionLevel), terrain+": coleta entrega mineral no nivel da ilha");
@@ -193,6 +198,14 @@ internal static class VolcanoCraterCheck
         Check(world.NaturalTypeAt(tile)==spot.EntityType && world.HarvestedGenerators($"{tile.x},{tile.y}").Count==0,
             terrain+": mineral regenera com o tipo e loot originais");
         timer=link.Request<Collect,Messages.Timer>(collect); before=context.InventoryItems.Count;
+        string toolBefore=Json.Write(context.InventoryItems.First(i=>i.Id==pickaxe.Id));
+        link.Send(default(Depart)); link.Request<GetSkills,Skills>(default);
+        Call(link.Player,"UpdatePendingCollects",Gauge.CurrentTime+timer.Duration+1);
+        Check(Field<IList>(link.Player,"_pendingCollects").Count==0 && context.InventoryItems.Count==before &&
+            Json.Write(context.InventoryItems.First(i=>i.Id==pickaxe.Id))==toolBefore &&
+            world.HarvestedGenerators($"{tile.x},{tile.y}").Count==0,
+            terrain+": movimento manual cancela sem gastar ferramenta ou esgotar mineral");
+        timer=link.Request<Collect,Messages.Timer>(collect);
         Field<SurvivalState>(link.Player,"_survival").Set(SurvivalState.KeyLife,0); Call(link.Player,"UpdateSurvival");
         Call(link.Player,"UpdatePendingCollects",Gauge.CurrentTime+timer.Duration+1);
         Check(!context.AppearPlayer.IsAlive && Field<IList>(link.Player,"_pendingCollects").Count==0 && context.InventoryItems.Count==before,

@@ -64,7 +64,10 @@ public partial class Player
     /// Retornos concluem no loop principal, permitindo cancelar antes do
     /// deslocamento e encerrar o timer do cliente pela mesma sequência.
     /// </summary>
-    private sealed record PendingReturnWarp(Point2 Tile, uint Seq, double DueAt);
+    private sealed record PendingReturnWarp(Point2 Tile, uint Seq, double DueAt)
+    {
+        public double StartedAt { get; } = Gauge.CurrentTime;
+    }
     private readonly List<PendingReturnWarp> _pendingReturnWarps = new();
 
     /// <summary>**ค่าของเรา** — วาร์ปค้างพร้อมกันได้กี่คิว (กันยิงรัวจองหน่วยความจำ)</summary>

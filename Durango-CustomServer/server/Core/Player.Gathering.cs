@@ -153,7 +153,10 @@ public partial class Player
     /// Coletas concluem em Player.Process, no mesmo thread que renova os recursos.
     /// A geração do spot impede que uma coleta anterior ao wipe remova ou premie o recurso novo.
     /// </summary>
-    private sealed record PendingCollect(double DueAt, Action Complete, Action Cancel);
+    private sealed record PendingCollect(double DueAt, Action Complete, Action Cancel)
+    {
+        public double StartedAt { get; } = Gauge.CurrentTime;
+    }
     private readonly List<PendingCollect> _pendingCollects = new();
     internal Func<double> GatheredPropertyRoll { get; set; } = System.Random.Shared.NextDouble;
 

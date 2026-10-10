@@ -62,7 +62,10 @@ public partial class Player
     /// Construções concluem no loop principal. O movimento cancela a resposta
     /// pendente antes de alterar o estado do canteiro ou gastar energia.
     /// </summary>
-    private sealed record PendingBuild(double DueAt, System.Action Complete, System.Action Cancel, string EntityId);
+    private sealed record PendingBuild(double DueAt, System.Action Complete, System.Action Cancel, string EntityId)
+    {
+        public double StartedAt { get; } = Gauge.CurrentTime;
+    }
     private readonly List<PendingBuild> _pendingBuilds = new();
 
     /// <summary>
