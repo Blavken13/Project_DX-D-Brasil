@@ -34,3 +34,11 @@ dotnet Durango-CustomServer/server/bin/Debug/net9.0/DurangoServer.dll --fauna-ch
 ```
 
 Compilação sem erros, com dois avisos anteriores à alteração. As alterações estão implementadas no projeto local. Nesta etapa não houve deploy no servidor online nem reprodução visual no celular: a validação usa conexões TCP e os handlers reais do servidor, com atualizações de inventário e reenvio da coleta.
+
+## Compatibilidade verificada antes do deploy
+
+A validação remota de `ceb5980` encontrou uma regressão em `--polish-check`: a fila `_pendingCollects` também contém temporizadores de reparo e outras ações. A proteção inicial tratava qualquer temporizador como uma coleta ativa e bloqueava a coleta seguinte ao reparo. O deploy foi interrompido antes de substituir o servidor ativo.
+
+A proteção agora procura somente temporizadores marcados como coleta ou colheita. Reparos e outras ações mantêm seu comportamento anterior. A coleta em andamento ainda é encontrada mesmo quando existe outro tipo de ação antes dela na fila; pedidos repetidos continuam conservando uma única reserva.
+
+O teste de duplicação foi ampliado para esses casos. Passaram `--gathering-duplicate-check` com **57 verificações** e `--polish-check` com **1.249 verificações**, totalizando 1.306 verificações locais adicionais antes de preparar a nova release. Os logs e a tabela anteriores documentam a validação original de `ceb5980`.

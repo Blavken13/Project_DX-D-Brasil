@@ -319,7 +319,7 @@ public partial class Player
             CompleteFarmHarvestAfterDelay(collected, items, seq);
         }
         if (duration <= 0f || duration > GatheringTuning.MaxCollectSeconds) { Complete(); return; }
-        _pendingCollects.Add(new PendingCollect(Gauge.CurrentTime + duration, Complete, Cancel));
+        _pendingCollects.Add(new PendingCollect(Gauge.CurrentTime + duration, Complete, Cancel) { IsCollection = true });
     }
 
     private void CompleteFarmHarvestAfterDelay(Collected collected, List<Item> items, uint seq)

@@ -157,6 +157,7 @@ public partial class Player
     {
         public double StartedAt { get; } = Gauge.CurrentTime;
         public Collect? Request { get; init; }
+        public bool IsCollection { get; init; }
         public bool IsCarcass { get; init; }
     }
     private readonly List<PendingCollect> _pendingCollects = new();
@@ -486,8 +487,10 @@ public partial class Player
 
     private bool TryResumePendingCollect(Collect request, uint seq)
     {
-        if (_pendingCollects.Count == 0) return false;
-        var pending = _pendingCollects[0];
+        // Repairs and other interruptible actions share this queue. Only an
+        // actual gathering/harvesting timer can own a repeated Collect request.
+        var pending = _pendingCollects.FirstOrDefault(action => action.IsCollection);
+        if (pending == null) return false;
         if (pending.Request is { } active &&
             string.Equals(active.EntityId ?? "", request.EntityId ?? "", StringComparison.Ordinal) &&
             (pending.IsCarcass || active.Tile.Equals(request.Tile)) &&
@@ -721,6 +724,7 @@ public partial class Player
             finally { Release(); }
         }, Cancel) {
             Request = new Collect { EntityId = entityId, Tile = tile, GeneratorId = generatorId, ToolItemId = toolItemId },
+            IsCollection = true,
             IsCarcass = isCarcass
         });
     }

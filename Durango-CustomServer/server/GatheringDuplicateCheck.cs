@@ -118,6 +118,16 @@ internal static class GatheringDuplicateCheck
         link.Request<Collect, Messages.Timer>(request);
         Check(Pending(link.Player) == 1, mode + ": nova tentativa apos cancelar funciona");
         Call(link.Player, "ClearCollectTimers");
+        Call(link.Player, "ScheduleInterruptibleAction", 60f, 700u, null, null);
+        link.Request<Collect, Messages.Timer>(request);
+        Check(Pending(link.Player) == 2 && world.HarvestedGenerators(key).Count == 2,
+            mode + ": temporizador de outra acao nao bloqueia a coleta");
+        link.Request<Collect, Messages.Timer>(request);
+        Check(Pending(link.Player) == 2 && world.HarvestedGenerators(key).Count == 2,
+            mode + ": repeticao encontra coleta mesmo com outra acao antes dela na fila");
+        Call(link.Player, "ClearCollectTimers");
+        Check(Pending(link.Player) == 0 && world.HarvestedGenerators(key).Count == 1,
+            mode + ": cancelar fila compartilhada libera a reserva uma vez");
     }
 
     private static void Carcass(string root)
