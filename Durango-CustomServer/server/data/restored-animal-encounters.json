@@ -1,0 +1,16 @@
+{
+  "op60te180220": [
+    { "entity_type": 2108 },
+    { "entity_type": 2112 }
+  ],
+  "ua60de02Main02_elite": [
+    { "entity_type": 2125 }
+  ],
+  "ua60sn02Main04_elite": [
+    { "entity_type": 2109 },
+    { "entity_type": 2113, "life_max": 200000 }
+  ],
+  "ua60tr02Main01": [
+    { "entity_type": 2115, "life_max": 200000 }
+  ]
+}

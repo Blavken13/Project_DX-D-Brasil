@@ -1,0 +1,236 @@
+[ภาษา] โหลดคำแปล pt_BR 33399 ข้อความ
+[เควส] โหลดแคตตาล็อก 1386 แถว (Daily 66 · Once 1105 · เล่นได้ 379)
+[blueprint] merge blueprint×artifact: 560 รายการ
+[data] โหลด game data จาก Durango-CustomServer/server/data/assets เสร็จ:
+[data]   prototype_data               2419 รายการ
+[data]   constants                    1 รายการ
+[data]   entity_types/natural         711 รายการ
+[data]   entity_types/artifact        560 รายการ
+[data]   pet/pets_for_client          74 รายการ
+[data]   quests/epics_for_client      1 รายการ
+[data]   item/recipes                 720 รายการ
+[data]   emotions                     1 รายการ
+[data]   statistics/player            50 รายการ
+[data]   entity_types/players         4 รายการ
+[region] อ่าน region template 267 รายการ
+[สัตว์] โหลดชนิดสัตว์ 214 ชนิด
+[terrain] ⚠️ op60te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ op60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri15sv01: เติม tile_set/color_set = savanna
+[terrain] ri18tp01: เติม tile_set/color_set = tropical
+[terrain] ⚠️ ri20te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri25tp01: เติม tile_set/color_set = tropical
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[terrain] ri35de: เติม tile_set/color_set = desert
+[terrain] ri35te: เติม tile_set/color_set = temperate
+[terrain] ri40tr: เติม tile_set/color_set = tropical
+[terrain] ri40tu_alpha: เติม tile_set/color_set = tundra
+[terrain] ⚠️ ri50de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ri55tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri55tu: เติม tile_set/color_set = tundra
+[terrain] sn20snow: เติม tile_set/color_set = snowfields
+[terrain] ⚠️ ua60de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ua60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ua60tu_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[region] สารบัญเกาะ 25 ลูก: op60te_alpha(lv60), op60tr_alpha(lv60), ra60sw(lv60), ri15sv01(lv15), ri18tp01(lv18), ri20te_alpha(lv20), ri25tp01(lv25), ri30td01(lv30), ri35de(lv35), ri35te(lv35), ri40tr(lv40), ri40tu_alpha(lv40), ri45sa(lv45), ri45sw_alpha(lv45), ri50de_alpha(lv50), ri50sn(lv50), ri55sw_alpha(lv55), ri55tr_alpha(lv55), ri55tu(lv55), sn20snow(lv20), ua60de_alpha(lv60), ua60sn_alpha(lv60), ua60tr_alpha(lv60), ua60tu_alpha(lv60), ua60vol(lv60)
+[terrain] ⚠️ op60te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK op60te_alpha: catalogo completo
+[fauna] template=op60te180220 islandLv=60 nativeAnchors=43 total=40/40 species=17
+[restored-encounters-check] OK op60te_alpha: populacao e terreno seguros
+[restored-encounters-check] OK op60te_alpha: fora dos portos
+[สัตว์] โหลดชื่อท่าทางของสัตว์ 214 ชนิด (มีท่าโจมตี 214)
+[restored-encounters-check] OK 2108: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2108: escala e animacoes originais
+[restored-encounters-check] OK 2108: vida correta no servidor e no pacote
+[gather] ขุดคู่ collectible→generator จาก recipes.json ได้ 101 ตัว
+[restored-encounters-check] OK 2108: carcaca coletavel
+[restored-encounters-check] OK 2108: descarte da carcaca
+[restored-encounters-check] OK 2108: respawn conserva atributos
+[restored-encounters-check] OK 2112: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2112: escala e animacoes originais
+[restored-encounters-check] OK 2112: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2112: carcaca coletavel
+[restored-encounters-check] OK 2112: descarte da carcaca
+[restored-encounters-check] OK 2112: respawn conserva atributos
+[fauna] template=op60te180220 islandLv=60 nativeAnchors=43 total=40/40 species=17
+[restored-encounters-check] OK op60te_alpha: populacao e terreno seguros
+[restored-encounters-check] OK op60te_alpha: fora dos portos
+[restored-encounters-check] OK 2108: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2108: escala e animacoes originais
+[restored-encounters-check] OK 2108: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2108: carcaca coletavel
+[restored-encounters-check] OK 2108: descarte da carcaca
+[restored-encounters-check] OK 2108: respawn conserva atributos
+[restored-encounters-check] OK 2112: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2112: escala e animacoes originais
+[restored-encounters-check] OK 2112: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2112: carcaca coletavel
+[restored-encounters-check] OK 2112: descarte da carcaca
+[restored-encounters-check] OK 2112: respawn conserva atributos
+[fauna] template=op60te180220 islandLv=60 nativeAnchors=43 total=40/40 species=17
+[restored-encounters-check] OK op60te_alpha: populacao e terreno seguros
+[restored-encounters-check] OK op60te_alpha: fora dos portos
+[restored-encounters-check] OK 2108: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2108: escala e animacoes originais
+[restored-encounters-check] OK 2108: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2108: carcaca coletavel
+[restored-encounters-check] OK 2108: descarte da carcaca
+[restored-encounters-check] OK 2108: respawn conserva atributos
+[restored-encounters-check] OK 2112: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2112: escala e animacoes originais
+[restored-encounters-check] OK 2112: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2112: carcaca coletavel
+[restored-encounters-check] OK 2112: descarte da carcaca
+[restored-encounters-check] OK 2112: respawn conserva atributos
+[terrain] ⚠️ ua60de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK ua60de_alpha: catalogo completo
+[fauna] template=ua60de02Main02_elite islandLv=60 nativeAnchors=45 total=40/40 species=8
+[restored-encounters-check] OK ua60de_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60de_alpha: fora dos portos
+[restored-encounters-check] OK 2125: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2125: escala e animacoes originais
+[restored-encounters-check] OK 2125: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2125: carcaca coletavel
+[restored-encounters-check] OK 2125: descarte da carcaca
+[restored-encounters-check] OK 2125: respawn conserva atributos
+[fauna] template=ua60de02Main02_elite islandLv=60 nativeAnchors=45 total=40/40 species=8
+[restored-encounters-check] OK ua60de_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60de_alpha: fora dos portos
+[restored-encounters-check] OK 2125: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2125: escala e animacoes originais
+[restored-encounters-check] OK 2125: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2125: carcaca coletavel
+[restored-encounters-check] OK 2125: descarte da carcaca
+[restored-encounters-check] OK 2125: respawn conserva atributos
+[fauna] template=ua60de02Main02_elite islandLv=60 nativeAnchors=45 total=40/40 species=8
+[restored-encounters-check] OK ua60de_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60de_alpha: fora dos portos
+[restored-encounters-check] OK 2125: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2125: escala e animacoes originais
+[restored-encounters-check] OK 2125: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2125: carcaca coletavel
+[restored-encounters-check] OK 2125: descarte da carcaca
+[restored-encounters-check] OK 2125: respawn conserva atributos
+[restored-encounters-check] OK ua60sn_alpha: catalogo completo
+[fauna] template=ua60sn02Main04_elite islandLv=60 nativeAnchors=50 total=40/40 species=9
+[restored-encounters-check] OK ua60sn_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60sn_alpha: fora dos portos
+[restored-encounters-check] OK 2109: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2109: escala e animacoes originais
+[restored-encounters-check] OK 2109: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2109: carcaca coletavel
+[restored-encounters-check] OK 2109: descarte da carcaca
+[restored-encounters-check] OK 2109: respawn conserva atributos
+[restored-encounters-check] OK 2113: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2113: escala e animacoes originais
+[restored-encounters-check] OK 2113: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2113: carcaca coletavel
+[restored-encounters-check] OK 2113: descarte da carcaca
+[restored-encounters-check] OK 2113: respawn conserva atributos
+[fauna] template=ua60sn02Main04_elite islandLv=60 nativeAnchors=50 total=40/40 species=9
+[restored-encounters-check] OK ua60sn_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60sn_alpha: fora dos portos
+[restored-encounters-check] OK 2109: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2109: escala e animacoes originais
+[restored-encounters-check] OK 2109: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2109: carcaca coletavel
+[restored-encounters-check] OK 2109: descarte da carcaca
+[restored-encounters-check] OK 2109: respawn conserva atributos
+[restored-encounters-check] OK 2113: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2113: escala e animacoes originais
+[restored-encounters-check] OK 2113: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2113: carcaca coletavel
+[restored-encounters-check] OK 2113: descarte da carcaca
+[restored-encounters-check] OK 2113: respawn conserva atributos
+[fauna] template=ua60sn02Main04_elite islandLv=60 nativeAnchors=50 total=40/40 species=9
+[restored-encounters-check] OK ua60sn_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60sn_alpha: fora dos portos
+[restored-encounters-check] OK 2109: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2109: escala e animacoes originais
+[restored-encounters-check] OK 2109: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2109: carcaca coletavel
+[restored-encounters-check] OK 2109: descarte da carcaca
+[restored-encounters-check] OK 2109: respawn conserva atributos
+[restored-encounters-check] OK 2113: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2113: escala e animacoes originais
+[restored-encounters-check] OK 2113: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2113: carcaca coletavel
+[restored-encounters-check] OK 2113: descarte da carcaca
+[restored-encounters-check] OK 2113: respawn conserva atributos
+[terrain] ⚠️ ua60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK ua60tr_alpha: catalogo completo
+[fauna] template=ua60tr02Main01 islandLv=60 nativeAnchors=59 total=40/40 species=8
+[restored-encounters-check] OK ua60tr_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60tr_alpha: fora dos portos
+[restored-encounters-check] OK 2115: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2115: escala e animacoes originais
+[restored-encounters-check] OK 2115: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2115: carcaca coletavel
+[restored-encounters-check] OK 2115: descarte da carcaca
+[restored-encounters-check] OK 2115: respawn conserva atributos
+[fauna] template=ua60tr02Main01 islandLv=60 nativeAnchors=59 total=40/40 species=8
+[restored-encounters-check] OK ua60tr_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60tr_alpha: fora dos portos
+[restored-encounters-check] OK 2115: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2115: escala e animacoes originais
+[restored-encounters-check] OK 2115: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2115: carcaca coletavel
+[restored-encounters-check] OK 2115: descarte da carcaca
+[restored-encounters-check] OK 2115: respawn conserva atributos
+[fauna] template=ua60tr02Main01 islandLv=60 nativeAnchors=59 total=40/40 species=8
+[restored-encounters-check] OK ua60tr_alpha: populacao e terreno seguros
+[restored-encounters-check] OK ua60tr_alpha: fora dos portos
+[restored-encounters-check] OK 2115: alfa nativo nivel 60 sem doma
+[restored-encounters-check] OK 2115: escala e animacoes originais
+[restored-encounters-check] OK 2115: vida correta no servidor e no pacote
+[restored-encounters-check] OK 2115: carcaca coletavel
+[restored-encounters-check] OK 2115: descarte da carcaca
+[restored-encounters-check] OK 2115: respawn conserva atributos
+[terrain] ⚠️ op60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=op60tr180220 islandLv=60 nativeAnchors=59 total=40/40 species=15
+[restored-encounters-check] OK Braquiossauro comum continua disponivel
+[restored-encounters-check] OK grass_company_safehouse_01: sem encontros adicionais
+[terrain] ⚠️ op60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK op60tr_alpha: sem encontros adicionais
+[restored-encounters-check] OK pe10gr_1: sem encontros adicionais
+[restored-encounters-check] OK pe10gr_2: sem encontros adicionais
+[restored-encounters-check] OK pe10gr_3: sem encontros adicionais
+[restored-encounters-check] OK pe10gr_4: sem encontros adicionais
+[restored-encounters-check] OK pe10gr_5: sem encontros adicionais
+[restored-encounters-check] OK ra60sw: sem encontros adicionais
+[terrain] ri15sv01: เติม tile_set/color_set = savanna
+[restored-encounters-check] OK ri15sv01: sem encontros adicionais
+[terrain] ri18tp01: เติม tile_set/color_set = tropical
+[restored-encounters-check] OK ri18tp01: sem encontros adicionais
+[terrain] ⚠️ ri20te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK ri20te_alpha: sem encontros adicionais
+[terrain] ri25tp01: เติม tile_set/color_set = tropical
+[restored-encounters-check] OK ri25tp01: sem encontros adicionais
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[restored-encounters-check] OK ri30td01: sem encontros adicionais
+[terrain] ri35de: เติม tile_set/color_set = desert
+[restored-encounters-check] OK ri35de: sem encontros adicionais
+[terrain] ri35te: เติม tile_set/color_set = temperate
+[restored-encounters-check] OK ri35te: sem encontros adicionais
+[terrain] ri40tr: เติม tile_set/color_set = tropical
+[restored-encounters-check] OK ri40tr: sem encontros adicionais
+[terrain] ri40tu_alpha: เติม tile_set/color_set = tundra
+[restored-encounters-check] OK ri40tu_alpha: sem encontros adicionais
+[restored-encounters-check] OK ri45sa: sem encontros adicionais
+[restored-encounters-check] OK ri45sw_alpha: sem encontros adicionais
+[terrain] ⚠️ ri50de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK ri50de_alpha: sem encontros adicionais
+[restored-encounters-check] OK ri50sn: sem encontros adicionais
+[restored-encounters-check] OK ri55sw_alpha: sem encontros adicionais
+[terrain] ⚠️ ri55tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK ri55tr_alpha: sem encontros adicionais
+[terrain] ri55tu: เติม tile_set/color_set = tundra
+[restored-encounters-check] OK ri55tu: sem encontros adicionais
+[terrain] sn20snow: เติม tile_set/color_set = snowfields
+[restored-encounters-check] OK sn20snow: sem encontros adicionais
+[restored-encounters-check] OK tropical_event_ancora_01: sem encontros adicionais
+[terrain] ⚠️ ua60tu_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[restored-encounters-check] OK ua60tu_alpha: sem encontros adicionais
+[restored-encounters-check] OK ua60vol: sem encontros adicionais
+[restored-encounters-check] OK Compsognathus usa variante Alfa existente
+[restored-encounters-check] PASS 166 verificacoes

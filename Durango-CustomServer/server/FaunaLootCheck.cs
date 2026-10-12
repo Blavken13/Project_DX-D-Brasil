@@ -49,10 +49,12 @@ internal static class FaunaLootCheck
                     Check(manager.All.All(a => TerrainEcology.IsLand(terrain, a.Tile)) &&
                         manager.All.Select(a => a.Tile).Distinct().Count() == manager.Count,
                         id + ": todos em terra e sem pontos duplicados");
-                    Check(manager.All.All(a => template.Herds.Values.SelectMany(h => h).Any(s => s.EntityType == a.EntityType)),
+                    Check(manager.All.All(a => template.Herds.Values.SelectMany(h => h).Any(s => s.EntityType == a.EntityType) ||
+                        template.RestoredEncounters.Any(e => e.EntityType == a.EntityType)),
                         id + ": especies pertencem ao template");
                     var nativeTypes = template.Herds.Values.SelectMany(h => h).Select(s => s.EntityType)
                         .Where(t => AnimalTypes.Get(t) != null).ToHashSet();
+                    nativeTypes.UnionWith(template.RestoredEncounters.Select(e => e.EntityType));
                     if (nativeTypes.Count <= manager.Count)
                         Check(nativeTypes.SetEquals(manager.All.Select(a => a.EntityType)), id + ": preserva todas as especies nativas");
                     if (template.Level > 0)
@@ -60,7 +62,7 @@ internal static class FaunaLootCheck
                             id + ": nivel coerente com ilha");
                     if (template.Level == 60)
                     {
-                        var animal = manager.All.First();
+                        var animal = manager.All.First(a => !a.IsRestoredEncounter);
                         var stats = AnimalTypes.Get(animal.EntityType);
                         Check(Math.Abs(animal.LifeMax - StatFormula.EvalOr(stats.LifeMax,
                             new Dictionary<string, double> { ["combat_level"] = 60, ["unstable_factor"] = 1 }, 1)) < .01,

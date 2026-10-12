@@ -12,6 +12,7 @@ namespace DurangoServerNx;
 
 internal static class EstateReturnCheck
 {
+    private static readonly Dictionary<string, float[]> _survivalBeforeTravel = new();
     private static int _passed;
     private static void Check(bool value, string label)
     {
@@ -47,12 +48,15 @@ internal static class EstateReturnCheck
             link.PumpUntil(() => link.Messages.OfType<InventoryInfos>().Any(i =>
                 i.LockedItemIds?.Contains(important.Id) == true));
             Check(context.LockedItemIds.Contains(important.Id), "bloqueio pertence ao save do personagem");
+            _survivalBeforeTravel[context.EntityId] = SurvivalContinuityCheck.Prepare(link.Player, context);
             link.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = type });
             link.PumpUntil(() => link.Messages.OfType<Emigrated>().Any());
             Check(context.PendingEstateArrival?.EstateId == estateId, "retorno grava somente o dominio do dono: " + context.EntityId);
         }
         SafeSave.FlushPending();
         var loaded = PlayerContext.Load(context.Path);
+        Check(SurvivalContinuityCheck.Matches(loaded, _survivalBeforeTravel[context.EntityId]),
+            "retorno ao dominio e recarga preservam vida, saude, vitalidade e energia: " + context.EntityId);
         Check(loaded.LockedItemIds.SetEquals(context.LockedItemIds) && loaded.LockedItemIds.Count > 0,
             "viagem e recarga do save preservam itens bloqueados: " + context.EntityId);
         Check(loaded.RegionId == context.RegionId && loaded.PendingEstateArrival?.EstateId == estateId,
@@ -62,6 +66,8 @@ internal static class EstateReturnCheck
     private static void Arrival(PlayerContext context, World world, string estateId)
     {
         using var link = new EconomyProtocolCheck.Link(context, world, null, true);
+        if (_survivalBeforeTravel.TryGetValue(context.EntityId, out var before))
+            Check(SurvivalContinuityCheck.Matches(context, before), "entrada no dominio preserva as barras: " + context.EntityId);
         link.PumpUntil(() => link.Messages.OfType<Inventory>().Any());
         Check(link.Messages.OfType<Inventory>().Last().InventoryInfos.LockedItemIds.ToHashSet()
             .SetEquals(context.LockedItemIds), "inventario inicial restaura bloqueios na ilha de destino");
@@ -150,8 +156,11 @@ internal static class EstateReturnCheck
 
             using (var local = new EconomyProtocolCheck.Link(first, tamed, null, true))
             {
+                var beforeLocalWarp = SurvivalContinuityCheck.Prepare(local.Player, first);
                 local.Request<ReturnToEstate, Messages.Timer>(new ReturnToEstate { OwnerType = OwnerType.Player });
                 local.PumpUntil(() => local.Messages.OfType<Teleported>().Any());
+                Check(SurvivalContinuityCheck.Matches(first, beforeLocalWarp),
+                    "teleporte ao dominio na mesma ilha preserva vida e vitalidade");
                 Point2 tile = local.Messages.OfType<Teleported>().Last().Tile;
                 Check(tamed.TryGetEstateIdAtCell(World.CellFromTile(tile), out string arrived) && arrived == firstId &&
                     !local.Messages.OfType<Emigrated>().Any(), "retorno na mesma ilha teleporta para o dominio sem trocar de mundo");

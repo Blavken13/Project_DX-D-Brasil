@@ -100,6 +100,18 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--gathering-duplicate-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return GatheringDuplicateCheck.Run(dataDir);
+                case "--restored-encounters-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return RestoredEncountersCheck.Run(dataDir);
+                case "--survival-continuity-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return SurvivalContinuityCheck.Run(dataDir);
                 case "--world-combat-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

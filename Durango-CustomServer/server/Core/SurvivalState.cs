@@ -202,6 +202,7 @@ public sealed class SurvivalState
     {
         _context = context;
         _live = live;
+        RestoreMaxBonuses(Gauge.CurrentTime);
         // online_momenta = แรงที่ติดตัวตลอดเวลาที่ออนไลน์ — ของ player มีแค่ fatigue +0.083333
         // ซึ่งหักล้างกับ velocity ฐาน -0.083333 พอดี ⇒ อยู่เฉย ๆ ความเหนื่อยนิ่ง (ตามที่ข้อมูลออกแบบ)
         PlayerType type = PlayerTypes.Player;
@@ -229,6 +230,25 @@ public sealed class SurvivalState
     /// </summary>
     private readonly Dictionary<string, float> _maxBonus = new();
 
+    private void RestoreMaxBonuses(double now)
+    {
+        // Both PlayerContext.Initialize and a reconnect rebuild the gauges.
+        // Restore their existing static ceilings before that first rebuild:
+        // otherwise health/energy and their dependent life/stamina are clamped
+        // to the level-one defaults before Player recalculates its bonuses.
+        // GaugeConverter already persists these ceilings in old saves.
+        Dictionary<string, SurvivalGaugeDef> defs = ResolvedDefs();
+        foreach (string key in new HashSet<string>(MaxOwners(defs).Values))
+        {
+            Gauge gauge = GaugeOf(key);
+            if (gauge == null || !defs.TryGetValue(key, out var def)) continue;
+            float ceiling = gauge.Max(now);
+            float baseline = def.Max ?? def.Value ?? 0f;
+            if (!float.IsFinite(ceiling) || !float.IsFinite(baseline) || ceiling < (def.Min ?? 0f)) continue;
+            _maxBonus[key] = ceiling - baseline;
+        }
+    }
+
     /// <summary>
     /// ตั้งส่วนบวกของค่าสูงสุด แล้วสร้างหลอดใหม่ถ้าค่าเปลี่ยนจริง
     /// คืน true ถ้าเปลี่ยน ⇒ ผู้เรียกต้อง flush ให้ฝั่งเกมเห็นเพดานใหม่
@@ -237,6 +257,7 @@ public sealed class SurvivalState
     {
         _maxBonus.TryGetValue(key, out float old);
         if (Math.Abs(old - bonus) < 0.01f) return false;
+        Harvest(now);
         _maxBonus[key] = bonus;
 
         // ⚠️ ขยายเพดานอย่างเดียวไม่พอ — health/energy เป็น "หลอดที่เป็นค่าสูงสุดของหลอดอื่น"
@@ -246,7 +267,7 @@ public sealed class SurvivalState
         // ⇒ ดันค่าปัจจุบันขึ้นตามส่วนที่เพิ่มด้วย เลเวลอัพถึงจะเห็นผลทันที
         if (bonus > old && _values.TryGetValue(key, out float cur))
         {
-            _values[key] = cur + (bonus - old);
+            Set(key, cur + (bonus - old));
         }
 
         Rebuild(now);

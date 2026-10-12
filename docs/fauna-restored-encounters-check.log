@@ -1,0 +1,544 @@
+[ภาษา] โหลดคำแปล pt_BR 33399 ข้อความ
+[เควส] โหลดแคตตาล็อก 1386 แถว (Daily 66 · Once 1105 · เล่นได้ 379)
+[blueprint] merge blueprint×artifact: 560 รายการ
+[data] โหลด game data จาก Durango-CustomServer/server/data/assets เสร็จ:
+[data]   prototype_data               2419 รายการ
+[data]   constants                    1 รายการ
+[data]   entity_types/natural         711 รายการ
+[data]   entity_types/artifact        560 รายการ
+[data]   pet/pets_for_client          74 รายการ
+[data]   quests/epics_for_client      1 รายการ
+[data]   item/recipes                 720 รายการ
+[data]   emotions                     1 รายการ
+[data]   statistics/player            50 รายการ
+[data]   entity_types/players         4 รายการ
+[region] อ่าน region template 267 รายการ
+[สัตว์] โหลดชนิดสัตว์ 214 ชนิด
+[terrain] ⚠️ op60te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ op60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri15sv01: เติม tile_set/color_set = savanna
+[terrain] ri18tp01: เติม tile_set/color_set = tropical
+[terrain] ⚠️ ri20te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri25tp01: เติม tile_set/color_set = tropical
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[terrain] ri35de: เติม tile_set/color_set = desert
+[terrain] ri35te: เติม tile_set/color_set = temperate
+[terrain] ri40tr: เติม tile_set/color_set = tropical
+[terrain] ri40tu_alpha: เติม tile_set/color_set = tundra
+[terrain] ⚠️ ri50de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ri55tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri55tu: เติม tile_set/color_set = tundra
+[terrain] sn20snow: เติม tile_set/color_set = snowfields
+[terrain] ⚠️ ua60de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ua60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ua60tu_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[region] สารบัญเกาะ 25 ลูก: op60te_alpha(lv60), op60tr_alpha(lv60), ra60sw(lv60), ri15sv01(lv15), ri18tp01(lv18), ri20te_alpha(lv20), ri25tp01(lv25), ri30td01(lv30), ri35de(lv35), ri35te(lv35), ri40tr(lv40), ri40tu_alpha(lv40), ri45sa(lv45), ri45sw_alpha(lv45), ri50de_alpha(lv50), ri50sn(lv50), ri55sw_alpha(lv55), ri55tr_alpha(lv55), ri55tu(lv55), sn20snow(lv20), ua60de_alpha(lv60), ua60sn_alpha(lv60), ua60tr_alpha(lv60), ua60tu_alpha(lv60), ua60vol(lv60)
+[skill] โหลดตารางสกิล: 275 bundle · 13 หมวด · 1321 รางวัล · 154 โมดิฟายเออร์ (40 ตัวผูกกับ Derived) · 8 อาชีพ · เลเวลสูงสุด 60 · สกิลอัตโนมัติ 71 โหนด · หมวดของที่ต้องปลดสกิล 41 หมวด
+[safehouse] fauna: compso=50/50 raptor_medroso=50/50 lv=5 total=100/100 candidatos=103
+[terrain] ⚠️ op60te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=op60te180220 islandLv=60 nativeAnchors=43 total=40/40 species=17
+[fauna-check] OK op60te_alpha: 40 animais
+[fauna-check] OK op60te_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK op60te_alpha: especies pertencem ao template
+[fauna-check] OK op60te_alpha: preserva todas as especies nativas
+[สัตว์] โหลดชื่อท่าทางของสัตว์ 214 ชนิด (มีท่าโจมตี 214)
+[fauna-check] OK op60te_alpha: nivel coerente com ilha
+[fauna-check] OK op60te_alpha: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK op60te_alpha: corpo dura quatro minutos
+[fauna-check] OK op60te_alpha: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK op60te_alpha: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK op60te_alpha: respawn conserva nível da ilha e restaura vida
+[fauna] template=op60te180220 islandLv=60 nativeAnchors=43 total=40/40 species=17
+[fauna-check] OK op60te_alpha: recarregar a ilha mantém todos os dinos no nível 60
+[terrain] ⚠️ op60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=op60tr180220 islandLv=60 nativeAnchors=59 total=40/40 species=15
+[fauna-check] OK op60tr_alpha: 40 animais
+[fauna-check] OK op60tr_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK op60tr_alpha: especies pertencem ao template
+[fauna-check] OK op60tr_alpha: preserva todas as especies nativas
+[fauna-check] OK op60tr_alpha: nivel coerente com ilha
+[fauna-check] OK op60tr_alpha: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK op60tr_alpha: corpo dura quatro minutos
+[fauna-check] OK op60tr_alpha: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK op60tr_alpha: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK op60tr_alpha: respawn conserva nível da ilha e restaura vida
+[fauna] template=op60tr180220 islandLv=60 nativeAnchors=59 total=40/40 species=15
+[fauna-check] OK op60tr_alpha: recarregar a ilha mantém todos os dinos no nível 60
+[fauna-check] OK sem fauna selvagem em pe10gr_1
+[fauna-check] OK sem fauna selvagem em pe10gr_2
+[fauna-check] OK sem fauna selvagem em pe10gr_3
+[fauna-check] OK sem fauna selvagem em pe10gr_4
+[fauna-check] OK sem fauna selvagem em pe10gr_5
+[fauna] template=ra60sw180226 islandLv=60 nativeAnchors=3 total=40/40 species=2
+[fauna-check] OK ra60sw: 40 animais
+[fauna-check] OK ra60sw: todos em terra e sem pontos duplicados
+[fauna-check] OK ra60sw: especies pertencem ao template
+[fauna-check] OK ra60sw: preserva todas as especies nativas
+[fauna-check] OK ra60sw: nivel coerente com ilha
+[fauna-check] OK ra60sw: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK ra60sw: corpo dura quatro minutos
+[fauna-check] OK ra60sw: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK ra60sw: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK ra60sw: respawn conserva nível da ilha e restaura vida
+[fauna] template=ra60sw180226 islandLv=60 nativeAnchors=3 total=40/40 species=2
+[fauna-check] OK ra60sw: recarregar a ilha mantém todos os dinos no nível 60
+[terrain] ri15sv01: เติม tile_set/color_set = savanna
+[fauna] template=ri15sv01 islandLv=15 nativeAnchors=36 total=40/40 species=4
+[fauna-check] OK ri15sv01: 40 animais
+[fauna-check] OK ri15sv01: todos em terra e sem pontos duplicados
+[fauna-check] OK ri15sv01: especies pertencem ao template
+[fauna-check] OK ri15sv01: preserva todas as especies nativas
+[fauna-check] OK ri15sv01: nivel coerente com ilha
+[terrain] ri18tp01: เติม tile_set/color_set = tropical
+[fauna] template=ri18tp01 islandLv=18 nativeAnchors=23 total=40/40 species=4
+[fauna-check] OK ri18tp01: 40 animais
+[fauna-check] OK ri18tp01: todos em terra e sem pontos duplicados
+[fauna-check] OK ri18tp01: especies pertencem ao template
+[fauna-check] OK ri18tp01: preserva todas as especies nativas
+[fauna-check] OK ri18tp01: nivel coerente com ilha
+[terrain] ⚠️ ri20te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=ri20te190710 islandLv=20 nativeAnchors=43 total=40/40 species=5
+[fauna-check] OK ri20te_alpha: 40 animais
+[fauna-check] OK ri20te_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ri20te_alpha: especies pertencem ao template
+[fauna-check] OK ri20te_alpha: preserva todas as especies nativas
+[fauna-check] OK ri20te_alpha: nivel coerente com ilha
+[terrain] ri25tp01: เติม tile_set/color_set = tropical
+[fauna] template=ri25tp01 islandLv=25 nativeAnchors=31 total=40/40 species=6
+[fauna-check] OK ri25tp01: 40 animais
+[fauna-check] OK ri25tp01: todos em terra e sem pontos duplicados
+[fauna-check] OK ri25tp01: especies pertencem ao template
+[fauna-check] OK ri25tp01: preserva todas as especies nativas
+[fauna-check] OK ri25tp01: nivel coerente com ilha
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[fauna] template=ri30td01 islandLv=30 nativeAnchors=22 total=40/40 species=5
+[fauna-check] OK ri30td01: 40 animais
+[fauna-check] OK ri30td01: todos em terra e sem pontos duplicados
+[fauna-check] OK ri30td01: especies pertencem ao template
+[fauna-check] OK ri30td01: preserva todas as especies nativas
+[fauna-check] OK ri30td01: nivel coerente com ilha
+[terrain] ri35de: เติม tile_set/color_set = desert
+[fauna] template=ri35deSub01 islandLv=35 nativeAnchors=45 total=40/40 species=5
+[fauna-check] OK ri35de: 40 animais
+[fauna-check] OK ri35de: todos em terra e sem pontos duplicados
+[fauna-check] OK ri35de: especies pertencem ao template
+[fauna-check] OK ri35de: preserva todas as especies nativas
+[fauna-check] OK ri35de: nivel coerente com ilha
+[terrain] ri35te: เติม tile_set/color_set = temperate
+[fauna] template=ri35teSub01 islandLv=35 nativeAnchors=43 total=40/40 species=6
+[fauna-check] OK ri35te: 40 animais
+[fauna-check] OK ri35te: todos em terra e sem pontos duplicados
+[fauna-check] OK ri35te: especies pertencem ao template
+[fauna-check] OK ri35te: preserva todas as especies nativas
+[fauna-check] OK ri35te: nivel coerente com ilha
+[terrain] ri40tr: เติม tile_set/color_set = tropical
+[fauna] template=ri40trSub01 islandLv=40 nativeAnchors=59 total=40/40 species=7
+[fauna-check] OK ri40tr: 40 animais
+[fauna-check] OK ri40tr: todos em terra e sem pontos duplicados
+[fauna-check] OK ri40tr: especies pertencem ao template
+[fauna-check] OK ri40tr: preserva todas as especies nativas
+[fauna-check] OK ri40tr: nivel coerente com ilha
+[terrain] ri40tu_alpha: เติม tile_set/color_set = tundra
+[fauna] template=ri40tu171228 islandLv=40 nativeAnchors=22 total=40/40 species=6
+[fauna-check] OK ri40tu_alpha: 40 animais
+[fauna-check] OK ri40tu_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ri40tu_alpha: especies pertencem ao template
+[fauna-check] OK ri40tu_alpha: preserva todas as especies nativas
+[fauna-check] OK ri40tu_alpha: nivel coerente com ilha
+[fauna] template=ri45saSub01 islandLv=45 nativeAnchors=63 total=40/40 species=7
+[fauna-check] OK ri45sa: 40 animais
+[fauna-check] OK ri45sa: todos em terra e sem pontos duplicados
+[fauna-check] OK ri45sa: especies pertencem ao template
+[fauna-check] OK ri45sa: preserva todas as especies nativas
+[fauna-check] OK ri45sa: nivel coerente com ilha
+[fauna] template=ri45sw171228 islandLv=45 nativeAnchors=3 total=40/40 species=5
+[fauna-check] OK ri45sw_alpha: 40 animais
+[fauna-check] OK ri45sw_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ri45sw_alpha: especies pertencem ao template
+[fauna-check] OK ri45sw_alpha: preserva todas as especies nativas
+[fauna-check] OK ri45sw_alpha: nivel coerente com ilha
+[terrain] ⚠️ ri50de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=ri50de171228 islandLv=50 nativeAnchors=45 total=40/40 species=7
+[fauna-check] OK ri50de_alpha: 40 animais
+[fauna-check] OK ri50de_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ri50de_alpha: especies pertencem ao template
+[fauna-check] OK ri50de_alpha: preserva todas as especies nativas
+[fauna-check] OK ri50de_alpha: nivel coerente com ilha
+[fauna] template=ri50snSub01 islandLv=50 nativeAnchors=50 total=40/40 species=6
+[fauna-check] OK ri50sn: 40 animais
+[fauna-check] OK ri50sn: todos em terra e sem pontos duplicados
+[fauna-check] OK ri50sn: especies pertencem ao template
+[fauna-check] OK ri50sn: preserva todas as especies nativas
+[fauna-check] OK ri50sn: nivel coerente com ilha
+[fauna] template=ri55sw171228 islandLv=55 nativeAnchors=3 total=40/40 species=5
+[fauna-check] OK ri55sw_alpha: 40 animais
+[fauna-check] OK ri55sw_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ri55sw_alpha: especies pertencem ao template
+[fauna-check] OK ri55sw_alpha: preserva todas as especies nativas
+[fauna-check] OK ri55sw_alpha: nivel coerente com ilha
+[terrain] ⚠️ ri55tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=ri55tb171228 islandLv=55 nativeAnchors=59 total=40/40 species=7
+[fauna-check] OK ri55tr_alpha: 40 animais
+[fauna-check] OK ri55tr_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ri55tr_alpha: especies pertencem ao template
+[fauna-check] OK ri55tr_alpha: preserva todas as especies nativas
+[fauna-check] OK ri55tr_alpha: nivel coerente com ilha
+[terrain] ri55tu: เติม tile_set/color_set = tundra
+[fauna] template=ri55tuSub01 islandLv=55 nativeAnchors=55 total=40/40 species=6
+[fauna-check] OK ri55tu: 40 animais
+[fauna-check] OK ri55tu: todos em terra e sem pontos duplicados
+[fauna-check] OK ri55tu: especies pertencem ao template
+[fauna-check] OK ri55tu: preserva todas as especies nativas
+[fauna-check] OK ri55tu: nivel coerente com ilha
+[terrain] sn20snow: เติม tile_set/color_set = snowfields
+[fauna] template=gen002020 islandLv=20 nativeAnchors=15 total=40/40 species=6
+[fauna-check] OK sn20snow: 40 animais
+[fauna-check] OK sn20snow: todos em terra e sem pontos duplicados
+[fauna-check] OK sn20snow: especies pertencem ao template
+[fauna-check] OK sn20snow: preserva todas as especies nativas
+[fauna-check] OK sn20snow: nivel coerente com ilha
+[fauna-check] OK sem fauna selvagem em tropical_event_ancora_01
+[terrain] ⚠️ ua60de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=ua60de02Main02_elite islandLv=60 nativeAnchors=45 total=40/40 species=8
+[fauna-check] OK ua60de_alpha: 40 animais
+[fauna-check] OK ua60de_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ua60de_alpha: especies pertencem ao template
+[fauna-check] OK ua60de_alpha: preserva todas as especies nativas
+[fauna-check] OK ua60de_alpha: nivel coerente com ilha
+[fauna-check] OK ua60de_alpha: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK ua60de_alpha: corpo dura quatro minutos
+[fauna-check] OK ua60de_alpha: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK ua60de_alpha: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK ua60de_alpha: respawn conserva nível da ilha e restaura vida
+[fauna] template=ua60de02Main02_elite islandLv=60 nativeAnchors=45 total=40/40 species=8
+[fauna-check] OK ua60de_alpha: recarregar a ilha mantém todos os dinos no nível 60
+[fauna] template=ua60sn02Main04_elite islandLv=60 nativeAnchors=50 total=40/40 species=9
+[fauna-check] OK ua60sn_alpha: 40 animais
+[fauna-check] OK ua60sn_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ua60sn_alpha: especies pertencem ao template
+[fauna-check] OK ua60sn_alpha: preserva todas as especies nativas
+[fauna-check] OK ua60sn_alpha: nivel coerente com ilha
+[fauna-check] OK ua60sn_alpha: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK ua60sn_alpha: corpo dura quatro minutos
+[fauna-check] OK ua60sn_alpha: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK ua60sn_alpha: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK ua60sn_alpha: respawn conserva nível da ilha e restaura vida
+[fauna] template=ua60sn02Main04_elite islandLv=60 nativeAnchors=50 total=40/40 species=9
+[fauna-check] OK ua60sn_alpha: recarregar a ilha mantém todos os dinos no nível 60
+[terrain] ⚠️ ua60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=ua60tr02Main01 islandLv=60 nativeAnchors=59 total=40/40 species=8
+[fauna-check] OK ua60tr_alpha: 40 animais
+[fauna-check] OK ua60tr_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ua60tr_alpha: especies pertencem ao template
+[fauna-check] OK ua60tr_alpha: preserva todas as especies nativas
+[fauna-check] OK ua60tr_alpha: nivel coerente com ilha
+[fauna-check] OK ua60tr_alpha: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_1 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK ua60tr_alpha: corpo dura quatro minutos
+[fauna-check] OK ua60tr_alpha: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK ua60tr_alpha: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK ua60tr_alpha: respawn conserva nível da ilha e restaura vida
+[fauna] template=ua60tr02Main01 islandLv=60 nativeAnchors=59 total=40/40 species=8
+[fauna-check] OK ua60tr_alpha: recarregar a ilha mantém todos os dinos no nível 60
+[terrain] ⚠️ ua60tu_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[fauna] template=ua60tu02Main01 islandLv=60 nativeAnchors=55 total=40/40 species=6
+[fauna-check] OK ua60tu_alpha: 40 animais
+[fauna-check] OK ua60tu_alpha: todos em terra e sem pontos duplicados
+[fauna-check] OK ua60tu_alpha: especies pertencem ao template
+[fauna-check] OK ua60tu_alpha: preserva todas as especies nativas
+[fauna-check] OK ua60tu_alpha: nivel coerente com ilha
+[fauna-check] OK ua60tu_alpha: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK ua60tu_alpha: corpo dura quatro minutos
+[fauna-check] OK ua60tu_alpha: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK ua60tu_alpha: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK ua60tu_alpha: respawn conserva nível da ilha e restaura vida
+[fauna] template=ua60tu02Main01 islandLv=60 nativeAnchors=55 total=40/40 species=6
+[fauna-check] OK ua60tu_alpha: recarregar a ilha mantém todos os dinos no nível 60
+[fauna] template=ua60vol_06_03 islandLv=60 nativeAnchors=58 total=40/40 species=5
+[fauna-check] OK ua60vol: 40 animais
+[fauna-check] OK ua60vol: todos em terra e sem pontos duplicados
+[fauna-check] OK ua60vol: especies pertencem ao template
+[fauna-check] OK ua60vol: preserva todas as especies nativas
+[fauna-check] OK ua60vol: nivel coerente com ilha
+[fauna-check] OK ua60vol: atributos de combate usam nível 60 além do número exibido
+[สัตว์] ซาก herd_population_0 จะหายในอีก 0 วิ (เวลา 22:04:01)
+[fauna-check] OK ua60vol: corpo dura quatro minutos
+[fauna-check] OK ua60vol: corpo desaparece sem reviver aos quatro minutos
+[fauna-check] OK ua60vol: sem respawn antecipado ou descarte duplicado
+[fauna-check] OK ua60vol: respawn conserva nível da ilha e restaura vida
+[fauna] template=ua60vol_06_03 islandLv=60 nativeAnchors=58 total=40/40 species=5
+[fauna-check] OK ua60vol: recarregar a ilha mantém todos os dinos no nível 60
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[fauna] template=ri30td01 islandLv=30 nativeAnchors=0 total=40/40 species=5
+[fauna-check] OK ilha 30 recebe 40 animais mesmo sem herds.yml
+[gather] ขุดคู่ collectible→generator จาก recipes.json ได้ 101 ตัว
+[fauna-check] OK stegosaurus: loot variado e ids unicos
+[fauna-check] OK raptor: loot variado e ids unicos
+[fauna-check] OK oviraptor: loot variado e ids unicos
+[fauna-check] OK triceratops: loot variado e ids unicos
+[fauna-check] OK brachio: loot variado e ids unicos
+[fauna-check] OK trex: loot variado e ids unicos
+[fauna-check] OK phenacodus: loot variado e ids unicos
+[fauna-check] OK sabertooth: loot variado e ids unicos
+[fauna-check] OK mammoth: loot variado e ids unicos
+[fauna-check] OK parasaurolophus: loot variado e ids unicos
+[fauna-check] OK ankylosaurus: loot variado e ids unicos
+[fauna-check] OK euoplocephalus: loot variado e ids unicos
+[fauna-check] OK macrauchenia: loot variado e ids unicos
+[fauna-check] OK megaloceros: loot variado e ids unicos
+[fauna-check] OK ornithomimus: loot variado e ids unicos
+[fauna-check] OK compsognathus: loot variado e ids unicos
+[fauna-check] OK coelophysis: loot variado e ids unicos
+[fauna-check] OK protoceratops: loot variado e ids unicos
+[fauna-check] OK chasmosaurus: loot variado e ids unicos
+[fauna-check] OK styracosaurus: loot variado e ids unicos
+[fauna-check] OK direwolf: loot variado e ids unicos
+[fauna-check] OK allosaurus: loot variado e ids unicos
+[fauna-check] OK pachycephalosaurus: loot variado e ids unicos
+[fauna-check] OK utahraptor: loot variado e ids unicos
+[fauna-check] OK dilophosaurus: loot variado e ids unicos
+[fauna-check] OK gallimimus: loot variado e ids unicos
+[fauna-check] OK tuojiangosaurus: loot variado e ids unicos
+[fauna-check] OK zebraceratops: loot variado e ids unicos
+[fauna-check] OK saurolophus: loot variado e ids unicos
+[fauna-check] OK deinonychus: loot variado e ids unicos
+[fauna-check] OK corythosaurus: loot variado e ids unicos
+[fauna-check] OK edmontosaurus: loot variado e ids unicos
+[fauna-check] OK skunkodus: loot variado e ids unicos
+[fauna-check] OK dodophysis: loot variado e ids unicos
+[fauna-check] OK dimetrodon: loot variado e ids unicos
+[fauna-check] OK dodo_snowfield: loot variado e ids unicos
+[fauna-check] OK compso_ancora: loot variado e ids unicos
+[fauna-check] OK elephantulus: loot variado e ids unicos
+[fauna-check] OK rat: loot variado e ids unicos
+[fauna-check] OK deinonychus_savana: loot variado e ids unicos
+[fauna-check] OK protoceratops_pink: loot variado e ids unicos
+[fauna-check] OK centrosaurus: loot variado e ids unicos
+[fauna-check] OK lizard_savana: loot variado e ids unicos
+[fauna-check] OK lizard_sand: loot variado e ids unicos
+[fauna-check] OK lizard_poisonous: loot variado e ids unicos
+[fauna-check] OK coelophysis_swamp: loot variado e ids unicos
+[fauna-check] OK hadrosaurus: loot variado e ids unicos
+[fauna-check] OK sabertooth_tem: loot variado e ids unicos
+[fauna-check] OK iguanodon: loot variado e ids unicos
+[fauna-check] OK phenacodus_hanbok: loot variado e ids unicos
+[fauna-check] OK phenacodus_witch: loot variado e ids unicos
+[fauna-check] OK raptor_coward: loot variado e ids unicos
+[fauna-check] OK phenacodus_pumpkinwitch: loot variado e ids unicos
+[fauna-check] OK megaloceros_xmas_elite_store_for_pet: loot variado e ids unicos
+[fauna-check] OK tortoise_ankylosaurus_for_pet: loot variado e ids unicos
+[fauna-check] OK direwolf_for_pet: loot variado e ids unicos
+[fauna-check] OK macrauchenia_for_pet: loot variado e ids unicos
+[fauna-check] OK megaloceros_for_pet: loot variado e ids unicos
+[fauna-check] OK coelophysis_for_pet: loot variado e ids unicos
+[fauna-check] OK pachycephalosaurus_for_pet: loot variado e ids unicos
+[fauna-check] OK skunkodus_for_pet: loot variado e ids unicos
+[fauna-check] OK stegosaurus_for_pet: loot variado e ids unicos
+[fauna-check] OK triceratops_for_pet: loot variado e ids unicos
+[fauna-check] OK megaloceros_female: loot variado e ids unicos
+[fauna-check] OK megaloceros_baby: loot variado e ids unicos
+[fauna-check] OK triceratops_baby: loot variado e ids unicos
+[fauna-check] OK brachio_baby: loot variado e ids unicos
+[fauna-check] OK ankylosaurus_baby: loot variado e ids unicos
+[fauna-check] OK euoplocephalus_baby: loot variado e ids unicos
+[fauna-check] OK direwolf_black: loot variado e ids unicos
+[fauna-check] OK direwolf_snow: loot variado e ids unicos
+[fauna-check] OK direwolf_baby: loot variado e ids unicos
+[fauna-check] OK chasmosaurus_baby: loot variado e ids unicos
+[fauna-check] OK styracosaurus_baby: loot variado e ids unicos
+[fauna-check] OK tuojiangosaurus_baby: loot variado e ids unicos
+[fauna-check] OK stegosaurus_baby: loot variado e ids unicos
+[fauna-check] OK gallimimus_baby: loot variado e ids unicos
+[fauna-check] OK oviraptor_snowy: loot variado e ids unicos
+[fauna-check] OK oviraptor_tropical: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_female: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_baby: loot variado e ids unicos
+[fauna-check] OK ceratosaurus: loot variado e ids unicos
+[fauna-check] OK kentrosaurus: loot variado e ids unicos
+[fauna-check] OK kentrosaurus_baby: loot variado e ids unicos
+[fauna-check] OK ornithomimus_baby: loot variado e ids unicos
+[fauna-check] OK tarbosaurus: loot variado e ids unicos
+[fauna-check] OK deinotherium: loot variado e ids unicos
+[fauna-check] OK sabertooth_golden: loot variado e ids unicos
+[fauna-check] OK tarbosaurus_snowy: loot variado e ids unicos
+[fauna-check] OK coelophysis_snowy: loot variado e ids unicos
+[fauna-check] OK direwolf_snow_for_pet: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_for_pet: loot variado e ids unicos
+[fauna-check] OK pavomimus: loot variado e ids unicos
+[fauna-check] OK bonusaurus: loot variado e ids unicos
+[fauna-check] OK phenacodus_elite: loot variado e ids unicos
+[fauna-check] OK centrosaurus_for_pet: loot variado e ids unicos
+[fauna-check] OK ornithomimus_elite: loot variado e ids unicos
+[fauna-check] OK triceratops_elite: loot variado e ids unicos
+[fauna-check] OK protoceratops_elite: loot variado e ids unicos
+[fauna-check] OK utahraptor_elite: loot variado e ids unicos
+[fauna-check] OK parasaurolophus_elite: loot variado e ids unicos
+[fauna-check] OK deinotherium_elite: loot variado e ids unicos
+[fauna-check] OK megaloceros_elite: loot variado e ids unicos
+[fauna-check] OK direwolf_elite: loot variado e ids unicos
+[fauna-check] OK styracosaurus_elite: loot variado e ids unicos
+[fauna-check] OK bonusaurus_elite: loot variado e ids unicos
+[fauna-check] OK chasmosaurus_elite: loot variado e ids unicos
+[fauna-check] OK compsognathus_elite: loot variado e ids unicos
+[fauna-check] OK mammoth_elite: loot variado e ids unicos
+[fauna-check] OK raptor_elite: loot variado e ids unicos
+[fauna-check] OK sabertooth_elite: loot variado e ids unicos
+[fauna-check] OK stegosaurus_elite: loot variado e ids unicos
+[fauna-check] OK tarbosaurus_snowy_elite: loot variado e ids unicos
+[fauna-check] OK trex_elite: loot variado e ids unicos
+[fauna-check] OK tarbosaurus_elite: loot variado e ids unicos
+[fauna-check] OK tuojiangosaurus_elite: loot variado e ids unicos
+[fauna-check] OK kentrosaurus_elite: loot variado e ids unicos
+[fauna-check] OK gallimimus_elite: loot variado e ids unicos
+[fauna-check] OK pavomimus_elite: loot variado e ids unicos
+[fauna-check] OK coelophysis_elite: loot variado e ids unicos
+[fauna-check] OK sabertooth_golden_elite: loot variado e ids unicos
+[fauna-check] OK dilophosaurus_elite: loot variado e ids unicos
+[fauna-check] OK macrauchenia_elite: loot variado e ids unicos
+[fauna-check] OK brachio_elite: loot variado e ids unicos
+[fauna-check] OK ankylosaurus_elite: loot variado e ids unicos
+[fauna-check] OK euoplocephalus_elite: loot variado e ids unicos
+[fauna-check] OK megaloceros_xmas: loot variado e ids unicos
+[fauna-check] OK megaloceros_xmas_elite_store: loot variado e ids unicos
+[fauna-check] OK phenacodus_xmas: loot variado e ids unicos
+[fauna-check] OK gastornis: loot variado e ids unicos
+[fauna-check] OK retriever_labrador: loot variado e ids unicos
+[fauna-check] OK tortoise_ankylosaurus: loot variado e ids unicos
+[fauna-check] OK apatosaurus: loot variado e ids unicos
+[fauna-check] OK sabertooth_snow_s01: loot variado e ids unicos
+[fauna-check] OK skunkodus_season2: loot variado e ids unicos
+[fauna-check] OK rat_season2_02: loot variado e ids unicos
+[fauna-check] OK coelophysis_swamp_season2: loot variado e ids unicos
+[fauna-check] OK apatosaurus_season2: loot variado e ids unicos
+[fauna-check] OK triceratops_season2_01: loot variado e ids unicos
+[fauna-check] OK triceratops_season2_02: loot variado e ids unicos
+[fauna-check] OK coelophysis_snowy_for_pet: loot variado e ids unicos
+[fauna-check] OK styracosaurus_for_pet: loot variado e ids unicos
+[fauna-check] OK megaloceros_xmas_for_pet: loot variado e ids unicos
+[fauna-check] OK magpie_gastornis: loot variado e ids unicos
+[fauna-check] OK elephant_albino_small: loot variado e ids unicos
+[fauna-check] OK elephant_albino_small_for_pet: loot variado e ids unicos
+[fauna-check] OK retriever_labrador_black: loot variado e ids unicos
+[fauna-check] OK elephant_small: loot variado e ids unicos
+[fauna-check] OK elephant_small_store_for_pet: loot variado e ids unicos
+[fauna-check] OK phenacodus_bee: loot variado e ids unicos
+[fauna-check] OK sabertooth_factor6: loot variado e ids unicos
+[fauna-check] OK deinonychus_factor6: loot variado e ids unicos
+[fauna-check] OK gallimimus_factor6: loot variado e ids unicos
+[fauna-check] OK gallimimus_factor6_baby: loot variado e ids unicos
+[fauna-check] OK megaloceros_factor6: loot variado e ids unicos
+[fauna-check] OK megaloceros_factor6_baby: loot variado e ids unicos
+[fauna-check] OK megaloceros_factor6_female: loot variado e ids unicos
+[fauna-check] OK skunkodus_factor6: loot variado e ids unicos
+[fauna-check] OK centrosaurus_for_pet_offerwall: loot variado e ids unicos
+[fauna-check] OK brachio_junior_for_pet: loot variado e ids unicos
+[fauna-check] OK andrewsarchus: loot variado e ids unicos
+[fauna-check] OK horseshoecrab: loot variado e ids unicos
+[fauna-check] OK iguana_volcanic: loot variado e ids unicos
+[fauna-check] OK skunkodus_diver_for_pet: loot variado e ids unicos
+[fauna-check] OK skunkodus_sulphur: loot variado e ids unicos
+[fauna-check] OK utahraptor_volcanic: loot variado e ids unicos
+[fauna-check] OK iguana_rock: loot variado e ids unicos
+[fauna-check] OK hadrosaurus_volcanic: loot variado e ids unicos
+[fauna-check] OK chasmosaurus_volcanic: loot variado e ids unicos
+[fauna-check] OK amargasaurus: loot variado e ids unicos
+[fauna-check] OK elephantulus_hula_for_pet: loot variado e ids unicos
+[fauna-check] OK phenacodus_shark_for_pet: loot variado e ids unicos
+[fauna-check] OK compsognathus_clownfish: loot variado e ids unicos
+[fauna-check] OK iguana_emerald_for_pet: loot variado e ids unicos
+[fauna-check] OK hadrosaurus_offroad_for_pet: loot variado e ids unicos
+[fauna-check] OK hadrosaurus_volcanic_02: loot variado e ids unicos
+[fauna-check] OK andrewsarchus_02: loot variado e ids unicos
+[fauna-check] OK amargasaurus_02: loot variado e ids unicos
+[fauna-check] OK lizard_poisonous_volcanic: loot variado e ids unicos
+[fauna-check] OK gastornis_unknown: loot variado e ids unicos
+[fauna-check] OK pavomimus_unknown: loot variado e ids unicos
+[fauna-check] OK direwolf_snow_unknown: loot variado e ids unicos
+[fauna-check] OK direwolf_snow_baby_unknown: loot variado e ids unicos
+[fauna-check] OK tortoise_ankylosaurus_unknown: loot variado e ids unicos
+[fauna-check] OK macrauchenia_unknown: loot variado e ids unicos
+[fauna-check] OK gallimimus_unknown: loot variado e ids unicos
+[fauna-check] OK megaloceros_unknown: loot variado e ids unicos
+[fauna-check] OK megaloceros_baby_unknown: loot variado e ids unicos
+[fauna-check] OK megaloceros_female_unknown: loot variado e ids unicos
+[fauna-check] OK sabertooth_snow_epic: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_baby_unknown: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_female_unknown: loot variado e ids unicos
+[fauna-check] OK ankylosaurus_unknown: loot variado e ids unicos
+[fauna-check] OK direwolf_black_baby_unknown: loot variado e ids unicos
+[fauna-check] OK direwolf_black_unknown: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_unknown: loot variado e ids unicos
+[fauna-check] OK direwolf_snow_sunset: loot variado e ids unicos
+[fauna-check] OK tortoise_ankylosaurus_unknown_2: loot variado e ids unicos
+[fauna-check] OK macrauchenia_unknown_2: loot variado e ids unicos
+[fauna-check] OK gallimimus_unknown_2: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_unknown_2: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_baby_unknown_2: loot variado e ids unicos
+[fauna-check] OK megaloceros_snowy_female_unknown_2: loot variado e ids unicos
+[fauna-check] OK anquilossauro conserva couro blindado
+[fauna-check] OK penas somente nas familias correspondentes
+[fauna-check] OK marfim e chifres por especie
+[fauna-check] OK variantes sem galhada e elefantes sem pelagem respeitam anatomia
+[fauna-check] REPORT C:\Users\Ander\AppData\Local\Temp\Durango-fauna-check-c116cb0ba1a743d2a2f4f732c0946a06\animal-loot.md
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[ecologia] ri30td01: pesca total=312 mantida=312 filtrada=0
+[โต๊ะคราฟต์] โหลดแท็กของโต๊ะ 72 แบบ
+[world] วางจุดสำคัญของเกาะ 5 จุด (ท่าเรือ 1 · รูวาร์ป 3 · รอยแยก 0 · หลุมอุกกาบาต 1)
+[flores] ri30td01: restaurados 1 spots nos biomas nativos.
+[fauna] template=ri30td01 islandLv=30 nativeAnchors=22 total=40/40 species=5
+[skill] butcher ไม่รู้อาชีพ (เสื้อไม่ตรงตาราง) — ไม่แจกสกิลตั้งต้น
+[skill] butcher ปลดสกิลอัตโนมัติ 38 โหนด (ไม่ใช้แต้ม)
+[ของขวัญ] butcher รับของขวัญ 2 ชิ้น
+[clã] carregados 0 clãs de C:\Users\Ander\AppData\Local\Temp\Durango-fauna-check-c116cb0ba1a743d2a2f4f732c0946a06\clans.json
+[craft] โหลดสูตรคราฟต์ 720 รายการ (ทำของใหม่ได้จริง 720) จาก item/recipes.json
+[craft] butcher ส่งสูตรที่ปลดแล้ว 21 จาก 720 สูตร (ReplyOf=0)
+[combat] โหลดท่าต่อสู้ 59 ท่า · tag→ท่า 10 กลุ่ม · ชนิดอาวุธ 248 แบบ
+[ความเหนื่อย] โหลดหมวด 12 หมวด
+[craft] butcher ส่งสูตรที่ปลดแล้ว 21 จาก 720 สูตร (ReplyOf=0)
+[สถานะ] โหลด status_effects 372 ชนิด
+[สถานะ] butcher ติด wet lv1 120วิ
+[fauna-check] OK menu TCP mostra todos os materiais e limita nivel pela habilidade
+[fauna-check] OK couro blindado, gordura e costelas respeitam nos aprendidos, inclusive ordem nao numerica
+[gather] butcher ยังไม่ได้ปลดหมวด 'leather' (gen=leather_raw_armored)
+[fauna-check] OK pedido forjado exige habilidade correta sem consumir loot
+[สี] โหลดตารางสีไอเทม 109 ชุด
+[gather] butcher เริ่มเก็บ meat x2 จาก ankylo ที่ (146,19) — รอ 7 วิ · จองแล้ว 1/50
+[craft] butcher ส่งสูตรที่ปลดแล้ว 21 จาก 720 สูตร (ReplyOf=0)
+[xp] butcher +2 raw · indicator=2 · total=2/4022263 · Esfolar [ALPHA XP x1]
+[gather] butcher จบเก็บครบเวลา · RanOut=False
+[fauna-check] OK loot TCP limitado a esquartejamento 10 apesar de jogador e pedido nivel 60
+[fauna-check] OK coletar carne conserva os outros tipos na carcaca
+[fauna-check] OK aprender habilidade libera couro blindado; item nao excede nivel do animal
+[gather] butcher เริ่มเก็บ leather_raw_armored x1 จาก ankylo ที่ (146,19) — รอ 5.6 วิ · จองแล้ว 2/50
+[xp] butcher +2 raw · indicator=2 · total=4/4022263 · Esfolar [ALPHA XP x1]
+[gather] butcher จบเก็บครบเวลา · RanOut=False
+[fauna-check] OK mesma carcaca entrega outro tipo de loot, com tags e nivel corretos
+[gather] butcher เริ่มเก็บ bone_leg_thick x1 จาก ankylo ที่ (146,19) — รอ 5.6 วิ · จองแล้ว 3/50
+[xp] butcher +2 raw · indicator=2 · total=6/4022263 · Esfolar [ALPHA XP x1]
+[gather] butcher จบเก็บครบเวลา · RanOut=False
+[fauna-check] OK ossos TCP recebem propriedades sorteadas no inventario e no pacote do cliente
+[touch-entry-v3] entity=cheat_2010_1 type=2010 seq=8
+[gather] ปฏิเสธคำขอเก็บที่ (146,19) gen='leather_raw_armored': Este cadaver nao esta mais disponivel.
+[fauna-check] OK id inexistente nao permite tratar carcaca como recurso natural
+[fauna-check] OK menu nao vaza nivel de outra consulta pelo cache
+[gather] butcher เริ่มเก็บ meat x2 จาก ankylo ที่ (146,19) — รอ 5.6 วิ · จองแล้ว 4/50
+[fauna-check] OK coleta reserva protecao do corpo
+[fauna-check] OK corpo nao desaparece nem renova loot durante coleta, mesmo apos cinco minutos
+[craft] butcher ส่งสูตรที่ปลดแล้ว 21 จาก 720 สูตร (ReplyOf=0)
+[xp] butcher +2 raw · indicator=2 · total=8/4022263 · Esfolar [ALPHA XP x1]
+[gather] butcher จบเก็บครบเวลา · RanOut=False
+[fauna-check] OK concluir coleta libera protecao sem renovar recursos
+[gather] butcher เริ่มเก็บ meat x1 จาก ankylo ที่ (146,19) — รอ 5.6 วิ · จองแล้ว 5/50
+[fauna-check] OK cancelar coleta libera corpo e devolve reserva, preservando loot ja coletado
+[fauna-check] OK corpo expirado nao oferece recursos
+[gather] ปฏิเสธคำขอเก็บที่ (146,19) gen='meat': Este animal nao possui um cadaver disponivel para coleta.
+[สัตว์] ซาก cheat_2010_1 หายไปแล้ว — เกิดใหม่ที่ [146,19]
+[fauna-check] OK dino reaparece vivo aos cinco minutos e nao oferece loot antes de nova morte
+[fauna-check] PASS 404 verificacoes

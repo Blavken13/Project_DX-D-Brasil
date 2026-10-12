@@ -41,6 +41,7 @@ public static class RegionCatalog
 
         /// <summary>ฝูงสัตว์ที่เกิดบนเกาะแบบนี้ · ชื่อกลุ่ม (land/beach/…) → รายการฝูง</summary>
         public Dictionary<string, List<HerdSpawn>> Herds = new(StringComparer.OrdinalIgnoreCase);
+        public List<RestoredAnimalEncounters.Encounter> RestoredEncounters = new();
 
         /// <summary>
         /// ไบโอมบนเกาะแบบนี้ให้ความเหนื่อยหมวดไหน — จาก <c>region_templates.json → biome_effects</c>
@@ -101,6 +102,7 @@ public static class RegionCatalog
     public static void Load(string assetsDir)
     {
         LoadTemplates(assetsDir);
+        RestoredAnimalEncounters.Load(assetsDir, _templates);
         LoadRegions();
     }
 

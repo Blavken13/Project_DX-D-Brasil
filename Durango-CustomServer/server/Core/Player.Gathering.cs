@@ -156,6 +156,8 @@ public partial class Player
     private sealed record PendingCollect(double DueAt, Action Complete, Action Cancel)
     {
         public double StartedAt { get; } = Gauge.CurrentTime;
+        public Collect? Request { get; init; }
+        public bool IsCarcass { get; init; }
     }
     private readonly List<PendingCollect> _pendingCollects = new();
     internal Func<double> GatheredPropertyRoll { get; set; } = System.Random.Shared.NextDouble;
@@ -272,6 +274,7 @@ public partial class Player
             RejectCollect(seq, "Personagem morto não pode coletar recursos.", msg);
             return;
         }
+        if (TryResumePendingCollect(msg, seq)) return;
         if (TryCollectGroundPackage(msg, seq)) return;
         // แปลงเพาะปลูกที่โตแล้วใช้ Collect ชุดเดียวกับของธรรมชาติ (ดู Player.Farm.cs)
         if (TryHandleFarmHarvest(msg, seq)) return;
@@ -479,6 +482,28 @@ public partial class Player
         ScheduleCollectFinish(collected, items, seq, gatherDuration, harvestKey, tile, entityId, isCarcass,
                               ranOut, msg.ToolItemId, spec.Id);
         OnContextChanged();
+    }
+
+    private bool TryResumePendingCollect(Collect request, uint seq)
+    {
+        if (_pendingCollects.Count == 0) return false;
+        var pending = _pendingCollects[0];
+        if (pending.Request is { } active &&
+            string.Equals(active.EntityId ?? "", request.EntityId ?? "", StringComparison.Ordinal) &&
+            (pending.IsCarcass || active.Tile.Equals(request.Tile)) &&
+            string.Equals(active.GeneratorId, request.GeneratorId, StringComparison.Ordinal) &&
+            string.Equals(active.ToolItemId ?? "", request.ToolItemId ?? "", StringComparison.Ordinal))
+        {
+            // A repeated request observes the same action. Its one-shot Timer reply
+            // must not reserve another resource, roll another bonus, or publish a
+            // second Collected. The original request owns completion/cancellation.
+            Send(new Messages.Timer { Duration = (float)Math.Max(0, pending.DueAt - Gauge.CurrentTime) }, seq);
+        }
+        else
+        {
+            RejectCollect(seq, "Aguarde a coleta atual terminar antes de iniciar outra.", request);
+        }
+        return true;
     }
 
     /// <summary>
@@ -694,7 +719,10 @@ public partial class Player
                 CompleteCollectAfterDelay(collected, items, seq, harvestKey, tile, entityId, isCarcass, ranOut, toolItemId);
             }
             finally { Release(); }
-        }, Cancel));
+        }, Cancel) {
+            Request = new Collect { EntityId = entityId, Tile = tile, GeneratorId = generatorId, ToolItemId = toolItemId },
+            IsCarcass = isCarcass
+        });
     }
 
     private void UpdatePendingCollects(double now)

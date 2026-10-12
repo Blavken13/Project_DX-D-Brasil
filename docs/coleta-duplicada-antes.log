@@ -1,0 +1,60 @@
+[ภาษา] โหลดคำแปล pt_BR 33399 ข้อความ
+[เควส] โหลดแคตตาล็อก 1386 แถว (Daily 66 · Once 1105 · เล่นได้ 379)
+[blueprint] merge blueprint×artifact: 560 รายการ
+[data] โหลด game data จาก Durango-CustomServer/server/data/assets เสร็จ:
+[data]   prototype_data               2419 รายการ
+[data]   constants                    1 รายการ
+[data]   entity_types/natural         711 รายการ
+[data]   entity_types/artifact        560 รายการ
+[data]   pet/pets_for_client          74 รายการ
+[data]   quests/epics_for_client      1 รายการ
+[data]   item/recipes                 720 รายการ
+[data]   emotions                     1 รายการ
+[data]   statistics/player            50 รายการ
+[data]   entity_types/players         4 รายการ
+[region] อ่าน region template 267 รายการ
+[สัตว์] โหลดชนิดสัตว์ 214 ชนิด
+[terrain] ⚠️ op60te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ op60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri15sv01: เติม tile_set/color_set = savanna
+[terrain] ri18tp01: เติม tile_set/color_set = tropical
+[terrain] ⚠️ ri20te_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri25tp01: เติม tile_set/color_set = tropical
+[terrain] ri30td01: เติม tile_set/color_set = tundra
+[terrain] ri35de: เติม tile_set/color_set = desert
+[terrain] ri35te: เติม tile_set/color_set = temperate
+[terrain] ri40tr: เติม tile_set/color_set = tropical
+[terrain] ri40tu_alpha: เติม tile_set/color_set = tundra
+[terrain] ⚠️ ri50de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ri55tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ri55tu: เติม tile_set/color_set = tundra
+[terrain] sn20snow: เติม tile_set/color_set = snowfields
+[terrain] ⚠️ ua60de_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ua60tr_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[terrain] ⚠️ ua60tu_alpha ไม่มี tile_set และเดาไม่ได้ (theme=-) — เกาะจะใช้โทนสีเริ่มต้น
+[region] สารบัญเกาะ 25 ลูก: op60te_alpha(lv60), op60tr_alpha(lv60), ra60sw(lv60), ri15sv01(lv15), ri18tp01(lv18), ri20te_alpha(lv20), ri25tp01(lv25), ri30td01(lv30), ri35de(lv35), ri35te(lv35), ri40tr(lv40), ri40tu_alpha(lv40), ri45sa(lv45), ri45sw_alpha(lv45), ri50de_alpha(lv50), ri50sn(lv50), ri55sw_alpha(lv55), ri55tr_alpha(lv55), ri55tu(lv55), sn20snow(lv20), ua60de_alpha(lv60), ua60sn_alpha(lv60), ua60tr_alpha(lv60), ua60tu_alpha(lv60), ua60vol(lv60)
+[terrain] ri35te: เติม tile_set/color_set = temperate
+[ecologia] ri35te: pesca total=361 mantida=361 filtrada=0
+[โต๊ะคราฟต์] โหลดแท็กของโต๊ะ 72 แบบ
+[world] วางจุดสำคัญของเกาะ 9 จุด (ท่าเรือ 1 · รูวาร์ป 5 · รอยแยก 2 · หลุมอุกกาบาต 1)
+[gather] ขุดคู่ collectible→generator จาก recipes.json ได้ 101 ตัว
+[flores] ri35te: restaurados 24 spots nos biomas nativos.
+[fauna] template=ri35teSub01 islandLv=35 nativeAnchors=43 total=40/40 species=6
+[skill] โหลดตารางสกิล: 275 bundle · 13 หมวด · 1321 รางวัล · 154 โมดิฟายเออร์ (40 ตัวผูกกับ Derived) · 8 อาชีพ · เลเวลสูงสุด 60 · สกิลอัตโนมัติ 71 โหนด · หมวดของที่ต้องปลดสกิล 41 หมวด
+[skill] normal ไม่รู้อาชีพ (เสื้อไม่ตรงตาราง) — ไม่แจกสกิลตั้งต้น
+[skill] normal ปลดสกิลอัตโนมัติ 38 โหนด (ไม่ใช้แต้ม)
+[ของขวัญ] normal รับของขวัญ 2 ชิ้น
+[clã] carregados 0 clãs de C:\Users\Ander\AppData\Local\Temp\Durango-gathering-duplicate-2905f77725f64e01a653004cc0caa970\clans.json
+[craft] โหลดสูตรคราฟต์ 720 รายการ (ทำของใหม่ได้จริง 720) จาก item/recipes.json
+[craft] normal ส่งสูตรที่ปลดแล้ว 21 จาก 720 สูตร (ReplyOf=0)
+[combat] โหลดท่าต่อสู้ 59 ท่า · tag→ท่า 10 กลุ่ม · ชนิดอาวุธ 248 แบบ
+[touch-entry-v3] entity= type=11070 seq=1
+[gathering-duplicate-check] OK normal: recurso permite coletas sequenciais
+[สี] โหลดตารางสีไอเทม 109 ชุด
+[gather] normal เริ่มเก็บ leaf_small x1 จาก tree_sandalwood ที่ (49,186) — รอ 10.1 วิ · จองแล้ว 1/15
+[gathering-duplicate-check] OK normal: primeira coleta reserva uma vez sem entrega antecipada
+[gather] normal เริ่มเก็บ leaf_small x1 จาก tree_sandalwood ที่ (49,186) — รอ 10.1 วิ · จองแล้ว 2/15
+[gathering-duplicate-check] FAIL System.InvalidOperationException: normal: repetir coleta com bolsa aberta conserva uma reserva e um temporizador (reservas=2, pendentes=2)
+   at DurangoServerNx.GatheringDuplicateCheck.Check(Boolean value, String label) in C:\code\ProjectDX\Project_DX-D-Brasil\Durango-CustomServer\server\GatheringDuplicateCheck.cs:line 22
+   at DurangoServerNx.GatheringDuplicateCheck.Scenario(String root, String mode) in C:\code\ProjectDX\Project_DX-D-Brasil\Durango-CustomServer\server\GatheringDuplicateCheck.cs:line 83
+   at DurangoServerNx.GatheringDuplicateCheck.Run(String dataDir) in C:\code\ProjectDX\Project_DX-D-Brasil\Durango-CustomServer\server\GatheringDuplicateCheck.cs:line 36

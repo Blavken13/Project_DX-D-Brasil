@@ -81,6 +81,7 @@ public class AnimalManager
         public string EntityId;
         public ushort EntityType;
         public int CombatLevel;
+        public bool IsRestoredEncounter;
         public float LifeMax;
         public float Life;
         public float Attack;
@@ -766,14 +767,16 @@ public class AnimalManager
                 $"total={compsoPlaced + raptorPlaced}/{wantedTotal} candidatos={candidates.Count}");
             return;
         }
-        if (terrain == null || template == null || template.Herds.Count == 0) return;
+        if (terrain == null || template == null || template.Herds.Count == 0 && template.RestoredEncounters.Count == 0) return;
         if (template.Role is Shared.Region.Role.Personal or Shared.Region.Role.Tutorial) return;
 
         int resolvedWildLevel = Math.Max(1, template.Level);
         int target = AnimalTuning.TargetAnimalsPerRegion;
+        var encounters = template.RestoredEncounters;
+        var encounterTypes = encounters.Select(e => e.EntityType).ToHashSet();
         var definitions = template.Herds.Values.SelectMany(group => group)
-            .Where(spawn => AnimalTypes.Get(spawn.EntityType) != null).ToList();
-        if (definitions.Count == 0) return;
+            .Where(spawn => AnimalTypes.Get(spawn.EntityType) != null && !encounterTypes.Contains(spawn.EntityType)).ToList();
+        if (definitions.Count == 0 && encounters.Count == 0) return;
 
         // Validate native anchors too: converted maps can have herd points in water
         // or outside their new terrain bounds. Never stack extras at old anchors.
@@ -823,17 +826,19 @@ public class AnimalManager
         // Nth definition can otherwise omit rare species on the level-60 maps.
         var species = definitions.GroupBy(s => s.EntityType).Select(g => g.ToList()).ToList();
         var quotas = new int[species.Count];
-        var plan = new List<RegionCatalog.HerdSpawn>();
+        var plan = new List<(RegionCatalog.HerdSpawn Spawn, RestoredAnimalEncounters.Encounter Encounter)>();
+        foreach (var encounter in encounters.Take(positions.Count))
+            plan.Add((new RegionCatalog.HerdSpawn(encounter.EntityType, resolvedWildLevel), encounter));
         for (int i = 0; i < species.Count && plan.Count < positions.Count; i++)
         {
-            plan.Add(species[i][0]);
+            plan.Add((species[i][0], null));
             quotas[i]++;
         }
-        while (plan.Count < positions.Count)
+        while (species.Count > 0 && plan.Count < positions.Count)
         {
             int next = Enumerable.Range(0, species.Count).OrderByDescending(i =>
-                positions.Count * (double)species[i].Count / definitions.Count - quotas[i]).First();
-            plan.Add(species[next][quotas[next] % species[next].Count]);
+                (positions.Count - encounters.Count) * (double)species[i].Count / definitions.Count - quotas[i]).First();
+            plan.Add((species[next][quotas[next] % species[next].Count], null));
             quotas[next]++;
         }
         for (int i = plan.Count - 1; i > 0; i--)
@@ -841,11 +846,13 @@ public class AnimalManager
             int j = _rng.Next(i + 1);
             (plan[i], plan[j]) = (plan[j], plan[i]);
         }
-        for (int i = 0; i < positions.Count; i++)
+        for (int i = 0; i < plan.Count; i++)
         {
-            var spawn = plan[i];
+            var (spawn, encounter) = plan[i];
             Animal animal = Create($"herd_population_{i}", spawn, positions[i], resolvedWildLevel);
             if (animal == null) continue;
+            animal.IsRestoredEncounter = encounter != null;
+            if (encounter?.LifeMax is { } lifeMax) animal.Life = animal.LifeMax = lifeMax;
             _animals.Add(animal);
             _byId[animal.EntityId] = animal;
         }
