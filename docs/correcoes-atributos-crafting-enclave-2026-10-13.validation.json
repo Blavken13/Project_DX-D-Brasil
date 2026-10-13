@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-13",
+  "environment": "WSL Ubuntu-24.04, .NET 9",
+  "artifact": "Durango-CustomServer/server/bin/gameplay-fixes/DurangoServer.dll",
+  "sha256": "010ad99a110896d0eb73a6b1eec6b9415dc9e9580af89605c3259769f1827649",
+  "build": "PASS",
+  "gitDiffCheck": "PASS",
+  "published": false,
+  "tests": [
+    {
+      "option": "--attributes-check",
+      "result": "PASS",
+      "checks": 29
+    },
+    {
+      "option": "--gameplay-bugs-check",
+      "result": "PASS",
+      "coverage": "catálogo de 720 receitas, processamento, bancadas e protocolo"
+    },
+    {
+      "option": "--estate-return-check",
+      "result": "PASS",
+      "checks": 96
+    },
+    {
+      "option": "--progression-check",
+      "result": "PASS",
+      "checks": 148
+    },
+    {
+      "option": "--combat-bags-check",
+      "result": "PASS",
+      "checks": 2415
+    },
+    {
+      "option": "--volcanic-food-check",
+      "result": "PASS",
+      "checks": 73
+    },
+    {
+      "option": "--survival-continuity-check",
+      "result": "PASS",
+      "checks": 14
+    }
+  ]
+}

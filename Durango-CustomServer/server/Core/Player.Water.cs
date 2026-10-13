@@ -16,8 +16,10 @@ public partial class Player
     private static int WaterCapacity(Item item)
     {
         if (item.Tags?.Any(t => t.Id == "container") != true || item.Durability?.Get() <= 0) return 0;
-        var container = ItemPerformance.Of(item.Prototype, item.Level).FirstOrDefault(p => p.Id == "container");
-        float capacity = container.Nums?.GetValueOrDefault("capacity") ?? 0f;
+        var container = item.Performance?.FirstOrDefault(p => p.Id == "container") ??
+            ItemPerformance.Of(item.Prototype, item.Level).FirstOrDefault(p => p.Id == "container");
+        float capacity = container.Nums?.GetValueOrDefault("capacity") ??
+            ItemPerformance.Of(item.Prototype, item.Level).FirstOrDefault(p => p.Id == "container").Nums?.GetValueOrDefault("capacity") ?? 0f;
         return float.IsFinite(capacity) ? (int)Math.Clamp(Math.Floor(capacity), 0, 1000) : 0;
     }
 

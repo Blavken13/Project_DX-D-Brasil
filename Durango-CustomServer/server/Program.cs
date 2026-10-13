@@ -132,6 +132,10 @@ internal static class Program
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
                     return SkillPointsCheck.Run(dataDir);
+                case "--attributes-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return GameplayAttributesCheck.Run(dataDir);
                 case "--volcanic-food-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];

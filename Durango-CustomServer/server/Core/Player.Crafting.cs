@@ -130,6 +130,7 @@ public class CraftRecipeData
 {
     public CraftType type;                                  // 0=Craft 1=Modify 2=Reform (Shared.Item.CraftType)
     public Gettext name;
+    public string icon;
     public string category;
     public string subcategory;
     public string prototype_id;                             // ของที่ได้ (เฉพาะ type=Craft)
@@ -150,6 +151,7 @@ public class CraftRecipeData
     public string required_recipe;
 
     // ── type=Modify (ทำอาหาร) ── อ่านตรงจาก recipes.json ────────────────────────────
+    public Dictionary<string, string> replace_color;
     public Dictionary<string, string> add_color;   // ช่องสี "0"/"1"/"2" → hex ที่จะทาทับ (browning)
     public float add_color_rate;                    // อัตราผสมสี (0.1 = เข้มขึ้น 10%)
     public bool deduct_modifiable_count;            // จริง = หัก ModifiableCount ของ base ไป 1
@@ -916,24 +918,13 @@ public partial class Player
             Shared.Ability.Derived.Furnishing or Shared.Ability.Derived.Construction => (int)Shared.Skill.Category.Constructing,
             Shared.Ability.Derived.Cook => (int)Shared.Skill.Category.Cooking,
             Shared.Ability.Derived.Farming => (int)Shared.Skill.Category.Farming, _ => -1 };
-        float sum = (category < 0 ? 0 : CategoryState(category).Level) + ClanAbilityBonus(ability);
+        float sum = (category < 0 ? 0 : CategoryState(category).Level);
         foreach (var (id, value) in CollectModifiers())
         {
             if (SkillDataStore.DerivedOfModifier.TryGetValue(id, out Shared.Ability.Derived d) && d == ability)
             {
                 sum += value;
             }
-        }
-        foreach (string itemId in _context.EquippedItems.Values.Distinct())
-        {
-            int index = _context.InventoryItems.FindIndex(i => i.Id == itemId);
-            if (index < 0) continue;
-            Item equipped = _context.InventoryItems[index];
-            foreach (var block in equipped.Performance ?? Array.Empty<Performance>())
-                if (block.Id == "modifiers" && block.Nums != null)
-                    foreach (var bonus in block.Nums)
-                        if (SkillDataStore.DerivedOfModifier.TryGetValue(bonus.Key, out var derived) && derived == ability)
-                            sum += bonus.Value;
         }
         return sum;
     }
@@ -949,7 +940,15 @@ public partial class Player
         for (int i = 0; i < count; i++)
         {
             Item? item = Cheats.MakeItem(prototypeId, level);   // ตัวสร้างไอเทมชุดเดียวกับที่ cheat "it" ใช้
-            if (item.HasValue) list.Add(item.Value);
+            if (item.HasValue)
+            {
+                var product = item.Value;
+                var slots = (sent ?? new()).ToDictionary(p => p.Key,
+                    p => materials.Where(m => (p.Value ?? Array.Empty<string>()).Contains(m.Id)).ToArray());
+                ItemCraftInheritance.Apply(ref product, recipe, slots);
+                ApplyAddColor(ref product, recipe);
+                list.Add(product);
+            }
         }
         return list.ToArray();
     }
@@ -1270,11 +1269,8 @@ public partial class Player
             return;
         }
         int level = ProductLevel(recipe, picked);
-        var tags = new Dictionary<string, int>();
-        if (prototype.Tags != null)
-        {
-            foreach (var tag in prototype.Tags) tags[tag.Key] = tag.Key == "pocket" ? BagPocketLevels.Of(prototypeId, level) : level;
-        }
+        var preview = MakeProducts(recipe, msg.Materials, picked, level).FirstOrDefault();
+        var tags = (preview.Tags ?? Array.Empty<Tag>()).ToDictionary(t => t.Id, t => t.Level);
         Send(new CraftEstimationInfo
         {
             CraftLevel = level,

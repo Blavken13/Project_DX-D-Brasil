@@ -138,14 +138,13 @@ public partial class Player
     /// (เกณฑ์เดียวกับที่ Player.Hunting ใช้เลือกหมวดตอนแจก exp ⇒ เรียนหมวดไหน หมวดนั้นมีผล)
     /// </summary>
     public float OutgoingDamageScale() =>
-        CurrentAttackType() is Shared.Battle.AttackType.Arrow or Shared.Battle.AttackType.Stone
-            ? RangedDamageScale()
-            : MeleeDamageScale();
+        (CurrentAttackType() is Shared.Battle.AttackType.Arrow or Shared.Battle.AttackType.Stone
+            ? RangedDamageScale() : MeleeDamageScale()) * Math.Max(.1f, 1 + CollectModifiers().GetValueOrDefault("damage_bonus"));
 
     /// <summary>ดาเมจที่รับ × ค่านี้</summary>
     public float DamageTakenScale() =>
         Math.Max(SkillEffectTuning.MinCostScale,
-                 1f - SkillRatio(Shared.Skill.Category.Defense) * SkillEffectTuning.DefenseReduce);
+                 1f - SkillRatio(Shared.Skill.Category.Defense) * SkillEffectTuning.DefenseReduce) * ModifierCostScale("damage_reduction");
 
     /// <summary>
     /// ค่าพลังงาน/ความเหนื่อยที่เสีย × ค่านี้
@@ -155,7 +154,7 @@ public partial class Player
     /// </summary>
     public float EnergyCostScale() =>
         Math.Max(SkillEffectTuning.MinCostScale,
-                 1f - SkillRatio(Shared.Skill.Category.Survival) * SkillEffectTuning.EnergySave);
+                 1f - SkillRatio(Shared.Skill.Category.Survival) * SkillEffectTuning.EnergySave) * (_survival?.DecreaseScale("energy") ?? 1);
 
     /// <summary>เก็บของรอบนี้ได้ของเพิ่มอีกชิ้นไหม</summary>
     public bool RollGatherBonus() =>
@@ -256,31 +255,26 @@ public partial class Player
         if (_survival == null) return;
         double now = Gauge.CurrentTime;
 
-        float endurance = BaseAbilityValue(Shared.Ability.Basic.Endurance) - SkillTuning.BasicAbilityBase;
-        float will = BaseAbilityValue(Shared.Ability.Basic.Will) - SkillTuning.BasicAbilityBase;
+        var modifiers = CollectModifiers();
+        var basics = Enum.GetValues<Shared.Ability.Basic>().Where(b => b != Shared.Ability.Basic.Invalid)
+            .ToDictionary(b => b, BaseAbilityValue);
+        ApplyModifiers(modifiers, basics, new Dictionary<Shared.Ability.Derived, float>());
+        float endurance = basics[Shared.Ability.Basic.Endurance] - SkillTuning.BasicAbilityBase;
+        float will = basics[Shared.Ability.Basic.Will] - SkillTuning.BasicAbilityBase;
         int levels = Math.Max(0, _skillLevel - 1);
-
-        bool changed = _survival.SetMaxBonus(SurvivalState.KeyHealth,
-                           levels * LifePerLevel + Math.Max(0f, endurance) * LifePerEndurance + ClanModifier("max_health_plus")
-                           + (SelectedGuideTitle()?.Modifiers?.GetValueOrDefault("max_health_plus") ?? 0), now);
-        changed |= _survival.SetMaxBonus(SurvivalState.KeyEnergy,
-                       levels * EnergyPerLevel + Math.Max(0f, will) * EnergyPerWill
-                       + (SelectedGuideTitle()?.Modifiers?.GetValueOrDefault("max_energy_plus") ?? 0), now);
-
-        // ⚠️ Rebuild เปลี่ยนแค่หลอดฝั่งเซิร์ฟ — ต้อง broadcast ด้วย ไม่งั้นบนจอยังเป็นเพดานเก่า
-        // จนกว่าจะมีอะไรอื่นไปสั่ง flush (client วาดจากชุด Gauge ที่ได้รับล่าสุดล้วน ๆ)
+        var maxima = new Dictionary<Shared.Ability.Derived, float>();
+        SurvivalState.FillDeriveds(maxima);
+        float healthBase = maxima.GetValueOrDefault(Shared.Ability.Derived.MaxHealth);
+        float energyBase = maxima.GetValueOrDefault(Shared.Ability.Derived.MaxEnergy);
+        maxima[Shared.Ability.Derived.MaxHealth] = healthBase + levels * LifePerLevel + Math.Max(0, endurance) * LifePerEndurance;
+        maxima[Shared.Ability.Derived.MaxEnergy] = energyBase + levels * EnergyPerLevel + Math.Max(0, will) * EnergyPerWill;
+        ApplyModifiers(modifiers, new(), maxima);
+        bool changed = _survival.SetMaxBonus(SurvivalState.KeyHealth, maxima[Shared.Ability.Derived.MaxHealth] - healthBase, now);
+        changed |= _survival.SetMaxBonus(SurvivalState.KeyEnergy, maxima[Shared.Ability.Derived.MaxEnergy] - energyBase, now);
+        changed |= SyncModifierRecovery(modifiers);
         if (changed) FlushSurvival();
     }
 
-    /// <summary>
-    /// เอาเพดานหลอดที่ขยายแล้วไปทับค่าใน Statistics ให้ตัวเลขบนจอตรงกับหลอดจริง
-    ///
-    /// ⚠️ SurvivalState.FillDeriveds อ่าน max จาก players.json ตรง ๆ ⇒ ไม่รู้จักส่วนที่บวกเพิ่ม
-    /// ถ้าไม่ทับ หน้าจอจะโชว์เลือดสูงสุด 300 ตลอดทั้งที่หลอดจริงขยายไปแล้ว
-    ///
-    /// max_effected_by ในไฟล์จริง: energy→3 (MaxEnergy) · health→0 (MaxHealth)
-    /// ส่วน LifeMax(50) ไม่ได้อยู่ในตารางนั้น ต้องตั้งเอง เพราะ health คือเพดานของ life
-    /// </summary>
     private void ApplySurvivalMaxToDeriveds(IDictionary<Shared.Ability.Derived, float> deriveds)
     {
         if (deriveds == null || _survival == null) return;

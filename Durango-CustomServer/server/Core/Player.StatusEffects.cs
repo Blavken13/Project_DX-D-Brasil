@@ -16,6 +16,7 @@ public partial class Player
         public double Since;
         public double Until; // 0 = ไม่มีอายุ (เช่น rest ระหว่างนั่ง / inside ในบ้าน)
         public string NameGettext;
+        public Dictionary<string, float> Modifiers;
     }
 
     private const string InsideStatusEffectId = "inside";
@@ -116,10 +117,11 @@ public partial class Player
                 string.Equals(se.Id, "lava", StringComparison.OrdinalIgnoreCase)) continue;
 
             StatusEffectCatalog.Template t = StatusEffectCatalog.Get(se.Id, se.Level);
-            if (t?.Type1Velocities == null || t.Type1Velocities.Count == 0) continue;
+            var resolved = t?.GetType1Velocities(se.Level);
+            if (resolved == null || resolved.Count == 0) continue;
             // แปลงชื่อหลอดจาก JSON → คีย์ SurvivalState
             var velocities = new Dictionary<string, float>();
-            foreach (KeyValuePair<string, float> kv in t.Type1Velocities)
+            foreach (KeyValuePair<string, float> kv in resolved)
             {
                 string key = kv.Key switch
                 {

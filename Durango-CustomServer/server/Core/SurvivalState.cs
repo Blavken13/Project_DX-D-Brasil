@@ -341,6 +341,17 @@ public sealed class SurvivalState
     }
 
     /// <summary>ชื่อแหล่ง momentum ที่กำลังมีอยู่ — ใช้เคลียร์แหล่งของ StatusEffect</summary>
+    private Dictionary<string, float> _increaseAmplifiers = new(), _decreaseAmplifiers = new();
+
+    public bool SetVelocityAmplifiers(Dictionary<string, float> increase, Dictionary<string, float> decrease)
+    {
+        if (SameVelocities(_increaseAmplifiers, increase) && SameVelocities(_decreaseAmplifiers, decrease)) return false;
+        _increaseAmplifiers = new(increase); _decreaseAmplifiers = new(decrease); _dirty = true;
+        return true;
+    }
+
+    public float DecreaseScale(string key) => Math.Clamp(1 + _decreaseAmplifiers.GetValueOrDefault(key), 0, 10);
+
     public IEnumerable<string> MomentumSources() => _momenta.Keys;
 
     // ── การเปลี่ยนค่าแบบไม่ต่อเนื่อง (กิน/โดนตี/ชุบชีวิต) ─────────────────────────────
@@ -557,6 +568,7 @@ public sealed class SurvivalState
         float cur = _values.TryGetValue(key, out float v) ? v : def.Value ?? maxNow;
         // ไม่มีใครต่ออยู่ = เส้นแบน ค่าค้างไว้เฉย ๆ (ยังไม่ทำ offline progression — ดู _live)
         float velocity = _live ? def.Velocity + MomentumOf(key) : 0f;
+        velocity *= velocity < 0 ? DecreaseScale(key) : Math.Clamp(1 + _increaseAmplifiers.GetValueOrDefault(key), 0, 10);
 
         // health/energy podem atingir o piso ou teto antes do fim do horizonte.
         // Usar apenas seus extremos dilui a velocidade pelos 600s e deixa life

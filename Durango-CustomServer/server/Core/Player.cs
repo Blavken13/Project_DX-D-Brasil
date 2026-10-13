@@ -713,6 +713,7 @@ public partial class Player
     {
         // รวม toggle (AFK) + timed (อาหาร/อากาศ/พัก) เป็นลิสต์เดียว
         // client แทนที่ทั้งก้อนทุกครั้ง — ห้ามส่งแค่ส่วนที่เปลี่ยน
+        SendFullStatistics();
         var list = new List<StatusEffect>();
         foreach (KeyValuePair<string, double> effect in _toggledStatusEffects)
         {
@@ -742,7 +743,8 @@ public partial class Player
                 Stacked = 0,
                 DurationHidden = effect.Until <= 0,
                 NameGettext = effect.NameGettext,
-                Effects = StatusEffectCatalog.PackDetails(effect.Id, effect.Level)
+                Effects = StatusEffectCatalog.PackDetails(effect.Id, effect.Level).Concat(
+                    (effect.Modifiers ?? new()).Select(m => new EffectDetail { Type = Shared.StatusEffect.EffectType.Modifier, Key = m.Key, Value = m.Value })).ToArray()
             };
             if (idx >= 0) list[idx] = packed;
             else list.Add(packed);
@@ -2307,8 +2309,8 @@ public partial class Player
         // ใช้เกณฑ์ FatigueCaution/FatigueDanger ที่ส่งให้ client อยู่แล้ว
         // ต่ำกว่า caution = ปกติ · ระหว่าง caution→danger = ค่อย ๆ ช้า · ถึง danger = ช้าสุด
         float fatigueMul = FatigueMoveMultiplier();
-        int normal = Math.Max(1, (int)Math.Round(DefaultNormalSpeed * fatigueMul));
-        int battleSpeed = Math.Max(1, (int)Math.Round(battle * fatigueMul));
+        int normal = Math.Max(1, (int)Math.Round(DefaultNormalSpeed * fatigueMul * Math.Clamp(1 + _runtimeModifiers.GetValueOrDefault("normal_speed_bonus"), .1f, 10f)));
+        int battleSpeed = Math.Max(1, (int)Math.Round(battle * fatigueMul * Math.Clamp(1 + _runtimeModifiers.GetValueOrDefault("battle_move_speed_plus"), .1f, 10f)));
 
         // ไม่ยิงซ้ำถ้าค่าไม่เปลี่ยน — กันสแปมทุกเฟรมตอน Process
         if (_lastSentNormalSpeed == normal && _lastSentBattleSpeed == battleSpeed)

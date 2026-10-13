@@ -575,7 +575,10 @@ internal static class SkillDataStore
                     break;
                 }
             }
-            Derived derived = baseName.ToCamelCase().ToEnum(Derived.Invalid);
+            Derived derived = id switch { "life_recovery" => Derived.LifeVelocity,
+                "stamina_recovery" => Derived.StaminaVelocity, "carry_capacity" => Derived.InventoryCapacity,
+                "max_fatigue_plus" => Derived.FatigueMax,
+                _ => baseName.ToCamelCase().ToEnum(Derived.Invalid) };
             if (derived != Derived.Invalid) DerivedOfModifier[id] = derived;
         }
     }
@@ -1723,6 +1726,8 @@ public partial class Player
         // ⚠️ สลับลำดับไม่ได้ — FillDeriveds อ่านจาก players.json ตรง ๆ ไม่รู้จักส่วนที่บวกเพิ่ม
         //    (ตัวเลขที่ client โชว์จึงจะตรงกับหลอดจริงก็ต่อเมื่อขยายเสร็จก่อน)
         RefreshSurvivalMax();
+        deriveds[Derived.LifeVelocity] = Yaml.PlayerTypes.Player.Survival["life"].Velocity;
+        deriveds[Derived.StaminaVelocity] = Yaml.PlayerTypes.Player.Survival["stamina"].Velocity;
 
         // ⚠️ ต้องเรียกหลังตั้งค่าฐาน และห้ามไปเขียนทับหลังจากนี้ — ตัวนี้เติมค่าสูงสุดของหลอด
         //    (LifeMax/MaxEnergy/FatigueMax/MaxHealth) + เกณฑ์ FatigueCaution/FatigueDanger
@@ -1732,6 +1737,7 @@ public partial class Player
 
         // 2) โมดิฟายเออร์จากสกิลที่เรียนแล้ว — สกิล → rewards.json → modifiers
         Dictionary<string, float> modifiers = CollectModifiers();
+        _runtimeModifiers = modifiers;
 
         // 3) พลังพื้นฐาน + เอาโมดิฟายเออร์ไปบวก/คูณ
         var basics = new Dictionary<Basic, int>();
@@ -1797,6 +1803,7 @@ public partial class Player
             }
         }
         foreach (var (id, value) in SelectedGuideTitle()?.Modifiers ?? new()) Accumulate(result, id, value);
+        CollectRuntimeModifiers(result);
         return result;
     }
 
@@ -1829,7 +1836,8 @@ public partial class Player
                                        Dictionary<Basic, float> basics,
                                        Dictionary<Derived, float> deriveds)
     {
-        foreach (var (id, value) in modifiers)
+        foreach (var (id, value) in modifiers.OrderBy(m => SkillDataStore.Modifiers.GetValueOrDefault(m.Key)?.Operation == "rate" ||
+            SkillDataStore.Modifiers.GetValueOrDefault(m.Key)?.IncreaseType == (int)IncreaseType.Ratio ? 1 : 0))
         {
             SkillModifierJson def = SkillDataStore.Modifiers.GetValueOrDefault(id);
             if (def == null) continue;

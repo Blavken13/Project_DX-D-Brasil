@@ -442,6 +442,7 @@ public partial class Player
 
         if (TryUseSkillXpCoupon(item, idx, seq)) return;
 
+        ItemCraftModifications.Recalculate(ref item);
         FoodTable.Effect food = FoodTable.Get(item);
         if (food == null)
         {
@@ -464,21 +465,30 @@ public partial class Player
         // ค่าบวก = ฟื้น · fatigue ในไฟล์เป็นค่าลบอยู่แล้ว (เช่น fatigue_drug = "-150") จึงบวกตรง ๆ
         // SurvivalState.Add จะ clamp ให้อยู่ในช่วง min..max ของหลอดเอง (MakeLine)
         bool touched = false;
-        touched |= _survival.Add(SurvivalState.KeyLife, food.Life);
-        touched |= _survival.Add(SurvivalState.KeyHealth, food.Health);
+        touched |= _survival.Add(SurvivalState.KeyLife, food.Life +
+            _survival.MaxOf(SurvivalState.KeyHealth, Gauge.CurrentTime) * food.LifeRatio);
+        touched |= _survival.Add(SurvivalState.KeyHealth, food.Health +
+            _survival.MaxOf(SurvivalState.KeyHealth, Gauge.CurrentTime) * food.HealthRatio);
         touched |= _survival.Add(SurvivalState.KeyFatigue, food.Fatigue);
         // energy_potential = พลังงานที่อาหารชิ้นนี้ให้ได้ทั้งหมด
-        // ⚠️ **ที่เป็นของเราคือการให้ทันทีทั้งก้อน** — ไฟล์จริงมี energy_expression /
-        // energy_per_sec / digestivetime ไว้ทยอยปล่อยระหว่างย่อย แต่ความหมายของสามตัวนี้
-        // ยืนยันจากซอร์สเกมไม่ได้ (client ไม่ได้อ่านเลย เป็นงานของเซิร์ฟแท้) ⇒ ไม่เดาสูตร
-        touched |= _survival.Add(SurvivalState.KeyEnergy, food.EnergyPotential);
+        // Recovery is immediate: expressed nutrition plus any maximum-based recovery.
+        touched |= _survival.Add(SurvivalState.KeyEnergy, food.EnergyPotential * food.EnergyExpression +
+            _survival.MaxOf(SurvivalState.KeyEnergy, Gauge.CurrentTime) * food.EnergyRatio);
         if (touched) FlushSurvival();
 
+        var foodPerformance = item.Performance?.FirstOrDefault(p => p.Id == "food");
+        bool statusRemoved = !string.IsNullOrEmpty(foodPerformance?.Strs?.GetValueOrDefault("effect_off")) &&
+            ClearTimedStatusEffect(foodPerformance.Value.Strs["effect_off"]);
+        if (item.Tags?.Any(t => t.Id == "remove_modifier") == true) statusRemoved |= ClearTimedStatusEffect("food_ability");
+        var foodModifiers = (foodPerformance?.Nums ?? new()).Where(m => SkillDataStore.Modifiers.ContainsKey(m.Key) && m.Value != 0)
+            .ToDictionary(m => m.Key, m => m.Value);
+        if (foodModifiers.Count > 0 && food.ModifierEffectTime > 0 && ApplyTimedStatusEffect("food_ability", 1, food.ModifierEffectTime))
+            _timedStatusEffects["food_ability"].Modifiers = foodModifiers;
         if (!string.IsNullOrEmpty(food.EffectOn))
         {
             ApplyTimedStatusEffect(food.EffectOn, food.EffectOnLevel, food.ModifierEffectTime);
-            SendStatusEffects();
         }
+        if (statusRemoved || foodModifiers.Count > 0 || !string.IsNullOrEmpty(food.EffectOn)) SendStatusEffects();
 
         _context.InventoryItems.RemoveAt(idx);
         _lockedItemIds.Remove(item.Id);
@@ -1484,6 +1494,8 @@ public partial class Player
             public float Health;
             public float Fatigue;
             public float EnergyPotential;
+            public float EnergyExpression = 1;
+            public float LifeRatio, HealthRatio, EnergyRatio;
             public string EatMotion;
             /// <summary>วินาทีของท่ากินจาก performance.json → digestivetime</summary>
             public float DigestiveTime;
@@ -1525,6 +1537,10 @@ public partial class Player
             food.Health = Value("health", food.Health);
             food.Fatigue = Value("fatigue", food.Fatigue);
             food.EnergyPotential = Value("energy_potential", food.EnergyPotential);
+            food.EnergyExpression = Math.Max(0, Value("energy_expression", 1));
+            food.LifeRatio = Value("life_ratio", 0);
+            food.HealthRatio = Value("health_ratio", 0);
+            food.EnergyRatio = Value("energy_ratio", 0);
             food.DigestiveTime = Math.Max(0.1f, Value("digestivetime", food.DigestiveTime));
             food.EffectOnLevel = Math.Max(1, (int)Value("effect_on_level", food.EffectOnLevel));
             food.ModifierEffectTime = Value("modifier_effect_time", (float)(food.ModifierEffectTime ?? 300));

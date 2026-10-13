@@ -327,16 +327,21 @@ internal static class WorkbenchCraftCheck
                 Check(result.ModifiableCount == baseItem.ModifiableCount - 1, id + " desconta um uso de processamento");
             if (recipe.category == "cook")
             {
-                float rawEnergy = baseItem.Performance.Single(p => p.Id == "food").Nums["energy_potential"];
-                float cookedEnergy = result.Performance.Single(p => p.Id == "food").Nums["energy_potential"];
+                float Nutrition(Item food)
+                {
+                    var values = food.Performance.Single(p => p.Id == "food").Nums;
+                    return values["energy_potential"] * values.GetValueOrDefault("energy_expression", 1);
+                }
+                float rawEnergy = Nutrition(baseItem);
+                float cookedEnergy = Nutrition(result);
                 Check(cookedEnergy > rawEnergy && result.Tags.All(t => t.Id != "raw_food"),
                     id + " melhora nutricao e remove atributo cru");
                 var persisted = Json.Read<Item>(Json.Write(result));
-                Check(persisted.Performance.Single(p => p.Id == "food").Nums["energy_potential"] == cookedEnergy,
+                Check(Nutrition(persisted) == cookedEnergy,
                     id + " conserva nutricao preparada apos salvar");
                 Item repeated = result;
                 ItemCraftModifications.Apply(ref repeated, id, recipe, inputs, null, out _);
-                Check(repeated.Performance.Single(p => p.Id == "food").Nums["energy_potential"] == cookedEnergy,
+                Check(Nutrition(repeated) == cookedEnergy,
                     id + " nao acumula bonus ao recalcular o mesmo preparo");
                 var survival = (SurvivalState)typeof(Player).GetField("_survival", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(link.Player);
                 // Leave enough headroom: a capped gauge could conceal consumption

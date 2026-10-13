@@ -81,7 +81,7 @@ internal static class CraftEquipmentLevelCheck
             Call(player, "UpdatePendingCrafts", Gauge.CurrentTime + timer.Duration + 1);
             link.PumpUntil(() => link.Messages.OfType<Crafted>().Count() > replies);
             var result = link.Messages.OfType<Crafted>().Last();
-            check(result.Items.Length > 0 && result.Items.All(i => i.Level == expected && i.Tags.All(t => t.Level == expected)) &&
+            check(result.Items.Length > 0 && result.Items.All(i => i.Level == expected && i.Tags.Where(t => !i.TagModifications.Any(m => m.Id == t.Id)).All(t => t.Level == expected)) &&
                 result.Result == (great ? Result.GreatSuccess : Result.Success), id + $": produto TCP nível {expected}, sem piso/teto antigo");
             check(picked.All(i => context.InventoryItems.All(p => p.Id != i.Id)) && result.Items.All(i => context.InventoryItems.Any(p => p.Id == i.Id)),
                 id + ": consome materiais e entrega o produto anunciado");

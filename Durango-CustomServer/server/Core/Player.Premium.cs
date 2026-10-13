@@ -8,7 +8,16 @@ public partial class Player
 {
     public static int InventoryCapacity(PlayerContext context) => (int)Math.Min(int.MaxValue,
         (long)InventoryMaxSize + (context?.Premium?.InventoryBonus(context.EntityId) ?? 0) + EquipmentInventoryBonus(context));
-    public int CurrentInventoryCapacity => InventoryCapacity(_context);
+    public int CurrentInventoryCapacity
+    {
+        get
+        {
+            float equippedCarry = _context.EquippedItems.Values.Distinct().Sum(id => EquipmentStats.Value(
+                _context.InventoryItems.FirstOrDefault(i => i.Id == id), "modifiers", "carry_capacity"));
+            float abilityCarry = _runtimeModifiers.GetValueOrDefault("carry_capacity") - equippedCarry;
+            return (int)Math.Clamp((long)InventoryCapacity(_context) + (long)Math.Floor(abilityCarry), 1, int.MaxValue);
+        }
+    }
     private bool PremiumActive => _context.Premium?.IsActive(EntityId) == true;
     private string _premiumSignature;
     private double _premiumDailyCheckAt;

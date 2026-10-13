@@ -67,7 +67,8 @@ internal static class EstateReturnCheck
     {
         using var link = new EconomyProtocolCheck.Link(context, world, null, true);
         if (_survivalBeforeTravel.TryGetValue(context.EntityId, out var before))
-            Check(SurvivalContinuityCheck.Matches(context, before), "entrada no dominio preserva as barras: " + context.EntityId);
+            Check(SurvivalContinuityCheck.Matches(new PlayerContext { AppearPlayer = link.Messages.OfType<AppearPlayer>().First() }, before),
+                "primeiro pacote de entrada no domínio preserva as barras: " + context.EntityId);
         link.PumpUntil(() => link.Messages.OfType<Inventory>().Any());
         Check(link.Messages.OfType<Inventory>().Last().InventoryInfos.LockedItemIds.ToHashSet()
             .SetEquals(context.LockedItemIds), "inventario inicial restaura bloqueios na ilha de destino");
@@ -185,6 +186,30 @@ internal static class EstateReturnCheck
                 tamed.TryEstateArrivalTile(firstId, out Point2 shrunk) && World.CellFromTile(shrunk).Equals(neighbor),
                 "dominio reduzido usa um lote que continua pertencendo ao jogador");
 
+            ClanStore.EnsureLoaded(first.Path);
+            Check(ClanStore.TryCreate(first, "Enclave tester", out var clan, out _), "clã criado em save temporário");
+            ClanStore.SyncContext(first);
+            Point2 clanCell = candidateCells.First(c => !tamed.TryGetEstateIdAtCell(c, out _));
+            string clanEstate = tamed.DeclareEstate(clan.Id, OwnerType.ClanEstate, clanCell, WorldRegistry.DefaultSharedTamedRegionId).Value.EstateId;
+            first.RegionId = huntId;
+            using (var visit = new EconomyProtocolCheck.Link(first, hunt, null, true))
+            {
+                _survivalBeforeTravel[first.EntityId] = SurvivalContinuityCheck.Prepare(visit.Player, first);
+                visit.Request<VisitEstate, Messages.Timer>(new VisitEstate { OwnerType = OwnerType.ClanEstate,
+                    OwnerId = clan.Id, RegionId = WorldRegistry.DefaultSharedTamedRegionId });
+                visit.PumpUntil(() => visit.Messages.OfType<Emigrated>().Any());
+                Check(first.PendingEstateArrival?.EstateId == clanEstate, "visita ao enclave registra chegada no domínio do clã");
+            }
+            SafeSave.FlushPending(); first = PlayerContext.Load(first.Path);
+            Arrival(first, tamed, clanEstate);
+            using (var visit = new EconomyProtocolCheck.Link(first, tamed, null, true))
+            {
+                visit.Request<VisitEstate, Messages.Timer>(new VisitEstate { OwnerType = OwnerType.ClanEstate,
+                    OwnerId = clan.Id, RegionId = WorldRegistry.DefaultSharedTamedRegionId });
+                visit.PumpUntil(() => visit.Messages.OfType<Teleported>().Any());
+                Check(tamed.TryGetEstateIdAtCell(World.CellFromTile(visit.Messages.OfType<Teleported>().Last().Tile), out var id) &&
+                    id == clanEstate && !visit.Messages.OfType<Emigrated>().Any(), "visita na mesma ilha chega no enclave sem trocar de mundo");
+            }
             const string privateRegion = "personal_return";
             registry.RegisterPersonalRegion(privateRegion, "pe10gr_1", first.EntityId);
             var privateWorld = registry.GetOrCreate(privateRegion);

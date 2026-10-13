@@ -167,6 +167,7 @@ public static class Cheats
         ItemPerformance.MergeInto(list2, prototypeId, level);
 
         value.Performance = list2.ToArray();
+        ItemCraftModifications.Recalculate(ref value);
         return value;
     }
 

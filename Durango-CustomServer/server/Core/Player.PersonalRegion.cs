@@ -265,6 +265,7 @@ public partial class Player
     private void HandleVisitEstate(VisitEstate msg, uint seq)
     {
         string dest = msg.RegionId;
+        string arrivalEstateId = null;
 
         switch (msg.OwnerType)
         {
@@ -291,7 +292,7 @@ public partial class Player
                 string ownedClanRegion = ownedClanWorld?.GetEstate(ownedClanEstateId)?.RegionId;
                 if (ownedClanRegion != null && (string.IsNullOrEmpty(dest) ||
                     string.Equals(dest, ownedClanRegion, StringComparison.OrdinalIgnoreCase)))
-                { dest = ownedClanRegion; break; }
+                { dest = ownedClanRegion; arrivalEstateId = ownedClanEstateId; break; }
                 goto case OwnerType.ClanWarphole;
             case OwnerType.ClanWarphole:
                 string ownClanRegion = EnsureClanWorldRegistered();
@@ -311,6 +312,12 @@ public partial class Player
         }
 
         const float duration = 1f;
+        if (arrivalEstateId != null && string.Equals(dest, LogicalRegionId(), StringComparison.OrdinalIgnoreCase))
+        {
+            if (_world.TryEstateArrivalTile(arrivalEstateId, out Point2 tile)) BeginWarp(tile, seq, "Visitar enclave do clã");
+            else Send(new Abort { Text = "Não há um ponto de chegada disponível no enclave." }, seq);
+            return;
+        }
         Console.WriteLine($"[assentamento] {Short(EntityId)} visitando {dest}");
         ScheduleInterruptibleAction(duration, seq, () =>
         {
@@ -319,6 +326,7 @@ public partial class Player
                 if (_world.Registry?.IsClanRegion(dest) == true &&
                     (! _world.Registry.TryGetSettlementRegion(dest, out var destination) || destination.OwnerId != CurrentClanId()))
                 { Send(new Abort { Text = "Você não pertence mais ao clã dessa ilha." }); return; }
+                _context.PendingEstateArrival = arrivalEstateId == null ? null : new EstateArrival { RegionId = dest, EstateId = arrivalEstateId };
                 _context.RegionId = dest;
                 _context.AppearPlayer.Move.Movements = null;
                 if (!string.IsNullOrEmpty(_context.Path))

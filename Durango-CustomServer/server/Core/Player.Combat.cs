@@ -523,7 +523,9 @@ public partial class Player
             return;
         }
 
-        float staminaCost = StaminaTuning.Cost(action.meta.stamina);
+        bool defenseAction = action.meta.skill_category == Shared.Skill.Category.Defense;
+        float staminaCost = StaminaTuning.Cost(action.meta.stamina) * ModifierCostScale("stamina_reduction",
+            defenseAction ? "defense_stamina_reduction" : "attack_stamina_reduction") * _survival.DecreaseScale("stamina");
         if (staminaCost > 0 &&
             _survival.ValueAt(SurvivalState.KeyStamina, now) + 0.001f < staminaCost)
         {
@@ -532,7 +534,8 @@ public partial class Player
         }
 
         _battleActionReadyAt[msg.ActionId] =
-            now + Math.Max(0f, action.meta.cooltime);
+            now + Math.Max(0f, action.meta.cooltime) * ModifierCostScale("cooldown_reduction",
+                defenseAction ? "defense_cooldown_reduction" : "attack_cooldown_reduction");
 
         // ค่าความอึดที่ท่าใช้ — ตัวเลขจริงจาก player_battle_actions.json → meta.stamina
         if (staminaCost > 0)

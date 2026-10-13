@@ -73,8 +73,7 @@ public partial class Player
             ApplyTimedStatusEffect(effect.Key, effect.Value.Level, effect.Value.Until > 0 ? effect.Value.Until - now : 0);
             _clanEffectIds.Add(effect.Key);
         }
-        float recovery = ClanModifier("life_recovery");
-        _survival.SetMomentum("clan_recovery", recovery > 0 ? new() { [SurvivalState.KeyLife] = recovery } : null);
+        _survival.SetMomentum("clan_recovery", null);
         RefreshSurvivalMax(); SendStatusEffects(); SendRecipes(0); SyncFatigueVelocities();
     }
     private bool TryClanLab(string entityId, Point2 tile, out string blueprint)

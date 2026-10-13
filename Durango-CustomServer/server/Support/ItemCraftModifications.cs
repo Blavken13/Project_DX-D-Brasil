@@ -19,11 +19,15 @@ public static class ItemCraftModifications
     private static Dictionary<string, CraftRecipeData> _recipes;
     private static JObject _reforms;
     private static JObject _tags;
+    private static Dictionary<string, string[]> _modifiedFields;
     private static void Load()
     {
         _recipes ??= Json.ReadFromFile<Dictionary<string, CraftRecipeData>>("item/recipes");
         _reforms ??= Json.ReadFromFile<JObject>("item/tech_support");
         _tags ??= Json.ReadFromFile<JObject>("tags");
+        _modifiedFields ??= _tags.Properties().Where(p => !string.IsNullOrEmpty((string)p.Value["required_performance"]) &&
+            p.Value["modifiers"] is JObject).GroupBy(p => (string)p.Value["required_performance"])
+            .ToDictionary(g => g.Key, g => g.SelectMany(p => ((JObject)p.Value["modifiers"]).Properties().Select(m => m.Name)).Distinct().ToArray());
     }
 
     private static bool Has(Item item, string id) => item.Tags?.Any(t => t.Id == id) == true;
@@ -106,6 +110,7 @@ public static class ItemCraftModifications
         if (recipe.category == "cook" || id is "s02_skewer" or "s02_cooking")
         {
             Cook(ref item, id);
+            ApplyCookAppearance(ref item, id, recipe);
             ApplyPerformance(ref item);
             return true;
         }
@@ -208,6 +213,20 @@ public static class ItemCraftModifications
         return true;
     }
 
+    private static void ApplyCookAppearance(ref Item item, string id, CraftRecipeData recipe)
+    {
+        if (!string.IsNullOrEmpty(recipe.icon) && (recipe.icon.StartsWith("cook_") || recipe.icon.StartsWith("recipe_")))
+            item.Icon = recipe.icon;
+        string method = id switch { "boil" => "Cozido", "steam" => "Ao vapor", "fry" => "Frito",
+            "fry_stir" => "Refogado", _ => id.StartsWith("smoke_food") ? "Defumado" :
+                id.StartsWith("dry_food") ? "Seco" : null };
+        if (method != null)
+        {
+            var prototype = PrototypeYaml.GetItemPrototype(item.Prototype, item.Level);
+            item.Name = method + " · " + (prototype?.Name?.ToString() ?? item.Name);
+        }
+    }
+
     private static void Cook(ref Item item, string id)
     {
         int tier = id.Contains("03") ? 3 : id.Contains("02") ? 2 : 1;
@@ -224,6 +243,8 @@ public static class ItemCraftModifications
         if (id.StartsWith("medicine_")) SetTag(ref item, "medicine_high", tier);
     }
 
+    public static void Recalculate(ref Item item) { Load(); ApplyPerformance(ref item); }
+
     private static void ApplyPerformance(ref Item item)
     {
         // Recompute modified numeric fields from the prototype baseline, avoiding
@@ -232,8 +253,22 @@ public static class ItemCraftModifications
         var blocks = (item.Performance ?? Array.Empty<Performance>()).Select(p => new Performance {
             Id = p.Id, Strs = p.Strs == null ? new() : new(p.Strs),
             Nums = p.Nums == null ? new Dictionary<string, float>() : new(p.Nums) }).ToList();
+        foreach (var block in blocks.Where(b => b.Id == "food"))
+            foreach (string field in _modifiedFields.GetValueOrDefault(block.Id) ?? Array.Empty<string>())
+            { block.Nums.Remove(field); block.Strs.Remove(field); }
+        foreach (var original in baseline)
+        {
+            int index = blocks.FindIndex(p => p.Id == original.Id);
+            if (index < 0) { blocks.Add(new Performance { Id = original.Id, Nums = new(), Strs = new() }); index = blocks.Count - 1; }
+            foreach (var field in original.Nums ?? new())
+                if (original.Id == "food") blocks[index].Nums[field.Key] = field.Value;
+                else blocks[index].Nums.TryAdd(field.Key, field.Value);
+            foreach (var field in original.Strs ?? new())
+                if (original.Id == "food") blocks[index].Strs[field.Key] = field.Value;
+                else blocks[index].Strs.TryAdd(field.Key, field.Value);
+        }
         var effects = new Dictionary<(string Block, string Field), List<(string Function, double Value)>>();
-        foreach (var tag in item.TagModifications ?? Array.Empty<Tag>())
+        foreach (var tag in item.Tags ?? Array.Empty<Tag>())
         {
             var definition = _tags[tag.Id];
             string block = (string)definition?["required_performance"];
@@ -268,19 +303,6 @@ public static class ItemCraftModifications
                     "decr" => value - (float)effect.Value,
                     _ => value + (float)effect.Value };
             blocks[index].Nums[key.Field] = value;
-        }
-        // The server grants nutrition immediately. Translate the original cooking
-        // expression bonus into that recovery amount, once, from the raw baseline.
-        int foodIndex = blocks.FindIndex(p => p.Id == "food");
-        if (foodIndex >= 0 && effects.ContainsKey(("food", "energy_expression")))
-        {
-            var raw = baseline.FirstOrDefault(p => p.Id == "food");
-            float bonus = Math.Max(0, blocks[foodIndex].Nums.GetValueOrDefault("energy_expression") -
-                (raw.Nums?.GetValueOrDefault("energy_expression") ?? 0));
-            blocks[foodIndex].Nums["energy_potential"] =
-                (raw.Nums?.GetValueOrDefault("energy_potential") ?? 0) * (1 + bonus);
-            if (blocks[foodIndex].Strs.GetValueOrDefault("effect_on") == "raw_food")
-                blocks[foodIndex].Strs["effect_on"] = raw.Strs?.GetValueOrDefault("effect_on") ?? "";
         }
         item.Performance = blocks.ToArray();
     }
