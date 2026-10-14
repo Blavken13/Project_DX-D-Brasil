@@ -214,14 +214,17 @@ internal static class SocialCheck
             world.ArtifactManager.AddArtifact(battleLab); world.ArtifactManager.SetOwner(battleLab.EntityId, alice.EntityId);
             var daveSurvival = (SurvivalState)typeof(Player).GetField("_survival", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(d.Player);
             float previousHealth = daveSurvival.MaxOf(SurvivalState.KeyHealth,Gauge.CurrentTime);
+            float previousRecovery = (float)Call(daveSurvival, "MomentumOf", SurvivalState.KeyLife);
             a.Request<StartClanResearch, Messages.ClanResearch>(new StartClanResearch { EntityId=battleLab.EntityId,Tile=battleLab.Tile,Id="recovery" });
             Check(daveSurvival.MaxOf(SurvivalState.KeyHealth,Gauge.CurrentTime) == previousHealth + 100
-                && daveSurvival.MomentumSources().Contains("clan_recovery"), "pesquisa de recuperação aumenta saúde máxima e regenera vida");
+                && Math.Abs((float)Call(daveSurvival, "MomentumOf", SurvivalState.KeyLife) - previousRecovery - .2f) < .001f,
+                "pesquisa de recuperação aumenta saúde máxima e regenera vida");
             a.Request<KickClanMember, OK>(new KickClanMember { EntityId = dave.EntityId });
             Check(ClanStore.ClanIdOf(dave.EntityId) == null && !world.GetEstate(license.EstateId).AllowsClan(dave.EntityId, Shared.Estate.AccessRights.Give), "expulsão remove direitos do enclave imediatamente");
             Check(dave.RegionId == WorldRegistry.DefaultSharedTamedRegionId, "expulsão exige retorno à ilha pública");
             Check(daveSurvival.MaxOf(SurvivalState.KeyHealth,Gauge.CurrentTime) == previousHealth
-                && !daveSurvival.MomentumSources().Contains("clan_recovery"), "expulsão remove bônus de saúde e recuperação");
+                && Math.Abs((float)Call(daveSurvival, "MomentumOf", SurvivalState.KeyLife) - previousRecovery) < .001f,
+                "expulsão remove bônus de saúde e recuperação");
 
             Check(SafeSave.FlushPending(), "snapshots concluídos");
             var oldWorld = new WorldContext { TerrainId = "pe10gr_1" }; oldWorld.Initialize(Path.Combine(root,"stale.world"));
