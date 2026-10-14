@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using Durango.Utils;
 using Messages;
+using Shared.StatusEffect;
 
 namespace Durango.Online;
 
@@ -14,9 +16,20 @@ public partial class Player
         {
             float equippedCarry = _context.EquippedItems.Values.Distinct().Sum(id => EquipmentStats.Value(
                 _context.InventoryItems.FirstOrDefault(i => i.Id == id), "modifiers", "carry_capacity"));
-            float abilityCarry = _runtimeModifiers.GetValueOrDefault("carry_capacity") - equippedCarry;
+            float abilityCarry = _runtimeModifiers.GetValueOrDefault("carry_capacity") - equippedCarry - _runtimePremiumCarry;
             return (int)Math.Clamp((long)InventoryCapacity(_context) + (long)Math.Floor(abilityCarry), 1, int.MaxValue);
         }
+    }
+    private float _runtimePremiumCarry;
+    private float PremiumCarryInModifiers()
+    {
+        if (_context.Premium == null) return 0;
+        var effectIds = _context.Premium.Packages.Values.Select(p => p.EffectId).ToHashSet();
+        double now = Times.UnixTimeNow();
+        return _timedStatusEffects.Values.Where(e => effectIds.Contains(e.Id) && (e.Until <= 0 || e.Until > now))
+            .Sum(e => StatusEffectCatalog.PackDetails(e.Id, e.Level)
+                .Where(d => d.Type == EffectType.Modifier && d.Key == "carry_capacity").Sum(d => d.Value)
+                + (e.Modifiers?.GetValueOrDefault("carry_capacity") ?? 0));
     }
     private bool PremiumActive => _context.Premium?.IsActive(EntityId) == true;
     private string _premiumSignature;

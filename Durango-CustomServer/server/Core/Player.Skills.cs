@@ -1738,6 +1738,7 @@ public partial class Player
         // 2) โมดิฟายเออร์จากสกิลที่เรียนแล้ว — สกิล → rewards.json → modifiers
         Dictionary<string, float> modifiers = CollectModifiers();
         _runtimeModifiers = modifiers;
+        _runtimePremiumCarry = PremiumCarryInModifiers();
 
         // 3) พลังพื้นฐาน + เอาโมดิฟายเออร์ไปบวก/คูณ
         var basics = new Dictionary<Basic, int>();
