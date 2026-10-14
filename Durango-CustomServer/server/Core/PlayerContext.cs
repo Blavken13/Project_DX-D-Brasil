@@ -20,6 +20,8 @@ namespace Durango.Online;
 //  2) blob "encyclopedia" ต้นฉบับเติม memo ที่มีข้อความทั้งหมด — เซิร์ฟไม่มีตารางภาษา เริ่มว่าง (MemoStorageDefaults)
 public class PlayerContext
 {
+    [JsonProperty("season_pass", NullValueHandling = NullValueHandling.Ignore)]
+    public SeasonPassProgress SeasonPass;
     [JsonProperty("safehouse_missions", NullValueHandling = NullValueHandling.Ignore)]
     public SafehouseMissionSave SafehouseMissions;
 
@@ -295,6 +297,7 @@ public class PlayerContext
             AppearPlayer.Display.EntityId = text;
         }
         InventoryItems ??= new List<Item>();
+        SeasonPass ??= new SeasonPassProgress();
         EquippedItems ??= new Dictionary<string, string>();
         // [5 ก.ย. 2026] ช่องใหม่ของรอบนี้ — ไฟล์เซฟเก่าไม่มีคีย์นี้จึงโหลดมาเป็น null
         Pets ??= new List<PetSaveData>();

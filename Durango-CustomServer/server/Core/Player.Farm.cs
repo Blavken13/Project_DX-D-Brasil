@@ -324,6 +324,7 @@ public partial class Player
 
     private void CompleteFarmHarvestAfterDelay(Collected collected, List<Item> items, uint seq)
     {
+        NoteSeasonAction("harvest", 1);
         AddItems(items);
         Send(new InventoryUpdated { EntityId = EntityId, Items = items.ToArray() });
         AddExpForAction(SkillTuning.GatherWeight, Shared.Skill.Category.Farming, "Colher planta");

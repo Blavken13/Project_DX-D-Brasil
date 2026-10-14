@@ -150,6 +150,7 @@ public partial class Player
     public void NoteQuestEvent(QuestEventType ev, string detail = null, int amount = 1, QuestEventContext context = null)
     {
         if (amount <= 0) return;
+        NoteSeasonQuestEvent(ev, amount);
         NoteSafehouseHuntingEvent(ev, context);
         EnsureDailyReset();
 

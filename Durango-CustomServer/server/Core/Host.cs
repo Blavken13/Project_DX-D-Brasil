@@ -601,6 +601,15 @@ public class Host
         };
     }
 
+    /// <summary>Finds the live player across all loaded worlds.</summary>
+    public Player FindOnlinePlayer(string entityId)
+    {
+        foreach (World world in WorldsOf())
+        foreach (Player player in world.PlayersSnapshot())
+            if (string.Equals(player.EntityId, entityId, StringComparison.Ordinal)) return player;
+        return null;
+    }
+
     /// <summary>
     /// Envia a Wallet atual para um personagem online.
     /// Se estiver offline, o saldo será enviado no próximo login.

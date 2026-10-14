@@ -102,6 +102,7 @@ public partial class Gateway
     private void RegisterRoutes()
     {
         RegisterAdminRoutes();
+        RegisterSeasonPassRoutes();
         _webServer.GetRoute["/knock"] = delegate(HttpListenerRequest request, Dictionary<string, string> postData)
         {
             string platform = PlatformKey(request.QueryString.Get("platform"));
@@ -373,7 +374,8 @@ public partial class Gateway
             string entryToken = request?.Headers?["Authorization"];
             if (!string.IsNullOrEmpty(entryEntity) && _gameServer.BindSessionToEntity(entryToken, entryEntity))
             {
-                Console.WriteLine($"[gateway] /entry ผูก session เข้ากับตัวละคร {entryEntity}");
+                Console.WriteLine($"[gateway] /entry ผูก session เข้ากับตัวละคร {entryEntity}");
+                RecordSeasonLogin(_host.FindContextByEntityId(entryEntity), SeasonPassCatalog.Now());
             }
 
             string tcpHost = !string.IsNullOrEmpty(PublicHost)

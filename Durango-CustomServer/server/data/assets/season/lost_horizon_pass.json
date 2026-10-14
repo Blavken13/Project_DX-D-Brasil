@@ -1,0 +1,711 @@
+{
+  "season": {
+    "id": "lost-horizon-s1",
+    "name": "Lost Horizon · Temporada 1",
+    "since": 1790812800,
+    "until": 1798761600
+  },
+  "maxTier": 15,
+  "pointsPerTier": 2000,
+  "tiers": [
+    {
+      "tier": 1,
+      "box": {
+        "items": [
+          {
+            "id": "wood_bough",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "remodeling_wall_01",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "clay",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "vine_thick",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "resin",
+            "count": 5,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "capsulated_fur_box_03",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 2,
+      "box": {
+        "items": [
+          {
+            "id": "leather_raw",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_leg",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_leg_thick",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "ore_zinc",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "remodeling_roof_01",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_special_wristband",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 3,
+      "box": {
+        "items": [
+          {
+            "id": "fried_hen",
+            "count": 2,
+            "level": 60
+          },
+          {
+            "id": "flower",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "fruit",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "wheat_infertility",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 1500
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_special_ladle",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "feed_store_task_attack_amplifier",
+            "count": 3,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 4,
+      "box": {
+        "items": [
+          {
+            "id": "leather_raw",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ore_zinc",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "stem_fiber",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_rib",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ore_copper",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_clothes_rope_avatar",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 5,
+      "box": {
+        "items": [
+          {
+            "id": "s02_grill_stone",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ice",
+            "count": 10,
+            "level": 60
+          },
+          {
+            "id": "glass_piece",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "rose_misterlincoln_seed",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 2000
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_special_awl",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "feed_store_task_defense_amplifier",
+            "count": 3,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 6,
+      "box": {
+        "items": [
+          {
+            "id": "wood_bough",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "remodeling_wall_01",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "clay",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "vine_thick",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "resin",
+            "count": 5,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "capsulated_fur_box_03_leaf",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 7,
+      "box": {
+        "items": [
+          {
+            "id": "leather_raw",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_leg",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_leg_thick",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "ore_zinc",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "remodeling_roof_01",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_gloves_rubber",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "feed_store_hp_regen_amplifier",
+            "count": 3,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 8,
+      "box": {
+        "items": [
+          {
+            "id": "fried_hen",
+            "count": 2,
+            "level": 60
+          },
+          {
+            "id": "flower",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "fruit",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "wheat_infertility",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 1500
+      },
+      "special": {
+        "items": [
+          {
+            "id": "hat_techwear",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 9,
+      "box": {
+        "items": [
+          {
+            "id": "leather_raw",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ore_zinc",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "stem_fiber",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_rib",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ore_copper",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_hat_rubber",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 10,
+      "box": {
+        "items": [
+          {
+            "id": "s02_grill_stone",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ice",
+            "count": 10,
+            "level": 60
+          },
+          {
+            "id": "glass_piece",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "rose_misterlincoln_seed",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 2000
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_clothes_rubber",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0,
+        "gems": 100
+      }
+    },
+    {
+      "tier": 11,
+      "box": {
+        "items": [
+          {
+            "id": "wood_bough",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "remodeling_wall_01",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "clay",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "vine_thick",
+            "count": 5,
+            "level": 60
+          },
+          {
+            "id": "resin",
+            "count": 5,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "s02_poster_05",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 12,
+      "box": {
+        "items": [
+          {
+            "id": "leather_raw",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_leg",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_leg_thick",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "ore_zinc",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "remodeling_roof_01",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "capsulated_s02_rubber_icebox",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "feed_store_unlimited_vigor",
+            "count": 3,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    },
+    {
+      "tier": 13,
+      "box": {
+        "items": [
+          {
+            "id": "fried_hen",
+            "count": 2,
+            "level": 60
+          },
+          {
+            "id": "flower",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "fruit",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "wheat_infertility",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 1500
+      },
+      "special": {
+        "items": [
+          {
+            "id": "capsulated_s02_flag_pioneer_02",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0,
+        "gems": 150
+      }
+    },
+    {
+      "tier": 14,
+      "box": {
+        "items": [
+          {
+            "id": "leather_raw",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ore_zinc",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "stem_fiber",
+            "count": 3,
+            "level": 60
+          },
+          {
+            "id": "bone_rib",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ore_copper",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      },
+      "special": {
+        "items": [
+          {
+            "id": "capsulated_s02_flag_society_01",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 2500
+      }
+    },
+    {
+      "tier": 15,
+      "box": {
+        "items": [
+          {
+            "id": "s02_grill_stone",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "ice",
+            "count": 10,
+            "level": 60
+          },
+          {
+            "id": "glass_piece",
+            "count": 1,
+            "level": 60
+          },
+          {
+            "id": "rose_misterlincoln_seed",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 2000
+      },
+      "special": {
+        "items": [
+          {
+            "id": "clothes_techwear",
+            "count": 1,
+            "level": 60
+          }
+        ],
+        "tstone": 0
+      }
+    }
+  ],
+  "daily": {
+    "missions": [
+      {
+        "id": "d_login",
+        "event": "login",
+        "count": 1,
+        "points": 100
+      },
+      {
+        "id": "d_hunt",
+        "event": "hunt",
+        "count": 10,
+        "points": 200
+      },
+      {
+        "id": "d_collect",
+        "event": "collect",
+        "count": 50,
+        "points": 200
+      },
+      {
+        "id": "d_craft",
+        "event": "craft",
+        "count": 5,
+        "points": 200
+      },
+      {
+        "id": "d_harvest",
+        "event": "harvest",
+        "count": 5,
+        "points": 200
+      }
+    ]
+  },
+  "weekly": {
+    "missions": [
+      {
+        "id": "w_hunt",
+        "event": "hunt",
+        "count": 100,
+        "points": 1000
+      },
+      {
+        "id": "w_tame",
+        "event": "tame",
+        "count": 1,
+        "points": 800
+      },
+      {
+        "id": "w_collect",
+        "event": "collect",
+        "count": 500,
+        "points": 1000
+      },
+      {
+        "id": "w_craft",
+        "event": "craft",
+        "count": 40,
+        "points": 1000
+      }
+    ]
+  }
+}
