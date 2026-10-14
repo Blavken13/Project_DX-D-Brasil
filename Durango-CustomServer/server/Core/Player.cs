@@ -2310,7 +2310,9 @@ public partial class Player
         // ต่ำกว่า caution = ปกติ · ระหว่าง caution→danger = ค่อย ๆ ช้า · ถึง danger = ช้าสุด
         float fatigueMul = FatigueMoveMultiplier();
         int normal = Math.Max(1, (int)Math.Round(DefaultNormalSpeed * fatigueMul * Math.Clamp(1 + _runtimeModifiers.GetValueOrDefault("normal_speed_bonus"), .1f, 10f)));
-        int battleSpeed = Math.Max(1, (int)Math.Round(battle * fatigueMul * Math.Clamp(1 + _runtimeModifiers.GetValueOrDefault("battle_move_speed_plus"), .1f, 10f)));
+        // battle_move_speed_plus usa increase_type=0 (Amount): +50 são pontos,
+        // não um percentual. Limita o resultado à velocidade normal do personagem.
+        int battleSpeed = Math.Min(normal, Math.Max(1, (int)Math.Round((battle + _runtimeModifiers.GetValueOrDefault("battle_move_speed_plus")) * fatigueMul)));
 
         // ไม่ยิงซ้ำถ้าค่าไม่เปลี่ยน — กันสแปมทุกเฟรมตอน Process
         if (_lastSentNormalSpeed == normal && _lastSentBattleSpeed == battleSpeed)
