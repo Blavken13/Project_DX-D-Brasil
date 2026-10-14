@@ -37528,7 +37528,7 @@
         "defense_plus_10": "0.025",
         "decrease_grow_time_ratio": 0.0,
         "accuracy_plus_10": "0.01",
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 60
       }
     },
@@ -37789,7 +37789,7 @@
         "decrease_domesticate_time_ratio": 0.0,
         "increase_domesticate_success_rate": 0.0,
         "decrease_grow_time_ratio": 0.0,
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 0
       }
     },
@@ -38049,7 +38049,7 @@
         "decrease_domesticate_time_ratio": 0.0,
         "increase_domesticate_success_rate": 0.0,
         "decrease_grow_time_ratio": 0.0,
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 0
       }
     },
@@ -38249,7 +38249,7 @@
         "decrease_domesticate_time_ratio": 0.0,
         "increase_domesticate_success_rate": 0.0,
         "decrease_grow_time_ratio": 0.0,
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 0
       }
     },
@@ -38289,7 +38289,7 @@
         "decrease_domesticate_time_ratio": 0.0,
         "increase_domesticate_success_rate": 0.0,
         "decrease_grow_time_ratio": 0.0,
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 0
       }
     },
@@ -39095,7 +39095,7 @@
         "decrease_domesticate_time_ratio": 0.0,
         "increase_domesticate_success_rate": 0.0,
         "decrease_grow_time_ratio": 0.0,
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 0
       }
     },
@@ -39618,7 +39618,7 @@
         "decrease_domesticate_time_ratio": 0.0,
         "increase_domesticate_success_rate": 0.0,
         "decrease_grow_time_ratio": 0.0,
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 0
       }
     },
@@ -39778,7 +39778,7 @@
         "defense_plus_10": "0.02",
         "decrease_grow_time_ratio": 0.0,
         "speed_plus_10": "0.01",
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 30
       }
     },
@@ -39821,7 +39821,7 @@
         "defense_plus_10": "0.02",
         "decrease_grow_time_ratio": 0.0,
         "speed_plus_10": "0.01",
-        "decrease_domesticate_time": 0,
+        "decrease_domesticate_time": 10,
         "decrease_grow_time": 30
       }
     },

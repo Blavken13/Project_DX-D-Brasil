@@ -54,7 +54,7 @@ internal static class PetFeedingCheck
             var carni = Player.PetFactory.Build(carniType, PetRank.D, 20, "food-owner").Value;
             Check(InMenu(herb, leaves) && InMenu(herb, flower, true), "zebraceratops com preferencia soft mostra folhas e flores apropriadas");
             Check(!InMenu(herb, meat) && InMenu(carni, meat, true) && !InMenu(carni, leaves), "menus respeitam dieta herbivora e carnivora");
-            Check(!InMenu(herb, leaves, true), "folhas sem bonus nativo nao sao oferecidas durante a doma");
+            Check(InMenu(herb, leaves, true), "folhas aparecem como alimento herbivoro durante a doma");
             Check(InMenu(herb, Cheats.MakeItem("cactus", 20).Value) && InMenu(herb, Cheats.MakeItem("sugarcane", 20).Value),
                 "vegetais nativos com tags especificas aparecem no menu herbivoro");
             foreach (var p in pets.Properties())
