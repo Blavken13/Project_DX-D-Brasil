@@ -881,12 +881,12 @@ public partial class Player
         float chance = GreatSuccessChance(recipe, normalLevel);
         if (chance > 0f && CraftRoll() < chance)
         {
-            // Great success remains tied to the supplied materials. Weapon/tool
-            // results cannot bypass the proficiency limit through this branch.
+            // Great success remains tied to the supplied materials and cannot
+            // bypass the proficiency limit through this branch.
             int min = IsWeaponOrToolCraft(recipe) ? 1 : recipe.min_level > 0 ? recipe.min_level : 1;
             int max = recipe.max_level > 0 ? recipe.max_level : min;
             finalLevel = Math.Clamp(Math.Max(normalLevel, maxMaterialLevel), min, Math.Max(min, max));
-            if (IsWeaponOrToolCraft(recipe)) finalLevel = Math.Min(finalLevel, CraftLevelLimit(recipe));
+            if (recipe.type == CraftType.Craft) finalLevel = Math.Min(finalLevel, CraftLevelLimit(recipe));
             return Result.GreatSuccess;
         }
         return Result.Success;
@@ -998,9 +998,9 @@ public partial class Player
     }
 
     /// <summary>
-    /// Weapon/tool level follows material quality and the corresponding proficiency.
-    /// Other crafts retain their recipe bounds. Recipe minimums still govern inputs
-    /// and unlocks, but never raise an equipment result above the player's ability.
+    /// Crafted item level follows material quality and the corresponding proficiency.
+    /// Recipe minimums still govern inputs and unlocks, but never raise a result above
+    /// the player's ability in that craft category.
     /// </summary>
     private int ProductLevel(CraftRecipeData recipe, List<Item> materials)
     {
@@ -1009,7 +1009,7 @@ public partial class Player
         {
             level = (int)Math.Round(materials.Average(item => (double)item.Level));
         }
-        if (IsWeaponOrToolCraft(recipe)) return Math.Clamp(level, 1, CraftLevelLimit(recipe));
+        if (recipe.type == CraftType.Craft) return Math.Clamp(level, 1, CraftLevelLimit(recipe));
         int min = recipe.min_level > 0 ? recipe.min_level : 1;
         int max = recipe.max_level > 0 ? recipe.max_level : min;
         return Math.Clamp(level, min, Math.Max(min, max));
@@ -1021,8 +1021,21 @@ public partial class Player
 
     private int CraftLevelLimit(CraftRecipeData recipe)
     {
-        var ability = recipe.required_ability ?? Shared.Ability.Derived.Weaponcraft;
+        var ability = recipe.required_ability ?? CraftAbilityForCategory(recipe.category);
         return Math.Clamp((int)Math.Floor(CraftAbilityValue(ability)), 1, SkillDataStore.MaxPlayerLevel);
+    }
+
+    private static Shared.Ability.Derived CraftAbilityForCategory(string category)
+    {
+        if (category?.StartsWith("cook", StringComparison.OrdinalIgnoreCase) == true) return Shared.Ability.Derived.Cook;
+        if (category?.StartsWith("clothing", StringComparison.OrdinalIgnoreCase) == true) return Shared.Ability.Derived.Tailor;
+        if (category?.StartsWith("material_process", StringComparison.OrdinalIgnoreCase) == true ||
+            category?.StartsWith("process", StringComparison.OrdinalIgnoreCase) == true) return Shared.Ability.Derived.Smith;
+        if (category?.StartsWith("weapon", StringComparison.OrdinalIgnoreCase) == true ||
+            category?.StartsWith("tool", StringComparison.OrdinalIgnoreCase) == true) return Shared.Ability.Derived.Weaponcraft;
+        if (category?.StartsWith("build", StringComparison.OrdinalIgnoreCase) == true) return Shared.Ability.Derived.Construction;
+        if (category?.StartsWith("farm", StringComparison.OrdinalIgnoreCase) == true) return Shared.Ability.Derived.Farming;
+        return Shared.Ability.Derived.Handicraft;
     }
 
     /// <summary>

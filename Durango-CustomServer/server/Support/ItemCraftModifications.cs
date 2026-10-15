@@ -107,9 +107,9 @@ public static class ItemCraftModifications
         }
         if (id.StartsWith("dye_color_") || id.StartsWith("bleach_color_"))
             return Dye(ref item, id, recipe, materials, out error);
-        if (recipe.category == "cook" || id is "s02_skewer" or "s02_cooking")
+        if (recipe.category?.StartsWith("cook", StringComparison.OrdinalIgnoreCase) == true)
         {
-            Cook(ref item, id);
+            Cook(ref item, id, recipe);
             ApplyCookAppearance(ref item, id, recipe);
             ApplyPerformance(ref item);
             return true;
@@ -186,7 +186,21 @@ public static class ItemCraftModifications
         {
             SetTag(ref item, "smelted_metal", item.Level, "ore"); SetTag(ref item, "metal", item.Level);
         }
-        else if (id == "combine_metal") Increase(ref item, "hardness_hard");
+        else if (id == "combine_metal")
+        {
+            // A receita consome o segundo fragmento e transforma a forma do fragmento-base.
+            // Sem trocar o protótipo e as tags, o resultado não atende às receitas que
+            // exigem um fragmento grande, mesmo depois de aumentar a dureza.
+            Prototype prototype = PrototypeYaml.GetItemPrototype("metal_chunk_big");
+            if (prototype == null) { error = "O fragmento grande de metal não está disponível."; return false; }
+            // Os campos localizados desse protótipo estão incompletos nos dados incluídos;
+            // preserve a apresentação do material e atualize sua identidade/tags.
+            item.Prototype = "metal_chunk_big";
+            item.Name = "Fragmento grande de metal";
+            item.Description = "Fragmento grande de metal obtido pelo processamento de dois fragmentos menores.";
+            SetTag(ref item, "chunk_big", item.Level, "chunk_normal", "chunk_small");
+            Increase(ref item, "hardness_hard");
+        }
         else if (id.StartsWith("refine"))
         {
             string property = id switch { "refine" => "purity_high", "refine_02" => "hardness_hard",
@@ -217,9 +231,11 @@ public static class ItemCraftModifications
     {
         if (!string.IsNullOrEmpty(recipe.icon) && (recipe.icon.StartsWith("cook_") || recipe.icon.StartsWith("recipe_")))
             item.Icon = recipe.icon;
-        string method = id switch { "boil" => "Cozido", "steam" => "Ao vapor", "fry" => "Frito",
-            "fry_stir" => "Refogado", _ => id.StartsWith("smoke_food") ? "Defumado" :
-                id.StartsWith("dry_food") ? "Seco" : null };
+        string method = id switch {
+            "boil" => "Cozido", "steam" => "Ao vapor", "fry" => "Frito", "fry_stir" => "Refogado",
+            "ice_drink" => "Bebida gelada", "steak_set_meal" => "Jantar de bife",
+            "medicine_01" => "Pílula improvisada", "medicine_02" => "Pílula normal", "medicine_03" => "Pílula de qualidade",
+            _ => id.StartsWith("smoke_food") ? "Defumado" : id.StartsWith("dry_food") ? "Seco" : null };
         if (method != null)
         {
             var prototype = PrototypeYaml.GetItemPrototype(item.Prototype, item.Level);
@@ -227,20 +243,44 @@ public static class ItemCraftModifications
         }
     }
 
-    private static void Cook(ref Item item, string id)
+    private static void Cook(ref Item item, string id, CraftRecipeData recipe)
     {
         int tier = id.Contains("03") ? 3 : id.Contains("02") ? 2 : 1;
-        string method = id == "fry" ? "fried" : id == "fry_stir" ? "fried_stir" :
+        int stationLevel = recipe.workbench_tags?.Values.DefaultIfEmpty(1).Max() ?? 1;
+        int heatLevel = stationLevel >= 40 ? 3 : stationLevel >= 15 ? 2 : 1;
+        bool isColdDrink = id == "ice_drink";
+        string method = id.StartsWith("medicine_") ? "medicine_high" :
+            id == "fry" ? "fried" : id == "fry_stir" ? "fried_stir" :
             id.StartsWith("smoke_food") ? "smoked" : id.StartsWith("dry_food") ||
-            id.StartsWith("salt_food") || id.StartsWith("can_food") || id == "ice_drink"
-                ? "preserve_energy" : "energy_fire";
-        SetTag(ref item, method, tier, "raw_food");
+            id.StartsWith("salt_food") || id.StartsWith("can_food")
+                ? "preserve_energy" : id is "s02_skewer" or "s02_cooking" ? "s02_energy_fire" : "energy_fire";
+        bool isPreserving = id.StartsWith("dry_food") || id.StartsWith("smoke_food") ||
+            id.StartsWith("salt_food") || id.StartsWith("can_food");
+        bool isMedicine = id.StartsWith("medicine_");
+
+        SetTag(ref item, isColdDrink ? "cold" : method,
+            isColdDrink ? 3 : isPreserving || isMedicine ? tier : heatLevel,
+            "raw_food", "hot", "cold", "energy_fire", "s02_energy_fire", "fried", "fried_stir",
+            "smoked", "preserve_energy", "preserve_power", "dried", "medicine_high",
+            "attack_incr_food", "defense_incr_food");
+        if (!isPreserving && !isMedicine && !isColdDrink)
+            SetTag(ref item, "hot", heatLevel);
         if (id.StartsWith("dry_food")) SetTag(ref item, "dried", tier);
-        if (id.StartsWith("dry_food") || id.StartsWith("smoke_food") ||
-            id.StartsWith("salt_food") || id.StartsWith("can_food")) SetTag(ref item, "preserve_power", tier);
+        // O atributo smoked já aplica ×1,65 pela fórmula nativa; não acumule
+        // com preserve_power (×1,5). Os outros métodos de conservação usam esse bônus.
+        if (id.StartsWith("dry_food") || id.StartsWith("salt_food") || id.StartsWith("can_food"))
+            SetTag(ref item, "preserve_power", tier);
         if (id.EndsWith("seasoning") || id.EndsWith("food_02")) SetTag(ref item, "savory_plus", tier);
         if (id is "boil" or "steam" or "soup_01" or "herb_tea_01") SetTag(ref item, "digestive_easy", 2);
-        if (id.StartsWith("medicine_")) SetTag(ref item, "medicine_high", tier);
+        if (isMedicine)
+        {
+            if (id == "medicine_03") SetTag(ref item, "sweet_plus_02", 1);
+        }
+        if (id == "steak_set_meal")
+        {
+            SetTag(ref item, "attack_incr_food", 1);
+            SetTag(ref item, "defense_incr_food", 1);
+        }
     }
 
     public static void Recalculate(ref Item item) { Load(); ApplyPerformance(ref item); }
@@ -290,6 +330,7 @@ public static class ItemCraftModifications
                 list.Add((function, value));
             }
         }
+        AddCraftedMaterialEffects(item, baseline, effects);
         foreach (var (key, values) in effects)
         {
             int index = blocks.FindIndex(p => p.Id == key.Block);
@@ -305,6 +346,81 @@ public static class ItemCraftModifications
             blocks[index].Nums[key.Field] = value;
         }
         item.Performance = blocks.ToArray();
+    }
+
+    private static void AddCraftedMaterialEffects(Item item, List<Performance> baseline,
+        Dictionary<(string Block, string Field), List<(string Function, double Value)>> effects)
+    {
+        bool Has(string id) => item.Tags?.Any(t => t.Id == id) == true;
+        int Level(string id) => item.Tags?.Where(t => t.Id == id).Select(t => t.Level).DefaultIfEmpty(0).Max() ?? 0;
+        bool IsEquipment(string id) => Has(id);
+
+        // The prototype supplies the item's native performance block. Add only
+        // fields that exist for that prototype, so unrelated item types are not
+        // given synthetic client stats.
+        void Add(string block, string[] fields, string tag, double perLevel)
+        {
+            int level = Level(tag);
+            if (level <= 0) return;
+            var native = baseline.FirstOrDefault(p => p.Id == block);
+            string field = fields.FirstOrDefault(name => native.Nums?.ContainsKey(name) == true);
+            if (field == null) return;
+            var key = (block, field);
+            if (!effects.TryGetValue(key, out var values)) effects[key] = values = new();
+            values.Add((perLevel < 0 ? "decr" : "incr", Math.Abs(perLevel) * level));
+        }
+
+        void AddUsingNativeModifier(string block, string sourceTag, string modifierTag, bool reverse = false)
+        {
+            int level = Level(sourceTag);
+            if (level <= 0 || _tags[modifierTag] is not JObject definition ||
+                (string)definition["required_performance"] != block ||
+                definition["modifiers"] is not JObject modifiers) return;
+            foreach (var modifier in modifiers.Properties())
+            {
+                string formula = (string)modifier.Value["formula"];
+                string function = (string)modifier.Value["function"];
+                if (!StatFormula.TryEval(formula, "level", level, out double value)) continue;
+                if (reverse) function = function switch { "incr" => "decr", "decr" => "incr", _ => function };
+                var key = (block, modifier.Name);
+                if (!effects.TryGetValue(key, out var values)) effects[key] = values = new();
+                values.Add((function, value));
+            }
+        }
+
+        if (IsEquipment("weapon"))
+        {
+            // Where the old guide confirms an effect but not its coefficient,
+            // reuse the corresponding native modifier formula from tags.json.
+            AddUsingNativeModifier("weapon", "hardness_hard", "attack_incr");
+            AddUsingNativeModifier("weapon", "hardness_soft", "attack_decr");
+            AddUsingNativeModifier("weapon", "weight_light", "accuracy_incr");
+            AddUsingNativeModifier("weapon", "weight_heavy", "accuracy_decr");
+            // The surviving game notes give the compact-structure coefficient
+            // exactly: +0.67 percentage points of critical chance per level.
+            Add("weapon", new[] { "critical", "critical_chance" }, "structure_compact", 0.0067);
+            Add("weapon", new[] { "critical", "critical_chance" }, "structure_sloppy", -0.0067);
+        }
+
+        if (IsEquipment("armor"))
+        {
+            // Density modifies the actual durability gauge in ItemDurability;
+            // dodge and defense stay in the equipment performance block.
+            AddUsingNativeModifier("armor", "fiber_tough", "defense_incr");
+            AddUsingNativeModifier("armor", "weight_light", "dodge_incr");
+            AddUsingNativeModifier("armor", "weight_heavy", "dodge_decr");
+        }
+
+        bool IsTool = IsEquipment("tool_gathering") || IsEquipment("tool_working");
+        if (IsTool)
+        {
+            AddUsingNativeModifier("tool", "section_sharp", "gathering_incr");
+            AddUsingNativeModifier("tool", "section_round", "gathering_incr", reverse: true);
+            AddUsingNativeModifier("tool", "shape_pointed", "weaponcraft_incr");
+            AddUsingNativeModifier("tool", "shape_blunt", "weaponcraft_incr", reverse: true);
+            AddUsingNativeModifier("tool", "inside_full", "construction_incr");
+            AddUsingNativeModifier("tool", "inside_empty", "construction_incr", reverse: true);
+        }
     }
 
     private static bool Reform(ref Item item, string id, CraftRecipeData recipe,

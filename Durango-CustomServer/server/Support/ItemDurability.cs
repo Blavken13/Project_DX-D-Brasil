@@ -25,6 +25,15 @@ public static class ItemDurability
         return (40 * tier + Math.Clamp(level, 1, 70) - 1) * Delta("collect", 1.6f);
     }
 
+    public static float Maximum(Item item)
+    {
+        float maximum = Maximum(item.Prototype, item.Level);
+        if (maximum <= 1) return maximum;
+        int density = (item.Tags ?? Array.Empty<Tag>()).Where(tag => tag.Id == "density_high")
+            .Sum(tag => Math.Max(0, tag.Level));
+        return Math.Max(1, maximum + density * 10f);
+    }
+
     // equipment_avatar identifies decorative outfits in the original tables.
     public static bool IsArmor(Prototype prototype) => prototype != null &&
         !(prototype.Tags?.ContainsKey("equipment_avatar") ?? false) &&
@@ -60,9 +69,12 @@ public static class ItemDurability
 
     public static bool Normalize(ref Item item)
     {
-        float maximum = Maximum(item.Prototype, item.Level);
-        if (maximum <= 1 || item.Durability?.Max() > 1) return false;
-        float fraction = item.Durability == null ? 1 : Math.Clamp(item.Durability.Get(), 0, 1);
+        float maximum = Maximum(item);
+        if (maximum <= 1) return false;
+        float previousMaximum = item.Durability?.Max() ?? 0;
+        if (previousMaximum > 1 && Math.Abs(previousMaximum - maximum) < 0.01f) return false;
+        float fraction = previousMaximum > 0
+            ? Math.Clamp(item.Durability.Get() / previousMaximum, 0, 1) : 1;
         item.Durability = new Gauge(maximum, 0f, new[] { new GaugeNode(0, maximum * fraction) });
         return true;
     }

@@ -219,6 +219,10 @@
     "12": {
       "reward_id": "recoveryrate_cook_08",
       "required_value": 160
+    },
+    "13": {
+      "reward_id": "recipe_medicine_03",
+      "required_value": 160
     }
   },
   "218": {

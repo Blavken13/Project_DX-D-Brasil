@@ -14,7 +14,13 @@ internal static class ItemCraftInheritance
     {
         _tags ??= Json.ReadFromFile<JObject>("tags");
         var inherited = new Dictionary<string, int>(StringComparer.Ordinal);
-        foreach (var material in slots.Values.SelectMany(v => v).DistinctBy(m => m.Id))
+        // A receita usa o primeiro slot como material principal. Os outros itens
+        // limitam o nível do produto, mas não transferem propriedades.
+        string primarySlot = recipe.slots?.FirstOrDefault()?.slot_id;
+        var primaryMaterials = string.IsNullOrEmpty(primarySlot)
+            ? Array.Empty<Item>()
+            : slots.GetValueOrDefault(primarySlot) ?? Array.Empty<Item>();
+        foreach (var material in primaryMaterials.DistinctBy(m => m.Id))
             foreach (var tag in material.Tags ?? Array.Empty<Tag>())
             {
                 var definition = _tags[tag.Id];
@@ -32,6 +38,7 @@ internal static class ItemCraftInheritance
         }
         product.Tags = tags.Select(t => new Tag { Id = t.Key, Level = t.Value }).ToArray();
         product.TagModifications = changes.Select(t => new Tag { Id = t.Key, Level = t.Value }).ToArray();
+        ItemDurability.Normalize(ref product);
         foreach (var color in recipe.replace_color ?? new())
         {
             string[] source = color.Value.Split('.');

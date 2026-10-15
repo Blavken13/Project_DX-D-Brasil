@@ -1157,7 +1157,14 @@ internal static class CollectibleTable
                     // Native skin/leg variants replace the family default instead of
                     // giving both generic leather/bones and their specialized variant.
                     if (id.StartsWith("leather_raw", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("leather_raw", StringComparison.Ordinal))) continue;
-                    if (id.StartsWith("bone_leg", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("bone_leg", StringComparison.Ordinal))) continue;
+                    if (id == "bone_leg_thick")
+                    {
+                        if (nativeIds.Contains(id)) continue;
+                        // Large dinosaurs often have the ordinary leg bone in the
+                        // native source table. Replace it with the large variant.
+                        ids.RemoveAll(n => n.StartsWith("bone_leg", StringComparison.Ordinal));
+                    }
+                    else if (id.StartsWith("bone_leg", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("bone_leg", StringComparison.Ordinal))) continue;
                     if (id.StartsWith("bone_head", StringComparison.Ordinal) && nativeIds.Any(n => n.StartsWith("bone_head", StringComparison.Ordinal))) continue;
                     if (!ids.Contains(id)) ids.Add(id);
                 }
@@ -1254,6 +1261,25 @@ internal static class CollectibleTable
             Add("clam");
         }
         foreach (string id in LostParcelLoot.For(collectibleId)) Add(id);
+
+        // Fruit trees on the map use collectible ids that differ from the generators
+        // in recipes.json. Both the fruit and seed prototypes exist in prototype_data.
+        (string fruit, string fruitGenerator, string seed, string seedGenerator) fruitTree = collectibleId switch
+        {
+            "tree_orange" or "tree_orange_navel_poison" => ("fruit", "orange", "orange_seed", "orange_seed_crop"),
+            "tree_mango" or "tree_mango_apple_poison" => ("fruit", "mango", "mango_seed", "mango_seed_crop"),
+            _ => (null, null, null, null)
+        };
+        if (fruitTree.fruit != null && PrototypeYaml.GetItemPrototype(fruitTree.fruit) != null)
+        {
+            Add(fruitTree.fruit);
+            _generatorIdByCollectiblePrototype.TryAdd(GeneratorAliasKey(collectibleId, fruitTree.fruit), fruitTree.fruitGenerator);
+        }
+        if (fruitTree.seed != null && PrototypeYaml.GetItemPrototype(fruitTree.seed) != null)
+        {
+            Add(fruitTree.seed);
+            _generatorIdByCollectiblePrototype.TryAdd(GeneratorAliasKey(collectibleId, fruitTree.seed), fruitTree.seedGenerator);
+        }
         // 2) ชื่อ collectible เป็น prototype อยู่แล้ว (sulphur / basalt / granite / clay_gray …)
         if (PrototypeYaml.GetItemPrototype(collectibleId) != null) Add(collectibleId);
         // 3) ของประจำหมวด (ค่าของเรา)
@@ -1296,6 +1322,12 @@ internal static class CollectibleTable
             return new[] { "stem_tough", "leaf" };
         if (id.StartsWith("grass_reed", StringComparison.Ordinal))
             return new[] { "stem", "leaf" };
+        // Taboa and seasonal vine patches use distinct collectible IDs, so they
+        // otherwise fall through to the generic grass -> leaf rule.
+        if (id.StartsWith("grass_cattail", StringComparison.Ordinal))
+            return new[] { "stem", "leaf" };
+        if (id.StartsWith("grass_ring_vine", StringComparison.Ordinal))
+            return new[] { "vine_thick", "leaf_small" };
         if (id.StartsWith("harpoon_shrimp_point_")) return new[] { "shrimp", "shrimp_big" };
         if (id.StartsWith("harpoon_fishing_point_")) return new[] { "fish", "fish_big" };
         if (id.StartsWith("tree") || id.Contains("tree") || id.StartsWith("timber") || id.StartsWith("dead"))
@@ -1540,6 +1572,10 @@ internal static class CollectibleTable
             return "stem_tough";
         if (generatorId == "reed" || generatorId.StartsWith("reed_", StringComparison.Ordinal))
             return "stem";
+        if (generatorId == "cattail_reed" || generatorId.StartsWith("cattail_reed_", StringComparison.Ordinal))
+            return "stem";
+        if (generatorId == "vine_thick" || generatorId.StartsWith("vine_thick_", StringComparison.Ordinal))
+            return PrototypeYaml.GetItemPrototype("vine_thick") != null ? "vine_thick" : null;
 
         // Os ids de protocolo identificam a planta; o inventario usa o item generico
         // flower. Confirmados em recipes.json/source_info e generator_client_data.

@@ -616,7 +616,8 @@ public partial class Player
         }
 
         int value = CombatDamage.Calculate(power, attack, CurrentDerivedDefense(),
-            resistances, (wearWeapon ? owner.OutgoingDamageScale() : 1) * directionRatio * DamageTakenScale() * BattleDataStore.PvpDamageScale(attack));
+            resistances, (wearWeapon ? owner.OutgoingDamageScale() : 1) * directionRatio * DamageTakenScale() * BattleDataStore.PvpDamageScale(attack),
+            owner.CurrentAttackType());
         if (value <= 0) return;
 
         // โดนหรือหลบ — ใช้ Derived.Dodge / Accuracy ของทั้งสองฝ่ายหลังรวมสกิล

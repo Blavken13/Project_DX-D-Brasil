@@ -9,11 +9,17 @@ internal static class CombatDamage
     // Server balance curve: armor attenuates damage continuously instead of
     // subtracting a level-scaled defense until every weapon hits for one.
     internal static int Calculate(float power, BattleAttackInfo hit, float defense,
-        Dictionary<string, float> resistances = null, float scale = 1)
+        Dictionary<string, float> resistances = null, float scale = 1,
+        Shared.Battle.AttackType? weaponType = null)
     {
         if (!float.IsFinite(power) || power <= 0 || hit == null) return 0;
         float weight = hit.atk_ratio?.Values.Where(v => v > 0).Sum() ?? 0;
-        float resistance = weight > 0 ? hit.atk_ratio.Where(p => p.Value > 0)
+        // The action table labels several blunt-weapon skills as cut damage.
+        // Blunt weapons use the impact resistance, while retaining the action's
+        // own damage bonus and the attack power calculated from skills/equipment.
+        float resistance = weaponType == Shared.Battle.AttackType.Blunt
+            ? Math.Max(0, resistances?.GetValueOrDefault("impact", 1) ?? 1)
+            : weight > 0 ? hit.atk_ratio.Where(p => p.Value > 0)
             .Sum(p => p.Value * Math.Max(0, resistances?.GetValueOrDefault(p.Key, 1) ?? 1)) / weight : 1;
         float armor = Math.Max(0, defense) * resistance * (1 - Math.Clamp(hit.armor_penetration, 0, 1));
         double value = power * (double)power / (power + armor) * Math.Max(0, hit.damage_bonus) * Math.Max(0, scale);

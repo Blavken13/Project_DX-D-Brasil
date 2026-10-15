@@ -10,6 +10,49 @@ namespace Durango.Online;
 
 public partial class World
 {
+    private static WarpAccelerator MakeInactiveWarpAccelerator() => new()
+    {
+        Status = Shared.Accelerator.AcceleratorStatus.RiftInactivated,
+        CurrentPhase = 0,
+        Participants = Array.Empty<string>()
+    };
+
+    private void RestoreWarpAccelerators()
+    {
+        bool repaired = false;
+        foreach (var rift in ArtifactManager.Enumerable(a => a.IsAlive && a.EntityType == 6282).ToArray())
+            repaired |= ArtifactManager.RestoreWarpAccelerator(rift.EntityId, MakeInactiveWarpAccelerator());
+        if (repaired) Save();
+        ProcessWarpAccelerators(Gauge.CurrentTime);
+    }
+
+    public bool ActivateWarpAccelerator(string id, string participantId, double now)
+    {
+        if (ArtifactManager.Get(id) is not { } rift || rift.EntityType != 6282 ||
+            rift.States.Warpaccelerator is not { } state ||
+            state.Status != Shared.Accelerator.AcceleratorStatus.RiftInactivated) return false;
+        ArtifactManager.UpdateWarpAccelerator(id, accelerator =>
+        {
+            accelerator.Status = Shared.Accelerator.AcceleratorStatus.RiftActivated;
+            accelerator.StatusSince = now;
+            accelerator.StatusUntil = now + 180;
+            accelerator.CurrentPhase = 0;
+            accelerator.CurrentWave = null;
+            accelerator.CurrentMaxWave = null;
+            accelerator.RemainAnimals = null;
+            accelerator.Participants = string.IsNullOrEmpty(participantId) ? Array.Empty<string>() : new[] { participantId };
+            return accelerator;
+        });
+        Save();
+        return true;
+    }
+
+    private void ProcessWarpAccelerators(double now)
+    {
+        foreach (var rift in ArtifactManager.Enumerable(a => a.States.Warpaccelerator?.StatusUntil <= now).ToArray())
+            ArtifactManager.UpdateWarpAccelerator(rift.EntityId, _ => MakeInactiveWarpAccelerator());
+    }
+
     private readonly HashSet<string> _reservedCraters = new(StringComparer.Ordinal);
     public bool ReserveCrater(string id) => id != null && _reservedCraters.Add(id);
     public void ReleaseCrater(string id) => _reservedCraters.Remove(id);
