@@ -322,6 +322,26 @@ public class ArtifactManager
         return true;
     }
 
+    public bool RestoreWarpAccelerator(string entityId, WarpAccelerator state)
+    {
+        if (entityId == null || !_artifacts.TryGetValue(entityId, out var artifact) ||
+            artifact.EntityType != 6282 || artifact.States.Warpaccelerator.HasValue) return false;
+        artifact.States.Warpaccelerator = state;
+        _artifacts[entityId] = artifact;
+        RaiseStateUpdated(entityId, artifact.States);
+        return true;
+    }
+
+    public bool UpdateWarpAccelerator(string entityId, Func<WarpAccelerator, WarpAccelerator> mutate)
+    {
+        if (entityId == null || mutate == null || !_artifacts.TryGetValue(entityId, out var artifact) ||
+            artifact.States.Warpaccelerator is not WarpAccelerator state) return false;
+        artifact.States.Warpaccelerator = mutate(state);
+        _artifacts[entityId] = artifact;
+        RaiseStateUpdated(entityId, artifact.States);
+        return true;
+    }
+
     private void RaiseStateUpdated(string entityId, ArtifactState state)
     {
         state.EntityId = entityId;
