@@ -1,27 +1,4 @@
 {
-  "lock": [
-    {
-      "category": "material",
-      "min_level": 1,
-      "max_level": 60,
-      "time_limited": false,
-      "name": { "Cadeado": null },
-      "icon": "icon_item_lock",
-      "tags": { "lock": null },
-      "dyeables": [],
-      "dump_locked": false,
-      "trade_locked": false,
-      "color_r": "#8f8f8f",
-      "color_g": "#8f8f8f",
-      "color_b": "#8f8f8f",
-      "material_name": { "": null },
-      "sub_categories": [ "material_metal" ],
-      "item_name": { "": null },
-      "size": 1,
-      "item_description": { "Cadeado usado para proteger caixas e armazenamentos.": null },
-      "immune_to_time": false
-    }
-  ],
   "door_01_none": [
     {
       "category": "material",

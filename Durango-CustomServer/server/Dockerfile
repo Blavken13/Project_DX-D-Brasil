@@ -14,6 +14,7 @@ RUN dotnet publish "./DurangoServer.csproj" \
     --no-restore \
     /p:UseAppHost=false
 
+RUN dotnet /out/DurangoServer.dll --client-assets-check --data /out/data
 
 FROM mcr.microsoft.com/dotnet/runtime:9.0 AS runtime
 

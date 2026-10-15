@@ -100,6 +100,10 @@ internal static class Program
         {
             switch (args[i])
             {
+                case "--client-assets-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return ClientAssetsCheck.Run(dataDir);
                 case "--gathering-duplicate-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
