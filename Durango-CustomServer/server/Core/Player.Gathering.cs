@@ -320,6 +320,12 @@ public partial class Player
             RejectCollect(seq, $"Gerador não encontrado: '{msg.GeneratorId}' do tipo {entityType}", msg);
             return;
         }
+        if (LostParcelLoot.IsPackage(spec.CollectibleId) &&
+            !LostParcelLoot.For(spec.CollectibleId, msg.EntityId).Contains(spec.PrototypeId, StringComparer.Ordinal))
+        {
+            RejectCollect(seq, "Esta caixa não contém mais esse item.", msg);
+            return;
+        }
 
         int resourceLevel = carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType);
         spec = CollectibleTable.AtLevel(spec, resourceLevel);
@@ -412,14 +418,17 @@ public partial class Player
         // ซากสัตว์คิดครั้งจากเลเวลตัวสัตว์ ของธรรมชาติใช้ตามที่ spec คิดไว้
         int taken = _world.HarvestedGenerators(harvestKey).Count;
         int total = 0;
-        foreach (CollectibleTable.GeneratorSpec s in CollectibleTable.AllSpecs(entityType))
-        {
-            CollectibleTable.GeneratorSpec live = CollectibleTable.AtLevel(
-                s, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType));
-            total += carcass != null
-                ? CollectibleTable.AmountForCarcass(live, carcass.CombatLevel)
-                : live.Amount;
-        }
+        if (LostParcelLoot.IsPackage(spec.CollectibleId))
+            total = LostParcelLoot.For(spec.CollectibleId, msg.EntityId).Length;
+        else
+            foreach (CollectibleTable.GeneratorSpec s in CollectibleTable.AllSpecs(entityType))
+            {
+                CollectibleTable.GeneratorSpec live = CollectibleTable.AtLevel(
+                    s, carcass != null ? carcass.CombatLevel : CurrentGatheringLevel(entityType));
+                total += carcass != null
+                    ? CollectibleTable.AmountForCarcass(live, carcass.CombatLevel)
+                    : live.Amount;
+            }
         bool ranOut = total > 0 && taken >= total;
 
         // หักแรงตอนเริ่มเก็บ (ลงมือแล้ว) — ของเข้ากระเป๋าเลื่อนไปตอนจบ
@@ -434,7 +443,9 @@ public partial class Player
             RejectCollect(seq, "Coleta interrompida pela morte do personagem.", msg);
             return;
         }
-        int itemCount = CollectibleTable.ItemsPerCollect;
+        int itemCount = LostParcelLoot.IsPackage(spec.CollectibleId)
+            ? LostParcelLoot.Quantity(spec.CollectibleId, msg.EntityId, spec.PrototypeId)
+            : CollectibleTable.ItemsPerCollect;
         bool bonus = carcass != null ? RollButcheryBonus() : RollGatherBonus();
         if (bonus) itemCount++;
 
@@ -909,7 +920,13 @@ internal static class CollectibleTable
                                     Dictionary<string, int> unlockedCategories = null, int resourceLevel = 0,
                                     int itemLevelLimit = 0, IReadOnlySet<string> unlockedRewards = null)
     {
-        if (!_cache.TryGetValue(entityType, out Collectible template))
+        Collectible template;
+        if (LostParcelLoot.IsPackage(CollectibleIdOf(entityType)))
+        {
+            // Cada caixa tem seu próprio conteúdo aleatório, estável por EntityId.
+            template = BuildTemplate(entityType);
+        }
+        else if (!_cache.TryGetValue(entityType, out template))
         {
             template = BuildTemplate(entityType);
             _cache[entityType] = template;
@@ -1015,6 +1032,25 @@ internal static class CollectibleTable
                 left.Add(copy);
             }
             template.Generators = left.ToArray();
+        }
+        if (LostParcelLoot.IsPackage(template.CollectibleId) && template.Generators != null)
+        {
+            HashSet<string> selectedPrototypes = LostParcelLoot.For(template.CollectibleId, entityId)
+                .ToHashSet(StringComparer.Ordinal);
+            Dictionary<string, GeneratorSpec> specsByGenerator = SpecsFor(entityType)
+                .ToDictionary(spec => spec.Id, StringComparer.Ordinal);
+            template.Generators = template.Generators
+                .Where(generator => specsByGenerator.TryGetValue(generator.Id, out GeneratorSpec spec) &&
+                    selectedPrototypes.Contains(spec.PrototypeId))
+                .Select(generator =>
+                {
+                    Generator copy = generator;
+                    string prototypeId = specsByGenerator[copy.Id].PrototypeId;
+                    copy.Amount = LostParcelLoot.Quantity(template.CollectibleId, entityId, prototypeId);
+                    return copy;
+                })
+                .ToArray();
+            template.CriticalGenerator = template.Generators.FirstOrDefault().Id ?? string.Empty;
         }
         return template;
     }
@@ -1260,7 +1296,7 @@ internal static class CollectibleTable
         {
             Add("clam");
         }
-        foreach (string id in LostParcelLoot.For(collectibleId)) Add(id);
+        foreach (string id in LostParcelLoot.Candidates(collectibleId)) Add(id);
 
         // Fruit trees on the map use collectible ids that differ from the generators
         // in recipes.json. Both the fruit and seed prototypes exist in prototype_data.

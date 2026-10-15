@@ -38,9 +38,16 @@ internal static class SeasonPassCatalog
         {
             string id = (string)spec["id"];
             int level = (int?)spec["level"] ?? 60;
-            if (string.IsNullOrWhiteSpace(id) || (int?)spec["count"] <= 0 ||
-                !Cheats.MakeItem(id, level).HasValue)
+            if (string.IsNullOrWhiteSpace(id) || (int?)spec["count"] <= 0)
                 throw new InvalidOperationException("Prêmio inválido no Season Pass: " + id);
+            try
+            {
+                ShopCatalog.MakeItem(new JObject { ["prototype_id"] = id, ["level"] = level });
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidOperationException("Prêmio inválido no Season Pass: " + id);
+            }
         }
         Current = catalog;
     }

@@ -62,9 +62,13 @@ public partial class Gateway
                     foreach (JToken spec in (JArray)reward["items"])
                     for (int n = 0; n < (int)spec["count"]; n++)
                     {
-                        Item? made = Cheats.MakeItem((string)spec["id"], (int?)spec["level"] ?? 60);
-                        if (!made.HasValue) throw new InvalidOperationException("Prêmio ausente: " + spec["id"]);
-                        granted.Add(made.Value);
+                        // Reuse the standard item composer so capsule rewards receive
+                        // their ArtifactCapsule extension and remain placeable from inventory.
+                        granted.Add(ShopCatalog.MakeItem(new JObject
+                        {
+                            ["prototype_id"] = (string)spec["id"],
+                            ["level"] = (int?)spec["level"] ?? 60
+                        }));
                     }
                 }
             }
