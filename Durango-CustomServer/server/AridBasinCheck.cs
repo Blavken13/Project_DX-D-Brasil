@@ -59,6 +59,8 @@ internal static class AridBasinCheck
             var arid = TerrainLoader.Load(AridBasinContent.TerrainId);
             Check(arid.Pois.PortPoints.Count == 1 && arid.Pois.PortPoints[0] == new Point2(128, 27),
                 "the inline port coordinate is available for arrival and the raft map");
+            Check(arid.Pois.Craters.Count == 0 && !world.ArtifactManager.Enumerable(a => a.States.Crack.HasValue).Any(),
+                "Arid Basin has no crater POIs or crater structures");
             var other = TerrainLoader.Load("ua60de_alpha");
             Check(!arid.Biomes.SequenceEqual(other.Biomes) && !arid.Ocean.SequenceEqual(other.Ocean),
                 "Arid Basin coastline and map layers differ from the existing desert island");
@@ -128,6 +130,13 @@ internal static class AridBasinCheck
             player.ResolveAnimalAttack(giga, now + 6.7);
             Check(survival.ValueAt(SurvivalState.KeyLife, Gauge.CurrentTime) >= beforeMiss,
                 "leaving the bite's area during the warning still avoids damage");
+            var obsoleteCrater = Cheats.MakeAppearArtifact(new[] { "prop", "7037" }, out _).Value;
+            obsoleteCrater.EntityId = "poi_crater_0";
+            obsoleteCrater.Tile = new Point2(80, 80);
+            world.ArtifactManager.AddArtifact(obsoleteCrater);
+            var restored = new World(context);
+            Check(!restored.ArtifactManager.Enumerable(a => a.EntityId == "poi_crater_0").Any(),
+                "loading an older Arid Basin save removes its obsolete crater");
             Console.WriteLine($"[arid-check] PASS {passed} checks; production saves untouched");
             return 0;
         }

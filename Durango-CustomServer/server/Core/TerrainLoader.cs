@@ -39,7 +39,7 @@ public static class TerrainLoader
         int edge = (terrainData.Width + 1) * (terrainData.Height + 1);
         if (terrainData.Ocean == null) terrainData.Ocean = new byte[edge];
         if (terrainData.Rivers == null) terrainData.Rivers = new byte[edge * 3];
-        TerrainEcology.CompletePois(terrainData);
+        TerrainEcology.CompletePois(terrainData, terrainId);
         return terrainData;
     }
 

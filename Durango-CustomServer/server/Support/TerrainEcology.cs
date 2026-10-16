@@ -52,18 +52,20 @@ internal static class TerrainEcology
         }
     }
 
-    public static void CompletePois(TerrainData terrain)
+    public static void CompletePois(TerrainData terrain, string terrainId)
     {
         var role = RegionCatalog.GetTemplate(terrain.Info?.region_template)?.Role;
         terrain.Pois ??= new TerrainPois();
         var pois = terrain.Pois;
+        bool withoutCraters = AridBasinContent.IsTerrain(terrainId);
+        if (withoutCraters) pois.Craters.Clear();
         // O garden também contém POIs nativos: não são recursos coletáveis.
         foreach (var natural in NaturalInfo.FromBytes(terrain.Garden ?? Array.Empty<byte>()))
         {
             var target = natural.EntityType switch
             {
                 15001 => pois.Warpholes,
-                15002 or 15004 => pois.Craters,
+                15002 or 15004 when !withoutCraters => pois.Craters,
                 15006 => pois.Rifts,
                 _ => null
             };
@@ -75,11 +77,11 @@ internal static class TerrainEcology
         var landmarks = terrain.Landmarks == null ? Array.Empty<LandmarkInfo>() : LandmarkInfo.FromBytes(terrain.Landmarks);
         foreach (var tile in LandGrid(terrain, 20))
         {
-            if (pois.Warpholes.Count >= 2 && pois.Craters.Count >= 1) break;
+            if (pois.Warpholes.Count >= 2 && (withoutCraters || pois.Craters.Count >= 1)) break;
             if (occupied.Any(p => Math.Abs(p.x - tile.x) < 16 && Math.Abs(p.y - tile.y) < 16) ||
                 landmarks.Any(p => Math.Abs(p.X - tile.x) < 6 && Math.Abs(p.Y - tile.y) < 6)) continue;
             if (pois.Warpholes.Count < 2) pois.Warpholes.Add(tile);
-            else pois.Craters.Add(tile);
+            else if (!withoutCraters) pois.Craters.Add(tile);
             occupied.Add(tile);
         }
     }

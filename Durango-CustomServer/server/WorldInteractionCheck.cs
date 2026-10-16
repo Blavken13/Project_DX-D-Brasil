@@ -158,8 +158,13 @@ internal static class WorldInteractionCheck
                         "nova ilha preserva nivel e fauna do template: " + id);
                 if (template.Role is not (Shared.Region.Role.Personal or Shared.Region.Role.Tutorial))
                 {
-                    Check(data.Pois.Warpholes.Count >= 2 && data.Pois.Craters.Count >= 1 &&
-                        tw.ArtifactManager.Enumerable(a => a.States.Crack.HasValue).Any(), "portais e crateras em " + id);
+                    bool noCraters = AridBasinContent.IsTerrain(id);
+                    Check(data.Pois.Warpholes.Count >= 2 &&
+                        (noCraters ? data.Pois.Craters.Count == 0 &&
+                            !tw.ArtifactManager.Enumerable(a => a.States.Crack.HasValue).Any() :
+                            data.Pois.Craters.Count >= 1 &&
+                            tw.ArtifactManager.Enumerable(a => a.States.Crack.HasValue).Any()),
+                        "portais e crateras conforme o mapa em " + id);
                     foreach (var nativeCrater in tw.ArtifactManager.Enumerable(a => a.States.Crack.HasValue).ToArray())
                         Check(tw.ActivateCrater(nativeCrater.EntityId, Gauge.CurrentTime) &&
                             tc.CraterResources[nativeCrater.EntityId].Count > 0, "inducao efetiva em " + id + "/" + nativeCrater.EntityId);
