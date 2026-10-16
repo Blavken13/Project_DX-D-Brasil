@@ -28,6 +28,10 @@ services:
     volumes:
       - durango-staging-state:/app/AppData-nx
       - ../../Durango-CustomServer/server/assetbundles/android:/app/assetbundles/android:ro
+      - type: bind
+        source: ${DURANGO_WINDOWS_BUNDLES_DIR:-../../Durango-CustomServer/server/assetbundles/windows}
+        target: /app/assetbundles/windows
+        read_only: true
 
     command:
       - "--name"
@@ -40,6 +44,8 @@ services:
       - "/app/data/terrains"
       - "--assetbundles-android"
       - "/app/assetbundles/android"
+      - "--assetbundles-windows"
+      - "/app/assetbundles/windows"
       - "--public-host"
       - "${DURANGO_PUBLIC_HOST}"
       - "--max-players"
