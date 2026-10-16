@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Durango.Online;
 
@@ -94,6 +95,15 @@ public class TerrainPois
                         "craters" => pois.Craters,
                         _ => null
                     };
+                    if (target != null && rest.StartsWith("[[", StringComparison.Ordinal)
+                        && rest.EndsWith("]]", StringComparison.Ordinal))
+                    {
+                        foreach (Match pair in Regex.Matches(rest, @"\[\s*(-?\d+)\s*,\s*(-?\d+)\s*\]"))
+                            target.Add(new Point2(int.Parse(pair.Groups[1].Value),
+                                int.Parse(pair.Groups[2].Value)));
+                        target = null;
+                        continue;
+                    }
                     // "คีย์: {}" หรือ "คีย์: []" = ว่าง ไม่มีรายการตามมา
                     if (rest == "{}" || rest == "[]")
                     {

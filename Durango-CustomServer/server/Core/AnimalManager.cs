@@ -716,8 +716,8 @@ public class AnimalManager
     /// </summary>
     private void Spawn(TerrainData terrain, RegionCatalog.TemplateInfo template, string terrainId)
     {
-        // Arid Basin keeps its single showcase Giganotosaurus, then continues
-        // through the native level-60 desert fauna population below.
+        // Arid Basin has its single showcase Giganotosaurus. The separate
+        // level-60 desert island keeps the native desert fauna below.
         if (terrain != null && AridBasinContent.IsTerrain(terrainId))
         {
             Point2 center = new(128, 128);
@@ -751,6 +751,7 @@ public class AnimalManager
             {
                 Console.WriteLine("[fauna] Arid Basin: sem terreno seco próximo ao centro; Giganotosaurus não criado.");
             }
+            return;
         }
 
         if (template?.Role == Shared.Region.Role.Safehouse)

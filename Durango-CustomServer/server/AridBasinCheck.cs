@@ -57,6 +57,8 @@ internal static class AridBasinCheck
             Check(Math.Abs(giga.ToMessage().Display.BaseScale - 4f) < .0001 && AnimalTypes.Get(2213).BoundRadius == 240f,
                 "spawn scale is four times the T-Rex and its server hit radius scales with the model");
             var arid = TerrainLoader.Load(AridBasinContent.TerrainId);
+            Check(arid.Pois.PortPoints.Count == 1 && arid.Pois.PortPoints[0] == new Point2(128, 27),
+                "the inline port coordinate is available for arrival and the raft map");
             var other = TerrainLoader.Load("ua60de_alpha");
             Check(!arid.Biomes.SequenceEqual(other.Biomes) && !arid.Ocean.SequenceEqual(other.Ocean),
                 "Arid Basin coastline and map layers differ from the existing desert island");
