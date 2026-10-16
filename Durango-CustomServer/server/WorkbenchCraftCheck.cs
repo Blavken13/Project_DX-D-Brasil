@@ -350,7 +350,11 @@ internal static class WorkbenchCraftCheck
                 survival.Set(SurvivalState.KeyEnergy, 1);
                 Call(link.Player, "FlushSurvival");
                 link.Request<UseItem, OK>(new UseItem { ItemId = result.Id, Accept = true });
-                float expected = 1 + cookedEnergy;
+                var cookedFood = result.Performance.Single(p => p.Id == "food").Nums;
+                float recovery = cookedFood.TryGetValue("satiety", out float satiety)
+                    ? satiety
+                    : cookedEnergy;
+                float expected = 1 + recovery;
                 float actual = survival.ValueAt(SurvivalState.KeyEnergy, Gauge.CurrentTime);
                 Check(Math.Abs(actual - expected) < .5,
                     id + $" consumo TCP recupera os valores preparados do item ({actual} / {expected})");
