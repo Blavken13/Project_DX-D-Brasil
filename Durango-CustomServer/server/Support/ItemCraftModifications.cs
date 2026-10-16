@@ -345,6 +345,16 @@ public static class ItemCraftModifications
                     _ => value + (float)effect.Value };
             blocks[index].Nums[key.Field] = value;
         }
+        // Cooking changes energy_expression, while the client displays satiety.
+        // Keep that displayed amount in sync with the energy restored on use.
+        bool preparedFood = item.Tags?.Any(tag => tag.Id is "fried" or "fried_stir" or
+            "energy_fire" or "s02_energy_fire" or "smoked" or "preserve_energy" or
+            "medicine_high" or "cold") == true;
+        var food = blocks.FirstOrDefault(block => block.Id == "food");
+        if (preparedFood && food.Nums?.TryGetValue("satiety", out float satiety) == true &&
+            food.Nums.TryGetValue("energy_potential", out float potential))
+            food.Nums["satiety"] = Math.Max(satiety,
+                potential * food.Nums.GetValueOrDefault("energy_expression", 1));
         item.Performance = blocks.ToArray();
     }
 

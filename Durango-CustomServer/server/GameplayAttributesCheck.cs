@@ -116,6 +116,9 @@ internal static class GameplayAttributesCheck
             }
             float rawEnergy = Eat(raw); cooked.Id = Guid.NewGuid().ToString(); float cookedEnergy = Eat(cooked);
             Check(cookedEnergy > rawEnergy + 20, "preparo aumenta energia realmente recuperada ao comer");
+            Check(cooked.Performance.Single(b => b.Id == "food").Nums["satiety"] >
+                raw.Performance.Single(b => b.Id == "food").Nums["satiety"] + 20,
+                "preparo atualiza a saciedade exibida para o valor recuperado");
             var strengthBefore = Stats().BasicAbilities[Basic.Strength];
             Eat(Cheats.MakeItem("meatball_01", 10).Value);
             Check(Stats().BasicAbilities[Basic.Strength] > strengthBefore && link.Messages.OfType<StatusEffects>().Last()._StatusEffects
