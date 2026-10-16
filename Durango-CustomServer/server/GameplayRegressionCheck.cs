@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Durango.Online;
+using Durango.Terrain;
 using Durango.Utils;
 using Messages;
 using Newtonsoft.Json.Linq;
@@ -311,8 +312,13 @@ internal static class GameplayRegressionCheck
             tutorial.MarkGeneratorHarvested($"{clientSpot.x},{clientSpot.y}", "leaf_small");
             Check(tutorialContext.NaturalRegrow.Any(e => e.X == clientSpot.x && e.Y == clientSpot.y),
                 "recursos conhecidos pelo cliente tambem entram na fila de renovacao");
-            var regularSpot = new Point2(world.EntryPoint.x + 2, world.EntryPoint.y + 2);
+            // The entry point can contain the island dock; personal islands
+            // correctly reject resources placed on top of structures.
+            var regularSpot = TerrainEcology.LandGrid(TerrainLoader.Load(world.TerrainId), 4)
+                .First(p => world.CanPlaceSystemContent(p) && world.NaturalTypeAt(p) == 0);
             world.AddNatural(regularSpot, 11002);
+            Check(world.NaturalTypeAt(regularSpot) == 11002,
+                "recurso de teste ocupa terreno livre na ilha comum");
             world.MarkGeneratorHarvested($"{regularSpot.x},{regularSpot.y}", "leaf_small");
             Check(worldContext.NaturalRegrow.Any(e => e.X == regularSpot.x && e.Y == regularSpot.y),
                 "renovacao parcial cobre ilhas comuns sem exigir esgotar todas as partes");
