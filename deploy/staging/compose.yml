@@ -49,7 +49,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -fsS http://127.0.0.1:8190/status >/dev/null || exit 1"
+          "curl -fsS --max-time 3 http://127.0.0.1:8190/status >/dev/null || exit 1"
         ]
       interval: 15s
       timeout: 5s

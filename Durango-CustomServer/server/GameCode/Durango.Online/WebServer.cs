@@ -141,6 +141,7 @@ public class WebServer
 	/// 8 พอสำหรับ 50 คน เพราะฝั่งเกมแคชไฟล์ไว้แล้วโหลดแค่ครั้งแรกครั้งเดียว
 	/// </summary>
 	private static readonly SemaphoreSlim _fileSendSlots = new SemaphoreSlim(8, 8);
+	private static readonly SemaphoreSlim _bufferedSendSlots = new SemaphoreSlim(16, 16);
 
 	public class FileResponse : Response
 	{
@@ -189,7 +190,14 @@ public class WebServer
 		}
 	}
 
-	private readonly Queue<HttpListenerContext> _contextQueue = new Queue<HttpListenerContext>();
+	private sealed class QueuedRequest
+	{
+		public HttpListenerContext Context;
+		public string Body;
+	}
+
+	private readonly Queue<QueuedRequest> _contextQueue = new Queue<QueuedRequest>();
+	private readonly SemaphoreSlim _postReadSlots = new SemaphoreSlim(16, 16);
 
 	private readonly LinkedList<KeyValuePair<HttpListenerContext, Response>> _responseList = new LinkedList<KeyValuePair<HttpListenerContext, Response>>();
 	private const int MaxRequestBodyBytes = 128 * 1024;
@@ -389,16 +397,50 @@ public class WebServer
 			{
 				HttpListenerContext item = _listener.EndGetContext(result);
 				if (BackgroundHandler?.Invoke(item, StripPrefix(item.Request.Url.AbsolutePath)) == true) return;
-					lock (_contextQueue)
+				if (item.Request.HttpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase)
+					&& item.Request.ContentLength64 >= 0
+					&& item.Request.ContentLength64 <= MaxRequestBodyBytes)
+				{
+					if (!_postReadSlots.Wait(0))
 					{
-						if (_contextQueue.Count >= MaxQueuedContexts)
-						{
-							try { item.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable; item.Response.Close(); } catch (Exception) { }
-							return;
-						}
-						_contextQueue.Enqueue(item);
+						try { item.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable; item.Response.Close(); } catch (Exception) { }
 						return;
 					}
+					if (!ThreadPool.QueueUserWorkItem(async _ =>
+					{
+						try
+						{
+							byte[] bytes = new byte[(int)item.Request.ContentLength64];
+							using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+							int read = 0;
+							while (read < bytes.Length)
+							{
+								int n = await item.Request.InputStream
+									.ReadAsync(bytes.AsMemory(read), deadline.Token)
+									.AsTask().WaitAsync(deadline.Token);
+								if (n == 0) throw new EndOfStreamException("Incomplete POST body");
+								read += n;
+							}
+							EnqueueRequest(item, Encoding.UTF8.GetString(bytes));
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine("[web] POST body rejected: " + ex.Message);
+							try { item.Response.Abort(); } catch (Exception) { }
+						}
+						finally
+						{
+							_postReadSlots.Release();
+						}
+					}))
+					{
+						_postReadSlots.Release();
+						try { item.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable; item.Response.Close(); } catch (Exception) { }
+					}
+					return;
+				}
+				EnqueueRequest(item, null);
+				return;
 			}
 		}
 		catch (Exception)
@@ -407,6 +449,19 @@ public class WebServer
 		finally
 		{
 			_listenReady = true;
+		}
+	}
+
+	private void EnqueueRequest(HttpListenerContext context, string body)
+	{
+		lock (_contextQueue)
+		{
+			if (_contextQueue.Count >= MaxQueuedContexts)
+			{
+				try { context.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable; context.Response.Close(); } catch (Exception) { }
+				return;
+			}
+			_contextQueue.Enqueue(new QueuedRequest { Context = context, Body = body });
 		}
 	}
 
@@ -456,12 +511,12 @@ public class WebServer
 
 	public void Process()
 	{
-		List<HttpListenerContext> pending = null;
+		List<QueuedRequest> pending = null;
 		lock (_contextQueue)
 		{
 			if (_contextQueue.Count > 0)
 			{
-				pending = new List<HttpListenerContext>(_contextQueue.Count);
+				pending = new List<QueuedRequest>(_contextQueue.Count);
 				while (_contextQueue.Count > 0)
 				{
 					pending.Add(_contextQueue.Dequeue());
@@ -472,10 +527,10 @@ public class WebServer
 		{
 			for (int i = 0; i < pending.Count; i++)
 			{
-				HttpListenerContext httpListenerContext = pending[i];
+				HttpListenerContext httpListenerContext = pending[i].Context;
 				try
 				{
-					Response value = Process(httpListenerContext);
+					Response value = Process(httpListenerContext, pending[i].Body);
 					_responseList.AddLast(new KeyValuePair<HttpListenerContext, Response>(httpListenerContext, value));
 				}
 				catch (Exception ex)
@@ -601,41 +656,49 @@ public class WebServer
 					linkedListNode = linkedListNode.Next;
 					continue;
 				}
-				else
-				using (MemoryStream buffer = new MemoryStream())
+				else if (StripPrefix(key.Request.Url.AbsolutePath).Equals("/status", StringComparison.OrdinalIgnoreCase))
 				{
-					value3.Write(buffer);
-					byte[] bytes = buffer.ToArray();
-					// [แก้เอง] 31 ส.ค. 2026 — บีบ gzip ให้ถ้า client ขอมา
-					//
-					// พอเปิด Mode.Online เกมเลิกอ่านไฟล์ข้อมูลจากดิสก์ในเครื่อง มาโหลดจากเซิร์ฟแทน
-					// = 15 MB ต่อการเข้าเกม 1 ครั้ง ทีละไฟล์ ⇒ วัดจริงได้ 75 วินาทีตอนสร้างตัวละคร
-					//
-					// ตัวเกมส่ง "Accept-Encoding: gzip" มาให้อยู่แล้ว (client Durango.Utils/Http.cs:29)
-					// แต่เราไม่เคยบีบให้ — JSON บีบแล้วเหลือ ~7% (2,022 KB → 157 KB)
-					//
-					// ข้ามไฟล์เล็กกว่า 1 KB (บีบแล้วมักโตกว่าเดิม) และข้าม octet-stream ซึ่งคือ
-					// assetbundle (.bundle บีบ LZ4 มาแล้ว บีบซ้ำได้ไม่กี่ % แต่กิน CPU ทุกคำขอ)
-					string acceptEncoding = key.Request.Headers["Accept-Encoding"];
-					bool wantsGzip = acceptEncoding != null
-						&& acceptEncoding.IndexOf("gzip", StringComparison.OrdinalIgnoreCase) >= 0
-						&& bytes.Length >= 1024
-						&& value3.ContentType != null
-						&& value3.ContentType.IndexOf("octet-stream", StringComparison.OrdinalIgnoreCase) < 0;
-					if (wantsGzip)
+					// The small liveness response has its own path even when slow clients fill send slots.
+					WriteBufferedResponse(key, value3);
+				}
+				else
+				{
+					// A client that stops reading must not block the game loop or other HTTP requests.
+					if (!_bufferedSendSlots.Wait(0))
 					{
-						using (MemoryStream packed = new MemoryStream())
-						{
-							using (GZipStream gzip = new GZipStream(packed, CompressionLevel.Fastest, leaveOpen: true))
-							{
-								gzip.Write(bytes, 0, bytes.Length);
-							}
-							bytes = packed.ToArray();
-						}
-						key.Response.Headers["Content-Encoding"] = "gzip";
+						linkedListNode = linkedListNode.Next;
+						continue;
 					}
-					key.Response.ContentLength64 = bytes.Length;
-					key.Response.OutputStream.Write(bytes, 0, bytes.Length);
+					HttpListenerContext ctx = key;
+					Response body = value3;
+					if (!ThreadPool.QueueUserWorkItem(delegate
+					{
+						try
+						{
+							WriteBufferedResponse(ctx, body);
+							LogRepeatable(string.Format("[web] {0} {1} -> {2}",
+								ctx.Request.HttpMethod, ctx.Request.Url.PathAndQuery, (int)body.StatusCode));
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine("[web] response send failed: " + ex.Message);
+							try { ctx.Response.Abort(); } catch (Exception) { }
+						}
+						finally
+						{
+							try { ctx.Response.Close(); } catch (Exception) { }
+							_bufferedSendSlots.Release();
+						}
+					}))
+					{
+						_bufferedSendSlots.Release();
+						linkedListNode = linkedListNode.Next;
+						continue;
+					}
+					LinkedListNode<KeyValuePair<HttpListenerContext, Response>> sent = linkedListNode;
+					linkedListNode = linkedListNode.Next;
+					_responseList.Remove(sent);
+					continue;
 				}
 				LogRepeatable(string.Format("[web] {0} {1} -> {2}", key.Request.HttpMethod, key.Request.Url.PathAndQuery, (int)value3.StatusCode));
 				key.Response.Close();
@@ -665,6 +728,31 @@ public class WebServer
 		}
 	}
 
+	private static void WriteBufferedResponse(HttpListenerContext context, Response body)
+	{
+		using MemoryStream buffer = new MemoryStream();
+		body.Write(buffer);
+		byte[] bytes = buffer.ToArray();
+		string acceptEncoding = context.Request.Headers["Accept-Encoding"];
+		bool wantsGzip = acceptEncoding != null
+			&& acceptEncoding.IndexOf("gzip", StringComparison.OrdinalIgnoreCase) >= 0
+			&& bytes.Length >= 1024
+			&& body.ContentType != null
+			&& body.ContentType.IndexOf("octet-stream", StringComparison.OrdinalIgnoreCase) < 0;
+		if (wantsGzip)
+		{
+			using MemoryStream packed = new MemoryStream();
+			using (GZipStream gzip = new GZipStream(packed, CompressionLevel.Fastest, leaveOpen: true))
+			{
+				gzip.Write(bytes, 0, bytes.Length);
+			}
+			bytes = packed.ToArray();
+			context.Response.Headers["Content-Encoding"] = "gzip";
+		}
+		context.Response.ContentLength64 = bytes.Length;
+		context.Response.OutputStream.Write(bytes, 0, bytes.Length);
+	}
+
 	/// <summary>
 	/// [3 ก.ย. 2026] prefix ของ path ที่ให้ตัดทิ้งก่อน route (เช่น "/p8190") — ตั้งด้วย --url-prefix
 	///
@@ -686,7 +774,7 @@ public class WebServer
 		return rest.StartsWith("/") ? rest : "/" + rest;
 	}
 
-	private Response Process(HttpListenerContext context)
+	private Response Process(HttpListenerContext context, string preparedBody)
 	{
 		string absolutePath = StripPrefix(context.Request.Url.AbsolutePath);
 		if (context.Request.HttpMethod.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
@@ -733,16 +821,11 @@ public class WebServer
 				}
 				else
 				{
-					using StreamReader streamReader = new StreamReader(context.Request.InputStream);
-					char[] chars = new char[MaxRequestBodyBytes];
-					int read = 0;
-					while (read < chars.Length)
+					if (preparedBody == null)
 					{
-						int n = streamReader.Read(chars, read, chars.Length - read);
-						if (n == 0) break;
-						read += n;
+						return new BadRequestResponse();
 					}
-					string text = new string(chars, 0, read);
+					string text = preparedBody;
 					if (isMultipart)
 					{
 						dictionary2 = ParseMultipartForm(text, contentType);
