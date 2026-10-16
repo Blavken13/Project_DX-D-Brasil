@@ -1,0 +1,90 @@
+Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0 : System.Object
+FIELD System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::onChanged
+FIELD System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::url
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::<FetchServers>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+ldc.i4.0 
+stloc.0 
+ldarg.2 
+brfalse.s IL_0025: ldc.i4.0
+ldarg.2 
+callvirt System.Boolean BestHTTP.HTTPResponse::get_IsSuccess()
+brfalse.s IL_0025: ldc.i4.0
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+ldstr BestHTTP
+ldarg.0 
+ldfld System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::onChanged
+call System.Boolean Durango.Logic.Clusters.OffServerLink::ApplyServersJson(System.String,System.String,System.Action)
+br.s IL_0026: stloc.0
+ldc.i4.0 
+stloc.0 
+leave.s IL_0041: ldloc.0
+stloc.1 
+ldstr [OffServer] servers.json BestHTTP parse error: 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+leave.s IL_0041: ldloc.0
+ldloc.0 
+brtrue IL_00d9: ret
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] servers.json BestHTTP failed: 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.1 
+callvirt BestHTTP.HTTPRequestStates BestHTTP.HTTPRequest::get_State()
+stloc.2 
+ldloca.s V_2
+constrained. BestHTTP.HTTPRequestStates
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.2 
+brtrue.s IL_0080: ldarg.2
+ldstr no-response
+br.s IL_008e: stelem.ref
+ldarg.2 
+callvirt System.Int32 BestHTTP.HTTPResponse::get_StatusCode()
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.1 
+callvirt System.Exception BestHTTP.HTTPRequest::get_Exception()
+brtrue.s IL_00a0: ldstr " "
+ldstr 
+br.s IL_00b5: stelem.ref
+ldstr  
+ldarg.1 
+callvirt System.Exception BestHTTP.HTTPRequest::get_Exception()
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr  -> UnityWebRequest
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::url
+ldarg.0 
+ldfld System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::onChanged
+call System.Void Durango.Logic.Clusters.OffServerLink::FetchServersUnity(System.String,System.Action)
+ret 

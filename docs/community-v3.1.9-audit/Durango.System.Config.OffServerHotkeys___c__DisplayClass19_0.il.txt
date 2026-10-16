@@ -1,0 +1,13 @@
+Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0 : System.Object
+FIELD System.String Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::id
+METHOD System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::<CaptionOf>b__0(Durango.System.Config.OffServerHotkeys/Entry)
+ldarg.1 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+ldarg.0 
+ldfld System.String Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+ret 

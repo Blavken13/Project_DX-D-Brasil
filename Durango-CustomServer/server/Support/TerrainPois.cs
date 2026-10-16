@@ -108,6 +108,18 @@ public class TerrainPois
                 }
 
                 string body = line.TrimStart();
+                // Some terrain packs also use a top-level `craters` collection for
+                // biocom/resource spawn records (`biocom_type` + `tile`). Those are
+                // not crater POIs. Ignore that whole record, including its tile pair,
+                // until the next top-level POI key is reached.
+                if (body.StartsWith("- biocom_type:", StringComparison.Ordinal) ||
+                    body.StartsWith("- entity_type:", StringComparison.Ordinal))
+                {
+                    target = null;
+                    pendingX = int.MinValue;
+                    continue;
+                }
+
                 if (body.StartsWith("- ["))
                 {
                     // รูปแบบบรรทัดเดียว: - [63, 71]

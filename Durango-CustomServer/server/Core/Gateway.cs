@@ -39,7 +39,7 @@ public partial class Gateway
 
     public string PublicHost { get; set; }
 
-    public string AssetBundleAndroidDir { get; set; }
+    public string AssetBundleAndroidDir { get; set; }    public string AssetBundleWindowsDir { get; set; }
 
     /// <summary>
     /// [5 ก.ย. 2026] โฟลเดอร์ JSON ที่เสิร์ฟให้ /assets/* (ปกติ &lt;data&gt;/assets)
@@ -1060,7 +1060,8 @@ public partial class Gateway
     /// (TerrainBase.cs:332) ⇒ ถ้าใช้ชื่อซ้ำ เกาะใหม่จะได้แผนที่เกาะเก่าจากแคชของ client
     ///
     /// รูปแบบ:  /terrains/&lt;id&gt;            → info.yml (TerrainInfoJson)
-    ///          /terrains/&lt;id&gt;/whole_biomes → biome ทั้งแผ่น
+    ///          /terrains/&lt;id&gt;/whole_biomes → biome ทั้งแผ่น
+    ///          /terrains/&lt;id&gt;/whole_elevations → elevação por tile
     ///          /terrains/&lt;id&gt;/ocean|rivers/&lt;x&gt;,&lt;y&gt; → chunk เฉพาะชั้น
     ///          /terrains/&lt;id&gt;/&lt;x&gt;,&lt;y&gt;      → chunk รวม (biome+ocean+river+landmark)
     /// </summary>
@@ -1083,6 +1084,11 @@ public partial class Gateway
             return (HttpListenerRequest _, Dictionary<string, string> __) =>
                 new WebServer.BinaryReponse { Content = world.Biomes };
         }
+        if (tail.StartsWith("whole_elevations", StringComparison.OrdinalIgnoreCase))
+        {
+            return (HttpListenerRequest _, Dictionary<string, string> __) =>
+                new WebServer.BinaryReponse { Content = world.Elevations ?? Array.Empty<byte>() };
+        }
         if (tail.StartsWith("ocean", StringComparison.OrdinalIgnoreCase))
         {
             return (HttpListenerRequest _, Dictionary<string, string> __) =>
@@ -1521,7 +1527,7 @@ public partial class Gateway
                 return new WebServer.FileResponse(aPath, "\"" + aName + "\"");
             };
         }
-
+        if (url.StartsWith("/assetbundles/", StringComparison.OrdinalIgnoreCase))        {            string aName = Uri.UnescapeDataString(url.Substring("/assetbundles/".Length).Split('?')[0]);            if (string.IsNullOrEmpty(aName) || aName.Contains("..") ||                aName.IndexOfAny(new[] { '/', '\\', ':', '\0' }) >= 0)                return (HttpListenerRequest _, Dictionary<string, string> __) => new WebServer.BadRequestResponse();            bool isIndex = aName == AndroidAssetBundleCheck.IndexName;            if (!isIndex && !AndroidAssetBundleCheck.IsBundleName(aName))                return (HttpListenerRequest _, Dictionary<string, string> __) => new WebServer.NotFountResponse();            return (HttpListenerRequest request, Dictionary<string, string> _) =>            {                if (!string.Equals(request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase) ||                    string.IsNullOrEmpty(AssetBundleWindowsDir))                    return new WebServer.NotFountResponse();                string aPath = Path.Combine(AssetBundleWindowsDir, aName);                if (!File.Exists(aPath)) return new WebServer.NotFountResponse();                if (isIndex)                    return new WebServer.FileResponse(aPath) { ContentType = "application/json; charset=utf-8" };                return new WebServer.FileResponse(aPath, "\"" + aName + "\"");            };        }
         if (url.StartsWith("/terrains/", StringComparison.OrdinalIgnoreCase))
         {
             return TerrainRoute(url);

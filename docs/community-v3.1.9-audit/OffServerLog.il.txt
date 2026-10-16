@@ -1,0 +1,10 @@
+OffServerLog : System.Object
+METHOD System.Void OffServerLog::Info(System.String)
+call System.Boolean UnityEngine.Application::get_isEditor()
+brfalse.s IL_000e: ldarg.0
+ldarg.0 
+call System.Void UnityEngine.Debug::Log(System.Object)
+ret 
+ldarg.0 
+call System.Void UnityEngine.Debug::LogError(System.Object)
+ret 

@@ -1,0 +1,504 @@
+Durango.System.Config.OffServerVoiceSettings : System.Object
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::Category
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::ModeKey
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::LevelKey
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::VolumeKey
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::SensitivityKey
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::DeafKey
+FIELD System.String Durango.System.Config.OffServerVoiceSettings::PanelKey
+FIELD System.String[] Durango.System.Config.OffServerVoiceSettings::ModeOptions
+FIELD System.String[] Durango.System.Config.OffServerVoiceSettings::LevelOptions
+FIELD System.String[] Durango.System.Config.OffServerVoiceSettings::VolumeOptions
+METHOD System.Boolean Durango.System.Config.OffServerVoiceSettings::get_Visible()
+call System.Boolean OffServerVoice::get_Available()
+ret 
+METHOD System.Collections.Generic.List`1<Durango.System.Config.Setting> Durango.System.Config.OffServerVoiceSettings::BuildSettings()
+newobj System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr offserver_voice_mode
+ldsfld System.String[] Durango.System.Config.OffServerVoiceSettings::ModeOptions
+ldstr hold
+call Durango.System.Config.ToggleSetting Durango.System.Config.OffServerVoiceSettings::MakeToggle(System.String,System.String[],System.String)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+ldstr offserver_voice_level
+ldsfld System.String[] Durango.System.Config.OffServerVoiceSettings::LevelOptions
+ldstr 1
+call Durango.System.Config.ToggleSetting Durango.System.Config.OffServerVoiceSettings::MakeToggle(System.String,System.String[],System.String)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+ldstr offserver_voice_volume
+ldsfld System.String[] Durango.System.Config.OffServerVoiceSettings::VolumeOptions
+ldstr 100
+call Durango.System.Config.ToggleSetting Durango.System.Config.OffServerVoiceSettings::MakeToggle(System.String,System.String[],System.String)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldsfld System.Single[] OffServerVoice::SensitivityDb
+ldlen 
+conv.i4 
+newarr System.String
+stloc.1 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_0082: ldloc.s V_4
+ldloc.1 
+ldloc.s V_4
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloca.s V_5
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int32::ToString(System.IFormatProvider)
+stelem.ref 
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0066: ldloc.1
+ldloc.0 
+ldstr offserver_voice_sensitivity
+ldloc.1 
+ldstr 4
+call Durango.System.Config.ToggleSetting Durango.System.Config.OffServerVoiceSettings::MakeToggle(System.String,System.String[],System.String)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+newobj System.Void Durango.System.Config.ValueSetting::.ctor()
+stloc.2 
+ldloc.2 
+ldstr offserver_voice_deaf
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.2 
+ldc.i4.s 9
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.2 
+ldstr false
+stfld System.String Durango.System.Config.ValueSetting::Default
+ldloc.2 
+ldc.i4.0 
+box System.Boolean
+stfld System.Object Durango.System.Config.ValueSetting::Value
+ldloc.2 
+ldc.i4.1 
+stfld System.Boolean Durango.System.Config.Setting::HideOnOffline
+ldloc.2 
+ldstr offserver_voice_deaf
+call System.String Durango.System.Config.OffServerVoiceSettings::Label(System.String)
+stfld System.String Durango.System.Config.ValueSetting::PrepareLabelText
+ldloc.0 
+ldloc.2 
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+newobj System.Void Durango.System.Config.ValueSetting::.ctor()
+stloc.3 
+ldloc.3 
+ldstr offserver_voice_panel
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.3 
+ldc.i4.s 12
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.3 
+ldc.i4.1 
+stfld System.Boolean Durango.System.Config.Setting::HideOnOffline
+ldloc.3 
+ldstr offserver_voice_panel
+call System.String Durango.System.Config.OffServerVoiceSettings::Label(System.String)
+stfld System.String Durango.System.Config.ValueSetting::PrepareLabelText
+ldloc.0 
+ldloc.3 
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+call System.Void Durango.System.Config.OffServerVoiceSettings::SyncValues(System.Collections.Generic.List`1<Durango.System.Config.Setting>)
+ldloc.0 
+ret 
+METHOD Durango.System.Config.ToggleSetting Durango.System.Config.OffServerVoiceSettings::MakeToggle(System.String,System.String[],System.String)
+newobj System.Void Durango.System.Config.ToggleSetting::.ctor()
+dup 
+ldarg.0 
+stfld System.String Durango.System.Config.Setting::Key
+dup 
+ldc.i4.1 
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+dup 
+ldarg.1 
+stfld System.String[] Durango.System.Config.ToggleSetting::Options
+dup 
+ldarg.2 
+stfld System.String Durango.System.Config.ValueSetting::Default
+dup 
+ldarg.2 
+stfld System.Object Durango.System.Config.ValueSetting::Value
+dup 
+ldc.i4.1 
+stfld System.Boolean Durango.System.Config.Setting::HideOnOffline
+dup 
+ldarg.0 
+call System.String Durango.System.Config.OffServerVoiceSettings::Label(System.String)
+stfld System.String Durango.System.Config.ValueSetting::PrepareLabelText
+ret 
+METHOD System.Void Durango.System.Config.OffServerVoiceSettings::SyncValues(System.Collections.Generic.List`1<Durango.System.Config.Setting>)
+ldarg.0 
+brtrue.s IL_0004: ldarg.0
+ret 
+ldarg.0 
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.System.Config.Setting>::GetEnumerator()
+stloc.0 
+br IL_0101: ldloca.s V_0
+ldloca.s V_0
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.System.Config.Setting>::get_Current()
+stloc.1 
+ldloc.1 
+isinst Durango.System.Config.ValueSetting
+stloc.2 
+ldloc.2 
+brfalse IL_0101: ldloca.s V_0
+ldloc.1 
+ldfld System.String Durango.System.Config.Setting::Key
+stloc.3 
+ldloc.3 
+ldstr offserver_voice_mode
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0075: ldloc.2
+ldloc.3 
+ldstr offserver_voice_level
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0090: ldloc.2
+ldloc.3 
+ldstr offserver_voice_volume
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00ab: ldloc.2
+ldloc.3 
+ldstr offserver_voice_sensitivity
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00d4: ldloc.2
+ldloc.3 
+ldstr offserver_voice_deaf
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_00f1: ldloc.2
+br IL_0101: ldloca.s V_0
+ldloc.2 
+call System.Boolean OffServerVoice::get_AutoMode()
+brtrue.s IL_0084: ldstr "auto"
+ldstr hold
+br.s IL_0089: stfld System.Object Durango.System.Config.ValueSetting::Value
+ldstr auto
+stfld System.Object Durango.System.Config.ValueSetting::Value
+br.s IL_0101: ldloca.s V_0
+ldloc.2 
+call System.Int32 OffServerVoice::get_Level()
+stloc.s V_4
+ldloca.s V_4
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int32::ToString(System.IFormatProvider)
+stfld System.Object Durango.System.Config.ValueSetting::Value
+br.s IL_0101: ldloca.s V_0
+ldloc.2 
+call System.Single OffServerVoice::get_Volume()
+ldc.r4 4
+mul 
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+ldc.i4.s 25
+mul 
+stloc.s V_4
+ldloca.s V_4
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int32::ToString(System.IFormatProvider)
+stfld System.Object Durango.System.Config.ValueSetting::Value
+br.s IL_0101: ldloca.s V_0
+ldloc.2 
+call System.Int32 OffServerVoice::get_Sensitivity()
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloca.s V_4
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int32::ToString(System.IFormatProvider)
+stfld System.Object Durango.System.Config.ValueSetting::Value
+br.s IL_0101: ldloca.s V_0
+ldloc.2 
+call System.Boolean OffServerVoice::get_Deaf()
+box System.Boolean
+stfld System.Object Durango.System.Config.ValueSetting::Value
+ldloca.s V_0
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.System.Config.Setting>::MoveNext()
+brtrue IL_0010: ldloca.s V_0
+leave.s IL_011d: ret
+ldloca.s V_0
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.System.Config.Setting>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerVoiceSettings::Apply(System.String,System.String)
+ldarg.0 
+ldstr offserver_voice_mode
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0036: ldarg.1
+ldarg.0 
+ldstr offserver_voice_level
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0048: ldarg.1
+ldarg.0 
+ldstr offserver_voice_volume
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0065: ldarg.1
+ldarg.0 
+ldstr offserver_voice_sensitivity
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0084: ldarg.1
+br.s IL_009e: ldc.i4.0
+ldarg.1 
+ldstr auto
+call System.Boolean System.String::op_Equality(System.String,System.String)
+call System.Void OffServerVoice::SetAutoMode(System.Boolean)
+ldc.i4.1 
+ret 
+ldarg.1 
+ldc.i4.7 
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_0
+call System.Boolean System.Int32::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32&)
+brfalse.s IL_0063: ldc.i4.1
+ldloc.0 
+call System.Void OffServerVoice::SetLevel(System.Int32)
+call System.Void OffServerVoiceUI::FlashRange()
+ldc.i4.1 
+ret 
+ldarg.1 
+ldc.i4.7 
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_0
+call System.Boolean System.Int32::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32&)
+brfalse.s IL_0082: ldc.i4.1
+ldloc.0 
+conv.r4 
+ldc.r4 100
+div 
+call System.Void OffServerVoice::SetVolume(System.Single)
+ldc.i4.1 
+ret 
+ldarg.1 
+ldc.i4.7 
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_0
+call System.Boolean System.Int32::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32&)
+brfalse.s IL_009c: ldc.i4.1
+ldloc.0 
+ldc.i4.1 
+sub 
+call System.Void OffServerVoice::SetSensitivity(System.Int32)
+ldc.i4.1 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerVoiceSettings::Apply(System.String,System.Boolean)
+ldarg.0 
+ldstr offserver_voice_deaf
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_000f: ldarg.1
+ldc.i4.0 
+ret 
+ldarg.1 
+call System.Void OffServerVoice::SetDeaf(System.Boolean)
+ldc.i4.1 
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerVoiceSettings::HandleAction(System.String)
+ldarg.0 
+ldstr offserver_voice_panel
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_000f: nop
+ldc.i4.0 
+ret 
+nop 
+call TV UIManager::FindScript<Durango.UI.ConfigGroup>()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0033: leave.s IL_003c
+ldloc.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brfalse.s IL_0033: leave.s IL_003c
+ldloc.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+leave.s IL_003c: call System.Void OffServerVoiceUI::OpenPanel()
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_003c: call System.Void OffServerVoiceUI::OpenPanel()
+call System.Void OffServerVoiceUI::OpenPanel()
+ldc.i4.1 
+ret 
+METHOD System.String Durango.System.Config.OffServerVoiceSettings::get_TabLabel()
+ldstr tab
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+METHOD System.String Durango.System.Config.OffServerVoiceSettings::Label(System.String)
+ldarg.0 
+ldstr offserver_voice_mode
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0050: ldstr "mode"
+ldarg.0 
+ldstr offserver_voice_level
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_005b: ldstr "range"
+ldarg.0 
+ldstr offserver_voice_volume
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0066: ldstr "volume"
+ldarg.0 
+ldstr offserver_voice_sensitivity
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0071: ldstr "sens"
+ldarg.0 
+ldstr offserver_voice_deaf
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_007c: ldstr "deaf"
+ldarg.0 
+ldstr offserver_voice_panel
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0087: ldstr "nearby_button"
+br.s IL_0092: ldnull
+ldstr mode
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldstr range
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldstr volume
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldstr sens
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldstr deaf
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldstr nearby_button
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldnull 
+ret 
+METHOD System.String Durango.System.Config.OffServerVoiceSettings::OptionLabel(System.String,System.String)
+ldarg.0 
+ldstr offserver_voice_mode
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0036: ldarg.1
+ldarg.0 
+ldstr offserver_voice_level
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0055: ldarg.1
+ldarg.0 
+ldstr offserver_voice_volume
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_006e: ldarg.1
+ldarg.0 
+ldstr offserver_voice_sensitivity
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_007a: ldarg.1
+br.s IL_009a: ldnull
+ldarg.1 
+ldstr auto
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004a: ldstr "mode_auto"
+ldstr mode_hold
+br.s IL_004f: call System.String OffServerVoiceUI::Text(System.String)
+ldstr mode_auto
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+ldarg.1 
+ldc.i4.7 
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_0
+call System.Boolean System.Int32::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32&)
+brtrue.s IL_0067: ldloc.0
+ldarg.1 
+ret 
+ldloc.0 
+call System.String OffServerVoiceUI::LevelLabel(System.Int32)
+ret 
+ldarg.1 
+ldstr %
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldarg.1 
+ldstr /
+ldsfld System.Single[] OffServerVoice::SensitivityDb
+ldlen 
+conv.i4 
+stloc.1 
+ldloca.s V_1
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int32::ToString(System.IFormatProvider)
+call System.String System.String::Concat(System.String,System.String,System.String)
+ret 
+ldnull 
+ret 
+METHOD System.Void Durango.System.Config.OffServerVoiceSettings::.cctor()
+ldc.i4.2 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr hold
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr auto
+stelem.ref 
+stsfld System.String[] Durango.System.Config.OffServerVoiceSettings::ModeOptions
+ldc.i4.3 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr 0
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr 1
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr 2
+stelem.ref 
+stsfld System.String[] Durango.System.Config.OffServerVoiceSettings::LevelOptions
+ldc.i4.s 9
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr 0
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr 25
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr 50
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 75
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr 100
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr 125
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr 150
+stelem.ref 
+dup 
+ldc.i4.7 
+ldstr 175
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr 200
+stelem.ref 
+stsfld System.String[] Durango.System.Config.OffServerVoiceSettings::VolumeOptions
+ret 

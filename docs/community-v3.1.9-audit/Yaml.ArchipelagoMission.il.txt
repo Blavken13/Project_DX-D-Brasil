@@ -1,0 +1,11 @@
+Yaml.ArchipelagoMission : System.Object
+FIELD System.Int32 Yaml.ArchipelagoMission::ClearPoint
+FIELD Gettext Yaml.ArchipelagoMission::Description
+FIELD Yaml.Dialogue Yaml.ArchipelagoMission::Intro
+FIELD Yaml.Dialogue Yaml.ArchipelagoMission::Outro
+FIELD Gettext Yaml.ArchipelagoMission::Title
+FIELD System.Collections.Generic.Dictionary`2<System.String,Yaml.ToDoContents> Yaml.ArchipelagoMission::ToDos
+METHOD System.Void Yaml.ArchipelagoMission::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

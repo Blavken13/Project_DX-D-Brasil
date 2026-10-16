@@ -1,0 +1,49 @@
+OffServerDyeUI/<>c__DisplayClass8_3 : System.Object
+FIELD System.String OffServerDyeUI/<>c__DisplayClass8_3::targetId
+FIELD System.String OffServerDyeUI/<>c__DisplayClass8_3::dyeId
+FIELD OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass8_3::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass8_3::<Refresh>b__3(System.Nullable`1<Messages.CraftEstimation>)
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+callvirt System.Boolean UIBase::get_IsOpened()
+brfalse.s IL_008f: ret
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+callvirt System.String DyeSelection::get_TargetId()
+ldarg.0 
+ldfld System.String OffServerDyeUI/<>c__DisplayClass8_3::targetId
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_008f: ret
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld Durango.UI.DyePartsWidget OffServerDyeUI/<>c__DisplayClass8_0::parts
+callvirt System.Int32 Durango.UI.DyePartsWidget::get_SelectedPart()
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+bne.un.s IL_008f: ret
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+callvirt System.String DyeSelection::get_Item(System.Int32)
+ldarg.0 
+ldfld System.String OffServerDyeUI/<>c__DisplayClass8_3::dyeId
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_008f: ret
+ldarg.0 
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld Durango.UI.DyeResultWidget OffServerDyeUI/<>c__DisplayClass8_0::result
+ldarg.1 
+callvirt System.Void Durango.UI.DyeResultWidget::SetEstimate(System.Nullable`1<Messages.CraftEstimation>)
+ret 

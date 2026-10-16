@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.6.0f1
+CRC: 2628026815
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ffe5be614e7411f253c43383272a3236
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5080b36a206dcfdb8885909af8d29ecf
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 9312fb485314183d73fe0eaa0804e170
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Models/Maps/AridBasin/AridBasinTerrain.prefab
+Dependencies: []

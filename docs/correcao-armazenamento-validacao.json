@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "validation_only_changes": [
+    "CombatBagsCheck.cs",
+    "Support/ItemCraftModifications.cs"
+  ],
+  "regressions": [
+    "[combat-bags] PASS 2415 verificações. Saves temporários: /tmp/Durango-combat-bags-1f22926bbda1425486dca2a27989eef8",
+    "[reported-gameplay] PASS 107 verificações"
+  ],
+  "live_server_image_unchanged": true,
+  "live_state_volume_mounted_by_tests": false
+}

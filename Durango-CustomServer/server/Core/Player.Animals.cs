@@ -620,13 +620,43 @@ public partial class Player
     private void HandleReturnPetMsg(ReturnPet msg, uint seq)
     {
         PetStore.Entry entry = PetStore.Find(EntityId, msg.PetId);
-        if (entry == null || !entry.Pet.IsSpawned)
+        if (entry == null || (!entry.Pet.IsSpawned && !entry.Grazing))
         {
             Send(new Abort { Text = "Este animal não está ao seu lado." }, seq);
             return;
         }
-        DespawnPet(entry);
+        if (entry.Grazing)
+        {
+            SetGrazing(entry, false);
+            _world.BroadCast(new GrazedPets { Data = _world.GetGrazedPets().ToArray() });
+            _world.Save();
+        }
+        else DespawnPet(entry);
         Send(default(OK), seq);
+    }
+
+    private const double GrazedPetExpirySeconds = 24.0 * 60.0 * 60.0;
+    private double _nextGrazedPetCleanupAt;
+
+    private bool ExpireGrazedPets(double now)
+    {
+        if (now < _nextGrazedPetCleanupAt) return false;
+        _nextGrazedPetCleanupAt = now + 60.0;
+        List<PetStore.Entry> pets = PetStore.Of(EntityId);
+        var expired = pets.Where(entry => entry.Grazing && entry.Pet.Stat.GrazedAt.HasValue &&
+            now - entry.Pet.Stat.GrazedAt.Value >= GrazedPetExpirySeconds).ToArray();
+        if (expired.Length == 0) return false;
+
+        List<Messages.Pet> worldPets = _world.GetGrazedPets();
+        foreach (PetStore.Entry entry in expired)
+        {
+            pets.Remove(entry);
+            worldPets.RemoveAll(pet => pet.EntityId == entry.Pet.EntityId);
+        }
+        _world.BroadCast(new GrazedPets { Data = worldPets.ToArray() });
+        _world.Save();
+        OnContextChanged();
+        return true;
     }
 
     /// <summary>
@@ -966,6 +996,7 @@ public partial class Player
         {
             _world.BroadCast(new GrazedPets { Data = _world.GetGrazedPets().ToArray() });
             _world.Save();
+            OnContextChanged();
         }
         SendPetsInfo(seq);
     }
@@ -1344,7 +1375,8 @@ public partial class Player
         var weights = new List<int>();
         foreach (PetTables.ActiveSkillCondition cond in PetTables.ActiveSkillConditions)
         {
-            if (cond.EntityTypes == null || !cond.EntityTypes.Contains(entry.Pet.EntityType)) continue;
+            // An empty entity_type list in the original table means the skill is generic.
+            if (cond.EntityTypes is { Count: > 0 } && !cond.EntityTypes.Contains(entry.Pet.EntityType)) continue;
             if (cond.ForFightable && !def.IsFightable) continue;
             if (cond.ForRidable && !def.IsRidable) continue;
             bool ok = true;

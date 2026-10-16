@@ -1,0 +1,292 @@
+OffServerItemShare : System.Object
+FIELD System.String OffServerItemShare::Caps
+FIELD System.String OffServerItemShare::ItemKey
+FIELD System.String OffServerItemShare::ProtoKey
+FIELD System.String OffServerItemShare::LevelKey
+METHOD System.Boolean OffServerItemShare::CanShare(Durango.Logic.Item.ItemData)
+ldarg.0 
+brfalse.s IL_0028: ldc.i4.0
+call Durango.Logic.Clusters.Mode GameManager::get_ClusterMode()
+brtrue.s IL_0028: ldc.i4.0
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0026: ldc.i4.1
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_PrototypeId()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.1 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.String OffServerItemShare::CommandFor(Durango.Logic.Item.ItemData)
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_002e: ldstr "/item "
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+ldc.i4.s 32
+callvirt System.Int32 System.String::IndexOf(System.Char)
+ldc.i4.0 
+bge.s IL_002e: ldstr "/item "
+ldstr /item @
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldstr /item 
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_PrototypeId()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+METHOD System.Void OffServerItemShare::PickAndShare()
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.PopupItemSelector>()
+dup 
+callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::MyInventory()
+ldnull 
+ldftn System.Boolean OffServerItemShare::CanShare(Durango.Logic.Item.ItemData)
+newobj System.Void System.Predicate`1<Durango.Logic.Item.ItemData>::.ctor(System.Object,System.IntPtr)
+callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::Filter(System.Predicate`1<Durango.Logic.Item.ItemData>)
+ldc.i4.1 
+ldnull 
+callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::SelectableCount(System.Int32,System.Func`2<Durango.Logic.Item.ItemData,System.Single>)
+ldstr 공유하기
+call System.String L10N.T::_(System.String)
+callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::ConfirmText(System.String)
+ldsfld Durango.Logic.Item.Util/ItemDelegate OffServerItemShare/<>c::<>9__6_0
+dup 
+brtrue.s IL_0056: callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::OnConfirmed(Durango.Logic.Item.Util/ItemDelegate)
+pop 
+ldsfld OffServerItemShare/<>c OffServerItemShare/<>c::<>9
+ldftn System.Void OffServerItemShare/<>c::<PickAndShare>b__6_0(Durango.Logic.Item.ItemData)
+newobj System.Void Durango.Logic.Item.Util/ItemDelegate::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld Durango.Logic.Item.Util/ItemDelegate OffServerItemShare/<>c::<>9__6_0
+callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::OnConfirmed(Durango.Logic.Item.Util/ItemDelegate)
+ldstr 공유할 아이템을 선택해주세요.
+call System.String L10N.T::_(System.String)
+call SyncString SyncString::op_Implicit(System.String)
+callvirt Durango.UI.Popup.PopupItemSelector Durango.UI.Popup.PopupItemSelector::Title(SyncString)
+pop 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Show()
+ret 
+METHOD System.Boolean OffServerItemShare::Share(Durango.Logic.Item.ItemData,System.Boolean)
+ldarg.0 
+call System.Boolean OffServerItemShare::CanShare(Durango.Logic.Item.ItemData)
+brtrue.s IL_000a: call T GameSystem`1<SocialSystem>::Instance()
+ldc.i4.0 
+ret 
+call T GameSystem`1<SocialSystem>::Instance()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001b: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+callvirt System.Boolean SocialSystem::CanSay()
+stloc.1 
+ldloca.s V_2
+initobj System.Nullable`1<Shared.Chat.ChannelType>
+ldloc.0 
+callvirt SocialSystem/Channel SocialSystem::get_CurrentChannel()
+ldfld Shared.Chat.ChannelType SocialSystem/Channel::Type
+call System.Boolean SocialSystem::IsAllowedChannel(Shared.Chat.ChannelType)
+brtrue.s IL_0044: ldloc.0
+ldloca.s V_2
+ldc.i4.0 
+call System.Void System.Nullable`1<Shared.Chat.ChannelType>::.ctor(!0)
+ldloc.0 
+ldloca.s V_3
+initobj Messages.RadioTalk
+ldloca.s V_3
+ldarg.0 
+call System.String OffServerItemShare::CommandFor(Durango.Logic.Item.ItemData)
+stfld System.String Messages.RadioTalk::Text
+ldloc.3 
+box Messages.RadioTalk
+ldloc.2 
+ldnull 
+callvirt System.Void SocialSystem::SystemSay(System.Object,System.Nullable`1<Shared.Chat.ChannelType>,System.String)
+ldloc.1 
+brtrue.s IL_0080: ldarg.1
+ldstr 채팅 서버와 연결이 끊어졌습니다.
+call System.String L10N.T::_(System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldc.i4.0 
+ret 
+ldarg.1 
+brfalse.s IL_0097: ldc.i4.1
+ldstr 아이템을 채팅에 공유했습니다.
+call System.String L10N.T::_(System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldc.i4.1 
+ret 
+METHOD System.Boolean OffServerItemShare::TryOpen(Durango.UI.Control.ParamsDictionary)
+ldarg.0 
+brtrue.s IL_0005: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldstr item
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String>::TryGetValue(!0,!1&)
+pop 
+ldarg.0 
+ldstr proto
+ldloca.s V_1
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String>::TryGetValue(!0,!1&)
+pop 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0033: ldloc.0
+ldloc.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0033: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+call Durango.Logic.Item.ItemData OffServerItemShare::Decode(System.String)
+stloc.2 
+ldc.i4.1 
+ldarg.0 
+ldstr lv
+ldc.i4.1 
+callvirt System.Int32 Durango.UI.Control.ParamsDictionary::GetInt(System.String,System.Int32)
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stloc.3 
+ldloc.2 
+brtrue.s IL_0077: call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+ldloc.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0061: ldstr "아이템 정보를 불러올 수 없습니다."
+ldloc.1 
+ldloc.3 
+call Yaml.Prototype Yaml.PrototypeYaml::GetItemPrototype(System.String,System.Int32)
+brtrue.s IL_0077: call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+ldstr 아이템 정보를 불러올 수 없습니다.
+call System.String L10N.T::_(System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldc.i4.1 
+ret 
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.ItemInfoTooltip>()
+stloc.s V_4
+ldloc.2 
+brfalse.s IL_0090: ldloc.s V_4
+ldloc.s V_4
+ldloc.2 
+callvirt System.Void Durango.UI.Popup.ItemInfoTooltip::Set(Durango.Logic.Item.ItemData)
+br.s IL_0099: ldloc.s V_4
+ldloc.s V_4
+ldloc.1 
+ldloc.3 
+callvirt System.Void Durango.UI.Popup.ItemInfoTooltip::Set(System.String,System.Int32)
+ldloc.s V_4
+callvirt System.Void Durango.UI.Popup.TooltipBase::Show()
+ldc.i4.1 
+ret 
+METHOD Durango.Logic.Item.ItemData OffServerItemShare::Decode(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: nop
+ldnull 
+ret 
+nop 
+ldarg.0 
+callvirt System.String System.String::Trim()
+ldc.i4.s 45
+ldc.i4.s 43
+callvirt System.String System.String::Replace(System.Char,System.Char)
+ldc.i4.s 95
+ldc.i4.s 47
+callvirt System.String System.String::Replace(System.Char,System.Char)
+stloc.0 
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.4 
+rem 
+stloc.1 
+ldloc.1 
+ldc.i4.1 
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+br.s IL_0064: ldloc.0
+ldnull 
+stloc.2 
+leave IL_00f7: ldloc.2
+ldloc.0 
+ldstr ==
+call System.String System.String::Concat(System.String,System.String)
+stloc.0 
+br.s IL_0064: ldloc.0
+ldloc.0 
+ldstr =
+call System.String System.String::Concat(System.String,System.String)
+stloc.0 
+ldloc.0 
+call System.Byte[] System.Convert::FromBase64String(System.String)
+newobj System.Void System.IO.MemoryStream::.ctor(System.Byte[])
+stloc.3 
+ldloc.3 
+call MsgPack.Unpacker MsgPack.Unpacker::Create(System.IO.Stream)
+stloc.s V_4
+ldloc.s V_4
+callvirt System.Boolean MsgPack.Unpacker::Read()
+brfalse.s IL_008a: ldnull
+ldloc.s V_4
+callvirt System.Boolean MsgPack.Unpacker::get_IsArrayHeader()
+brtrue.s IL_008e: ldloc.s V_4
+ldnull 
+stloc.2 
+leave.s IL_00f7: ldloc.2
+ldloc.s V_4
+call Messages.Item Messages.Item::Unpack(MsgPack.Unpacker)
+stloc.s V_5
+ldloc.s V_5
+ldfld System.String Messages.Item::Prototype
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_00b7: ldnull
+ldloc.s V_5
+ldfld Messages.Tag[] Messages.Item::Tags
+brfalse.s IL_00b7: ldnull
+ldloc.s V_5
+ldfld Messages.Tag[] Messages.Item::TagModifications
+brtrue.s IL_00bb: ldloc.s V_5
+ldnull 
+stloc.2 
+leave.s IL_00f7: ldloc.2
+ldloc.s V_5
+newobj System.Void Durango.Logic.Item.ItemData::.ctor(Messages.Item)
+stloc.2 
+leave.s IL_00f7: ldloc.2
+ldloc.s V_4
+brfalse.s IL_00d0: endfinally
+ldloc.s V_4
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.3 
+brfalse.s IL_00da: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+stloc.s V_6
+ldstr [OffServer] CHAT-SHARE item link decode failed: 
+ldloc.s V_6
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+ldnull 
+stloc.2 
+leave.s IL_00f7: ldloc.2
+ldloc.2 
+ret 

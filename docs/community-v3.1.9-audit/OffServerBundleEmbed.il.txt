@@ -1,0 +1,341 @@
+OffServerBundleEmbed : System.Object
+FIELD System.String OffServerBundleEmbed::Folder
+FIELD System.String OffServerBundleEmbed::MarkerName
+FIELD System.String OffServerBundleEmbed::IndexName
+FIELD System.Boolean OffServerBundleEmbed::_probeStarted
+FIELD System.Boolean OffServerBundleEmbed::_probeDone
+FIELD System.Boolean OffServerBundleEmbed::_active
+FIELD System.String OffServerBundleEmbed::_marker
+FIELD System.Byte[] OffServerBundleEmbed::_index
+FIELD System.String OffServerBundleEmbed::_serverIndexUrl
+FIELD System.String OffServerBundleEmbed::_serverUrlRoot
+FIELD System.String OffServerBundleEmbed::_testRoot
+FIELD System.Int32 OffServerBundleEmbed::_localLoads
+FIELD System.Int32 OffServerBundleEmbed::_serverLoads
+METHOD System.Boolean OffServerBundleEmbed::get_ProbeDone()
+call System.Void OffServerBundleEmbed::StartProbe()
+ldsfld System.Boolean OffServerBundleEmbed::_probeDone
+ret 
+METHOD System.Boolean OffServerBundleEmbed::get_Active()
+call System.Boolean OffServerBundleEmbed::get_ProbeDone()
+brfalse.s IL_000d: ldc.i4.0
+ldsfld System.Boolean OffServerBundleEmbed::_active
+ret 
+ldc.i4.0 
+ret 
+METHOD System.String OffServerBundleEmbed::get_LocalRoot()
+call System.String UnityEngine.Application::get_streamingAssetsPath()
+ldstr /AssetBundles/
+call System.String System.String::Concat(System.String,System.String)
+ret 
+METHOD System.String OffServerBundleEmbed::get_ServerIndexUrl()
+ldsfld System.String OffServerBundleEmbed::_testRoot
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_001c: ldsfld System.String OffServerBundleEmbed::_serverIndexUrl
+ldsfld System.String OffServerBundleEmbed::_testRoot
+ldstr Info.5.2.1.json
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldsfld System.String OffServerBundleEmbed::_serverIndexUrl
+ret 
+METHOD System.String OffServerBundleEmbed::get_ServerUrlRoot()
+ldsfld System.String OffServerBundleEmbed::_testRoot
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0012: ldsfld System.String OffServerBundleEmbed::_serverUrlRoot
+ldsfld System.String OffServerBundleEmbed::_testRoot
+ret 
+ldsfld System.String OffServerBundleEmbed::_serverUrlRoot
+ret 
+METHOD System.String OffServerBundleEmbed::get_Marker()
+ldsfld System.String OffServerBundleEmbed::_marker
+ret 
+METHOD System.Void OffServerBundleEmbed::SetServer(System.String,System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0013: ldnull
+ldarg.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0013: ldnull
+ldarg.0 
+br.s IL_0014: stsfld System.String OffServerBundleEmbed::_serverIndexUrl
+ldnull 
+stsfld System.String OffServerBundleEmbed::_serverIndexUrl
+ldsfld System.String OffServerBundleEmbed::_serverIndexUrl
+brfalse.s IL_003d: ldnull
+ldarg.1 
+ldstr /
+callvirt System.Boolean System.String::EndsWith(System.String)
+brtrue.s IL_003a: ldarg.1
+ldarg.1 
+ldstr /
+call System.String System.String::Concat(System.String,System.String)
+br.s IL_003e: stsfld System.String OffServerBundleEmbed::_serverUrlRoot
+ldarg.1 
+br.s IL_003e: stsfld System.String OffServerBundleEmbed::_serverUrlRoot
+ldnull 
+stsfld System.String OffServerBundleEmbed::_serverUrlRoot
+ret 
+METHOD System.Void OffServerBundleEmbed::StartProbe()
+newobj System.Void OffServerBundleEmbed/<>c__DisplayClass26_0::.ctor()
+stloc.0 
+ldsfld System.Boolean OffServerBundleEmbed::_probeStarted
+brfalse.s IL_000e: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean OffServerBundleEmbed::_probeStarted
+call System.Boolean UnityEngine.Application::get_isEditor()
+brfalse.s IL_0022: call System.String OffServerBundleEmbed::get_LocalRoot()
+ldc.i4.1 
+stsfld System.Boolean OffServerBundleEmbed::_probeDone
+ret 
+call System.String OffServerBundleEmbed::get_LocalRoot()
+ldstr OffServerEmbed.json
+call System.String System.String::Concat(System.String,System.String)
+stloc.1 
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+beq.s IL_007f: ldloc.0
+ldloc.1 
+call System.Boolean System.IO.File::Exists(System.String)
+brfalse.s IL_0059: leave.s IL_0073
+ldloc.1 
+call System.String System.IO.File::ReadAllText(System.String)
+stsfld System.String OffServerBundleEmbed::_marker
+ldc.i4.1 
+stsfld System.Boolean OffServerBundleEmbed::_active
+call System.Void OffServerBundleEmbed::ReadTestOverride()
+leave.s IL_0073: ldc.i4.1
+stloc.2 
+ldstr [ABM] embed marker: 
+ldloc.2 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_0073: ldc.i4.1
+ldc.i4.1 
+stsfld System.Boolean OffServerBundleEmbed::_probeDone
+call System.Void OffServerBundleEmbed::Log()
+ret 
+ldloc.0 
+ldloc.1 
+call UnityEngine.Networking.UnityWebRequest UnityEngine.Networking.UnityWebRequest::Get(System.String)
+stfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+ldloc.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+callvirt UnityEngine.Networking.UnityWebRequestAsyncOperation UnityEngine.Networking.UnityWebRequest::SendWebRequest()
+ldloc.0 
+ldftn System.Void OffServerBundleEmbed/<>c__DisplayClass26_0::<StartProbe>b__0(UnityEngine.AsyncOperation)
+newobj System.Void System.Action`1<UnityEngine.AsyncOperation>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void UnityEngine.AsyncOperation::add_completed(System.Action`1<UnityEngine.AsyncOperation>)
+ret 
+METHOD System.Void OffServerBundleEmbed::Log()
+ldsfld System.Boolean OffServerBundleEmbed::_active
+brfalse.s IL_0083: ret
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ABM] embed: bundles in game (
+stelem.ref 
+dup 
+ldc.i4.1 
+call System.String OffServerBundleEmbed::get_LocalRoot()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr ) 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldsfld System.String OffServerBundleEmbed::_marker
+dup 
+brtrue.s IL_0035: ldstr ""
+pop 
+ldstr 
+ldstr 
+ldstr 
+callvirt System.String System.String::Replace(System.String,System.String)
+ldstr 
+
+ldstr  
+callvirt System.String System.String::Replace(System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.4 
+ldsfld System.String OffServerBundleEmbed::_testRoot
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0073: ldstr ""
+ldstr  · test server index 
+ldsfld System.String OffServerBundleEmbed::_testRoot
+call System.String System.String::Concat(System.String,System.String)
+br.s IL_0078: stelem.ref
+ldstr 
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ret 
+METHOD System.Void OffServerBundleEmbed::ReadTestOverride()
+call System.String Durango.Logic.Clusters.OffServerLink::get_ConfigPath()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0016: leave IL_00a7
+ldloc.0 
+call System.Boolean System.IO.File::Exists(System.String)
+brtrue.s IL_001b: ldloc.0
+leave IL_00a7: ret
+ldloc.0 
+call System.String[] System.IO.File::ReadAllLines(System.String)
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0085: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+callvirt System.String System.String::Trim()
+stloc.3 
+ldloc.3 
+ldstr bundle_embed=
+ldc.i4.5 
+callvirt System.Boolean System.String::StartsWith(System.String,System.StringComparison)
+brfalse.s IL_0081: ldloc.2
+ldloc.3 
+ldstr bundle_embed=
+call System.Int32 System.String::get_Length()
+callvirt System.String System.String::Substring(System.Int32)
+callvirt System.String System.String::Trim()
+stloc.s V_4
+ldloc.s V_4
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_0081: ldloc.2
+ldloc.s V_4
+ldstr /
+callvirt System.Boolean System.String::EndsWith(System.String)
+brtrue.s IL_007a: ldloc.s V_4
+ldloc.s V_4
+ldstr /
+call System.String System.String::Concat(System.String,System.String)
+br.s IL_007c: stsfld System.String OffServerBundleEmbed::_testRoot
+ldloc.s V_4
+stsfld System.String OffServerBundleEmbed::_testRoot
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0026: ldloc.1
+leave.s IL_00a7: ret
+stloc.s V_5
+ldstr [ABM] embed test override: 
+ldloc.s V_5
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_00a7: ret
+ret 
+METHOD System.Collections.IEnumerator OffServerBundleEmbed::CoReadIndex(System.Action`1<System.Byte[]>)
+ldc.i4.0 
+newobj System.Void OffServerBundleEmbed/<CoReadIndex>d__29::.ctor(System.Int32)
+dup 
+ldarg.0 
+stfld System.Action`1<System.Byte[]> OffServerBundleEmbed/<CoReadIndex>d__29::done
+ret 
+METHOD System.String OffServerBundleEmbed::LocalPath(System.String,System.String)
+ldarg.0 
+ldarg.1 
+call System.String OffServerBundleEmbed::get_LocalRoot()
+call System.String AssetBundleItemInfo::GetCrcName(System.String,System.String,System.String)
+ret 
+METHOD System.Void OffServerBundleEmbed::NoteLoad(System.String,System.Boolean)
+ldarg.1 
+brfalse.s IL_0076: ldsfld System.Int32 OffServerBundleEmbed::_serverLoads
+ldsfld System.Int32 OffServerBundleEmbed::_localLoads
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerBundleEmbed::_localLoads
+ldsfld System.Int32 OffServerBundleEmbed::_localLoads
+ldc.i4.3 
+ble.s IL_0027: ldc.i4.7
+ldsfld System.Int32 OffServerBundleEmbed::_localLoads
+ldc.i4 200
+rem 
+brtrue IL_00d0: ret
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ABM] embed: local bundle #
+stelem.ref 
+dup 
+ldc.i4.1 
+ldsflda System.Int32 OffServerBundleEmbed::_localLoads
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  (server 
+stelem.ref 
+dup 
+ldc.i4.5 
+ldsflda System.Int32 OffServerBundleEmbed::_serverLoads
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ret 
+ldsfld System.Int32 OffServerBundleEmbed::_serverLoads
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerBundleEmbed::_serverLoads
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ABM] embed: server bundle #
+stelem.ref 
+dup 
+ldc.i4.1 
+ldsflda System.Int32 OffServerBundleEmbed::_serverLoads
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  (local 
+stelem.ref 
+dup 
+ldc.i4.5 
+ldsflda System.Int32 OffServerBundleEmbed::_localLoads
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ret 

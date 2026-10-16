@@ -1,0 +1,225 @@
+Durango.UI.OffServerHotkeyRow : UnityEngine.MonoBehaviour
+FIELD System.Single Durango.UI.OffServerHotkeyRow::RightMargin
+FIELD UIWidget Durango.UI.OffServerHotkeyRow::_widget
+FIELD UILabel Durango.UI.OffServerHotkeyRow::_label
+METHOD System.Void Durango.UI.OffServerHotkeyRow::Decorate(Durango.UI.ButtonBoxWidget,Durango.System.Config.Setting,UILabel)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000a: ldarg.1
+ret 
+ldarg.1 
+call System.String Durango.System.Config.OffServerHotkeys::CaptionFor(Durango.System.Config.Setting)
+stloc.0 
+ldarg.0 
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.OffServerHotkeyRow>()
+stloc.1 
+ldloc.0 
+brtrue.s IL_0044: ldloc.1
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0043: ret
+ldloc.1 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0043: ret
+ldloc.1 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0059: ldloc.1
+ldarg.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.UI.OffServerHotkeyRow>()
+stloc.1 
+ldloc.1 
+ldarg.0 
+callvirt UIWidget Durango.UI.Control.Selectable::get_Widget()
+ldloc.0 
+ldarg.2 
+callvirt System.Void Durango.UI.OffServerHotkeyRow::Show(UIWidget,System.String,UILabel)
+ret 
+METHOD System.Void Durango.UI.OffServerHotkeyRow::Show(UIWidget,System.String,UILabel)
+ldarg.0 
+ldarg.1 
+stfld UIWidget Durango.UI.OffServerHotkeyRow::_widget
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_0101: ldarg.0
+ldarg.0 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4 2147483647
+call T NGUITools::AddWidget<UILabel>(UnityEngine.GameObject,System.Int32)
+stfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldstr OffServerHotkeyKey
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+ldarg.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_00dd: ldarg.0
+ldarg.3 
+callvirt UIFont UILabel::get_bitmapFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_006b: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt UIFont UILabel::get_bitmapFont()
+callvirt System.Void UILabel::set_bitmapFont(UIFont)
+br.s IL_007c: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt UnityEngine.Font UILabel::get_trueTypeFont()
+callvirt System.Void UILabel::set_trueTypeFont(UnityEngine.Font)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt System.Int32 UILabel::get_fontSize()
+callvirt System.Void UILabel::set_fontSize(System.Int32)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldc.i4.1 
+callvirt System.Void UILabel::set_fontStyle(UnityEngine.FontStyle)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt UnityEngine.Color UIWidget::get_color()
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt UILabel/Effect UILabel::get_effectStyle()
+callvirt System.Void UILabel::set_effectStyle(UILabel/Effect)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt UnityEngine.Color UILabel::get_effectColor()
+callvirt System.Void UILabel::set_effectColor(UnityEngine.Color)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.3 
+callvirt UnityEngine.Vector2 UILabel::get_effectDistance()
+callvirt System.Void UILabel::set_effectDistance(UnityEngine.Vector2)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldc.i4.2 
+callvirt System.Void UILabel::set_overflowMethod(UILabel/Overflow)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldc.i4.3 
+callvirt System.Void UILabel::set_alignment(NGUIText/Alignment)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldc.i4.5 
+callvirt System.Void UIWidget::set_pivot(UIWidget/Pivot)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldarg.2 
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Void Durango.UI.OffServerHotkeyRow::Place()
+ret 
+METHOD System.Void Durango.UI.OffServerHotkeyRow::LateUpdate()
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0026: ret
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_0026: ret
+ldarg.0 
+call System.Void Durango.UI.OffServerHotkeyRow::Place()
+ret 
+METHOD System.Void Durango.UI.OffServerHotkeyRow::Place()
+ldarg.0 
+ldfld UIWidget Durango.UI.OffServerHotkeyRow::_widget
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_001c: ret
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001d: ldarg.0
+ret 
+ldarg.0 
+ldfld UIWidget Durango.UI.OffServerHotkeyRow::_widget
+callvirt UnityEngine.Vector3[] UIRect::get_localCorners()
+stloc.0 
+ldloc.0 
+ldc.i4.2 
+ldelem.any UnityEngine.Vector3
+ldloc.0 
+ldc.i4.3 
+ldelem.any UnityEngine.Vector3
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+ldc.r4 0,5
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+stloc.1 
+ldarg.0 
+ldfld UIWidget Durango.UI.OffServerHotkeyRow::_widget
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+stloc.2 
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+ldarg.0 
+ldfld UIWidget Durango.UI.OffServerHotkeyRow::_widget
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0082: ldloca.s V_1
+ldloc.1 
+ldloc.2 
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.1 
+ldloca.s V_1
+ldflda System.Single UnityEngine.Vector3::x
+dup 
+ldind.r4 
+ldc.r4 64
+sub 
+stind.r4 
+ldloca.s V_1
+ldc.r4 0
+stfld System.Single UnityEngine.Vector3::z
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldloc.1 
+call System.Boolean UnityEngine.Vector3::op_Inequality(UnityEngine.Vector3,UnityEngine.Vector3)
+brfalse.s IL_00c7: ret
+ldarg.0 
+ldfld UILabel Durango.UI.OffServerHotkeyRow::_label
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldloc.1 
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ret 
+METHOD System.Void Durango.UI.OffServerHotkeyRow::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

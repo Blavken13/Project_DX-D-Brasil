@@ -1,0 +1,110 @@
+[CoreBusinessMetrics] System persistent data directory not found: 
+[CoreBusinessMetrics] Unable to configure cache. Connection string was invalid or not specified.
+VBCSCompilerPreWarmer: pre-warm launched (dotnet PID 9084)
+VBCSCompiler prewarm took 37.68 ms
+CreateDirectory 'C:/Users/Ander/AppData/Local/Unity/Caches' failed: Não é possível criar um arquivo já existente.
+ (current dir: )
+CreateDirectory 'C:/Users/Ander/AppData/Local/Unity/Caches' failed: Não é possível criar um arquivo já existente.
+ (current dir: )
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.6/respin/6000.6.0f1-fa21a270ab12' branch; Version is '6000.6.0f1 (f7f8ed4d1e24) revision 16251117'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) ProfessionalWorkstation' Language: 'pt' Physical Memory: 12153 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-15T23:45:28Z
+[Licensing::IpcConnector] Channel LicenseClient-Ander doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 6440)
+Assertion failed on expression: 'SUCCEEDED(hr)'
+Assertion failed on expression: 'SUCCEEDED(hr)'
+Assertion failed on expression: 'ERROR_SUCCESS == status'
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Unity.exe
+-batchmode
+-nographics
+-disable-assembly-updater
+--burst-disable-compilation
+-projectPath
+C:/code/ProjectDX/Project_DX-D-Brasil/New Dinos/Giganotosaurus_2213/UnityProject
+-executeMethod
+BuildAridBasin.Run
+-logFile
+C:/code/ProjectDX/Project_DX-D-Brasil/New Dinos/Desert Maps/Generated_Arid_Basin/Runtime/unity-build.log
+Successfully changed project path to: C:/code/ProjectDX/Project_DX-D-Brasil/New Dinos/Giganotosaurus_2213/UnityProject
+C:/code/ProjectDX/Project_DX-D-Brasil/New Dinos/Giganotosaurus_2213/UnityProject
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=1"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.
+Failed to start primary listening socket at (0.0.0.0:55504-55512).
+Player connection [7856]  Target information:
+
+Player connection [7856]  * "[IP] 172.29.64.1 [Port] 55511 [Flags] 2 [Guid] 2161639479 [EditorId] 2161639479 [Version] 1048832 [Id] WindowsEditor(7,DevAnd) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [7856]  * "[IP] 10.168.149.34 [Port] 55511 [Flags] 2 [Guid] 2161639479 [EditorId] 2161639479 [Version] 1048832 [Id] WindowsEditor(7,DevAnd) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [7856]  * "[IP] 169.254.83.107 [Port] 55511 [Flags] 2 [Guid] 2161639479 [EditorId] 2161639479 [Version] 1048832 [Id] WindowsEditor(7,DevAnd) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [7856]  * "[IP] 192.168.1.4 [Port] 55511 [Flags] 2 [Guid] 2161639479 [EditorId] 2161639479 [Version] 1048832 [Id] WindowsEditor(7,DevAnd) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [7856] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [7856] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-13628" after 0.7 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Ander" at "2026-10-15T23:45:30.0105439Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 6440, path: "C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              0aa81a4e33b2490b9ae42e04c1bfc7f0
+  Correlation Id:          62869ab007da14f3d05843d0f75e7ef4
+  External correlation Id: 7661935102513787563
+  Machine Id:              tVhKPJV26krK2T99rpMsmBYjNio=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Ander" (connect: 1.29s, validation: 0.25s, handshake: 0.31s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Ander-notifications" at "2026-10-15T23:45:30.5683888Z"
+[Licensing::Module] Connected to LicensingClient (PId: 6440, launch time: 0.01, total connection time: 1.85s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Successfully updated license, isAsync: False, time: 0.05
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Module] Error: 'com.unity.editor.headless' was not found.
+[Licensing::Module] Licensing Background thread has ended after 1.96s
+[ExitDontLaunchBugReporter] Exiting without the bug reporter. Application will exit with return code 198

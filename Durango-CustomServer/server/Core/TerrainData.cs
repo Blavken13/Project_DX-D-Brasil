@@ -7,6 +7,9 @@ public class TerrainData
 {
     public byte[] Biomes;
 
+    /// <summary>Elevação por tile carregada de <c>whole.elevations</c> no ZIP da ilha.</summary>
+    public byte[] Elevations;
+
     public byte[] Ocean;
 
     public byte[] Rivers;

@@ -1,0 +1,306 @@
+Durango.System.Config.OffServerGameplayOptions : System.Object
+FIELD System.String Durango.System.Config.OffServerGameplayOptions::PlayerAttackRangeKey
+FIELD System.String Durango.System.Config.OffServerGameplayOptions::MonsterAttackRangeKey
+FIELD System.String Durango.System.Config.OffServerGameplayOptions::MaxVisiblePlayersKey
+FIELD System.String Durango.System.Config.OffServerGameplayOptions::VSyncKey
+FIELD System.String Durango.System.Config.OffServerGameplayOptions::ShowNameFlagsKey
+FIELD System.String Durango.System.Config.OffServerGameplayOptions::Unlimited
+FIELD System.String[] Durango.System.Config.OffServerGameplayOptions::MaxVisiblePlayersOptions
+METHOD System.Collections.Generic.List`1<Durango.System.Config.Setting> Durango.System.Config.OffServerGameplayOptions::BuildSettings()
+newobj System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::.ctor()
+stloc.0 
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.2 
+beq.s IL_0016: ldstr "v_sync"
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.7 
+bne.un.s IL_0030: ldloc.0
+ldstr v_sync
+ldc.i4.0 
+call Durango.System.Config.ValueSetting Durango.System.Config.OffServerGameplayOptions::MakeSwitch(System.String,System.Boolean)
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+stfld System.Boolean Durango.System.Config.Setting::HideOnPrologue
+ldloc.0 
+ldloc.2 
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+ldstr attack_range_player
+ldc.i4.0 
+call Durango.System.Config.ValueSetting Durango.System.Config.OffServerGameplayOptions::MakeSwitch(System.String,System.Boolean)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+ldstr attack_range_monster
+ldc.i4.0 
+call Durango.System.Config.ValueSetting Durango.System.Config.OffServerGameplayOptions::MakeSwitch(System.String,System.Boolean)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+newobj System.Void Durango.System.Config.ToggleSetting::.ctor()
+stloc.1 
+ldloc.1 
+ldstr max_visible_players
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.1 
+ldc.i4.1 
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.1 
+ldsfld System.String[] Durango.System.Config.OffServerGameplayOptions::MaxVisiblePlayersOptions
+stfld System.String[] Durango.System.Config.ToggleSetting::Options
+ldloc.1 
+ldstr all
+stfld System.String Durango.System.Config.ValueSetting::Default
+ldloc.1 
+ldc.i4.1 
+stfld System.Boolean Durango.System.Config.Setting::HideOnPrologue
+ldloc.1 
+ldstr max_visible_players
+call System.String Durango.System.Config.OffServerGameplayOptions::Label(System.String)
+stfld System.String Durango.System.Config.ValueSetting::PrepareLabelText
+ldloc.0 
+ldloc.1 
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+call System.Boolean OffServerEmoji::get_NameTagToggleSupported()
+brfalse.s IL_00b6: ldloc.0
+ldloc.0 
+ldstr show_name_flags
+ldc.i4.1 
+call Durango.System.Config.ValueSetting Durango.System.Config.OffServerGameplayOptions::MakeSwitch(System.String,System.Boolean)
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+ret 
+METHOD Durango.System.Config.ValueSetting Durango.System.Config.OffServerGameplayOptions::MakeSwitch(System.String,System.Boolean)
+newobj System.Void Durango.System.Config.ValueSetting::.ctor()
+dup 
+ldarg.0 
+stfld System.String Durango.System.Config.Setting::Key
+dup 
+ldc.i4.s 9
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+dup 
+ldarg.1 
+brtrue.s IL_001f: ldstr "true"
+ldstr false
+br.s IL_0024: stfld System.String Durango.System.Config.ValueSetting::Default
+ldstr true
+stfld System.String Durango.System.Config.ValueSetting::Default
+dup 
+ldarg.1 
+box System.Boolean
+stfld System.Object Durango.System.Config.ValueSetting::Value
+dup 
+ldc.i4.1 
+stfld System.Boolean Durango.System.Config.Setting::HideOnPrologue
+dup 
+ldarg.0 
+call System.String Durango.System.Config.OffServerGameplayOptions::Label(System.String)
+stfld System.String Durango.System.Config.ValueSetting::PrepareLabelText
+ret 
+METHOD System.Int32 Durango.System.Config.OffServerGameplayOptions::ParseMaxVisiblePlayers(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0018: ldc.i4.m1
+ldarg.0 
+ldloca.s V_0
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_0018: ldc.i4.m1
+ldloc.0 
+ldc.i4.0 
+blt.s IL_0018: ldc.i4.m1
+ldloc.0 
+ret 
+ldc.i4.m1 
+ret 
+METHOD System.String Durango.System.Config.OffServerGameplayOptions::Label(System.String)
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.0 
+ldarg.0 
+ldstr v_sync
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0055: ldloc.0
+ldarg.0 
+ldstr attack_range_player
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0096: ldloc.0
+ldarg.0 
+ldstr attack_range_monster
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_00d7: ldloc.0
+ldarg.0 
+ldstr max_visible_players
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0118: ldloc.0
+ldarg.0 
+ldstr show_name_flags
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0159: ldloc.0
+br IL_019a: ldnull
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_007e: ldstr "V-Sync (ลดภาพฉีก · เฟรมเรทตามจอ)"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0084: ldstr "V-Sync (kurangi robekan gambar)"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_008a: ldstr "수직 동기화 (V-Sync)"
+br.s IL_0090: ldstr "V-Sync (no tearing · frame rate follows the display)"
+ldstr V-Sync (ลดภาพฉีก · เฟรมเรทตามจอ)
+ret 
+ldstr V-Sync (kurangi robekan gambar)
+ret 
+ldstr 수직 동기화 (V-Sync)
+ret 
+ldstr V-Sync (no tearing · frame rate follows the display)
+ret 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00bf: ldstr "แสดงระยะโจมตีของตัวเอง"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00c5: ldstr "Tampilkan jangkauan serangan sendiri"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00cb: ldstr "내 공격 범위 표시"
+br.s IL_00d1: ldstr "Show my attack range"
+ldstr แสดงระยะโจมตีของตัวเอง
+ret 
+ldstr Tampilkan jangkauan serangan sendiri
+ret 
+ldstr 내 공격 범위 표시
+ret 
+ldstr Show my attack range
+ret 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0100: ldstr "แสดงระยะโจมตีของมอนสเตอร์"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0106: ldstr "Tampilkan jangkauan serangan monster"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_010c: ldstr "몬스터 공격 범위 표시"
+br.s IL_0112: ldstr "Show monster attack range"
+ldstr แสดงระยะโจมตีของมอนสเตอร์
+ret 
+ldstr Tampilkan jangkauan serangan monster
+ret 
+ldstr 몬스터 공격 범위 표시
+ret 
+ldstr Show monster attack range
+ret 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0141: ldstr "จำนวนผู้เล่นอื่นที่แสดง"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0147: ldstr "Jumlah pemain lain yang ditampilkan"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_014d: ldstr "표시할 다른 플레이어 수"
+br.s IL_0153: ldstr "Other players shown"
+ldstr จำนวนผู้เล่นอื่นที่แสดง
+ret 
+ldstr Jumlah pemain lain yang ditampilkan
+ret 
+ldstr 표시할 다른 플레이어 수
+ret 
+ldstr Other players shown
+ret 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0182: ldstr "แสดงธง/ไอคอนหน้าชื่อ"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0188: ldstr "Tampilkan bendera/ikon di depan nama"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_018e: ldstr "이름 앞 국기/아이콘 표시"
+br.s IL_0194: ldstr "Show flags/icons before names"
+ldstr แสดงธง/ไอคอนหน้าชื่อ
+ret 
+ldstr Tampilkan bendera/ikon di depan nama
+ret 
+ldstr 이름 앞 국기/아이콘 표시
+ret 
+ldstr Show flags/icons before names
+ret 
+ldnull 
+ret 
+METHOD System.String Durango.System.Config.OffServerGameplayOptions::MaxVisiblePlayersOptionLabel(System.String)
+ldarg.0 
+call System.Int32 Durango.System.Config.OffServerGameplayOptions::ParseMaxVisiblePlayers(System.String)
+ldc.i4.0 
+blt.s IL_000b: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.0 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_003a: ldstr "ทั้งหมด"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldstr "Semua"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0046: ldstr "전체"
+br.s IL_004c: ldstr "All"
+ldstr ทั้งหมด
+ret 
+ldstr Semua
+ret 
+ldstr 전체
+ret 
+ldstr All
+ret 
+METHOD System.Void Durango.System.Config.OffServerGameplayOptions::.cctor()
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr 0
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr 5
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr 10
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 20
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr 30
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr 50
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr all
+stelem.ref 
+stsfld System.String[] Durango.System.Config.OffServerGameplayOptions::MaxVisiblePlayersOptions
+ret 

@@ -1,0 +1,86 @@
+Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0 : System.Object
+FIELD System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::onChanged
+FIELD UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::<FetchServersUnity>b__0(UnityEngine.AsyncOperation)
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt UnityEngine.Networking.UnityWebRequest/Result UnityEngine.Networking.UnityWebRequest::get_result()
+ldc.i4.2 
+beq.s IL_001c: ldc.i4.7
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt UnityEngine.Networking.UnityWebRequest/Result UnityEngine.Networking.UnityWebRequest::get_result()
+ldc.i4.3 
+bne.un.s IL_0087: ldarg.0
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] servers.json UnityWebRequest failed: 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt System.Int64 UnityEngine.Networking.UnityWebRequest::get_responseCode()
+stloc.0 
+ldloca.s V_0
+call System.String System.Int64::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt System.String UnityEngine.Networking.UnityWebRequest::get_error()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  -> keep cache (
+stelem.ref 
+dup 
+ldc.i4.5 
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+stloc.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+br.s IL_00b3: leave.s IL_00d9
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.String UnityEngine.Networking.DownloadHandler::get_text()
+ldstr UnityWebRequest
+ldarg.0 
+ldfld System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::onChanged
+call System.Boolean Durango.Logic.Clusters.OffServerLink::ApplyServersJson(System.String,System.String,System.Action)
+brtrue.s IL_00b3: leave.s IL_00d9
+ldstr [OffServer] servers.json UnityWebRequest: empty/invalid list
+call System.Void UnityEngine.Debug::Log(System.Object)
+leave.s IL_00d9: ret
+stloc.2 
+ldstr [OffServer] servers.json UnityWebRequest error: 
+ldloc.2 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+leave.s IL_00d9: ret
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt System.Void UnityEngine.Networking.UnityWebRequest::Dispose()
+endfinally 
+ret 

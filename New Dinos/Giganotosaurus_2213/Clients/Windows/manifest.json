@@ -1,0 +1,20 @@
+{
+  "entity_type": 2213,
+  "unity_version": "6000.6.0f1",
+  "platform": "Windows",
+  "model_path": "Giganotosaurus/GiganotosaurusPrefab",
+  "prefab_asset": "assets/models/animals/giganotosaurus/giganotosaurusprefab.prefab",
+  "framework_asset": "assets/models/animals/giganotosaurus/giganotosaurus_framework.asset",
+  "files": [
+    {
+      "name": "models$animals$giganotosaurus$giganotosaurusprefab.prefab.8640d579ae8413325ed5d0af77b5e128.bundle",
+      "size": 1921167,
+      "sha256": "af8e5b52cafe76a4665a955187d3f197e581ed96d8d4ccc5e4ee6a9a674512dd"
+    },
+    {
+      "name": "models$animals$giganotosaurus$giganotosaurus_framework.asset.a02e746614f5efb97f4c8750035cfd04.bundle",
+      "size": 18684446,
+      "sha256": "09c1186e9bf0dfb698ef65bafb110efc80bb1bcc5e5f27836e98855708a9829d"
+    }
+  ]
+}

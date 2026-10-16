@@ -1,0 +1,10 @@
+OffServerDyeUI/State : System.Object
+FIELD DyeSelection OffServerDyeUI/State::Selection
+FIELD System.Boolean OffServerDyeUI/State::Syncing
+METHOD System.Void OffServerDyeUI/State::.ctor()
+ldarg.0 
+newobj System.Void DyeSelection::.ctor()
+stfld DyeSelection OffServerDyeUI/State::Selection
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

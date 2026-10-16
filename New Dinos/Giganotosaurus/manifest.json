@@ -1,0 +1,1273 @@
+{
+  "asset": "Giganotosaurus",
+  "assetPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus",
+  "extractor": {
+    "name": "ArkExtractor",
+    "version": "0.1",
+    "arkSectionExtension": true,
+    "engine": "UE4.17 (ARK Survival Evolved mobile 2.0.29)"
+  },
+  "lods": [
+    {
+      "lod": 0,
+      "vertices": 4118,
+      "triangles": 5215,
+      "sections": [
+        {
+          "index": 0,
+          "materialIndex": 0,
+          "vertices": 4118,
+          "triangles": 5215,
+          "baseVertexIndex": 0,
+          "baseVertexIndexExpected": 0,
+          "baseVertexIndexOk": true,
+          "boneMapCount": 70,
+          "maxBoneInfluences": 4,
+          "arkExtension": {
+            "unknown0": 0,
+            "unknown1": 0.0,
+            "unknown2": 1.0,
+            "rawHex": "00000000000000000000803F"
+          }
+        }
+      ],
+      "uvChannels": 2,
+      "hasVertexColors": true,
+      "file": "mesh/Giganotosaurus.psk",
+      "sha256": "98ca5141f02baf3b2c3acd24db30cec3384a47e786be8f4b71d759bf70871b21",
+      "bytes": 394400,
+      "psk": {
+        "points": 4118,
+        "wedges": 4118,
+        "triangles": 5215,
+        "materials": [
+          "Gigantosaurus_Colorize_MIC"
+        ],
+        "trianglesPerMaterial": {
+          "0": 5215
+        },
+        "bones": 110,
+        "weights": 8673,
+        "hasVertexNormals": true,
+        "hasVertexColors": true,
+        "uvChannels": 2,
+        "maxInfluencesPerVertex": 4,
+        "verticesWithoutWeights": 0,
+        "weightSumMin": 1.0,
+        "weightSumMax": 1.0,
+        "chunks": [
+          "ACTRHEAD",
+          "PNTS0000",
+          "VTXW0000",
+          "FACE0000",
+          "MATT0000",
+          "VTXNORMS",
+          "RAWWEIGHTS",
+          "VERTEXCOLOR",
+          "EXTRAUVS0",
+          "REFSKELT"
+        ]
+      }
+    },
+    {
+      "lod": 1,
+      "vertices": 3127,
+      "triangles": 3650,
+      "sections": [
+        {
+          "index": 0,
+          "materialIndex": 0,
+          "vertices": 3127,
+          "triangles": 3650,
+          "baseVertexIndex": 0,
+          "baseVertexIndexExpected": 0,
+          "baseVertexIndexOk": true,
+          "boneMapCount": 70,
+          "maxBoneInfluences": 4,
+          "arkExtension": {
+            "unknown0": 0,
+            "unknown1": 0.0,
+            "unknown2": 1.0,
+            "rawHex": "00000000000000000000803F"
+          }
+        }
+      ],
+      "uvChannels": 2,
+      "hasVertexColors": true,
+      "file": "mesh/Giganotosaurus_LOD1.psk",
+      "sha256": "5b21db0e79673a79fda714358a111e16383bc1770dbb808f250f6531f28abde1",
+      "bytes": 296836,
+      "psk": {
+        "points": 3127,
+        "wedges": 3127,
+        "triangles": 3650,
+        "materials": [
+          "Gigantosaurus_Colorize_MIC"
+        ],
+        "trianglesPerMaterial": {
+          "0": 3650
+        },
+        "bones": 110,
+        "weights": 6402,
+        "hasVertexNormals": true,
+        "hasVertexColors": true,
+        "uvChannels": 2,
+        "maxInfluencesPerVertex": 4,
+        "verticesWithoutWeights": 0,
+        "weightSumMin": 1.0,
+        "weightSumMax": 1.0,
+        "chunks": [
+          "ACTRHEAD",
+          "PNTS0000",
+          "VTXW0000",
+          "FACE0000",
+          "MATT0000",
+          "VTXNORMS",
+          "RAWWEIGHTS",
+          "VERTEXCOLOR",
+          "EXTRAUVS0",
+          "REFSKELT"
+        ]
+      }
+    },
+    {
+      "lod": 2,
+      "vertices": 1095,
+      "triangles": 1042,
+      "sections": [
+        {
+          "index": 0,
+          "materialIndex": 0,
+          "vertices": 1095,
+          "triangles": 1042,
+          "baseVertexIndex": 0,
+          "baseVertexIndexExpected": 0,
+          "baseVertexIndexOk": true,
+          "boneMapCount": 66,
+          "maxBoneInfluences": 4,
+          "arkExtension": {
+            "unknown0": 0,
+            "unknown1": 0.0,
+            "unknown2": 1.0,
+            "rawHex": "00000000000000000000803F"
+          }
+        }
+      ],
+      "uvChannels": 2,
+      "hasVertexColors": true,
+      "file": "mesh/Giganotosaurus_LOD2.psk",
+      "sha256": "067f8551e73f4ccf43e1f5ed5da303a917f70deed93da15356803eb027f6088c",
+      "bytes": 109620,
+      "psk": {
+        "points": 1095,
+        "wedges": 1095,
+        "triangles": 1042,
+        "materials": [
+          "Gigantosaurus_Colorize_MIC"
+        ],
+        "trianglesPerMaterial": {
+          "0": 1042
+        },
+        "bones": 110,
+        "weights": 2214,
+        "hasVertexNormals": true,
+        "hasVertexColors": true,
+        "uvChannels": 2,
+        "maxInfluencesPerVertex": 4,
+        "verticesWithoutWeights": 0,
+        "weightSumMin": 1.0,
+        "weightSumMax": 1.0,
+        "chunks": [
+          "ACTRHEAD",
+          "PNTS0000",
+          "VTXW0000",
+          "FACE0000",
+          "MATT0000",
+          "VTXNORMS",
+          "RAWWEIGHTS",
+          "VERTEXCOLOR",
+          "EXTRAUVS0",
+          "REFSKELT"
+        ]
+      }
+    }
+  ],
+  "skeleton": {
+    "asset": "Skeleton'ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.Giganotosaurus_Skeleton'",
+    "skeletonBones": 90,
+    "meshBones": 90,
+    "pskBones": 110,
+    "sockets": 20,
+    "socketNames": [
+      "LookOffsetSocket",
+      "RiderSocket",
+      "MeleeSwing1",
+      "MeleeSwing2",
+      "MeleeSwing3",
+      "MeleeSwing4",
+      "PoopSocket",
+      "LeftFoot_SKT",
+      "RightFoot_SKT",
+      "root_SKT",
+      "EyeFX",
+      "buffsocketcenterdynamic",
+      "DragSocket",
+      "GlassesSocket",
+      "WitchHatSocket",
+      "SantaHatSocket",
+      "BunnyEarsSocket",
+      "CollarSocket",
+      "HeadSocket",
+      "TailSocket"
+    ],
+    "skeletonBonesNotInMesh": [],
+    "roots": 1,
+    "parentsBeforeChildren": true,
+    "detail": "metadata/skeleton.json",
+    "note": "ActorX exporter represents sockets as extra bones in the PSK (after the mesh bones). They are auxiliary, not animatable; PSA tracks only cover skeleton bones."
+  },
+  "animations": [
+    {
+      "name": "Giganotosaurus-Aim-Center",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Center",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Center.psa",
+      "sha256": "8b7cf60bf85a1768f9e7bcd6b02eced88d17bd9d05c4a097b65a057534227372",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Dwn-Lft",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Dwn-Lft",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Dwn-Lft.psa",
+      "sha256": "c77e219accb85aa1a67a97316ff96e857e50287981f9970e31c128a383bfe0ef",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Dwn-Rit",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Dwn-Rit",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Dwn-Rit.psa",
+      "sha256": "8c82bfa86468e387552c5ebc44652049066349359a5e56021ab9f5523e6ffb78",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Dwn",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Dwn",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Dwn.psa",
+      "sha256": "da41ae185f2f92a124691f0e39988256c2866f55f5e3a5665b8a12679d4fb87a",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Lft",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Lft",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Lft.psa",
+      "sha256": "8fb15c146d98c698e1e53e1c1a63d8b79c66dbb9600f1fca9ae40c70a7d5ebd3",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Rit",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Rit",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Rit.psa",
+      "sha256": "59dd0c7a3f7bc41d5aa377a0172857327a2423235a12a530a09210068910a478",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Up-Lft",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Up-Lft",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Up-Lft.psa",
+      "sha256": "e907e8049611518facebad5ff4d00ff60d3cd05a08ecc12159e1b44f2d3efbe6",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Up-Rit",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Up-Rit",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Up-Rit.psa",
+      "sha256": "9950ea92822db3a60eecf7a8b7c390e686e86240caabc53283bd3439c35f8523",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Aim-Up",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Aim-Up",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 1,
+      "duration": 0.02963,
+      "fps": 0.0,
+      "tracks": 90,
+      "additive": "AAT_RotationOffsetMeshSpace",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Aim-Up.psa",
+      "sha256": "3a2f7340618f303aef1bdced316d1498c7cd3a85466096239155142ea761224e",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 1,
+        "keys": 90,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Attack-Bite",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_LocalSpaceBase",
+      "rateScale": 1.0,
+      "notifies": 1,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Attack-Bite.psa",
+      "sha256": "42c531c6203c59f5d4619ce0eda2f22177c14dcdad4eece9db1aadedfd3ef1e6",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Blink",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Blink",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 2,
+      "duration": 0.033333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_LocalSpaceBase",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Blink.psa",
+      "sha256": "c1fd451d1ad0d6189f14432bb6fd853ca401866b002495e18c2c57a291c772d3",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 2,
+        "keys": 180,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Charge-Fwd",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Charge-Fwd",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.4,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Charge-Fwd.psa",
+      "sha256": "4fed7d4b95f0338d8b8d00963997a5930bf68591215375b350ffe924bda15401",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Charge-Lft",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Charge-Lft",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.2375,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Charge-Lft.psa",
+      "sha256": "144c130cc4783ebe9b3891f273f1ea70601c17fab3cf19059c71ac9a4abaacc5",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Charge-Rit",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Charge-Rit",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.2375,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Charge-Rit.psa",
+      "sha256": "5999107931f0a0dabef62a17b22e243f7b74233c3aa701cac5263d3813ee30e0",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Cuddle",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Cuddle",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 201,
+      "duration": 6.666667,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 3,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Cuddle.psa",
+      "sha256": "6b8f8bd4ab03cc062a22715110785a3e68bc2af261caf26ed7bb1efda59b1a0c",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 201,
+        "keys": 18090,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Eat",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Eat",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 201,
+      "duration": 6.666667,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 4,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Eat.psa",
+      "sha256": "e646f63d635cd6c6e76c87c7c0503628f39f890b20310803843583f1d35eb152",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 201,
+        "keys": 18090,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Hurt-Small-Rit",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Hurt-Small-Rit",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 16,
+      "duration": 0.5,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_LocalSpaceBase",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Hurt-Small-Rit.psa",
+      "sha256": "eb1c61fd61034339b8fbdb0dcc3260075adecb87a9f518d5eadec26935740690",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 16,
+        "keys": 1440,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Idle",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Idle",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 101,
+      "duration": 3.333333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 1,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Idle.psa",
+      "sha256": "600d30202d8f6cf355e2e33d9b32afb85962839c64143876ee69aa6028db4d72",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 101,
+        "keys": 9090,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Lay-Egg",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 61,
+      "duration": 2.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Lay-Egg.psa",
+      "sha256": "d6abbbee12ca10c3e84d45254b8107121db23f95c1a61f37e61c533814302763",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 61,
+        "keys": 5490,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Move-Fwd",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Move-Fwd",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 0.6375,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Move-Fwd.psa",
+      "sha256": "945a8b4c78cb5ea6a636182ade6b24f05c7eccc55c4d45cac53f06833aa9a042",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Move-Lft",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Move-Lft",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 0.67,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Move-Lft.psa",
+      "sha256": "648bb6c2ecae2810f316f51e0ddbe7e54762c788cfec09617b6e76c9e8527d4d",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Move-Rit",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Move-Rit",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 31,
+      "duration": 1.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 0.67,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Move-Rit.psa",
+      "sha256": "c1d2add3c657bf0609875d2fb6e8c6f57110323671e1097e518a7d0369cf172f",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 31,
+        "keys": 2790,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Roar",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 61,
+      "duration": 2.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 3,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Roar.psa",
+      "sha256": "74655eeba5fc2c20c4423ea0f64e68a2342410bd69ae65ee42b76dde4914e706",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 61,
+        "keys": 5490,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Startled",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Startled",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 41,
+      "duration": 1.333333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 1,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Startled.psa",
+      "sha256": "0504a8f1cae7b30a6bbb36d2f61be4b84809a199ec39e910a1760a1e5c0c866c",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 41,
+        "keys": 3690,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Swim-Fwd",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Swim-Fwd",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 41,
+      "duration": 1.333333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 0.6,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Swim-Fwd.psa",
+      "sha256": "6fbaf0f1b5c8b61e726852275212e3dba7e69017112881aeef41f207c253564a",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 41,
+        "keys": 3690,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Swim-Idle",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Swim-Idle",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 101,
+      "duration": 3.333333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 0.9,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Swim-Idle.psa",
+      "sha256": "38aebd42299444bc8880244be16b79ee8862261141ab97cdd9dfcbe295349d19",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 101,
+        "keys": 9090,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Torpid-Eat",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Eat",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 101,
+      "duration": 3.333333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 3,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Torpid-Eat.psa",
+      "sha256": "61172a87a21fe617e17d3584fcd7e34f4fedfcb49b7fc10515696f153ce02ea8",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 101,
+        "keys": 9090,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Torpid-Idle",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Idle",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 101,
+      "duration": 3.333333,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 0,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Torpid-Idle.psa",
+      "sha256": "139bc478b8e91f9ac2454853f3123ab40e4317e59921fcabb8e5c50415321022",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 101,
+        "keys": 9090,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Torpid-In",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-In",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 61,
+      "duration": 2.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 3,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Torpid-In.psa",
+      "sha256": "6462159ce2d63d18d32fb6356f715fa6101208f4955ffe0fcf10260fb61b5bde",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 61,
+        "keys": 5490,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Torpid-Out-Tamed",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Tamed",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 111,
+      "duration": 3.666667,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Torpid-Out-Tamed.psa",
+      "sha256": "ee249086299dc0744f95a285dba923f798ed622bc88588699b7e69142a89f23e",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 111,
+        "keys": 9990,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    },
+    {
+      "name": "Giganotosaurus-Torpid-Out-Wild",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Wild",
+      "skeleton": "Giganotosaurus_Skeleton",
+      "skeletonCompatible": true,
+      "frames": 61,
+      "duration": 2.0,
+      "fps": 30.0,
+      "tracks": 90,
+      "additive": "AAT_None",
+      "rateScale": 1.0,
+      "notifies": 7,
+      "nanInf": 0,
+      "tracksMatchSkeleton": true,
+      "file": "animations/Giganotosaurus-Torpid-Out-Wild.psa",
+      "sha256": "82ffc4d811aa8683fa135df09c0d6ab06163c5fe797a7f616ce31557e30bd872",
+      "psa": {
+        "bones": 90,
+        "sequences": 1,
+        "frames": 61,
+        "keys": 5490,
+        "keysConsistent": true
+      },
+      "status": "OK"
+    }
+  ],
+  "montages": {
+    "count": 12,
+    "file": "animations/montages.json",
+    "names": [
+      "Giganotosaurus-Attack-Bite_Montage",
+      "Giganotosaurus-Cuddle_Montage",
+      "Giganotosaurus-Eat_Montage",
+      "Giganotosaurus-Hurt-Small-Rit_Montage",
+      "Giganotosaurus-Lay-Egg_Montage",
+      "Giganotosaurus-Rage_Montage",
+      "Giganotosaurus-Roar_Montage",
+      "Giganotosaurus-Startled_Montage",
+      "Giganotosaurus-Torpid-Eat_Montage",
+      "Giganotosaurus-Torpid-In_Montage",
+      "Giganotosaurus-Torpid-Out-Tamed_Montage",
+      "Giganotosaurus-Torpid-Out-Wild_Montage"
+    ]
+  },
+  "otherAnimationAssets": [
+    {
+      "name": "Giganotosaurus_AimOffset",
+      "type": "UAimOffsetBlendSpace",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus_AimOffset",
+      "note": "listed only (not exported)"
+    }
+  ],
+  "materials": [
+    {
+      "slot": 0,
+      "slotName": "Gigantosaurus_Colorize_MIC",
+      "material": "Gigantosaurus_Colorize_MIC",
+      "parent": "Material:Mobile_ColorMask",
+      "parentChain": [
+        "MaterialInstanceConstant:Gigantosaurus_Colorize_MIC",
+        "Material:Mobile_ColorMask"
+      ],
+      "master": "Mobile_ColorMask",
+      "blendMode": "BLEND_Masked",
+      "twoSided": true,
+      "textures": [
+        {
+          "parameter": "Color Texture",
+          "role": "colorMask",
+          "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_Colorize_m_mobile",
+          "setBy": "Gigantosaurus_Colorize_MIC"
+        },
+        {
+          "parameter": "Diffuse",
+          "role": "diffuse",
+          "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_Colorize_d",
+          "setBy": "Gigantosaurus_Colorize_MIC"
+        },
+        {
+          "parameter": "Normal",
+          "role": "normal",
+          "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_N",
+          "setBy": "Gigantosaurus_Colorize_MIC"
+        }
+      ],
+      "scalars": {
+        "DetailNormal - Tile": 60.0,
+        "DiffuseMult": 4.0,
+        "Metallic": 0.3,
+        "RefractionDepthBias": 0.0,
+        "Roughness": 0.42,
+        "Specular": 0.28
+      },
+      "vectors": {
+        "Color0": {
+          "r": 0.37,
+          "g": 0.270021,
+          "b": 0.25345,
+          "a": 1.0,
+          "hex": "A48E8A"
+        },
+        "Color1": {
+          "r": 0.196191,
+          "g": 0.189833,
+          "b": 0.28,
+          "a": 1.0,
+          "hex": "7A7990"
+        },
+        "Color2": {
+          "r": 0.279388,
+          "g": 0.270175,
+          "b": 0.505,
+          "a": 1.0,
+          "hex": "908EBD"
+        }
+      },
+      "detected": {
+        "diffuse": true,
+        "normal": true,
+        "mask": true,
+        "detailNormal": true,
+        "opacity": "BLEND_Masked, but the diffuse texture has no alpha channel (opacity source unresolved)",
+        "furAtlas": false
+      },
+      "colorMask": {
+        "present": true,
+        "channels": "RGB",
+        "colors": {
+          "Color0": {
+            "r": 0.37,
+            "g": 0.270021,
+            "b": 0.25345,
+            "a": 1.0,
+            "hex": "A48E8A"
+          },
+          "Color1": {
+            "r": 0.196191,
+            "g": 0.189833,
+            "b": 0.28,
+            "a": 1.0,
+            "hex": "7A7990"
+          },
+          "Color2": {
+            "r": 0.279388,
+            "g": 0.270175,
+            "b": 0.505,
+            "a": 1.0,
+            "hex": "908EBD"
+          }
+        },
+        "sourceColorSpace": "sRGB",
+        "blenderInterpretation": "unresolved"
+      },
+      "masterDefaultTextures": [
+        {
+          "parameter": "Normal",
+          "package": "Engine/Content/EngineMaterials/T_Default_Normal",
+          "overriddenByInstance": true,
+          "role": "normal"
+        },
+        {
+          "parameter": "DetailNormal",
+          "package": "ShooterGame/Content/PrimalEarth/Dinos/Sauropod/skin_detail_N",
+          "overriddenByInstance": false,
+          "role": "detailNormal"
+        },
+        {
+          "parameter": "Color Texture",
+          "package": "ShooterGame/Content/PrimalEarth/Dinos/Achatina/textures/achintina_Colorize_m",
+          "overriddenByInstance": true,
+          "role": "colorMask"
+        }
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": "gigantosaurus_Colorize_d",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_Colorize_d",
+      "roles": [
+        "diffuse"
+      ],
+      "format": "PF_ETC2_RGB",
+      "width": 512,
+      "height": 512,
+      "mips": 10,
+      "sRGB": true,
+      "compression": "TC_Default",
+      "addressX": "TA_Wrap",
+      "addressY": "TA_Wrap",
+      "hasAlpha": false,
+      "textureType": "diffuse",
+      "file": "textures/gigantosaurus_Colorize_d.png",
+      "sha256": "71313876c3f2fdda035dc5842e729f4bae55bb7d31d5e9f216280620bb7b817d",
+      "status": "OK"
+    },
+    {
+      "name": "gigantosaurus_Colorize_m_mobile",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_Colorize_m_mobile",
+      "roles": [
+        "colorMask"
+      ],
+      "format": "PF_ETC2_RGB",
+      "width": 256,
+      "height": 256,
+      "mips": 9,
+      "sRGB": true,
+      "compression": "TC_Default",
+      "addressX": "TA_Wrap",
+      "addressY": "TA_Wrap",
+      "hasAlpha": false,
+      "textureType": "colorMask",
+      "file": "textures/gigantosaurus_Colorize_m_mobile.png",
+      "sha256": "b308ca1bf7929d3c4b44f1b2ddc68589cefe672544f949ba11bdf02bd7bbc87d",
+      "status": "OK"
+    },
+    {
+      "name": "gigantosaurus_N",
+      "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_N",
+      "roles": [
+        "normal"
+      ],
+      "format": "PF_ETC2_RGB",
+      "width": 512,
+      "height": 512,
+      "mips": 10,
+      "sRGB": false,
+      "compression": "TC_Normalmap",
+      "addressX": "TA_Wrap",
+      "addressY": "TA_Wrap",
+      "hasAlpha": false,
+      "textureType": "normal",
+      "file": "textures/gigantosaurus_N.png",
+      "sha256": "101dc2a0916e0509b7f1231b80df147ec53e94fe9cb17fe0eba16687e7a57ad8",
+      "status": "OK"
+    }
+  ],
+  "summary": {
+    "lods": 3,
+    "sections": [
+      1,
+      1,
+      1
+    ],
+    "animationsParsed": 31,
+    "animationsOk": 31,
+    "montages": 12,
+    "materials": 1,
+    "textures": 3,
+    "failures": 0,
+    "fingerprintSha256": "19665ececf96adc33dda9e3bf27be5528e8715636f13db074232dad7e803982f",
+    "fileHashes": [
+      "animations/Giganotosaurus-Aim-Center.psa:8b7cf60bf85a1768f9e7bcd6b02eced88d17bd9d05c4a097b65a057534227372",
+      "animations/Giganotosaurus-Aim-Dwn-Lft.psa:c77e219accb85aa1a67a97316ff96e857e50287981f9970e31c128a383bfe0ef",
+      "animations/Giganotosaurus-Aim-Dwn-Rit.psa:8c82bfa86468e387552c5ebc44652049066349359a5e56021ab9f5523e6ffb78",
+      "animations/Giganotosaurus-Aim-Dwn.psa:da41ae185f2f92a124691f0e39988256c2866f55f5e3a5665b8a12679d4fb87a",
+      "animations/Giganotosaurus-Aim-Lft.psa:8fb15c146d98c698e1e53e1c1a63d8b79c66dbb9600f1fca9ae40c70a7d5ebd3",
+      "animations/Giganotosaurus-Aim-Rit.psa:59dd0c7a3f7bc41d5aa377a0172857327a2423235a12a530a09210068910a478",
+      "animations/Giganotosaurus-Aim-Up-Lft.psa:e907e8049611518facebad5ff4d00ff60d3cd05a08ecc12159e1b44f2d3efbe6",
+      "animations/Giganotosaurus-Aim-Up-Rit.psa:9950ea92822db3a60eecf7a8b7c390e686e86240caabc53283bd3439c35f8523",
+      "animations/Giganotosaurus-Aim-Up.psa:3a2f7340618f303aef1bdced316d1498c7cd3a85466096239155142ea761224e",
+      "animations/Giganotosaurus-Attack-Bite.psa:42c531c6203c59f5d4619ce0eda2f22177c14dcdad4eece9db1aadedfd3ef1e6",
+      "animations/Giganotosaurus-Blink.psa:c1fd451d1ad0d6189f14432bb6fd853ca401866b002495e18c2c57a291c772d3",
+      "animations/Giganotosaurus-Charge-Fwd.psa:4fed7d4b95f0338d8b8d00963997a5930bf68591215375b350ffe924bda15401",
+      "animations/Giganotosaurus-Charge-Lft.psa:144c130cc4783ebe9b3891f273f1ea70601c17fab3cf19059c71ac9a4abaacc5",
+      "animations/Giganotosaurus-Charge-Rit.psa:5999107931f0a0dabef62a17b22e243f7b74233c3aa701cac5263d3813ee30e0",
+      "animations/Giganotosaurus-Cuddle.psa:6b8f8bd4ab03cc062a22715110785a3e68bc2af261caf26ed7bb1efda59b1a0c",
+      "animations/Giganotosaurus-Eat.psa:e646f63d635cd6c6e76c87c7c0503628f39f890b20310803843583f1d35eb152",
+      "animations/Giganotosaurus-Hurt-Small-Rit.psa:eb1c61fd61034339b8fbdb0dcc3260075adecb87a9f518d5eadec26935740690",
+      "animations/Giganotosaurus-Idle.psa:600d30202d8f6cf355e2e33d9b32afb85962839c64143876ee69aa6028db4d72",
+      "animations/Giganotosaurus-Lay-Egg.psa:d6abbbee12ca10c3e84d45254b8107121db23f95c1a61f37e61c533814302763",
+      "animations/Giganotosaurus-Move-Fwd.psa:945a8b4c78cb5ea6a636182ade6b24f05c7eccc55c4d45cac53f06833aa9a042",
+      "animations/Giganotosaurus-Move-Lft.psa:648bb6c2ecae2810f316f51e0ddbe7e54762c788cfec09617b6e76c9e8527d4d",
+      "animations/Giganotosaurus-Move-Rit.psa:c1d2add3c657bf0609875d2fb6e8c6f57110323671e1097e518a7d0369cf172f",
+      "animations/Giganotosaurus-Roar.psa:74655eeba5fc2c20c4423ea0f64e68a2342410bd69ae65ee42b76dde4914e706",
+      "animations/Giganotosaurus-Startled.psa:0504a8f1cae7b30a6bbb36d2f61be4b84809a199ec39e910a1760a1e5c0c866c",
+      "animations/Giganotosaurus-Swim-Fwd.psa:6fbaf0f1b5c8b61e726852275212e3dba7e69017112881aeef41f207c253564a",
+      "animations/Giganotosaurus-Swim-Idle.psa:38aebd42299444bc8880244be16b79ee8862261141ab97cdd9dfcbe295349d19",
+      "animations/Giganotosaurus-Torpid-Eat.psa:61172a87a21fe617e17d3584fcd7e34f4fedfcb49b7fc10515696f153ce02ea8",
+      "animations/Giganotosaurus-Torpid-Idle.psa:139bc478b8e91f9ac2454853f3123ab40e4317e59921fcabb8e5c50415321022",
+      "animations/Giganotosaurus-Torpid-In.psa:6462159ce2d63d18d32fb6356f715fa6101208f4955ffe0fcf10260fb61b5bde",
+      "animations/Giganotosaurus-Torpid-Out-Tamed.psa:ee249086299dc0744f95a285dba923f798ed622bc88588699b7e69142a89f23e",
+      "animations/Giganotosaurus-Torpid-Out-Wild.psa:82ffc4d811aa8683fa135df09c0d6ab06163c5fe797a7f616ce31557e30bd872",
+      "mesh/Giganotosaurus.psk:98ca5141f02baf3b2c3acd24db30cec3384a47e786be8f4b71d759bf70871b21",
+      "mesh/Giganotosaurus_LOD1.psk:5b21db0e79673a79fda714358a111e16383bc1770dbb808f250f6531f28abde1",
+      "mesh/Giganotosaurus_LOD2.psk:067f8551e73f4ccf43e1f5ed5da303a917f70deed93da15356803eb027f6088c",
+      "textures/gigantosaurus_Colorize_d.png:71313876c3f2fdda035dc5842e729f4bae55bb7d31d5e9f216280620bb7b817d",
+      "textures/gigantosaurus_Colorize_m_mobile.png:b308ca1bf7929d3c4b44f1b2ddc68589cefe672544f949ba11bdf02bd7bbc87d",
+      "textures/gigantosaurus_N.png:101dc2a0916e0509b7f1231b80df147ec53e94fe9cb17fe0eba16687e7a57ad8"
+    ]
+  },
+  "status": "OK",
+  "failures": []
+}

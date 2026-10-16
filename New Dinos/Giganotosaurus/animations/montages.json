@@ -1,0 +1,1320 @@
+[
+  {
+    "name": "Giganotosaurus-Attack-Bite_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "AdditiveSlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Attack-Bite'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 1.0,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Attack-Bite"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Attack-Bite.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 1.0,
+    "blendIn": null,
+    "blendOut": {
+      "BlendTime": 0.2
+    },
+    "blendOutTriggerTime": null,
+    "notifies": [
+      {
+        "TriggerTimeOffset": 0.0,
+        "EndTriggerTimeOffset": 0.0,
+        "TriggerWeightThreshold": 0.0,
+        "NotifyName": "MeleeSwing",
+        "Notify": null,
+        "NotifyStateClass": {
+          "ObjectName": "AnimNotifyState_Custom'Giganotosaurus-Attack-Bite_Montage:AnimNotifyState_Custom_0'",
+          "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.1"
+        },
+        "Duration": 0.29813498,
+        "EndLink": {
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Attack-Bite_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.0,
+          "LinkValue": 0.79096335,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Attack-Bite'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1"
+          }
+        },
+        "bConvertedFromBranchingPoint": false,
+        "MontageTickType": "EMontageNotifyTickType::Queued",
+        "NotifyTriggerChance": 1.0,
+        "NotifyFilterType": "ENotifyFilterType::NoFiltering",
+        "NotifyFilterLOD": 0,
+        "bTriggerOnDedicatedServer": true,
+        "TrackIndex": 0,
+        "LinkedMontage": {
+          "ObjectName": "AnimMontage'Giganotosaurus-Attack-Bite_Montage'",
+          "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.0"
+        },
+        "SlotIndex": 0,
+        "SegmentIndex": 0,
+        "LinkMethod": "EAnimLinkMethod::Absolute",
+        "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+        "SegmentBeginTime": 0.0,
+        "SegmentLength": 1.0,
+        "LinkValue": 0.49282837,
+        "LinkedSequence": {
+          "ObjectName": "AnimSequence'Giganotosaurus-Attack-Bite'",
+          "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1"
+        }
+      }
+    ],
+    "properties": {
+      "BlendOut": {
+        "BlendTime": 0.2
+      },
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Attack-Bite_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.0,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Attack-Bite'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "AdditiveSlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Attack-Bite'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 1.0,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "Notifies": [
+        {
+          "TriggerTimeOffset": 0.0,
+          "EndTriggerTimeOffset": 0.0,
+          "TriggerWeightThreshold": 0.0,
+          "NotifyName": "MeleeSwing",
+          "Notify": null,
+          "NotifyStateClass": {
+            "ObjectName": "AnimNotifyState_Custom'Giganotosaurus-Attack-Bite_Montage:AnimNotifyState_Custom_0'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.1"
+          },
+          "Duration": 0.29813498,
+          "EndLink": {
+            "LinkedMontage": {
+              "ObjectName": "AnimMontage'Giganotosaurus-Attack-Bite_Montage'",
+              "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.0"
+            },
+            "SlotIndex": 0,
+            "SegmentIndex": 0,
+            "LinkMethod": "EAnimLinkMethod::Absolute",
+            "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+            "SegmentBeginTime": 0.0,
+            "SegmentLength": 1.0,
+            "LinkValue": 0.79096335,
+            "LinkedSequence": {
+              "ObjectName": "AnimSequence'Giganotosaurus-Attack-Bite'",
+              "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1"
+            }
+          },
+          "bConvertedFromBranchingPoint": false,
+          "MontageTickType": "EMontageNotifyTickType::Queued",
+          "NotifyTriggerChance": 1.0,
+          "NotifyFilterType": "ENotifyFilterType::NoFiltering",
+          "NotifyFilterLOD": 0,
+          "bTriggerOnDedicatedServer": true,
+          "TrackIndex": 0,
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Attack-Bite_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.0,
+          "LinkValue": 0.49282837,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Attack-Bite'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Attack-Bite.1"
+          }
+        }
+      ],
+      "SequenceLength": 1.0,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Cuddle_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Cuddle_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Cuddle'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Cuddle.3",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 6.6666665,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Cuddle"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Cuddle.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 6.6666665,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Cuddle_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Cuddle_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 6.6666665,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Cuddle'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Cuddle.3"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Cuddle'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Cuddle.3"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 6.6666665,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 6.6666665,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Eat_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Eat_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Eat'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Eat.4",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 6.6666665,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Eat"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Eat.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 6.6666665,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Eat_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Eat_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 6.6666665,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Eat'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Eat.4"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Eat'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Eat.4"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 6.6666665,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 6.6666665,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Hurt-Small-Rit_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Hurt-Small-Rit_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "AdditiveSlotSecondary"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Hurt-Small-Rit'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Hurt-Small-Rit.0",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 0.5,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Hurt-Small-Rit"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Hurt-Small-Rit.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 0.5,
+    "blendIn": {
+      "BlendTime": 0.3
+    },
+    "blendOut": {
+      "BlendTime": 0.35
+    },
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "BlendIn": {
+        "BlendTime": 0.3
+      },
+      "BlendOut": {
+        "BlendTime": 0.35
+      },
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Hurt-Small-Rit_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Hurt-Small-Rit_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 0.5,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Hurt-Small-Rit'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Hurt-Small-Rit.0"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "AdditiveSlotSecondary",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Hurt-Small-Rit'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Hurt-Small-Rit.0"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 0.5,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 0.5,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Lay-Egg_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Lay-Egg'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg.0",
+        "startPos": 0.0,
+        "animStartTime": 0.3,
+        "animEndTime": 1.8,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Lay-Egg"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Lay-Egg.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 1.5,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": [
+      {
+        "TriggerTimeOffset": 0.0,
+        "EndTriggerTimeOffset": 0.0,
+        "TriggerWeightThreshold": 0.0,
+        "NotifyName": "Poop",
+        "Notify": {
+          "ObjectName": "AnimNotify_CustomEvent'Giganotosaurus-Lay-Egg_Montage:AnimNotify_CustomEvent_0'",
+          "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg_Montage.1"
+        },
+        "NotifyStateClass": null,
+        "Duration": 0.0,
+        "EndLink": {
+          "LinkedMontage": null,
+          "SlotIndex": 0,
+          "SegmentIndex": -1,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 0.0,
+          "LinkValue": 0.0,
+          "LinkedSequence": null
+        },
+        "bConvertedFromBranchingPoint": false,
+        "MontageTickType": "EMontageNotifyTickType::Queued",
+        "NotifyTriggerChance": 1.0,
+        "NotifyFilterType": "ENotifyFilterType::NoFiltering",
+        "NotifyFilterLOD": 0,
+        "bTriggerOnDedicatedServer": true,
+        "TrackIndex": 0,
+        "LinkedMontage": {
+          "ObjectName": "AnimMontage'Giganotosaurus-Lay-Egg_Montage'",
+          "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg_Montage.0"
+        },
+        "SlotIndex": 0,
+        "SegmentIndex": 0,
+        "LinkMethod": "EAnimLinkMethod::Absolute",
+        "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+        "SegmentBeginTime": 0.0,
+        "SegmentLength": 1.5,
+        "LinkValue": 0.703069,
+        "LinkedSequence": {
+          "ObjectName": "AnimSequence'Giganotosaurus-Lay-Egg'",
+          "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg.0"
+        }
+      }
+    ],
+    "properties": {
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Lay-Egg_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.5,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Lay-Egg'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg.0"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Lay-Egg'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg.0"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.3,
+                "AnimEndTime": 1.8,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "Notifies": [
+        {
+          "TriggerTimeOffset": 0.0,
+          "EndTriggerTimeOffset": 0.0,
+          "TriggerWeightThreshold": 0.0,
+          "NotifyName": "Poop",
+          "Notify": {
+            "ObjectName": "AnimNotify_CustomEvent'Giganotosaurus-Lay-Egg_Montage:AnimNotify_CustomEvent_0'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg_Montage.1"
+          },
+          "NotifyStateClass": null,
+          "Duration": 0.0,
+          "EndLink": {
+            "LinkedMontage": null,
+            "SlotIndex": 0,
+            "SegmentIndex": -1,
+            "LinkMethod": "EAnimLinkMethod::Absolute",
+            "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+            "SegmentBeginTime": 0.0,
+            "SegmentLength": 0.0,
+            "LinkValue": 0.0,
+            "LinkedSequence": null
+          },
+          "bConvertedFromBranchingPoint": false,
+          "MontageTickType": "EMontageNotifyTickType::Queued",
+          "NotifyTriggerChance": 1.0,
+          "NotifyFilterType": "ENotifyFilterType::NoFiltering",
+          "NotifyFilterLOD": 0,
+          "bTriggerOnDedicatedServer": true,
+          "TrackIndex": 0,
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Lay-Egg_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.5,
+          "LinkValue": 0.703069,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Lay-Egg'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Lay-Egg.0"
+          }
+        }
+      ],
+      "SequenceLength": 1.5,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Rage_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Rage_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Roar'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar.3",
+        "startPos": 0.0,
+        "animStartTime": 0.2,
+        "animEndTime": 2.0,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Roar"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Roar.psa"
+    ],
+    "rateScale": 0.55,
+    "sequenceLength": 1.8,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Rage_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Rage_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.8,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Roar'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar.3"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Roar'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar.3"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.2,
+                "AnimEndTime": 2.0,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 1.8,
+      "RateScale": 0.55,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Roar_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Roar'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar.3",
+        "startPos": 0.0,
+        "animStartTime": 0.2,
+        "animEndTime": 2.0,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Roar"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Roar.psa"
+    ],
+    "rateScale": 0.65,
+    "sequenceLength": 1.8,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Roar_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.8,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Roar'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar.3"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Roar'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Roar.3"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.2,
+                "AnimEndTime": 2.0,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 1.8,
+      "RateScale": 0.65,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Startled_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Startled_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Startled'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Startled.1",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 1.25,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Startled"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Startled.psa"
+    ],
+    "rateScale": 0.9,
+    "sequenceLength": 1.25,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Startled_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Startled_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 1.25,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Startled'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Startled.1"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Startled'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Startled.1"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 1.25,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 1.25,
+      "RateScale": 0.9,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Torpid-Eat_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Eat_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Torpid-Eat'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Eat.3",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 3.3333333,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Torpid-Eat"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Torpid-Eat.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 3.3333333,
+    "blendIn": null,
+    "blendOut": null,
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "bClientPlayWhenNotRendered": true,
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Torpid-Eat_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Eat_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 3.3333333,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Torpid-Eat'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Eat.3"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Torpid-Eat'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Eat.3"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 3.3333333,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 3.3333333,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Torpid-In_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-In_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Torpid-In'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-In.3",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 2.0,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Torpid-In"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Torpid-In.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 2.0,
+    "blendIn": {
+      "BlendTime": 0.35
+    },
+    "blendOut": {
+      "BlendTime": 0.5
+    },
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "BlendIn": {
+        "BlendTime": 0.35
+      },
+      "BlendOut": {
+        "BlendTime": 0.5
+      },
+      "bClientPlayWhenNotRendered": true,
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Torpid-In_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-In_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 2.0,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Torpid-In'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-In.3"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Torpid-In'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-In.3"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 2.0,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 2.0,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Torpid-Out-Tamed_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Tamed_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Torpid-Out-Tamed'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Tamed.7",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 3.6666667,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Torpid-Out-Tamed"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Torpid-Out-Tamed.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 3.6666667,
+    "blendIn": {
+      "BlendTime": 0.35
+    },
+    "blendOut": {
+      "BlendTime": 0.5
+    },
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "BlendIn": {
+        "BlendTime": 0.35
+      },
+      "BlendOut": {
+        "BlendTime": 0.5
+      },
+      "bClientPlayWhenNotRendered": true,
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Torpid-Out-Tamed_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Tamed_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 3.6666667,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Torpid-Out-Tamed'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Tamed.7"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Torpid-Out-Tamed'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Tamed.7"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 3.6666667,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 3.6666667,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  },
+  {
+    "name": "Giganotosaurus-Torpid-Out-Wild_Montage",
+    "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Wild_Montage",
+    "skeleton": "Giganotosaurus_Skeleton",
+    "slots": [
+      "FullBodySlot"
+    ],
+    "sections": [
+      {
+        "name": "Default",
+        "next": "None",
+        "segmentBeginTime": 0.0,
+        "startTime": null
+      }
+    ],
+    "segments": [
+      {
+        "reference": "AnimSequence'Giganotosaurus-Torpid-Out-Wild'",
+        "referencePath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Wild.7",
+        "startPos": 0.0,
+        "animStartTime": 0.0,
+        "animEndTime": 2.0,
+        "animPlayRate": 1.0,
+        "loopingCount": 1
+      }
+    ],
+    "sequences": [
+      "Giganotosaurus-Torpid-Out-Wild"
+    ],
+    "sequencePsa": [
+      "animations/Giganotosaurus-Torpid-Out-Wild.psa"
+    ],
+    "rateScale": 1.0,
+    "sequenceLength": 2.0,
+    "blendIn": {
+      "BlendTime": 0.35
+    },
+    "blendOut": {
+      "BlendTime": 0.5
+    },
+    "blendOutTriggerTime": null,
+    "notifies": null,
+    "properties": {
+      "BlendIn": {
+        "BlendTime": 0.35
+      },
+      "BlendOut": {
+        "BlendTime": 0.5
+      },
+      "bClientPlayWhenNotRendered": true,
+      "CompositeSections": [
+        {
+          "SectionName": "Default",
+          "NextSectionName": "None",
+          "MetaData": [],
+          "LinkedMontage": {
+            "ObjectName": "AnimMontage'Giganotosaurus-Torpid-Out-Wild_Montage'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Wild_Montage.0"
+          },
+          "SlotIndex": 0,
+          "SegmentIndex": 0,
+          "LinkMethod": "EAnimLinkMethod::Absolute",
+          "CachedLinkMethod": "EAnimLinkMethod::Absolute",
+          "SegmentBeginTime": 0.0,
+          "SegmentLength": 2.0,
+          "LinkValue": 0.0,
+          "LinkedSequence": {
+            "ObjectName": "AnimSequence'Giganotosaurus-Torpid-Out-Wild'",
+            "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Wild.7"
+          }
+        }
+      ],
+      "SlotAnimTracks": [
+        {
+          "SlotName": "FullBodySlot",
+          "AnimTrack": {
+            "AnimSegments": [
+              {
+                "AnimReference": {
+                  "ObjectName": "AnimSequence'Giganotosaurus-Torpid-Out-Wild'",
+                  "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Animations/Giganotosaurus-Torpid-Out-Wild.7"
+                },
+                "StartPos": 0.0,
+                "AnimStartTime": 0.0,
+                "AnimEndTime": 2.0,
+                "AnimPlayRate": 1.0,
+                "LoopingCount": 1
+              }
+            ]
+          }
+        }
+      ],
+      "SequenceLength": 2.0,
+      "Skeleton": {
+        "ObjectName": "Skeleton'Giganotosaurus_Skeleton'",
+        "ObjectPath": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.20"
+      }
+    },
+    "note": "PSA cannot represent montage data; only the referenced sequence is exported (see sequencePsa)."
+  }
+]

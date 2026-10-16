@@ -1,0 +1,123 @@
+Messages.AcceptMission : System.ValueType
+FIELD System.UInt32 Messages.AcceptMission::TypeCode
+FIELD System.String Messages.AcceptMission::EntityId
+FIELD Point2 Messages.AcceptMission::Tile
+FIELD System.String Messages.AcceptMission::MissionId
+METHOD System.Void Messages.AcceptMission::Pack(MsgPack.Packer,Messages.AcceptMission,System.Boolean)
+ldarg.2 
+brfalse.s IL_0019: ldarg.0
+ldarg.0 
+ldc.i4.4 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 3623
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+br.s IL_0021: ldarg.1
+ldarg.0 
+ldc.i4.3 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.String Messages.AcceptMission::EntityId
+brtrue.s IL_0037: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+br.s IL_0044: ldarg.0
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.AcceptMission::EntityId
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.0 
+ldc.i4.2 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Point2 Messages.AcceptMission::Tile
+ldfld System.Int32 Point2::x
+conv.u2 
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt16)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Point2 Messages.AcceptMission::Tile
+ldfld System.Int32 Point2::y
+conv.u2 
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt16)
+pop 
+ldarg.1 
+ldfld System.String Messages.AcceptMission::MissionId
+brtrue.s IL_0087: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ret 
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.AcceptMission::MissionId
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ret 
+METHOD Messages.AcceptMission Messages.AcceptMission::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_2
+initobj Messages.AcceptMission
+ldloca.s V_2
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.AcceptMission::EntityId
+ldloc.2 
+stloc.0 
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+ldloca.s V_1
+callvirt System.Boolean MsgPack.Unpacker::ReadUInt16(System.UInt16&)
+pop 
+ldloca.s V_0
+ldflda Point2 Messages.AcceptMission::Tile
+ldloc.1 
+stfld System.Int32 Point2::x
+ldarg.0 
+ldloca.s V_1
+callvirt System.Boolean MsgPack.Unpacker::ReadUInt16(System.UInt16&)
+pop 
+ldloca.s V_0
+ldflda Point2 Messages.AcceptMission::Tile
+ldloc.1 
+stfld System.Int32 Point2::y
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.AcceptMission::MissionId
+ldloc.0 
+ret 
+METHOD System.String Messages.AcceptMission::ToString()
+ldstr <AcceptMission EntityId={0} Tile={1} MissionId={2}>
+ldarg.0 
+ldfld System.String Messages.AcceptMission::EntityId
+ldarg.0 
+ldfld Point2 Messages.AcceptMission::Tile
+box Point2
+ldarg.0 
+ldfld System.String Messages.AcceptMission::MissionId
+call System.String System.String::Format(System.String,System.Object,System.Object,System.Object)
+ret 

@@ -1,0 +1,437 @@
+{
+    "entity_type": 2213,
+    "model_scale": 100.0,
+    "vertices": 4142,
+    "triangles": 5215,
+    "bones": 110,
+    "bounds": {
+        "x": 730.8789672851563,
+        "y": 1000.6503295898438,
+        "z": 488.2564697265625
+    },
+    "clips": [
+        {
+            "name": "Giganotosaurus-Aim-Center",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Dwn",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Dwn-Lft",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Dwn-Rit",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Lft",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Rit",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Up",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Up-Lft",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Aim-Up-Rit",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Attack-Bite",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Attack-Bite_Montage",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Blink",
+            "duration": 0.0416666679084301,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Charge-Fwd",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Charge-Lft",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Charge-Rit",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Cuddle",
+            "duration": 8.333333969116211,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Cuddle_Montage",
+            "duration": 8.333333969116211,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Die",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Eat",
+            "duration": 8.333333969116211,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Eat_Montage",
+            "duration": 8.333333969116211,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Hurt-Small-Rit",
+            "duration": 0.625,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Hurt-Small-Rit_Montage",
+            "duration": 0.625,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Idle",
+            "duration": 4.1666669845581055,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Lay-Egg",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Lay-Egg_Montage",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Move-Fwd",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Move-Lft",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Move-Rit",
+            "duration": 1.25,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Rage_Montage",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Roar",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Roar_Montage",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Startled",
+            "duration": 1.6666667461395264,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Startled_Montage",
+            "duration": 1.6666667461395264,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Swim-Fwd",
+            "duration": 1.6666667461395264,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Swim-Idle",
+            "duration": 4.1666669845581055,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Eat",
+            "duration": 4.1666669845581055,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Eat_Montage",
+            "duration": 4.1666669845581055,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Idle",
+            "duration": 4.1666669845581055,
+            "fps": 24.0,
+            "wrap": "Loop",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-In",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-In_Montage",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Out-Tamed",
+            "duration": 4.583333492279053,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Out-Tamed_Montage",
+            "duration": 4.583333492279053,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Out-Wild",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        },
+        {
+            "name": "Giganotosaurus-Torpid-Out-Wild_Montage",
+            "duration": 2.5,
+            "fps": 24.0,
+            "wrap": "ClampForever",
+            "curves": 1110
+        }
+    ],
+    "bone_names": [
+        "GiganotosaurusModel",
+        "Giga_Armature",
+        "root",
+        "c_back1",
+        "c_back2",
+        "buffsocketcenterdynamic",
+        "c_back3",
+        "c_back4",
+        "c_neck1",
+        "c_neck2",
+        "c_neck3",
+        "c_head",
+        "BunnyEarsSocket",
+        "c_jaw",
+        "c_tongue1",
+        "c_tongue2",
+        "c_tongue3",
+        "c_tongue4",
+        "DragSocket",
+        "HeadSocket",
+        "EyeFX",
+        "GlassesSocket",
+        "l_eye",
+        "l_lowerEye",
+        "l_upperEye",
+        "MeleeSwing1",
+        "MeleeSwing2",
+        "r_eye",
+        "r_lowerEye",
+        "r_upperEye",
+        "SantaHatSocket",
+        "WitchHatSocket",
+        "CollarSocket",
+        "MeleeSwing3",
+        "MeleeSwing4",
+        "l_scapula",
+        "l_shoulder",
+        "l_armTiwst",
+        "l_elbow",
+        "l_forearmTwist",
+        "l_wrist",
+        "l_fingerA1",
+        "l_fingerA2",
+        "l_fingerA3",
+        "l_fingerB1",
+        "l_fingerB2",
+        "l_fingerB3",
+        "l_fingerC1",
+        "l_fingerC2",
+        "l_fingerC3",
+        "r_scapula",
+        "r_shoulder",
+        "r_armTiwst",
+        "r_elbow",
+        "r_forearmTwist",
+        "r_wrist",
+        "r_fingerA1",
+        "r_fingerA2",
+        "r_fingerA3",
+        "r_fingerB1",
+        "r_fingerB2",
+        "r_fingerB3",
+        "r_fingerC1",
+        "r_fingerC2",
+        "r_fingerC3",
+        "transform5",
+        "RiderSocket",
+        "c_tail1",
+        "c_tail2",
+        "c_tail3",
+        "c_tail4",
+        "c_tail5",
+        "TailSocket",
+        "l_leg",
+        "l_knee",
+        "l_ankle",
+        "l_ankle1",
+        "l_toeA1",
+        "l_toeA2",
+        "l_toeA3",
+        "l_toeB1",
+        "l_toeB2",
+        "l_toeB3",
+        "LeftFoot_SKT",
+        "l_toeC1",
+        "l_toeC2",
+        "l_toeC3",
+        "l_toeD1",
+        "l_toeD2",
+        "l_toeD3",
+        "l_legTwist",
+        "PoopSocket",
+        "r_leg",
+        "r_knee",
+        "r_ankle",
+        "r_ankle1",
+        "r_toeA1",
+        "r_toeA2",
+        "r_toeA3",
+        "r_toeB1",
+        "r_toeB2",
+        "r_toeB3",
+        "RightFoot_SKT",
+        "r_toeC1",
+        "r_toeC2",
+        "r_toeC3",
+        "r_toeD1",
+        "r_toeD2",
+        "r_toeD3",
+        "r_legTwist",
+        "LookOffsetSocket",
+        "root_SKT",
+        "Giga_LOD0"
+    ]
+}

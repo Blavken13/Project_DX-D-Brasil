@@ -1,0 +1,336 @@
+Durango.UI.OffServerFpsCounter : UnityEngine.MonoBehaviour
+FIELD System.String Durango.UI.OffServerFpsCounter::SettingKey
+FIELD System.Single Durango.UI.OffServerFpsCounter::Window
+FIELD Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+FIELD System.Single Durango.UI.OffServerFpsCounter::_elapsed
+FIELD System.Int32 Durango.UI.OffServerFpsCounter::_frames
+FIELD System.Single Durango.UI.OffServerFpsCounter::_worst
+FIELD System.String Durango.UI.OffServerFpsCounter::_text
+FIELD UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+FIELD UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+FIELD System.Int32 Durango.UI.OffServerFpsCounter::_styleHeight
+FIELD UnityEngine.GUIContent Durango.UI.OffServerFpsCounter::_content
+METHOD System.String Durango.UI.OffServerFpsCounter::get_Label()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.0 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_002f: ldstr "แสดงเฟรมเรท (FPS)"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0035: ldstr "Tampilkan frame rate (FPS)"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_003b: ldstr "프레임 표시 (FPS)"
+br.s IL_0041: ldstr "Show frame rate (FPS)"
+ldstr แสดงเฟรมเรท (FPS)
+ret 
+ldstr Tampilkan frame rate (FPS)
+ret 
+ldstr 프레임 표시 (FPS)
+ret 
+ldstr Show frame rate (FPS)
+ret 
+METHOD System.Void Durango.UI.OffServerFpsCounter::SetVisible(System.Boolean)
+ldarg.0 
+brfalse.s IL_0036: ldsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002a: ldsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldstr OffServerFpsCounter
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.UI.OffServerFpsCounter>()
+stsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldc.i4.1 
+callvirt System.Void UnityEngine.Behaviour::set_enabled(System.Boolean)
+ret 
+ldsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_004e: ret
+ldsfld Durango.UI.OffServerFpsCounter Durango.UI.OffServerFpsCounter::s_instance
+ldc.i4.0 
+callvirt System.Void UnityEngine.Behaviour::set_enabled(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.OffServerFpsCounter::Awake()
+ldarg.0 
+ldc.i4.0 
+call System.Void UnityEngine.MonoBehaviour::set_useGUILayout(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.OffServerFpsCounter::OnEnable()
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.OffServerFpsCounter::_elapsed
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 Durango.UI.OffServerFpsCounter::_frames
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.OffServerFpsCounter::_worst
+ldarg.0 
+ldstr FPS ...
+stfld System.String Durango.UI.OffServerFpsCounter::_text
+ldarg.0 
+call UnityEngine.Color UnityEngine.Color::get_white()
+stfld UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+ret 
+METHOD System.Void Durango.UI.OffServerFpsCounter::Update()
+call System.Single UnityEngine.Time::get_unscaledDeltaTime()
+stloc.0 
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerFpsCounter::_elapsed
+ldloc.0 
+add 
+stfld System.Single Durango.UI.OffServerFpsCounter::_elapsed
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerFpsCounter::_frames
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerFpsCounter::_frames
+ldloc.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerFpsCounter::_worst
+ble.un.s IL_0032: ldarg.0
+ldarg.0 
+ldloc.0 
+stfld System.Single Durango.UI.OffServerFpsCounter::_worst
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerFpsCounter::_elapsed
+ldc.r4 0,5
+blt IL_015c: ret
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerFpsCounter::_frames
+conv.r4 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerFpsCounter::_elapsed
+div 
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+stloc.1 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerFpsCounter::_worst
+ldc.r4 0
+bgt.s IL_0066: ldc.r4 1
+ldloc.1 
+br.s IL_0077: stloc.2
+ldc.r4 1
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerFpsCounter::_worst
+div 
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+stloc.2 
+call System.Int32 UnityEngine.Application::get_targetFrameRate()
+stloc.3 
+ldarg.0 
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr FPS 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr   ·  min 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_2
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.3 
+ldc.i4.0 
+bgt.s IL_00b6: ldstr "  ·  cap "
+ldsfld System.String System.String::Empty
+br.s IL_00c7: stelem.ref
+ldstr   ·  cap 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stfld System.String Durango.UI.OffServerFpsCounter::_text
+ldloc.3 
+ldc.i4.0 
+bgt.s IL_00dd: ldloc.3
+ldc.r4 60
+br.s IL_00df: stloc.s V_4
+ldloc.3 
+conv.r4 
+stloc.s V_4
+ldarg.0 
+ldloc.1 
+conv.r4 
+ldloc.s V_4
+ldc.r4 0,85
+mul 
+bge.s IL_0126: ldc.r4 0.55
+ldloc.1 
+conv.r4 
+ldloc.s V_4
+ldc.r4 0,55
+mul 
+bge.s IL_0110: ldc.r4 1
+ldc.r4 1
+ldc.r4 0,45
+ldc.r4 0,4
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single)
+br.s IL_013a: stfld UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+ldc.r4 1
+ldc.r4 0,85
+ldc.r4 0,35
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single)
+br.s IL_013a: stfld UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+ldc.r4 0,55
+ldc.r4 1
+ldc.r4 0,55
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single)
+stfld UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.OffServerFpsCounter::_elapsed
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 Durango.UI.OffServerFpsCounter::_frames
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.OffServerFpsCounter::_worst
+ret 
+METHOD System.Void Durango.UI.OffServerFpsCounter::OnGUI()
+call UnityEngine.Event UnityEngine.Event::get_current()
+callvirt UnityEngine.EventType UnityEngine.Event::get_type()
+ldc.i4.7 
+beq.s IL_000e: call System.Int32 UnityEngine.Screen::get_height()
+ret 
+call System.Int32 UnityEngine.Screen::get_height()
+stloc.0 
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+brfalse.s IL_0025: ldarg.0
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerFpsCounter::_styleHeight
+ldloc.0 
+beq.s IL_0084: ldarg.0
+ldarg.0 
+ldloc.0 
+stfld System.Int32 Durango.UI.OffServerFpsCounter::_styleHeight
+ldarg.0 
+call UnityEngine.GUISkin UnityEngine.GUI::get_skin()
+callvirt UnityEngine.GUIStyle UnityEngine.GUISkin::get_label()
+newobj System.Void UnityEngine.GUIStyle::.ctor(UnityEngine.GUIStyle)
+stfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+ldc.i4.s 12
+ldloc.0 
+conv.r4 
+ldc.r4 0,022
+mul 
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+callvirt System.Void UnityEngine.GUIStyle::set_fontSize(System.Int32)
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+ldc.i4.1 
+callvirt System.Void UnityEngine.GUIStyle::set_fontStyle(UnityEngine.FontStyle)
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+ldc.i4.1 
+callvirt System.Void UnityEngine.GUIStyle::set_alignment(UnityEngine.TextAnchor)
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+ldc.i4.0 
+callvirt System.Void UnityEngine.GUIStyle::set_wordWrap(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GUIContent Durango.UI.OffServerFpsCounter::_content
+ldarg.0 
+ldfld System.String Durango.UI.OffServerFpsCounter::_text
+callvirt System.Void UnityEngine.GUIContent::set_text(System.String)
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+ldarg.0 
+ldfld UnityEngine.GUIContent Durango.UI.OffServerFpsCounter::_content
+callvirt UnityEngine.Vector2 UnityEngine.GUIStyle::CalcSize(UnityEngine.GUIContent)
+stloc.1 
+ldloca.s V_2
+call System.Int32 UnityEngine.Screen::get_width()
+conv.r4 
+ldloc.1 
+ldfld System.Single UnityEngine.Vector2::x
+sub 
+ldc.r4 0,5
+mul 
+ldc.r4 2
+ldloc.1 
+ldfld System.Single UnityEngine.Vector2::x
+ldloc.1 
+ldfld System.Single UnityEngine.Vector2::y
+call System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+call UnityEngine.Color UnityEngine.GUI::get_color()
+ldc.r4 0
+ldc.r4 0
+ldc.r4 0
+ldc.r4 0,75
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+call System.Void UnityEngine.GUI::set_color(UnityEngine.Color)
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+callvirt UnityEngine.GUIStyleState UnityEngine.GUIStyle::get_normal()
+call UnityEngine.Color UnityEngine.Color::get_white()
+callvirt System.Void UnityEngine.GUIStyleState::set_textColor(UnityEngine.Color)
+ldloca.s V_2
+call System.Single UnityEngine.Rect::get_x()
+ldc.r4 1
+add 
+ldloca.s V_2
+call System.Single UnityEngine.Rect::get_y()
+ldc.r4 1
+add 
+ldloca.s V_2
+call System.Single UnityEngine.Rect::get_width()
+ldloca.s V_2
+call System.Single UnityEngine.Rect::get_height()
+newobj System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldfld UnityEngine.GUIContent Durango.UI.OffServerFpsCounter::_content
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+call System.Void UnityEngine.GUI::Label(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.GUIStyle)
+ldarg.0 
+ldfld UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+call System.Void UnityEngine.GUI::set_color(UnityEngine.Color)
+ldloc.2 
+ldarg.0 
+ldfld UnityEngine.GUIContent Durango.UI.OffServerFpsCounter::_content
+ldarg.0 
+ldfld UnityEngine.GUIStyle Durango.UI.OffServerFpsCounter::_style
+call System.Void UnityEngine.GUI::Label(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.GUIStyle)
+call System.Void UnityEngine.GUI::set_color(UnityEngine.Color)
+ret 
+METHOD System.Void Durango.UI.OffServerFpsCounter::.ctor()
+ldarg.0 
+ldstr FPS ...
+stfld System.String Durango.UI.OffServerFpsCounter::_text
+ldarg.0 
+call UnityEngine.Color UnityEngine.Color::get_white()
+stfld UnityEngine.Color Durango.UI.OffServerFpsCounter::_color
+ldarg.0 
+newobj System.Void UnityEngine.GUIContent::.ctor()
+stfld UnityEngine.GUIContent Durango.UI.OffServerFpsCounter::_content
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

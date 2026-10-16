@@ -1,0 +1,37 @@
+OffServerDyeUI/<>c__DisplayClass10_0 : System.Object
+FIELD Artifact OffServerDyeUI/<>c__DisplayClass10_0::workbench
+FIELD Durango.Logic.Item.ItemData OffServerDyeUI/<>c__DisplayClass10_0::target
+FIELD System.String[] OffServerDyeUI/<>c__DisplayClass10_0::plan
+FIELD Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass10_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass10_0::<Apply>b__0(System.String[])
+ldarg.0 
+ldftn System.Void OffServerDyeUI/<>c__DisplayClass10_0::<Apply>b__1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stloc.0 
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+callvirt System.Boolean PlayerBehavior::get_IsRiding()
+brfalse.s IL_0021: ldloc.0
+ldc.i4.1 
+ldloc.0 
+call System.Void VehicleBase::RequestUnmountIfRiding(System.Boolean,System.Action)
+ret 
+ldloc.0 
+callvirt System.Void System.Action::Invoke()
+ret 
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass10_0::<Apply>b__1()
+ldarg.0 
+ldfld Artifact OffServerDyeUI/<>c__DisplayClass10_0::workbench
+ldarg.0 
+ldfld Durango.Logic.Item.ItemData OffServerDyeUI/<>c__DisplayClass10_0::target
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+ldarg.0 
+ldfld System.String[] OffServerDyeUI/<>c__DisplayClass10_0::plan
+call System.Void OffServerDyeBatch::Begin(Artifact,System.String,System.String[])
+ldarg.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+callvirt System.Void UIBase::ForceClose()
+ret 

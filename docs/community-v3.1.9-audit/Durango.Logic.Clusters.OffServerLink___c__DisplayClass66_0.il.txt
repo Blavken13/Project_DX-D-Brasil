@@ -1,0 +1,57 @@
+Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0 : System.Object
+FIELD System.Action`2<System.Boolean,System.Int32> Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::callback
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::<FetchStatus>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+ldc.i4.0 
+stloc.0 
+ldc.i4.0 
+stloc.1 
+ldarg.2 
+brfalse.s IL_0068: leave.s IL_006d
+ldarg.2 
+callvirt System.Boolean BestHTTP.HTTPResponse::get_IsSuccess()
+brfalse.s IL_0068: leave.s IL_006d
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+dup 
+brtrue.s IL_001e: stloc.2
+pop 
+ldsfld System.String System.String::Empty
+stloc.2 
+ldloc.2 
+ldstr "ok":true
+callvirt System.Boolean System.String::Contains(System.String)
+brtrue.s IL_0039: ldc.i4.1
+ldloc.2 
+ldstr "ok": true
+callvirt System.Boolean System.String::Contains(System.String)
+br.s IL_003a: stloc.0
+ldc.i4.1 
+stloc.0 
+ldloc.2 
+ldstr "online"\s*:\s*(\d+)
+call System.Text.RegularExpressions.Match System.Text.RegularExpressions.Regex::Match(System.String,System.String)
+stloc.3 
+ldloc.3 
+callvirt System.Boolean System.Text.RegularExpressions.Group::get_Success()
+brfalse.s IL_0068: leave.s IL_006d
+ldloc.3 
+callvirt System.Text.RegularExpressions.GroupCollection System.Text.RegularExpressions.Match::get_Groups()
+ldc.i4.1 
+callvirt System.Text.RegularExpressions.Group System.Text.RegularExpressions.GroupCollection::get_Item(System.Int32)
+callvirt System.String System.Text.RegularExpressions.Capture::get_Value()
+ldloca.s V_1
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+pop 
+leave.s IL_006d: ldarg.0
+pop 
+leave.s IL_006d: ldarg.0
+ldarg.0 
+ldfld System.Action`2<System.Boolean,System.Int32> Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::callback
+ldloc.0 
+ldloc.1 
+callvirt System.Void System.Action`2<System.Boolean,System.Int32>::Invoke(!0,!1)
+ret 

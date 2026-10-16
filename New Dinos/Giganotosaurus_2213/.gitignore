@@ -1,0 +1,11 @@
+UnityProject/Library/
+UnityProject/Logs/
+UnityProject/Temp/
+UnityProject/UserSettings/
+UnityProject/obj/
+UnityProject/.vs/
+Work/
+Build/
+*.zip
+*.zip.sha256
+__pycache__/

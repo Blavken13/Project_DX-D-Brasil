@@ -1,0 +1,26 @@
+Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0 : System.Object
+FIELD Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+METHOD System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::<BeginCapture>b__0(System.Int32)
+ldsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+ldarg.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+beq.s IL_000e: ldnull
+ret 
+ldnull 
+stsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+ldarg.1 
+brtrue.s IL_0038: ret
+ldarg.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldarg.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+ldarg.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+call System.Void Durango.System.Config.OffServerHotkeys::SetBinding(Durango.System.Config.OffServerHotkeys/Entry,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ret 

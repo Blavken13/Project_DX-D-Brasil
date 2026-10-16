@@ -1,0 +1,21 @@
+OffServerDyeUI/<>c__DisplayClass8_0 : System.Object
+FIELD OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+FIELD System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+FIELD Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+FIELD Durango.UI.DyePartsWidget OffServerDyeUI/<>c__DisplayClass8_0::parts
+FIELD Durango.UI.DyeResultWidget OffServerDyeUI/<>c__DisplayClass8_0::result
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass8_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Boolean OffServerDyeUI/<>c__DisplayClass8_0::<Refresh>b__0(Durango.Logic.Item.ItemData)
+ldarg.1 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+ldarg.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldarg.0 
+ldfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+callvirt System.String DyeSelection::get_Item(System.Int32)
+call System.Boolean System.String::op_Equality(System.String,System.String)
+ret 

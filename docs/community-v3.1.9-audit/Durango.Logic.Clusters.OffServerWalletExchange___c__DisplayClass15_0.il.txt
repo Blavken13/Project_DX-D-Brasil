@@ -1,0 +1,90 @@
+Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0 : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::path
+FIELD System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::done
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::<Post>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+ldc.i4.0 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::Busy
+ldnull 
+stloc.0 
+ldarg.2 
+brtrue.s IL_000e: ldarg.2
+ldc.i4.0 
+br.s IL_0014: stloc.1
+ldarg.2 
+callvirt System.Int32 BestHTTP.HTTPResponse::get_StatusCode()
+stloc.1 
+ldarg.2 
+brfalse.s IL_0031: leave.s IL_0038
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0031: leave.s IL_0038
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+call Newtonsoft.Json.Linq.JObject Newtonsoft.Json.Linq.JObject::Parse(System.String)
+stloc.0 
+leave.s IL_0038: ldloc.0
+pop 
+ldnull 
+stloc.0 
+leave.s IL_0038: ldloc.0
+ldloc.0 
+brtrue.s IL_00b4: ldarg.0
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] wallet 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::path
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  ล้ม: 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.1 
+callvirt BestHTTP.HTTPRequestStates BestHTTP.HTTPRequest::get_State()
+stloc.2 
+ldloca.s V_2
+constrained. BestHTTP.HTTPRequestStates
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  HTTP 
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldarg.1 
+callvirt System.Exception BestHTTP.HTTPRequest::get_Exception()
+brtrue.s IL_0094: ldstr " "
+ldsfld System.String System.String::Empty
+br.s IL_00a9: stelem.ref
+ldstr  
+ldarg.1 
+callvirt System.Exception BestHTTP.HTTPRequest::get_Exception()
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldarg.0 
+ldfld System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::done
+ldloc.0 
+ldloc.1 
+callvirt System.Void System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>::Invoke(!0,!1)
+ret 

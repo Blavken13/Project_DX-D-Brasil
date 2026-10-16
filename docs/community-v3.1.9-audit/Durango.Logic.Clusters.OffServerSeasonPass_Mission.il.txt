@@ -1,0 +1,21 @@
+Durango.Logic.Clusters.OffServerSeasonPass/Mission : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Id
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Name
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Event
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Count
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Progress
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Points
+FIELD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/Mission::.ctor()
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Id
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Name
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Event
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

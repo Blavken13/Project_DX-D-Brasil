@@ -1,0 +1,391 @@
+Messages.Mission : System.ValueType
+FIELD System.String Messages.Mission::Id
+FIELD System.String Messages.Mission::RegionId
+FIELD Shared.Faction.FactionType Messages.Mission::Faction
+FIELD System.String Messages.Mission::Subject
+FIELD System.String Messages.Mission::Description
+FIELD Messages.MissionToDo[] Messages.Mission::Todos
+FIELD System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+FIELD System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+FIELD System.Nullable`1<System.Double> Messages.Mission::StartedAt
+FIELD System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+METHOD System.Void Messages.Mission::Pack(MsgPack.Packer,Messages.Mission,System.Boolean)
+ldarg.0 
+ldc.i4.s 10
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.String Messages.Mission::Id
+brtrue.s IL_001f: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+br.s IL_002c: ldarg.1
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Mission::Id
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.1 
+ldfld System.String Messages.Mission::RegionId
+brtrue.s IL_0042: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+br.s IL_004f: ldarg.0
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Mission::RegionId
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Shared.Faction.FactionType Messages.Mission::Faction
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Mission::Subject
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Mission::Description
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.1 
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+brtrue.s IL_0088: ldarg.0
+ldarg.0 
+ldc.i4.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+br.s IL_00bd: ldarga.s val
+ldarg.0 
+ldarg.1 
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+ldlen 
+conv.i4 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldc.i4.0 
+stloc.0 
+br.s IL_00b2: ldloc.0
+ldarg.0 
+ldarg.1 
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+ldloc.0 
+ldelem.any Messages.MissionToDo
+ldc.i4.0 
+call System.Void Messages.MissionToDo::Pack(MsgPack.Packer,Messages.MissionToDo,System.Boolean)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.1 
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+ldlen 
+conv.i4 
+blt.s IL_009b: ldarg.0
+ldarga.s val
+ldflda System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+call System.Boolean System.Nullable`1<Messages.RewardInfo>::get_HasValue()
+brtrue.s IL_00d4: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+br.s IL_00e7: ldarga.s val
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+call !0 System.Nullable`1<Messages.RewardInfo>::get_Value()
+ldc.i4.0 
+call System.Void Messages.RewardInfo::Pack(MsgPack.Packer,Messages.RewardInfo,System.Boolean)
+ldarga.s val
+ldflda System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+call System.Boolean System.Nullable`1<Messages.MissionBonusReward>::get_HasValue()
+brtrue.s IL_00fe: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+br.s IL_0111: ldarga.s val
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+call !0 System.Nullable`1<Messages.MissionBonusReward>::get_Value()
+ldc.i4.0 
+call System.Void Messages.MissionBonusReward::Pack(MsgPack.Packer,Messages.MissionBonusReward,System.Boolean)
+ldarga.s val
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brtrue.s IL_0128: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+br.s IL_013b: ldarga.s val
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Double)
+pop 
+ldarga.s val
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call System.Boolean System.Nullable`1<System.Int32>::get_HasValue()
+brtrue.s IL_0151: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+ret 
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call !0 System.Nullable`1<System.Int32>::get_Value()
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ret 
+METHOD Messages.Mission Messages.Mission::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_3
+initobj Messages.Mission
+ldloca.s V_3
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.Mission::Id
+ldloc.3 
+stloc.0 
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.Mission::RegionId
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.1 
+ldloc.1 
+ldc.i4.0 
+blt.s IL_0064: ldloca.s V_0
+ldc.i4.s 101
+ldloc.1 
+bge.s IL_006e: ldloca.s V_0
+ldloca.s V_0
+ldc.i4.m1 
+stfld Shared.Faction.FactionType Messages.Mission::Faction
+br.s IL_0076: ldarg.0
+ldloca.s V_0
+ldloc.1 
+stfld Shared.Faction.FactionType Messages.Mission::Faction
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+call System.String LocalizeSystem::UnpackGettextFromMsgPack(MsgPack.Unpacker)
+stfld System.String Messages.Mission::Subject
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+call System.String LocalizeSystem::UnpackGettextFromMsgPack(MsgPack.Unpacker)
+stfld System.String Messages.Mission::Description
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.2 
+ldloca.s V_0
+ldloc.2 
+newarr Messages.MissionToDo
+stfld Messages.MissionToDo[] Messages.Mission::Todos
+ldc.i4.0 
+stloc.s V_5
+br.s IL_00e7: ldloc.s V_5
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloc.0 
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+ldloc.s V_5
+ldarg.0 
+call Messages.MissionToDo Messages.MissionToDo::Unpack(MsgPack.Unpacker)
+stelem.any Messages.MissionToDo
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.2 
+blt.s IL_00c7: ldarg.0
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_0113: ldarg.0
+ldloca.s V_0
+ldflda System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+initobj System.Nullable`1<Messages.RewardInfo>
+br.s IL_0129: ldarg.0
+ldarg.0 
+call Messages.RewardInfo Messages.RewardInfo::Unpack(MsgPack.Unpacker)
+stloc.s V_6
+ldloca.s V_0
+ldloc.s V_6
+newobj System.Void System.Nullable`1<Messages.RewardInfo>::.ctor(!0)
+stfld System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_0150: ldarg.0
+ldloca.s V_0
+ldflda System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+initobj System.Nullable`1<Messages.MissionBonusReward>
+br.s IL_0166: ldarg.0
+ldarg.0 
+call Messages.MissionBonusReward Messages.MissionBonusReward::Unpack(MsgPack.Unpacker)
+stloc.s V_7
+ldloca.s V_0
+ldloc.s V_7
+newobj System.Void System.Nullable`1<Messages.MissionBonusReward>::.ctor(!0)
+stfld System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_018d: ldarg.0
+ldloca.s V_0
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+initobj System.Nullable`1<System.Double>
+br.s IL_01ac: ldarg.0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Double MsgPack.MessagePackObject::AsDouble()
+stloc.s V_8
+ldloca.s V_0
+ldloc.s V_8
+newobj System.Void System.Nullable`1<System.Double>::.ctor(!0)
+stfld System.Nullable`1<System.Double> Messages.Mission::StartedAt
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_01d3: ldarg.0
+ldloca.s V_0
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+initobj System.Nullable`1<System.Int32>
+br.s IL_01f2: ldloc.0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.s V_9
+ldloca.s V_0
+ldloc.s V_9
+newobj System.Void System.Nullable`1<System.Int32>::.ctor(!0)
+stfld System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+ldloc.0 
+ret 
+METHOD System.String Messages.Mission::ToString()
+ldstr <Mission Id={0} RegionId={1} Faction={2} Subject={3} Description={4} Todos={5} Reward={6} BonusReward={7} StartedAt={8} TimeLimit={9}>
+ldc.i4.s 10
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.String Messages.Mission::Id
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.String Messages.Mission::RegionId
+stelem.ref 
+dup 
+ldc.i4.2 
+ldarg.0 
+ldfld Shared.Faction.FactionType Messages.Mission::Faction
+box Shared.Faction.FactionType
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+ldfld System.String Messages.Mission::Subject
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.0 
+ldfld System.String Messages.Mission::Description
+stelem.ref 
+dup 
+ldc.i4.5 
+ldarg.0 
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+stelem.ref 
+dup 
+ldc.i4.6 
+ldarg.0 
+ldfld System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+box System.Nullable`1<Messages.RewardInfo>
+stelem.ref 
+dup 
+ldc.i4.7 
+ldarg.0 
+ldfld System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+box System.Nullable`1<Messages.MissionBonusReward>
+stelem.ref 
+dup 
+ldc.i4.8 
+ldarg.0 
+ldfld System.Nullable`1<System.Double> Messages.Mission::StartedAt
+box System.Nullable`1<System.Double>
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldarg.0 
+ldfld System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+box System.Nullable`1<System.Int32>
+stelem.ref 
+call System.String System.String::Format(System.String,System.Object[])
+ret 

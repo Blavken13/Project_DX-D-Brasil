@@ -1,0 +1,110 @@
+[
+  {
+    "name": "AnimalFrameworkResource",
+    "namespace": "",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "normal_motions",
+      "normal_3states",
+      "weighted_motions",
+      "weighted_3states",
+      "move_sets",
+      "comabt_motions",
+      "combat_directions",
+      "combat_3states",
+      "combat_attacks",
+      "active_skills",
+      "etc_motions"
+    ]
+  },
+  {
+    "name": "AnimationEventController",
+    "namespace": "",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "AnimationEventResource",
+      "AnimationEventResourceShared"
+    ]
+  },
+  {
+    "name": "AnimationEventResource",
+    "namespace": "",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "AnimationEventPairs"
+    ]
+  },
+  {
+    "name": "AmbientLighting",
+    "namespace": "Durango.Environment",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "_maxWetness",
+      "_wetParticleOnThreashold",
+      "_wetParticleType"
+    ]
+  },
+  {
+    "name": "AnimalBehavior",
+    "namespace": "",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "_xRadius",
+      "_yRadius",
+      "_size",
+      "_bushWhackEffectPeriod",
+      "_bushWhackEffectOffset",
+      "_hitEffect",
+      "AnimalFrameworkResource",
+      "_bodyPartHead",
+      "_bodyPartBody",
+      "_bodyPartArm",
+      "_bodyPartArmR",
+      "_bodyPartLeg",
+      "_bodyPartLegR",
+      "_bodyPartTail",
+      "_bodyPartBack",
+      "_bodyPartBip001",
+      "_processDepth",
+      "_closedEyes",
+      "_nightEyes",
+      "_eyeTrail",
+      "_dieTexture",
+      "UIViewScale",
+      "_lootableRimMax",
+      "_lootableRimMin",
+      "_lootableRimIntensity",
+      "_meshObject"
+    ]
+  },
+  {
+    "name": "RootMotionExporter",
+    "namespace": "Durango.Model",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "_deadband",
+      "_deadbandYaw",
+      "_rootMotionBoneName",
+      "_rootMotionForward",
+      "_doesImportAnimEventFilesFolder"
+    ]
+  },
+  {
+    "name": "BoneFlinchingController",
+    "namespace": "Durango.Model",
+    "assembly": "Assembly-CSharp",
+    "fields": [
+      "_isLimbCanceling",
+      "_numIter",
+      "_cullDistance",
+      "_flinchDeg",
+      "_flinchDuration"
+    ]
+  },
+  {
+    "name": "PlaneShadows",
+    "namespace": "Durango.Render",
+    "assembly": "Assembly-CSharp",
+    "fields": []
+  }
+]

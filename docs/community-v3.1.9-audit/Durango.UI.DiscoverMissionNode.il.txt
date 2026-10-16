@@ -1,0 +1,53 @@
+Durango.UI.DiscoverMissionNode : UnityEngine.MonoBehaviour
+FIELD UILabel Durango.UI.DiscoverMissionNode::_nameLabel
+FIELD UISprite Durango.UI.DiscoverMissionNode::_progressRatio
+FIELD UILabel Durango.UI.DiscoverMissionNode::_progressLabel
+FIELD UnityEngine.GameObject Durango.UI.DiscoverMissionNode::_lockedIcon
+METHOD System.Void Durango.UI.DiscoverMissionNode::Set(System.String,System.Int32,System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.DiscoverMissionNode::_progressLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.3 
+ldc.i4.0 
+ceq 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.DiscoverMissionNode::_lockedIcon
+ldarg.3 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.3 
+brfalse.s IL_0044: ldarg.2
+ldarg.0 
+ldfld UILabel Durango.UI.DiscoverMissionNode::_nameLabel
+ldstr ???
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld UISprite Durango.UI.DiscoverMissionNode::_progressRatio
+ldc.r4 0
+callvirt System.Void UIBasicSprite::set_fillAmount(System.Single)
+ret 
+ldarg.2 
+conv.r4 
+ldc.r4 100
+div 
+stloc.0 
+ldarg.0 
+ldfld UILabel Durango.UI.DiscoverMissionNode::_nameLabel
+ldarg.1 
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld UISprite Durango.UI.DiscoverMissionNode::_progressRatio
+ldloc.0 
+callvirt System.Void UIBasicSprite::set_fillAmount(System.Single)
+ldarg.0 
+ldfld UILabel Durango.UI.DiscoverMissionNode::_progressLabel
+ldstr {0:P0}
+ldloc.0 
+box System.Single
+call System.String System.String::Format(System.String,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+METHOD System.Void Durango.UI.DiscoverMissionNode::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

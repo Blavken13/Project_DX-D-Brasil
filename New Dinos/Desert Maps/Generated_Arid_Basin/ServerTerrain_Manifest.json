@@ -1,0 +1,30 @@
+{
+  "terrain_id": "arid_basin_60_v2",
+  "region_template": "ua60deMain01",
+  "level": 60,
+  "biome": "desert",
+  "source_terrain": "ri35de",
+  "height_encoding": "resampled generated heightfield normalized to byte range 0..232",
+  "giganotosaurus": {
+    "entity_type": 2213,
+    "spawn_tile": [
+      128,
+      128
+    ],
+    "count": 1,
+    "scale_relative_to_trex": 2
+  },
+  "client_template_alias": "ua60deMain01",
+  "source_heightmap": "AridBasin_Heightmap16.png",
+  "visual_representation": "Unity 6 global landmark prefab",
+  "visual_prefab": "Models/Maps/AridBasin/AridBasinTerrain.prefab",
+  "global_landmark_id": 60000,
+  "client_uses_whole_elevations_for_geometry": false,
+  "entry_tile": [
+    128,
+    27
+  ],
+  "central_arena": "native flat ground",
+  "peripheral_mountains": "visual mesh; mountain navigation is not implemented",
+  "integration_checks_passed": 11
+}

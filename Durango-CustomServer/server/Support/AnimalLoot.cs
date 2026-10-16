@@ -33,7 +33,9 @@ internal static class AnimalLoot
         bool mammal = Matches(name, Mammals);
         bool armored = Matches(name, Armored);
         bool carnivore = animal.IsAggressive && !mammal;
-        bool large = animal.SizeLevel >= 4 && !name.Contains("_baby", StringComparison.Ordinal);
+        // Big leg bones are a dinosaur drop, not a generic reward for every
+        // large animal (mammoths, elephants and other megafauna included).
+        bool large = animal.SizeLevel >= 4 && !mammal && !name.Contains("_baby", StringComparison.Ordinal);
         var result = new List<string> { "meat" };
         result.Add(armored ? "leather_raw_armored" : mammal && !Matches(name, HairlessMammals) ? "leather_raw_fur" : "leather_raw");
         result.Add(large ? "bone_leg_thick" : carnivore ? "bone_leg_carni" : "bone_leg");

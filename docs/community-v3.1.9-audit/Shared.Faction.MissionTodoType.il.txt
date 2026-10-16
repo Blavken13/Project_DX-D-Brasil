@@ -1,0 +1,11 @@
+Shared.Faction.MissionTodoType : System.Enum
+FIELD System.Int32 Shared.Faction.MissionTodoType::value__
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::Invalid
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::Hunt
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::Collect
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::ObjectFound
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::PoiFound
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::Delivery
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::TraceObject
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::GetItem
+FIELD Shared.Faction.MissionTodoType Shared.Faction.MissionTodoType::CustomEvent

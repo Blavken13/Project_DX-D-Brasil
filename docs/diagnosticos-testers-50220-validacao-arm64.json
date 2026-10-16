@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "adapter_checks": 88,
+  "repaired_hooks": 11,
+  "baseline_tcp": {
+    "expected_registers": [
+      0,
+      1,
+      0,
+      4000,
+      24,
+      12884910080,
+      12,
+      12884918272
+    ],
+    "actual_registers": [
+      0,
+      1,
+      0,
+      4000,
+      24,
+      8192,
+      12,
+      12884918272
+    ],
+    "time_preserved": true,
+    "events": [
+      [
+        "TCP_PACKET_ENCODE_BEGIN",
+        "type=0 name=unknown seq=0 reply=1"
+      ],
+      [
+        "TCP_PACKET_ENCODE_END",
+        "type=0 name=unknown seq=0 reply=1"
+      ]
+    ],
+    "return_value": 24,
+    "stack_restored": true
+  },
+  "corrected_tcp": {
+    "expected_registers": [
+      0,
+      1,
+      0,
+      4000,
+      24,
+      12884910080,
+      12,
+      12884918272
+    ],
+    "actual_registers": [
+      0,
+      1,
+      0,
+      4000,
+      24,
+      12884910080,
+      12,
+      12884918272
+    ],
+    "time_preserved": true,
+    "events": [
+      [
+        "TCP_PACKET_ENCODE_BEGIN",
+        "type=4000 name=GetClock seq=1 reply=0"
+      ],
+      [
+        "TCP_PACKET_ENCODE_END",
+        "type=4000 name=GetClock seq=1 reply=0"
+      ]
+    ],
+    "return_value": 24,
+    "stack_restored": true
+  },
+  "original_mapped_bytes_preserved_except_elf_headers_and_22_branches": true
+}

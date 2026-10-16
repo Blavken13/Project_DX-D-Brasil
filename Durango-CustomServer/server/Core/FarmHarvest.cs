@@ -33,6 +33,17 @@ internal static class FarmHarvest
         if (crop == null) return Array.Empty<string>();
         var list = new List<string>();
         AddIfPrototype(list, crop.GrowsTo);
+        // crops.json uses *_crop as generator ids, but those are not inventory items.
+        // Return the real fruit prototype from the catalog together with its seed.
+        string fruitPrototype = seedPrototypeId switch
+        {
+            "orange_seed" or "mango_seed" => "fruit",
+            "banana_seed" => "banana",
+            "persimmontree_seed" => "persimmon",
+            "apple_seed" => "apple",
+            _ => null
+        };
+        AddIfPrototype(list, fruitPrototype);
         if (!string.IsNullOrEmpty(crop.GrowsTo)
             && crop.GrowsTo.EndsWith("_crop", StringComparison.Ordinal))
         {

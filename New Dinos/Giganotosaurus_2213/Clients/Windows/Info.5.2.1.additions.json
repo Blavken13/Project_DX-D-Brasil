@@ -1,0 +1,32 @@
+{
+  "FileList": [
+    {
+      "Name": "models$animals$giganotosaurus$giganotosaurus_framework.asset.bundle",
+      "Hash": "a02e746614f5efb97f4c8750035cfd04",
+      "Crc": "a02e746614f5efb97f4c8750035cfd04",
+      "Size": 18684446,
+      "Dependencies": [],
+      "Priority": 750
+    },
+    {
+      "Name": "models$animals$giganotosaurus$giganotosaurusprefab.prefab.bundle",
+      "Hash": "8640d579ae8413325ed5d0af77b5e128",
+      "Crc": "8640d579ae8413325ed5d0af77b5e128",
+      "Size": 1921167,
+      "Dependencies": [
+        "models$animals$giganotosaurus$giganotosaurus_framework.asset.bundle"
+      ],
+      "Priority": 750
+    }
+  ],
+  "ItemList": [
+    {
+      "Name": "models$animals$giganotosaurus$giganotosaurus_framework.asset.bundle",
+      "SavePerDirectory": false
+    },
+    {
+      "Name": "models$animals$giganotosaurus$giganotosaurusprefab.prefab.bundle",
+      "SavePerDirectory": false
+    }
+  ]
+}

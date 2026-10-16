@@ -1,0 +1,175 @@
+OffServerBundleEmbed/<CoReadIndex>d__29 : System.Object
+FIELD System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+FIELD System.Object OffServerBundleEmbed/<CoReadIndex>d__29::<>2__current
+FIELD System.Action`1<System.Byte[]> OffServerBundleEmbed/<CoReadIndex>d__29::done
+FIELD System.String OffServerBundleEmbed/<CoReadIndex>d__29::<path>5__2
+FIELD UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+METHOD System.Void OffServerBundleEmbed/<CoReadIndex>d__29::.ctor(System.Int32)
+ldarg.0 
+call System.Void System.Object::.ctor()
+ldarg.0 
+ldarg.1 
+stfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+ret 
+METHOD System.Void OffServerBundleEmbed/<CoReadIndex>d__29::System.IDisposable.Dispose()
+ldarg.0 
+ldfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+stloc.0 
+ldloc.0 
+ldc.i4.s -3
+beq.s IL_0010: nop
+ldloc.0 
+ldc.i4.1 
+bne.un.s IL_001a: ret
+nop 
+leave.s IL_001a: ret
+ldarg.0 
+call System.Void OffServerBundleEmbed/<CoReadIndex>d__29::<>m__Finally1()
+endfinally 
+ret 
+METHOD System.Boolean OffServerBundleEmbed/<CoReadIndex>d__29::MoveNext()
+ldarg.0 
+ldfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+stloc.1 
+ldloc.1 
+brfalse.s IL_0018: ldarg.0
+ldloc.1 
+ldc.i4.1 
+beq IL_00df: ldarg.0
+ldc.i4.0 
+stloc.0 
+leave IL_017e: ldloc.0
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+ldsfld System.Byte[] OffServerBundleEmbed::_index
+brfalse.s IL_003d: ldarg.0
+ldarg.0 
+ldfld System.Action`1<System.Byte[]> OffServerBundleEmbed/<CoReadIndex>d__29::done
+ldsfld System.Byte[] OffServerBundleEmbed::_index
+callvirt System.Void System.Action`1<System.Byte[]>::Invoke(!0)
+ldc.i4.0 
+stloc.0 
+leave IL_017e: ldloc.0
+ldarg.0 
+call System.String OffServerBundleEmbed::get_LocalRoot()
+ldstr Info.5.2.1.json
+call System.String System.String::Concat(System.String,System.String)
+stfld System.String OffServerBundleEmbed/<CoReadIndex>d__29::<path>5__2
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+beq.s IL_00a7: ldarg.0
+ldarg.0 
+ldfld System.String OffServerBundleEmbed/<CoReadIndex>d__29::<path>5__2
+call System.Byte[] System.IO.File::ReadAllBytes(System.String)
+stsfld System.Byte[] OffServerBundleEmbed::_index
+leave.s IL_0090: ldarg.0
+stloc.2 
+ldstr [ABM] embed index 
+ldarg.0 
+ldfld System.String OffServerBundleEmbed/<CoReadIndex>d__29::<path>5__2
+ldstr : 
+ldloc.2 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_0090: ldarg.0
+ldarg.0 
+ldfld System.Action`1<System.Byte[]> OffServerBundleEmbed/<CoReadIndex>d__29::done
+ldsfld System.Byte[] OffServerBundleEmbed::_index
+callvirt System.Void System.Action`1<System.Byte[]>::Invoke(!0)
+ldc.i4.0 
+stloc.0 
+leave IL_017e: ldloc.0
+ldarg.0 
+ldarg.0 
+ldfld System.String OffServerBundleEmbed/<CoReadIndex>d__29::<path>5__2
+call UnityEngine.Networking.UnityWebRequest UnityEngine.Networking.UnityWebRequest::Get(System.String)
+stfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+ldarg.0 
+ldc.i4.s -3
+stfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+ldarg.0 
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt UnityEngine.Networking.UnityWebRequestAsyncOperation UnityEngine.Networking.UnityWebRequest::SendWebRequest()
+stfld System.Object OffServerBundleEmbed/<CoReadIndex>d__29::<>2__current
+ldarg.0 
+ldc.i4.1 
+stfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+ldc.i4.1 
+stloc.0 
+leave IL_017e: ldloc.0
+ldarg.0 
+ldc.i4.s -3
+stfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt UnityEngine.Networking.UnityWebRequest/Result UnityEngine.Networking.UnityWebRequest::get_result()
+ldc.i4.1 
+bne.un.s IL_0131: ldstr "[ABM] embed index "
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.Byte[] UnityEngine.Networking.DownloadHandler::get_data()
+brfalse.s IL_0131: ldstr "[ABM] embed index "
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.Byte[] UnityEngine.Networking.DownloadHandler::get_data()
+ldlen 
+brfalse.s IL_0131: ldstr "[ABM] embed index "
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.Byte[] UnityEngine.Networking.DownloadHandler::get_data()
+stsfld System.Byte[] OffServerBundleEmbed::_index
+br.s IL_0156: ldarg.0
+ldstr [ABM] embed index 
+ldarg.0 
+ldfld System.String OffServerBundleEmbed/<CoReadIndex>d__29::<path>5__2
+ldstr : 
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt System.String UnityEngine.Networking.UnityWebRequest::get_error()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+ldarg.0 
+call System.Void OffServerBundleEmbed/<CoReadIndex>d__29::<>m__Finally1()
+ldarg.0 
+ldnull 
+stfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+ldarg.0 
+ldfld System.Action`1<System.Byte[]> OffServerBundleEmbed/<CoReadIndex>d__29::done
+ldsfld System.Byte[] OffServerBundleEmbed::_index
+callvirt System.Void System.Action`1<System.Byte[]>::Invoke(!0)
+ldc.i4.0 
+stloc.0 
+leave.s IL_017e: ldloc.0
+ldarg.0 
+call System.Void OffServerBundleEmbed/<CoReadIndex>d__29::System.IDisposable.Dispose()
+endfinally 
+ldloc.0 
+ret 
+METHOD System.Void OffServerBundleEmbed/<CoReadIndex>d__29::<>m__Finally1()
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 OffServerBundleEmbed/<CoReadIndex>d__29::<>1__state
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+brfalse.s IL_001a: ret
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<CoReadIndex>d__29::<request>5__3
+callvirt System.Void System.IDisposable::Dispose()
+ret 
+METHOD System.Object OffServerBundleEmbed/<CoReadIndex>d__29::System.Collections.Generic.IEnumerator<System.Object>.get_Current()
+ldarg.0 
+ldfld System.Object OffServerBundleEmbed/<CoReadIndex>d__29::<>2__current
+ret 
+METHOD System.Void OffServerBundleEmbed/<CoReadIndex>d__29::System.Collections.IEnumerator.Reset()
+newobj System.Void System.NotSupportedException::.ctor()
+throw 
+METHOD System.Object OffServerBundleEmbed/<CoReadIndex>d__29::System.Collections.IEnumerator.get_Current()
+ldarg.0 
+ldfld System.Object OffServerBundleEmbed/<CoReadIndex>d__29::<>2__current
+ret 

@@ -1,0 +1,14 @@
+Durango.UI.OffServerTransition/<>c : System.Object
+FIELD Durango.UI.OffServerTransition/<>c Durango.UI.OffServerTransition/<>c::<>9
+FIELD System.Func`2<System.Int32,System.Single> Durango.UI.OffServerTransition/<>c::<>9__97_1
+METHOD System.Void Durango.UI.OffServerTransition/<>c::.cctor()
+newobj System.Void Durango.UI.OffServerTransition/<>c::.ctor()
+stsfld Durango.UI.OffServerTransition/<>c Durango.UI.OffServerTransition/<>c::<>9
+ret 
+METHOD System.Void Durango.UI.OffServerTransition/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Single Durango.UI.OffServerTransition/<>c::<OnGUI>b__97_1(System.Int32)
+ldc.r4 0
+ret 

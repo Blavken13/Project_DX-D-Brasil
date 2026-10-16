@@ -1,0 +1,122 @@
+Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0 : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::op
+FIELD System.Action`1<Newtonsoft.Json.Linq.JObject> Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::callback
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::<Post>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+ldnull 
+stloc.0 
+ldarg.2 
+brtrue.s IL_0008: ldarg.2
+ldc.i4.0 
+br.s IL_000e: stloc.1
+ldarg.2 
+callvirt System.Int32 BestHTTP.HTTPResponse::get_StatusCode()
+stloc.1 
+ldarg.2 
+brfalse.s IL_002b: leave.s IL_0032
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_002b: leave.s IL_0032
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+call Newtonsoft.Json.Linq.JObject Newtonsoft.Json.Linq.JObject::Parse(System.String)
+stloc.0 
+leave.s IL_0032: ldloc.0
+pop 
+ldnull 
+stloc.0 
+leave.s IL_0032: ldloc.0
+ldloc.0 
+brtrue.s IL_0081: ldc.i4.s 9
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::op
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr  error 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldarg.1 
+callvirt BestHTTP.HTTPRequestStates BestHTTP.HTTPRequest::get_State()
+stloc.2 
+ldloca.s V_2
+constrained. BestHTTP.HTTPRequestStates
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastEvent
+br.s IL_00f7: ldarg.0
+ldc.i4.s 9
+newarr System.String
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::op
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr  HTTP 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr  ok=
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.0 
+ldstr ok
+call System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.3 
+ldloca.s V_3
+call System.String System.Boolean::ToString()
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr  result=
+stelem.ref 
+dup 
+ldc.i4.6 
+ldloc.0 
+ldstr result
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stelem.ref 
+dup 
+ldc.i4.7 
+ldstr  reason=
+stelem.ref 
+dup 
+ldc.i4.8 
+ldloc.0 
+ldstr reason
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastEvent
+ldarg.0 
+ldfld System.Action`1<Newtonsoft.Json.Linq.JObject> Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::callback
+ldloc.0 
+callvirt System.Void System.Action`1<Newtonsoft.Json.Linq.JObject>::Invoke(!0)
+ret 

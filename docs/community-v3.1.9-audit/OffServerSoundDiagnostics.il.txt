@@ -1,0 +1,260 @@
+OffServerSoundDiagnostics : System.Object
+FIELD System.Int32 OffServerSoundDiagnostics::MaxLoggedEvents
+FIELD System.Int32 OffServerSoundDiagnostics::MaxProbedFailures
+FIELD System.Int32 OffServerSoundDiagnostics::s_loggedEvents
+FIELD System.Int32 OffServerSoundDiagnostics::s_probedFailures
+METHOD System.Void OffServerSoundDiagnostics::OnEngineReady()
+ldc.i4.3 
+ldnull 
+ldftn System.Void OffServerSoundDiagnostics::LogWwiseMessage(AkMonitorErrorCode,AkMonitorErrorLevel,System.UInt32,System.UInt64,System.String)
+newobj System.Void AkCallbackManager/MonitoringCallback::.ctor(System.Object,System.IntPtr)
+call System.Void AkCallbackManager::SetMonitoringCallback(AkMonitorErrorLevel,AkCallbackManager/MonitoringCallback)
+call AkChannelConfig AkSoundEngine::GetSpeakerConfiguration()
+stloc.0 
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Sound] speaker config channels=
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.0 
+callvirt System.UInt32 AkChannelConfig::get_uNumChannels()
+stloc.1 
+ldloca.s V_1
+call System.String System.UInt32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  mask=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+callvirt System.UInt32 AkChannelConfig::get_uChannelMask()
+stloc.1 
+ldloca.s V_1
+call System.String System.UInt32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  type=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.0 
+callvirt System.UInt32 AkChannelConfig::get_eConfigType()
+stloc.1 
+ldloca.s V_1
+call System.String System.UInt32::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ret 
+METHOD System.Void OffServerSoundDiagnostics::OnEventPosted(System.String,System.UInt32,UnityEngine.GameObject)
+ldsfld System.Int32 OffServerSoundDiagnostics::s_loggedEvents
+ldc.i4.s 40
+blt.s IL_000a: ldsfld System.Int32 OffServerSoundDiagnostics::s_loggedEvents
+ret 
+ldsfld System.Int32 OffServerSoundDiagnostics::s_loggedEvents
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerSoundDiagnostics::s_loggedEvents
+ldc.i4.s 10
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Sound] PostEvent 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  -> playingId=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarga.s playingId
+call System.String System.UInt32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  obj=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldarg.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0056: ldstr "null"
+ldarg.2 
+callvirt System.String UnityEngine.Object::get_name()
+br.s IL_005b: stelem.ref
+ldstr null
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr  bgm=
+stelem.ref 
+dup 
+ldc.i4.7 
+call System.Single SoundManager::get_VolumeForBgm()
+stloc.0 
+ldloca.s V_0
+call System.String System.Single::ToString()
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr  sfx=
+stelem.ref 
+dup 
+ldc.i4.s 9
+call System.Single SoundManager::get_VolumeForSfx()
+stloc.0 
+ldloca.s V_0
+call System.String System.Single::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ldarg.1 
+brtrue.s IL_00be: ret
+ldarg.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00be: ret
+ldsfld System.Int32 OffServerSoundDiagnostics::s_probedFailures
+ldc.i4.3 
+bge.s IL_00be: ret
+ldsfld System.Int32 OffServerSoundDiagnostics::s_probedFailures
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerSoundDiagnostics::s_probedFailures
+ldarg.0 
+ldarg.2 
+call System.Void OffServerSoundDiagnostics::ProbeRefusedEvent(System.String,UnityEngine.GameObject)
+ret 
+METHOD System.Void OffServerSoundDiagnostics::ProbeRefusedEvent(System.String,UnityEngine.GameObject)
+ldarg.1 
+call System.Boolean AkSoundEngine::IsGameObjectRegistered(UnityEngine.GameObject)
+stloc.0 
+ldarg.0 
+ldarg.1 
+call System.UInt32 AkSoundEngine::PostEvent(System.String,UnityEngine.GameObject)
+stloc.1 
+ldarg.1 
+ldarg.1 
+callvirt System.String UnityEngine.Object::get_name()
+call AKRESULT AkSoundEngine::RegisterGameObj(UnityEngine.GameObject,System.String)
+stloc.2 
+ldarg.0 
+ldarg.1 
+call System.UInt32 AkSoundEngine::PostEvent(System.String,UnityEngine.GameObject)
+stloc.3 
+ldc.i4.s 12
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Sound] probe 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  id=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+call System.UInt32 AkSoundEngine::GetIDFromString(System.String)
+stloc.s V_4
+ldloca.s V_4
+call System.String System.UInt32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  registered=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloca.s V_0
+call System.String System.Boolean::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr  postWithoutCallback=
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloca.s V_1
+call System.String System.UInt32::ToString()
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr  register=
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldloca.s V_2
+constrained. AKRESULT
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr  postAfterRegister=
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldloca.s V_3
+call System.String System.UInt32::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ret 
+METHOD System.Void OffServerSoundDiagnostics::LogWwiseMessage(AkMonitorErrorCode,AkMonitorErrorLevel,System.UInt32,System.UInt64,System.String)
+ldc.i4.8 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Wwise] 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarga.s level
+constrained. AkMonitorErrorLevel
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarga.s code
+constrained. AkMonitorErrorCode
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  playingId=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldarga.s playingId
+call System.String System.UInt32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.7 
+ldarg.s message
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ret 

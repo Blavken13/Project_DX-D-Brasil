@@ -1,0 +1,2486 @@
+{
+  "source": "Durango-Brasil-v2.2-Lite.zip",
+  "sourceManifest": "assets/AssetBundles/Info.5.2.1.json",
+  "referenceManifest": "Durango-CustomServer/server/assetbundles/android/Info.5.2.1.json",
+  "extractedBundles": [
+    {
+      "group": "allosaurus",
+      "name": "models$animals$allosaurus$allosaurusprefab.prefab.bundle",
+      "hash": "97eb3b8746543f073a31af01d6afef99",
+      "size": 372989,
+      "dependencies": [
+        "models$animals$_helmet$allosaurus$helmet_allosaurus.prefab.bundle",
+        "models$animals$_saddle$allosaurus$saddle_allosaurus.prefab.bundle",
+        "models$animals$allosaurus$allosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$allosaurus$allosaurusprefab.prefab.97eb3b8746543f073a31af01d6afef99.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$allosaurus$ceratosaurusprefab.prefab.bundle",
+      "hash": "ffefc8f3dd975519318821ab2821949b",
+      "size": 164916,
+      "dependencies": [
+        "models$animals$_helmet$allosaurus$helmet_ceratosaurus.prefab.bundle",
+        "models$animals$_saddle$allosaurus$saddle_allosaurus.prefab.bundle",
+        "models$animals$allosaurus$allosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$allosaurus$ceratosaurusprefab.prefab.ffefc8f3dd975519318821ab2821949b.bundle"
+    },
+    {
+      "group": "andrewsarchus",
+      "name": "models$animals$andrewsarchus$andrewsarchusprefab.prefab.bundle",
+      "hash": "187c8a40646b7af3588c3a8e8e6fe11e",
+      "size": 268408,
+      "dependencies": [
+        "models$animals$_helmet$andrewsarchus$helmet_andrewsarchus.prefab.bundle",
+        "models$animals$_saddle$andrewsarchus$saddle_andrewsarchus.prefab.bundle",
+        "models$animals$andrewsarchus$andrewsarchus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\andrewsarchus\\models$animals$andrewsarchus$andrewsarchusprefab.prefab.187c8a40646b7af3588c3a8e8e6fe11e.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$ankylosaurusprefab.prefab.bundle",
+      "hash": "7ee3c3b4fd91d2d5897fa2551a9779b0",
+      "size": 60923,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle",
+        "models$animals$ankylosaurus$materials$ankylosaurus-texture1.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$ankylosaurusprefab.prefab.7ee3c3b4fd91d2d5897fa2551a9779b0.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$ankylosaurus_eliteprefab.prefab.bundle",
+      "hash": "eb3481a3c789b858704f4dae26a2422d",
+      "size": 305807,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$ankylosaurus_eliteprefab.prefab.eb3481a3c789b858704f4dae26a2422d.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$ankylosaurus_mut01.prefab.bundle",
+      "hash": "71a67d89cb3308ee6454bcb970e288f9",
+      "size": 336388,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$ankylosaurus_mut01.prefab.71a67d89cb3308ee6454bcb970e288f9.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$ankylosaurus_smallprefab.prefab.bundle",
+      "hash": "626faa7a29ffaf291495e7d94d8e9e81",
+      "size": 54797,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus_small.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus_small.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle",
+        "models$animals$ankylosaurus$materials$ankylosaurus-texture1.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$ankylosaurus_smallprefab.prefab.626faa7a29ffaf291495e7d94d8e9e81.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$euoplocephalusprefab.prefab.bundle",
+      "hash": "0c3750ee3ed28d5627bf60a8b20b3518",
+      "size": 68133,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_euoplocephalus.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_euoplocephalus.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle",
+        "models$animals$ankylosaurus$materials$euoplocephalus.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$euoplocephalusprefab.prefab.0c3750ee3ed28d5627bf60a8b20b3518.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$euoplocephalus_smallprefab.prefab.bundle",
+      "hash": "4b98ff252e33aab1048acd646fbaec4b",
+      "size": 63221,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_euoplocephalus_small.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_euoplocephalus_small.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle",
+        "models$animals$ankylosaurus$materials$euoplocephalus.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$euoplocephalus_smallprefab.prefab.4b98ff252e33aab1048acd646fbaec4b.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$tortoise_ankylosaurusprefab.prefab.bundle",
+      "hash": "f9719f8806a58586dd9283ed09613340",
+      "size": 376474,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$tortoise_ankylosaurusprefab.prefab.f9719f8806a58586dd9283ed09613340.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$tortoise_ankylosaurus_mut01.prefab.bundle",
+      "hash": "ca4abc52c1e1c81e496fb08bdfbf37dd",
+      "size": 370275,
+      "dependencies": [
+        "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.bundle",
+        "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.bundle",
+        "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$tortoise_ankylosaurus_mut01.prefab.ca4abc52c1e1c81e496fb08bdfbf37dd.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$apatosaurus$amargasaurusprefab.prefab.bundle",
+      "hash": "b992e88cfbcca6a84b21dee920b90df6",
+      "size": 257706,
+      "dependencies": [
+        "models$animals$_helmet$apatosaurus$helmet_apatosaurus.prefab.bundle",
+        "models$animals$_saddle$apatosaurus$saddle_apatosaurus.prefab.bundle",
+        "models$animals$apatosaurus$apatosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$apatosaurus$amargasaurusprefab.prefab.b992e88cfbcca6a84b21dee920b90df6.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$apatosaurus$apatosaurusprefab.prefab.bundle",
+      "hash": "a7e4f58422c5795952cc1878e4a6b3df",
+      "size": 646973,
+      "dependencies": [
+        "models$animals$_helmet$apatosaurus$helmet_apatosaurus.prefab.bundle",
+        "models$animals$_saddle$apatosaurus$saddle_apatosaurus.prefab.bundle",
+        "models$animals$apatosaurus$apatosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$apatosaurus$apatosaurusprefab.prefab.a7e4f58422c5795952cc1878e4a6b3df.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$apatosaurus$apatosaurus_darkprefab.prefab.bundle",
+      "hash": "94e3044a62e5fe4913df80c55e749134",
+      "size": 612494,
+      "dependencies": [
+        "models$animals$_helmet$apatosaurus$helmet_apatosaurus.prefab.bundle",
+        "models$animals$_saddle$apatosaurus$saddle_apatosaurus.prefab.bundle",
+        "models$animals$apatosaurus$apatosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$apatosaurus$apatosaurus_darkprefab.prefab.94e3044a62e5fe4913df80c55e749134.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$brachio$brachioprefab.prefab.bundle",
+      "hash": "dd8e8d6d27b292f2b4f5fcdfaa5ae130",
+      "size": 83680,
+      "dependencies": [
+        "models$animals$_helmet$brachio$helmet_brachio.prefab.bundle",
+        "models$animals$_saddle$brachio$saddle_brachio.prefab.bundle",
+        "models$animals$brachio$brachio_framework.asset.bundle",
+        "models$animals$brachio$materials$brachio-texture1.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$brachio$brachioprefab.prefab.dd8e8d6d27b292f2b4f5fcdfaa5ae130.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$brachio$brachio_smallprefab.prefab.bundle",
+      "hash": "c665e80bd9d31fef33fa145589f107bd",
+      "size": 64049,
+      "dependencies": [
+        "models$animals$_helmet$brachio$helmet_brachio_small.prefab.bundle",
+        "models$animals$_saddle$brachio$saddle_brachio_small.prefab.bundle",
+        "models$animals$brachio$brachio_framework.asset.bundle",
+        "models$animals$brachio$materials$brachio-texture1.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$brachio$brachio_smallprefab.prefab.c665e80bd9d31fef33fa145589f107bd.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$brachio$ultrasaurusprefab.prefab.bundle",
+      "hash": "17e9499036422468b5833ffff9760b3c",
+      "size": 194439,
+      "dependencies": [
+        "models$animals$_helmet$brachio$helmet_brachio.prefab.bundle",
+        "models$animals$_saddle$brachio$saddle_brachio.prefab.bundle",
+        "models$animals$brachio$brachio_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$brachio$ultrasaurusprefab.prefab.17e9499036422468b5833ffff9760b3c.bundle"
+    },
+    {
+      "group": "brachio_junior",
+      "name": "models$animals$brachio_junior$brachio_junior.prefab.bundle",
+      "hash": "20c7e26ab96581b9bedc71a04c593de5",
+      "size": 63227,
+      "dependencies": [
+        "models$animals$_helmet$brachio$helmet_brachio_small.prefab.bundle",
+        "models$animals$_saddle$brachio$saddle_brachio_small.prefab.bundle",
+        "models$animals$brachio_junior$brachio_junior_framework.asset.bundle",
+        "models$animals$brachio_junior$materials$brachio_junior.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio_junior\\models$animals$brachio_junior$brachio_junior.prefab.20c7e26ab96581b9bedc71a04c593de5.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compso_lab.prefab.bundle",
+      "hash": "48ac5d8692f1bc1e5b3f1f13ec0a7fd4",
+      "size": 36727,
+      "dependencies": [
+        "models$animals$compso$materials$compsognathus_ancora.mat.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compso_lab.prefab.48ac5d8692f1bc1e5b3f1f13ec0a7fd4.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compso_paper_followerprefab.prefab.bundle",
+      "hash": "33d91d2991b92f6638ce807cf0009a98",
+      "size": 26941,
+      "dependencies": [
+        "models$animals$_helmet$compso$helmet_compso.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compso_paper_followerprefab.prefab.33d91d2991b92f6638ce807cf0009a98.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compso_paper_guardprefab.prefab.bundle",
+      "hash": "456efe074bd4e27ce4fd6bc17087a18d",
+      "size": 26337,
+      "dependencies": [
+        "models$animals$_helmet$compso$helmet_compso.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compso_paper_guardprefab.prefab.456efe074bd4e27ce4fd6bc17087a18d.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compso_spa.prefab.bundle",
+      "hash": "bf3e4843764440d96f32f742f19fa0ea",
+      "size": 43453,
+      "dependencies": [
+        "models$animals$compso$materials$compsognathus.mat.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compso_spa.prefab.bf3e4843764440d96f32f742f19fa0ea.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compsognathusprefab.prefab.bundle",
+      "hash": "5fc2e572989a17c6cd10a247301cf027",
+      "size": 47536,
+      "dependencies": [
+        "models$animals$_helmet$compso$helmet_compso.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle",
+        "models$animals$compso$materials$compsognathus.mat.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compsognathusprefab.prefab.5fc2e572989a17c6cd10a247301cf027.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compsognathus_ancoraprefab.prefab.bundle",
+      "hash": "e184fa994d51b2525487b5d373518f01",
+      "size": 47504,
+      "dependencies": [
+        "models$animals$_helmet$compso$helmet_compso.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle",
+        "models$animals$compso$materials$compsognathus_ancora.mat.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compsognathus_ancoraprefab.prefab.e184fa994d51b2525487b5d373518f01.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$dodo_snowfieldprefab.prefab.bundle",
+      "hash": "f542d9a7f8dd38632e5e11a2505ed180",
+      "size": 116674,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$dodo_snowfieldprefab.prefab.f542d9a7f8dd38632e5e11a2505ed180.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$dodophysisprefab.prefab.bundle",
+      "hash": "5c82d3ee705022b1a53af40995b1463b",
+      "size": 117585,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$dodophysisprefab.prefab.5c82d3ee705022b1a53af40995b1463b.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compsognathus_clownfishprefab.prefab.bundle",
+      "hash": "8310a9090452f65ce35eee752398ba0a",
+      "size": 121697,
+      "dependencies": [
+        "models$animals$_helmet$compso$helmet_compso.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$compso$compso_framework.asset.bundle",
+        "models$animals$compso$materials$compsognathus.mat.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$compso$compsognathus_clownfishprefab.prefab.8310a9090452f65ce35eee752398ba0a.bundle"
+    },
+    {
+      "group": "dimetrodon",
+      "name": "models$animals$dimetrodon$dimetrodonprefab.prefab.bundle",
+      "hash": "a5892dcaae526a77572b065023b73e17",
+      "size": 123917,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$dimetrodon$dimetrodon_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\dimetrodon\\models$animals$dimetrodon$dimetrodonprefab.prefab.a5892dcaae526a77572b065023b73e17.bundle"
+    },
+    {
+      "group": "dimetrodon",
+      "name": "models$animals$dimetrodon$lizard_poisonousprefab.prefab.bundle",
+      "hash": "a262e60a073a2da4429b16aa9f6b2748",
+      "size": 259683,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$dimetrodon$saddle_lizard_poisonous.prefab.bundle",
+        "models$animals$dimetrodon$dimetrodon_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\dimetrodon\\models$animals$dimetrodon$lizard_poisonousprefab.prefab.a262e60a073a2da4429b16aa9f6b2748.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$coelophysisprefab.prefab.bundle",
+      "hash": "3d26308bb57fa98a9771819aad46c074",
+      "size": 215056,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_coelophysis.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_coelophysis.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$coelophysisprefab.prefab.3d26308bb57fa98a9771819aad46c074.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$coelophysis_snowfieldprefab.prefab.bundle",
+      "hash": "799ac26e84203460fd5ca64e462d49b2",
+      "size": 229719,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_coelophysis.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_coelophysis.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$coelophysis_snowfieldprefab.prefab.799ac26e84203460fd5ca64e462d49b2.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$coelophysis_swampprefab.prefab.bundle",
+      "hash": "e37d48b0ed5111b9ace8aba4da5226e8",
+      "size": 240407,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_coelophysis.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_coelophysis.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$coelophysis_swampprefab.prefab.e37d48b0ed5111b9ace8aba4da5226e8.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimusprefab.prefab.bundle",
+      "hash": "1cafc365019a1f9b29a58073ec9adfc1",
+      "size": 237017,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimusprefab.prefab.1cafc365019a1f9b29a58073ec9adfc1.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimus_birdyprefab.prefab.bundle",
+      "hash": "bc47504e75120ac878f58d372dc4925a",
+      "size": 150514,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimus_birdyprefab.prefab.bc47504e75120ac878f58d372dc4925a.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimus_birdy_mut01.prefab.bundle",
+      "hash": "d6ec1937e15776b045e140f10d83a8f1",
+      "size": 144474,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimus_birdy_mut01.prefab.d6ec1937e15776b045e140f10d83a8f1.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimus_mut01.prefab.bundle",
+      "hash": "6f7897e3259bf0e2ce73e86544128202",
+      "size": 242928,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimus_mut01.prefab.6f7897e3259bf0e2ce73e86544128202.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimus_smallprefab.prefab.bundle",
+      "hash": "4b72c599a089ad17cb21ba8af12940f5",
+      "size": 198977,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_ornithomimus_small.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimus_smallprefab.prefab.4b72c599a089ad17cb21ba8af12940f5.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimus_smallunstableprefab.prefab.bundle",
+      "hash": "b496b897c2198150a42be63889d6f541",
+      "size": 201603,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_ornithomimus_small.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimus_smallunstableprefab.prefab.b496b897c2198150a42be63889d6f541.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gallimimus_unstableprefab.prefab.bundle",
+      "hash": "465807cf6f02edc8820b21bdbd7e3f04",
+      "size": 237893,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gallimimus_unstableprefab.prefab.465807cf6f02edc8820b21bdbd7e3f04.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gastronisprefab.prefab.bundle",
+      "hash": "07d665acbdefa7582f1705cd6cb4bff8",
+      "size": 235193,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gastronis.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gastronis.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gastronisprefab.prefab.07d665acbdefa7582f1705cd6cb4bff8.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gastronis_kkachiprefab.prefab.bundle",
+      "hash": "b59426f3ca2041e2de64d93e06b59c71",
+      "size": 229334,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gastronis.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gastronis.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gastronis_kkachiprefab.prefab.b59426f3ca2041e2de64d93e06b59c71.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$gastronis_mut01.prefab.bundle",
+      "hash": "3ee6154e0a2fb3ae09d980746b0ebde9",
+      "size": 236083,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_gastronis.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_gastronis.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$gastronis_mut01.prefab.3ee6154e0a2fb3ae09d980746b0ebde9.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$ornithomimusprefab.prefab.bundle",
+      "hash": "b7915a5a6fe5cab7682b324235153d31",
+      "size": 219140,
+      "dependencies": [
+        "models$animals$_helmet$ornithomimus$helmet_ornithomimus.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_ornithomimus.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$ornithomimusprefab.prefab.b7915a5a6fe5cab7682b324235153d31.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$ornithomimus_smallprefab.prefab.bundle",
+      "hash": "fdf9143bb488e6708ca88e9d57fb3277",
+      "size": 165642,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$ornithomimus$saddle_ornithomimus_small.prefab.bundle",
+        "models$animals$ornithomimus$ornithomimus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$ornithomimus_smallprefab.prefab.fdf9143bb488e6708ca88e9d57fb3277.bundle"
+    },
+    {
+      "group": "pachycephalo",
+      "name": "models$animals$pachycephalo$pachycephalosaurusprefab.prefab.bundle",
+      "hash": "9864290dd8ba49ace516ede75464f673",
+      "size": 327916,
+      "dependencies": [
+        "models$animals$_helmet$allosaurus$helmet_pachycephalosaurus.prefab.bundle",
+        "models$animals$_saddle$allosaurus$saddle_pachycephalosaurus.prefab.bundle",
+        "models$animals$pachycephalo$pachycephalo_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\pachycephalo\\models$animals$pachycephalo$pachycephalosaurusprefab.prefab.9864290dd8ba49ace516ede75464f673.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$corythosaurusprefab.prefab.bundle",
+      "hash": "ab4ca4c645882a82998ee8d7a287ea16",
+      "size": 195748,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_corythosaurus.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$corythosaurusprefab.prefab.ab4ca4c645882a82998ee8d7a287ea16.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$edmontosaurusprefab.prefab.bundle",
+      "hash": "0dd6394c2ae2d70c4db841f4fc692b65",
+      "size": 59830,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_edmontosaurus.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$materials$edmontosaurus.mat.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$edmontosaurusprefab.prefab.0dd6394c2ae2d70c4db841f4fc692b65.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$hadrosaurusprefab.prefab.bundle",
+      "hash": "e74a8bbd5a9f8190ccccd299ce563208",
+      "size": 195834,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_hadrosaurus.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$hadrosaurusprefab.prefab.e74a8bbd5a9f8190ccccd299ce563208.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$hadrosaurus_lava.prefab.bundle",
+      "hash": "5d54360dabffa94fc6956f82eb6f8c72",
+      "size": 404236,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_hadrosauruslava.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_hadrosauruslava.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$hadrosaurus_lava.prefab.5d54360dabffa94fc6956f82eb6f8c72.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$hadrosaurus_tank.prefab.bundle",
+      "hash": "7da3a89de845c68781d9a6c8e52fd64d",
+      "size": 765142,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_hadrosaurus_tank.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$hadrosaurus_tank.prefab.7da3a89de845c68781d9a6c8e52fd64d.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$iguanodonprefab.prefab.bundle",
+      "hash": "ea9957cd9b930c51a05e776b687e7404",
+      "size": 208631,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_iguanodon.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$iguanodonprefab.prefab.ea9957cd9b930c51a05e776b687e7404.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$parasaurolophusprefab.prefab.bundle",
+      "hash": "8e3864c1ccb5af7d6a06b8df959aa648",
+      "size": 203808,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_parasaurolophus.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$parasaurolophusprefab.prefab.8e3864c1ccb5af7d6a06b8df959aa648.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$saurolophusprefab.prefab.bundle",
+      "hash": "18728f39b913354df09915fd7335445c",
+      "size": 194965,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_saurolophus.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$saurolophusprefab.prefab.18728f39b913354df09915fd7335445c.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$tsintaosaurusprefab.prefab.bundle",
+      "hash": "fc6a52f41b3756eacd9f56be9e2fbbdc",
+      "size": 206582,
+      "dependencies": [
+        "models$animals$_helmet$parasaurolophus$helmet_saurolophus.prefab.bundle",
+        "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+        "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$tsintaosaurusprefab.prefab.fc6a52f41b3756eacd9f56be9e2fbbdc.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodusprefab.prefab.bundle",
+      "hash": "b53f12f9ec13c9b1ae7350c2bbf15375",
+      "size": 45939,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$materials$phenacodus-texture1.mat.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodusprefab.prefab.b53f12f9ec13c9b1ae7350c2bbf15375.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_hanbokprefab.prefab.bundle",
+      "hash": "4150ded474aaabdf4d6f9aa440cdd969",
+      "size": 211416,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_hanbokprefab.prefab.4150ded474aaabdf4d6f9aa440cdd969.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_paper_followerprefab.prefab.bundle",
+      "hash": "0f631247ccc41d7097049ed703c70015",
+      "size": 54981,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_paper_followerprefab.prefab.0f631247ccc41d7097049ed703c70015.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_paper_guardprefab.prefab.bundle",
+      "hash": "0261c238a5aa76cb138c0769aa9b3f24",
+      "size": 127013,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_paper_guardprefab.prefab.0261c238a5aa76cb138c0769aa9b3f24.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_pumpkinwitchprefab.prefab.bundle",
+      "hash": "bdfcd0d1a5bbcdf65683a89645a8eb88",
+      "size": 241830,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_pumpkinwitchprefab.prefab.bdfcd0d1a5bbcdf65683a89645a8eb88.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_ratprefab.prefab.bundle",
+      "hash": "6743cb054def57a640d0f0f9c916f385",
+      "size": 96220,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_ratprefab.prefab.6743cb054def57a640d0f0f9c916f385.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_savanaprefab.prefab.bundle",
+      "hash": "978e1e9399630e1cf359d503c769a85d",
+      "size": 46729,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$phenacodus$materials$phenacodus_savana.mat.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_savanaprefab.prefab.978e1e9399630e1cf359d503c769a85d.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_savana_smallprefab.prefab.bundle",
+      "hash": "5d845d18a47a47dbafd9702b5de34c51",
+      "size": 35815,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$phenacodus$materials$phenacodus_savana.mat.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_savana_smallprefab.prefab.5d845d18a47a47dbafd9702b5de34c51.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_xmasprefab.prefab.bundle",
+      "hash": "c578a9adec8dc52bb80606dbb68cbc96",
+      "size": 191299,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_xmasprefab.prefab.c578a9adec8dc52bb80606dbb68cbc96.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$skunkodusprefab.prefab.bundle",
+      "hash": "1ccfbbe3e3998b74adbd79a3da51bbb9",
+      "size": 191561,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$skunkodusprefab.prefab.1ccfbbe3e3998b74adbd79a3da51bbb9.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$skunkodus_unstableprefab.prefab.bundle",
+      "hash": "de1c0bfc329a36f2fda6b6fa25922845",
+      "size": 177563,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$skunkodus_unstableprefab.prefab.de1c0bfc329a36f2fda6b6fa25922845.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$skunkodus_volcanic.prefab.bundle",
+      "hash": "07bf2fee739b61ed68345f0c1cf843ca",
+      "size": 106195,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$skunkodus_volcanic.prefab.07bf2fee739b61ed68345f0c1cf843ca.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_bee.prefab.bundle",
+      "hash": "6f20395ca959a6edc14502d227db20b1",
+      "size": 266066,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_bee.prefab.6f20395ca959a6edc14502d227db20b1.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_savana_hulaprefab.prefab.bundle",
+      "hash": "5ef60e3268089ab38ce205dbd9ea22c0",
+      "size": 108247,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus_savana.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$phenacodus$materials$phenacodus_savana.mat.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_savana_hulaprefab.prefab.5ef60e3268089ab38ce205dbd9ea22c0.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_shark.prefab.bundle",
+      "hash": "ad57fbeaa24b7c792c7c336c5742795f",
+      "size": 242718,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_shark.prefab.ad57fbeaa24b7c792c7c336c5742795f.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_witchprefab.prefab.bundle",
+      "hash": "f7cc91bfddb367f3280f2d9b58aa9155",
+      "size": 221963,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_witchprefab.prefab.f7cc91bfddb367f3280f2d9b58aa9155.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$skunkodus_diver.prefab.bundle",
+      "hash": "3176acbcbf07f8f3fd95993fdfddb326",
+      "size": 269640,
+      "dependencies": [
+        "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+        "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+        "models$animals$phenacodus$phenacodus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$skunkodus_diver.prefab.3176acbcbf07f8f3fd95993fdfddb326.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$deinonychusprefab.prefab.bundle",
+      "hash": "0b056f884bf8dd43785c2ee2032eda16",
+      "size": 155998,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$deinonychusprefab.prefab.0b056f884bf8dd43785c2ee2032eda16.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$deinonychus_savanaprefab.prefab.bundle",
+      "hash": "cd4b7649dcbdc8bb8a5641a330731722",
+      "size": 149875,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$deinonychus_savanaprefab.prefab.cd4b7649dcbdc8bb8a5641a330731722.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$deinonychus_unstableprefab.prefab.bundle",
+      "hash": "16d8ba46be981d5c4c3d0d87f70d9890",
+      "size": 154382,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$deinonychus_unstableprefab.prefab.16d8ba46be981d5c4c3d0d87f70d9890.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$dilophosaurusprefab.prefab.bundle",
+      "hash": "9eab9760c6ac108d6c87943d0c5be3e5",
+      "size": 154197,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$dilophosaurusprefab.prefab.9eab9760c6ac108d6c87943d0c5be3e5.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$oviraptorprefab.prefab.bundle",
+      "hash": "37c08e8a329c0b806e1afa895facc8c7",
+      "size": 163185,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_oviraptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$oviraptorprefab.prefab.37c08e8a329c0b806e1afa895facc8c7.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$oviraptor_snowyprefab.prefab.bundle",
+      "hash": "bb383feeab82b1e411d24cf8222dc812",
+      "size": 164590,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_oviraptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$oviraptor_snowyprefab.prefab.bb383feeab82b1e411d24cf8222dc812.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$oviraptor_tropicalprefab.prefab.bundle",
+      "hash": "34df1415343bf935425abbd8c14f8796",
+      "size": 140133,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_oviraptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$oviraptor_tropicalprefab.prefab.34df1415343bf935425abbd8c14f8796.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$raptorprefab.prefab.bundle",
+      "hash": "4b5c17717755e0fde2cc8c95fab7f39c",
+      "size": 160796,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$raptorprefab.prefab.4b5c17717755e0fde2cc8c95fab7f39c.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$raptor_cowardprefab.prefab.bundle",
+      "hash": "dd4c4c047587663a19fb0cba938473bb",
+      "size": 159344,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$raptor_cowardprefab.prefab.dd4c4c047587663a19fb0cba938473bb.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$utahraptorprefab.prefab.bundle",
+      "hash": "4ee69813b83d266a3772c30488489217",
+      "size": 250793,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$utahraptorprefab.prefab.4ee69813b83d266a3772c30488489217.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$utahraptor_dark.prefab.bundle",
+      "hash": "87dc2114d57cc856ba3b93e9aa87f317",
+      "size": 221291,
+      "dependencies": [
+        "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+        "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+        "models$animals$raptor$raptor_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$utahraptor_dark.prefab.87dc2114d57cc856ba3b93e9aa87f317.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$kentrosaurusprefab.prefab.bundle",
+      "hash": "de9efd11d669d97414d940ff8570438e",
+      "size": 54338,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$stegosaurus$materials$kentrosaurus.mat.bundle",
+        "models$animals$stegosaurus$stegosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$kentrosaurusprefab.prefab.de9efd11d669d97414d940ff8570438e.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$kentrosaurus_smallprefab.prefab.bundle",
+      "hash": "610aa04a81f367af810ea833b6f0d97f",
+      "size": 54438,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$stegosaurus$materials$kentrosaurus.mat.bundle",
+        "models$animals$stegosaurus$stegosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$kentrosaurus_smallprefab.prefab.610aa04a81f367af810ea833b6f0d97f.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$stegosaurusprefab.prefab.bundle",
+      "hash": "58e21a86492759d991bcb44ec03b5071",
+      "size": 58449,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$stegosaurus$materials$stegosaurus-texture1.mat.bundle",
+        "models$animals$stegosaurus$stegosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$stegosaurusprefab.prefab.58e21a86492759d991bcb44ec03b5071.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$stegosaurus_smallprefab.prefab.bundle",
+      "hash": "37f4b984f0b13bb4c61ebe65bbdd5848",
+      "size": 57485,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$stegosaurus$materials$stegosaurus-texture1.mat.bundle",
+        "models$animals$stegosaurus$stegosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$stegosaurus_smallprefab.prefab.37f4b984f0b13bb4c61ebe65bbdd5848.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$tuojiangosaurusprefab.prefab.bundle",
+      "hash": "50908d9de01f038197c2cb2b696e0647",
+      "size": 57345,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$stegosaurus$materials$tuojiangosaurus.mat.bundle",
+        "models$animals$stegosaurus$stegosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$tuojiangosaurusprefab.prefab.50908d9de01f038197c2cb2b696e0647.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$tuojiangosaurus_smallprefab.prefab.bundle",
+      "hash": "e266b7a21366fb26c2bc431fc108ef45",
+      "size": 56787,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+        "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+        "models$animals$stegosaurus$materials$tuojiangosaurus.mat.bundle",
+        "models$animals$stegosaurus$stegosaurus_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$tuojiangosaurus_smallprefab.prefab.e266b7a21366fb26c2bc431fc108ef45.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$trex$trexprefab.prefab.bundle",
+      "hash": "ee75f9772f050d86a14ca7d71f7734d5",
+      "size": 705362,
+      "dependencies": [
+        "models$animals$_helmet$trex$helmet_trex.prefab.bundle",
+        "models$animals$_saddle$trex$saddle_trex.prefab.bundle",
+        "models$animals$trex$trex_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$trex$trexprefab.prefab.ee75f9772f050d86a14ca7d71f7734d5.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$trex$tarbosaurusprefab.prefab.bundle",
+      "hash": "e910a999cbe3d796c8720b5d4a9b9ff7",
+      "size": 398431,
+      "dependencies": [
+        "models$animals$_helmet$trex$helmet_trex.prefab.bundle",
+        "models$animals$_saddle$trex$saddle_trex.prefab.bundle",
+        "models$animals$trex$trex_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$trex$tarbosaurusprefab.prefab.e910a999cbe3d796c8720b5d4a9b9ff7.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$trex$tarbosaurus_snowyprefab.prefab.bundle",
+      "hash": "d9c59947ad3b7cc2bdfd01ca0d018b73",
+      "size": 319926,
+      "dependencies": [
+        "models$animals$_helmet$trex$helmet_trex.prefab.bundle",
+        "models$animals$_saddle$trex$saddle_trex.prefab.bundle",
+        "models$animals$trex$trex_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$trex$tarbosaurus_snowyprefab.prefab.d9c59947ad3b7cc2bdfd01ca0d018b73.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$centrosaurusprefab.prefab.bundle",
+      "hash": "a8330e426cbac0c6f6620d1806b24e31",
+      "size": 56191,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_centrosaurus.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_triceratops.prefab.bundle",
+        "models$animals$tricera$materials$centrosaurus.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$centrosaurusprefab.prefab.a8330e426cbac0c6f6620d1806b24e31.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$centrosaurus_smallprefab.prefab.bundle",
+      "hash": "8f67bd02e4f8d3c322d45fbd19eb6802",
+      "size": 56463,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_centrosaurus_small.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_centrosaurus_small.prefab.bundle",
+        "models$animals$tricera$materials$centrosaurus.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$centrosaurus_smallprefab.prefab.8f67bd02e4f8d3c322d45fbd19eb6802.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$chasmosaurusprefab.prefab.bundle",
+      "hash": "c5b6096e218353b98a6fe4558aed7cc3",
+      "size": 58922,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_chasmosaurus.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_chasmosaurus.prefab.bundle",
+        "models$animals$tricera$materials$chasmosaurus.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$chasmosaurusprefab.prefab.c5b6096e218353b98a6fe4558aed7cc3.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$chasmosaurus_rocky.prefab.bundle",
+      "hash": "0f4701f16011aebd92a94a27053b0732",
+      "size": 292371,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_chasmosaurus.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_chasmosaurus.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$chasmosaurus_rocky.prefab.0f4701f16011aebd92a94a27053b0732.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$chasmosaurus_smallprefab.prefab.bundle",
+      "hash": "ff072e8ccff336a7afb8fe702f1094b3",
+      "size": 55674,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_chasmosaurus_small.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_chasmosaurus_small.prefab.bundle",
+        "models$animals$tricera$materials$chasmosaurus.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$chasmosaurus_smallprefab.prefab.ff072e8ccff336a7afb8fe702f1094b3.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$eotriceratopsprefab.prefab.bundle",
+      "hash": "e34aa0fbcbf2bfefebc9cc859ac7a4c1",
+      "size": 237521,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_eotriceratops.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_eotriceratops.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$eotriceratopsprefab.prefab.e34aa0fbcbf2bfefebc9cc859ac7a4c1.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$protoceratopsprefab.prefab.bundle",
+      "hash": "67a836df658ba0ffc266e05f9a176cd9",
+      "size": 151245,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_protoceratops.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_protoceratops.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$protoceratopsprefab.prefab.67a836df658ba0ffc266e05f9a176cd9.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$protoceratops_tbprefab.prefab.bundle",
+      "hash": "cd7d3dd5ea373e4ef5d1442f79c97227",
+      "size": 152615,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_protoceratops.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_protoceratops.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$protoceratops_tbprefab.prefab.cd7d3dd5ea373e4ef5d1442f79c97227.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$styracosaurusprefab.prefab.bundle",
+      "hash": "bb9ae24d16c269943a721db419618cd0",
+      "size": 60844,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_styracosaurus.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_triceratops.prefab.bundle",
+        "models$animals$tricera$materials$styracosaurus.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$styracosaurusprefab.prefab.bb9ae24d16c269943a721db419618cd0.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$styracosaurus_deerprefab.prefab.bundle",
+      "hash": "97b280ef12aa5e511f1b304beffc8d04",
+      "size": 245556,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_styracosaurus_deer.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_triceratops.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$styracosaurus_deerprefab.prefab.97b280ef12aa5e511f1b304beffc8d04.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$styracosaurus_smallprefab.prefab.bundle",
+      "hash": "c4a4b20607f9ac7f63fa7b7435093ce0",
+      "size": 57242,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_styracosaurus_small.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_chasmosaurus_small.prefab.bundle",
+        "models$animals$tricera$materials$styracosaurus.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$styracosaurus_smallprefab.prefab.c4a4b20607f9ac7f63fa7b7435093ce0.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$triceratopsprefab.prefab.bundle",
+      "hash": "70a013041952fb837ec38ccb18293099",
+      "size": 63846,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_triceratops.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_triceratops.prefab.bundle",
+        "models$animals$tricera$materials$triceratops.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$triceratopsprefab.prefab.70a013041952fb837ec38ccb18293099.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$triceratops_eliteprefab.prefab.bundle",
+      "hash": "6ecbbfed83233501fa24fa655bb7a86b",
+      "size": 229787,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_triceratops.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_triceratops.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$triceratops_eliteprefab.prefab.6ecbbfed83233501fa24fa655bb7a86b.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$triceratops_smallprefab.prefab.bundle",
+      "hash": "78177d53cbd04df6ed4bc53940b31b08",
+      "size": 57055,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_triceratops_small.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_triceratops_small.prefab.bundle",
+        "models$animals$tricera$materials$triceratops.mat.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$triceratops_smallprefab.prefab.78177d53cbd04df6ed4bc53940b31b08.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$zebraceratopsprefab.prefab.bundle",
+      "hash": "66619dae6fa27a2247af7f9eda5d841d",
+      "size": 149549,
+      "dependencies": [
+        "models$animals$_helmet$tricera$helmet_protoceratops.prefab.bundle",
+        "models$animals$_saddle$tricera$saddle_protoceratops.prefab.bundle",
+        "models$animals$tricera$tricera_framework.asset.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$zebraceratopsprefab.prefab.66619dae6fa27a2247af7f9eda5d841d.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_helmet$allosaurus$helmet_allosaurus.prefab.bundle",
+      "hash": "763b45f8b7463c99cfdc697997993c9e",
+      "size": 11024,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_helmet$allosaurus$helmet_allosaurus.prefab.763b45f8b7463c99cfdc697997993c9e.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_helmet$allosaurus$helmet_ceratosaurus.prefab.bundle",
+      "hash": "1ba683128d6cc608d2e08f63fb20afd2",
+      "size": 11024,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_helmet$allosaurus$helmet_ceratosaurus.prefab.1ba683128d6cc608d2e08f63fb20afd2.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_helmet$allosaurus$helmet_giganotosaurus.prefab.bundle",
+      "hash": "89ed902378183c63ddabd190ed8ff431",
+      "size": 10999,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_helmet$allosaurus$helmet_giganotosaurus.prefab.89ed902378183c63ddabd190ed8ff431.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_helmet$allosaurus$helmet_megalosaurus.prefab.bundle",
+      "hash": "1e058165727e86ddc08e0ad160cc07db",
+      "size": 11031,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_helmet$allosaurus$helmet_megalosaurus.prefab.1e058165727e86ddc08e0ad160cc07db.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_helmet$allosaurus$helmet_pachycephalosaurus.prefab.bundle",
+      "hash": "d4c09acb06998d15ec6095ddbeca2d37",
+      "size": 11042,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_helmet$allosaurus$helmet_pachycephalosaurus.prefab.d4c09acb06998d15ec6095ddbeca2d37.bundle"
+    },
+    {
+      "group": "andrewsarchus",
+      "name": "models$animals$_helmet$andrewsarchus$helmet_andrewsarchus.prefab.bundle",
+      "hash": "dcdfede6a19f32fe15f796b005df0746",
+      "size": 11007,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\andrewsarchus\\models$animals$_helmet$andrewsarchus$helmet_andrewsarchus.prefab.dcdfede6a19f32fe15f796b005df0746.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.bundle",
+      "hash": "04038c098032f7f6daae46c5eb587450",
+      "size": 11014,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_helmet$ankylosaurus$helmet_ankylosaurus.prefab.04038c098032f7f6daae46c5eb587450.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_helmet$ankylosaurus$helmet_ankylosaurus_small.prefab.bundle",
+      "hash": "ac40d8e294c948baa23bc9e39db0e636",
+      "size": 10111,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_helmet$ankylosaurus$helmet_ankylosaurus_small.prefab.ac40d8e294c948baa23bc9e39db0e636.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_helmet$ankylosaurus$helmet_euoplocephalus.prefab.bundle",
+      "hash": "2e898777eea89c9f8c19dfa653dde869",
+      "size": 11063,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_helmet$ankylosaurus$helmet_euoplocephalus.prefab.2e898777eea89c9f8c19dfa653dde869.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_helmet$ankylosaurus$helmet_euoplocephalus_small.prefab.bundle",
+      "hash": "f7368d8ba4d0d2c8bbd6f86a06ff58f2",
+      "size": 10153,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_helmet$ankylosaurus$helmet_euoplocephalus_small.prefab.f7368d8ba4d0d2c8bbd6f86a06ff58f2.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$_helmet$apatosaurus$helmet_amargasaurus.prefab.bundle",
+      "hash": "b9f6c3ec6d2cbfd6100d6f4aebbdcd21",
+      "size": 11029,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$_helmet$apatosaurus$helmet_amargasaurus.prefab.b9f6c3ec6d2cbfd6100d6f4aebbdcd21.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$_helmet$apatosaurus$helmet_apatosaurus.prefab.bundle",
+      "hash": "ad6dc0bbe54a2c02b5125d269f4e22d0",
+      "size": 10992,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$_helmet$apatosaurus$helmet_apatosaurus.prefab.ad6dc0bbe54a2c02b5125d269f4e22d0.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$_helmet$brachio$helmet_brachio.prefab.bundle",
+      "hash": "b5cc1e3429e66d706a112d4f855b7046",
+      "size": 10107,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$_helmet$brachio$helmet_brachio.prefab.b5cc1e3429e66d706a112d4f855b7046.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$_helmet$brachio$helmet_brachio_small.prefab.bundle",
+      "hash": "b5ce53b2100adc699b8c761b6ebf6a1a",
+      "size": 10083,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$_helmet$brachio$helmet_brachio_small.prefab.b5ce53b2100adc699b8c761b6ebf6a1a.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$_helmet$compso$helmet_compso.prefab.bundle",
+      "hash": "8a9e47a65eebc5e13b6f72efddd9b645",
+      "size": 11018,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\compso\\models$animals$_helmet$compso$helmet_compso.prefab.8a9e47a65eebc5e13b6f72efddd9b645.bundle"
+    },
+    {
+      "group": "dimetrodon",
+      "name": "models$animals$_helmet$dimetrodon$helmet_lizard_poisonous.prefab.bundle",
+      "hash": "95b28d19e7f3490ae306630821d5fe54",
+      "size": 11036,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\dimetrodon\\models$animals$_helmet$dimetrodon$helmet_lizard_poisonous.prefab.95b28d19e7f3490ae306630821d5fe54.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_helmet$ornithomimus$helmet_coelophysis.prefab.bundle",
+      "hash": "01526ee673c2cee47fbde3808459b09e",
+      "size": 11019,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_helmet$ornithomimus$helmet_coelophysis.prefab.01526ee673c2cee47fbde3808459b09e.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.bundle",
+      "hash": "c991c188c3bdfbc38c6e10892ab6d559",
+      "size": 11016,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_helmet$ornithomimus$helmet_gallimimus.prefab.c991c188c3bdfbc38c6e10892ab6d559.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_helmet$ornithomimus$helmet_gastronis.prefab.bundle",
+      "hash": "7ac7030b5eb65a6a9112e46ed1c40b02",
+      "size": 11030,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_helmet$ornithomimus$helmet_gastronis.prefab.7ac7030b5eb65a6a9112e46ed1c40b02.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_helmet$ornithomimus$helmet_ornithomimus.prefab.bundle",
+      "hash": "0d1b94cf5b1774cca5d1d8568670b307",
+      "size": 11009,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_helmet$ornithomimus$helmet_ornithomimus.prefab.0d1b94cf5b1774cca5d1d8568670b307.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_corythosaurus.prefab.bundle",
+      "hash": "48821b16c273fb9ff3cf7f413d860732",
+      "size": 11033,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_corythosaurus.prefab.48821b16c273fb9ff3cf7f413d860732.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_edmontosaurus.prefab.bundle",
+      "hash": "698a48202d3f0eb08b7e253374247592",
+      "size": 11030,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_edmontosaurus.prefab.698a48202d3f0eb08b7e253374247592.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_hadrosaurus.prefab.bundle",
+      "hash": "97aee052c7b521fd375a46b498bedcc9",
+      "size": 11027,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_hadrosaurus.prefab.97aee052c7b521fd375a46b498bedcc9.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_hadrosauruslava.prefab.bundle",
+      "hash": "52124deb15c465661e2fae1a7dbcc1c4",
+      "size": 11012,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_hadrosauruslava.prefab.52124deb15c465661e2fae1a7dbcc1c4.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_iguanodon.prefab.bundle",
+      "hash": "b1406efc7306307f17a464b8fd4a92c1",
+      "size": 11015,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_iguanodon.prefab.b1406efc7306307f17a464b8fd4a92c1.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_parasaurolophus.prefab.bundle",
+      "hash": "bbd8d8a54ae5cd4c2ec091fa8563a27b",
+      "size": 11018,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_parasaurolophus.prefab.bbd8d8a54ae5cd4c2ec091fa8563a27b.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_helmet$parasaurolophus$helmet_saurolophus.prefab.bundle",
+      "hash": "0dd8f078258d7fab26f0253bbe74ab45",
+      "size": 11024,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_helmet$parasaurolophus$helmet_saurolophus.prefab.0dd8f078258d7fab26f0253bbe74ab45.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.bundle",
+      "hash": "04c2c8a58615bbdc387aa9c6a6b81c4e",
+      "size": 10097,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$_helmet$phenacodus$helmet_phenacodus.prefab.04c2c8a58615bbdc387aa9c6a6b81c4e.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$_helmet$phenacodus$helmet_phenacodus_savana.prefab.bundle",
+      "hash": "2870090b549cc68a3175ec21420a3ebc",
+      "size": 10112,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$_helmet$phenacodus$helmet_phenacodus_savana.prefab.2870090b549cc68a3175ec21420a3ebc.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$_helmet$raptor$helmet_oviraptor.prefab.bundle",
+      "hash": "54cd70c962184c37d16d825a92ad850b",
+      "size": 11027,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$_helmet$raptor$helmet_oviraptor.prefab.54cd70c962184c37d16d825a92ad850b.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$_helmet$raptor$helmet_raptor.prefab.bundle",
+      "hash": "50a5e251a58329adb278d0502c7332ee",
+      "size": 11057,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$_helmet$raptor$helmet_raptor.prefab.50a5e251a58329adb278d0502c7332ee.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$_helmet$trex$helmet_trex.prefab.bundle",
+      "hash": "a03cfbd9e17a1f0b20fb7a5a14f75b6f",
+      "size": 11026,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$_helmet$trex$helmet_trex.prefab.a03cfbd9e17a1f0b20fb7a5a14f75b6f.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$_helmet$trex$helmet_tarbosaurus_small.prefab.bundle",
+      "hash": "0f99c5b4276e8bdccedac93b4b35c28b",
+      "size": 11003,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$_helmet$trex$helmet_tarbosaurus_small.prefab.0f99c5b4276e8bdccedac93b4b35c28b.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_centrosaurus.prefab.bundle",
+      "hash": "65f611bd76993b7ec241d295b545db66",
+      "size": 11016,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_centrosaurus.prefab.65f611bd76993b7ec241d295b545db66.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_centrosaurus_small.prefab.bundle",
+      "hash": "0cb014af138e7f0896614dafea69755c",
+      "size": 10113,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_centrosaurus_small.prefab.0cb014af138e7f0896614dafea69755c.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_chasmosaurus.prefab.bundle",
+      "hash": "3ada7803af53fbd294a2cb4bad216651",
+      "size": 11021,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_chasmosaurus.prefab.3ada7803af53fbd294a2cb4bad216651.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_chasmosaurus_small.prefab.bundle",
+      "hash": "71e470f73a2211c1ebee421b748a74ed",
+      "size": 10126,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_chasmosaurus_small.prefab.71e470f73a2211c1ebee421b748a74ed.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_eotriceratops.prefab.bundle",
+      "hash": "8ad4ff65390dbe93b5e14c2d349906b2",
+      "size": 11005,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_eotriceratops.prefab.8ad4ff65390dbe93b5e14c2d349906b2.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_protoceratops.prefab.bundle",
+      "hash": "318ddda59c45c7d9495d6efd150e4780",
+      "size": 11012,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_protoceratops.prefab.318ddda59c45c7d9495d6efd150e4780.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_styracosaurus.prefab.bundle",
+      "hash": "db438bdd53a73d56f29f8e8f85c5a154",
+      "size": 11025,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_styracosaurus.prefab.db438bdd53a73d56f29f8e8f85c5a154.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_styracosaurus_deer.prefab.bundle",
+      "hash": "c483cc539ddcb7c79af0492320094699",
+      "size": 11019,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_styracosaurus_deer.prefab.c483cc539ddcb7c79af0492320094699.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_styracosaurus_small.prefab.bundle",
+      "hash": "57e407332128135b4e491e1e7656bd2d",
+      "size": 10102,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_styracosaurus_small.prefab.57e407332128135b4e491e1e7656bd2d.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_triceratops.prefab.bundle",
+      "hash": "fc685f3564d5f86670073e0fe5b88a9b",
+      "size": 11009,
+      "dependencies": [
+        "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_triceratops.prefab.fc685f3564d5f86670073e0fe5b88a9b.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_helmet$tricera$helmet_triceratops_small.prefab.bundle",
+      "hash": "de3ce8c74782abbb6e9d036247159b25",
+      "size": 10116,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$head_01_base.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_helmet$tricera$helmet_triceratops_small.prefab.de3ce8c74782abbb6e9d036247159b25.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_saddle$allosaurus$saddle_allosaurus.prefab.bundle",
+      "hash": "7250fce69e4015bb3b281c968492bf3b",
+      "size": 26123,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_saddle$allosaurus$saddle_allosaurus.prefab.7250fce69e4015bb3b281c968492bf3b.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_saddle$allosaurus$saddle_pachycephalosaurus.prefab.bundle",
+      "hash": "012e590a82f21aa07821b09d33be50c2",
+      "size": 26198,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_saddle$allosaurus$saddle_pachycephalosaurus.prefab.012e590a82f21aa07821b09d33be50c2.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$_saddle$allosaurus$saddle_megalosaurus.prefab.bundle",
+      "hash": "b35b021a6e11bf67c2fbc035496df587",
+      "size": 14621,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\allosaurus\\models$animals$_saddle$allosaurus$saddle_megalosaurus.prefab.b35b021a6e11bf67c2fbc035496df587.bundle"
+    },
+    {
+      "group": "andrewsarchus",
+      "name": "models$animals$_saddle$andrewsarchus$saddle_andrewsarchus.prefab.bundle",
+      "hash": "45b966308229032a7dfd356c8a469cb4",
+      "size": 24912,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\andrewsarchus\\models$animals$_saddle$andrewsarchus$saddle_andrewsarchus.prefab.45b966308229032a7dfd356c8a469cb4.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.bundle",
+      "hash": "19fc64df0a131af22d56158fdfdbe75a",
+      "size": 20584,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_saddle$ankylosaurus$saddle_ankylosaurus.prefab.19fc64df0a131af22d56158fdfdbe75a.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_saddle$ankylosaurus$saddle_ankylosaurus_small.prefab.bundle",
+      "hash": "31489f76eb80d62dcea8f3b718b33cf8",
+      "size": 11533,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_saddle$ankylosaurus$saddle_ankylosaurus_small.prefab.31489f76eb80d62dcea8f3b718b33cf8.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_saddle$ankylosaurus$saddle_euoplocephalus.prefab.bundle",
+      "hash": "4e88c565e2556c06210f494003f08008",
+      "size": 20556,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_saddle$ankylosaurus$saddle_euoplocephalus.prefab.4e88c565e2556c06210f494003f08008.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$_saddle$ankylosaurus$saddle_euoplocephalus_small.prefab.bundle",
+      "hash": "3e94f3b4dd2566a77c69c6e8dc8d23fb",
+      "size": 11566,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$_saddle$ankylosaurus$saddle_euoplocephalus_small.prefab.3e94f3b4dd2566a77c69c6e8dc8d23fb.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$_saddle$apatosaurus$saddle_amargasaurus.prefab.bundle",
+      "hash": "b102af1120477ca60a4a32538261042e",
+      "size": 24940,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$_saddle$apatosaurus$saddle_amargasaurus.prefab.b102af1120477ca60a4a32538261042e.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$_saddle$apatosaurus$saddle_apatosaurus.prefab.bundle",
+      "hash": "1eead6026bba43d59bbd7f0240d61088",
+      "size": 19405,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle"
+      ],
+      "path": "AssetBundles\\apatosaurus\\models$animals$_saddle$apatosaurus$saddle_apatosaurus.prefab.1eead6026bba43d59bbd7f0240d61088.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$_saddle$brachio$saddle_brachio.prefab.bundle",
+      "hash": "6c5db17f9c5ceaf520f7d9d1d45a572e",
+      "size": 24866,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$_saddle$brachio$saddle_brachio.prefab.6c5db17f9c5ceaf520f7d9d1d45a572e.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$_saddle$brachio$saddle_brachio_small.prefab.bundle",
+      "hash": "35c69c5e6c0ea3165196599ab86565f0",
+      "size": 15637,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\brachio\\models$animals$_saddle$brachio$saddle_brachio_small.prefab.35c69c5e6c0ea3165196599ab86565f0.bundle"
+    },
+    {
+      "group": "dimetrodon",
+      "name": "models$animals$_saddle$dimetrodon$saddle_lizard_poisonous.prefab.bundle",
+      "hash": "7b00125e8371fd8e29f10f0dd3a1063c",
+      "size": 25025,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\dimetrodon\\models$animals$_saddle$dimetrodon$saddle_lizard_poisonous.prefab.7b00125e8371fd8e29f10f0dd3a1063c.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_saddle$ornithomimus$saddle_coelophysis.prefab.bundle",
+      "hash": "33cdddf8ea0fb8773b1c802bf8365930",
+      "size": 16535,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_bag02.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_saddle$ornithomimus$saddle_coelophysis.prefab.33cdddf8ea0fb8773b1c802bf8365930.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.bundle",
+      "hash": "e3acd64b8268576d8b2da50f1270f061",
+      "size": 17819,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_bag02.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_saddle$ornithomimus$saddle_gallimimus.prefab.e3acd64b8268576d8b2da50f1270f061.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_saddle$ornithomimus$saddle_gastronis.prefab.bundle",
+      "hash": "7714911e216ab6cee30f85d429b64579",
+      "size": 17494,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_bag02.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_saddle$ornithomimus$saddle_gastronis.prefab.7714911e216ab6cee30f85d429b64579.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_saddle$ornithomimus$saddle_ornithomimus.prefab.bundle",
+      "hash": "eddabab621af671e4ba776052d787826",
+      "size": 17817,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_bag02.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_saddle$ornithomimus$saddle_ornithomimus.prefab.eddabab621af671e4ba776052d787826.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$_saddle$ornithomimus$saddle_ornithomimus_small.prefab.bundle",
+      "hash": "5791d46d7804f71ad92c61c8f42204fa",
+      "size": 11415,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\ornithomimus\\models$animals$_saddle$ornithomimus$saddle_ornithomimus_small.prefab.5791d46d7804f71ad92c61c8f42204fa.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_saddle$parasaurolophus$saddle_hadrosaurus_tank.prefab.bundle",
+      "hash": "c120c8db7257c75a87255a20beb3bb5b",
+      "size": 2002,
+      "dependencies": [],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_saddle$parasaurolophus$saddle_hadrosaurus_tank.prefab.c120c8db7257c75a87255a20beb3bb5b.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_saddle$parasaurolophus$saddle_hadrosauruslava.prefab.bundle",
+      "hash": "364c38c0ac28a2b82521e01ce38678f8",
+      "size": 26044,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_saddle$parasaurolophus$saddle_hadrosauruslava.prefab.364c38c0ac28a2b82521e01ce38678f8.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.bundle",
+      "hash": "4bcaaf0ab5b17b910e24355c7bc98016",
+      "size": 26015,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$_saddle$parasaurolophus$saddle_parasaurolophus.prefab.4bcaaf0ab5b17b910e24355c7bc98016.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$_saddle$phenacodus$saddle_phenacodus.prefab.bundle",
+      "hash": "11ac4df946cb22cd13615a3a130a66b6",
+      "size": 11151,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$_saddle$phenacodus$saddle_phenacodus.prefab.11ac4df946cb22cd13615a3a130a66b6.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$_saddle$phenacodus$saddle_phenacodus_elite.prefab.bundle",
+      "hash": "ca1cd3d234dfc59f40c4bbe9030ca131",
+      "size": 11123,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\phenacodus\\models$animals$_saddle$phenacodus$saddle_phenacodus_elite.prefab.ca1cd3d234dfc59f40c4bbe9030ca131.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.bundle",
+      "hash": "e3c655dd796e53aa7ba2cc475bd64790",
+      "size": 1992,
+      "dependencies": [],
+      "path": "AssetBundles\\phenacodus\\models$animals$_saddle$phenacodus$saddle_phenacodus_invisible.prefab.e3c655dd796e53aa7ba2cc475bd64790.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$_saddle$raptor$saddle_raptor.prefab.bundle",
+      "hash": "150008a347896339c709daf20f1554f7",
+      "size": 14173,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\raptor\\models$animals$_saddle$raptor$saddle_raptor.prefab.150008a347896339c709daf20f1554f7.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$_saddle$trex$saddle_trex.prefab.bundle",
+      "hash": "8200f78214305fbd8baa57d3e52ee943",
+      "size": 40328,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$_saddle$trex$saddle_trex.prefab.8200f78214305fbd8baa57d3e52ee943.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$_saddle$trex$saddle_tarbosaurus_small.prefab.bundle",
+      "hash": "f8ef9e7480f4965a107e74203d0c5945",
+      "size": 17891,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_bag02.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\trex\\models$animals$_saddle$trex$saddle_tarbosaurus_small.prefab.f8ef9e7480f4965a107e74203d0c5945.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_centrosaurus_small.prefab.bundle",
+      "hash": "7f1fc61e4b297994e00cdb63c2943545",
+      "size": 11509,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_centrosaurus_small.prefab.7f1fc61e4b297994e00cdb63c2943545.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_chasmosaurus.prefab.bundle",
+      "hash": "e8ba818670484f9b161165269a4a4f64",
+      "size": 19436,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_chasmosaurus.prefab.e8ba818670484f9b161165269a4a4f64.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_chasmosaurus_small.prefab.bundle",
+      "hash": "6391e1b5d53bf57aa3b4493270a7e098",
+      "size": 11514,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_chasmosaurus_small.prefab.6391e1b5d53bf57aa3b4493270a7e098.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_eotriceratops.prefab.bundle",
+      "hash": "b6814c569cee9f8be5ff73de46333acc",
+      "size": 24985,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_eotriceratops.prefab.b6814c569cee9f8be5ff73de46333acc.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_protoceratops.prefab.bundle",
+      "hash": "e0e273578a35287e765a7859ba02f13d",
+      "size": 11500,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_protoceratops.prefab.e0e273578a35287e765a7859ba02f13d.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_triceratops.prefab.bundle",
+      "hash": "88ce3033ef606c890f8151e34514e891",
+      "size": 24966,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+        "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+        "models$animals$_saddle$_base$materials$saddle_big.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_triceratops.prefab.88ce3033ef606c890f8151e34514e891.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$_saddle$tricera$saddle_triceratops_small.prefab.bundle",
+      "hash": "225b32f0baa7ab7f098d96c744ed4580",
+      "size": 11476,
+      "dependencies": [
+        "models$animals$_saddle$_base$materials$saddle_small.mat.bundle"
+      ],
+      "path": "AssetBundles\\tricera\\models$animals$_saddle$tricera$saddle_triceratops_small.prefab.225b32f0baa7ab7f098d96c744ed4580.bundle"
+    },
+    {
+      "group": "allosaurus",
+      "name": "models$animals$allosaurus$allosaurus_framework.asset.bundle",
+      "hash": "5107e1a3c4fcc92ca4df7eeb890af5c4",
+      "size": 4817283,
+      "dependencies": [],
+      "path": "AssetBundles\\allosaurus\\models$animals$allosaurus$allosaurus_framework.asset.5107e1a3c4fcc92ca4df7eeb890af5c4.bundle"
+    },
+    {
+      "group": "andrewsarchus",
+      "name": "models$animals$andrewsarchus$andrewsarchus_framework.asset.bundle",
+      "hash": "49bdd89b5c14d9c019eb5a6c34d784fb",
+      "size": 3579990,
+      "dependencies": [],
+      "path": "AssetBundles\\andrewsarchus\\models$animals$andrewsarchus$andrewsarchus_framework.asset.49bdd89b5c14d9c019eb5a6c34d784fb.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$ankylosaurus_framework.asset.bundle",
+      "hash": "39362a3e158aa9cfef16e77d564b0682",
+      "size": 2942791,
+      "dependencies": [],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$ankylosaurus_framework.asset.39362a3e158aa9cfef16e77d564b0682.bundle"
+    },
+    {
+      "group": "apatosaurus",
+      "name": "models$animals$apatosaurus$apatosaurus_framework.asset.bundle",
+      "hash": "0dc7cb95249a942151e2f4b40c60ea50",
+      "size": 5117569,
+      "dependencies": [],
+      "path": "AssetBundles\\apatosaurus\\models$animals$apatosaurus$apatosaurus_framework.asset.0dc7cb95249a942151e2f4b40c60ea50.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$brachio$brachio_framework.asset.bundle",
+      "hash": "52684589ea7c4e07c7550b9d32874116",
+      "size": 3850483,
+      "dependencies": [],
+      "path": "AssetBundles\\brachio\\models$animals$brachio$brachio_framework.asset.52684589ea7c4e07c7550b9d32874116.bundle"
+    },
+    {
+      "group": "brachio_junior",
+      "name": "models$animals$brachio_junior$brachio_junior_framework.asset.bundle",
+      "hash": "85329458e7462895ce0298b2fd3108a8",
+      "size": 1992540,
+      "dependencies": [],
+      "path": "AssetBundles\\brachio_junior\\models$animals$brachio_junior$brachio_junior_framework.asset.85329458e7462895ce0298b2fd3108a8.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$compso_framework.asset.bundle",
+      "hash": "8fb57840adef66ee9de8e8febbb72f7d",
+      "size": 2411571,
+      "dependencies": [],
+      "path": "AssetBundles\\compso\\models$animals$compso$compso_framework.asset.8fb57840adef66ee9de8e8febbb72f7d.bundle"
+    },
+    {
+      "group": "dimetrodon",
+      "name": "models$animals$dimetrodon$dimetrodon_framework.asset.bundle",
+      "hash": "5d39212af1e3d3ca5c5e0b248453c8fa",
+      "size": 2653320,
+      "dependencies": [],
+      "path": "AssetBundles\\dimetrodon\\models$animals$dimetrodon$dimetrodon_framework.asset.5d39212af1e3d3ca5c5e0b248453c8fa.bundle"
+    },
+    {
+      "group": "ornithomimus",
+      "name": "models$animals$ornithomimus$ornithomimus_framework.asset.bundle",
+      "hash": "2c1ae7447ca759bd55dd23be1803892a",
+      "size": 3764400,
+      "dependencies": [],
+      "path": "AssetBundles\\ornithomimus\\models$animals$ornithomimus$ornithomimus_framework.asset.2c1ae7447ca759bd55dd23be1803892a.bundle"
+    },
+    {
+      "group": "pachycephalo",
+      "name": "models$animals$pachycephalo$pachycephalo_framework.asset.bundle",
+      "hash": "8708b38b733e87969a827ec87f3538cc",
+      "size": 4127403,
+      "dependencies": [],
+      "path": "AssetBundles\\pachycephalo\\models$animals$pachycephalo$pachycephalo_framework.asset.8708b38b733e87969a827ec87f3538cc.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$parasaurolophus_framework.asset.bundle",
+      "hash": "6bbfa429969434406a9c23be8a1ac76a",
+      "size": 3090251,
+      "dependencies": [],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$parasaurolophus_framework.asset.6bbfa429969434406a9c23be8a1ac76a.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$phenacodus_framework.asset.bundle",
+      "hash": "78ff8c95e88795c81b321b7dbeded72f",
+      "size": 3204924,
+      "dependencies": [],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$phenacodus_framework.asset.78ff8c95e88795c81b321b7dbeded72f.bundle"
+    },
+    {
+      "group": "raptor",
+      "name": "models$animals$raptor$raptor_framework.asset.bundle",
+      "hash": "54a563925ba7edf8f2c217216ad58402",
+      "size": 3119956,
+      "dependencies": [],
+      "path": "AssetBundles\\raptor\\models$animals$raptor$raptor_framework.asset.54a563925ba7edf8f2c217216ad58402.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$stegosaurus_framework.asset.bundle",
+      "hash": "69e29d8d88416c1b1d083d4107dcac14",
+      "size": 3119140,
+      "dependencies": [],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$stegosaurus_framework.asset.69e29d8d88416c1b1d083d4107dcac14.bundle"
+    },
+    {
+      "group": "trex",
+      "name": "models$animals$trex$trex_framework.asset.bundle",
+      "hash": "c1091e8e58598dc7cfd63b7ed68302f5",
+      "size": 3719394,
+      "dependencies": [],
+      "path": "AssetBundles\\trex\\models$animals$trex$trex_framework.asset.c1091e8e58598dc7cfd63b7ed68302f5.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$tricera_framework.asset.bundle",
+      "hash": "e6f15bff10375440719547e744667c76",
+      "size": 2353978,
+      "dependencies": [],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$tricera_framework.asset.e6f15bff10375440719547e744667c76.bundle"
+    },
+    {
+      "group": "brachio_junior",
+      "name": "models$animals$brachio_junior$materials$brachio_junior.mat.bundle",
+      "hash": "e17e003710bd898bd7209efe649dfefb",
+      "size": 488930,
+      "dependencies": [],
+      "path": "AssetBundles\\brachio_junior\\models$animals$brachio_junior$materials$brachio_junior.mat.e17e003710bd898bd7209efe649dfefb.bundle"
+    },
+    {
+      "group": "brachio",
+      "name": "models$animals$brachio$materials$brachio-texture1.mat.bundle",
+      "hash": "0269f640862ca6549aeeda890632c19a",
+      "size": 449573,
+      "dependencies": [],
+      "path": "AssetBundles\\brachio\\models$animals$brachio$materials$brachio-texture1.mat.0269f640862ca6549aeeda890632c19a.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$materials$compsognathus_ancora.mat.bundle",
+      "hash": "a7bb26f7d89a5de6f824d51789edd401",
+      "size": 52713,
+      "dependencies": [],
+      "path": "AssetBundles\\compso\\models$animals$compso$materials$compsognathus_ancora.mat.a7bb26f7d89a5de6f824d51789edd401.bundle"
+    },
+    {
+      "group": "parasaurolophus",
+      "name": "models$animals$parasaurolophus$materials$edmontosaurus.mat.bundle",
+      "hash": "b8b97d226b93b2ebc42f49b35bf95eb1",
+      "size": 219197,
+      "dependencies": [],
+      "path": "AssetBundles\\parasaurolophus\\models$animals$parasaurolophus$materials$edmontosaurus.mat.b8b97d226b93b2ebc42f49b35bf95eb1.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$materials$phenacodus-texture1.mat.bundle",
+      "hash": "206539347524e426ea78624af987255a",
+      "size": 150546,
+      "dependencies": [],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$materials$phenacodus-texture1.mat.206539347524e426ea78624af987255a.bundle"
+    },
+    {
+      "group": "compso",
+      "name": "models$animals$compso$materials$compsognathus.mat.bundle",
+      "hash": "0d9b6e49d5b8751316a3f2bc7ec34c28",
+      "size": 19312,
+      "dependencies": [],
+      "path": "AssetBundles\\compso\\models$animals$compso$materials$compsognathus.mat.0d9b6e49d5b8751316a3f2bc7ec34c28.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$materials$ankylosaurus-texture1.mat.bundle",
+      "hash": "29dcdd519a90e835c2aeb23df2d86d41",
+      "size": 275394,
+      "dependencies": [],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$materials$ankylosaurus-texture1.mat.29dcdd519a90e835c2aeb23df2d86d41.bundle"
+    },
+    {
+      "group": "ankylosaurus",
+      "name": "models$animals$ankylosaurus$materials$euoplocephalus.mat.bundle",
+      "hash": "f40681cb80c5996ac93e158ecb85bd29",
+      "size": 251018,
+      "dependencies": [],
+      "path": "AssetBundles\\ankylosaurus\\models$animals$ankylosaurus$materials$euoplocephalus.mat.f40681cb80c5996ac93e158ecb85bd29.bundle"
+    },
+    {
+      "group": "phenacodus",
+      "name": "models$animals$phenacodus$materials$phenacodus_savana.mat.bundle",
+      "hash": "a190d7a375ad574e2789503707c27f92",
+      "size": 207637,
+      "dependencies": [],
+      "path": "AssetBundles\\phenacodus\\models$animals$phenacodus$materials$phenacodus_savana.mat.a190d7a375ad574e2789503707c27f92.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$materials$kentrosaurus.mat.bundle",
+      "hash": "576051ff66bbdda753e91b678835d44f",
+      "size": 153608,
+      "dependencies": [],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$materials$kentrosaurus.mat.576051ff66bbdda753e91b678835d44f.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$materials$stegosaurus-texture1.mat.bundle",
+      "hash": "1ac0f1ab2b95965e4ea8c498daa695cf",
+      "size": 275914,
+      "dependencies": [],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$materials$stegosaurus-texture1.mat.1ac0f1ab2b95965e4ea8c498daa695cf.bundle"
+    },
+    {
+      "group": "stegosaurus",
+      "name": "models$animals$stegosaurus$materials$tuojiangosaurus.mat.bundle",
+      "hash": "fd29b318b9f8c07b260a4445c4b06456",
+      "size": 158363,
+      "dependencies": [],
+      "path": "AssetBundles\\stegosaurus\\models$animals$stegosaurus$materials$tuojiangosaurus.mat.fd29b318b9f8c07b260a4445c4b06456.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$materials$centrosaurus.mat.bundle",
+      "hash": "01b3010cafc7cb27701976151756256b",
+      "size": 189362,
+      "dependencies": [],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$materials$centrosaurus.mat.01b3010cafc7cb27701976151756256b.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$materials$chasmosaurus.mat.bundle",
+      "hash": "a60bd0e5a5fb9be0aff032ee002b6ec5",
+      "size": 191522,
+      "dependencies": [],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$materials$chasmosaurus.mat.a60bd0e5a5fb9be0aff032ee002b6ec5.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$materials$styracosaurus.mat.bundle",
+      "hash": "78d1530c316f759d02976550c6773582",
+      "size": 186544,
+      "dependencies": [],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$materials$styracosaurus.mat.78d1530c316f759d02976550c6773582.bundle"
+    },
+    {
+      "group": "tricera",
+      "name": "models$animals$tricera$materials$triceratops.mat.bundle",
+      "hash": "2a88cd56931e3cd59482f71101f7d58f",
+      "size": 176975,
+      "dependencies": [],
+      "path": "AssetBundles\\tricera\\models$animals$tricera$materials$triceratops.mat.2a88cd56931e3cd59482f71101f7d58f.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$saddle_invisible.prefab.bundle",
+      "hash": "c2a8750304e5cef42eee3fe2c03b31f9",
+      "size": 2128,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$saddle_invisible.prefab.c2a8750304e5cef42eee3fe2c03b31f9.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_helmet$_base$helmet_invisible.prefab.bundle",
+      "hash": "19ab8fb78ced9f6f4407b1fcf23c81f8",
+      "size": 1858,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_helmet$_base$helmet_invisible.prefab.19ab8fb78ced9f6f4407b1fcf23c81f8.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_helmet$_base$helmet_rope.prefab.bundle",
+      "hash": "d4c2f62fb6b902f0b3b509ba86dba8a6",
+      "size": 10603,
+      "dependencies": [
+        "models$animals$_helmet$_base$materials$helmet_rope.mat.bundle"
+      ],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_helmet$_base$helmet_rope.prefab.d4c2f62fb6b902f0b3b509ba86dba8a6.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_helmet$_base$materials$head_01_base.mat.bundle",
+      "hash": "4e2ec629713987965f2e8a2228b05178",
+      "size": 9899,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_helmet$_base$materials$head_01_base.mat.4e2ec629713987965f2e8a2228b05178.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$materials$body_01_sub1.mat.bundle",
+      "hash": "2571e39c22d8331c95a1f83e83a71a10",
+      "size": 10949,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$materials$body_01_sub1.mat.2571e39c22d8331c95a1f83e83a71a10.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$materials$mat_straw.mat.bundle",
+      "hash": "db60ddc4d496969a43b8a9e21306d004",
+      "size": 18451,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$materials$mat_straw.mat.db60ddc4d496969a43b8a9e21306d004.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$materials$saddle_big.mat.bundle",
+      "hash": "65847d1e57051e17c6d65c7065e5b5e3",
+      "size": 40146,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$materials$saddle_big.mat.65847d1e57051e17c6d65c7065e5b5e3.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$materials$body_sub_blanket01.mat.bundle",
+      "hash": "e207eb4432f64a9b9ab57ad3030338a6",
+      "size": 11302,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$materials$body_sub_blanket01.mat.e207eb4432f64a9b9ab57ad3030338a6.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$materials$saddle_small.mat.bundle",
+      "hash": "05ec03d35ea03bc5827ea4f3d5f1546a",
+      "size": 10892,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$materials$saddle_small.mat.05ec03d35ea03bc5827ea4f3d5f1546a.bundle"
+    },
+    {
+      "group": "Common Dependencies",
+      "name": "models$animals$_saddle$_base$materials$body_sub_bag02.mat.bundle",
+      "hash": "0dab7060d1f566c921e89ffa1ec9625f",
+      "size": 5214,
+      "dependencies": [],
+      "path": "AssetBundles\\Common Dependencies\\models$animals$_saddle$_base$materials$body_sub_bag02.mat.0dab7060d1f566c921e89ffa1ec9625f.bundle"
+    }
+  ]
+}

@@ -1,0 +1,1089 @@
+OffServerRenderDiag : UnityEngine.MonoBehaviour
+FIELD System.Single OffServerRenderDiag::_next
+METHOD System.Void OffServerRenderDiag::Boot()
+call System.Boolean UnityEngine.Application::get_isEditor()
+brtrue.s IL_0018: ldstr "OffServerRenderDiag"
+call System.Boolean Debug::get_isDebugBuild()
+brfalse.s IL_0017: ret
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+beq.s IL_0018: ldstr "OffServerRenderDiag"
+ret 
+ldstr OffServerRenderDiag
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerRenderDiag>()
+pop 
+ret 
+METHOD System.Void OffServerRenderDiag::DumpTopRightWidgets()
+ldc.i4.0 
+stloc.0 
+call !!0[] UnityEngine.Resources::FindObjectsOfTypeAll<UIWidget>()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br IL_0310: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_030c: ldloc.2
+ldloc.3 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brfalse IL_030c: ldloc.2
+ldloc.3 
+callvirt System.Boolean UnityEngine.Behaviour::get_enabled()
+brfalse IL_030c: ldloc.2
+ldloc.3 
+ldfld UIPanel UIWidget::panel
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_030c: ldloc.2
+ldnull 
+stloc.s V_4
+ldloc.3 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Int32 UnityEngine.GameObject::get_layer()
+call UnityEngine.Camera NGUITools::FindCameraForLayer(System.Int32)
+stloc.s V_4
+leave.s IL_0065: ldloc.s V_4
+pop 
+leave.s IL_0065: ldloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_030c: ldloc.2
+ldloc.3 
+callvirt UnityEngine.Vector3[] UIRect::get_worldCorners()
+stloc.s V_5
+ldloc.s V_4
+ldloc.s V_5
+ldc.i4.0 
+ldelem.any UnityEngine.Vector3
+callvirt UnityEngine.Vector3 UnityEngine.Camera::WorldToScreenPoint(UnityEngine.Vector3)
+stloc.s V_6
+ldloc.s V_4
+ldloc.s V_5
+ldc.i4.2 
+ldelem.any UnityEngine.Vector3
+callvirt UnityEngine.Vector3 UnityEngine.Camera::WorldToScreenPoint(UnityEngine.Vector3)
+stloc.s V_7
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector3::x
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector3::x
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+stloc.s V_8
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector3::x
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector3::x
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.s V_9
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector3::y
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector3::y
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+stloc.s V_10
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector3::y
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector3::y
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.s V_11
+ldloc.s V_9
+call System.Int32 UnityEngine.Screen::get_width()
+conv.r4 
+ldc.r4 0,66
+mul 
+blt IL_030c: ldloc.2
+ldloc.s V_10
+call System.Int32 UnityEngine.Screen::get_height()
+conv.r4 
+ldc.r4 0,78
+mul 
+blt IL_030c: ldloc.2
+ldloc.s V_9
+ldloc.s V_8
+sub 
+ldc.r4 40
+blt IL_030c: ldloc.2
+ldloc.s V_11
+ldloc.s V_10
+sub 
+ldc.r4 20
+blt IL_030c: ldloc.2
+ldloc.3 
+callvirt UnityEngine.Texture UIWidget::get_mainTexture()
+stloc.s V_12
+ldloc.3 
+callvirt UnityEngine.Shader UIWidget::get_shader()
+stloc.s V_13
+ldc.i4.s 24
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [RenderDiag] widget 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.3 
+callvirt System.Type System.Object::GetType()
+callvirt System.String System.Reflection.MemberInfo::get_Name()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.3 
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  rect=(
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.s V_8
+conv.i4 
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr ,
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.s V_10
+conv.i4 
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr )-(
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldloc.s V_9
+conv.i4 
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr ,
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldloc.s V_11
+conv.i4 
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr ) depth=
+stelem.ref 
+dup 
+ldc.i4.s 13
+ldloc.3 
+callvirt System.Int32 UIWidget::get_depth()
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.s 14
+ldstr  tex=
+stelem.ref 
+dup 
+ldc.i4.s 15
+ldloc.s V_12
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0267: ldstr "null"
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldloc.s V_12
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.2 
+ldloc.s V_12
+callvirt System.Int32 UnityEngine.Texture::get_width()
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr x
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.s V_12
+callvirt System.Int32 UnityEngine.Texture::get_height()
+stloc.s V_14
+ldloca.s V_14
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.6 
+ldloc.s V_12
+callvirt System.Type System.Object::GetType()
+callvirt System.String System.Reflection.MemberInfo::get_Name()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+br.s IL_026c: stelem.ref
+ldstr null
+stelem.ref 
+dup 
+ldc.i4.s 16
+ldstr  shader=
+stelem.ref 
+dup 
+ldc.i4.s 17
+ldloc.s V_13
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_028c: ldstr "null"
+ldloc.s V_13
+callvirt System.String UnityEngine.Object::get_name()
+br.s IL_0291: stelem.ref
+ldstr null
+stelem.ref 
+dup 
+ldc.i4.s 18
+ldstr  mat=
+stelem.ref 
+dup 
+ldc.i4.s 19
+ldloc.3 
+callvirt UnityEngine.Material UIWidget::get_material()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_02b9: ldstr "null"
+ldloc.3 
+callvirt UnityEngine.Material UIWidget::get_material()
+callvirt System.String UnityEngine.Object::get_name()
+br.s IL_02be: stelem.ref
+ldstr null
+stelem.ref 
+dup 
+ldc.i4.s 20
+ldstr  color=
+stelem.ref 
+dup 
+ldc.i4.s 21
+ldloc.3 
+callvirt UnityEngine.Color UIWidget::get_color()
+stloc.s V_15
+ldloca.s V_15
+constrained. UnityEngine.Color
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.s 22
+ldstr  path=
+stelem.ref 
+dup 
+ldc.i4.s 23
+ldloc.3 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+call System.String OffServerRenderDiag::Path(UnityEngine.Transform)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerShaderRemap::Report(System.String)
+ldloc.0 
+ldc.i4.1 
+add 
+dup 
+stloc.0 
+ldc.i4.s 12
+bge.s IL_0319: leave.s IL_0335
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt IL_000f: ldloc.1
+leave.s IL_0335: ret
+stloc.s V_16
+ldstr [RenderDiag] widget dump err=
+ldloc.s V_16
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerShaderRemap::Report(System.String)
+leave.s IL_0335: ret
+ret 
+METHOD System.String OffServerRenderDiag::Path(UnityEngine.Transform)
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0025: ldarg.0
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+starg.s t
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+ldstr /
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String,System.String)
+stloc.0 
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_003b: ldloc.0
+ldloc.1 
+dup 
+ldc.i4.1 
+add 
+stloc.1 
+ldc.i4.6 
+blt.s IL_000b: ldarg.0
+ldloc.0 
+ret 
+METHOD System.Void OffServerRenderDiag::Update()
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single OffServerRenderDiag::_next
+bge.un.s IL_000e: ldarg.0
+ret 
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 20
+add 
+stfld System.Single OffServerRenderDiag::_next
+ldarg.0 
+call System.Void OffServerRenderDiag::Dump()
+leave.s IL_003f: ret
+stloc.0 
+ldstr [RenderDiag] 
+ldloc.0 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerShaderRemap::Report(System.String)
+leave.s IL_003f: ret
+ret 
+METHOD System.Void OffServerRenderDiag::Dump()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Int32>::.ctor()
+stloc.0 
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::.ctor()
+stloc.1 
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+stloc.2 
+call !!0[] UnityEngine.Object::FindObjectsByType<UnityEngine.Renderer>()
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+ldloc.3 
+stloc.s V_7
+ldc.i4.0 
+stloc.s V_8
+br IL_0110: ldloc.s V_8
+ldloc.s V_7
+ldloc.s V_8
+ldelem.ref 
+stloc.s V_9
+ldloc.s V_9
+callvirt System.Boolean UnityEngine.Renderer::get_isVisible()
+brfalse IL_010a: ldloc.s V_8
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_9
+callvirt UnityEngine.Material[] UnityEngine.Renderer::get_sharedMaterials()
+stloc.s V_10
+ldc.i4.0 
+stloc.s V_11
+br IL_00ff: ldloc.s V_11
+ldloc.s V_10
+ldloc.s V_11
+ldelem.ref 
+stloc.s V_12
+ldloc.s V_12
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_00f9: ldloc.s V_11
+ldloc.s V_12
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0081: ldstr "<null shader>"
+ldloc.s V_12
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+callvirt System.String UnityEngine.Object::get_name()
+br.s IL_0086: stloc.s V_13
+ldstr <null shader>
+stloc.s V_13
+ldloc.0 
+ldloc.s V_13
+ldloca.s V_14
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.Int32>::TryGetValue(!0,!1&)
+pop 
+ldloc.0 
+ldloc.s V_13
+ldloc.s V_14
+ldc.i4.1 
+add 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Int32>::set_Item(!0,!1)
+ldloc.1 
+ldloc.s V_13
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::ContainsKey(!0)
+brtrue.s IL_00f9: ldloc.s V_11
+ldloc.1 
+ldloc.s V_13
+ldloc.s V_12
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00c9: ldc.i4.0
+ldloc.s V_12
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+callvirt System.Boolean UnityEngine.Shader::get_isSupported()
+br.s IL_00ca: callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::set_Item(!0,!1)
+ldc.i4.0 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::set_Item(!0,!1)
+ldloc.2 
+ldloc.s V_13
+ldloc.s V_9
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.String UnityEngine.Object::get_name()
+ldstr  (
+ldloc.s V_12
+callvirt System.String UnityEngine.Object::get_name()
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldloc.s V_10
+ldlen 
+conv.i4 
+blt IL_0050: ldloc.s V_10
+ldloc.s V_8
+ldc.i4.1 
+add 
+stloc.s V_8
+ldloc.s V_8
+ldloc.s V_7
+ldlen 
+conv.i4 
+blt IL_0026: ldloc.s V_7
+newobj System.Void System.Text.StringBuilder::.ctor()
+stloc.s V_5
+ldloc.s V_5
+ldstr [RenderDiag] scene=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+call UnityEngine.SceneManagement.Scene UnityEngine.SceneManagement.SceneManager::GetActiveScene()
+stloc.s V_15
+ldloca.s V_15
+call System.String UnityEngine.SceneManagement.Scene::get_name()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr  gfx=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+call UnityEngine.Rendering.GraphicsDeviceType UnityEngine.SystemInfo::get_graphicsDeviceType()
+box UnityEngine.Rendering.GraphicsDeviceType
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+ldstr  renderers=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.3 
+ldlen 
+conv.i4 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Int32)
+ldstr  visible=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_4
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Int32)
+ldstr  fps~
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldc.r4 1
+call System.Single UnityEngine.Time::get_smoothDeltaTime()
+ldc.r4 0,0001
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+div 
+stloc.s V_16
+ldloca.s V_16
+ldstr 0
+call System.String System.Single::ToString(System.String)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+call UnityEngine.Camera[] UnityEngine.Camera::get_allCameras()
+stloc.s V_17
+ldc.i4.0 
+stloc.s V_8
+br IL_0247: ldloc.s V_8
+ldloc.s V_17
+ldloc.s V_8
+ldelem.ref 
+stloc.s V_18
+ldloc.s V_5
+ldstr  | cam 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_18
+callvirt System.String UnityEngine.Object::get_name()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr  clear=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_18
+callvirt UnityEngine.CameraClearFlags UnityEngine.Camera::get_clearFlags()
+box UnityEngine.CameraClearFlags
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+ldstr  bg=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_18
+callvirt UnityEngine.Color UnityEngine.Camera::get_backgroundColor()
+box UnityEngine.Color
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+ldstr  depth=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_18
+callvirt System.Single UnityEngine.Camera::get_depth()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Single)
+ldstr  mask=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_18
+callvirt System.Int32 UnityEngine.Camera::get_cullingMask()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Int32)
+pop 
+ldloc.s V_8
+ldc.i4.1 
+add 
+stloc.s V_8
+ldloc.s V_8
+ldloc.s V_17
+ldlen 
+conv.i4 
+blt IL_01bf: ldloc.s V_17
+ldloc.s V_5
+ldstr  | _WorldLightColor=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr _WorldLightColor
+call UnityEngine.Color UnityEngine.Shader::GetGlobalColor(System.String)
+box UnityEngine.Color
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+ldstr  _WorldLightVector=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr _WorldLightVector
+call UnityEngine.Vector4 UnityEngine.Shader::GetGlobalVector(System.String)
+box UnityEngine.Vector4
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+pop 
+call System.Boolean Durango.Utils.Singleton`1<Durango.Render.Screen.CustomColorCorrectionEffect>::HasInstance()
+stloc.s V_19
+ldloc.s V_5
+ldstr  colorCorrection=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_19
+brtrue.s IL_02af: ldstr "instance"
+ldstr none
+br.s IL_02b4: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr instance
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloc.s V_19
+brfalse.s IL_0330: leave.s IL_034f
+call T Durango.Utils.Singleton`1<Durango.Render.Screen.CustomColorCorrectionEffect>::Instance()
+stloc.s V_20
+ldloc.s V_5
+ldstr  enabled=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_20
+callvirt System.Boolean UnityEngine.Behaviour::get_enabled()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Boolean)
+ldstr  on=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_20
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.String UnityEngine.Object::get_name()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr  active=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_20
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Boolean)
+ldstr  cam=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_20
+callvirt !!0 UnityEngine.Component::GetComponent<UnityEngine.Camera>()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Boolean)
+pop 
+leave.s IL_034f: ldloc.s V_5
+stloc.s V_21
+ldloc.s V_5
+ldstr  colorCorrection err=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_21
+callvirt System.String System.Exception::get_Message()
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+leave.s IL_034f: ldloc.s V_5
+ldloc.s V_5
+ldstr  _SkyAmbient=
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr _SkyAmbient
+call UnityEngine.Color UnityEngine.Shader::GetGlobalColor(System.String)
+box UnityEngine.Color
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+pop 
+ldloc.s V_5
+callvirt System.String System.Object::ToString()
+call System.Void OffServerShaderRemap::Report(System.String)
+call System.Void OffServerRenderDiag::DumpTopRightWidgets()
+ldloc.3 
+stloc.s V_7
+ldc.i4.0 
+stloc.s V_8
+br IL_069d: ldloc.s V_8
+ldloc.s V_7
+ldloc.s V_8
+ldelem.ref 
+stloc.s V_22
+ldloc.s V_22
+callvirt System.Boolean UnityEngine.Renderer::get_isVisible()
+brfalse IL_0697: ldloc.s V_8
+ldnull 
+stloc.s V_23
+ldloc.s V_22
+callvirt UnityEngine.Material[] UnityEngine.Renderer::get_sharedMaterials()
+stloc.s V_10
+ldc.i4.0 
+stloc.s V_11
+br.s IL_040c: ldloc.s V_11
+ldloc.s V_10
+ldloc.s V_11
+ldelem.ref 
+stloc.s V_25
+ldloc.s V_25
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0406: ldloc.s V_11
+ldloc.s V_25
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0406: ldloc.s V_11
+ldloc.s V_25
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+callvirt System.String UnityEngine.Object::get_name()
+ldstr LitSphere/Skin
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_0400: ldloc.s V_25
+ldloc.s V_25
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+callvirt System.String UnityEngine.Object::get_name()
+ldstr LitSphere/ThreeColor
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_0406: ldloc.s V_11
+ldloc.s V_25
+stloc.s V_23
+br.s IL_0414: ldloc.s V_23
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldloc.s V_10
+ldlen 
+conv.i4 
+blt.s IL_03b0: ldloc.s V_10
+ldloc.s V_23
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_0697: ldloc.s V_8
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [RenderDiag] LitSphere material 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_23
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  shader=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_23
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  kw=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr ,
+ldloc.s V_23
+callvirt System.String[] UnityEngine.Material::get_shaderKeywords()
+call System.String System.String::Join(System.String,System.String[])
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+newobj System.Void System.Text.StringBuilder::.ctor(System.String)
+stloc.s V_24
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr _Color
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr _ThreeColor_1
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr _ThreeColor_2
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr _ThreeColor_3
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr _GroundAmbient
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr _SkinColor
+stelem.ref 
+stloc.s V_26
+ldc.i4.0 
+stloc.s V_11
+br.s IL_0504: ldloc.s V_11
+ldloc.s V_26
+ldloc.s V_11
+ldelem.ref 
+stloc.s V_27
+ldloc.s V_23
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+ldloc.s V_27
+callvirt System.Int32 UnityEngine.Shader::FindPropertyIndex(System.String)
+ldc.i4.0 
+blt.s IL_04fe: ldloc.s V_11
+ldloc.s V_24
+ldstr  
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_27
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr =
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_23
+ldloc.s V_27
+callvirt UnityEngine.Color UnityEngine.Material::GetColor(System.String)
+box UnityEngine.Color
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Object)
+pop 
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldloc.s V_26
+ldlen 
+conv.i4 
+blt.s IL_04b5: ldloc.s V_26
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr _LitAmount
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr _SpecularPower
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr _RimIntensity
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr _Wetness
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr _Cutoff
+stelem.ref 
+stloc.s V_26
+ldc.i4.0 
+stloc.s V_11
+br.s IL_058b: ldloc.s V_11
+ldloc.s V_26
+ldloc.s V_11
+ldelem.ref 
+stloc.s V_28
+ldloc.s V_23
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+ldloc.s V_28
+callvirt System.Int32 UnityEngine.Shader::FindPropertyIndex(System.String)
+ldc.i4.0 
+blt.s IL_0585: ldloc.s V_11
+ldloc.s V_24
+ldstr  
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_28
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr =
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_23
+ldloc.s V_28
+callvirt System.Single UnityEngine.Material::GetFloat(System.String)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Single)
+pop 
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldloc.s V_26
+ldlen 
+conv.i4 
+blt.s IL_0541: ldloc.s V_26
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr _MainTex
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr _SubTex
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr _LitSphereTex
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr _DirtyTex
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr _MetalicTex
+stelem.ref 
+stloc.s V_26
+ldc.i4.0 
+stloc.s V_11
+br IL_067e: ldloc.s V_11
+ldloc.s V_26
+ldloc.s V_11
+ldelem.ref 
+stloc.s V_29
+ldloc.s V_23
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+ldloc.s V_29
+callvirt System.Int32 UnityEngine.Shader::FindPropertyIndex(System.String)
+ldc.i4.0 
+blt IL_0678: ldloc.s V_11
+ldloc.s V_23
+ldloc.s V_29
+callvirt UnityEngine.Texture UnityEngine.Material::GetTexture(System.String)
+stloc.s V_30
+ldloc.s V_24
+ldstr  
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_29
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr =
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_30
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_066d: ldstr "null"
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldloc.s V_30
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr (
+stelem.ref 
+dup 
+ldc.i4.2 
+ldloc.s V_30
+callvirt System.Int32 UnityEngine.Texture::get_width()
+stloc.s V_31
+ldloca.s V_31
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr x
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.s V_30
+callvirt System.Int32 UnityEngine.Texture::get_height()
+stloc.s V_31
+ldloca.s V_31
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+br.s IL_0672: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr null
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldloc.s V_26
+ldlen 
+conv.i4 
+blt IL_05cb: ldloc.s V_26
+ldloc.s V_24
+callvirt System.String System.Object::ToString()
+call System.Void OffServerShaderRemap::Report(System.String)
+br.s IL_06a8: ldloc.0
+ldloc.s V_8
+ldc.i4.1 
+add 
+stloc.s V_8
+ldloc.s V_8
+ldloc.s V_7
+ldlen 
+conv.i4 
+blt IL_038c: ldloc.s V_7
+ldloc.0 
+newobj System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::.ctor(System.Collections.Generic.IEnumerable`1<!0>)
+dup 
+ldsfld System.Comparison`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>> OffServerRenderDiag/<>c::<>9__5_0
+dup 
+brtrue.s IL_06ce: callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::Sort(System.Comparison`1<!0>)
+pop 
+ldsfld OffServerRenderDiag/<>c OffServerRenderDiag/<>c::<>9
+ldftn System.Int32 OffServerRenderDiag/<>c::<Dump>b__5_0(System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>,System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>)
+newobj System.Void System.Comparison`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Comparison`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>> OffServerRenderDiag/<>c::<>9__5_0
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::Sort(System.Comparison`1<!0>)
+ldc.i4.0 
+stloc.s V_6
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::GetEnumerator()
+stloc.s V_32
+br IL_076e: ldloca.s V_32
+ldloca.s V_32
+call !0 System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::get_Current()
+stloc.s V_33
+ldloc.s V_6
+dup 
+ldc.i4.1 
+add 
+stloc.s V_6
+ldc.i4.s 25
+blt.s IL_06fb: ldc.i4.7
+leave IL_078a: ret
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [RenderDiag]   
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloca.s V_33
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>::get_Value()
+stloc.s V_8
+ldloca.s V_8
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr x 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_33
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>::get_Key()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.1 
+ldloca.s V_33
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>::get_Key()
+callvirt !1 System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::get_Item(!0)
+brtrue.s IL_0746: ldstr ""
+ldstr   **UNSUPPORTED**
+br.s IL_074b: stelem.ref
+ldstr 
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr   e.g. 
+stelem.ref 
+dup 
+ldc.i4.6 
+ldloc.2 
+ldloca.s V_33
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>::get_Key()
+callvirt !1 System.Collections.Generic.Dictionary`2<System.String,System.String>::get_Item(!0)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerShaderRemap::Report(System.String)
+ldloca.s V_32
+call System.Boolean System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>::MoveNext()
+brtrue IL_06e2: ldloca.s V_32
+leave.s IL_078a: ret
+ldloca.s V_32
+constrained. System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Void OffServerRenderDiag::.ctor()
+ldarg.0 
+ldc.r4 25
+stfld System.Single OffServerRenderDiag::_next
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

@@ -1,0 +1,107 @@
+OffServerEmojiLinks/Link : System.Object
+FIELD UILabel OffServerEmojiLinks/Link::Parent
+FIELD UITexture OffServerEmojiLinks/Link::Widget
+FIELD System.Boolean OffServerEmojiLinks/Link::Valid
+METHOD System.Void OffServerEmojiLinks/Link::ITextRectLayout.Set(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Color)
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerEmojiLinks/Link::Valid
+ldarg.1 
+ldarg.0 
+ldfld UILabel OffServerEmojiLinks/Link::Parent
+callvirt UnityEngine.Vector2 UILabel::get_FontOffset()
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Addition(UnityEngine.Vector2,UnityEngine.Vector2)
+starg.s pos
+ldc.i4.2 
+ldarg.2 
+ldfld System.Single UnityEngine.Vector2::x
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+stloc.0 
+ldc.i4.2 
+ldarg.2 
+ldfld System.Single UnityEngine.Vector2::y
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+stloc.1 
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+callvirt System.Int32 UIWidget::get_width()
+ldloc.0 
+bne.un.s IL_005a: ldarg.0
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+callvirt System.Int32 UIWidget::get_height()
+ldloc.1 
+beq.s IL_0067: ldarg.0
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldloc.0 
+ldloc.1 
+callvirt System.Void UIWidget::SetDimensions(System.Int32,System.Int32)
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+callvirt UnityEngine.Vector2 UIWidget::get_pivotOffset()
+stloc.2 
+ldloca.s V_3
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::x
+ldarg.2 
+ldfld System.Single UnityEngine.Vector2::x
+ldloc.2 
+ldfld System.Single UnityEngine.Vector2::x
+mul 
+add 
+call System.Single UnityEngine.Mathf::Round(System.Single)
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::y
+ldarg.2 
+ldfld System.Single UnityEngine.Vector2::y
+ldloc.2 
+ldfld System.Single UnityEngine.Vector2::y
+mul 
+add 
+call System.Single UnityEngine.Mathf::Round(System.Single)
+call System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single)
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+callvirt UnityEngine.Transform UIRect::get_cachedTransform()
+stloc.s V_4
+ldloc.s V_4
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldloc.3 
+call System.Boolean UnityEngine.Vector3::op_Inequality(UnityEngine.Vector3,UnityEngine.Vector3)
+brfalse.s IL_00d0: ldloc.s V_4
+ldloc.s V_4
+ldloc.3 
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldloc.s V_4
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localScale()
+call UnityEngine.Vector3 UnityEngine.Vector3::get_one()
+call System.Boolean UnityEngine.Vector3::op_Inequality(UnityEngine.Vector3,UnityEngine.Vector3)
+brfalse.s IL_00ef: ldloca.s V_5
+ldloc.s V_4
+call UnityEngine.Vector3 UnityEngine.Vector3::get_one()
+callvirt System.Void UnityEngine.Transform::set_localScale(UnityEngine.Vector3)
+ldloca.s V_5
+ldc.r4 1
+ldc.r4 1
+ldc.r4 1
+ldarg.3 
+ldfld System.Single UnityEngine.Color::a
+call System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+callvirt UnityEngine.Color UIWidget::get_color()
+ldloc.s V_5
+call System.Boolean UnityEngine.Color::op_Inequality(UnityEngine.Color,UnityEngine.Color)
+brfalse.s IL_012c: ret
+ldarg.0 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldloc.s V_5
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ret 
+METHOD System.Void OffServerEmojiLinks/Link::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

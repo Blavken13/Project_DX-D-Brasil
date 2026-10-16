@@ -1,0 +1,2816 @@
+Durango.Development.TestBridge : UnityEngine.MonoBehaviour
+FIELD System.Int32 Durango.Development.TestBridge::LogCapacity
+FIELD Durango.Development.TestBridge Durango.Development.TestBridge::_instance
+FIELD System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+FIELD System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+FIELD System.Collections.Generic.Dictionary`2<System.String,Durango.Development.TestBridge/Handler> Durango.Development.TestBridge::_handlers
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Development.TestBridge::_help
+FIELD System.Net.Sockets.TcpListener Durango.Development.TestBridge::_listener
+FIELD System.Threading.Thread Durango.Development.TestBridge::_acceptThread
+FIELD System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Development.TestBridge::_running
+FIELD System.Int32 Durango.Development.TestBridge::_port
+FIELD System.String[] Durango.Development.TestBridge::GaugeKeys
+METHOD System.Void Durango.Development.TestBridge::EnsureStarted(System.Int32)
+ldarg.0 
+ldc.i4.0 
+ble.s IL_0040: ret
+ldsfld Durango.Development.TestBridge Durango.Development.TestBridge::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0040: ret
+ldstr OffServerTestBridge
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.Development.TestBridge>()
+stsfld Durango.Development.TestBridge Durango.Development.TestBridge::_instance
+ldsfld Durango.Development.TestBridge Durango.Development.TestBridge::_instance
+ldarg.0 
+stfld System.Int32 Durango.Development.TestBridge::_port
+ldsfld Durango.Development.TestBridge Durango.Development.TestBridge::_instance
+callvirt System.Void Durango.Development.TestBridge::StartListener()
+ret 
+METHOD System.Void Durango.Development.TestBridge::Record(System.String,System.String)
+ldarg.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0009: ldsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+ret 
+ldsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+stloc.0 
+ldc.i4.0 
+stloc.1 
+ldloc.0 
+ldloca.s V_1
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+call System.DateTime System.DateTime::get_Now()
+stloc.2 
+ldloca.s V_2
+ldstr HH:mm:ss.fff
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.DateTime::ToString(System.String,System.IFormatProvider)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr  [
+stelem.ref 
+dup 
+ldc.i4.2 
+ldarg.0 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr ] 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.1 
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+callvirt System.Int32 System.Collections.Generic.List`1<System.String>::get_Count()
+ldc.i4 200
+ble.s IL_008c: leave.s IL_0098
+ldsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+ldc.i4.0 
+ldsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+callvirt System.Int32 System.Collections.Generic.List`1<System.String>::get_Count()
+ldc.i4 200
+sub 
+callvirt System.Void System.Collections.Generic.List`1<System.String>::RemoveRange(System.Int32,System.Int32)
+leave.s IL_0098: ret
+ldloc.1 
+brfalse.s IL_0097: endfinally
+ldloc.0 
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+ret 
+METHOD System.Void Durango.Development.TestBridge::Awake()
+ldarg.0 
+call System.Void Durango.Development.TestBridge::RegisterHandlers()
+ldarg.0 
+ldftn System.Void Durango.Development.TestBridge::OnUnityLog(System.String,System.String,UnityEngine.LogType)
+newobj System.Void UnityEngine.Application/LogCallback::.ctor(System.Object,System.IntPtr)
+call System.Void UnityEngine.Application::add_logMessageReceived(UnityEngine.Application/LogCallback)
+ret 
+METHOD System.Void Durango.Development.TestBridge::OnDestroy()
+ldarg.0 
+ldftn System.Void Durango.Development.TestBridge::OnUnityLog(System.String,System.String,UnityEngine.LogType)
+newobj System.Void UnityEngine.Application/LogCallback::.ctor(System.Object,System.IntPtr)
+call System.Void UnityEngine.Application::remove_logMessageReceived(UnityEngine.Application/LogCallback)
+ldarg.0 
+call System.Void Durango.Development.TestBridge::StopListener()
+ret 
+METHOD System.Void Durango.Development.TestBridge::OnUnityLog(System.String,System.String,UnityEngine.LogType)
+ldarg.3 
+brfalse.s IL_0007: ldarga.s type
+ldarg.3 
+ldc.i4.4 
+bne.un.s IL_001f: ret
+ldarga.s type
+constrained. UnityEngine.LogType
+callvirt System.String System.Object::ToString()
+callvirt System.String System.String::ToLowerInvariant()
+ldarg.1 
+call System.Void Durango.Development.TestBridge::Record(System.String,System.String)
+ret 
+METHOD System.Void Durango.Development.TestBridge::StartListener()
+ldarg.0 
+ldsfld System.Net.IPAddress System.Net.IPAddress::Loopback
+ldarg.0 
+ldfld System.Int32 Durango.Development.TestBridge::_port
+newobj System.Void System.Net.Sockets.TcpListener::.ctor(System.Net.IPAddress,System.Int32)
+stfld System.Net.Sockets.TcpListener Durango.Development.TestBridge::_listener
+ldarg.0 
+ldfld System.Net.Sockets.TcpListener Durango.Development.TestBridge::_listener
+callvirt System.Void System.Net.Sockets.TcpListener::Start()
+ldarg.0 
+ldc.i4.1 
+volatile. 
+stfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Development.TestBridge::_running
+ldarg.0 
+ldarg.0 
+ldftn System.Void Durango.Development.TestBridge::AcceptLoop()
+newobj System.Void System.Threading.ThreadStart::.ctor(System.Object,System.IntPtr)
+newobj System.Void System.Threading.Thread::.ctor(System.Threading.ThreadStart)
+stfld System.Threading.Thread Durango.Development.TestBridge::_acceptThread
+ldarg.0 
+ldfld System.Threading.Thread Durango.Development.TestBridge::_acceptThread
+ldc.i4.1 
+callvirt System.Void System.Threading.Thread::set_IsBackground(System.Boolean)
+ldarg.0 
+ldfld System.Threading.Thread Durango.Development.TestBridge::_acceptThread
+ldstr OffServerTestBridge
+callvirt System.Void System.Threading.Thread::set_Name(System.String)
+ldarg.0 
+ldfld System.Threading.Thread Durango.Development.TestBridge::_acceptThread
+callvirt System.Void System.Threading.Thread::Start()
+leave.s IL_006d: ret
+pop 
+leave.s IL_006d: ret
+ret 
+METHOD System.Void Durango.Development.TestBridge::StopListener()
+ldarg.0 
+ldc.i4.0 
+volatile. 
+stfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Development.TestBridge::_running
+ldarg.0 
+ldfld System.Net.Sockets.TcpListener Durango.Development.TestBridge::_listener
+brfalse.s IL_001c: leave.s IL_0021
+ldarg.0 
+ldfld System.Net.Sockets.TcpListener Durango.Development.TestBridge::_listener
+callvirt System.Void System.Net.Sockets.TcpListener::Stop()
+leave.s IL_0021: ret
+pop 
+leave.s IL_0021: ret
+ret 
+METHOD System.Void Durango.Development.TestBridge::AcceptLoop()
+br.s IL_0042: ldarg.0
+newobj System.Void Durango.Development.TestBridge/<>c__DisplayClass21_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Development.TestBridge Durango.Development.TestBridge/<>c__DisplayClass21_0::<>4__this
+ldloc.0 
+ldarg.0 
+ldfld System.Net.Sockets.TcpListener Durango.Development.TestBridge::_listener
+callvirt System.Net.Sockets.TcpClient System.Net.Sockets.TcpListener::AcceptTcpClient()
+stfld System.Net.Sockets.TcpClient Durango.Development.TestBridge/<>c__DisplayClass21_0::client
+leave.s IL_0025: ldloc.0
+pop 
+leave.s IL_004c: ret
+ldloc.0 
+ldftn System.Void Durango.Development.TestBridge/<>c__DisplayClass21_0::<AcceptLoop>b__0()
+newobj System.Void System.Threading.ThreadStart::.ctor(System.Object,System.IntPtr)
+newobj System.Void System.Threading.Thread::.ctor(System.Threading.ThreadStart)
+dup 
+ldc.i4.1 
+callvirt System.Void System.Threading.Thread::set_IsBackground(System.Boolean)
+callvirt System.Void System.Threading.Thread::Start()
+ldarg.0 
+volatile. 
+ldfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Development.TestBridge::_running
+brtrue.s IL_0002: newobj System.Void Durango.Development.TestBridge/<>c__DisplayClass21_0::.ctor()
+ret 
+METHOD System.Void Durango.Development.TestBridge::ClientLoop(System.Net.Sockets.TcpClient)
+ldarg.1 
+ldc.i4.1 
+callvirt System.Void System.Net.Sockets.TcpClient::set_NoDelay(System.Boolean)
+ldarg.1 
+callvirt System.Net.Sockets.NetworkStream System.Net.Sockets.TcpClient::GetStream()
+ldc.i4.0 
+newobj System.Void System.Text.UTF8Encoding::.ctor(System.Boolean)
+newobj System.Void System.IO.StreamReader::.ctor(System.IO.Stream,System.Text.Encoding)
+stloc.0 
+br.s IL_006f: ldarg.0
+ldloc.0 
+callvirt System.String System.IO.TextReader::ReadLine()
+stloc.1 
+ldloc.1 
+brfalse.s IL_0079: leave.s IL_0085
+ldloc.1 
+callvirt System.String System.String::Trim()
+stloc.1 
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+brfalse.s IL_006f: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+stloc.2 
+ldc.i4.0 
+stloc.3 
+ldloc.2 
+ldloca.s V_3
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+newobj System.Void Durango.Development.TestBridge/Request::.ctor()
+dup 
+ldarg.1 
+stfld System.Net.Sockets.TcpClient Durango.Development.TestBridge/Request::Client
+dup 
+ldloc.1 
+stfld System.String Durango.Development.TestBridge/Request::Line
+callvirt System.Void System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request>::Enqueue(!0)
+leave.s IL_006f: ldarg.0
+ldloc.3 
+brfalse.s IL_006e: endfinally
+ldloc.2 
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+ldarg.0 
+volatile. 
+ldfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Development.TestBridge::_running
+brtrue.s IL_001b: ldloc.0
+leave.s IL_0085: leave.s IL_0097
+ldloc.0 
+brfalse.s IL_0084: endfinally
+ldloc.0 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+leave.s IL_0097: ret
+pop 
+leave.s IL_0097: ret
+nop 
+ldarg.1 
+callvirt System.Void System.Net.Sockets.TcpClient::Close()
+leave.s IL_0096: endfinally
+pop 
+leave.s IL_0096: endfinally
+endfinally 
+ret 
+METHOD System.Void Durango.Development.TestBridge::Update()
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+stloc.1 
+ldc.i4.0 
+stloc.2 
+ldloc.1 
+ldloca.s V_2
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+callvirt System.Int32 System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request>::get_Count()
+brtrue.s IL_0020: ldarg.0
+leave.s IL_0048: ret
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+callvirt !0 System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request>::Dequeue()
+stloc.0 
+leave.s IL_0038: ldarg.0
+ldloc.2 
+brfalse.s IL_0037: endfinally
+ldloc.1 
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+ldarg.0 
+ldarg.0 
+ldloc.0 
+call System.Collections.IEnumerator Durango.Development.TestBridge::Execute(Durango.Development.TestBridge/Request)
+call UnityEngine.Coroutine UnityEngine.MonoBehaviour::StartCoroutine(System.Collections.IEnumerator)
+pop 
+br.s IL_0000: ldarg.0
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::Execute(Durango.Development.TestBridge/Request)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<Execute>d__24::.ctor(System.Int32)
+dup 
+ldarg.0 
+stfld Durango.Development.TestBridge Durango.Development.TestBridge/<Execute>d__24::<>4__this
+dup 
+ldarg.1 
+stfld Durango.Development.TestBridge/Request Durango.Development.TestBridge/<Execute>d__24::request
+ret 
+METHOD System.Void Durango.Development.TestBridge::Send(System.Net.Sockets.TcpClient,Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/<>c__DisplayClass25_0::.ctor()
+dup 
+ldarg.0 
+stfld System.Net.Sockets.TcpClient Durango.Development.TestBridge/<>c__DisplayClass25_0::client
+ldarg.1 
+call System.String Durango.Development.TestBridge::Json(Durango.Development.TestBridge/Result)
+stloc.0 
+dup 
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldloc.0 
+ldstr 
+
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Byte[] System.Text.Encoding::GetBytes(System.String)
+stfld System.Byte[] Durango.Development.TestBridge/<>c__DisplayClass25_0::bytes
+ldftn System.Void Durango.Development.TestBridge/<>c__DisplayClass25_0::<Send>b__0(System.Object)
+newobj System.Void System.Threading.WaitCallback::.ctor(System.Object,System.IntPtr)
+call System.Boolean System.Threading.ThreadPool::QueueUserWorkItem(System.Threading.WaitCallback)
+pop 
+ret 
+METHOD System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Durango.Development.TestBridge/Handler> Durango.Development.TestBridge::_handlers
+ldarg.1 
+ldarg.3 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,Durango.Development.TestBridge/Handler>::set_Item(!0,!1)
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Development.TestBridge::_help
+ldarg.1 
+ldarg.2 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ret 
+METHOD System.Void Durango.Development.TestBridge::RegisterHandlers()
+ldarg.0 
+ldstr help
+ldstr รายการคำสั่ง
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdHelp(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr ping
+ldstr ตอบ pong + เวลาในเกม
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdPing(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr voice
+ldstr voice [panel|auto 0/1|level 0-2|talk 1/0|mute <id> 0/1|deaf 0/1|volume x] — สถานะ/คุมไมค์ตามระยะ (VOICE-CHAT 3.1.9 · OffServerVoice)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdVoice(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr state
+ldstr สถานะรวม: ฉาก/ผู้เล่น/ไทล์/เกจ/เกาะ/guide event
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdState(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr gauges
+ldstr เกจเอาชีวิตรอดทั้งหมด (ค่า/สูงสุด/อัตรา)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdGauges(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr effects
+ldstr สถานะติดตัวของผู้เล่น
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdEffects(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr inv
+ldstr ไอเทมในกระเป๋า [filter]
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdInventory(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr use
+ldstr use <itemId|prototypeId|tag:xxx> — ใช้/กินไอเทม
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdUse(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr equip
+ldstr equip <itemId|prototypeId> — สวมใส่
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdEquip(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr drop
+ldstr drop <itemId|prototypeId> — ทิ้งไอเทม
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdDrop(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr near
+ldstr near [prop|movable|all] [radius] — วัตถุโต้ตอบได้รอบตัว
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdNear(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr touch
+ldstr touch <entityId|entityType|name> [waitMs] — แตะวัตถุแล้วคืนเมนูโต้ตอบ
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdTouch(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr menu
+ldstr เมนูโต้ตอบของเป้าหมายปัจจุบัน
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdMenu(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr select
+ldstr select <Interaction|index> [id] — กดปุ่มในเมนูโต้ตอบ
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdSelect(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr context
+ldstr ปุ่มบริบท (ดื่มน้ำ/ล้างตัว/สแกน ฯลฯ) ที่ใช้ได้ตอนนี้
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdContext(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr do
+ldstr do <Interaction> — กดปุ่มบริบท เช่น DrinkWater WashBody SearchWarphole
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdDo(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr move
+ldstr move <tileX> <tileY> [timeoutMs] — เดินไปไทล์ (รอจนถึง)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdMove(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr moveto
+ldstr moveto <entityId> [timeoutMs] — เดินไปหาวัตถุ
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdMoveTo(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr stop
+ldstr หยุดเดิน
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdStop(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr triggers
+ldstr triggers — trigger ของ guide (PlayerTriggerGuide) ที่โหลดอยู่ พร้อมกรอบ collider เป็นไทล์
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdTriggers(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr npc
+ldstr npc — NPC ประจำเกาะที่วางไว้ (ชื่อ/ไทล์/คอมโพเนนต์) · npc talk <index> — ส่งคุย (InteractWithEpicNPC) · npc respawn
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdNpc(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr override
+ldstr override <ResourcesPath> — เส้นทางไฟล์ทับ (game/override/…bytes) ที่เกมจะใช้แทน Resources
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdOverride(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr nav
+ldstr nav — สถานะ NavGrid (ใช้กับ NPC เดินเล่นเท่านั้น) · nav <x> <y> — ต้นทุนไทล์ · nav path <x> <y> — เส้นทาง NavGrid จากตัวละครไปไทล์
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdNav(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr craft
+ldstr craft <recipeId> [qty] — คราฟต์ด้วยวัตถุดิบที่เลือกอัตโนมัติ
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdCraft(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr recipes
+ldstr recipes [filter] — สูตรที่รู้จัก
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdRecipes(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr guide
+ldstr guide — event/flow/todo ของ play guide · guide flow <name> · guide complete · guide reload
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdGuide(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr dialog
+ldstr dialog — บทพูดที่แสดงอยู่ · dialog next [n] — กดข้าม · dialog quiz <index>
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdDialog(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr msgbox
+ldstr msgbox — กล่องข้อความที่เปิดอยู่ · msgbox ok|cancel
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdMsgBox(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr ui
+ldstr ui list [filter] · ui click <path|label> · ui open <TypeName> · ui close <TypeName>
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdUi(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr key
+ldstr key <InputCommand> [down|up|press] — ยิงคำสั่งคีย์ลัดของเกม (เช่น HelperButtonAction, OpenInventory) โดยไม่ต้องกดคีย์จริง
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdKey(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr keys
+ldstr keys [filter] — รายชื่อ InputCommand ทั้งหมด
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdKeys(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr emote
+ldstr emote <emoticonId> — อีโมติคอน เช่น smile
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdEmote(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr motion
+ldstr motion <motionId> — ท่าทาง
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdMotion(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr cheat
+ldstr cheat <text> — ส่ง Cheat ไปเซิร์ฟ (เช่น m 96 94 = วาร์ป)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdCheat(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr boat
+ldstr boat — สถานะแพหนีเกาะ · boat put — ใส่วัตถุดิบที่มีทั้งหมด · boat depart
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdBoat(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr screenshot
+ldstr screenshot [path] — บันทึกภาพหน้าจอ
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdScreenshot(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr log
+ldstr log [n] — ข้อความระบบ/ประกาศ/แชท/ข้อผิดพลาดล่าสุด
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdLog(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr wait
+ldstr wait <ms>
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdWait(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr discordlink
+ldstr discordlink [status|start|click|cancel] — ปุ่ม Link Discord: start = เริ่ม flow ไม่เปิดเบราว์เซอร์ (คืน url ให้จำลอง callback) · click = เหมือนกดปุ่ม (เปิดเบราว์เซอร์)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdDiscordLink(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr movecode
+ldstr movecode [status|click|redeem <รหัส>] — ปุ่ม «ย้ายเครื่อง»: click = เหมือนกดปุ่ม (ขอรหัส 9 หลัก · คืน code) · redeem = กรอกรหัสในช่องคูปองแบบ ConfigInstance.SendCoupon
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdMoveCode(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr seasonpass
+ldstr seasonpass [status|fetch|open|close|claim <tier|all>|missions] — Season Pass: fetch = ดึงสถานะ · open = เปิดหน้า (WarpRushGroup โหมด Pass) · claim = รับขั้น (all = ทั้งหมด)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdSeasonPass(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr gemx
+ldstr gemx [status|open|t2g <gem>|g2t <gem>] — แลก T-Stone ↔ Gem: open = กล่องเลือกทิศ (เหมือนคลิกช่อง Gem ในกระเป๋า) · t2g/g2t = ส่งเซิร์ฟตรง (ไม่ผ่าน popup)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdGemExchange(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr anim
+ldstr anim <entityId|entityType|name|pet> [samples] [intervalMs] — สัตว์ใกล้สุด: มุมหัน/คลิปที่เล่น/เวลาคลิป/สถานะ PetAI ตามเวลา (ANIM-CLIENT · อ่านอย่างเดียว)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdAnim(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ldarg.0 
+ldstr nametag
+ldstr nametag [status] — atlas อีโมจิ Twemoji + ป้ายชื่อบนหัวที่มีอีโมจิ · nametag demo [CC] [mobile|pc|none] — ใส่ธง/ไอคอนหน้าชื่อบนหัวทุกคน (เฉพาะเครื่องนี้) · nametag label <ข้อความ> [CC] [mobile|pc|none] — ใส่หน้า UILabel ทุกตัวที่มีข้อความนั้น (แชท/เพื่อน/แคลน/อันดับ)
+ldarg.0 
+ldftn System.Collections.IEnumerator Durango.Development.TestBridge::CmdNameTag(System.String[],Durango.Development.TestBridge/Result)
+newobj System.Void Durango.Development.TestBridge/Handler::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Development.TestBridge::Add(System.String,System.String,Durango.Development.TestBridge/Handler)
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdAnim(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdAnim>d__28::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdAnim>d__28::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdAnim>d__28::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdNameTag(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdNameTag>d__29::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdNameTag>d__29::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdNameTag>d__29::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdGemExchange(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdGemExchange>d__30::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdGemExchange>d__30::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdGemExchange>d__30::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdSeasonPass(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdSeasonPass>d__31::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdDiscordLink(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdDiscordLink>d__32::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdDiscordLink>d__32::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdDiscordLink>d__32::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdMoveCode(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdMoveCode>d__33::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdMoveCode>d__33::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdMoveCode>d__33::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdHelp(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdHelp>d__34::.ctor(System.Int32)
+dup 
+ldarg.0 
+stfld Durango.Development.TestBridge Durango.Development.TestBridge/<CmdHelp>d__34::<>4__this
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdHelp>d__34::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdVoice(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdVoice>d__35::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdVoice>d__35::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdVoice>d__35::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdPing(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdPing>d__36::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdPing>d__36::r
+ret 
+METHOD System.Boolean Durango.Development.TestBridge::InWorld()
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0016: ldc.i4.0
+call System.Boolean GameManager::get_IsTitleScene()
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Boolean Durango.Development.TestBridge::UiReady()
+call System.Boolean Durango.Utils.Singleton`1<UIManager>::HasInstance()
+brfalse.s IL_0021: ldc.i4.0
+call System.Boolean GameManager::get_IsTitleScene()
+brtrue.s IL_0021: ldc.i4.0
+call System.Boolean GameManager::get_IsSceneClosing()
+brtrue.s IL_0021: ldc.i4.0
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+ret 
+ldc.i4.0 
+ret 
+METHOD UnityEngine.Vector2 Durango.Development.TestBridge::PlayerTile()
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+callvirt UnityEngine.Vector3 CharacterBehavior::get_CurrentPosition()
+call UnityEngine.Vector2 Durango.Terrain.Util::ClientPositionToTilePosition(UnityEngine.Vector3)
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdState(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdState>d__40::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdState>d__40::r
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::GaugeDict(CharacterBehavior)
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::.ctor()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br IL_0090: ldloc.1
+ldarg.0 
+ldsfld System.String[] Durango.Development.TestBridge::GaugeKeys
+ldloc.1 
+ldelem.ref 
+callvirt Gauge CharacterBehavior::GetGauge(System.String)
+stloc.2 
+ldloc.2 
+brfalse.s IL_008c: ldloc.1
+ldloc.0 
+ldsfld System.String[] Durango.Development.TestBridge::GaugeKeys
+ldloc.1 
+ldelem.ref 
+ldc.i4.6 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr value
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.2 
+callvirt System.Single Gauge::Get()
+box System.Single
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr max
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.2 
+callvirt System.Single Gauge::Max()
+box System.Single
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr velocity
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.2 
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetBufferedServerTime()
+ldc.r8 1
+add 
+callvirt System.Single Gauge::Velocity(System.Double)
+box System.Single
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldsfld System.String[] Durango.Development.TestBridge::GaugeKeys
+ldlen 
+conv.i4 
+blt IL_000d: ldarg.0
+ldloc.0 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdGauges(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdGauges>d__42::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdGauges>d__42::r
+ret 
+METHOD System.Collections.Generic.List`1<System.Object> Durango.Development.TestBridge::EffectList()
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.0 
+call T GameSystem`1<StatusEffectSystem>::Instance()
+callvirt Durango.Logic.StatusEffects StatusEffectSystem::GetStatusEffects()
+stloc.1 
+ldloc.1 
+brfalse IL_00a5: ldloc.0
+ldloc.1 
+callvirt System.Collections.Generic.List`1<Durango.Logic.StatusEffect> Durango.Logic.StatusEffects::get_List()
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.StatusEffect>::GetEnumerator()
+stloc.2 
+br.s IL_008c: ldloca.s V_2
+ldloca.s V_2
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.StatusEffect>::get_Current()
+stloc.3 
+ldloc.0 
+ldc.i4.8 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr id
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.3 
+callvirt System.String Durango.Logic.StatusEffect::get_Id()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr level
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.3 
+callvirt System.Int32 Durango.Logic.StatusEffect::get_Level()
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr name
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.3 
+callvirt System.String Durango.Logic.StatusEffect::get_Name()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr until
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.3 
+callvirt System.Double Durango.Logic.StatusEffect::get_Until()
+box System.Double
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_2
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.StatusEffect>::MoveNext()
+brtrue.s IL_0025: ldloca.s V_2
+leave.s IL_00a5: ldloc.0
+ldloca.s V_2
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.StatusEffect>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdEffects(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdEffects>d__44::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdEffects>d__44::r
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::ItemDict(Durango.Logic.Item.ItemData)
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.0 
+ldarg.0 
+callvirt System.Collections.Generic.List`1<Durango.Logic.Item.TagData> Durango.Logic.Item.ItemData::get_Tags()
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Item.TagData>::GetEnumerator()
+stloc.1 
+br.s IL_0028: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Item.TagData>::get_Current()
+stloc.2 
+ldloc.0 
+ldloc.2 
+callvirt System.String Durango.Logic.Item.TagData::get_Id()
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Item.TagData>::MoveNext()
+brtrue.s IL_0014: ldloca.s V_1
+leave.s IL_0041: ldc.i4.s 14
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Item.TagData>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldc.i4.s 14
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr id
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr prototype
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_PrototypeId()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr name
+stelem.ref 
+dup 
+ldc.i4.5 
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Name()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr level
+stelem.ref 
+dup 
+ldc.i4.7 
+ldarg.0 
+callvirt System.Int32 Durango.Logic.Item.ItemData::get_Level()
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr equipment
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldarg.0 
+callvirt System.Boolean Durango.Logic.Item.ItemData::get_IsEquipments()
+box System.Boolean
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr size
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldarg.0 
+callvirt System.Int32 Durango.Logic.Item.ItemData::get_Size()
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr tags
+stelem.ref 
+dup 
+ldc.i4.s 13
+ldloc.0 
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdInventory(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdInventory>d__46::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdInventory>d__46::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdInventory>d__46::r
+ret 
+METHOD System.Boolean Durango.Development.TestBridge::Matches(Durango.Logic.Item.ItemData,System.String)
+ldarg.1 
+ldstr tag:
+ldc.i4.5 
+callvirt System.Boolean System.String::StartsWith(System.String,System.StringComparison)
+brfalse.s IL_001c: ldarg.0
+ldarg.0 
+ldarg.1 
+ldc.i4.4 
+callvirt System.String System.String::Substring(System.Int32)
+callvirt System.Boolean Durango.Logic.Item.ItemData::HasTag(System.String)
+ret 
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+ldarg.1 
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brtrue.s IL_0058: ldc.i4.1
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_PrototypeId()
+ldarg.1 
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brtrue.s IL_0058: ldc.i4.1
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Name()
+brfalse.s IL_0056: ldc.i4.0
+ldarg.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Name()
+ldarg.1 
+ldc.i4.5 
+callvirt System.Int32 System.String::IndexOf(System.String,System.StringComparison)
+ldc.i4.0 
+clt 
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+ldc.i4.1 
+ret 
+METHOD Durango.Logic.Item.ItemData Durango.Development.TestBridge::FindItem(System.String)
+call T GameSystem`1<InventorySystem>::Instance()
+callvirt System.Collections.Generic.List`1<Durango.Logic.Item.ItemData> InventorySystem::get_PlayerItemList()
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::GetEnumerator()
+stloc.0 
+br.s IL_0027: ldloca.s V_0
+ldloca.s V_0
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Item.ItemData>::get_Current()
+stloc.1 
+ldloc.1 
+ldarg.0 
+call System.Boolean Durango.Development.TestBridge::Matches(Durango.Logic.Item.ItemData,System.String)
+brfalse.s IL_0027: ldloca.s V_0
+ldloc.1 
+stloc.2 
+leave.s IL_0042: ldloc.2
+ldloca.s V_0
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Item.ItemData>::MoveNext()
+brtrue.s IL_0012: ldloca.s V_0
+leave.s IL_0040: ldnull
+ldloca.s V_0
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Item.ItemData>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldnull 
+ret 
+ldloc.2 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdUse(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdUse>d__49::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdUse>d__49::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdUse>d__49::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdEquip(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdEquip>d__50::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdEquip>d__50::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdEquip>d__50::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdDrop(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdDrop>d__51::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdDrop>d__51::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdDrop>d__51::r
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::ObjectDict(UnityEngine.GameObject)
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+call UnityEngine.Vector2 Durango.Terrain.Util::ClientPositionToTilePosition(UnityEngine.Vector3)
+stloc.0 
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+stloc.1 
+ldarg.0 
+callvirt !!0 UnityEngine.GameObject::GetComponent<ImmovableBase>()
+stloc.2 
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002f: ldarg.0
+ldloc.2 
+callvirt System.String ImmovableBase::GetName()
+stloc.1 
+ldarg.0 
+callvirt !!0 UnityEngine.GameObject::GetComponent<SelectableObject>()
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0046: ldc.i4.s 12
+ldloc.3 
+callvirt System.String SelectableObject::GetName()
+stloc.1 
+ldc.i4.s 12
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr entityId
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+call System.String ObjectIdentifier::GetEntityId(UnityEngine.GameObject)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr entityType
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+call System.Int32 ObjectIdentifier::GetEntityType(UnityEngine.GameObject)
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr name
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.1 
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr object
+stelem.ref 
+dup 
+ldc.i4.7 
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr tile
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldc.i4.4 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr x
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.0 
+ldfld System.Single UnityEngine.Vector2::x
+conv.i4 
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr y
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+ldfld System.Single UnityEngine.Vector2::y
+conv.i4 
+box System.Int32
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr distance
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+callvirt UnityEngine.Vector3 CharacterBehavior::get_CurrentPosition()
+call System.Single UnityEngine.Vector3::Distance(UnityEngine.Vector3,UnityEngine.Vector3)
+box System.Single
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+ret 
+METHOD System.Collections.Generic.List`1<UnityEngine.GameObject> Durango.Development.TestBridge::SearchNear(System.String,System.Single)
+newobj System.Void System.Collections.Generic.List`1<UnityEngine.GameObject>::.ctor()
+stloc.0 
+ldarg.0 
+ldstr prop
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0020: ldloc.0
+ldarg.0 
+ldstr all
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_003d: ldarg.0
+ldloc.0 
+call UnityEngine.LayerMask Durango.Utils.LayerHelper::get_PropMask()
+call System.Int32 UnityEngine.LayerMask::op_Implicit(UnityEngine.LayerMask)
+ldarg.1 
+ldnull 
+ldftn UnityEngine.GameObject InteractionSystem::PropInteractionObjectFilter(UnityEngine.GameObject)
+newobj System.Void System.Func`2<UnityEngine.GameObject,UnityEngine.GameObject>::.ctor(System.Object,System.IntPtr)
+call System.Void InteractionSystem::GetNearObjectsInternal(System.Collections.Generic.ICollection`1<UnityEngine.GameObject>,System.Int32,System.Single,System.Func`2<UnityEngine.GameObject,UnityEngine.GameObject>)
+ldarg.0 
+ldstr movable
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0057: ldloc.0
+ldarg.0 
+ldstr all
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0074: ldloc.0
+ldloc.0 
+call UnityEngine.LayerMask Durango.Utils.LayerHelper::get_InteractionMask()
+call System.Int32 UnityEngine.LayerMask::op_Implicit(UnityEngine.LayerMask)
+ldarg.1 
+ldnull 
+ldftn UnityEngine.GameObject InteractionSystem::MovableInteractionObjectFilter(UnityEngine.GameObject)
+newobj System.Void System.Func`2<UnityEngine.GameObject,UnityEngine.GameObject>::.ctor(System.Object,System.IntPtr)
+call System.Void InteractionSystem::GetNearObjectsInternal(System.Collections.Generic.ICollection`1<UnityEngine.GameObject>,System.Int32,System.Single,System.Func`2<UnityEngine.GameObject,UnityEngine.GameObject>)
+ldloc.0 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdNear(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdNear>d__54::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdNear>d__54::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdNear>d__54::r
+ret 
+METHOD UnityEngine.GameObject Durango.Development.TestBridge::FindObject(System.String,System.Single)
+ldnull 
+stloc.0 
+ldc.r4 3,4028235E+38
+stloc.1 
+ldarg.0 
+ldloca.s V_2
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+stloc.3 
+ldstr all
+ldarg.1 
+call System.Collections.Generic.List`1<UnityEngine.GameObject> Durango.Development.TestBridge::SearchNear(System.String,System.Single)
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<UnityEngine.GameObject>::GetEnumerator()
+stloc.s V_4
+br IL_00f0: ldloca.s V_4
+ldloca.s V_4
+call !0 System.Collections.Generic.List`1/Enumerator<UnityEngine.GameObject>::get_Current()
+stloc.s V_5
+ldloc.s V_5
+call System.String ObjectIdentifier::GetEntityId(UnityEngine.GameObject)
+ldarg.0 
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brtrue.s IL_0053: ldc.i4.1
+ldloc.3 
+brfalse.s IL_0050: ldc.i4.0
+ldloc.s V_5
+call System.Int32 ObjectIdentifier::GetEntityType(UnityEngine.GameObject)
+ldloc.2 
+ceq 
+br.s IL_0054: stloc.s V_6
+ldc.i4.0 
+br.s IL_0054: stloc.s V_6
+ldc.i4.1 
+stloc.s V_6
+ldloc.s V_6
+brtrue.s IL_00c4: ldloc.s V_6
+ldloc.s V_5
+callvirt !!0 UnityEngine.GameObject::GetComponent<ImmovableBase>()
+stloc.s V_7
+ldloc.s V_5
+callvirt !!0 UnityEngine.GameObject::GetComponent<SelectableObject>()
+stloc.s V_8
+ldloc.s V_7
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0092: ldloc.s V_7
+ldloc.s V_8
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0089: ldloc.s V_8
+ldloc.s V_5
+callvirt System.String UnityEngine.Object::get_name()
+br.s IL_0099: stloc.s V_9
+ldloc.s V_8
+callvirt System.String SelectableObject::GetName()
+br.s IL_0099: stloc.s V_9
+ldloc.s V_7
+callvirt System.String ImmovableBase::GetName()
+stloc.s V_9
+ldloc.s V_9
+brfalse.s IL_00ab: ldloc.s V_5
+ldloc.s V_9
+ldarg.0 
+ldc.i4.5 
+callvirt System.Int32 System.String::IndexOf(System.String,System.StringComparison)
+ldc.i4.0 
+bge.s IL_00c1: ldc.i4.1
+ldloc.s V_5
+callvirt System.String UnityEngine.Object::get_name()
+ldarg.0 
+ldc.i4.5 
+callvirt System.Int32 System.String::IndexOf(System.String,System.StringComparison)
+ldc.i4.0 
+clt 
+ldc.i4.0 
+ceq 
+br.s IL_00c2: stloc.s V_6
+ldc.i4.1 
+stloc.s V_6
+ldloc.s V_6
+brfalse.s IL_00f0: ldloca.s V_4
+ldloc.s V_5
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+callvirt UnityEngine.Vector3 CharacterBehavior::get_CurrentPosition()
+call System.Single UnityEngine.Vector3::Distance(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.s V_10
+ldloc.s V_10
+ldloc.1 
+bge.un.s IL_00f0: ldloca.s V_4
+ldloc.s V_10
+stloc.1 
+ldloc.s V_5
+stloc.0 
+ldloca.s V_4
+call System.Boolean System.Collections.Generic.List`1/Enumerator<UnityEngine.GameObject>::MoveNext()
+brtrue IL_0028: ldloca.s V_4
+leave.s IL_010c: ldloc.0
+ldloca.s V_4
+constrained. System.Collections.Generic.List`1/Enumerator<UnityEngine.GameObject>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ret 
+METHOD System.Collections.Generic.List`1<System.Object> Durango.Development.TestBridge::MenuList()
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.0 
+call T GameSystem`1<InteractionSystem>::Instance()
+callvirt InteractionData.InteractionMenuList InteractionSystem::get_MenuList()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br IL_00d2: ldloc.2
+ldloc.1 
+ldloc.2 
+callvirt InteractionData.InteractionMenuData InteractionData.InteractionMenuList::get_Item(System.Int32)
+stloc.3 
+ldloc.0 
+ldc.i4.s 14
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr index
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.2 
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr action
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_3
+call InteractionData.Interaction InteractionData.InteractionMenuData::get_Action()
+stloc.s V_4
+ldloca.s V_4
+constrained. InteractionData.Interaction
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr id
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.3 
+ldfld System.String InteractionData.InteractionMenuData::Id
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr name
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloca.s V_3
+call System.String InteractionData.InteractionMenuData::get_Name()
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr count
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldloc.3 
+ldfld System.Int32 InteractionData.InteractionMenuData::Count
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr disabled
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldloc.3 
+ldfld System.Boolean InteractionData.InteractionMenuData::Disabled
+box System.Boolean
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr denied
+stelem.ref 
+dup 
+ldc.i4.s 13
+ldloc.3 
+ldfld System.Boolean InteractionData.InteractionMenuData::AccessDenied
+box System.Boolean
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+callvirt System.Int32 InteractionData.InteractionMenuList::get_Count()
+blt IL_0018: ldloc.1
+ldloc.0 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdTouch(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdTouch>d__57::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdTouch>d__57::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdTouch>d__57::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdMenu(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdMenu>d__58::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdMenu>d__58::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdSelect(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdSelect>d__59::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdSelect>d__59::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSelect>d__59::r
+ret 
+METHOD System.Collections.Generic.List`1<InteractionData.InteractionMenuData> Durango.Development.TestBridge::ContextActions()
+newobj System.Void System.Collections.Generic.List`1<InteractionData.InteractionMenuData>::.ctor()
+stloc.0 
+call T GameSystem`1<InteractionSystem>::Instance()
+ldloc.0 
+callvirt System.Void InteractionSystem::GetContextActionList(System.Collections.Generic.List`1<InteractionData.InteractionMenuData>)
+ldloc.0 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdContext(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdContext>d__61::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdContext>d__61::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdDo(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdDo>d__62::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdDo>d__62::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdDo>d__62::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::MoveAndWait(UnityEngine.Vector3,UnityEngine.GameObject,System.Single,Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<MoveAndWait>d__63::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld UnityEngine.Vector3 Durango.Development.TestBridge/<MoveAndWait>d__63::position
+dup 
+ldarg.2 
+stfld UnityEngine.GameObject Durango.Development.TestBridge/<MoveAndWait>d__63::target
+dup 
+ldarg.3 
+stfld System.Single Durango.Development.TestBridge/<MoveAndWait>d__63::timeout
+dup 
+ldarg.s r
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<MoveAndWait>d__63::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdMove(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdMove>d__64::.ctor(System.Int32)
+dup 
+ldarg.0 
+stfld Durango.Development.TestBridge Durango.Development.TestBridge/<CmdMove>d__64::<>4__this
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdMove>d__64::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdMove>d__64::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdMoveTo(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdMoveTo>d__65::.ctor(System.Int32)
+dup 
+ldarg.0 
+stfld Durango.Development.TestBridge Durango.Development.TestBridge/<CmdMoveTo>d__65::<>4__this
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdMoveTo>d__65::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdMoveTo>d__65::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdNav(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdNav>d__66::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdNav>d__66::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdNav>d__66::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdNpc(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdNpc>d__67::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdNpc>d__67::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdNpc>d__67::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdOverride(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdOverride>d__68::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdOverride>d__68::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdOverride>d__68::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdTriggers(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdTriggers>d__69::.ctor(System.Int32)
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdTriggers>d__69::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdStop(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdStop>d__70::.ctor(System.Int32)
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdRecipes(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdRecipes>d__71::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdRecipes>d__71::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdRecipes>d__71::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdCraft(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdCraft>d__72::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdCraft>d__72::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdCraft>d__72::r
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::GuideSummary()
+call T GameSystem`1<PlayGuideSystem>::Instance()
+stloc.0 
+ldc.i4.4 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr begun
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.0 
+callvirt System.Boolean PlayGuideSystem::get_IsGuideBegin()
+box System.Boolean
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr event
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+callvirt System.String PlayGuideSystem::get_CurrentEventName()
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+stloc.1 
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.2 
+ldloc.0 
+callvirt System.Collections.Generic.List`1<System.String> PlayGuideSystem::ActiveFlowsInfo()
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.String>::GetEnumerator()
+stloc.s V_5
+br.s IL_005f: ldloca.s V_5
+ldloca.s V_5
+call !0 System.Collections.Generic.List`1/Enumerator<System.String>::get_Current()
+stloc.s V_6
+ldloc.2 
+ldloc.s V_6
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_5
+call System.Boolean System.Collections.Generic.List`1/Enumerator<System.String>::MoveNext()
+brtrue.s IL_004e: ldloca.s V_5
+leave.s IL_0078: ldloc.1
+ldloca.s V_5
+constrained. System.Collections.Generic.List`1/Enumerator<System.String>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.1 
+ldstr flows
+ldloc.2 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.3 
+call T GameSystem`1<ToDoListSystem>::Instance()
+stloc.s V_4
+ldc.i4.0 
+stloc.s V_7
+br IL_0237: ldloc.s V_7
+ldloc.s V_4
+ldloc.s V_7
+callvirt Durango.Logic.PlayGuide.ToDoCollection ToDoListSystem::GetCollection(System.Int32)
+stloc.s V_8
+ldloc.s V_8
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::GetEnumerator()
+stloc.s V_9
+br IL_0215: ldloca.s V_9
+ldloca.s V_9
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.PlayGuide.ToDoBase>::get_Current()
+stloc.s V_10
+ldnull 
+stloc.s V_11
+ldloc.s V_8
+isinst Durango.Logic.Faction.MissionToDoCollection
+stloc.s V_12
+ldloc.s V_12
+brfalse.s IL_00ed: ldloc.3
+ldloc.s V_12
+callvirt Durango.Logic.Faction.MissionToDo Durango.Logic.Faction.MissionToDoCollection::GetCurrentToDo()
+stloc.s V_14
+ldloc.s V_14
+brfalse.s IL_00e6: ldstr "null"
+ldloc.s V_14
+ldfld System.String Durango.Logic.Faction.MissionToDo::DisplayText
+br.s IL_00eb: stloc.s V_11
+ldstr null
+stloc.s V_11
+ldloc.3 
+ldc.i4.s 22
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr key
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_10
+callvirt System.String Durango.Logic.PlayGuide.ToDoBase::get_Key()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr text
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_10
+callvirt System.String Durango.Logic.PlayGuide.ToDoBase::get_LocalText()
+call System.String Durango.Development.TestBridge::StripTags(System.String)
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr progress
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.s V_10
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_CurrentProgress()
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr target
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.s V_10
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_TargetProgress()
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr completed
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldloc.s V_10
+callvirt System.Boolean Durango.Logic.PlayGuide.ToDoBase::get_IsCompleted()
+box System.Boolean
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr title
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldloc.s V_8
+ldfld System.String Durango.Logic.PlayGuide.ToDoCollection::Title
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr event
+stelem.ref 
+dup 
+ldc.i4.s 13
+ldloc.s V_8
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.PlayGuide.ToDoCollection::GuideEvent
+brtrue.s IL_0190: ldloc.s V_8
+ldnull 
+br.s IL_019c: stelem.ref
+ldloc.s V_8
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.PlayGuide.ToDoCollection::GuideEvent
+ldfld System.String Durango.Logic.PlayGuide.GuideEvent::Name
+stelem.ref 
+dup 
+ldc.i4.s 14
+ldstr disabled
+stelem.ref 
+dup 
+ldc.i4.s 15
+ldloc.s V_8
+callvirt System.Boolean Durango.Logic.PlayGuide.ToDoCollection::get_IsDisabled()
+box System.Boolean
+stelem.ref 
+dup 
+ldc.i4.s 16
+ldstr order
+stelem.ref 
+dup 
+ldc.i4.s 17
+ldloc.s V_10
+isinst Durango.Logic.Faction.MissionToDo
+stloc.s V_13
+ldloc.s V_13
+brtrue.s IL_01d2: ldloc.s V_13
+ldnull 
+br.s IL_01e4: stelem.ref
+ldloc.s V_13
+ldflda Shared.Faction.MissionTodoOrder Durango.Logic.Faction.MissionToDo::MissionOrder
+constrained. Shared.Faction.MissionTodoOrder
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.s 18
+ldstr current
+stelem.ref 
+dup 
+ldc.i4.s 19
+ldloc.s V_11
+stelem.ref 
+dup 
+ldc.i4.s 20
+ldstr regionId
+stelem.ref 
+dup 
+ldc.i4.s 21
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.String Durango.Logic.Explore.Region::get_Id()
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_9
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.PlayGuide.ToDoBase>::MoveNext()
+brtrue IL_00b7: ldloca.s V_9
+leave.s IL_0231: ldloc.s V_7
+ldloca.s V_9
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.PlayGuide.ToDoBase>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.s V_7
+ldc.i4.1 
+add 
+stloc.s V_7
+ldloc.s V_7
+ldloc.s V_4
+callvirt System.Int32 ToDoListSystem::get_CollectionCount()
+blt IL_0099: ldloc.s V_4
+ldloc.1 
+ldstr todos
+ldloc.3 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.1 
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdGuide(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdGuide>d__74::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdGuide>d__74::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdGuide>d__74::r
+ret 
+METHOD Durango.UI.DialogueGroupBase Durango.Development.TestBridge::Dialogue()
+call System.Boolean Durango.Development.TestBridge::UiReady()
+brtrue.s IL_0009: call TV UIManager::FindScript<Durango.UI.DialogueGroupBase>()
+ldnull 
+ret 
+call TV UIManager::FindScript<Durango.UI.DialogueGroupBase>()
+ret 
+METHOD System.Object Durango.Development.TestBridge::DialogInfo()
+call Durango.UI.DialogueGroupBase Durango.Development.TestBridge::Dialogue()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0011: ldloc.0
+ldnull 
+ret 
+ldloc.0 
+callvirt System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.UI.DialogueGroupBase::TestBridgeInfo()
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0027: call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+ldnull 
+br.s IL_0031: stloc.1
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.GuideTooltip>()
+stloc.1 
+dup 
+ldstr tooltip
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0049: ldc.i4.0
+ldloc.1 
+callvirt System.Boolean Durango.UI.Popup.TooltipBase::get_IsVisible()
+br.s IL_004a: box System.Boolean
+ldc.i4.0 
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdDialog(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdDialog>d__77::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdDialog>d__77::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdDialog>d__77::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdMsgBox(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdMsgBox>d__78::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdMsgBox>d__78::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdMsgBox>d__78::r
+ret 
+METHOD System.String Durango.Development.TestBridge::UiPath(UnityEngine.Transform)
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+stloc.0 
+br.s IL_0023: ldarg.0
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+starg.s t
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+ldstr /
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String,System.String)
+stloc.0 
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0009: ldarg.0
+ldloc.0 
+ret 
+METHOD System.String Durango.Development.TestBridge::UiLabel(UnityEngine.GameObject)
+ldarg.0 
+callvirt !!0 UnityEngine.GameObject::GetComponentInChildren<UILabel>()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0016: ldloc.0
+ldsfld System.String System.String::Empty
+ret 
+ldloc.0 
+callvirt System.String UILabel::get_text()
+call System.String Durango.Development.TestBridge::StripTags(System.String)
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdUi(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdUi>d__81::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdUi>d__81::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdUi>d__81::r
+ret 
+METHOD UnityEngine.GameObject Durango.Development.TestBridge::FindUi(System.String)
+ldnull 
+stloc.0 
+call !!0[] UnityEngine.Object::FindObjectsByType<UIButton>()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0033: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brfalse.s IL_002f: ldloc.2
+ldloc.3 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.0 
+ldloca.s V_0
+call System.Boolean Durango.Development.TestBridge::UiMatch(UnityEngine.GameObject,System.String,UnityEngine.GameObject&)
+brfalse.s IL_002f: ldloc.2
+ldloc.0 
+ret 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_000c: ldloc.1
+call !!0[] UnityEngine.Object::FindObjectsByType<Durango.UI.Control.Selectable>()
+stloc.s V_4
+ldc.i4.0 
+stloc.2 
+br.s IL_006f: ldloc.2
+ldloc.s V_4
+ldloc.2 
+ldelem.ref 
+stloc.s V_5
+ldloc.s V_5
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brfalse.s IL_006b: ldloc.2
+ldloc.s V_5
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.0 
+ldloca.s V_0
+call System.Boolean Durango.Development.TestBridge::UiMatch(UnityEngine.GameObject,System.String,UnityEngine.GameObject&)
+brfalse.s IL_006b: ldloc.2
+ldloc.0 
+ret 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.s V_4
+ldlen 
+conv.i4 
+blt.s IL_0044: ldloc.s V_4
+ldloc.0 
+ret 
+METHOD System.Boolean Durango.Development.TestBridge::UiMatch(UnityEngine.GameObject,System.String,UnityEngine.GameObject&)
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+call System.String Durango.Development.TestBridge::UiPath(UnityEngine.Transform)
+stloc.0 
+ldloc.0 
+ldarg.1 
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brtrue.s IL_002a: ldarg.2
+ldloc.0 
+ldstr /
+ldarg.1 
+call System.String System.String::Concat(System.String,System.String)
+ldc.i4.5 
+callvirt System.Boolean System.String::EndsWith(System.String,System.StringComparison)
+brfalse.s IL_002f: ldarg.2
+ldarg.2 
+ldarg.0 
+stind.ref 
+ldc.i4.1 
+ret 
+ldarg.2 
+ldind.ref 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0057: ldc.i4.0
+ldloc.0 
+ldarg.1 
+ldc.i4.5 
+callvirt System.Int32 System.String::IndexOf(System.String,System.StringComparison)
+ldc.i4.0 
+bge.s IL_0054: ldarg.2
+ldarg.0 
+call System.String Durango.Development.TestBridge::UiLabel(UnityEngine.GameObject)
+ldarg.1 
+ldc.i4.5 
+callvirt System.Int32 System.String::IndexOf(System.String,System.StringComparison)
+ldc.i4.0 
+blt.s IL_0057: ldc.i4.0
+ldarg.2 
+ldarg.0 
+stind.ref 
+ldc.i4.0 
+ret 
+METHOD UIBase Durango.Development.TestBridge::FindUiScript(System.String)
+ldnull 
+stloc.0 
+ldtoken Durango.Development.TestBridge
+call System.Type System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)
+callvirt System.Reflection.Assembly System.Type::get_Assembly()
+callvirt System.Type[] System.Reflection.Assembly::GetTypes()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0055: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldtoken UIBase
+call System.Type System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)
+ldloc.3 
+callvirt System.Boolean System.Type::IsAssignableFrom(System.Type)
+brfalse.s IL_0051: ldloc.2
+ldloc.3 
+callvirt System.String System.Reflection.MemberInfo::get_Name()
+ldarg.0 
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004d: ldloc.3
+ldloc.3 
+callvirt System.String System.Type::get_FullName()
+ldarg.0 
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0051: ldloc.2
+ldloc.3 
+stloc.0 
+br.s IL_005b: ldloc.0
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_001b: ldloc.1
+ldloc.0 
+ldnull 
+call System.Boolean System.Type::op_Equality(System.Type,System.Type)
+brfalse.s IL_0066: call System.Boolean Durango.Development.TestBridge::UiReady()
+ldnull 
+ret 
+call System.Boolean Durango.Development.TestBridge::UiReady()
+brtrue.s IL_006f: ldtoken UIManager
+ldnull 
+ret 
+ldtoken UIManager
+call System.Type System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)
+ldstr FindScript
+ldc.i4.s 24
+call System.Reflection.MethodInfo System.Type::GetMethod(System.String,System.Reflection.BindingFlags)
+ldc.i4.1 
+newarr System.Type
+dup 
+ldc.i4.0 
+ldloc.0 
+stelem.ref 
+callvirt System.Reflection.MethodInfo System.Reflection.MethodInfo::MakeGenericMethod(System.Type[])
+ldnull 
+ldnull 
+callvirt System.Object System.Reflection.MethodBase::Invoke(System.Object,System.Object[])
+isinst UIBase
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdKey(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdKey>d__85::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdKey>d__85::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdKey>d__85::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdKeys(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdKeys>d__86::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdKeys>d__86::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdKeys>d__86::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdEmote(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdEmote>d__87::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdEmote>d__87::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdEmote>d__87::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdMotion(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdMotion>d__88::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdMotion>d__88::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdMotion>d__88::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdCheat(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdCheat>d__89::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdCheat>d__89::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdCheat>d__89::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdBoat(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdBoat>d__90::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdBoat>d__90::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdBoat>d__90::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdScreenshot(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdScreenshot>d__91::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdScreenshot>d__91::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdScreenshot>d__91::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdLog(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdLog>d__92::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdLog>d__92::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdLog>d__92::r
+ret 
+METHOD System.Collections.IEnumerator Durango.Development.TestBridge::CmdWait(System.String[],Durango.Development.TestBridge/Result)
+ldc.i4.0 
+newobj System.Void Durango.Development.TestBridge/<CmdWait>d__93::.ctor(System.Int32)
+dup 
+ldarg.1 
+stfld System.String[] Durango.Development.TestBridge/<CmdWait>d__93::args
+dup 
+ldarg.2 
+stfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdWait>d__93::r
+ret 
+METHOD System.Single Durango.Development.TestBridge::ParseFloat(System.String,System.Single)
+ldarg.0 
+ldc.i4 167
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_0
+call System.Boolean System.Single::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Single&)
+brtrue.s IL_0016: ldloc.0
+ldarg.1 
+ret 
+ldloc.0 
+ret 
+METHOD System.String Durango.Development.TestBridge::StripTags(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000e: ldarg.0
+ldsfld System.String System.String::Empty
+ret 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+newobj System.Void System.Text.StringBuilder::.ctor(System.Int32)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0075: ldloc.2
+ldarg.0 
+ldloc.2 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.3 
+ldc.i4.s 60
+beq.s IL_0034: ldloc.1
+ldloc.3 
+ldc.i4.s 62
+beq.s IL_003a: ldloc.1
+br.s IL_0044: ldloc.3
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+br.s IL_0071: ldloc.2
+ldloc.1 
+ldc.i4.0 
+ble.s IL_0044: ldloc.3
+ldloc.1 
+ldc.i4.1 
+sub 
+stloc.1 
+br.s IL_0071: ldloc.2
+ldloc.3 
+ldc.i4.s 91
+bne.un.s IL_0066: ldloc.1
+ldarg.0 
+ldc.i4.s 93
+ldloc.2 
+callvirt System.Int32 System.String::IndexOf(System.Char,System.Int32)
+stloc.s V_4
+ldloc.s V_4
+ldloc.2 
+ble.s IL_0066: ldloc.1
+ldloc.s V_4
+ldloc.2 
+sub 
+ldc.i4.s 9
+bgt.s IL_0066: ldloc.1
+ldloc.s V_4
+stloc.2 
+br.s IL_0071: ldloc.2
+ldloc.1 
+brtrue.s IL_0071: ldloc.2
+ldloc.0 
+ldloc.3 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+blt.s IL_0020: ldarg.0
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::.ctor()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0021: ldloc.1
+ldloc.0 
+ldarg.0 
+ldloc.1 
+ldelem.ref 
+castclass System.String
+ldarg.0 
+ldloc.1 
+ldc.i4.1 
+add 
+ldelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.1 
+ldc.i4.2 
+add 
+stloc.1 
+ldloc.1 
+ldc.i4.1 
+add 
+ldarg.0 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.0
+ldloc.0 
+ret 
+METHOD System.String[] Durango.Development.TestBridge::SplitArgs(System.String)
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor()
+stloc.0 
+newobj System.Void System.Text.StringBuilder::.ctor()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+ldarg.0 
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_0065: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.s V_5
+ldloc.s V_5
+ldc.i4.s 34
+bne.un.s IL_002c: ldloc.s V_5
+ldloc.2 
+ldc.i4.0 
+ceq 
+stloc.2 
+br.s IL_005f: ldloc.s V_4
+ldloc.s V_5
+call System.Boolean System.Char::IsWhiteSpace(System.Char)
+brfalse.s IL_0056: ldloc.1
+ldloc.2 
+brtrue.s IL_0056: ldloc.1
+ldloc.1 
+callvirt System.Int32 System.Text.StringBuilder::get_Length()
+ldc.i4.0 
+ble.s IL_005f: ldloc.s V_4
+ldloc.0 
+ldloc.1 
+callvirt System.String System.Object::ToString()
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldloc.1 
+ldc.i4.0 
+callvirt System.Void System.Text.StringBuilder::set_Length(System.Int32)
+br.s IL_005f: ldloc.s V_4
+ldloc.1 
+ldloc.s V_5
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+callvirt System.Int32 System.String::get_Length()
+blt.s IL_0015: ldloc.3
+ldloc.1 
+callvirt System.Int32 System.Text.StringBuilder::get_Length()
+ldc.i4.0 
+ble.s IL_0084: ldloc.0
+ldloc.0 
+ldloc.1 
+callvirt System.String System.Object::ToString()
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldloc.0 
+callvirt !0[] System.Collections.Generic.List`1<System.String>::ToArray()
+ret 
+METHOD System.String Durango.Development.TestBridge::Json(Durango.Development.TestBridge/Result)
+newobj System.Void System.Text.StringBuilder::.ctor()
+stloc.0 
+ldloc.0 
+ldstr {"ok":
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldarg.0 
+ldfld System.Boolean Durango.Development.TestBridge/Result::Ok
+brtrue.s IL_0020: ldstr "true"
+ldstr false
+br.s IL_0025: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr true
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge/Result::Data
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<System.String,System.Object>::GetEnumerator()
+stloc.1 
+br.s IL_006d: ldloca.s V_1
+ldloca.s V_1
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.Object>::get_Current()
+stloc.2 
+ldloc.0 
+ldc.i4.s 44
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.0 
+ldloca.s V_2
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.Object>::get_Key()
+call System.Void Durango.Development.TestBridge::JsonString(System.Text.StringBuilder,System.String)
+ldloc.0 
+ldc.i4.s 58
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.0 
+ldloca.s V_2
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.Object>::get_Value()
+call System.Void Durango.Development.TestBridge::JsonValue(System.Text.StringBuilder,System.Object)
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.Object>::MoveNext()
+brtrue.s IL_0039: ldloca.s V_1
+leave.s IL_0086: ldloc.0
+ldloca.s V_1
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.Object>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ldc.i4.s 125
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.Void Durango.Development.TestBridge::JsonValue(System.Text.StringBuilder,System.Object)
+ldarg.1 
+brtrue.s IL_0010: ldarg.1
+ldarg.0 
+ldstr null
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ret 
+ldarg.1 
+isinst System.String
+brfalse.s IL_0025: ldarg.1
+ldarg.0 
+ldarg.1 
+castclass System.String
+call System.Void Durango.Development.TestBridge::JsonString(System.Text.StringBuilder,System.String)
+ret 
+ldarg.1 
+isinst System.Boolean
+brfalse.s IL_0049: ldarg.1
+ldarg.0 
+ldarg.1 
+unbox.any System.Boolean
+brtrue.s IL_003d: ldstr "true"
+ldstr false
+br.s IL_0042: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr true
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ret 
+ldarg.1 
+isinst System.Int32
+brtrue.s IL_0071: ldarg.0
+ldarg.1 
+isinst System.Int64
+brtrue.s IL_0071: ldarg.0
+ldarg.1 
+isinst System.Int16
+brtrue.s IL_0071: ldarg.0
+ldarg.1 
+isinst System.Byte
+brtrue.s IL_0071: ldarg.0
+ldarg.1 
+isinst System.UInt16
+brfalse.s IL_008c: ldarg.1
+ldarg.0 
+ldarg.1 
+call System.Int64 System.Convert::ToInt64(System.Object)
+stloc.0 
+ldloca.s V_0
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int64::ToString(System.IFormatProvider)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ret 
+ldarg.1 
+isinst System.Single
+brtrue.s IL_009c: ldarg.1
+ldarg.1 
+isinst System.Double
+brfalse.s IL_00d9: ldarg.1
+ldarg.1 
+call System.Double System.Convert::ToDouble(System.Object)
+stloc.1 
+ldloc.1 
+call System.Boolean System.Double::IsNaN(System.Double)
+brtrue.s IL_00b3: ldarg.0
+ldloc.1 
+call System.Boolean System.Double::IsInfinity(System.Double)
+brfalse.s IL_00c0: ldarg.0
+ldarg.0 
+ldstr null
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ret 
+ldarg.0 
+ldloca.s V_1
+ldstr R
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Double::ToString(System.String,System.IFormatProvider)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ret 
+ldarg.1 
+isinst System.Collections.Generic.IDictionary`2<System.String,System.Object>
+brfalse.s IL_0151: ldarg.1
+ldarg.0 
+ldc.i4.s 123
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldc.i4.1 
+stloc.2 
+ldarg.1 
+castclass System.Collections.Generic.IDictionary`2<System.String,System.Object>
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Object>>::GetEnumerator()
+stloc.3 
+br.s IL_0133: ldloc.3
+ldloc.3 
+callvirt !0 System.Collections.Generic.IEnumerator`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Object>>::get_Current()
+stloc.s V_4
+ldloc.2 
+brtrue.s IL_010e: ldc.i4.0
+ldarg.0 
+ldc.i4.s 44
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldc.i4.0 
+stloc.2 
+ldarg.0 
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.Object>::get_Key()
+call System.Void Durango.Development.TestBridge::JsonString(System.Text.StringBuilder,System.String)
+ldarg.0 
+ldc.i4.s 58
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldarg.0 
+ldloca.s V_4
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.Object>::get_Value()
+call System.Void Durango.Development.TestBridge::JsonValue(System.Text.StringBuilder,System.Object)
+ldloc.3 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_00fa: ldloc.3
+leave.s IL_0147: ldarg.0
+ldloc.3 
+brfalse.s IL_0146: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldc.i4.s 125
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ret 
+ldarg.1 
+isinst System.Collections.IEnumerable
+brfalse.s IL_01bf: ldarg.0
+ldarg.0 
+ldc.i4.s 91
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldc.i4.1 
+stloc.s V_5
+ldarg.1 
+castclass System.Collections.IEnumerable
+callvirt System.Collections.IEnumerator System.Collections.IEnumerable::GetEnumerator()
+stloc.s V_6
+br.s IL_0195: ldloc.s V_6
+ldloc.s V_6
+callvirt System.Object System.Collections.IEnumerator::get_Current()
+stloc.s V_7
+ldloc.s V_5
+brtrue.s IL_018a: ldc.i4.0
+ldarg.0 
+ldc.i4.s 44
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldc.i4.0 
+stloc.s V_5
+ldarg.0 
+ldloc.s V_7
+call System.Void Durango.Development.TestBridge::JsonValue(System.Text.StringBuilder,System.Object)
+ldloc.s V_6
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_0174: ldloc.s V_6
+leave.s IL_01b5: ldarg.0
+ldloc.s V_6
+isinst System.IDisposable
+stloc.s V_8
+ldloc.s V_8
+brfalse.s IL_01b4: endfinally
+ldloc.s V_8
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldc.i4.s 93
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ret 
+ldarg.0 
+ldarg.1 
+callvirt System.String System.Object::ToString()
+call System.Void Durango.Development.TestBridge::JsonString(System.Text.StringBuilder,System.String)
+ret 
+METHOD System.Void Durango.Development.TestBridge::JsonString(System.Text.StringBuilder,System.String)
+ldarg.0 
+ldc.i4.s 34
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldarg.1 
+brfalse IL_00d2: ldarg.0
+ldarg.1 
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br IL_00c6: ldloc.1
+ldloc.0 
+ldloc.1 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.2 
+ldloc.2 
+ldc.i4.s 9
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+ldloc.2 
+ldc.i4.s 34
+beq.s IL_0049: ldarg.0
+ldloc.2 
+ldc.i4.s 92
+beq.s IL_0057: ldarg.0
+br.s IL_008f: ldloc.2
+ldarg.0 
+ldstr \"
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br.s IL_00c2: ldloc.1
+ldarg.0 
+ldstr \\
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br.s IL_00c2: ldloc.1
+ldarg.0 
+ldstr \n
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br.s IL_00c2: ldloc.1
+ldarg.0 
+ldstr \r
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br.s IL_00c2: ldloc.1
+ldarg.0 
+ldstr \t
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br.s IL_00c2: ldloc.1
+ldloc.2 
+ldc.i4.s 32
+bge.s IL_00ba: ldarg.0
+ldarg.0 
+ldstr \u
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.2 
+stloc.3 
+ldloca.s V_3
+ldstr x4
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Int32::ToString(System.String,System.IFormatProvider)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br.s IL_00c2: ldloc.1
+ldarg.0 
+ldloc.2 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+blt IL_0018: ldloc.0
+ldarg.0 
+ldc.i4.s 34
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ret 
+METHOD System.Void Durango.Development.TestBridge::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request>::.ctor()
+stfld System.Collections.Generic.Queue`1<Durango.Development.TestBridge/Request> Durango.Development.TestBridge::_pending
+ldarg.0 
+call System.StringComparer System.StringComparer::get_OrdinalIgnoreCase()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,Durango.Development.TestBridge/Handler>::.ctor(System.Collections.Generic.IEqualityComparer`1<!0>)
+stfld System.Collections.Generic.Dictionary`2<System.String,Durango.Development.TestBridge/Handler> Durango.Development.TestBridge::_handlers
+ldarg.0 
+call System.StringComparer System.StringComparer::get_OrdinalIgnoreCase()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor(System.Collections.Generic.IEqualityComparer`1<!0>)
+stfld System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Development.TestBridge::_help
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 
+METHOD System.Void Durango.Development.TestBridge::.cctor()
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor()
+stsfld System.Collections.Generic.List`1<System.String> Durango.Development.TestBridge::_log
+ldc.i4.8 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr life
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr health
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr stamina
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr energy
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr fatigue
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr groggy
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr hunger
+stelem.ref 
+dup 
+ldc.i4.7 
+ldstr thirst
+stelem.ref 
+stsfld System.String[] Durango.Development.TestBridge::GaugeKeys
+ret 

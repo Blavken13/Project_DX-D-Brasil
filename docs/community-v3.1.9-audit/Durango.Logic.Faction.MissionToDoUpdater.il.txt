@@ -1,0 +1,318 @@
+Durango.Logic.Faction.MissionToDoUpdater : System.Object
+FIELD System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+FIELD System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent> Durango.Logic.Faction.MissionToDoUpdater::_helperEvents
+FIELD Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+FIELD System.String Durango.Logic.Faction.MissionToDoUpdater::_lastHelperId
+METHOD System.String Durango.Logic.Faction.MissionToDoUpdater::GenerateKey(Shared.Faction.FactionType)
+ldstr Faction.{0}
+ldarg.0 
+box System.Int32
+call System.String System.String::Format(System.String,System.Object)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoUpdater::Update(System.Collections.Generic.IList`1<Messages.Mission>)
+ldnull 
+stloc.0 
+ldnull 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+ldc.i4.0 
+stloc.3 
+ldarg.1 
+callvirt System.Int32 System.Collections.Generic.ICollection`1<Messages.Mission>::get_Count()
+stloc.s V_4
+br IL_0159: ldloc.3
+ldarg.1 
+ldloc.3 
+callvirt !0 System.Collections.Generic.IList`1<Messages.Mission>::get_Item(System.Int32)
+stloc.s V_5
+ldloca.s V_5
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse IL_0155: ldloc.3
+ldloc.s V_5
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+call System.Int32 KUtility::GetSize<Messages.MissionToDo>(System.Collections.Generic.ICollection`1<T>)
+brfalse IL_0155: ldloc.3
+ldc.i4.0 
+stloc.s V_6
+ldarg.0 
+ldloc.s V_5
+ldfld Shared.Faction.FactionType Messages.Mission::Faction
+ldloc.3 
+call System.Int32 Durango.Logic.Faction.MissionToDoUpdater::IndexOf(Shared.Faction.FactionType,System.Int32)
+stloc.s V_7
+ldloc.s V_7
+ldc.i4.m1 
+bne.un.s IL_00a0: ldarg.0
+ldloc.s V_5
+ldfld Shared.Faction.FactionType Messages.Mission::Faction
+newobj System.Void Durango.Logic.Faction.MissionToDoCollection::.ctor(Shared.Faction.FactionType)
+stloc.s V_8
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.s V_5
+ldfld Shared.Faction.FactionType Messages.Mission::Faction
+ldloc.s V_8
+newobj System.Void System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>::.ctor(!0,!1)
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Count()
+ldc.i4.1 
+sub 
+stloc.s V_7
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldloc.s V_8
+ldc.i4.0 
+callvirt System.Void ToDoListSystem::Add(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ldc.i4.1 
+stloc.s V_6
+br.s IL_00b8: ldloc.2
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.s V_7
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Item(System.Int32)
+stloc.s V_10
+ldloca.s V_10
+call !1 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>::get_Value()
+stloc.s V_8
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.3 
+ldloc.s V_7
+beq.s IL_00f7: ldloc.s V_8
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.3 
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Item(System.Int32)
+stloc.s V_11
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.3 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.s V_7
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Item(System.Int32)
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::set_Item(System.Int32,!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.s V_7
+ldloc.s V_11
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::set_Item(System.Int32,!0)
+ldloc.s V_8
+ldloc.s V_5
+callvirt System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateMission(Messages.Mission)
+ldloc.s V_8
+ldloc.s V_6
+callvirt System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateTodos(System.Boolean)
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0155: ldloc.3
+ldloc.s V_5
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+stloc.s V_9
+ldc.i4.0 
+stloc.s V_12
+br.s IL_014d: ldloc.s V_12
+ldloc.s V_9
+ldloc.s V_12
+ldelem.any Messages.MissionToDo
+stloc.s V_13
+ldloc.s V_13
+ldfld System.Int32 Messages.MissionToDo::GoalCount
+ldloc.s V_13
+ldfld System.Int32 Messages.MissionToDo::Progress
+beq.s IL_0147: ldloc.s V_12
+ldloc.s V_8
+stloc.1 
+ldloc.s V_13
+ldfld System.String Messages.MissionToDo::Id
+stloc.0 
+br.s IL_0155: ldloc.3
+ldloc.s V_12
+ldc.i4.1 
+add 
+stloc.s V_12
+ldloc.s V_12
+ldloc.s V_9
+ldlen 
+conv.i4 
+blt.s IL_011f: ldloc.s V_9
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.s V_4
+blt IL_0015: ldarg.1
+ldarg.0 
+ldloc.2 
+call System.Void Durango.Logic.Faction.MissionToDoUpdater::RemoveUnused(System.Int32)
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Boolean Durango.Logic.Explore.Region::IsSafeHouse()
+brfalse.s IL_017c: ret
+ldarg.0 
+ldloc.0 
+ldloc.1 
+call System.Void Durango.Logic.Faction.MissionToDoUpdater::UpdateHelper(System.String,Durango.Logic.PlayGuide.ToDoCollection)
+ret 
+METHOD System.Int32 Durango.Logic.Faction.MissionToDoUpdater::IndexOf(Shared.Faction.FactionType,System.Int32)
+ldarg.2 
+stloc.0 
+br.s IL_0021: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Item(System.Int32)
+stloc.1 
+ldloca.s V_1
+call !0 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>::get_Key()
+ldarg.1 
+bne.un.s IL_001d: ldloc.0
+ldloc.0 
+ret 
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Count()
+blt.s IL_0004: ldarg.0
+ldc.i4.m1 
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoUpdater::RemoveUnused(System.Int32)
+ldarg.1 
+stloc.0 
+br.s IL_0027: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Item(System.Int32)
+stloc.1 
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldloca.s V_1
+call !1 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>::get_Value()
+ldc.i4.1 
+callvirt System.Void ToDoListSystem::Remove(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Count()
+blt.s IL_0004: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldarg.1 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::get_Count()
+ldarg.1 
+sub 
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::RemoveRange(System.Int32,System.Int32)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoUpdater::Clear()
+ldarg.0 
+ldnull 
+stfld System.String Durango.Logic.Faction.MissionToDoUpdater::_lastHelperId
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+brfalse.s IL_002b: ldarg.0
+call T GameSystem`1<PlayGuideSystem>::Instance()
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+callvirt System.Void PlayGuideSystem::RemoveHelperTargets(Durango.Logic.PlayGuide.GuideEvent)
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+ldnull 
+stfld Durango.Logic.PlayGuide.ToDoCollection Durango.Logic.PlayGuide.GuideEvent::ToDoCollection
+ldarg.0 
+ldnull 
+stfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::Clear()
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoUpdater::LoadHelpeEvents(System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent>)
+ldstr PlayGuide/mission_helper_guide_event
+call T Durango.Utils.Json::ReadFromFile<System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEventJson>>(System.String)
+stloc.0 
+ldloc.0 
+brtrue.s IL_0019: ldarg.0
+ldstr Deserialize MissionHelperGuideEvent failed: PlayGuide/mission_helper_guide_event
+call System.Void Debug::LogError(System.Object)
+ret 
+ldarg.0 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent>::Clear()
+ldarg.0 
+ldloc.0 
+call System.Void PlayGuideSystem::LoadPlayGuideEventJson(System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent>,System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEventJson>)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoUpdater::UpdateHelper(System.String,Durango.Logic.PlayGuide.ToDoCollection)
+ldarg.0 
+ldfld System.String Durango.Logic.Faction.MissionToDoUpdater::_lastHelperId
+ldarg.1 
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_00a0: ret
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent> Durango.Logic.Faction.MissionToDoUpdater::_helperEvents
+brtrue.s IL_002f: ldarg.0
+ldarg.0 
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent>::.ctor()
+stfld System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent> Durango.Logic.Faction.MissionToDoUpdater::_helperEvents
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent> Durango.Logic.Faction.MissionToDoUpdater::_helperEvents
+call System.Void Durango.Logic.Faction.MissionToDoUpdater::LoadHelpeEvents(System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent>)
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+brfalse.s IL_0053: ldarg.0
+call T GameSystem`1<PlayGuideSystem>::Instance()
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+callvirt System.Void PlayGuideSystem::RemoveHelperTargets(Durango.Logic.PlayGuide.GuideEvent)
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+ldnull 
+stfld Durango.Logic.PlayGuide.ToDoCollection Durango.Logic.PlayGuide.GuideEvent::ToDoCollection
+ldarg.0 
+ldarg.1 
+stfld System.String Durango.Logic.Faction.MissionToDoUpdater::_lastHelperId
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.GuideEvent> Durango.Logic.Faction.MissionToDoUpdater::_helperEvents
+ldarg.1 
+ldnull 
+call TV DictionaryExtensions::Get<System.String,Durango.Logic.PlayGuide.GuideEvent>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+stfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+ldarg.2 
+brfalse.s IL_007c: ldarg.0
+ldarg.2 
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+stfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.PlayGuide.ToDoCollection::GuideEvent
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+brfalse.s IL_00a0: ret
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+ldarg.2 
+stfld Durango.Logic.PlayGuide.ToDoCollection Durango.Logic.PlayGuide.GuideEvent::ToDoCollection
+call T GameSystem`1<PlayGuideSystem>::Instance()
+ldarg.0 
+ldfld Durango.Logic.PlayGuide.GuideEvent Durango.Logic.Faction.MissionToDoUpdater::_lastHelperEvent
+callvirt System.Void PlayGuideSystem::ApplyHelperTarget(Durango.Logic.PlayGuide.GuideEvent)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoUpdater::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>>::.ctor()
+stfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,Durango.Logic.Faction.MissionToDoCollection>> Durango.Logic.Faction.MissionToDoUpdater::_collections
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

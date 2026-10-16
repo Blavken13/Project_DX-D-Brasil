@@ -1,0 +1,15 @@
+{
+  "unity_version": "6000.6.0f1",
+  "platform": "Windows",
+  "hash": "58b675266c14f8cf6ef418276654e0bb",
+  "vertices": 66049,
+  "triangles": 51895,
+  "build_verified": true,
+  "bundle_load_verified": true,
+  "center_open": true,
+  "assets": [
+    "assets/models/maps/aridbasin/aridbasinterrain.prefab"
+  ],
+  "ground_texture": "Rock",
+  "sand_atlas_used": false
+}

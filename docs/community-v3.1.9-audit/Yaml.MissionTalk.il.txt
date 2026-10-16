@@ -1,0 +1,9 @@
+Yaml.MissionTalk : System.Object
+FIELD Shared.Faction.Messenger Yaml.MissionTalk::Messenger
+FIELD Gettext Yaml.MissionTalk::Message
+FIELD System.String Yaml.MissionTalk::Image
+FIELD System.Boolean Yaml.MissionTalk::HidePortrait
+METHOD System.Void Yaml.MissionTalk::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

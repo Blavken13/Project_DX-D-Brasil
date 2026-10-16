@@ -1,0 +1,21 @@
+{
+  "2213": {
+    "stand": "Giganotosaurus-Idle",
+    "idle": "Giganotosaurus-Idle",
+    "move": "Giganotosaurus-Move-Fwd",
+    "eat": "Giganotosaurus-Eat",
+    "alert": "Giganotosaurus-Startled",
+    "dead": "Giganotosaurus-Die",
+    "battle_stand": "Giganotosaurus-Idle",
+    "groggy": "Giganotosaurus-Torpid-Idle",
+    "blow": "Giganotosaurus-Hurt-Small-Rit",
+    "attack_normal": "Giganotosaurus-Attack-Bite",
+    "attacks": [
+      "Giganotosaurus-Attack-Bite"
+    ],
+    "move_speed": 320.0,
+    "move_playback_rate": 1.0,
+    "attack_duration": 1.25,
+    "attack_impact": 0.65
+  }
+}

@@ -1,0 +1,53 @@
+MenuSystem/<FetchSeasonPassSoon>d__16 : System.Object
+FIELD System.Int32 MenuSystem/<FetchSeasonPassSoon>d__16::<>1__state
+FIELD System.Object MenuSystem/<FetchSeasonPassSoon>d__16::<>2__current
+METHOD System.Void MenuSystem/<FetchSeasonPassSoon>d__16::.ctor(System.Int32)
+ldarg.0 
+call System.Void System.Object::.ctor()
+ldarg.0 
+ldarg.1 
+stfld System.Int32 MenuSystem/<FetchSeasonPassSoon>d__16::<>1__state
+ret 
+METHOD System.Void MenuSystem/<FetchSeasonPassSoon>d__16::System.IDisposable.Dispose()
+ret 
+METHOD System.Boolean MenuSystem/<FetchSeasonPassSoon>d__16::MoveNext()
+ldarg.0 
+ldfld System.Int32 MenuSystem/<FetchSeasonPassSoon>d__16::<>1__state
+stloc.0 
+ldloc.0 
+brfalse.s IL_0010: ldarg.0
+ldloc.0 
+ldc.i4.1 
+beq.s IL_0030: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 MenuSystem/<FetchSeasonPassSoon>d__16::<>1__state
+ldarg.0 
+ldc.r4 2
+newobj System.Void UnityEngine.WaitForSeconds::.ctor(System.Single)
+stfld System.Object MenuSystem/<FetchSeasonPassSoon>d__16::<>2__current
+ldarg.0 
+ldc.i4.1 
+stfld System.Int32 MenuSystem/<FetchSeasonPassSoon>d__16::<>1__state
+ldc.i4.1 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 MenuSystem/<FetchSeasonPassSoon>d__16::<>1__state
+ldnull 
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Fetch(System.Action`1<System.Boolean>)
+ldc.i4.0 
+ret 
+METHOD System.Object MenuSystem/<FetchSeasonPassSoon>d__16::System.Collections.Generic.IEnumerator<System.Object>.get_Current()
+ldarg.0 
+ldfld System.Object MenuSystem/<FetchSeasonPassSoon>d__16::<>2__current
+ret 
+METHOD System.Void MenuSystem/<FetchSeasonPassSoon>d__16::System.Collections.IEnumerator.Reset()
+newobj System.Void System.NotSupportedException::.ctor()
+throw 
+METHOD System.Object MenuSystem/<FetchSeasonPassSoon>d__16::System.Collections.IEnumerator.get_Current()
+ldarg.0 
+ldfld System.Object MenuSystem/<FetchSeasonPassSoon>d__16::<>2__current
+ret 

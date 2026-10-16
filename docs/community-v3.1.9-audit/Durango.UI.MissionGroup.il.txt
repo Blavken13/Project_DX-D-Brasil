@@ -1,0 +1,269 @@
+Durango.UI.MissionGroup : UIBase
+FIELD Durango.UI.Control.UITitle Durango.UI.MissionGroup::_titleWidget
+FIELD Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+FIELD UILabel Durango.UI.MissionGroup::_failedLabel
+FIELD System.String Durango.UI.MissionGroup::<EntityId>k__BackingField
+FIELD Point2 Durango.UI.MissionGroup::<Tile>k__BackingField
+METHOD System.String Durango.UI.MissionGroup::get_EntityId()
+ldarg.0 
+ldfld System.String Durango.UI.MissionGroup::<EntityId>k__BackingField
+ret 
+METHOD System.Void Durango.UI.MissionGroup::set_EntityId(System.String)
+ldarg.0 
+ldarg.1 
+stfld System.String Durango.UI.MissionGroup::<EntityId>k__BackingField
+ret 
+METHOD Point2 Durango.UI.MissionGroup::get_Tile()
+ldarg.0 
+ldfld Point2 Durango.UI.MissionGroup::<Tile>k__BackingField
+ret 
+METHOD System.Void Durango.UI.MissionGroup::set_Tile(Point2)
+ldarg.0 
+ldarg.1 
+stfld Point2 Durango.UI.MissionGroup::<Tile>k__BackingField
+ret 
+METHOD System.Void Durango.UI.MissionGroup::Start()
+ldarg.0 
+ldfld Durango.UI.Control.UITitle Durango.UI.MissionGroup::_titleWidget
+callvirt T NestedPrefab.NestedPrefabLinker`1<Durango.UI.Control.UITitleWidget>::get_Object()
+ldstr 임무
+call System.String L10N.T::_(System.String)
+callvirt System.Void Durango.UI.Control.UITitleWidget::SetTitle(System.String)
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::FindTooltip<Durango.UI.MissionInfoPopup>()
+ldarg.0 
+ldftn System.Void Durango.UI.MissionGroup::MissionInfoPopup_Closed()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.MissionInfoPopup::add_Closed(System.Action)
+ldarg.0 
+call System.Void Durango.UI.MissionGroup::AddInteractionHandlers()
+ldarg.0 
+ldc.i4.0 
+call System.Void UIBase::SetChildrenActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionGroup::MissionInfoPopup_Closed()
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brtrue.s IL_0019: ret
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ret 
+METHOD System.Boolean Durango.UI.MissionGroup::Open()
+newobj System.Void System.NotSupportedException::.ctor()
+throw 
+METHOD System.Void Durango.UI.MissionGroup::Open(System.String,Point2)
+ldarg.0 
+ldarg.1 
+call System.Void Durango.UI.MissionGroup::set_EntityId(System.String)
+ldarg.0 
+ldarg.2 
+call System.Void Durango.UI.MissionGroup::set_Tile(Point2)
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionGroup::_failedLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+call System.Boolean UIBase::Open()
+pop 
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt Durango.UI.Popup.LoadingRingWidget Durango.UI.Popup.PopupGroup::get_LoadingRing()
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldloca.s V_0
+initobj System.Nullable`1<UnityEngine.Vector3>
+ldloc.0 
+callvirt System.Void Durango.UI.Popup.LoadingRingWidget::AttachToWidget(UnityEngine.GameObject,System.Nullable`1<UnityEngine.Vector3>)
+call T GameSystem`1<FactionSystem>::Instance()
+ldarg.1 
+ldarg.2 
+ldarg.0 
+ldftn System.Void Durango.UI.MissionGroup::OnRecommendMissions(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void FactionSystem::RecommendMissions(System.String,Point2,System.Action`1<System.Boolean>)
+ret 
+METHOD System.Void Durango.UI.MissionGroup::Open(Durango.UI.MissionInfoPopup/Data,System.Boolean,System.Boolean)
+ldarg.0 
+call System.Boolean UIBase::Open()
+pop 
+ldarg.0 
+ldc.i4.0 
+call System.Void UIBase::SetChildrenActive(System.Boolean)
+ldarg.0 
+ldarg.1 
+ldarg.2 
+ldarg.3 
+call System.Void Durango.UI.MissionGroup::ShowMissionInfo(Durango.UI.MissionInfoPopup/Data,System.Boolean,System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionGroup::ShowMissionInfo(Durango.UI.MissionInfoPopup/Data,System.Boolean,System.Boolean)
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::FindTooltip<Durango.UI.MissionInfoPopup>()
+ldarg.1 
+ldarg.2 
+ldarg.3 
+callvirt System.Void Durango.UI.MissionInfoPopup::Show(Durango.UI.MissionInfoPopup/Data,System.Boolean,System.Boolean)
+ret 
+METHOD UnityEngine.Transform Durango.UI.MissionGroup::GetStartButtonTransform()
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt Durango.UI.Control.SelectableButton Durango.UI.FactionsMissionWidget::get_StartButton()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001c: ldnull
+ldloc.0 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ret 
+ldnull 
+ret 
+METHOD System.Boolean Durango.UI.MissionGroup::TryOpen()
+ldarg.0 
+call System.Boolean UIBase::TryOpen()
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::FindTooltip<Durango.UI.MissionInfoPopup>()
+stloc.0 
+ldloc.0 
+callvirt System.Boolean Durango.UI.Popup.TooltipBase::get_IsVisible()
+brfalse.s IL_001f: ret
+ldloc.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Hide()
+ret 
+METHOD System.Boolean Durango.UI.MissionGroup::TryClose()
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::FindTooltip<Durango.UI.MissionInfoPopup>()
+stloc.0 
+ldloc.0 
+callvirt System.Boolean Durango.UI.Popup.TooltipBase::get_IsVisible()
+brfalse.s IL_001b: ldarg.0
+ldloc.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Hide()
+ldc.i4.0 
+ret 
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt System.Void Durango.UI.FactionsMissionWidget::CloseFactionNode()
+ldarg.0 
+call System.Boolean UIBase::TryClose()
+ret 
+METHOD System.Void Durango.UI.MissionGroup::OnRecommendMissions(System.Boolean)
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt Durango.UI.Popup.LoadingRingWidget Durango.UI.Popup.PopupGroup::get_LoadingRing()
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Void Durango.UI.Popup.LoadingRingWidget::DetachFromWidget(UnityEngine.GameObject)
+ldarg.1 
+brtrue.s IL_002e: ldarg.0
+ldarg.0 
+call System.Void Durango.UI.MissionGroup::OnError()
+ret 
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt System.Void Durango.UI.FactionsMissionWidget::UpdateMissionInfos()
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UIWidget Durango.UI.Control.AnimationWidget::get_Widget()
+ldc.r4 0
+callvirt System.Void UIRect::set_alpha(System.Single)
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+ldc.r4 1
+callvirt System.Void Durango.UI.Control.AnimationWidget::set_Alpha(System.Single)
+ret 
+METHOD System.Void Durango.UI.MissionGroup::AddInteractionHandlers()
+call T GameSystem`1<InteractionSystem>::Instance()
+ldc.i4 601
+ldarg.0 
+ldftn System.Void Durango.UI.MissionGroup::<AddInteractionHandlers>b__21_0(InteractionObject)
+newobj System.Void InteractionSystem/InteractionHandler::.ctor(System.Object,System.IntPtr)
+callvirt System.Void InteractionSystem::AddInteractionHandler(InteractionData.Interaction,InteractionSystem/InteractionHandler)
+call T GameSystem`1<InteractionSystem>::Instance()
+ldc.i4 611
+ldsfld InteractionSystem/InteractionHandler Durango.UI.MissionGroup/<>c::<>9__21_1
+dup 
+brtrue.s IL_0044: callvirt System.Void InteractionSystem::AddInteractionHandler(InteractionData.Interaction,InteractionSystem/InteractionHandler)
+pop 
+ldsfld Durango.UI.MissionGroup/<>c Durango.UI.MissionGroup/<>c::<>9
+ldftn System.Void Durango.UI.MissionGroup/<>c::<AddInteractionHandlers>b__21_1(InteractionObject)
+newobj System.Void InteractionSystem/InteractionHandler::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld InteractionSystem/InteractionHandler Durango.UI.MissionGroup/<>c::<>9__21_1
+callvirt System.Void InteractionSystem::AddInteractionHandler(InteractionData.Interaction,InteractionSystem/InteractionHandler)
+call T GameSystem`1<InteractionSystem>::Instance()
+ldc.i4 603
+ldsfld InteractionSystem/InteractionHandler Durango.UI.MissionGroup/<>c::<>9__21_2
+dup 
+brtrue.s IL_0072: callvirt System.Void InteractionSystem::AddInteractionHandler(InteractionData.Interaction,InteractionSystem/InteractionHandler)
+pop 
+ldsfld Durango.UI.MissionGroup/<>c Durango.UI.MissionGroup/<>c::<>9
+ldftn System.Void Durango.UI.MissionGroup/<>c::<AddInteractionHandlers>b__21_2(InteractionObject)
+newobj System.Void InteractionSystem/InteractionHandler::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld InteractionSystem/InteractionHandler Durango.UI.MissionGroup/<>c::<>9__21_2
+callvirt System.Void InteractionSystem::AddInteractionHandler(InteractionData.Interaction,InteractionSystem/InteractionHandler)
+ret 
+METHOD System.Void Durango.UI.MissionGroup::OnError()
+ldarg.0 
+ldfld Durango.UI.FactionsMissionWidget Durango.UI.MissionGroup::_factionsMission
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionGroup::_failedLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionGroup::.ctor()
+ldarg.0 
+call System.Void UIBase::.ctor()
+ret 
+METHOD System.Void Durango.UI.MissionGroup::<AddInteractionHandlers>b__21_0(InteractionObject)
+call T GameSystem`1<StatisticsSystem>::Instance()
+callvirt System.Int32 StatisticsSystem::get_Level()
+call T Yaml.Util.Singleton`1<Yaml.Constants>::get_Instance()
+ldflda Yaml.FactionInfo Yaml.Constants::Faction
+ldflda Yaml.FactionInfo/MissionData Yaml.FactionInfo::Mission
+ldfld System.Int32 Yaml.FactionInfo/MissionData::ActivationLevel
+stloc.0 
+ldloc.0 
+bge.s IL_0046: ldarg.0
+ldstr {0:lv:} 부터 임무를 받을 수 있습니다.
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.0 
+box System.Int32
+stelem.ref 
+call System.String L10N.T::_(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+ldarg.0 
+ldarg.1 
+callvirt System.String InteractionObject::get_EntityId()
+ldarg.1 
+callvirt UnityEngine.Vector2 InteractionObject::get_Tile()
+newobj System.Void Point2::.ctor(UnityEngine.Vector2)
+call System.Void Durango.UI.MissionGroup::Open(System.String,Point2)
+ret 

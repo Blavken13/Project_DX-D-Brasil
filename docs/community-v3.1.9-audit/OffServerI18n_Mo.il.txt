@@ -1,0 +1,294 @@
+OffServerI18n/Mo : System.Object
+METHOD System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerI18n/Mo::Read(System.Byte[])
+newobj System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::.ctor()
+stloc.0 
+ldarg.0 
+ldc.i4.0 
+call System.UInt32 System.BitConverter::ToUInt32(System.Byte[],System.Int32)
+ldc.i4 -1794895138
+beq.s IL_001f: ldarg.0
+ldstr not a little-endian .mo
+newobj System.Void System.IO.InvalidDataException::.ctor(System.String)
+throw 
+ldarg.0 
+ldc.i4.8 
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.1 
+ldarg.0 
+ldc.i4.s 12
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.2 
+ldarg.0 
+ldc.i4.s 16
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_00a9: ldloc.s V_4
+ldarg.0 
+ldloc.2 
+ldc.i4.8 
+ldloc.s V_4
+mul 
+add 
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.s V_5
+ldarg.0 
+ldloc.2 
+ldc.i4.8 
+ldloc.s V_4
+mul 
+add 
+ldc.i4.4 
+add 
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.s V_6
+ldarg.0 
+ldloc.3 
+ldc.i4.8 
+ldloc.s V_4
+mul 
+add 
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.s V_7
+ldarg.0 
+ldloc.3 
+ldc.i4.8 
+ldloc.s V_4
+mul 
+add 
+ldc.i4.4 
+add 
+call System.Int32 System.BitConverter::ToInt32(System.Byte[],System.Int32)
+stloc.s V_8
+ldloc.0 
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldarg.0 
+ldloc.s V_6
+ldloc.s V_5
+callvirt System.String System.Text.Encoding::GetString(System.Byte[],System.Int32,System.Int32)
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldarg.0 
+ldloc.s V_8
+ldloc.s V_7
+callvirt System.String System.Text.Encoding::GetString(System.Byte[],System.Int32,System.Int32)
+newobj System.Void System.Collections.Generic.KeyValuePair`2<System.String,System.String>::.ctor(!0,!1)
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::Add(!0)
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.1 
+blt.s IL_003e: ldarg.0
+ldloc.0 
+ret 
+METHOD System.Byte[] OffServerI18n/Mo::Write(System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>)
+ldarg.0 
+ldsfld System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]> OffServerI18n/Mo/<>c::<>9__1_0
+dup 
+brtrue.s IL_0020: call System.Collections.Generic.IEnumerable`1<!!1> System.Linq.Enumerable::Select<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,!!1>)
+pop 
+ldsfld OffServerI18n/Mo/<>c OffServerI18n/Mo/<>c::<>9
+ldftn System.Byte[] OffServerI18n/Mo/<>c::<Write>b__1_0(System.Collections.Generic.KeyValuePair`2<System.String,System.String>)
+newobj System.Void System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]> OffServerI18n/Mo/<>c::<>9__1_0
+call System.Collections.Generic.IEnumerable`1<!!1> System.Linq.Enumerable::Select<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,!!1>)
+call System.Collections.Generic.List`1<!!0> System.Linq.Enumerable::ToList<System.Byte[]>(System.Collections.Generic.IEnumerable`1<!!0>)
+stloc.0 
+ldarg.0 
+ldsfld System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]> OffServerI18n/Mo/<>c::<>9__1_1
+dup 
+brtrue.s IL_004b: call System.Collections.Generic.IEnumerable`1<!!1> System.Linq.Enumerable::Select<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,!!1>)
+pop 
+ldsfld OffServerI18n/Mo/<>c OffServerI18n/Mo/<>c::<>9
+ldftn System.Byte[] OffServerI18n/Mo/<>c::<Write>b__1_1(System.Collections.Generic.KeyValuePair`2<System.String,System.String>)
+newobj System.Void System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]> OffServerI18n/Mo/<>c::<>9__1_1
+call System.Collections.Generic.IEnumerable`1<!!1> System.Linq.Enumerable::Select<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,!!1>)
+call System.Collections.Generic.List`1<!!0> System.Linq.Enumerable::ToList<System.Byte[]>(System.Collections.Generic.IEnumerable`1<!!0>)
+stloc.1 
+ldarg.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_Count()
+stloc.2 
+ldc.i4.s 28
+stloc.3 
+ldloc.3 
+ldc.i4.8 
+ldloc.2 
+mul 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.8 
+ldloc.2 
+mul 
+add 
+stloc.s V_5
+newobj System.Void System.IO.MemoryStream::.ctor()
+stloc.s V_6
+ldloc.s V_6
+newobj System.Void System.IO.BinaryWriter::.ctor(System.IO.Stream)
+stloc.s V_7
+ldloc.s V_7
+ldc.i4 -1794895138
+callvirt System.Void System.IO.BinaryWriter::Write(System.UInt32)
+ldloc.s V_7
+ldc.i4.0 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldloc.2 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldloc.3 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldloc.s V_4
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldc.i4.0 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldc.i4.0 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.2 
+newarr System.Int32
+stloc.s V_8
+ldc.i4.0 
+stloc.s V_10
+br.s IL_00e7: ldloc.s V_10
+ldloc.s V_8
+ldloc.s V_10
+ldloc.s V_5
+stelem.i4 
+ldloc.s V_5
+ldloc.0 
+ldloc.s V_10
+callvirt !0 System.Collections.Generic.List`1<System.Byte[]>::get_Item(System.Int32)
+ldlen 
+conv.i4 
+ldc.i4.1 
+add 
+add 
+stloc.s V_5
+ldloc.s V_10
+ldc.i4.1 
+add 
+stloc.s V_10
+ldloc.s V_10
+ldloc.2 
+blt.s IL_00c9: ldloc.s V_8
+ldloc.2 
+newarr System.Int32
+stloc.s V_9
+ldc.i4.0 
+stloc.s V_11
+br.s IL_0117: ldloc.s V_11
+ldloc.s V_9
+ldloc.s V_11
+ldloc.s V_5
+stelem.i4 
+ldloc.s V_5
+ldloc.1 
+ldloc.s V_11
+callvirt !0 System.Collections.Generic.List`1<System.Byte[]>::get_Item(System.Int32)
+ldlen 
+conv.i4 
+ldc.i4.1 
+add 
+add 
+stloc.s V_5
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldloc.2 
+blt.s IL_00f9: ldloc.s V_9
+ldc.i4.0 
+stloc.s V_12
+br.s IL_0144: ldloc.s V_12
+ldloc.s V_7
+ldloc.0 
+ldloc.s V_12
+callvirt !0 System.Collections.Generic.List`1<System.Byte[]>::get_Item(System.Int32)
+ldlen 
+conv.i4 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldloc.s V_8
+ldloc.s V_12
+ldelem.i4 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_12
+ldc.i4.1 
+add 
+stloc.s V_12
+ldloc.s V_12
+ldloc.2 
+blt.s IL_0121: ldloc.s V_7
+ldc.i4.0 
+stloc.s V_13
+br.s IL_0171: ldloc.s V_13
+ldloc.s V_7
+ldloc.1 
+ldloc.s V_13
+callvirt !0 System.Collections.Generic.List`1<System.Byte[]>::get_Item(System.Int32)
+ldlen 
+conv.i4 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_7
+ldloc.s V_9
+ldloc.s V_13
+ldelem.i4 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Int32)
+ldloc.s V_13
+ldc.i4.1 
+add 
+stloc.s V_13
+ldloc.s V_13
+ldloc.2 
+blt.s IL_014e: ldloc.s V_7
+ldc.i4.0 
+stloc.s V_14
+br.s IL_0198: ldloc.s V_14
+ldloc.s V_7
+ldloc.0 
+ldloc.s V_14
+callvirt !0 System.Collections.Generic.List`1<System.Byte[]>::get_Item(System.Int32)
+callvirt System.Void System.IO.BinaryWriter::Write(System.Byte[])
+ldloc.s V_7
+ldc.i4.0 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Byte)
+ldloc.s V_14
+ldc.i4.1 
+add 
+stloc.s V_14
+ldloc.s V_14
+ldloc.2 
+blt.s IL_017b: ldloc.s V_7
+ldc.i4.0 
+stloc.s V_15
+br.s IL_01bf: ldloc.s V_15
+ldloc.s V_7
+ldloc.1 
+ldloc.s V_15
+callvirt !0 System.Collections.Generic.List`1<System.Byte[]>::get_Item(System.Int32)
+callvirt System.Void System.IO.BinaryWriter::Write(System.Byte[])
+ldloc.s V_7
+ldc.i4.0 
+callvirt System.Void System.IO.BinaryWriter::Write(System.Byte)
+ldloc.s V_15
+ldc.i4.1 
+add 
+stloc.s V_15
+ldloc.s V_15
+ldloc.2 
+blt.s IL_01a2: ldloc.s V_7
+ldloc.s V_7
+callvirt System.Void System.IO.BinaryWriter::Flush()
+ldloc.s V_6
+callvirt System.Byte[] System.IO.MemoryStream::ToArray()
+ret 

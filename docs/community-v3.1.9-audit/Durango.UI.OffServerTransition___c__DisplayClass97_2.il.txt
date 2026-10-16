@@ -1,0 +1,28 @@
+Durango.UI.OffServerTransition/<>c__DisplayClass97_2 : System.Object
+FIELD System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::p
+FIELD System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::dur
+FIELD Durango.UI.OffServerTransition/<>c__DisplayClass97_0 Durango.UI.OffServerTransition/<>c__DisplayClass97_2::CS$<>8__locals2
+METHOD System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_2::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::<OnGUI>b__2(System.Int32)
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/<>c__DisplayClass97_0 Durango.UI.OffServerTransition/<>c__DisplayClass97_2::CS$<>8__locals2
+ldfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_0::far
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::p
+ldc.i4.6 
+ldarg.1 
+sub 
+conv.r4 
+ldc.r4 0,06
+mul 
+sub 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::dur
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+call System.Single Durango.UI.OffServerTransition::EaseInCubic(System.Single)
+mul 
+ret 

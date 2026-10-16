@@ -1,0 +1,9 @@
+Shared.Faction.MissionTodoOrderComparer : System.ValueType
+METHOD System.Boolean Shared.Faction.MissionTodoOrderComparer::Equals(Shared.Faction.MissionTodoOrder,Shared.Faction.MissionTodoOrder)
+ldarg.1 
+ldarg.2 
+ceq 
+ret 
+METHOD System.Int32 Shared.Faction.MissionTodoOrderComparer::GetHashCode(Shared.Faction.MissionTodoOrder)
+ldarg.1 
+ret 

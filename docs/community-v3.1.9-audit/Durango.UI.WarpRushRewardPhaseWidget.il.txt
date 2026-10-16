@@ -1,0 +1,496 @@
+Durango.UI.WarpRushRewardPhaseWidget : UnityEngine.MonoBehaviour
+FIELD NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushRewardPhaseWidget::_reward
+FIELD Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+FIELD UILabel Durango.UI.WarpRushRewardPhaseWidget::_levelLabel
+FIELD Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+FIELD System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+FIELD System.Action[] Durango.UI.WarpRushRewardPhaseWidget::_requestReward
+FIELD Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+FIELD System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_seasonFirstClaimable
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::Init(UIScrollView)
+ldarg.0 
+ldc.i4.2 
+newarr System.Action
+dup 
+ldc.i4.0 
+ldarg.0 
+ldftn System.Void Durango.UI.WarpRushRewardPhaseWidget::RequestLevelReward()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldftn System.Void Durango.UI.WarpRushRewardPhaseWidget::RequestCashReward()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stelem.ref 
+stfld System.Action[] Durango.UI.WarpRushRewardPhaseWidget::_requestReward
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushRewardPhaseWidget::_reward
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_004c: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+callvirt T NestedPrefab.NestedPrefabLinker`1<UnityEngine.Transform>::get_Object()
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.WarpRushRewardItem>()
+ldarg.1 
+callvirt System.Void Durango.UI.WarpRushRewardItem::SetScrollView(UIScrollView)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_0035: ldloc.0
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::Refresh()
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+brfalse.s IL_004a: call T[] Durango.Utils.Enums`1<Durango.Logic.WarpRushSystem/RewardType>::All()
+ldsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+brfalse.s IL_004a: call T[] Durango.Utils.Enums`1<Durango.Logic.WarpRushSystem/RewardType>::All()
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+stloc.1 
+ldloc.1 
+brtrue.s IL_001b: ldloc.1
+ldnull 
+br.s IL_002c: stloc.2
+ldloc.1 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+callvirt Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.Logic.Clusters.OffServerSeasonPass/Status::GetTier(System.Int32)
+stloc.2 
+ldloc.2 
+brfalse.s IL_0043: ldarg.0
+ldarg.0 
+ldloc.2 
+stfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldarg.0 
+ldloc.1 
+callvirt System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::get_FirstClaimable()
+stfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_seasonFirstClaimable
+ldarg.0 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::RefreshSeasonPass()
+ret 
+call T[] Durango.Utils.Enums`1<Durango.Logic.WarpRushSystem/RewardType>::All()
+stloc.0 
+ldc.i4.0 
+stloc.3 
+br.s IL_0061: ldloc.3
+ldarg.0 
+ldloc.0 
+ldloc.3 
+ldelem.i4 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::RefreshRewardWidget(Durango.Logic.WarpRushSystem/RewardType)
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_0054: ldarg.0
+ldarg.0 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::SetLevelGauge()
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::SetLevelGauge()
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ldarg.0 
+ldfld Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+callvirt Messages.S02RewardStatus Durango.Logic.WarpRushSystem::GetRewardStatus(Shared.Season2.ResourceType)
+ldfld System.Int32 Messages.S02RewardStatus::Level
+stloc.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+ldloc.0 
+bge.s IL_002b: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetAccepted()
+ret 
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+ldloc.0 
+bne.un.s IL_0040: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetFirstAcceptable()
+ret 
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetNonAcceptable()
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::RefreshRewardWidget(Durango.Logic.WarpRushSystem/RewardType)
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushRewardPhaseWidget::_reward
+ldarg.1 
+ldelem.ref 
+callvirt T NestedPrefab.NestedPrefabLinker`1<UnityEngine.Transform>::get_Object()
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.WarpRushRewardItem>()
+stloc.0 
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ldarg.1 
+ldarg.0 
+ldfld Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+callvirt Durango.Logic.WarpRushSystem/RewardState Durango.Logic.WarpRushSystem::GetRewardState(Durango.Logic.WarpRushSystem/RewardType,Shared.Season2.ResourceType,System.Int32)
+stloc.1 
+ldloc.1 
+ldc.i4.m1 
+beq.s IL_0079: ret
+ldarg.1 
+ldc.i4.1 
+bne.un.s IL_004b: ldc.i4.0
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+callvirt Durango.Logic.Shop.Purchase Durango.Logic.WarpRushSystem::GetCashRewardPurchase()
+brtrue.s IL_004b: ldc.i4.0
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+callvirt System.Boolean Durango.Logic.WarpRushSystem::IsCashRewardPurchasable()
+br.s IL_004c: stloc.2
+ldc.i4.0 
+stloc.2 
+ldloc.0 
+ldloc.1 
+ldc.i4.0 
+cgt.un 
+ldloc.2 
+or 
+brtrue.s IL_0060: ldloc.0
+ldarg.0 
+ldfld System.Action[] Durango.UI.WarpRushRewardPhaseWidget::_requestReward
+ldarg.1 
+ldelem.ref 
+br.s IL_006c: stfld System.Action Durango.UI.WarpRushRewardItem::Clicked
+ldloc.0 
+ldftn System.Void Durango.UI.WarpRushRewardItem::ShowTooltip()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stfld System.Action Durango.UI.WarpRushRewardItem::Clicked
+ldloc.0 
+ldloc.1 
+ldloc.2 
+callvirt System.Void Durango.UI.WarpRushRewardItem::SetState(Durango.Logic.WarpRushSystem/RewardState,System.Boolean)
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::Set(Shared.Season2.ResourceType,System.Int32,Yaml.WarpRushReward,Yaml.WarpRushReward)
+ldarg.0 
+ldnull 
+stfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldarg.0 
+ldarg.1 
+stfld Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+ldarg.0 
+ldarg.2 
+stfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+ldarg.0 
+ldfld UILabel Durango.UI.WarpRushRewardPhaseWidget::_levelLabel
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+call System.String LocalizeUtil::FormatLevel(System.Int32)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::SetLevelGauge()
+ldarg.0 
+ldc.i4.0 
+ldarg.3 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::SetReward(Durango.Logic.WarpRushSystem/RewardType,Yaml.WarpRushReward)
+ldarg.0 
+ldc.i4.1 
+ldarg.s cashReward
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::SetReward(Durango.Logic.WarpRushSystem/RewardType,Yaml.WarpRushReward)
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::SetReward(Durango.Logic.WarpRushSystem/RewardType,Yaml.WarpRushReward)
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushRewardPhaseWidget::_reward
+ldarg.1 
+ldelem.ref 
+callvirt T NestedPrefab.NestedPrefabLinker`1<UnityEngine.Transform>::get_Object()
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.WarpRushRewardItem>()
+stloc.0 
+ldarg.2 
+brtrue.s IL_0023: ldloc.0
+ldloc.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+ldloc.0 
+ldarg.2 
+callvirt System.Void Durango.UI.WarpRushRewardItem::Set(Yaml.WarpRushReward)
+ldloc.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldarg.1 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::RefreshRewardWidget(Durango.Logic.WarpRushSystem/RewardType)
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::RequestLevelReward()
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::RequestCashReward()
+newobj System.Void Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass15_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.WarpRushRewardPhaseWidget Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass15_0::<>4__this
+ldloc.0 
+call T Yaml.Util.Singleton`1<Yaml.WarpRushRewards>::get_Instance()
+ldarg.0 
+ldfld Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+callvirt Yaml.WarpRushReward Yaml.WarpRushRewards::GetCashReward(Shared.Season2.ResourceType,System.Int32)
+stfld Yaml.WarpRushReward Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass15_0::cashReward
+ldloc.0 
+ldfld Yaml.WarpRushReward Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass15_0::cashReward
+brtrue.s IL_0032: call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ret 
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+callvirt Durango.Logic.Shop.Purchase Durango.Logic.WarpRushSystem::GetCashRewardPurchase()
+stloc.1 
+ldloc.1 
+brtrue.s IL_0041: call T GameSystem`1<ShopSystem>::Instance()
+ret 
+call T GameSystem`1<ShopSystem>::Instance()
+ldloc.1 
+callvirt System.String Durango.Logic.Shop.Purchase::get_Id()
+ldloc.0 
+ldfld Yaml.WarpRushReward Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass15_0::cashReward
+ldfld System.String Yaml.WarpRushReward::CommodityId
+ldloc.0 
+ldftn System.Void Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass15_0::<RequestCashReward>b__0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void ShopSystem::AcceptSubPurchase(System.String,System.String,System.Action`1<System.Boolean>)
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::SetSeasonPass(Durango.Logic.Clusters.OffServerSeasonPass/Tier,System.Int32)
+ldarg.0 
+ldarg.1 
+stfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldarg.0 
+ldarg.2 
+stfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_seasonFirstClaimable
+ldarg.0 
+ldc.i4.m1 
+stfld Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+ldarg.0 
+ldarg.1 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+stfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+ldarg.0 
+ldfld UILabel Durango.UI.WarpRushRewardPhaseWidget::_levelLabel
+ldstr tier_n
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.1 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+box System.Int32
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::RefreshSeasonPass()
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::RefreshSeasonPass()
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::State
+stloc.0 
+ldloc.0 
+ldc.i4.1 
+beq.s IL_0021: ldarg.0
+ldloc.0 
+ldc.i4.2 
+bne.un.s IL_004e: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetAccepted()
+br.s IL_0059: ldarg.0
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_seasonFirstClaimable
+bne.un.s IL_0041: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetFirstAcceptable()
+br.s IL_0059: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetAcceptable()
+br.s IL_0059: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.LevelGaugeController Durango.UI.WarpRushRewardPhaseWidget::_levelGaugeController
+callvirt System.Void Durango.UI.Control.LevelGaugeController::SetNonAcceptable()
+ldarg.0 
+ldc.i4.0 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Box
+ldc.i4.1 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::SetSeasonRow(Durango.Logic.WarpRushSystem/RewardType,Durango.Logic.Clusters.OffServerSeasonPass/Reward,System.Boolean)
+ldarg.0 
+ldc.i4.1 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+ldc.i4.0 
+call System.Void Durango.UI.WarpRushRewardPhaseWidget::SetSeasonRow(Durango.Logic.WarpRushSystem/RewardType,Durango.Logic.Clusters.OffServerSeasonPass/Reward,System.Boolean)
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::SetSeasonRow(Durango.Logic.WarpRushSystem/RewardType,Durango.Logic.Clusters.OffServerSeasonPass/Reward,System.Boolean)
+newobj System.Void Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::.ctor()
+stloc.0 
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushRewardPhaseWidget::_reward
+ldarg.1 
+ldelem.ref 
+callvirt T NestedPrefab.NestedPrefabLinker`1<UnityEngine.Transform>::get_Object()
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.WarpRushRewardItem>()
+stloc.1 
+ldarg.2 
+brfalse.s IL_0024: ldloc.1
+ldarg.2 
+callvirt System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Reward::get_IsEmpty()
+brfalse.s IL_0031: ldloc.1
+ldloc.1 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+ldloc.1 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.2 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Int32 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Count()
+ldc.i4.0 
+bgt.s IL_0071: ldarg.2
+newobj System.Void Yaml.WarpRushReward::.ctor()
+dup 
+newobj System.Void Yaml.WarpRushReward/CurrencyInfo::.ctor()
+dup 
+ldc.i4.0 
+stfld Shared.Economy.Currency Yaml.WarpRushReward/CurrencyInfo::Type
+dup 
+ldarg.2 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+conv.i4 
+stfld System.Int32 Yaml.WarpRushReward/CurrencyInfo::Amount
+stfld Yaml.WarpRushReward/CurrencyInfo Yaml.WarpRushReward::Currency
+br.s IL_007d: stloc.2
+ldarg.2 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Item(System.Int32)
+stloc.2 
+ldloc.1 
+ldloc.2 
+callvirt System.Void Durango.UI.WarpRushRewardItem::Set(Yaml.WarpRushReward)
+ldarg.3 
+brfalse.s IL_00bf: ldarg.2
+ldloc.1 
+ldstr icon_warprush_reward
+ldnull 
+ldstr box_tooltip
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+box System.Int32
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldarg.2 
+callvirt System.String Durango.Logic.Clusters.OffServerSeasonPass/Reward::Describe()
+callvirt System.Void Durango.UI.WarpRushRewardItem::SetOverride(System.String,System.String,System.String,System.String)
+br.s IL_011b: ldarg.0
+ldarg.2 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Int32 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Count()
+ldc.i4.1 
+bgt.s IL_00e5: ldloc.1
+ldarg.2 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Int32 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Count()
+ldc.i4.0 
+ble.s IL_011b: ldarg.0
+ldarg.2 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+ldc.i4.0 
+conv.i8 
+ble.s IL_011b: ldarg.0
+ldloc.1 
+ldnull 
+ldarg.2 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Item(System.Int32)
+callvirt System.Int32 Yaml.WarpRushReward::GetCount()
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Int32::ToString()
+ldstr row_special
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldarg.2 
+callvirt System.String Durango.Logic.Clusters.OffServerSeasonPass/Reward::Describe()
+callvirt System.Void Durango.UI.WarpRushRewardItem::SetOverride(System.String,System.String,System.String,System.String)
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::State
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.1 
+beq.s IL_0136: ldc.i4.0
+ldloc.s V_4
+ldc.i4.2 
+bne.un.s IL_013a: ldc.i4.2
+ldc.i4.1 
+stloc.3 
+br.s IL_013c: ldloc.1
+ldc.i4.0 
+stloc.3 
+br.s IL_013c: ldloc.1
+ldc.i4.2 
+stloc.3 
+ldloc.1 
+ldloc.3 
+ldc.i4.0 
+callvirt System.Void Durango.UI.WarpRushRewardItem::SetState(Durango.Logic.WarpRushSystem/RewardState,System.Boolean)
+ldloc.0 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.UI.WarpRushRewardPhaseWidget::_seasonTier
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+stfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::tierNumber
+ldloc.1 
+ldloc.3 
+brfalse.s IL_0167: ldloc.0
+ldloc.1 
+ldftn System.Void Durango.UI.WarpRushRewardItem::ShowTooltip()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+br.s IL_0173: stfld System.Action Durango.UI.WarpRushRewardItem::Clicked
+ldloc.0 
+ldftn System.Void Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::<SetSeasonRow>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stfld System.Action Durango.UI.WarpRushRewardItem::Clicked
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget::.ctor()
+ldarg.0 
+ldc.i4.m1 
+stfld Shared.Season2.ResourceType Durango.UI.WarpRushRewardPhaseWidget::_resourceType
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget::_level
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

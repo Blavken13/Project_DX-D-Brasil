@@ -1,0 +1,229 @@
+OffServerDyeBatch : UnityEngine.MonoBehaviour
+FIELD System.Boolean OffServerDyeBatch::<Active>k__BackingField
+FIELD Artifact OffServerDyeBatch::workbench
+FIELD System.String OffServerDyeBatch::targetId
+FIELD System.String[] OffServerDyeBatch::plan
+FIELD System.Int32 OffServerDyeBatch::index
+FIELD System.Boolean OffServerDyeBatch::succeeded
+FIELD System.Single OffServerDyeBatch::started
+FIELD System.String OffServerDyeBatch::recipeId
+FIELD CraftSystem OffServerDyeBatch::craft
+METHOD System.Boolean OffServerDyeBatch::get_Active()
+ldsfld System.Boolean OffServerDyeBatch::<Active>k__BackingField
+ret 
+METHOD System.Void OffServerDyeBatch::set_Active(System.Boolean)
+ldarg.0 
+stsfld System.Boolean OffServerDyeBatch::<Active>k__BackingField
+ret 
+METHOD System.Void OffServerDyeBatch::Begin(Artifact,System.String,System.String[])
+call System.Boolean OffServerDyeBatch::get_Active()
+brfalse.s IL_0008: ldc.i4.1
+ret 
+ldc.i4.1 
+call System.Void OffServerDyeBatch::set_Active(System.Boolean)
+ldstr OffServerDyeBatch
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+call !!0 UnityEngine.GameObject::AddComponent<OffServerDyeBatch>()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Artifact OffServerDyeBatch::workbench
+ldloc.0 
+ldarg.1 
+stfld System.String OffServerDyeBatch::targetId
+ldloc.0 
+ldarg.2 
+stfld System.String[] OffServerDyeBatch::plan
+ldloc.0 
+call T GameSystem`1<CraftSystem>::Instance()
+stfld CraftSystem OffServerDyeBatch::craft
+ldloc.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+ldloc.0 
+ldftn System.Void OffServerDyeBatch::Succeeded(System.String,Messages.Crafted)
+newobj System.Void System.Action`2<System.String,Messages.Crafted>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void CraftSystem::add_CraftSucceed(System.Action`2<System.String,Messages.Crafted>)
+ldloc.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+ldloc.0 
+ldftn System.Void OffServerDyeBatch::Failed(System.String,Messages.ActionInfo)
+newobj System.Void System.Action`2<System.String,Messages.ActionInfo>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void CraftSystem::add_CraftFailed(System.Action`2<System.String,Messages.ActionInfo>)
+ldloc.0 
+callvirt System.Void OffServerDyeBatch::Next()
+ret 
+METHOD System.Void OffServerDyeBatch::Next()
+br.s IL_0010: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerDyeBatch::index
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+ldc.i4.3 
+bge.s IL_0028: ldarg.0
+ldarg.0 
+ldfld System.String[] OffServerDyeBatch::plan
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+ldelem.ref 
+brfalse.s IL_0002: ldarg.0
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+ldc.i4.3 
+beq.s IL_003f: ldarg.0
+ldarg.0 
+ldfld Artifact OffServerDyeBatch::workbench
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_004b: call T GameSystem`1<InventorySystem>::Instance()
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ret 
+call T GameSystem`1<InventorySystem>::Instance()
+callvirt Durango.Logic.Item.Inventory InventorySystem::get_PlayerInventory()
+dup 
+ldarg.0 
+ldfld System.String OffServerDyeBatch::targetId
+callvirt Durango.Logic.Item.ItemData Durango.Logic.Item.Inventory::Find(System.String)
+stloc.0 
+ldarg.0 
+ldfld System.String[] OffServerDyeBatch::plan
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+ldelem.ref 
+callvirt Durango.Logic.Item.ItemData Durango.Logic.Item.Inventory::Find(System.String)
+stloc.1 
+ldloc.0 
+brfalse.s IL_007b: ldarg.0
+ldloc.1 
+brtrue.s IL_0087: ldarg.0
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ret 
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+stloc.2 
+call T GameSystem`1<RecipeSystem>::Instance()
+stloc.3 
+ldloc.1 
+ldstr decolorizer
+callvirt System.Boolean Durango.Logic.Item.ItemData::HasTag(System.String)
+brtrue.s IL_00aa: ldloc.3
+ldloc.3 
+ldloc.2 
+callvirt Crafting.Recipe RecipeSystem::GetDyeingRecipe(Shared.Item.ColorChannel)
+br.s IL_00b1: stloc.s V_4
+ldloc.3 
+ldloc.2 
+callvirt Crafting.Recipe RecipeSystem::GetBleachingRecipe(Shared.Item.ColorChannel)
+stloc.s V_4
+ldloc.s V_4
+brtrue.s IL_00c3: ldarg.0
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ret 
+ldarg.0 
+ldloc.s V_4
+ldfld System.String Crafting.CategoryItem::Id
+stfld System.String OffServerDyeBatch::recipeId
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean OffServerDyeBatch::succeeded
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stfld System.Single OffServerDyeBatch::started
+ldarg.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+ldarg.0 
+ldfld Artifact OffServerDyeBatch::workbench
+ldloc.0 
+ldloc.1 
+ldloc.2 
+callvirt System.Void CraftSystem::Dyeing(Artifact,Durango.Logic.Item.ItemData,Durango.Logic.Item.ItemData,Shared.Item.ColorChannel)
+ret 
+METHOD System.Void OffServerDyeBatch::Succeeded(System.String,Messages.Crafted)
+ldarg.1 
+ldarg.0 
+ldfld System.String OffServerDyeBatch::recipeId
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0015: ret
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerDyeBatch::succeeded
+ret 
+METHOD System.Void OffServerDyeBatch::Failed(System.String,Messages.ActionInfo)
+ldarg.1 
+ldarg.0 
+ldfld System.String OffServerDyeBatch::recipeId
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0019: ret
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ret 
+METHOD System.Void OffServerDyeBatch::Update()
+ldarg.0 
+ldfld System.Boolean OffServerDyeBatch::succeeded
+brfalse.s IL_001d: call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerDyeBatch::index
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerDyeBatch::index
+ldarg.0 
+call System.Void OffServerDyeBatch::Next()
+ret 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single OffServerDyeBatch::started
+sub 
+ldc.r4 30
+bgt.s IL_005a: ldarg.0
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single OffServerDyeBatch::started
+sub 
+ldc.r4 0,5
+ble.un.s IL_0065: ret
+ldarg.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+callvirt Durango.Logic.Timer.PredictTimer CraftSystem::get_CraftingTimer()
+callvirt Durango.Logic.Timer.Timer Durango.Logic.Timer.PredictTimer::get_Timer()
+callvirt System.Boolean Durango.Logic.Timer.Timer::get_IsStop()
+brfalse.s IL_0065: ret
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ret 
+METHOD System.Void OffServerDyeBatch::OnDestroy()
+ldarg.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_003c: ldc.i4.0
+ldarg.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+ldarg.0 
+ldftn System.Void OffServerDyeBatch::Succeeded(System.String,Messages.Crafted)
+newobj System.Void System.Action`2<System.String,Messages.Crafted>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void CraftSystem::remove_CraftSucceed(System.Action`2<System.String,Messages.Crafted>)
+ldarg.0 
+ldfld CraftSystem OffServerDyeBatch::craft
+ldarg.0 
+ldftn System.Void OffServerDyeBatch::Failed(System.String,Messages.ActionInfo)
+newobj System.Void System.Action`2<System.String,Messages.ActionInfo>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void CraftSystem::remove_CraftFailed(System.Action`2<System.String,Messages.ActionInfo>)
+ldc.i4.0 
+call System.Void OffServerDyeBatch::set_Active(System.Boolean)
+ret 
+METHOD System.Void OffServerDyeBatch::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

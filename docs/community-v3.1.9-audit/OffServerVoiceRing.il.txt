@@ -1,0 +1,331 @@
+OffServerVoiceRing : UnityEngine.MonoBehaviour
+FIELD System.Single OffServerVoiceRing::Lifted
+FIELD System.Single OffServerVoiceRing::Span
+FIELD UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+FIELD Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+FIELD UnityEngine.Transform OffServerVoiceRing::_target
+FIELD System.Int32 OffServerVoiceRing::_shown
+FIELD System.Single OffServerVoiceRing::_radius
+FIELD System.Boolean OffServerVoiceRing::_talking
+METHOD OffServerVoiceRing OffServerVoiceRing::Create(System.String,System.Boolean)
+ldarg.0 
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerVoiceRing>()
+ret 
+METHOD UnityEngine.Texture2D OffServerVoiceRing::BorderTexture()
+ldsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_007f: ldsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+ldc.i4.s 16
+ldc.i4.1 
+ldc.i4.4 
+ldc.i4.0 
+newobj System.Void UnityEngine.Texture2D::.ctor(System.Int32,System.Int32,UnityEngine.TextureFormat,System.Boolean)
+stsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+ldsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+ldc.i4.1 
+callvirt System.Void UnityEngine.Texture::set_wrapMode(UnityEngine.TextureWrapMode)
+ldc.i4.0 
+stloc.0 
+br.s IL_0070: ldloc.0
+ldloc.0 
+conv.r4 
+ldc.r4 0,5
+add 
+ldc.r4 16
+div 
+stloc.1 
+ldsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+ldloc.0 
+ldc.i4.0 
+ldc.r4 1
+ldc.r4 1
+ldc.r4 1
+ldc.r4 0,15
+ldc.r4 1
+ldloc.1 
+ldloc.1 
+mul 
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Texture2D::SetPixel(System.Int32,System.Int32,UnityEngine.Color)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldc.i4.s 16
+blt.s IL_002b: ldloc.0
+ldsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+callvirt System.Void UnityEngine.Texture2D::Apply()
+ldsfld UnityEngine.Texture2D OffServerVoiceRing::_borderTexture
+ret 
+METHOD Durango.UI.InGame.FillBorderAlert OffServerVoiceRing::Alert(System.Int32)
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.1 
+ldelem.ref 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_009b: ldarg.0
+ldstr range
+ldarga.s level
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String)
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ldarg.0 
+call UnityEngine.Transform UnityEngine.Component::get_transform()
+ldc.i4.0 
+callvirt System.Void UnityEngine.Transform::SetParent(UnityEngine.Transform,System.Boolean)
+dup 
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.UI.InGame.FillBorderAlert>()
+stloc.0 
+ldarg.1 
+call UnityEngine.Color OffServerVoiceUI::LevelColor(System.Int32)
+stloc.1 
+ldloc.0 
+ldloc.1 
+ldfld System.Single UnityEngine.Color::r
+ldloc.1 
+ldfld System.Single UnityEngine.Color::g
+ldloc.1 
+ldfld System.Single UnityEngine.Color::b
+ldc.r4 0,13
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldloc.1 
+ldfld System.Single UnityEngine.Color::r
+ldloc.1 
+ldfld System.Single UnityEngine.Color::g
+ldloc.1 
+ldfld System.Single UnityEngine.Color::b
+ldc.r4 0,95
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+call UnityEngine.Texture2D OffServerVoiceRing::BorderTexture()
+callvirt System.Void Durango.UI.InGame.FillBorderAlert::Init(UnityEngine.Color,UnityEngine.Color,UnityEngine.Texture2D)
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.1 
+ldloc.0 
+stelem.ref 
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.1 
+ldelem.ref 
+ret 
+METHOD System.Void OffServerVoiceRing::Show(UnityEngine.Transform,System.Single,System.Int32,System.Boolean)
+ldarg.0 
+ldarg.1 
+stfld UnityEngine.Transform OffServerVoiceRing::_target
+ldarg.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0017: ldarg.3
+ldarg.0 
+call System.Void OffServerVoiceRing::Hide()
+ret 
+ldarg.3 
+ldc.i4.0 
+ldc.i4.2 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+starg.s level
+ldarg.0 
+ldarg.3 
+call Durango.UI.InGame.FillBorderAlert OffServerVoiceRing::Alert(System.Int32)
+stloc.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldarg.3 
+bne.un.s IL_0042: ldc.i4.1
+ldloc.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+ldc.i4.0 
+ceq 
+br.s IL_0043: stloc.1
+ldc.i4.1 
+stloc.1 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldc.i4.0 
+blt.s IL_0082: ldarg.1
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldarg.3 
+beq.s IL_0082: ldarg.1
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldelem.ref 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0082: ldarg.1
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldelem.ref 
+ldc.r4 0
+callvirt System.Void Durango.UI.InGame.FillBorderAlert::Stop(System.Single)
+ldarg.1 
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+call UnityEngine.Vector3 UnityEngine.Vector3::get_up()
+ldc.r4 15
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.2 
+ldloc.1 
+brtrue.s IL_00b4: ldloc.0
+ldarg.2 
+ldarg.0 
+ldfld System.Single OffServerVoiceRing::_radius
+sub 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+ldc.r4 0,5
+ble.un.s IL_00cd: ldloc.1
+ldloc.0 
+ldloc.2 
+ldarg.2 
+ldc.r4 0
+ldc.r4 360
+callvirt System.Void Durango.UI.InGame.FillBorderAlert::SetArc(UnityEngine.Vector3,System.Single,System.Single,System.Single)
+ldarg.0 
+ldarg.2 
+stfld System.Single OffServerVoiceRing::_radius
+ldloc.1 
+brtrue.s IL_00da: call System.Single Durango.UI.InGame.AreaOfEffectVisualizer::Now()
+ldarg.s talking
+ldarg.0 
+ldfld System.Boolean OffServerVoiceRing::_talking
+beq.s IL_0126: ldarg.0
+call System.Single Durango.UI.InGame.AreaOfEffectVisualizer::Now()
+stloc.3 
+ldarg.s talking
+brtrue.s IL_00eb: ldc.r4 0.8
+ldc.r4 0,45
+br.s IL_00f0: stloc.s V_4
+ldc.r4 0,8
+stloc.s V_4
+ldloc.0 
+ldloc.3 
+ldloc.s V_4
+ldc.r4 100000
+mul 
+sub 
+ldloc.3 
+ldc.r4 1
+ldloc.s V_4
+sub 
+ldc.r4 100000
+mul 
+add 
+ldloc.1 
+brtrue.s IL_0119: ldloc.3
+ldloc.3 
+ldc.r4 1
+sub 
+br.s IL_011a: ldloc.3
+ldloc.3 
+ldloc.3 
+ldc.r4 100000
+add 
+callvirt System.Void Durango.UI.InGame.FillBorderAlert::Show(System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldarg.3 
+stfld System.Int32 OffServerVoiceRing::_shown
+ldarg.0 
+ldarg.s talking
+stfld System.Boolean OffServerVoiceRing::_talking
+ldloc.0 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldloc.2 
+callvirt System.Void UnityEngine.Transform::set_position(UnityEngine.Vector3)
+ret 
+METHOD System.Void OffServerVoiceRing::Hide()
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldc.i4.0 
+blt.s IL_004e: ldarg.0
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldelem.ref 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_004e: ldarg.0
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldelem.ref 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_004e: ldarg.0
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldelem.ref 
+ldc.r4 0
+callvirt System.Void Durango.UI.InGame.FillBorderAlert::Stop(System.Single)
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 OffServerVoiceRing::_shown
+ret 
+METHOD System.Void OffServerVoiceRing::LateUpdate()
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldc.i4.0 
+bge.s IL_000a: ldarg.0
+ret 
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoiceRing::_target
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001f: ldarg.0
+ldarg.0 
+call System.Void OffServerVoiceRing::Hide()
+ret 
+ldarg.0 
+ldfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldfld System.Int32 OffServerVoiceRing::_shown
+ldelem.ref 
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0060: ret
+ldloc.0 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoiceRing::_target
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+call UnityEngine.Vector3 UnityEngine.Vector3::get_up()
+ldc.r4 15
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+callvirt System.Void UnityEngine.Transform::set_position(UnityEngine.Vector3)
+ret 
+METHOD System.Void OffServerVoiceRing::.ctor()
+ldarg.0 
+ldc.i4.3 
+newarr Durango.UI.InGame.FillBorderAlert
+stfld Durango.UI.InGame.FillBorderAlert[] OffServerVoiceRing::_alerts
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 OffServerVoiceRing::_shown
+ldarg.0 
+ldc.r4 -1
+stfld System.Single OffServerVoiceRing::_radius
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

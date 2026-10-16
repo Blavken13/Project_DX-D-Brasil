@@ -1,0 +1,270 @@
+{
+  "reference_map": "ri35de",
+  "source": "Durango-CustomServer/server/data/terrains/ri35de.zip",
+  "tile_count": [
+    256,
+    256
+  ],
+  "tile_world_units": 200,
+  "region_template": "ri35deSub01",
+  "theme": "desert",
+  "original_zip_sha256": "521905a731dfb9d3dadc7efa296832cd6fbe7631d2009ec7606db67b74a23819",
+  "river_records_differing_from_empty_triplet": 0,
+  "bundles": {
+    "Android": [
+      {
+        "logical_name": "models$cliff$common$materials$cliff_common_btm.mat.bundle",
+        "filename": "models$cliff$common$materials$cliff_common_btm.mat.4d499fce625468914c82c8867d746c40.bundle",
+        "available": false,
+        "catalog_entry": {
+          "Name": "models$cliff$common$materials$cliff_common_btm.mat.bundle",
+          "Hash": "8428995d045dc0799a6ccba69b1e3874",
+          "Crc": "4d499fce625468914c82c8867d746c40",
+          "Size": 145504,
+          "Dependencies": [],
+          "Priority": 490
+        },
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$common$materials$cliff_common_shadow_alpha.mat.bundle",
+        "filename": "models$cliff$common$materials$cliff_common_shadow_alpha.mat.52a1bcaaf07a0dc02bd3b8072d18fc1f.bundle",
+        "available": false,
+        "catalog_entry": {
+          "Name": "models$cliff$common$materials$cliff_common_shadow_alpha.mat.bundle",
+          "Hash": "b88c28e80ce93207d8c1897f69fb5f7c",
+          "Crc": "52a1bcaaf07a0dc02bd3b8072d18fc1f",
+          "Size": 13562,
+          "Dependencies": [],
+          "Priority": 490
+        },
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$common.bundle",
+        "filename": "models$cliff$common.bcbebc9952c493b2388cf7d9e00e317d.bundle",
+        "available": true,
+        "bytes": 1012128,
+        "sha256": "66f39e17fd434d44c8b9fc75654afc22e31663e1674241afa0110ae36fe63b68",
+        "dependencies": [
+          "models$cliff$common$materials$cliff_common_btm.mat.bundle",
+          "models$cliff$common$materials$cliff_common_shadow_alpha.mat.bundle"
+        ]
+      },
+      {
+        "logical_name": "models$cliff$desert$materials$cliff_desert_btm.mat.bundle",
+        "filename": "models$cliff$desert$materials$cliff_desert_btm.mat.549685136b6832f25ecd6e7c8d012dd5.bundle",
+        "available": false,
+        "catalog_entry": {
+          "Name": "models$cliff$desert$materials$cliff_desert_btm.mat.bundle",
+          "Hash": "95e14b34942ee669fdbfb508baa1bb09",
+          "Crc": "549685136b6832f25ecd6e7c8d012dd5",
+          "Size": 187065,
+          "Dependencies": [],
+          "Priority": 490
+        },
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$desert$materials$cliff_desert_grass.mat.bundle",
+        "filename": "models$cliff$desert$materials$cliff_desert_grass.mat.0d0880280e7d3733bf07d17a919cf120.bundle",
+        "available": false,
+        "catalog_entry": {
+          "Name": "models$cliff$desert$materials$cliff_desert_grass.mat.bundle",
+          "Hash": "87f0c8cf59a6e0d00e6f7a7c8f4b1eed",
+          "Crc": "0d0880280e7d3733bf07d17a919cf120",
+          "Size": 53181,
+          "Dependencies": [],
+          "Priority": 490
+        },
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.bundle",
+        "filename": "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.fbd8d730241113e7beeaaf608f329bb5.bundle",
+        "available": false,
+        "catalog_entry": {
+          "Name": "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.bundle",
+          "Hash": "bd5fc2f00ffc6195be3e9fc237846411",
+          "Crc": "fbd8d730241113e7beeaaf608f329bb5",
+          "Size": 18572,
+          "Dependencies": [],
+          "Priority": 490
+        },
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$desert.bundle",
+        "filename": "models$cliff$desert.c228833be9661a09e675eaf8663b86a7.bundle",
+        "available": true,
+        "bytes": 978785,
+        "sha256": "1711a503ad37e6084d8520ae94eaffddb57dac0f54c01f8ce8875cc905afcc87",
+        "dependencies": [
+          "models$cliff$desert$materials$cliff_desert_btm.mat.bundle",
+          "models$cliff$desert$materials$cliff_desert_grass.mat.bundle",
+          "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.bundle"
+        ]
+      },
+      {
+        "logical_name": "sprite$common_grass$desert$desert.prefab.bundle",
+        "filename": "sprite$common_grass$desert$desert.prefab.6df4e7a382c1bfac572731160757a768.bundle",
+        "available": true,
+        "bytes": 359360,
+        "sha256": "c38534f7864ecd7aa96ad5988d7691e536856f5cab98e86cd0aa0eca50bfb768",
+        "dependencies": []
+      },
+      {
+        "logical_name": "sprite$desert$shrubs_yellow$data_01$shrubs_yellow_01.prefab.bundle",
+        "filename": "sprite$desert$shrubs_yellow$data_01$shrubs_yellow_01.prefab.9aaf1bcdda19fcb727ff97cc3b5789b2.bundle",
+        "available": true,
+        "bytes": 524448,
+        "sha256": "d53ec6966f72031505d4c258d5e76e366e283856caf2c4055b6e564d14eab4fd",
+        "dependencies": []
+      },
+      {
+        "logical_name": "sprite$desert$tree_yellow$data_01$tree_yellow_01.prefab.bundle",
+        "filename": "sprite$desert$tree_yellow$data_01$tree_yellow_01.prefab.76c2a1a63eb9a55c0101fbe92ad591e0.bundle",
+        "available": true,
+        "bytes": 143668,
+        "sha256": "6b99950bd02e7d3422e04b5bcf11ca18e94bd1f2ca21218a5bb12228d79d9459",
+        "dependencies": []
+      }
+    ],
+    "Windows": [
+      {
+        "logical_name": "models$cliff$common$materials$cliff_common_btm.mat.bundle",
+        "filename": "models$cliff$common$materials$cliff_common_btm.mat.4a18fd365d3082415633ed60f659c52d.bundle",
+        "available": true,
+        "bytes": 317920,
+        "sha256": "fe9ea1afe5bbc4212f33fb0481fe1e51995f2e218bd856bdff579fea06548cc8",
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$common$materials$cliff_common_shadow_alpha.mat.bundle",
+        "filename": "models$cliff$common$materials$cliff_common_shadow_alpha.mat.53898a4df8780ede9f1255d4f839d630.bundle",
+        "available": true,
+        "bytes": 35216,
+        "sha256": "61fe9aaf91b08bc5d69522b761aaf1f5c9eb88f5e55b8db90a65f570af1a8ce7",
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$common.bundle",
+        "filename": "models$cliff$common.a17cbc0f87aaf08f281d45658c638b32.bundle",
+        "available": true,
+        "bytes": 1440590,
+        "sha256": "085ceab3f2db297275a04d1840d106dc9a607db7d866ad04af69e9ecfd7d7fbc",
+        "dependencies": [
+          "models$cliff$common$materials$cliff_common_btm.mat.bundle",
+          "models$cliff$common$materials$cliff_common_shadow_alpha.mat.bundle"
+        ]
+      },
+      {
+        "logical_name": "models$cliff$desert$materials$cliff_desert_btm.mat.bundle",
+        "filename": "models$cliff$desert$materials$cliff_desert_btm.mat.82ab7878332b5a40e7bde0d0997a248b.bundle",
+        "available": true,
+        "bytes": 399082,
+        "sha256": "4720f0cb741b941cb84e0456e05a40cac172f2374668336cb706c00b05c847fc",
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$desert$materials$cliff_desert_grass.mat.bundle",
+        "filename": "models$cliff$desert$materials$cliff_desert_grass.mat.a43281726939a3be1c0f540948af9c66.bundle",
+        "available": true,
+        "bytes": 80617,
+        "sha256": "cda14fe9124eb1ba2c3406d194cb92e098d35c427d5e9056d46beb6c91a8b53f",
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.bundle",
+        "filename": "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.18c25a4d382ca5500daa3a694edd39c1.bundle",
+        "available": true,
+        "bytes": 46806,
+        "sha256": "9f7c01a3e759b4f033a998aa5c34dc9d98d1c9004a08b66d1b8a1fdd4a3c2b57",
+        "dependencies": []
+      },
+      {
+        "logical_name": "models$cliff$desert.bundle",
+        "filename": "models$cliff$desert.47cc158b7e46db72e0a56cb9b482e3f8.bundle",
+        "available": true,
+        "bytes": 1361947,
+        "sha256": "38f10683247f9b494992c58710bd839c615cb98fa79e9eacb58222d6149cb493",
+        "dependencies": [
+          "models$cliff$desert$materials$cliff_desert_btm.mat.bundle",
+          "models$cliff$desert$materials$cliff_desert_grass.mat.bundle",
+          "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.bundle"
+        ]
+      },
+      {
+        "logical_name": "sprite$common_grass$desert$desert.prefab.bundle",
+        "filename": "sprite$common_grass$desert$desert.prefab.fa736967cc562ec801b9904150573f6d.bundle",
+        "available": true,
+        "bytes": 558347,
+        "sha256": "e307d317d8dd6badbb3fccafe4c8f9f192ec21f206fb87c9444d0a17bd8964f7",
+        "dependencies": []
+      },
+      {
+        "logical_name": "sprite$desert$shrubs_yellow$data_01$shrubs_yellow_01.prefab.bundle",
+        "filename": "sprite$desert$shrubs_yellow$data_01$shrubs_yellow_01.prefab.2aee564ade837042e46705362b5c956e.bundle",
+        "available": true,
+        "bytes": 869118,
+        "sha256": "3d050b1471987240a1d2b1c59d75de77c0fb12f12722524b2c7a5e8afe6cd17e",
+        "dependencies": []
+      },
+      {
+        "logical_name": "sprite$desert$tree_yellow$data_01$tree_yellow_01.prefab.bundle",
+        "filename": "sprite$desert$tree_yellow$data_01$tree_yellow_01.prefab.b6eb02e5ef70c481c055bbf260de038c.bundle",
+        "available": true,
+        "bytes": 234575,
+        "sha256": "32bc4a68e2fa630e20e3f2fe7797abb37987d1bf25be2c64b9c6fab69e57e9ce",
+        "dependencies": []
+      }
+    ]
+  },
+  "generated_map": {
+    "name": "Arid Basin",
+    "vertices_per_side": 257,
+    "mesh_size_world_units": 51200,
+    "height_min_world_units": 25,
+    "height_max_world_units": 3622.669677734375,
+    "has_river_mesh": false,
+    "has_water_mesh": false,
+    "uv_repeats": 32,
+    "vertex_count": 66049,
+    "quad_count": 65536,
+    "sand_face_triangles": 46816,
+    "rock_face_triangles": 84256,
+    "preview_vertical_exaggeration": 3,
+    "center_low_relief_radius_world_units": 12032,
+    "center_designed_for": "Giganotosaurus showcase",
+    "mesa_centers_normalized": [
+      [
+        -0.58,
+        -0.5
+      ],
+      [
+        0.54,
+        -0.59
+      ],
+      [
+        -0.56,
+        0.55
+      ],
+      [
+        0.59,
+        0.56
+      ]
+    ]
+  },
+  "reference_assets_complete_for_windows": true,
+  "reference_android_bundle_availability": {
+    "available": 5,
+    "total": 10,
+    "missing": [
+      "models$cliff$common$materials$cliff_common_btm.mat.bundle",
+      "models$cliff$common$materials$cliff_common_shadow_alpha.mat.bundle",
+      "models$cliff$desert$materials$cliff_desert_btm.mat.bundle",
+      "models$cliff$desert$materials$cliff_desert_grass.mat.bundle",
+      "models$cliff$desert$materials$cliff_desert_shadow_alpha.mat.bundle"
+    ]
+  }
+}

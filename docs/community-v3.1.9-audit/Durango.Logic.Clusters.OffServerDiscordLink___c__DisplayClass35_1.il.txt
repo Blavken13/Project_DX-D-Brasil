@@ -1,0 +1,20 @@
+Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1 : System.Object
+FIELD System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::ports
+FIELD Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0 Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::CS$<>8__locals1
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::<BeginInternal>b__1(System.Boolean)
+ldarg.1 
+brfalse.s IL_0024: ret
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0 Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::CS$<>8__locals1
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::<>4__this
+ldarg.0 
+ldfld System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::ports
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0 Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_1::CS$<>8__locals1
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::openBrowser
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StartFlow(System.Int32[],System.Boolean)
+ret 

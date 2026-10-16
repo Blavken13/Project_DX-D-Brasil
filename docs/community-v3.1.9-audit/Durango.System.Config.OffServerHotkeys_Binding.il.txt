@@ -1,0 +1,7 @@
+Durango.System.Config.OffServerHotkeys/Binding : System.Object
+FIELD KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+FIELD InputCommand Durango.System.Config.OffServerHotkeys/Binding::Command
+METHOD System.Void Durango.System.Config.OffServerHotkeys/Binding::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

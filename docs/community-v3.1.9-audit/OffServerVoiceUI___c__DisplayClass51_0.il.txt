@@ -1,0 +1,15 @@
+OffServerVoiceUI/<>c__DisplayClass51_0 : System.Object
+FIELD System.Int32 OffServerVoiceUI/<>c__DisplayClass51_0::level
+FIELD OffServerVoiceUI OffServerVoiceUI/<>c__DisplayClass51_0::<>4__this
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass51_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass51_0::<Build>b__9()
+ldarg.0 
+ldfld System.Int32 OffServerVoiceUI/<>c__DisplayClass51_0::level
+call System.Void OffServerVoice::SetLevel(System.Int32)
+ldarg.0 
+ldfld OffServerVoiceUI OffServerVoiceUI/<>c__DisplayClass51_0::<>4__this
+call System.Void OffServerVoiceUI::Refresh()
+ret 

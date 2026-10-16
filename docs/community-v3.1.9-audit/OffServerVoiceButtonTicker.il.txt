@@ -1,0 +1,8 @@
+OffServerVoiceButtonTicker : UnityEngine.MonoBehaviour
+METHOD System.Void OffServerVoiceButtonTicker::Update()
+call System.Void OffServerVoiceUI::TickMicButton()
+ret 
+METHOD System.Void OffServerVoiceButtonTicker::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

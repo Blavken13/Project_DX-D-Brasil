@@ -1,0 +1,18 @@
+{
+  "asset": "Models/Maps/AridBasin/AridBasinTerrain.prefab",
+  "file": "models$maps$aridbasin$aridbasinterrain.prefab.dd264110ac9156bd8f6c020781f8891f.bundle",
+  "sha256": "889a3a3dfb47c28d82dce77137d2ad7ff59c08b16526a08c03497785a6ca45e9",
+  "unity_version": "6000.6.0f1",
+  "platform": "Android",
+  "hash": "dd264110ac9156bd8f6c020781f8891f",
+  "vertices": 66049,
+  "triangles": 51895,
+  "build_verified": true,
+  "bundle_load_verified": false,
+  "center_open": true,
+  "assets": [
+    "assets/models/maps/aridbasin/aridbasinterrain.prefab"
+  ],
+  "ground_texture": "Rock",
+  "sand_atlas_used": false
+}

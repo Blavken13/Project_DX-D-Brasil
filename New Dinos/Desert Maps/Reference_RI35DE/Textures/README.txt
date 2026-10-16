@@ -1,0 +1,1 @@
+Materiais e texturas originais seguem dentro dos AssetBundles Unity 6 isolados para Windows e Android. O pacote Windows inclui os bundles do catálogo do mapa; no Android, entradas ausentes do cache local ficam marcadas no manifest. Importe os materiais cliff_desert_btm e cliff_desert_grass no Unity 6 e atribua aos slots Desert_Rock e Desert_Sand do OBJ.

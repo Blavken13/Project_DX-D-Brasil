@@ -1,0 +1,14 @@
+OffServerVoiceUI/<>c__DisplayClass56_0 : System.Object
+FIELD System.Action OffServerVoiceUI/<>c__DisplayClass56_0::onClick
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass56_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass56_0::<MakeButton>b__0(UnityEngine.GameObject)
+ldarg.0 
+ldfld System.Action OffServerVoiceUI/<>c__DisplayClass56_0::onClick
+callvirt System.Void System.Action::Invoke()
+leave.s IL_0014: ret
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_0014: ret
+ret 

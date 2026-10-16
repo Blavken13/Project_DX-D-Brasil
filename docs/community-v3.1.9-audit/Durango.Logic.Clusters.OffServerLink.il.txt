@@ -1,0 +1,1374 @@
+Durango.Logic.Clusters.OffServerLink : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerLink::FileName
+FIELD System.Boolean Durango.Logic.Clusters.OffServerLink::_loaded
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_gateway
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_account
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_name
+FIELD System.Int32 Durango.Logic.Clusters.OffServerLink::_testBridgePort
+FIELD System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+FIELD System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+FIELD System.String Durango.Logic.Clusters.OffServerLink::DefaultServersUrl
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_serversUrl
+FIELD System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheLoaded
+FIELD System.Boolean Durango.Logic.Clusters.OffServerLink::IsAdmin
+FIELD System.String Durango.Logic.Clusters.OffServerLink::ServerAccountId
+FIELD System.String Durango.Logic.Clusters.OffServerLink::DiscordName
+FIELD System.Int32 Durango.Logic.Clusters.OffServerLink::_httpStarted
+FIELD System.Int32 Durango.Logic.Clusters.OffServerLink::_httpDone
+FIELD System.Int64 Durango.Logic.Clusters.OffServerLink::_httpBytes
+FIELD System.Int32 Durango.Logic.Clusters.OffServerLink::_httpRunStarted
+FIELD System.Int32 Durango.Logic.Clusters.OffServerLink::_httpRunDone
+FIELD System.String Durango.Logic.Clusters.OffServerLink::ServerStatusSuffix
+FIELD System.String Durango.Logic.Clusters.OffServerLink::LastServerVersion
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+FIELD System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+FIELD System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheRootsReady
+METHOD System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::get_MultiServers()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ldc.i4.0 
+ble.s IL_0018: ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+ret 
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+brtrue.s IL_0029: ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+call System.Void Durango.Logic.Clusters.OffServerLink::LoadServersCache()
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Enabled()
+brtrue.s IL_0015: ldc.i4.1
+call System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::get_MultiServers()
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ldc.i4.0 
+cgt 
+ret 
+ldc.i4.1 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_Name()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_ServersUrl()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_serversUrl
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0017: ldstr "https://raw.githubusercontent.com/ShuuuuShi/Durango-OffServer-Client/main/servers.json"
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_serversUrl
+ret 
+ldstr https://raw.githubusercontent.com/ShuuuuShi/Durango-OffServer-Client/main/servers.json
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_ServersCachePath()
+call System.String UnityEngine.Application::get_dataPath()
+call System.String System.IO.Path::GetDirectoryName(System.String)
+dup 
+brtrue.s IL_0013: ldstr "offserver.servers.cache.json"
+pop 
+ldstr .
+ldstr offserver.servers.cache.json
+call System.String System.IO.Path::Combine(System.String,System.String)
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_LauncherArg()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+brtrue.s IL_0054: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+call System.String[] System.Environment::GetCommandLineArgs()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0049: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+ldstr -offserver-launcher
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0045: ldloc.1
+ldloc.1 
+ldc.i4.1 
+add 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_0039: ldloc.0
+ldstr 1
+br.s IL_003e: stsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+ldloc.0 
+ldloc.1 
+ldc.i4.1 
+add 
+ldelem.ref 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+br.s IL_004f: leave.s IL_0054
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_001b: ldloc.0
+leave.s IL_0054: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+pop 
+leave.s IL_0054: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_launcherArg
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+brtrue IL_009c: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+call System.String UnityEngine.Application::get_dataPath()
+ldstr version.txt
+call System.String System.IO.Path::Combine(System.String,System.String)
+stloc.0 
+ldloc.0 
+call System.Boolean System.IO.File::Exists(System.String)
+brfalse.s IL_003c: leave.s IL_0041
+ldloc.0 
+call System.String System.IO.File::ReadAllText(System.String)
+callvirt System.String System.String::Trim()
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+leave.s IL_0041: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+pop 
+leave.s IL_0041: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_009c: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ldstr offserver_version
+call !!0 UnityEngine.Resources::Load<UnityEngine.TextAsset>(System.String)
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0097: leave.s IL_009c
+ldloc.1 
+callvirt System.String UnityEngine.TextAsset::get_text()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0097: leave.s IL_009c
+ldloc.1 
+callvirt System.String UnityEngine.TextAsset::get_text()
+callvirt System.String System.String::Trim()
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ldstr [OffServer] ClientVersion from Resources seed = '
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ldstr '
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_009c: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+pop 
+leave.s IL_009c: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_clientVersion
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_WritableRoot()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+brfalse.s IL_000d: call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+ret 
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+bne.un.s IL_0046: ldc.i4.2
+ldc.i4.3 
+newarr System.String
+dup 
+ldc.i4.0 
+call System.String UnityEngine.Application::get_persistentDataPath()
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr /data/data/
+call System.String UnityEngine.Application::get_identifier()
+ldstr /files
+call System.String System.String::Concat(System.String,System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.2 
+call System.String UnityEngine.Application::get_temporaryCachePath()
+stelem.ref 
+stloc.0 
+br.s IL_006b: ldloc.0
+ldc.i4.2 
+newarr System.String
+dup 
+ldc.i4.0 
+call System.String UnityEngine.Application::get_dataPath()
+call System.String System.IO.Path::GetDirectoryName(System.String)
+dup 
+brtrue.s IL_0061: stelem.ref
+pop 
+ldstr .
+stelem.ref 
+dup 
+ldc.i4.1 
+call System.String UnityEngine.Application::get_persistentDataPath()
+stelem.ref 
+stloc.0 
+ldloc.0 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_00af: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_00ab: ldloc.2
+nop 
+ldloc.3 
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldloc.3 
+ldstr .offserver-write-test
+call System.String System.IO.Path::Combine(System.String,System.String)
+dup 
+ldstr ok
+call System.Void System.IO.File::WriteAllText(System.String,System.String)
+call System.Void System.IO.File::Delete(System.String)
+ldloc.3 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+leave.s IL_00b5: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+pop 
+leave.s IL_00ab: ldloc.2
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0071: ldloc.1
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+brtrue.s IL_00c6: ldstr "[OffServer] writable root = "
+call System.String UnityEngine.Application::get_persistentDataPath()
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+ldstr [OffServer] writable root = 
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_writableRoot
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::EnsureCacheRoots()
+newobj System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::.ctor()
+stloc.0 
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheRootsReady
+brfalse.s IL_000e: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheRootsReady
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+beq.s IL_001e: ldloc.0
+ret 
+ldloc.0 
+call System.String Durango.Logic.Clusters.OffServerLink::get_WritableRoot()
+stfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::root
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::root
+ldstr HTTPCache
+call System.String System.IO.Path::Combine(System.String,System.String)
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldloc.0 
+ldftn System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::<EnsureCacheRoots>b__0()
+newobj System.Void System.Func`1<System.String>::.ctor(System.Object,System.IntPtr)
+call System.Void BestHTTP.HTTPManager::set_RootCacheFolderProvider(System.Func`1<System.String>)
+leave.s IL_006a: nop
+stloc.1 
+ldstr [OffServer] BestHTTP cache root failed: 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_006a: nop
+nop 
+call System.String UnityEngine.Application::get_persistentDataPath()
+ldstr UnityCache
+call System.String System.IO.Path::Combine(System.String,System.String)
+stloc.2 
+ldloc.2 
+ldstr Shared
+call System.String System.IO.Path::Combine(System.String,System.String)
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldloc.2 
+ldstr Temp
+call System.String System.IO.Path::Combine(System.String,System.String)
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldloc.2 
+ldstr Temp/.write-test
+call System.String System.IO.Path::Combine(System.String,System.String)
+dup 
+ldstr ok
+call System.Void System.IO.File::WriteAllText(System.String,System.String)
+call System.Void System.IO.File::Delete(System.String)
+ldstr [OffServer] Unity bundle cache dirs ready at 
+ldloc.2 
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_0137: ret
+stloc.3 
+ldstr [OffServer] default Unity cache not writable (
+ldloc.3 
+callvirt System.String System.Exception::get_Message()
+ldstr ), using 
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::root
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::root
+ldstr unitycache
+call System.String System.IO.Path::Combine(System.String,System.String)
+dup 
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+call UnityEngine.Cache UnityEngine.Caching::AddCache(System.String)
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean UnityEngine.Cache::get_valid()
+brfalse.s IL_0119: leave.s IL_0135
+ldloc.s V_4
+call System.Void UnityEngine.Caching::set_currentCacheForWriting(UnityEngine.Cache)
+leave.s IL_0135: leave.s IL_0137
+stloc.s V_5
+ldstr [OffServer] alternate Unity cache failed: 
+ldloc.s V_5
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_0135: leave.s IL_0137
+leave.s IL_0137: ret
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerLink::get_Enabled()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+ldc.i4.0 
+ceq 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_AccountId()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_account
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0017: call System.String UnityEngine.SystemInfo::get_deviceUniqueIdentifier()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_account
+ret 
+call System.String UnityEngine.SystemInfo::get_deviceUniqueIdentifier()
+call System.String Durango.Logic.Clusters.OffServerLink::Sanitize(System.String)
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::get_ConfigPath()
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+bne.un.s IL_0019: call System.String UnityEngine.Application::get_dataPath()
+call System.String Durango.Logic.Clusters.OffServerLink::get_WritableRoot()
+ldstr offserver.txt
+call System.String System.IO.Path::Combine(System.String,System.String)
+ret 
+call System.String UnityEngine.Application::get_dataPath()
+call System.String System.IO.Path::GetDirectoryName(System.String)
+dup 
+brtrue.s IL_002c: ldstr "offserver.txt"
+pop 
+ldstr .
+ldstr offserver.txt
+call System.String System.IO.Path::Combine(System.String,System.String)
+ret 
+METHOD System.Int32 Durango.Logic.Clusters.OffServerLink::get_TestBridgePort()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_testBridgePort
+ret 
+METHOD System.IntPtr Durango.Logic.Clusters.OffServerLink::FindWindowExW(System.IntPtr,System.IntPtr,System.String,System.String)
+
+METHOD System.UInt32 Durango.Logic.Clusters.OffServerLink::GetWindowThreadProcessId(System.IntPtr,System.UInt32&)
+
+METHOD System.UInt32 Durango.Logic.Clusters.OffServerLink::GetCurrentProcessId()
+
+METHOD System.Boolean Durango.Logic.Clusters.OffServerLink::SetWindowTextW(System.IntPtr,System.String)
+
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::ApplyWindowTitle()
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.2 
+beq.s IL_0009: nop
+ret 
+nop 
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_001a: call System.UInt32 Durango.Logic.Clusters.OffServerLink::GetCurrentProcessId()
+leave.s IL_0072: ret
+call System.UInt32 Durango.Logic.Clusters.OffServerLink::GetCurrentProcessId()
+stloc.1 
+ldsfld System.IntPtr System.IntPtr::Zero
+stloc.2 
+br.s IL_004e: ldsfld System.IntPtr System.IntPtr::Zero
+ldloc.2 
+ldloca.s V_3
+call System.UInt32 Durango.Logic.Clusters.OffServerLink::GetWindowThreadProcessId(System.IntPtr,System.UInt32&)
+pop 
+ldloc.3 
+ldloc.1 
+bne.un.s IL_004e: ldsfld System.IntPtr System.IntPtr::Zero
+ldloc.2 
+call System.String UnityEngine.Application::get_productName()
+ldstr  v
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Boolean Durango.Logic.Clusters.OffServerLink::SetWindowTextW(System.IntPtr,System.String)
+pop 
+br.s IL_006d: leave.s IL_0072
+ldsfld System.IntPtr System.IntPtr::Zero
+ldloc.2 
+ldstr UnityWndClass
+ldnull 
+call System.IntPtr Durango.Logic.Clusters.OffServerLink::FindWindowExW(System.IntPtr,System.IntPtr,System.String,System.String)
+dup 
+stloc.2 
+ldsfld System.IntPtr System.IntPtr::Zero
+call System.Boolean System.IntPtr::op_Inequality(System.IntPtr,System.IntPtr)
+brtrue.s IL_0028: ldloc.2
+leave.s IL_0072: ret
+pop 
+leave.s IL_0072: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::SetAdminFlags(System.Collections.Generic.Dictionary`2<System.String,System.Boolean>)
+ldc.i4.0 
+stloc.0 
+ldarg.0 
+brfalse.s IL_0014: ldc.i4.0
+ldarg.0 
+ldstr admin
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::TryGetValue(!0,!1&)
+br.s IL_0015: ldloc.0
+ldc.i4.0 
+ldloc.0 
+and 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerLink::IsAdmin
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::NoteRequestStart()
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpStarted
+ldc.i4.1 
+add 
+stsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpStarted
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::NoteRequestDone(System.Int32)
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpDone
+ldc.i4.1 
+add 
+stsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpDone
+ldarg.0 
+ldc.i4.0 
+ble.s IL_001d: ret
+ldsfld System.Int64 Durango.Logic.Clusters.OffServerLink::_httpBytes
+ldarg.0 
+conv.i8 
+add 
+stsfld System.Int64 Durango.Logic.Clusters.OffServerLink::_httpBytes
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::BeginLoadRun()
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpStarted
+stsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpRunStarted
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpDone
+stsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpRunDone
+ret 
+METHOD System.Single Durango.Logic.Clusters.OffServerLink::LoadRunProgress()
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpStarted
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpRunStarted
+sub 
+stloc.0 
+ldloc.0 
+ldc.i4.0 
+bgt.s IL_0016: ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpDone
+ldc.r4 0
+ret 
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpDone
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_httpRunDone
+sub 
+conv.r4 
+ldloc.0 
+conv.r4 
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::SetServerStatus(System.Boolean,System.Int32)
+ldarg.0 
+brtrue.s IL_000a: ldstr "  [66dd66]●[-] Online "
+ldstr   [ff5555]●[-] Offline
+br.s IL_001b: stsfld System.String Durango.Logic.Clusters.OffServerLink::ServerStatusSuffix
+ldstr   [66dd66]●[-] Online 
+ldarga.s online
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerLink::ServerStatusSuffix
+ret 
+METHOD Durango.Logic.Clusters.Cluster Durango.Logic.Clusters.OffServerLink::CreateClusterNamed(System.String,System.String)
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+ldarg.0 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+call Durango.Logic.Clusters.Cluster Durango.Logic.Clusters.OffServerLink::CreateCluster()
+stloc.0 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+ldarg.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0025: ldloc.0
+ldloc.0 
+ldarg.1 
+stfld System.String Durango.Logic.Clusters.Cluster::GatewayUrlRoot
+ldloc.0 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::FetchStatus(System.String,System.Action`2<System.Boolean,System.Int32>)
+newobj System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.1 
+stfld System.Action`2<System.Boolean,System.Int32> Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::callback
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0023: nop
+ldloc.0 
+ldfld System.Action`2<System.Boolean,System.Int32> Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::callback
+ldc.i4.0 
+ldc.i4.0 
+callvirt System.Void System.Action`2<System.Boolean,System.Int32>::Invoke(!0,!1)
+ret 
+nop 
+ldarg.0 
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+ldstr /status
+call System.String System.String::Concat(System.String,System.String)
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.0 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::<FetchStatus>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+dup 
+ldc.r8 5
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+dup 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+leave.s IL_0080: ret
+pop 
+ldloc.0 
+ldfld System.Action`2<System.Boolean,System.Int32> Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass66_0::callback
+ldc.i4.0 
+ldc.i4.0 
+callvirt System.Void System.Action`2<System.Boolean,System.Int32>::Invoke(!0,!1)
+leave.s IL_0080: ret
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerLink::SameGateway(System.String,System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0010: ldc.i4.0
+ldarg.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0012: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+call System.String Durango.Logic.Clusters.OffServerLink::NormalizeUrl(System.String)
+ldarg.1 
+call System.String Durango.Logic.Clusters.OffServerLink::NormalizeUrl(System.String)
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+ret 
+METHOD System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::ParseServers(System.String)
+newobj System.Void System.Collections.Generic.List`1<System.String[]>::.ctor()
+stloc.0 
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0010: ldarg.0
+ldloc.0 
+ret 
+ldarg.0 
+ldc.i4.0 
+call T Durango.Utils.Json::Read<Durango.Logic.Clusters.OffServerLink/RemoteServerSet>(System.String,System.Boolean)
+stloc.1 
+ldloc.1 
+brtrue.s IL_001e: ldloc.1
+ldnull 
+br.s IL_0024: brtrue.s IL_0028
+ldloc.1 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry> Durango.Logic.Clusters.OffServerLink/RemoteServerSet::Servers
+brtrue.s IL_0028: ldloc.1
+ldloc.0 
+ret 
+ldloc.1 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry> Durango.Logic.Clusters.OffServerLink/RemoteServerSet::Servers
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry>::GetEnumerator()
+stloc.2 
+br.s IL_0083: ldloca.s V_2
+ldloca.s V_2
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry>::get_Current()
+stloc.3 
+ldloc.3 
+brfalse.s IL_0083: ldloca.s V_2
+ldloc.3 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/RemoteServerEntry::Name
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0083: ldloca.s V_2
+ldloc.3 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/RemoteServerEntry::Gateway
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0083: ldloca.s V_2
+ldloc.0 
+ldc.i4.2 
+newarr System.String
+dup 
+ldc.i4.0 
+ldloc.3 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/RemoteServerEntry::Name
+callvirt System.String System.String::Trim()
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.3 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/RemoteServerEntry::Gateway
+call System.String Durango.Logic.Clusters.OffServerLink::NormalizeUrl(System.String)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.List`1<System.String[]>::Add(!0)
+ldloca.s V_2
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry>::MoveNext()
+brtrue.s IL_0036: ldloca.s V_2
+leave.s IL_009c: ldloc.0
+ldloca.s V_2
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::LoadServersCache()
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheLoaded
+brfalse.s IL_0008: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheLoaded
+call System.String Durango.Logic.Clusters.OffServerLink::get_ServersCachePath()
+stloc.0 
+ldloc.0 
+call System.Boolean System.IO.File::Exists(System.String)
+brfalse.s IL_0046: leave.s IL_004b
+ldloc.0 
+call System.String System.IO.File::ReadAllText(System.String)
+call System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::ParseServers(System.String)
+stloc.1 
+ldloc.1 
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ldc.i4.0 
+ble.s IL_0046: leave.s IL_004b
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+callvirt System.Void System.Collections.Generic.List`1<System.String[]>::Clear()
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ldloc.1 
+callvirt System.Void System.Collections.Generic.List`1<System.String[]>::AddRange(System.Collections.Generic.IEnumerable`1<!0>)
+leave.s IL_004b: ret
+pop 
+leave.s IL_004b: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::FetchServers(System.Action)
+newobj System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::onChanged
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ldc.i4.0 
+ble.s IL_0020: ldloc.0
+ret 
+ldloc.0 
+call System.String Durango.Logic.Clusters.OffServerLink::get_ServersUrl()
+stfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::url
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::url
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.0 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::<FetchServers>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+dup 
+ldc.r8 6
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+dup 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+leave.s IL_0099: ret
+stloc.1 
+ldstr [OffServer] servers.json BestHTTP error: 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+ldstr  -> UnityWebRequest
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::url
+ldloc.0 
+ldfld System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass70_0::onChanged
+call System.Void Durango.Logic.Clusters.OffServerLink::FetchServersUnity(System.String,System.Action)
+leave.s IL_0099: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::FetchServersUnity(System.String,System.Action)
+newobj System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.1 
+stfld System.Action Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::onChanged
+ldloc.0 
+ldarg.0 
+call UnityEngine.Networking.UnityWebRequest UnityEngine.Networking.UnityWebRequest::Get(System.String)
+stfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+ldloc.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+ldc.i4.8 
+callvirt System.Void UnityEngine.Networking.UnityWebRequest::set_timeout(System.Int32)
+ldloc.0 
+ldfld UnityEngine.Networking.UnityWebRequest Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::www
+callvirt UnityEngine.Networking.UnityWebRequestAsyncOperation UnityEngine.Networking.UnityWebRequest::SendWebRequest()
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass71_0::<FetchServersUnity>b__0(UnityEngine.AsyncOperation)
+newobj System.Void System.Action`1<UnityEngine.AsyncOperation>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void UnityEngine.AsyncOperation::add_completed(System.Action`1<UnityEngine.AsyncOperation>)
+leave.s IL_005b: ret
+stloc.1 
+ldstr [OffServer] servers.json UnityWebRequest start error: 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+leave.s IL_005b: ret
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerLink::ApplyServersJson(System.String,System.String,System.Action)
+ldarg.0 
+call System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::ParseServers(System.String)
+stloc.0 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+brtrue.s IL_0011: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ceq 
+ldc.i4.0 
+ceq 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_006b: ldloc.1
+ldloc.0 
+ldloc.2 
+callvirt !0 System.Collections.Generic.List`1<System.String[]>::get_Item(System.Int32)
+ldc.i4.0 
+ldelem.ref 
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ldloc.2 
+callvirt !0 System.Collections.Generic.List`1<System.String[]>::get_Item(System.Int32)
+ldc.i4.0 
+ldelem.ref 
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brtrue.s IL_0065: ldc.i4.1
+ldloc.0 
+ldloc.2 
+callvirt !0 System.Collections.Generic.List`1<System.String[]>::get_Item(System.Int32)
+ldc.i4.1 
+ldelem.ref 
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ldloc.2 
+callvirt !0 System.Collections.Generic.List`1<System.String[]>::get_Item(System.Int32)
+ldc.i4.1 
+ldelem.ref 
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+br.s IL_0066: stloc.1
+ldc.i4.1 
+stloc.1 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.1 
+brtrue.s IL_0077: ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ldloc.2 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+blt.s IL_002b: ldloc.0
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+callvirt System.Void System.Collections.Generic.List`1<System.String[]>::Clear()
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+ldloc.0 
+callvirt System.Void System.Collections.Generic.List`1<System.String[]>::AddRange(System.Collections.Generic.IEnumerable`1<!0>)
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_cacheLoaded
+call System.String Durango.Logic.Clusters.OffServerLink::get_ServersCachePath()
+ldarg.0 
+call System.Void System.IO.File::WriteAllText(System.String,System.String)
+leave.s IL_00a2: ldc.i4.6
+pop 
+leave.s IL_00a2: ldc.i4.6
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] servers.json via 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.1 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr : 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  servers
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.1 
+brtrue.s IL_00e1: ldstr " (changed -> refresh list)"
+ldstr 
+br.s IL_00e6: stelem.ref
+ldstr  (changed -> refresh list)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldloc.1 
+brfalse.s IL_00fd: ldc.i4.1
+ldarg.2 
+brfalse.s IL_00fd: ldc.i4.1
+ldarg.2 
+callvirt System.Void System.Action::Invoke()
+ldc.i4.1 
+ret 
+METHOD Durango.Logic.Clusters.Cluster Durango.Logic.Clusters.OffServerLink::CreateCluster()
+call System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerLink::_testBridgePort
+call System.Void Durango.Development.TestBridge::EnsureStarted(System.Int32)
+newobj System.Void Durango.Logic.Clusters.Cluster::.ctor()
+dup 
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+stfld System.String Durango.Logic.Clusters.Cluster::GatewayUrlRoot
+dup 
+ldc.i4.0 
+callvirt System.Void Durango.Logic.Clusters.Cluster::set_Mode(Durango.Logic.Clusters.Mode)
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0043: ldsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+ldstr OffServer 
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+call System.String System.String::Concat(System.String,System.String)
+br.s IL_0048: stloc.0
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+stloc.0 
+dup 
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+dup 
+ldstr en_US
+ldloc.0 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::Add(!0,!1)
+dup 
+ldstr ko_KR
+ldloc.0 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::Add(!0,!1)
+stfld System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Logic.Clusters.Cluster::Names
+dup 
+ldnull 
+callvirt System.Void Durango.Logic.Clusters.Cluster::set_OnRequestAccount(System.Action`1<System.Action`1<Durango.Logic.Clusters.Account>>)
+dup 
+ldnull 
+callvirt System.Void Durango.Logic.Clusters.Cluster::set_OnConfirm(System.Action`1<System.String>)
+dup 
+ldnull 
+callvirt System.Void Durango.Logic.Clusters.Cluster::set_OnDeletePlayer(System.Action`1<System.String>)
+dup 
+ldc.i4.1 
+callvirt System.Void Durango.Logic.Clusters.Cluster::set_IsRecommendable(System.Boolean)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::Load()
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_loaded
+brfalse.s IL_0008: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerLink::_loaded
+call System.Void Durango.Logic.Clusters.OffServerLink::ApplyWindowTitle()
+call System.String Durango.Logic.Clusters.OffServerLink::get_ConfigPath()
+stloc.0 
+ldloc.0 
+call System.Boolean System.IO.File::Exists(System.String)
+brfalse.s IL_0042: ldstr "offserver"
+ldloc.0 
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+call System.String[] System.IO.File::ReadAllLines(System.String,System.Text.Encoding)
+stloc.1 
+ldstr [OffServer] config=
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+br IL_00f4: ldc.i4.0
+ldstr offserver
+call !!0 UnityEngine.Resources::Load<UnityEngine.TextAsset>(System.String)
+stloc.2 
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0063: ldstr "[OffServer] no config at "
+ldloc.2 
+callvirt System.String UnityEngine.TextAsset::get_text()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_007d: ldloc.2
+ldstr [OffServer] no config at 
+ldloc.0 
+ldstr  and no Resources/offserver seed
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave IL_03a5: ret
+ldloc.2 
+callvirt System.String UnityEngine.TextAsset::get_text()
+ldstr 
+ldsfld System.String System.String::Empty
+callvirt System.String System.String::Replace(System.String,System.String)
+ldc.i4.s 10
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.1 
+ldstr [OffServer] config seeded from Resources (
+ldloc.1 
+ldlen 
+conv.i4 
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+ldstr  lines) -> 
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+ldloc.0 
+call System.String System.IO.Path::GetDirectoryName(System.String)
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldloc.0 
+ldloc.2 
+callvirt System.String UnityEngine.TextAsset::get_text()
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+call System.Void System.IO.File::WriteAllText(System.String,System.String,System.Text.Encoding)
+leave.s IL_00f4: ldc.i4.0
+stloc.s V_4
+ldstr [OffServer] could not write seed config: 
+ldloc.s V_4
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_00f4: ldc.i4.0
+ldc.i4.0 
+stloc.s V_5
+br IL_0305: ldloc.s V_5
+ldloc.1 
+ldloc.s V_5
+ldelem.ref 
+callvirt System.String System.String::Trim()
+stloc.s V_6
+ldloc.s V_6
+callvirt System.Int32 System.String::get_Length()
+brfalse IL_02ff: ldloc.s V_5
+ldloc.s V_6
+ldstr #
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue IL_02ff: ldloc.s V_5
+ldloc.s V_6
+ldc.i4.s 61
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.s V_7
+ldloc.s V_7
+ldc.i4.0 
+bge.s IL_0145: ldloc.s V_6
+ldloc.s V_6
+call System.String Durango.Logic.Clusters.OffServerLink::NormalizeUrl(System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+br IL_02ff: ldloc.s V_5
+ldloc.s V_6
+ldc.i4.0 
+ldloc.s V_7
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+callvirt System.String System.String::Trim()
+callvirt System.String System.String::ToLowerInvariant()
+stloc.s V_8
+ldloc.s V_6
+ldloc.s V_7
+ldc.i4.1 
+add 
+callvirt System.String System.String::Substring(System.Int32)
+callvirt System.String System.String::Trim()
+stloc.s V_9
+ldloc.s V_8
+brfalse IL_02ff: ldloc.s V_5
+ldloc.s V_8
+call System.Int32 System.String::get_Length()
+stloc.3 
+ldloc.3 
+ldc.i4.3 
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldc.i4.0 
+call System.Char System.String::get_Chars(System.Int32)
+stloc.s V_10
+ldloc.s V_10
+ldc.i4.s 97
+beq.s IL_01d9: ldloc.s V_8
+ldloc.s V_10
+ldc.i4.s 103
+bne.un IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr gateway
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0251: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr account
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0262: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr url
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0251: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr name
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_027f: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr server
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0288: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr servers_url
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_02e4: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_8
+ldstr testbridge
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_02f2: ldloc.s V_9
+br IL_02ff: ldloc.s V_5
+ldloc.s V_9
+call System.String Durango.Logic.Clusters.OffServerLink::NormalizeUrl(System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+br IL_02ff: ldloc.s V_5
+ldloc.s V_9
+callvirt System.Int32 System.String::get_Length()
+brfalse.s IL_0274: ldnull
+ldloc.s V_9
+call System.String Durango.Logic.Clusters.OffServerLink::Sanitize(System.String)
+br.s IL_0275: stsfld System.String Durango.Logic.Clusters.OffServerLink::_account
+ldnull 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_account
+br IL_02ff: ldloc.s V_5
+ldloc.s V_9
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_name
+br.s IL_02ff: ldloc.s V_5
+ldloc.s V_9
+ldc.i4.s 124
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.s V_11
+ldloc.s V_11
+ldlen 
+conv.i4 
+ldc.i4.1 
+blt.s IL_02ff: ldloc.s V_5
+ldloc.s V_11
+ldc.i4.0 
+ldelem.ref 
+callvirt System.String System.String::Trim()
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_02ff: ldloc.s V_5
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+ldc.i4.2 
+newarr System.String
+dup 
+ldc.i4.0 
+ldloc.s V_11
+ldc.i4.0 
+ldelem.ref 
+callvirt System.String System.String::Trim()
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_11
+ldlen 
+conv.i4 
+ldc.i4.1 
+bgt.s IL_02d3: ldloc.s V_11
+ldsfld System.String System.String::Empty
+br.s IL_02dc: stelem.ref
+ldloc.s V_11
+ldc.i4.1 
+ldelem.ref 
+callvirt System.String System.String::Trim()
+stelem.ref 
+callvirt System.Void System.Collections.Generic.List`1<System.String[]>::Add(!0)
+br.s IL_02ff: ldloc.s V_5
+ldloc.s V_9
+callvirt System.String System.String::Trim()
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_serversUrl
+br.s IL_02ff: ldloc.s V_5
+ldloc.s V_9
+ldsflda System.Int32 Durango.Logic.Clusters.OffServerLink::_testBridgePort
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+pop 
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.1 
+ldlen 
+conv.i4 
+blt IL_00fc: ldloc.1
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+pop 
+ldc.i4.8 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] gateway=
+stelem.ref 
+dup 
+ldc.i4.1 
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  account=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::_account
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  localServers=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr  resolved account_id=
+stelem.ref 
+dup 
+ldc.i4.7 
+call System.String Durango.Logic.Clusters.OffServerLink::get_AccountId()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+call System.Void Durango.Logic.Clusters.OffServerLink::EnsureCacheRoots()
+leave.s IL_03a5: ret
+stloc.s V_12
+ldstr [OffServer] config load failed: 
+ldloc.s V_12
+dup 
+brtrue.s IL_038e: callvirt System.String System.Object::ToString()
+pop 
+ldnull 
+br.s IL_0393: call System.String System.String::Concat(System.String,System.String)
+callvirt System.String System.Object::ToString()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+ldnull 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::_gateway
+leave.s IL_03a5: ret
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::RewriteLoopbackHost(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: nop
+ldarg.0 
+ret 
+nop 
+ldarg.0 
+newobj System.Void System.Uri::.ctor(System.String)
+stloc.0 
+ldloc.0 
+callvirt System.String System.Uri::get_Host()
+ldstr 127.0.0.1
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_003c: call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+ldloc.0 
+callvirt System.String System.Uri::get_Host()
+ldstr localhost
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brtrue.s IL_003c: call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+ldarg.0 
+stloc.s V_4
+leave.s IL_0094: ldloc.s V_4
+call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+stloc.1 
+ldloc.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_004f: ldloc.1
+ldarg.0 
+stloc.s V_4
+leave.s IL_0094: ldloc.s V_4
+ldloc.1 
+newobj System.Void System.Uri::.ctor(System.String)
+stloc.2 
+ldloc.0 
+newobj System.Void System.UriBuilder::.ctor(System.Uri)
+dup 
+ldloc.2 
+callvirt System.String System.Uri::get_Host()
+callvirt System.Void System.UriBuilder::set_Host(System.String)
+callvirt System.Uri System.UriBuilder::get_Uri()
+callvirt System.String System.Object::ToString()
+stloc.3 
+ldstr [OffServer] rewrote loopback url 
+ldarg.0 
+ldstr  -> 
+ldloc.3 
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+ldloc.3 
+stloc.s V_4
+leave.s IL_0094: ldloc.s V_4
+pop 
+ldarg.0 
+stloc.s V_4
+leave.s IL_0094: ldloc.s V_4
+ldloc.s V_4
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::NormalizeUrl(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: ldarg.0
+ldnull 
+ret 
+ldarg.0 
+callvirt System.String System.String::Trim()
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+stloc.0 
+ldloc.0 
+ldstr http://
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_003e: ldloc.0
+ldloc.0 
+ldstr https://
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_003e: ldloc.0
+ldstr http://
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String)
+stloc.0 
+ldloc.0 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink::Sanitize(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000e: ldarg.0
+ldstr pc-unknown
+ret 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+newobj System.Void System.Text.StringBuilder::.ctor(System.Int32)
+stloc.0 
+ldarg.0 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0046: ldloc.2
+ldloc.1 
+ldloc.2 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.3 
+call System.Boolean System.Char::IsLetterOrDigit(System.Char)
+brtrue.s IL_003a: ldloc.0
+ldloc.3 
+ldc.i4.s 45
+beq.s IL_003a: ldloc.0
+ldloc.3 
+ldc.i4.s 95
+bne.un.s IL_0042: ldloc.2
+ldloc.0 
+ldloc.3 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+blt.s IL_0020: ldloc.1
+ldloc.0 
+callvirt System.Int32 System.Text.StringBuilder::get_Length()
+brtrue.s IL_005d: ldloc.0
+ldstr pc-unknown
+ret 
+ldloc.0 
+callvirt System.Int32 System.Text.StringBuilder::get_Length()
+ldc.i4.s 120
+ble.s IL_006f: ldloc.0
+ldloc.0 
+ldc.i4.s 120
+callvirt System.Void System.Text.StringBuilder::set_Length(System.Int32)
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerLink::.cctor()
+newobj System.Void System.Collections.Generic.List`1<System.String[]>::.ctor()
+stsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_multiServers
+newobj System.Void System.Collections.Generic.List`1<System.String[]>::.ctor()
+stsfld System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::_localServers
+ldstr 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::ServerStatusSuffix
+ldstr 
+stsfld System.String Durango.Logic.Clusters.OffServerLink::LastServerVersion
+ret 

@@ -1,0 +1,520 @@
+{
+  "apk": "LostHorizon-alfa-gameplay-50225.apk",
+  "sha256": "c3efe2a01b36bbda1cff269d77d13f245f81f9641a4c9822e8833307eb42238c",
+  "comparison_to_50224": {
+    "changed": [
+      "AndroidManifest.xml",
+      "META-INF/DURANGO-.RSA",
+      "META-INF/DURANGO-.SF",
+      "META-INF/MANIFEST.MF",
+      "assets/durango-br/diagnostics/build.json",
+      "lib/arm64-v8a/libil2cpp.so"
+    ],
+    "added": [],
+    "removed": []
+  },
+  "dex_identical_to_50224": true,
+  "native_libraries": {
+    "libAkSoundEngine.so": {
+      "load_alignments": [
+        65536
+      ],
+      "memory_apis": [
+        "dlopen"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": []
+    },
+    "libBlueDoveMediaRender.so": {
+      "load_alignments": [
+        65536
+      ],
+      "memory_apis": [
+        "mmap",
+        "dlopen"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": []
+    },
+    "libbr.so": {
+      "load_alignments": [
+        16384
+      ],
+      "memory_apis": [],
+      "shell_apis": [],
+      "bridge_symbols": [
+        "br_hook_install"
+      ]
+    },
+    "libil2cpp.so": {
+      "load_alignments": [
+        65536
+      ],
+      "memory_apis": [
+        "mmap",
+        "mprotect",
+        "dlopen",
+        "sysconf"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": []
+    },
+    "liblhaccount.so": {
+      "load_alignments": [
+        16384
+      ],
+      "memory_apis": [
+        "mprotect",
+        "dlopen",
+        "sysconf"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": [
+        "Java_com_newdawn_launcher_AccountPreloader_nativeInstall"
+      ],
+      "permission_register_constants": {
+        "Java_com_newdawn_launcher_AccountPreloader_nativeInstall": [
+          "mov w2, #0x11",
+          "mov w2, #0xf",
+          "mov w2, #7",
+          "mov w2, #5",
+          "mov w2, #5"
+        ]
+      }
+    },
+    "libmain.so": {
+      "load_alignments": [
+        4096
+      ],
+      "memory_apis": [
+        "dlopen"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": []
+    },
+    "libnd.so": {
+      "load_alignments": [
+        16384
+      ],
+      "memory_apis": [
+        "mmap",
+        "mprotect",
+        "dlopen",
+        "sysconf"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": [
+        "Java_com_newdawn_launcher_NativeRuntime_configureDiagnostics",
+        "br_hook_install",
+        "Java_com_newdawn_launcher_NativeRuntime_prepare",
+        "Java_com_newdawn_launcher_NativeRuntime_prepare.callback_bytes",
+        "Java_com_newdawn_launcher_NativeRuntime_prepare.send_bytes",
+        "Java_com_newdawn_launcher_NativeRuntime_prepare.media_bytes",
+        "Java_com_newdawn_launcher_NativeRuntime_prepare.load_bytes",
+        "Java_com_newdawn_launcher_NativeRuntime_prepare.title_bytes"
+      ],
+      "permission_register_constants": {
+        "br_hook_install": [
+          "mov w2, #3",
+          "mov w2, #5",
+          "mov w2, #7",
+          "mov w2, #5",
+          "mov w2, #5"
+        ]
+      }
+    },
+    "libsnappy.so": {
+      "load_alignments": [
+        65536
+      ],
+      "memory_apis": [],
+      "shell_apis": [],
+      "bridge_symbols": []
+    },
+    "libunity.so": {
+      "load_alignments": [
+        4096
+      ],
+      "memory_apis": [
+        "mmap",
+        "mprotect",
+        "dlopen",
+        "sysconf"
+      ],
+      "shell_apis": [],
+      "bridge_symbols": []
+    }
+  },
+  "diagnostic": {
+    "sha256": "317327a45605474f2c6db30634a955700deddcaeb474dbc700e6de116cc64aa4",
+    "integrity_verified": true,
+    "session": {
+      "schema_version": 2,
+      "session_id": "2b813f0d-068b-44db-a03a-a6dded1f544d",
+      "pid": 32448,
+      "started_utc_ms": 1791678959986,
+      "started_mono_ns": 9442208276331,
+      "version_code": 50224,
+      "version_name": "5.2.1-losthorizon-conta1",
+      "model": "Xiaomi 2311DRK48G",
+      "android_api": 36,
+      "android_build": "BP2A.250605.031.A3",
+      "abis_supported": [
+        "arm64-v8a"
+      ],
+      "compatibility": true,
+      "title_video_disabled": true,
+      "page_size": 4096,
+      "installed_apk_sha256": "e616a8655041267944eb75d581c169855d2286a00f60da4be52e70380523a96a"
+    },
+    "exit": {
+      "session_id": "2b813f0d-068b-44db-a03a-a6dded1f544d",
+      "confirmed": true,
+      "reason": 2,
+      "status": 11,
+      "timestamp": 1791678983791,
+      "description": "",
+      "importance": 100,
+      "rss_kib": 309146,
+      "pss_kib": 209948,
+      "trace_status": "unavailable"
+    },
+    "elapsed_unity_to_exit_ms": 1743,
+    "stages": [
+      {
+        "event": "LOGIN_STARTING",
+        "detail": "",
+        "after_unity_ms": -22044.899
+      },
+      {
+        "event": "LOGIN_VISIBLE",
+        "detail": "",
+        "after_unity_ms": -21986.244
+      },
+      {
+        "event": "ACCOUNT_PREFETCH_START",
+        "detail": "",
+        "after_unity_ms": -208.591
+      },
+      {
+        "event": "ACCOUNT_PREFETCH_HTTP_200",
+        "detail": "",
+        "after_unity_ms": -105.253
+      },
+      {
+        "event": "ACCOUNT_PREFETCH_VALIDATED_1",
+        "detail": "",
+        "after_unity_ms": -100.93
+      },
+      {
+        "event": "LOGIN_VIDEO_RELEASING",
+        "detail": "",
+        "after_unity_ms": -86.537
+      },
+      {
+        "event": "GAME_PREPARING",
+        "detail": "",
+        "after_unity_ms": -26.14
+      },
+      {
+        "event": "GAME_CONFIG",
+        "detail": "compatibility=false disable_video=false",
+        "after_unity_ms": -24.474
+      },
+      {
+        "event": "NATIVE_LOADING",
+        "detail": "",
+        "after_unity_ms": -20.446
+      },
+      {
+        "event": "NATIVE_PREPARED",
+        "detail": "",
+        "after_unity_ms": -11.294
+      },
+      {
+        "event": "ACCOUNT_CACHE_BRIDGE_READY",
+        "detail": "",
+        "after_unity_ms": -0.74
+      },
+      {
+        "event": "UNITY_STARTING",
+        "detail": "",
+        "after_unity_ms": 0.0
+      },
+      {
+        "event": "AUTH_SEND_ENTER",
+        "detail": "",
+        "after_unity_ms": 1613.168
+      },
+      {
+        "event": "AUTH_READY",
+        "detail": "",
+        "after_unity_ms": 1616.174
+      },
+      {
+        "event": "AUTH_URI_READ_BEGIN",
+        "detail": "",
+        "after_unity_ms": 1616.341
+      },
+      {
+        "event": "AUTH_URI_READ_RETURN",
+        "detail": "",
+        "after_unity_ms": 1616.442
+      },
+      {
+        "event": "AUTH_URL_READ_BEGIN",
+        "detail": "",
+        "after_unity_ms": 1616.536
+      },
+      {
+        "event": "AUTH_URL_READ_RETURN",
+        "detail": "",
+        "after_unity_ms": 1616.634
+      },
+      {
+        "event": "AUTH_URL_CONVERT_BEGIN",
+        "detail": "",
+        "after_unity_ms": 1616.723
+      },
+      {
+        "event": "AUTH_URL_CONVERT_RETURN",
+        "detail": "",
+        "after_unity_ms": 1616.843
+      },
+      {
+        "event": "HTTP_BEGIN",
+        "detail": "/[other-route]",
+        "after_unity_ms": 1616.976
+      },
+      {
+        "event": "HTTP_SEND_RETURN",
+        "detail": "",
+        "after_unity_ms": 1619.782
+      }
+    ],
+    "coverage": {
+      "schema_version": 2,
+      "engine_base": "0x750aa3e000",
+      "hooks": [
+        {
+          "name": "HTTP_RESULT",
+          "offset": 25115944,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "JSON_READ",
+          "offset": 19240100,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "EXCEPTION",
+          "offset": 51515844,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "UNITY_LOG",
+          "offset": 51478552,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "TCP_DISPATCH",
+          "offset": 26856216,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "TCP_HEADER",
+          "offset": 26858556,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "TCP_CONNECT",
+          "offset": 26844336,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "TCP_CLOSE",
+          "offset": 26845272,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "RESOURCE_LOAD",
+          "offset": 49400088,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "RESOURCE_ALL",
+          "offset": 49400208,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "BUNDLE_ASYNC",
+          "offset": 51480844,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "BUNDLE_ASSET",
+          "offset": 51481680,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "BUNDLE_UNLOAD",
+          "offset": 51481224,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "ASSET_REQUEST",
+          "offset": 22551364,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "BUNDLE_FILE",
+          "offset": 22542668,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "ASSET_ITEM",
+          "offset": 22543000,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "TRY_BUNDLE",
+          "offset": 22548600,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "SCENE_LOAD",
+          "offset": 49402184,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "SCENE_LOADED",
+          "offset": 49402944,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "LOW_MEMORY",
+          "offset": 51475944,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "UWR_URL",
+          "offset": 64143152,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "UWR_SEND",
+          "offset": 64145260,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "UWR_DONE",
+          "offset": 64148132,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "DOWNLOAD_BUNDLE",
+          "offset": 64142336,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "ASYNC_COMPLETE",
+          "offset": 51482264,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "DESERIALIZE",
+          "offset": 36437984,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "LOADER_STATE",
+          "offset": 25944052,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        },
+        {
+          "name": "LOADER_ERROR",
+          "offset": 25944480,
+          "installed": false,
+          "trampoline_pc": "0x0",
+          "trampoline_size": 96
+        }
+      ],
+      "http_send_callback": "existing_auth_hooks",
+      "limitations": [
+        "global_system_log_unavailable",
+        "Resources.LoadAsync_not_present_in_this_binary",
+        "native_plugin_internal_loads_not_hooked",
+        "caught_parse_exception_can_leave_BEGIN_without_END",
+        "last_http_data_is_thread_local_context_not_guaranteed_causal_link",
+        "async_asset_resolved_records_getter_access_not_gpu_upload",
+        "TCP_encode_is_not_socket_delivery",
+        "last_inflight_event_may_be_lost",
+        "bounded_pointer_associations_may_be_evicted_or_reused"
+      ]
+    },
+    "memory_samples": [
+      "available_mib=2969 low_memory=false foreground=1",
+      "available_mib=2913 low_memory=false foreground=1",
+      "available_mib=2929 low_memory=false foreground=1",
+      "available_mib=2932 low_memory=false foreground=1",
+      "available_mib=2915 low_memory=false foreground=1",
+      "available_mib=2926 low_memory=false foreground=1",
+      "available_mib=2969 low_memory=false foreground=1",
+      "available_mib=2922 low_memory=false foreground=1"
+    ]
+  }
+}

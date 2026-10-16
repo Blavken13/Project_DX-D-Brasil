@@ -1,0 +1,28 @@
+OffServerLangPack/<>c__DisplayClass14_1 : System.Object
+FIELD OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass14_1::captured
+FIELD OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+METHOD System.Void OffServerLangPack/<>c__DisplayClass14_1::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass14_1::<ShowPage>b__4()
+ldarg.0 
+ldfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass14_1::captured
+ldarg.0 
+ldfld OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+ldfld System.Action OffServerLangPack/<>c__DisplayClass14_0::<>9__5
+dup 
+brtrue.s IL_0034: call System.Void OffServerLangPack::Download(OffServerLangPack/Pack,System.Action)
+pop 
+ldarg.0 
+ldfld OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+ldarg.0 
+ldfld OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+ldftn System.Void OffServerLangPack/<>c__DisplayClass14_0::<ShowPage>b__5()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stloc.0 
+stfld System.Action OffServerLangPack/<>c__DisplayClass14_0::<>9__5
+ldloc.0 
+call System.Void OffServerLangPack::Download(OffServerLangPack/Pack,System.Action)
+ret 

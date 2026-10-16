@@ -1,0 +1,1262 @@
+OffServerLangPack : System.Object
+FIELD System.String OffServerLangPack::SettingKey
+FIELD System.Int32 OffServerLangPack::PerPage
+FIELD System.Boolean OffServerLangPack::_busy
+METHOD System.Boolean OffServerLangPack::get_Th()
+call System.String LocalizeSystem::get_LocaleLanguage()
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+ret 
+METHOD System.String OffServerLangPack::Tx(System.String,System.String)
+call System.Boolean OffServerLangPack::get_Th()
+brtrue.s IL_0009: ldarg.0
+ldarg.1 
+ret 
+ldarg.0 
+ret 
+METHOD System.String OffServerLangPack::get_ButtonLabel()
+ldstr แพ็กภาษา (โหลด · ใส่เอง)
+ldstr Language packs (download · add your own)
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ret 
+METHOD System.String OffServerLangPack::get_GatewayUrl()
+call System.String GameManager::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0014: ldloc.0
+call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_003e: ldloc.0
+call System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::get_MultiServers()
+brfalse.s IL_003e: ldloc.0
+call System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::get_MultiServers()
+callvirt System.Int32 System.Collections.Generic.List`1<System.String[]>::get_Count()
+ldc.i4.0 
+ble.s IL_003e: ldloc.0
+call System.Collections.Generic.List`1<System.String[]> Durango.Logic.Clusters.OffServerLink::get_MultiServers()
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<System.String[]>::get_Item(System.Int32)
+ldc.i4.1 
+ldelem.ref 
+stloc.0 
+ldloc.0 
+dup 
+brtrue.s IL_0048: ldc.i4.s 47
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+ret 
+METHOD System.Void OffServerLangPack::Open()
+ldsfld System.Boolean OffServerLangPack::_busy
+brfalse.s IL_0021: call System.String OffServerLangPack::get_GatewayUrl()
+ldstr กำลังโหลดอยู่ — รอสักครู่
+ldstr Still loading — please wait
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+call System.String OffServerLangPack::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0044: ldc.i4.1
+ldstr ไม่รู้ที่อยู่เซิร์ฟ — ใส่ไฟล์ภาษาเองในโฟลเดอร์ได้
+ldstr No server address — you can still add language files to the folder
+call System.String OffServerLangPack::Tx(System.String,System.String)
+call System.Void OffServerLangPack::ShowFolderMenu(System.String)
+ret 
+ldc.i4.1 
+stsfld System.Boolean OffServerLangPack::_busy
+ldloc.0 
+ldstr /i18n/packs
+call System.String System.String::Concat(System.String,System.String)
+ldsfld System.Action`1<System.Byte[]> OffServerLangPack/<>c::<>9__11_0
+dup 
+brtrue.s IL_0074: call System.Void OffServerLangPack::Get(System.String,System.Action`1<System.Byte[]>)
+pop 
+ldsfld OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+ldftn System.Void OffServerLangPack/<>c::<Open>b__11_0(System.Byte[])
+newobj System.Void System.Action`1<System.Byte[]>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action`1<System.Byte[]> OffServerLangPack/<>c::<>9__11_0
+call System.Void OffServerLangPack::Get(System.String,System.Action`1<System.Byte[]>)
+ret 
+METHOD System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack::ParseIndex(System.String)
+newobj System.Void System.Collections.Generic.List`1<OffServerLangPack/Pack>::.ctor()
+stloc.0 
+ldarg.0 
+call Newtonsoft.Json.Linq.JObject Newtonsoft.Json.Linq.JObject::Parse(System.String)
+ldstr packs
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.1 
+ldloc.1 
+brtrue.s IL_0026: ldloc.1
+ldloc.0 
+stloc.2 
+leave IL_024d: ldloc.2
+ldloc.1 
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Newtonsoft.Json.Linq.JToken>::GetEnumerator()
+stloc.3 
+br IL_0216: ldloc.3
+ldloc.3 
+callvirt !0 System.Collections.Generic.IEnumerator`1<Newtonsoft.Json.Linq.JToken>::get_Current()
+stloc.s V_4
+newobj System.Void OffServerLangPack/Pack::.ctor()
+dup 
+ldloc.s V_4
+ldstr locale
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_005a: stfld System.String OffServerLangPack/Pack::Locale
+pop 
+ldstr 
+stfld System.String OffServerLangPack/Pack::Locale
+dup 
+ldloc.s V_4
+ldstr name
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_007a: stfld System.String OffServerLangPack/Pack::Name
+pop 
+ldstr 
+stfld System.String OffServerLangPack/Pack::Name
+dup 
+ldloc.s V_4
+ldstr version
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_009a: stfld System.String OffServerLangPack/Pack::Version
+pop 
+ldstr 
+stfld System.String OffServerLangPack/Pack::Version
+dup 
+ldloc.s V_4
+ldstr serverTranslated
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.Nullable`1<System.Int32> Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+stloc.s V_7
+ldloca.s V_7
+call !0 System.Nullable`1<System.Int32>::GetValueOrDefault()
+stfld System.Int32 OffServerLangPack/Pack::Translated
+dup 
+ldloc.s V_4
+ldstr serverTotal
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.Nullable`1<System.Int32> Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+stloc.s V_7
+ldloca.s V_7
+call !0 System.Nullable`1<System.Int32>::GetValueOrDefault()
+stfld System.Int32 OffServerLangPack/Pack::Total
+stloc.s V_5
+ldloc.s V_5
+ldfld System.String OffServerLangPack/Pack::Locale
+call System.Boolean OffServerI18n::IsSafeLocale(System.String)
+brfalse IL_0216: ldloc.3
+ldloc.s V_5
+ldfld System.String OffServerLangPack/Pack::Locale
+ldstr _
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue IL_0216: ldloc.3
+ldloc.s V_4
+ldstr files
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.s V_6
+ldloc.s V_6
+brfalse IL_01ff: ldloc.s V_5
+ldloc.s V_6
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Newtonsoft.Json.Linq.JToken>::GetEnumerator()
+stloc.s V_8
+br IL_01e5: ldloc.s V_8
+ldloc.s V_8
+callvirt !0 System.Collections.Generic.IEnumerator`1<Newtonsoft.Json.Linq.JToken>::get_Current()
+stloc.s V_9
+ldloc.s V_9
+ldstr name
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_0153: stloc.s V_10
+pop 
+ldstr 
+stloc.s V_10
+ldloc.s V_10
+ldstr server.po
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_017f: ldloc.s V_5
+ldloc.s V_10
+ldstr messages.po
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_017f: ldloc.s V_5
+ldloc.s V_10
+ldstr language.json
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brtrue.s IL_01e5: ldloc.s V_8
+ldloc.s V_5
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerLangPack/Pack::Files
+ldloc.s V_10
+ldloc.s V_9
+ldstr sha256
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_01a2: newobj System.Void System.Collections.Generic.KeyValuePair`2<System.String,System.String>::.ctor(!0,!1)
+pop 
+ldstr 
+newobj System.Void System.Collections.Generic.KeyValuePair`2<System.String,System.String>::.ctor(!0,!1)
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::Add(!0)
+ldloc.s V_5
+ldfld System.Collections.Generic.List`1<System.String> OffServerLangPack/Pack::Urls
+ldloc.s V_9
+ldstr url
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JToken::get_Item(System.Object)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_01e0: callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+pop 
+ldstr /i18n/packs/
+ldloc.s V_5
+ldfld System.String OffServerLangPack/Pack::Locale
+ldstr /
+ldloc.s V_10
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldloc.s V_8
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue IL_0130: ldloc.s V_8
+leave.s IL_01ff: ldloc.s V_5
+ldloc.s V_8
+brfalse.s IL_01fe: endfinally
+ldloc.s V_8
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.s V_5
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerLangPack/Pack::Files
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_Count()
+ldc.i4.0 
+ble.s IL_0216: ldloc.3
+ldloc.0 
+ldloc.s V_5
+callvirt System.Void System.Collections.Generic.List`1<OffServerLangPack/Pack>::Add(!0)
+ldloc.3 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue IL_0032: ldloc.3
+leave.s IL_022d: ldloc.0
+ldloc.3 
+brfalse.s IL_022c: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+stloc.2 
+leave.s IL_024d: ldloc.2
+stloc.s V_11
+ldstr [LangPack] index: 
+ldloc.s V_11
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogWarning(System.Object)
+ldnull 
+stloc.2 
+leave.s IL_024d: ldloc.2
+ldloc.2 
+ret 
+METHOD System.String OffServerLangPack::InstalledVersion(System.String)
+ldarg.0 
+call System.String OffServerI18n::PackDir(System.String)
+stloc.0 
+ldloc.0 
+call System.Boolean System.IO.Directory::Exists(System.String)
+brtrue.s IL_0013: ldloc.0
+ldnull 
+stloc.2 
+leave.s IL_0077: ldloc.2
+ldloc.0 
+ldstr language.json
+call System.String System.IO.Path::Combine(System.String,System.String)
+stloc.1 
+ldloc.1 
+call System.Boolean System.IO.File::Exists(System.String)
+brfalse.s IL_0043: ldloc.0
+ldloc.1 
+call System.String System.IO.File::ReadAllText(System.String)
+ldstr version
+call System.String OffServerI18n::JsonField(System.String,System.String)
+dup 
+brtrue.s IL_0040: stloc.2
+pop 
+ldstr 
+stloc.2 
+leave.s IL_0077: ldloc.2
+ldloc.0 
+ldstr server.po
+call System.String System.IO.Path::Combine(System.String,System.String)
+call System.Boolean System.IO.File::Exists(System.String)
+brtrue.s IL_006a: ldstr ""
+ldloc.0 
+ldstr messages.po
+call System.String System.IO.Path::Combine(System.String,System.String)
+call System.Boolean System.IO.File::Exists(System.String)
+brtrue.s IL_006a: ldstr ""
+ldnull 
+br.s IL_006f: stloc.2
+ldstr 
+stloc.2 
+leave.s IL_0077: ldloc.2
+pop 
+ldnull 
+stloc.2 
+leave.s IL_0077: ldloc.2
+ldloc.2 
+ret 
+METHOD System.Void OffServerLangPack::ShowPage(System.Collections.Generic.List`1<OffServerLangPack/Pack>,System.Int32)
+newobj System.Void OffServerLangPack/<>c__DisplayClass14_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+ldloc.0 
+ldarg.1 
+stfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldc.i4.1 
+ldloc.0 
+ldfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerLangPack/Pack>::get_Count()
+ldc.i4.3 
+add 
+ldc.i4.1 
+sub 
+ldc.i4.3 
+div 
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stloc.1 
+ldloc.0 
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldloc.1 
+rem 
+ldloc.1 
+add 
+ldloc.1 
+rem 
+stfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+newobj System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::.ctor()
+stloc.2 
+ldloc.0 
+newobj System.Void System.Collections.Generic.List`1<System.Action>::.ctor()
+stfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldc.i4.3 
+mul 
+stloc.s V_4
+br IL_0200: ldloc.s V_4
+newobj System.Void OffServerLangPack/<>c__DisplayClass14_1::.ctor()
+stloc.s V_5
+ldloc.s V_5
+ldloc.0 
+stfld OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+ldloc.s V_5
+ldfld OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+ldfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+ldloc.s V_4
+callvirt !0 System.Collections.Generic.List`1<OffServerLangPack/Pack>::get_Item(System.Int32)
+stloc.s V_6
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Locale
+call System.String OffServerLangPack::InstalledVersion(System.String)
+stloc.s V_7
+ldloc.s V_6
+ldfld System.Int32 OffServerLangPack/Pack::Total
+ldc.i4.0 
+bgt.s IL_00a1: ldstr " · "
+ldstr 
+br.s IL_00d1: stloc.s V_8
+ldstr  · 
+ldc.i4.s 100
+ldloc.s V_6
+ldfld System.Int32 OffServerLangPack/Pack::Translated
+mul 
+ldc.i4.1 
+ldloc.s V_6
+ldfld System.Int32 OffServerLangPack/Pack::Total
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+div 
+stloc.s V_10
+ldloca.s V_10
+call System.String System.Int32::ToString()
+ldstr %
+call System.String System.String::Concat(System.String,System.String,System.String)
+stloc.s V_8
+ldloc.s V_7
+brtrue.s IL_011a: ldloc.s V_7
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ⬇ 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Name
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  (
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Locale
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.s V_8
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stloc.s V_9
+br IL_01c2: ldloc.2
+ldloc.s V_7
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Version
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0177: ldc.i4.6
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ✓ 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Name
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  (
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Locale
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr  — โหลดซ้ำ
+ldstr  — reinstall
+call System.String OffServerLangPack::Tx(System.String,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stloc.s V_9
+br.s IL_01c2: ldloc.2
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ⟳ 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Name
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  (
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_6
+ldfld System.String OffServerLangPack/Pack::Locale
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr  — อัปเดต
+ldstr  — update
+call System.String OffServerLangPack::Tx(System.String,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stloc.s V_9
+ldloc.2 
+ldloc.s V_9
+ldc.i4.3 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.s V_5
+ldloc.s V_6
+stfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass14_1::captured
+ldloc.s V_5
+ldfld OffServerLangPack/<>c__DisplayClass14_0 OffServerLangPack/<>c__DisplayClass14_1::CS$<>8__locals1
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+ldloc.s V_5
+ldftn System.Void OffServerLangPack/<>c__DisplayClass14_1::<ShowPage>b__4()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.0 
+ldfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerLangPack/Pack>::get_Count()
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldc.i4.1 
+add 
+ldc.i4.3 
+mul 
+call System.Int32 System.Math::Min(System.Int32,System.Int32)
+blt IL_005e: newobj System.Void OffServerLangPack/<>c__DisplayClass14_1::.ctor()
+ldloc.1 
+ldc.i4.1 
+ble IL_02d5: ldloc.2
+ldloc.2 
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr หน้าถัดไป ▸ (
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldc.i4.1 
+add 
+stloc.s V_10
+ldloca.s V_10
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr /
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Next page ▸ (
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldc.i4.1 
+add 
+stloc.s V_10
+ldloca.s V_10
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr /
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.3 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass14_0::<ShowPage>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.2 
+ldstr 📁 โฟลเดอร์ภาษา · ต้นแบบแปล
+ldstr 📁 Language folder · template
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.3 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+ldsfld System.Action OffServerLangPack/<>c::<>9__14_1
+dup 
+brtrue.s IL_0318: callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+pop 
+ldsfld OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+ldftn System.Void OffServerLangPack/<>c::<ShowPage>b__14_1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action OffServerLangPack/<>c::<>9__14_1
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.2 
+ldstr ปิด
+ldstr Close
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.0 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+ldsfld System.Action OffServerLangPack/<>c::<>9__14_2
+dup 
+brtrue.s IL_0360: callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+pop 
+ldsfld OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+ldftn System.Void OffServerLangPack/<>c::<ShowPage>b__14_2()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action OffServerLangPack/<>c::<>9__14_2
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerLangPack/Pack>::get_Count()
+brfalse.s IL_0383: ldstr "เซิร์ฟยังไม่มีแพ็กภาษา — ใส่ไฟล์เองได้ที่ «โฟลเดอร์ภาษา»"
+ldstr เลือกภาษาเพื่อดาวน์โหลด แล้วเปลี่ยนภาษาที่แถว «ภาษา» ด้านบน
+ภาษาที่ยังแปลไม่ครบจะเห็นอังกฤษแทน
+ldstr Pick a language to download, then switch at the «Language» row above.
+Untranslated text falls back to English.
+call System.String OffServerLangPack::Tx(System.String,System.String)
+br.s IL_0392: stloc.3
+ldstr เซิร์ฟยังไม่มีแพ็กภาษา — ใส่ไฟล์เองได้ที่ «โฟลเดอร์ภาษา»
+ldstr The server has no language packs yet — add your own in «Language folder»
+call System.String OffServerLangPack::Tx(System.String,System.String)
+stloc.3 
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr แพ็กภาษา
+ldstr Language packs
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldloc.3 
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass14_0::<ShowPage>b__3(System.Int32)
+newobj System.Void System.Action`1<System.Int32>::.ctor(System.Object,System.IntPtr)
+ldloc.2 
+callvirt !0[] System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::ToArray()
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action`1<System.Int32>,Durango.UI.MessageBox/Button[])
+ret 
+METHOD System.Void OffServerLangPack::ShowFolderMenu(System.String)
+newobj System.Void OffServerLangPack/<>c__DisplayClass15_0::.ctor()
+stloc.0 
+ldloc.0 
+call System.String OffServerI18n::get_LanguagesDir()
+stfld System.String OffServerLangPack/<>c__DisplayClass15_0::dir
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+beq.s IL_0024: ldc.i4.1
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.8 
+ceq 
+br.s IL_0025: stloc.1
+ldc.i4.1 
+stloc.1 
+call System.Collections.Generic.List`1<OffServerI18n/PackInfo> OffServerI18n::DiscoverPacks()
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor()
+stloc.2 
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<OffServerI18n/PackInfo>::GetEnumerator()
+stloc.s V_5
+br.s IL_0066: ldloca.s V_5
+ldloca.s V_5
+call !0 System.Collections.Generic.List`1/Enumerator<OffServerI18n/PackInfo>::get_Current()
+stloc.s V_6
+ldloc.2 
+ldloc.s V_6
+ldfld System.String OffServerI18n/PackInfo::Name
+ldstr  (
+ldloc.s V_6
+ldfld System.String OffServerI18n/PackInfo::Locale
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldloca.s V_5
+call System.Boolean System.Collections.Generic.List`1/Enumerator<OffServerI18n/PackInfo>::MoveNext()
+brtrue.s IL_003a: ldloca.s V_5
+leave.s IL_007f: ldc.i4.8
+ldloca.s V_5
+constrained. System.Collections.Generic.List`1/Enumerator<OffServerI18n/PackInfo>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldc.i4.8 
+newarr System.String
+dup 
+ldc.i4.0 
+ldarg.0 
+brtrue.s IL_0091: ldarg.0
+ldstr 
+br.s IL_009c: stelem.ref
+ldarg.0 
+ldstr 
+
+
+call System.String System.String::Concat(System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr ที่อยู่: 
+ldstr Path: 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldloc.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass15_0::dir
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 
+
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr ใส่ไฟล์ที่ Languages/<รหัสภาษา>/ เช่น vi_VN/ — messages.po (ข้อความเกม) · server.po (ข้อความเซิร์ฟ) · language.json {"name": "ชื่อภาษา"}
+ldstr Put files in Languages/<locale>/ e.g. vi_VN/ — messages.po (game text) · server.po (server text) · language.json {"name": "Language name"}
+call System.String OffServerLangPack::Tx(System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr 
+
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr ในเครื่องตอนนี้: 
+ldstr Installed: 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.2 
+callvirt System.Int32 System.Collections.Generic.List`1<System.String>::get_Count()
+brfalse.s IL_0108: ldstr "-"
+ldstr , 
+ldloc.2 
+callvirt !0[] System.Collections.Generic.List`1<System.String>::ToArray()
+call System.String System.String::Join(System.String,System.String[])
+br.s IL_010d: stelem.ref
+ldstr -
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stloc.3 
+newobj System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::.ctor()
+stloc.s V_4
+ldloc.0 
+newobj System.Void System.Collections.Generic.List`1<System.Action>::.ctor()
+stfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+ldloc.1 
+brtrue.s IL_015f: ldloc.s V_4
+ldloc.s V_4
+ldstr เปิดโฟลเดอร์
+ldstr Open folder
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.3 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass15_0::<ShowFolderMenu>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.s V_4
+ldstr โหลดไฟล์ต้นแบบสำหรับแปล
+ldstr Download translation template
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.3 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+ldnull 
+ldftn System.Void OffServerLangPack::DownloadTemplate()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.s V_4
+ldstr รีเฟรชรายการภาษา
+ldstr Refresh language list
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.3 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+ldsfld System.Action OffServerLangPack/<>c::<>9__15_1
+dup 
+brtrue.s IL_01d9: callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+pop 
+ldsfld OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+ldftn System.Void OffServerLangPack/<>c::<ShowFolderMenu>b__15_1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action OffServerLangPack/<>c::<>9__15_1
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+ldloc.s V_4
+ldstr ปิด
+ldstr Close
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.i4.0 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+callvirt System.Void System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::Add(!0)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+ldsfld System.Action OffServerLangPack/<>c::<>9__15_2
+dup 
+brtrue.s IL_0222: callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+pop 
+ldsfld OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+ldftn System.Void OffServerLangPack/<>c::<ShowFolderMenu>b__15_2()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action OffServerLangPack/<>c::<>9__15_2
+callvirt System.Void System.Collections.Generic.List`1<System.Action>::Add(!0)
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr โฟลเดอร์ภาษา
+ldstr Language folder
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldloc.3 
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass15_0::<ShowFolderMenu>b__3(System.Int32)
+newobj System.Void System.Action`1<System.Int32>::.ctor(System.Object,System.IntPtr)
+ldloc.s V_4
+callvirt !0[] System.Collections.Generic.List`1<Durango.UI.MessageBox/Button>::ToArray()
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action`1<System.Int32>,Durango.UI.MessageBox/Button[])
+ret 
+METHOD System.Void OffServerLangPack::OpenFolder(System.String)
+ldarg.0 
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldstr file:///
+ldarg.0 
+ldc.i4.s 92
+ldc.i4.s 47
+callvirt System.String System.String::Replace(System.Char,System.Char)
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Application::OpenURL(System.String)
+leave.s IL_0049: ret
+stloc.0 
+ldstr เปิดโฟลเดอร์ไม่ได้: 
+ldstr Could not open the folder: 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldloc.0 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+leave.s IL_0049: ret
+ret 
+METHOD System.Void OffServerLangPack::Download(OffServerLangPack/Pack,System.Action)
+ldsfld System.Boolean OffServerLangPack::_busy
+brfalse.s IL_0008: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean OffServerLangPack::_busy
+ldstr กำลังดาวน์โหลด 
+ldstr Downloading 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldarg.0 
+ldfld System.String OffServerLangPack/Pack::Name
+ldstr …
+call System.String System.String::Concat(System.String,System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+call System.String OffServerI18n::get_LanguagesDir()
+ldstr _download_
+ldarg.0 
+ldfld System.String OffServerLangPack/Pack::Locale
+call System.String System.String::Concat(System.String,System.String)
+call System.String System.IO.Path::Combine(System.String,System.String)
+stloc.0 
+ldloc.0 
+call System.Boolean System.IO.Directory::Exists(System.String)
+brfalse.s IL_0061: ldloc.0
+ldloc.0 
+ldc.i4.1 
+call System.Void System.IO.Directory::Delete(System.String,System.Boolean)
+ldloc.0 
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+leave.s IL_0097: ldarg.0
+stloc.1 
+ldc.i4.0 
+stsfld System.Boolean OffServerLangPack::_busy
+ldstr ดาวน์โหลดไม่ได้: 
+ldstr Download failed: 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+leave.s IL_00a0: ret
+ldarg.0 
+ldc.i4.0 
+ldloc.0 
+ldarg.1 
+call System.Void OffServerLangPack::DownloadNext(OffServerLangPack/Pack,System.Int32,System.String,System.Action)
+ret 
+METHOD System.Void OffServerLangPack::DownloadNext(OffServerLangPack/Pack,System.Int32,System.String,System.Action)
+newobj System.Void OffServerLangPack/<>c__DisplayClass18_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass18_0::p
+ldloc.0 
+ldarg.1 
+stfld System.Int32 OffServerLangPack/<>c__DisplayClass18_0::i
+ldloc.0 
+ldarg.2 
+stfld System.String OffServerLangPack/<>c__DisplayClass18_0::tmp
+ldloc.0 
+ldarg.3 
+stfld System.Action OffServerLangPack/<>c__DisplayClass18_0::after
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass18_0::i
+ldloc.0 
+ldfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass18_0::p
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerLangPack/Pack::Files
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_Count()
+blt.s IL_0052: ldloc.0
+ldloc.0 
+ldfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass18_0::p
+ldloc.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass18_0::tmp
+ldloc.0 
+ldfld System.Action OffServerLangPack/<>c__DisplayClass18_0::after
+call System.Void OffServerLangPack::Finish(OffServerLangPack/Pack,System.String,System.Action)
+ret 
+ldloc.0 
+ldfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass18_0::p
+ldfld System.Collections.Generic.List`1<System.String> OffServerLangPack/Pack::Urls
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass18_0::i
+callvirt !0 System.Collections.Generic.List`1<System.String>::get_Item(System.Int32)
+ldstr http
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_0096: ldloc.0
+call System.String OffServerLangPack::get_GatewayUrl()
+ldloc.0 
+ldfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass18_0::p
+ldfld System.Collections.Generic.List`1<System.String> OffServerLangPack/Pack::Urls
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass18_0::i
+callvirt !0 System.Collections.Generic.List`1<System.String>::get_Item(System.Int32)
+call System.String System.String::Concat(System.String,System.String)
+br.s IL_00ac: ldloc.0
+ldloc.0 
+ldfld OffServerLangPack/Pack OffServerLangPack/<>c__DisplayClass18_0::p
+ldfld System.Collections.Generic.List`1<System.String> OffServerLangPack/Pack::Urls
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass18_0::i
+callvirt !0 System.Collections.Generic.List`1<System.String>::get_Item(System.Int32)
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass18_0::<DownloadNext>b__0(System.Byte[])
+newobj System.Void System.Action`1<System.Byte[]>::.ctor(System.Object,System.IntPtr)
+call System.Void OffServerLangPack::Get(System.String,System.Action`1<System.Byte[]>)
+ret 
+METHOD System.Void OffServerLangPack::Finish(OffServerLangPack/Pack,System.String,System.Action)
+ldc.i4.0 
+stsfld System.Boolean OffServerLangPack::_busy
+ldarg.0 
+ldfld System.String OffServerLangPack/Pack::Locale
+call System.String OffServerI18n::PackDir(System.String)
+stloc.0 
+ldloc.0 
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerLangPack/Pack::Files
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::GetEnumerator()
+stloc.1 
+br.s IL_005e: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_Current()
+stloc.2 
+ldloc.0 
+ldloca.s V_2
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Key()
+call System.String System.IO.Path::Combine(System.String,System.String)
+stloc.3 
+ldloc.3 
+call System.Boolean System.IO.File::Exists(System.String)
+brfalse.s IL_004b: ldarg.1
+ldloc.3 
+call System.Void System.IO.File::Delete(System.String)
+ldarg.1 
+ldloca.s V_2
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Key()
+call System.String System.IO.Path::Combine(System.String,System.String)
+ldloc.3 
+call System.Void System.IO.File::Move(System.String,System.String)
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::MoveNext()
+brtrue.s IL_0027: ldloca.s V_1
+leave.s IL_0077: ldarg.1
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.1 
+ldc.i4.1 
+call System.Void System.IO.Directory::Delete(System.String,System.Boolean)
+leave.s IL_00a9: call System.Void LocalizeSystem::ReloadLanguages()
+stloc.s V_4
+ldstr ติดตั้งไม่ได้: 
+ldstr Install failed: 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldloc.s V_4
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+leave.s IL_00fe: ret
+call System.Void LocalizeSystem::ReloadLanguages()
+call System.String LocalizeSystem::get_Locale()
+ldarg.0 
+ldfld System.String OffServerLangPack/Pack::Locale
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_00cc: call System.Void Durango.UI.ConfigMainWidget::RefreshOffServerLanguages()
+ldarg.0 
+ldfld System.String OffServerLangPack/Pack::Locale
+call System.String LocalizeSystem::SetLocale(System.String)
+pop 
+call System.Void Durango.UI.ConfigMainWidget::RefreshOffServerLanguages()
+ldarg.0 
+ldfld System.String OffServerLangPack/Pack::Name
+ldstr  พร้อมใช้ — เลือกที่แถว «ภาษา»
+ldstr  is ready — pick it at the «Language» row
+call System.String OffServerLangPack::Tx(System.String,System.String)
+call System.String System.String::Concat(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldarg.2 
+brfalse.s IL_00fe: ret
+ldarg.2 
+callvirt System.Void System.Action::Invoke()
+ret 
+METHOD System.Void OffServerLangPack::DownloadTemplate()
+call System.String OffServerLangPack::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0015: ret
+ldsfld System.Boolean OffServerLangPack::_busy
+brfalse.s IL_0016: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean OffServerLangPack::_busy
+call System.String OffServerI18n::get_LanguagesDir()
+ldstr _template
+call System.String System.IO.Path::Combine(System.String,System.String)
+stloc.1 
+ldc.i4.2 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr server.pot
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr messages.pot
+stelem.ref 
+stloc.2 
+ldloc.0 
+ldloc.1 
+ldloc.2 
+ldc.i4.0 
+call System.Void OffServerLangPack::DownloadTemplateNext(System.String,System.String,System.String[],System.Int32)
+ret 
+METHOD System.Void OffServerLangPack::DownloadTemplateNext(System.String,System.String,System.String[],System.Int32)
+newobj System.Void OffServerLangPack/<>c__DisplayClass21_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.1 
+stfld System.String OffServerLangPack/<>c__DisplayClass21_0::dir
+ldloc.0 
+ldarg.2 
+stfld System.String[] OffServerLangPack/<>c__DisplayClass21_0::names
+ldloc.0 
+ldarg.3 
+stfld System.Int32 OffServerLangPack/<>c__DisplayClass21_0::i
+ldloc.0 
+ldarg.0 
+stfld System.String OffServerLangPack/<>c__DisplayClass21_0::gw
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass21_0::i
+ldloc.0 
+ldfld System.String[] OffServerLangPack/<>c__DisplayClass21_0::names
+ldlen 
+conv.i4 
+blt.s IL_005d: ldloc.0
+ldc.i4.0 
+stsfld System.Boolean OffServerLangPack::_busy
+ldstr ไฟล์ต้นแบบอยู่ที่ 
+ldstr Templates saved to 
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldloc.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass21_0::dir
+call System.String System.String::Concat(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+ldloc.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass21_0::gw
+ldstr /i18n/template/
+ldloc.0 
+ldfld System.String[] OffServerLangPack/<>c__DisplayClass21_0::names
+ldloc.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass21_0::i
+ldelem.ref 
+call System.String System.String::Concat(System.String,System.String,System.String)
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass21_0::<DownloadTemplateNext>b__0(System.Byte[])
+newobj System.Void System.Action`1<System.Byte[]>::.ctor(System.Object,System.IntPtr)
+call System.Void OffServerLangPack::Get(System.String,System.Action`1<System.Byte[]>)
+ret 
+METHOD System.Boolean OffServerLangPack::ShaOk(System.Byte[],System.String)
+ldarg.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: call System.Security.Cryptography.SHA256 System.Security.Cryptography.SHA256::Create()
+ldc.i4.1 
+ret 
+call System.Security.Cryptography.SHA256 System.Security.Cryptography.SHA256::Create()
+stloc.0 
+ldloc.0 
+ldarg.0 
+callvirt System.Byte[] System.Security.Cryptography.HashAlgorithm::ComputeHash(System.Byte[])
+ldc.i4.s 64
+newobj System.Void System.Text.StringBuilder::.ctor(System.Int32)
+stloc.1 
+stloc.2 
+ldc.i4.0 
+stloc.3 
+br.s IL_0040: ldloc.3
+ldloc.2 
+ldloc.3 
+ldelem.u1 
+stloc.s V_4
+ldloc.1 
+ldloca.s V_4
+ldstr x2
+call System.String System.Byte::ToString(System.String)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.2 
+ldlen 
+conv.i4 
+blt.s IL_0024: ldloc.2
+ldloc.1 
+callvirt System.String System.Object::ToString()
+ldarg.1 
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+stloc.s V_5
+leave.s IL_0061: ldloc.s V_5
+ldloc.0 
+brfalse.s IL_0060: endfinally
+ldloc.0 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.s V_5
+ret 
+METHOD System.Void OffServerLangPack::Get(System.String,System.Action`1<System.Byte[]>)
+newobj System.Void OffServerLangPack/<>c__DisplayClass23_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.1 
+stfld System.Action`1<System.Byte[]> OffServerLangPack/<>c__DisplayClass23_0::done
+ldarg.0 
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.0 
+ldloc.0 
+ldftn System.Void OffServerLangPack/<>c__DisplayClass23_0::<Get>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+dup 
+ldc.r8 60
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+dup 
+ldc.r8 10
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_ConnectTimeout(System.TimeSpan)
+dup 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+leave.s IL_0086: ret
+stloc.1 
+ldstr [LangPack] GET 
+ldarg.0 
+ldstr : 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::LogWarning(System.Object)
+ldloc.0 
+ldfld System.Action`1<System.Byte[]> OffServerLangPack/<>c__DisplayClass23_0::done
+ldnull 
+callvirt System.Void System.Action`1<System.Byte[]>::Invoke(!0)
+leave.s IL_0086: ret
+ret 

@@ -1,0 +1,555 @@
+OffServerDyeUI : System.Object
+FIELD System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State> OffServerDyeUI::States
+FIELD System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State> OffServerDyeUI::Lists
+FIELD System.Reflection.BindingFlags OffServerDyeUI::Fields
+METHOD T OffServerDyeUI::Get(System.Object,System.String)
+ldarg.0 
+callvirt System.Type System.Object::GetType()
+ldarg.1 
+ldc.i4.s 52
+callvirt System.Reflection.FieldInfo System.Type::GetField(System.String,System.Reflection.BindingFlags)
+ldarg.0 
+callvirt System.Object System.Reflection.FieldInfo::GetValue(System.Object)
+unbox.any T
+ret 
+METHOD OffServerDyeUI/State OffServerDyeUI::StateOf(Durango.UI.DyeGroup)
+newobj System.Void OffServerDyeUI/<>c__DisplayClass5_0::.ctor()
+stloc.0 
+ldsfld System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State> OffServerDyeUI::States
+ldarg.0 
+ldloc.0 
+ldflda OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass5_0::state
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State>::TryGetValue(!0,!1&)
+brtrue.s IL_0047: ldloc.0
+ldloc.0 
+newobj System.Void OffServerDyeUI/State::.ctor()
+stfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass5_0::state
+ldsfld System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State> OffServerDyeUI::States
+ldarg.0 
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass5_0::state
+callvirt System.Void System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State>::Add(!0,!1)
+ldarg.0 
+ldloc.0 
+ldftn System.Void OffServerDyeUI/<>c__DisplayClass5_0::<StateOf>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void UIBase::add_OnCloseSucceed(System.Action)
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass5_0::state
+ret 
+METHOD System.Void OffServerDyeUI::TargetChanged(Durango.UI.DyeGroup)
+ldarg.0 
+call OffServerDyeUI/State OffServerDyeUI::StateOf(Durango.UI.DyeGroup)
+ldarg.0 
+ldstr _targetItemList
+call T OffServerDyeUI::Get<Durango.UI.ItemList>(System.Object,System.String)
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemList::get_LastSelectedItem()
+stloc.0 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.0 
+brfalse.s IL_0027: ldnull
+ldloc.0 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+br.s IL_0028: callvirt System.Void DyeSelection::SetTarget(System.String)
+ldnull 
+callvirt System.Void DyeSelection::SetTarget(System.String)
+ldloc.0 
+brfalse.s IL_0052: ldarg.0
+ldarg.0 
+ldstr _dyePartsWidget
+call T OffServerDyeUI::Get<Durango.UI.DyePartsWidget>(System.Object,System.String)
+ldloc.0 
+callvirt System.Void Durango.UI.DyePartsWidget::Set(Durango.Logic.Item.ItemData)
+ldarg.0 
+ldstr _dyeResultWidget
+call T OffServerDyeUI::Get<Durango.UI.DyeResultWidget>(System.Object,System.String)
+ldloc.0 
+callvirt System.Void Durango.UI.DyeResultWidget::SetModel(Durango.Logic.Item.ItemData)
+ldarg.0 
+call System.Void OffServerDyeUI::Refresh(Durango.UI.DyeGroup)
+ret 
+METHOD System.Void OffServerDyeUI::DyeChanged(Durango.UI.DyeGroup)
+ldarg.0 
+call OffServerDyeUI/State OffServerDyeUI::StateOf(Durango.UI.DyeGroup)
+stloc.0 
+ldloc.0 
+ldfld System.Boolean OffServerDyeUI/State::Syncing
+brfalse.s IL_0010: ldarg.0
+ret 
+ldarg.0 
+ldstr _dyeItemList
+call T OffServerDyeUI::Get<Durango.UI.ItemList>(System.Object,System.String)
+stloc.1 
+ldarg.0 
+ldstr _targetItemList
+call T OffServerDyeUI::Get<Durango.UI.ItemList>(System.Object,System.String)
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemList::get_LastSelectedItem()
+stloc.2 
+ldarg.0 
+ldstr _dyePartsWidget
+call T OffServerDyeUI::Get<Durango.UI.DyePartsWidget>(System.Object,System.String)
+callvirt System.Int32 Durango.UI.DyePartsWidget::get_SelectedPart()
+stloc.3 
+ldloc.2 
+brfalse.s IL_004a: ret
+ldloc.2 
+ldloc.3 
+callvirt System.Boolean Durango.Logic.Item.ItemData::IsDyeable(Shared.Item.ColorChannel)
+brtrue.s IL_004b: ldloc.0
+ret 
+ldloc.0 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.3 
+callvirt System.Void DyeSelection::SelectChannel(System.Int32)
+ldloc.1 
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemList::get_LastClickedItem()
+brfalse.s IL_0077: ldloc.0
+ldloc.0 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.1 
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemList::get_LastClickedItem()
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+callvirt System.Void DyeSelection::Assign(System.String)
+br.s IL_00df: ldarg.0
+ldloc.0 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+callvirt System.String[] DyeSelection::Snapshot()
+stloc.s V_4
+ldc.i4.0 
+stloc.s V_5
+br.s IL_00d7: ldloc.s V_5
+newobj System.Void OffServerDyeUI/<>c__DisplayClass7_0::.ctor()
+stloc.s V_6
+ldloc.s V_6
+ldloc.s V_4
+ldloc.s V_5
+ldelem.ref 
+stfld System.String OffServerDyeUI/<>c__DisplayClass7_0::id
+ldloc.s V_6
+ldfld System.String OffServerDyeUI/<>c__DisplayClass7_0::id
+brfalse.s IL_00d1: ldloc.s V_5
+ldloc.1 
+callvirt System.Collections.Generic.List`1<Durango.Logic.Item.ItemData> Durango.UI.ItemList::get_SelectedList()
+ldloc.s V_6
+ldftn System.Boolean OffServerDyeUI/<>c__DisplayClass7_0::<DyeChanged>b__0(Durango.Logic.Item.ItemData)
+newobj System.Void System.Func`2<Durango.Logic.Item.ItemData,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call System.Boolean System.Linq.Enumerable::Any<Durango.Logic.Item.ItemData>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+brtrue.s IL_00d1: ldloc.s V_5
+ldloc.0 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.s V_6
+ldfld System.String OffServerDyeUI/<>c__DisplayClass7_0::id
+callvirt System.Void DyeSelection::Remove(System.String)
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.s V_4
+ldlen 
+conv.i4 
+blt.s IL_0089: newobj System.Void OffServerDyeUI/<>c__DisplayClass7_0::.ctor()
+ldarg.0 
+call System.Void OffServerDyeUI::Refresh(Durango.UI.DyeGroup)
+ret 
+METHOD System.Void OffServerDyeUI::Refresh(Durango.UI.DyeGroup)
+newobj System.Void OffServerDyeUI/<>c__DisplayClass8_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldloc.0 
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+call OffServerDyeUI/State OffServerDyeUI::StateOf(Durango.UI.DyeGroup)
+stfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldstr _targetItemList
+call T OffServerDyeUI::Get<Durango.UI.ItemList>(System.Object,System.String)
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemList::get_LastSelectedItem()
+stloc.1 
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldstr _dyeItemList
+call T OffServerDyeUI::Get<Durango.UI.ItemList>(System.Object,System.String)
+stloc.2 
+ldloc.0 
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldstr _dyePartsWidget
+call T OffServerDyeUI::Get<Durango.UI.DyePartsWidget>(System.Object,System.String)
+stfld Durango.UI.DyePartsWidget OffServerDyeUI/<>c__DisplayClass8_0::parts
+ldloc.0 
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldstr _dyeResultWidget
+call T OffServerDyeUI::Get<Durango.UI.DyeResultWidget>(System.Object,System.String)
+stfld Durango.UI.DyeResultWidget OffServerDyeUI/<>c__DisplayClass8_0::result
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldstr _applyButton
+call T OffServerDyeUI::Get<Durango.UI.Control.SelectableButton>(System.Object,System.String)
+stloc.3 
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.1 
+brfalse.s IL_0098: ldnull
+ldloc.1 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+br.s IL_0099: callvirt System.Void DyeSelection::SetTarget(System.String)
+ldnull 
+callvirt System.Void DyeSelection::SetTarget(System.String)
+ldsfld System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State> OffServerDyeUI::Lists
+ldloc.2 
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+callvirt System.Void System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State>::set_Item(!0,!1)
+ldloc.2 
+ldc.i4.m1 
+callvirt System.Void Durango.UI.ItemList::set_SelectableCount(System.Int32)
+ldloc.2 
+ldc.i4.1 
+callvirt System.Void Durango.UI.ItemList::set_MultiIconMode(Durango.UI.ItemIconWidget/MultiIconMode)
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldc.i4.1 
+stfld System.Boolean OffServerDyeUI/State::Syncing
+ldloc.2 
+callvirt System.Collections.Generic.List`1<Durango.Logic.Item.ItemData> Durango.UI.ItemList::get_SelectedList()
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::Clear()
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+callvirt System.String[] DyeSelection::Snapshot()
+stloc.s V_6
+ldc.i4.0 
+stloc.s V_7
+br.s IL_014c: ldloc.s V_7
+newobj System.Void OffServerDyeUI/<>c__DisplayClass8_1::.ctor()
+stloc.s V_8
+ldloc.s V_8
+ldloc.s V_6
+ldloc.s V_7
+ldelem.ref 
+stfld System.String OffServerDyeUI/<>c__DisplayClass8_1::id
+ldloc.s V_8
+ldfld System.String OffServerDyeUI/<>c__DisplayClass8_1::id
+brfalse.s IL_0146: ldloc.s V_7
+ldloc.2 
+ldloc.s V_8
+ldftn System.Boolean OffServerDyeUI/<>c__DisplayClass8_1::<Refresh>b__1(Durango.Logic.Item.ItemData)
+newobj System.Void System.Func`2<Durango.Logic.Item.ItemData,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call !!0 System.Linq.Enumerable::FirstOrDefault<Durango.Logic.Item.ItemData>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+stloc.s V_9
+ldloc.s V_9
+brtrue.s IL_0139: ldloc.2
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.s V_8
+ldfld System.String OffServerDyeUI/<>c__DisplayClass8_1::id
+callvirt System.Void DyeSelection::Remove(System.String)
+br.s IL_0146: ldloc.s V_7
+ldloc.2 
+callvirt System.Collections.Generic.List`1<Durango.Logic.Item.ItemData> Durango.UI.ItemList::get_SelectedList()
+ldloc.s V_9
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::Add(!0)
+ldloc.s V_7
+ldc.i4.1 
+add 
+stloc.s V_7
+ldloc.s V_7
+ldloc.s V_6
+ldlen 
+conv.i4 
+blt.s IL_00eb: newobj System.Void OffServerDyeUI/<>c__DisplayClass8_1::.ctor()
+ldloc.2 
+ldc.i4.0 
+callvirt System.Void Durango.UI.ItemList::UpdateSelectedItems(System.Boolean)
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldc.i4.0 
+stfld System.Boolean OffServerDyeUI/State::Syncing
+ldloc.3 
+ldloc.1 
+brfalse.s IL_0184: ldc.i4.1
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+callvirt System.Int32 DyeSelection::get_Count()
+brfalse.s IL_0184: ldc.i4.1
+call System.Boolean OffServerDyeBatch::get_Active()
+br.s IL_0185: callvirt System.Void Durango.UI.Control.Selectable::set_Disabled(System.Boolean)
+ldc.i4.1 
+callvirt System.Void Durango.UI.Control.Selectable::set_Disabled(System.Boolean)
+ldloc.1 
+brtrue.s IL_01a4: ldloc.1
+ldloc.0 
+ldfld Durango.UI.DyePartsWidget OffServerDyeUI/<>c__DisplayClass8_0::parts
+callvirt System.Void Durango.UI.DyePartsWidget::Reset()
+ldloc.0 
+ldfld Durango.UI.DyeResultWidget OffServerDyeUI/<>c__DisplayClass8_0::result
+callvirt System.Void Durango.UI.DyeResultWidget::SetUnknownModel()
+ret 
+ldloc.1 
+callvirt ItemColor Durango.Logic.Item.ItemData::get_Colors()
+stloc.s V_4
+ldc.i4.0 
+stloc.s V_10
+br IL_0255: ldloc.s V_10
+newobj System.Void OffServerDyeUI/<>c__DisplayClass8_2::.ctor()
+stloc.s V_11
+ldloc.s V_11
+ldloc.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass8_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldloc.s V_10
+callvirt System.String DyeSelection::get_Item(System.Int32)
+stfld System.String OffServerDyeUI/<>c__DisplayClass8_2::id
+ldloc.s V_11
+ldfld System.String OffServerDyeUI/<>c__DisplayClass8_2::id
+brfalse.s IL_024f: ldloc.s V_10
+ldloc.2 
+ldloc.s V_11
+ldftn System.Boolean OffServerDyeUI/<>c__DisplayClass8_2::<Refresh>b__2(Durango.Logic.Item.ItemData)
+newobj System.Void System.Func`2<Durango.Logic.Item.ItemData,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call !!0 System.Linq.Enumerable::First<Durango.Logic.Item.ItemData>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+stloc.s V_12
+ldloc.s V_12
+ldstr decolorizer
+callvirt System.Boolean Durango.Logic.Item.ItemData::HasTag(System.String)
+brfalse.s IL_0230: ldloca.s V_4
+call T GameSystem`1<RecipeSystem>::Instance()
+ldloc.s V_10
+callvirt Crafting.Recipe RecipeSystem::GetBleachingRecipe(Shared.Item.ColorChannel)
+isinst Crafting.RecipeModify
+stloc.s V_13
+ldloca.s V_4
+ldloc.s V_10
+ldloc.s V_13
+brfalse.s IL_0224: ldc.r4 0
+ldloc.s V_13
+ldfld System.Single Crafting.RecipeModify::AddColorRate
+br.s IL_0229: call System.Void ItemColor::Bleaching(System.Int32,System.Single)
+ldc.r4 0
+call System.Void ItemColor::Bleaching(System.Int32,System.Single)
+br.s IL_024f: ldloc.s V_10
+ldloca.s V_4
+ldloc.s V_10
+ldloc.s V_12
+callvirt ItemColor Durango.Logic.Item.ItemData::get_Colors()
+stloc.s V_14
+ldloca.s V_14
+ldc.i4.0 
+call UnityEngine.Color ItemColor::get_Item(System.Int32)
+ldc.r4 0,8
+call System.Void ItemColor::Dyeing(System.Int32,UnityEngine.Color,System.Single)
+ldloc.s V_10
+ldc.i4.1 
+add 
+stloc.s V_10
+ldloc.s V_10
+ldc.i4.3 
+blt IL_01b4: newobj System.Void OffServerDyeUI/<>c__DisplayClass8_2::.ctor()
+ldloc.0 
+ldfld Durango.UI.DyeResultWidget OffServerDyeUI/<>c__DisplayClass8_0::result
+ldloc.s V_4
+callvirt System.Void Durango.UI.DyeResultWidget::SetColor(ItemColor)
+ldloc.0 
+ldloc.0 
+ldfld Durango.UI.DyePartsWidget OffServerDyeUI/<>c__DisplayClass8_0::parts
+callvirt System.Int32 Durango.UI.DyePartsWidget::get_SelectedPart()
+stfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+ldloc.0 
+ldfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+ldc.i4.0 
+blt.s IL_028d: ldnull
+ldloc.0 
+ldfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+ldc.i4.3 
+blt.s IL_0290: ldloc.2
+ldnull 
+br.s IL_02a2: stloc.s V_5
+ldloc.2 
+ldloc.0 
+ldftn System.Boolean OffServerDyeUI/<>c__DisplayClass8_0::<Refresh>b__0(Durango.Logic.Item.ItemData)
+newobj System.Void System.Func`2<Durango.Logic.Item.ItemData,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call !!0 System.Linq.Enumerable::FirstOrDefault<Durango.Logic.Item.ItemData>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+stloc.s V_5
+ldloc.s V_5
+brtrue.s IL_02b4: newobj System.Void OffServerDyeUI/<>c__DisplayClass8_3::.ctor()
+ldloc.0 
+ldfld Durango.UI.DyeResultWidget OffServerDyeUI/<>c__DisplayClass8_0::result
+callvirt System.Void Durango.UI.DyeResultWidget::ResetEstimate()
+ret 
+newobj System.Void OffServerDyeUI/<>c__DisplayClass8_3::.ctor()
+stloc.s V_15
+ldloc.s V_15
+ldloc.0 
+stfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldloc.s V_15
+ldloc.1 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+stfld System.String OffServerDyeUI/<>c__DisplayClass8_3::targetId
+ldloc.s V_15
+ldloc.s V_5
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+stfld System.String OffServerDyeUI/<>c__DisplayClass8_3::dyeId
+ldloc.s V_15
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass8_0::group
+ldstr _workbench
+call T OffServerDyeUI::Get<Artifact>(System.Object,System.String)
+ldloc.1 
+ldloc.s V_5
+ldloc.s V_15
+ldfld OffServerDyeUI/<>c__DisplayClass8_0 OffServerDyeUI/<>c__DisplayClass8_3::CS$<>8__locals1
+ldfld System.Int32 OffServerDyeUI/<>c__DisplayClass8_0::selected
+ldloc.s V_15
+ldftn System.Void OffServerDyeUI/<>c__DisplayClass8_3::<Refresh>b__3(System.Nullable`1<Messages.CraftEstimation>)
+newobj System.Void System.Action`1<System.Nullable`1<Messages.CraftEstimation>>::.ctor(System.Object,System.IntPtr)
+call System.Void CraftSystem::DyeingEstimate(Artifact,Durango.Logic.Item.ItemData,Durango.Logic.Item.ItemData,Shared.Item.ColorChannel,System.Action`1<System.Nullable`1<Messages.CraftEstimation>>)
+ret 
+METHOD System.Void OffServerDyeUI::Badge(Durango.UI.ItemIconWidget)
+ldarg.0 
+callvirt !!0 UnityEngine.Component::GetComponentInParent<Durango.UI.ItemList>()
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0027: ret
+ldarg.0 
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemIconWidget::get_Item()
+brfalse.s IL_0027: ret
+ldsfld System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State> OffServerDyeUI::Lists
+ldloc.1 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State>::TryGetValue(!0,!1&)
+brtrue.s IL_0028: ldloc.0
+ret 
+ldloc.0 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldarg.0 
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemIconWidget::get_Item()
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+callvirt System.Int32 DyeSelection::ChannelOf(System.String)
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+bge.s IL_0044: ldarg.0
+ret 
+ldarg.0 
+ldstr _multiSelector
+call T OffServerDyeUI::Get<System.Object>(System.Object,System.String)
+ldstr IndexLabel
+call T OffServerDyeUI::Get<UILabel>(System.Object,System.String)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+METHOD System.Void OffServerDyeUI::Apply(Durango.UI.DyeGroup)
+newobj System.Void OffServerDyeUI/<>c__DisplayClass10_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+call OffServerDyeUI/State OffServerDyeUI::StateOf(Durango.UI.DyeGroup)
+stloc.1 
+ldloc.0 
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+ldstr _targetItemList
+call T OffServerDyeUI::Get<Durango.UI.ItemList>(System.Object,System.String)
+callvirt Durango.Logic.Item.ItemData Durango.UI.ItemList::get_LastSelectedItem()
+stfld Durango.Logic.Item.ItemData OffServerDyeUI/<>c__DisplayClass10_0::target
+ldloc.0 
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+ldstr _workbench
+call T OffServerDyeUI::Get<Artifact>(System.Object,System.String)
+stfld Artifact OffServerDyeUI/<>c__DisplayClass10_0::workbench
+ldloc.0 
+ldfld Durango.Logic.Item.ItemData OffServerDyeUI/<>c__DisplayClass10_0::target
+brfalse.s IL_0074: ret
+ldloc.0 
+ldfld Artifact OffServerDyeUI/<>c__DisplayClass10_0::workbench
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0074: ret
+ldloc.1 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+callvirt System.Int32 DyeSelection::get_Count()
+brfalse.s IL_0074: ret
+call System.Boolean OffServerDyeBatch::get_Active()
+brfalse.s IL_0075: ldloc.0
+ret 
+ldloc.0 
+ldloc.1 
+ldfld DyeSelection OffServerDyeUI/State::Selection
+callvirt System.String[] DyeSelection::Snapshot()
+stfld System.String[] OffServerDyeUI/<>c__DisplayClass10_0::plan
+call T GameSystem`1<InventorySystem>::Instance()
+callvirt Durango.Logic.Item.Inventory InventorySystem::get_PlayerInventory()
+stloc.2 
+newobj System.Void System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::.ctor()
+dup 
+ldloc.0 
+ldfld Durango.Logic.Item.ItemData OffServerDyeUI/<>c__DisplayClass10_0::target
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::Add(!0)
+stloc.3 
+ldloc.0 
+ldfld System.String[] OffServerDyeUI/<>c__DisplayClass10_0::plan
+stloc.s V_4
+ldc.i4.0 
+stloc.s V_5
+br.s IL_00e3: ldloc.s V_5
+ldloc.s V_4
+ldloc.s V_5
+ldelem.ref 
+stloc.s V_6
+ldloc.s V_6
+brfalse.s IL_00dd: ldloc.s V_5
+ldloc.2 
+ldloc.s V_6
+callvirt Durango.Logic.Item.ItemData Durango.Logic.Item.Inventory::Find(System.String)
+stloc.s V_7
+ldloc.s V_7
+brtrue.s IL_00d5: ldloc.3
+ldloc.0 
+ldfld Durango.UI.DyeGroup OffServerDyeUI/<>c__DisplayClass10_0::group
+call System.Void OffServerDyeUI::Refresh(Durango.UI.DyeGroup)
+ret 
+ldloc.3 
+ldloc.s V_7
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::Add(!0)
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.s V_4
+ldlen 
+conv.i4 
+blt.s IL_00b0: ldloc.s V_4
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.3 
+callvirt !0[] System.Collections.Generic.List`1<Durango.Logic.Item.ItemData>::ToArray()
+ldloc.0 
+ldftn System.Void OffServerDyeUI/<>c__DisplayClass10_0::<Apply>b__0(System.String[])
+newobj System.Void System.Action`1<System.String[]>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.MessageBox::ShowLockConfirm(System.Collections.Generic.IList`1<Durango.Logic.Item.ItemData>,System.Action`1<System.String[]>)
+ret 
+METHOD System.Void OffServerDyeUI::.cctor()
+newobj System.Void System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<Durango.UI.DyeGroup,OffServerDyeUI/State> OffServerDyeUI::States
+newobj System.Void System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<Durango.UI.ItemList,OffServerDyeUI/State> OffServerDyeUI::Lists
+ret 

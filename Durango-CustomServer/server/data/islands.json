@@ -59,6 +59,18 @@
       "GatewayPort": 8690,
       "GamePort": 8691,
       "Address": "127.0.0.1:8690"
+    },
+    {
+      "Id": "isle06",
+      "Name": "Arid Basin",
+      "Terrain": "arid_basin_60_v2",
+      "MinLevel": 60,
+      "MaxLevel": 60,
+      "RequiredLevel": 48,
+      "Host": "127.0.0.1",
+      "GatewayPort": 8790,
+      "GamePort": 8791,
+      "Address": "127.0.0.1:8790"
     }
   ]
 }

@@ -544,6 +544,23 @@ public partial class Player
             FlushSurvival();
         }
         string targetId = msg.TargetEntityId ?? _battleTargetId;
+        // Older clients may not resolve a clickable collider for this added
+        // creature. Bind an otherwise targetless attack to the nearby showcase
+        // Giganotosaurus; normal impact geometry still validates each hit.
+        if (_world.AnimalManager?.Get(targetId) is not { IsAlive: true })
+        {
+            WorldPosition playerPosition = PlayerWorldPosition();
+            var nearbyGiga = _world.AnimalManager?.All
+                .Where(a => a.EntityType == 2213 && a.IsAlive && !a.Captured && !a.CorpseDisposed)
+                .Select(a => new { Animal = a, Position = a.PositionAt(now) })
+                .Select(x => new { x.Animal, Distance = MathF.Sqrt(
+                    MathF.Pow(x.Position.x - playerPosition.x, 2) +
+                    MathF.Pow(x.Position.y - playerPosition.y, 2)) })
+                .Where(x => x.Distance <= 1_600f)
+                .OrderBy(x => x.Distance)
+                .FirstOrDefault();
+            if (nearbyGiga != null) targetId = nearbyGiga.Animal.EntityId;
+        }
         SetBattleMode(true, targetId);
         if (action.defense_info != null && action.meta.skill_category == Shared.Skill.Category.Defense)
         {

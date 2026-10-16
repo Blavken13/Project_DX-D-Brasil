@@ -1,0 +1,5 @@
+Shared.Faction.MissionTodoOrder : System.Enum
+FIELD System.Int32 Shared.Faction.MissionTodoOrder::value__
+FIELD Shared.Faction.MissionTodoOrder Shared.Faction.MissionTodoOrder::Invalid
+FIELD Shared.Faction.MissionTodoOrder Shared.Faction.MissionTodoOrder::StartAfterPrev
+FIELD Shared.Faction.MissionTodoOrder Shared.Faction.MissionTodoOrder::StartWithPrev

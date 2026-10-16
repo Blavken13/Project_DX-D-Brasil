@@ -1,0 +1,29 @@
+OffServerI18n/PoEntry : System.Object
+FIELD System.String OffServerI18n/PoEntry::Context
+FIELD System.String OffServerI18n/PoEntry::MsgId
+FIELD System.String OffServerI18n/PoEntry::MsgStr
+FIELD System.Boolean OffServerI18n/PoEntry::Fuzzy
+METHOD System.String OffServerI18n/PoEntry::get_Key()
+ldarg.0 
+ldfld System.String OffServerI18n/PoEntry::Context
+brfalse.s IL_001f: ldarg.0
+ldarg.0 
+ldfld System.String OffServerI18n/PoEntry::Context
+ldstr 
+ldarg.0 
+ldfld System.String OffServerI18n/PoEntry::MsgId
+call System.String System.String::Concat(System.String,System.String,System.String)
+ret 
+ldarg.0 
+ldfld System.String OffServerI18n/PoEntry::MsgId
+ret 
+METHOD System.Void OffServerI18n/PoEntry::.ctor()
+ldarg.0 
+ldstr 
+stfld System.String OffServerI18n/PoEntry::MsgId
+ldarg.0 
+ldstr 
+stfld System.String OffServerI18n/PoEntry::MsgStr
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

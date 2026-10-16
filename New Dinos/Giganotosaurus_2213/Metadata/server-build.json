@@ -1,0 +1,12 @@
+{
+  "command": "dotnet build Durango-CustomServer/server/DurangoServer.csproj --no-restore --nologo -v quiet",
+  "exit_code": 0,
+  "errors": 0,
+  "warnings": 2,
+  "android_bundle_unity_versions": [
+    "2017.4.34f1",
+    "2017.4.7f1",
+    "6000.6.0f1",
+    "6000.6.3f1"
+  ]
+}

@@ -1,0 +1,14 @@
+OffServerShaderRemapDriver/<>c : System.Object
+FIELD OffServerShaderRemapDriver/<>c OffServerShaderRemapDriver/<>c::<>9
+FIELD UnityEngine.Events.UnityAction`2<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode> OffServerShaderRemapDriver/<>c::<>9__0_0
+METHOD System.Void OffServerShaderRemapDriver/<>c::.cctor()
+newobj System.Void OffServerShaderRemapDriver/<>c::.ctor()
+stsfld OffServerShaderRemapDriver/<>c OffServerShaderRemapDriver/<>c::<>9
+ret 
+METHOD System.Void OffServerShaderRemapDriver/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerShaderRemapDriver/<>c::<Boot>b__0_0(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode)
+call System.Void OffServerShaderRemap::MarkBusy()
+ret 

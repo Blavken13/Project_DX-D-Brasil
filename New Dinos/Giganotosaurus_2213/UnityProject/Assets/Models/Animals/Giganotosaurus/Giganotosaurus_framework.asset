@@ -1,0 +1,618 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d691f3f3b27e1f84f8ae1a9016a3b954, type: 3}
+  m_Name: Giganotosaurus_framework
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalFrameworkResource
+  normal_motions:
+  - key: stand
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: idle
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: eat
+    motion: Giganotosaurus-Eat
+    _clipObj: {fileID: 7400000, guid: e8bb7055495e81f46b240b377df2fba5, type: 2}
+  - key: alert
+    motion: Giganotosaurus-Startled
+    _clipObj: {fileID: 7400000, guid: 2a76bd35ceb048e45a490488e491462a, type: 2}
+  - key: dead
+    motion: Giganotosaurus-Die
+    _clipObj: {fileID: 7400000, guid: 9d6a7f3e6188f4e49a49bd98bbfef1da, type: 2}
+  normal_3states:
+  - key: sleep_motions
+    begin: Giganotosaurus-Torpid-In
+    during: Giganotosaurus-Torpid-Idle
+    end: Giganotosaurus-Torpid-Out-Wild
+    _clipObjBegin: {fileID: 7400000, guid: 5c82c7a5ad57fc74a8b703ac06f6d083, type: 2}
+    _clipObjLooping: {fileID: 7400000, guid: ddad1f87664c1fa45b02ead7a70c7ef6, type: 2}
+    _clipObjEnd: {fileID: 7400000, guid: 4a3c430e16148a6469dba78112e37c63, type: 2}
+  weighted_motions:
+  - key: rest_motions
+    elems:
+    - weight: 1
+      motion: Giganotosaurus-Idle
+      duration: {x: 3, y: 3}
+      _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  weighted_3states:
+  - key: seq_rest_motions
+    elems: []
+  move_sets:
+  - key: move_motion_sets
+    elems:
+    - name: trex_move_set
+      motions:
+      - motion: Giganotosaurus-Move-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: leg_injury
+          enemy_distance_with_bound: 
+        base_move_speed: 569
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Giganotosaurus-Move-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: <600
+        base_move_speed: 462
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Giganotosaurus-Charge-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: 
+        base_move_speed: 1176
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: d9a9ccd1b32b91b49b1a97ca98739ad5, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+    - name: trex_move_p2_set
+      motions:
+      - motion: Giganotosaurus-Move-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: leg_injury
+          enemy_distance_with_bound: 
+        base_move_speed: 654.023
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Giganotosaurus-Move-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: <500
+        base_move_speed: 531.0345
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Giganotosaurus-Charge-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: 
+        base_move_speed: 1351.7241
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: d9a9ccd1b32b91b49b1a97ca98739ad5, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+    - name: trex_pet_move_set
+      motions:
+      - motion: Giganotosaurus-Move-Fwd
+        rot_motion_cw: Giganotosaurus-Move-Rit
+        rot_motion_ccw: Giganotosaurus-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: 
+        base_move_speed: 462
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+  comabt_motions:
+  - key: battle_idle
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: battle_stand
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: evade
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: groggy
+    motion: Giganotosaurus-Torpid-Idle
+    _clipObj: {fileID: 7400000, guid: ddad1f87664c1fa45b02ead7a70c7ef6, type: 2}
+  - key: blow
+    motion: Giganotosaurus-Hurt-Small-Rit
+    _clipObj: {fileID: 7400000, guid: d64790c75ff4f5b43a41b077fca2df7f, type: 2}
+  combat_directions:
+  - key: knock_back_motion_map
+    front: Giganotosaurus-Hurt-Small-Rit
+    back: Giganotosaurus-Hurt-Small-Rit
+    left: Giganotosaurus-Hurt-Small-Rit
+    right: Giganotosaurus-Hurt-Small-Rit
+    _clipObjFront: {fileID: 7400000, guid: d64790c75ff4f5b43a41b077fca2df7f, type: 2}
+    _clipObjBack: {fileID: 7400000, guid: d64790c75ff4f5b43a41b077fca2df7f, type: 2}
+    _clipObjLeft: {fileID: 7400000, guid: d64790c75ff4f5b43a41b077fca2df7f, type: 2}
+    _clipObjRight: {fileID: 7400000, guid: d64790c75ff4f5b43a41b077fca2df7f, type: 2}
+  combat_3states:
+  - key: knock_down_motions
+    begin: Giganotosaurus-Torpid-In
+    during: Giganotosaurus-Torpid-Idle
+    end: Giganotosaurus-Torpid-Out-Wild
+    _clipObjBegin: {fileID: 7400000, guid: 5c82c7a5ad57fc74a8b703ac06f6d083, type: 2}
+    _clipObjLooping: {fileID: 7400000, guid: ddad1f87664c1fa45b02ead7a70c7ef6, type: 2}
+    _clipObjEnd: {fileID: 7400000, guid: 4a3c430e16148a6469dba78112e37c63, type: 2}
+  combat_attacks:
+  - key: trex_stamp
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 180
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_tail
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 180
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_tail_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_bite_normal
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_bite_normal_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar
+    meta:
+      motion: Giganotosaurus-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 2251d1586961ef64180e2c59f7b33bf1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_bite
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_bite_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_wounded_tail
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_wounded_tail_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_head
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_head_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_tail_back
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_tail_back_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_stamp_right
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_right_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_stamp_left
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_left_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_stamp_foot
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_foot_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar_02
+    meta:
+      motion: Giganotosaurus-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 2251d1586961ef64180e2c59f7b33bf1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_02_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar_04
+    meta:
+      motion: Giganotosaurus-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 2251d1586961ef64180e2c59f7b33bf1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_04_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar_03
+    meta:
+      motion: Giganotosaurus-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 2251d1586961ef64180e2c59f7b33bf1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_03_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_attack_turn
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_attack_turn_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: attack_normal
+    meta:
+      motion: Giganotosaurus-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+    attack_info: []
+    SameAbove: 0
+  active_skills:
+  - key: active_default
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  etc_motions:
+  - key: trex_idle_walk
+    motion: Giganotosaurus-Move-Fwd
+    _clipObj: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+  - key: trex_run_stop
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: trex_walk_pet
+    motion: Giganotosaurus-Move-Fwd
+    _clipObj: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+  - key: giganotosaurus_extra_aim_center
+    motion: Giganotosaurus-Aim-Center
+    _clipObj: {fileID: 7400000, guid: ce30881ac02d46f4ca97c9034792bb39, type: 2}
+  - key: giganotosaurus_extra_aim_dwn
+    motion: Giganotosaurus-Aim-Dwn
+    _clipObj: {fileID: 7400000, guid: 00512bd579daabc41b959327d1b53523, type: 2}
+  - key: giganotosaurus_extra_aim_dwn_lft
+    motion: Giganotosaurus-Aim-Dwn-Lft
+    _clipObj: {fileID: 7400000, guid: ab7d952b107552842b2fe30558474896, type: 2}
+  - key: giganotosaurus_extra_aim_dwn_rit
+    motion: Giganotosaurus-Aim-Dwn-Rit
+    _clipObj: {fileID: 7400000, guid: 0ba002576f9870749a95480803539266, type: 2}
+  - key: giganotosaurus_extra_aim_lft
+    motion: Giganotosaurus-Aim-Lft
+    _clipObj: {fileID: 7400000, guid: 3437b6be559dc564494773f351586007, type: 2}
+  - key: giganotosaurus_extra_aim_rit
+    motion: Giganotosaurus-Aim-Rit
+    _clipObj: {fileID: 7400000, guid: d1af9ccf7f905ff4d9a25573c43e3229, type: 2}
+  - key: giganotosaurus_extra_aim_up
+    motion: Giganotosaurus-Aim-Up
+    _clipObj: {fileID: 7400000, guid: 42b0e917b81002d479892ec1f464815a, type: 2}
+  - key: giganotosaurus_extra_aim_up_lft
+    motion: Giganotosaurus-Aim-Up-Lft
+    _clipObj: {fileID: 7400000, guid: 138d331860f57214a996340d9d1138cd, type: 2}
+  - key: giganotosaurus_extra_aim_up_rit
+    motion: Giganotosaurus-Aim-Up-Rit
+    _clipObj: {fileID: 7400000, guid: 51e2646d3ea51fc4798db1a66c771cf9, type: 2}
+  - key: giganotosaurus_extra_attack_bite
+    motion: Giganotosaurus-Attack-Bite
+    _clipObj: {fileID: 7400000, guid: 56797968b32e4384b8edff59fe1609dd, type: 2}
+  - key: giganotosaurus_extra_attack_bite_montage
+    motion: Giganotosaurus-Attack-Bite_Montage
+    _clipObj: {fileID: 7400000, guid: b37114337e26c0c4fbf611180315b0a2, type: 2}
+  - key: giganotosaurus_extra_blink
+    motion: Giganotosaurus-Blink
+    _clipObj: {fileID: 7400000, guid: c3e4aa5fbcd13ce42a5fa9b22d7d8b9a, type: 2}
+  - key: giganotosaurus_extra_charge_fwd
+    motion: Giganotosaurus-Charge-Fwd
+    _clipObj: {fileID: 7400000, guid: d9a9ccd1b32b91b49b1a97ca98739ad5, type: 2}
+  - key: giganotosaurus_extra_charge_lft
+    motion: Giganotosaurus-Charge-Lft
+    _clipObj: {fileID: 7400000, guid: b420b1fea3ad3874fbc2b42449d4954b, type: 2}
+  - key: giganotosaurus_extra_charge_rit
+    motion: Giganotosaurus-Charge-Rit
+    _clipObj: {fileID: 7400000, guid: eeb6b49642e103d419b76167fa05cbdb, type: 2}
+  - key: giganotosaurus_extra_cuddle
+    motion: Giganotosaurus-Cuddle
+    _clipObj: {fileID: 7400000, guid: 3d6db9cb236dcbb42828546d0f5229f3, type: 2}
+  - key: giganotosaurus_extra_cuddle_montage
+    motion: Giganotosaurus-Cuddle_Montage
+    _clipObj: {fileID: 7400000, guid: fea089fcc6a532943b5cd2e6183bbb4c, type: 2}
+  - key: giganotosaurus_extra_eat
+    motion: Giganotosaurus-Eat
+    _clipObj: {fileID: 7400000, guid: e8bb7055495e81f46b240b377df2fba5, type: 2}
+  - key: giganotosaurus_extra_eat_montage
+    motion: Giganotosaurus-Eat_Montage
+    _clipObj: {fileID: 7400000, guid: c66e1766adda7c0429785dc5a06c0d3e, type: 2}
+  - key: giganotosaurus_extra_hurt_small_rit
+    motion: Giganotosaurus-Hurt-Small-Rit
+    _clipObj: {fileID: 7400000, guid: d64790c75ff4f5b43a41b077fca2df7f, type: 2}
+  - key: giganotosaurus_extra_hurt_small_rit_montage
+    motion: Giganotosaurus-Hurt-Small-Rit_Montage
+    _clipObj: {fileID: 7400000, guid: a22a5681fcf18764db4d4b5334bf1dfa, type: 2}
+  - key: giganotosaurus_extra_idle
+    motion: Giganotosaurus-Idle
+    _clipObj: {fileID: 7400000, guid: 3fc13dba58df6624cbd83f27de25cdbf, type: 2}
+  - key: giganotosaurus_extra_lay_egg
+    motion: Giganotosaurus-Lay-Egg
+    _clipObj: {fileID: 7400000, guid: 6dfdc34b7f4e4f748aaab30f3f4b0fde, type: 2}
+  - key: giganotosaurus_extra_lay_egg_montage
+    motion: Giganotosaurus-Lay-Egg_Montage
+    _clipObj: {fileID: 7400000, guid: dec41e42f0c53f645883016cc484b90c, type: 2}
+  - key: giganotosaurus_extra_move_fwd
+    motion: Giganotosaurus-Move-Fwd
+    _clipObj: {fileID: 7400000, guid: b00d5c6c8fae97e419ee377705fc31ce, type: 2}
+  - key: giganotosaurus_extra_move_lft
+    motion: Giganotosaurus-Move-Lft
+    _clipObj: {fileID: 7400000, guid: 3c1054bda14fe174195e372eb1d2fb74, type: 2}
+  - key: giganotosaurus_extra_move_rit
+    motion: Giganotosaurus-Move-Rit
+    _clipObj: {fileID: 7400000, guid: 2621f9370b52b4e4b937f54e3fbc608b, type: 2}
+  - key: giganotosaurus_extra_rage_montage
+    motion: Giganotosaurus-Rage_Montage
+    _clipObj: {fileID: 7400000, guid: 4b4d3b978e4734c4f82954f765cede24, type: 2}
+  - key: giganotosaurus_extra_roar
+    motion: Giganotosaurus-Roar
+    _clipObj: {fileID: 7400000, guid: 2251d1586961ef64180e2c59f7b33bf1, type: 2}
+  - key: giganotosaurus_extra_roar_montage
+    motion: Giganotosaurus-Roar_Montage
+    _clipObj: {fileID: 7400000, guid: 81686eb9ac0da5347b150bf672486879, type: 2}
+  - key: giganotosaurus_extra_startled
+    motion: Giganotosaurus-Startled
+    _clipObj: {fileID: 7400000, guid: 2a76bd35ceb048e45a490488e491462a, type: 2}
+  - key: giganotosaurus_extra_startled_montage
+    motion: Giganotosaurus-Startled_Montage
+    _clipObj: {fileID: 7400000, guid: 693dac5a3a697c84aa16fb3ba4d37f79, type: 2}
+  - key: giganotosaurus_extra_swim_fwd
+    motion: Giganotosaurus-Swim-Fwd
+    _clipObj: {fileID: 7400000, guid: 2f4aa73f2b8028a4cbc0f36cd50ff382, type: 2}
+  - key: giganotosaurus_extra_swim_idle
+    motion: Giganotosaurus-Swim-Idle
+    _clipObj: {fileID: 7400000, guid: cf5d5df7fecb941419ca59c132ebfae5, type: 2}
+  - key: giganotosaurus_extra_torpid_eat
+    motion: Giganotosaurus-Torpid-Eat
+    _clipObj: {fileID: 7400000, guid: 791b9d5ff0e4f6443b0bd1a038f81442, type: 2}
+  - key: giganotosaurus_extra_torpid_eat_montage
+    motion: Giganotosaurus-Torpid-Eat_Montage
+    _clipObj: {fileID: 7400000, guid: 29f699697f37c9247bdd3a7d0c319d11, type: 2}
+  - key: giganotosaurus_extra_torpid_idle
+    motion: Giganotosaurus-Torpid-Idle
+    _clipObj: {fileID: 7400000, guid: ddad1f87664c1fa45b02ead7a70c7ef6, type: 2}
+  - key: giganotosaurus_extra_torpid_in
+    motion: Giganotosaurus-Torpid-In
+    _clipObj: {fileID: 7400000, guid: 5c82c7a5ad57fc74a8b703ac06f6d083, type: 2}
+  - key: giganotosaurus_extra_torpid_in_montage
+    motion: Giganotosaurus-Torpid-In_Montage
+    _clipObj: {fileID: 7400000, guid: 16247f4cd14951543baebed207677a0a, type: 2}
+  - key: giganotosaurus_extra_torpid_out_tamed
+    motion: Giganotosaurus-Torpid-Out-Tamed
+    _clipObj: {fileID: 7400000, guid: e1d4a2c3cc3920949b6c8ae561a42921, type: 2}
+  - key: giganotosaurus_extra_torpid_out_tamed_montage
+    motion: Giganotosaurus-Torpid-Out-Tamed_Montage
+    _clipObj: {fileID: 7400000, guid: bf5f6bee79d31304da204c9416f9b7c6, type: 2}
+  - key: giganotosaurus_extra_torpid_out_wild
+    motion: Giganotosaurus-Torpid-Out-Wild
+    _clipObj: {fileID: 7400000, guid: 4a3c430e16148a6469dba78112e37c63, type: 2}
+  - key: giganotosaurus_extra_torpid_out_wild_montage
+    motion: Giganotosaurus-Torpid-Out-Wild_Montage
+    _clipObj: {fileID: 7400000, guid: e8d076261155fd64e943df88ae724901, type: 2}

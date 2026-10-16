@@ -1,0 +1,5 @@
+FactionSystem/MissionState : System.Enum
+FIELD System.Int32 FactionSystem/MissionState::value__
+FIELD FactionSystem/MissionState FactionSystem/MissionState::Disabled
+FIELD FactionSystem/MissionState FactionSystem/MissionState::Idle
+FIELD FactionSystem/MissionState FactionSystem/MissionState::Ready

@@ -361,6 +361,8 @@ public static class QuestCatalog
             if (objective.Prototypes?.Length > 0 && (context?.Products == null || !context.Products.Any(p => objective.Prototypes.Contains(p.Prototype, StringComparer.Ordinal)))) return false;
         }
         if (string.IsNullOrEmpty(def.Filter)) return true;
+        if (ev == QuestEventType.CustomEvent)
+            return string.Equals(def.Filter, detail, StringComparison.OrdinalIgnoreCase);
         if (ev == QuestEventType.Collected || ev == QuestEventType.AnimalTamed || ev == QuestEventType.EstateManaged)
         {
             return string.Equals(def.Filter, detail, StringComparison.OrdinalIgnoreCase);

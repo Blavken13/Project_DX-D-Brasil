@@ -1,0 +1,896 @@
+{
+  "normal_motions": [
+    {
+      "key": "stand",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "idle",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "eat",
+      "motion": "Giganotosaurus-Eat"
+    },
+    {
+      "key": "alert",
+      "motion": "Giganotosaurus-Startled"
+    },
+    {
+      "key": "dead",
+      "motion": "Giganotosaurus-Die"
+    }
+  ],
+  "normal_3states": [
+    {
+      "key": "sleep_motions",
+      "begin": "Giganotosaurus-Torpid-In",
+      "during": "Giganotosaurus-Torpid-Idle",
+      "end": "Giganotosaurus-Torpid-Out-Wild"
+    }
+  ],
+  "weighted_motions": [
+    {
+      "key": "rest_motions",
+      "elems": [
+        {
+          "weight": 1.0,
+          "motion": "Giganotosaurus-Idle",
+          "duration": {
+            "x": 3.0,
+            "y": 3.0
+          }
+        }
+      ]
+    }
+  ],
+  "weighted_3states": [
+    {
+      "key": "seq_rest_motions",
+      "elems": []
+    }
+  ],
+  "move_sets": [
+    {
+      "key": "move_motion_sets",
+      "elems": [
+        {
+          "name": "trex_move_set",
+          "motions": [
+            {
+              "motion": "Giganotosaurus-Move-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "leg_injury",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Giganotosaurus-Move-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": "<600"
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Giganotosaurus-Charge-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 1176.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            }
+          ]
+        },
+        {
+          "name": "trex_move_p2_set",
+          "motions": [
+            {
+              "motion": "Giganotosaurus-Move-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "leg_injury",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Giganotosaurus-Move-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": "<500"
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Giganotosaurus-Charge-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 1351.72412109375,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            }
+          ]
+        },
+        {
+          "name": "trex_pet_move_set",
+          "motions": [
+            {
+              "motion": "Giganotosaurus-Move-Fwd",
+              "rot_motion_cw": "Giganotosaurus-Move-Rit",
+              "rot_motion_ccw": "Giganotosaurus-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "comabt_motions": [
+    {
+      "key": "battle_idle",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "battle_stand",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "evade",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "groggy",
+      "motion": "Giganotosaurus-Torpid-Idle"
+    },
+    {
+      "key": "blow",
+      "motion": "Giganotosaurus-Hurt-Small-Rit"
+    }
+  ],
+  "combat_directions": [
+    {
+      "key": "knock_back_motion_map",
+      "front": "Giganotosaurus-Hurt-Small-Rit",
+      "back": "Giganotosaurus-Hurt-Small-Rit",
+      "left": "Giganotosaurus-Hurt-Small-Rit",
+      "right": "Giganotosaurus-Hurt-Small-Rit"
+    }
+  ],
+  "combat_3states": [
+    {
+      "key": "knock_down_motions",
+      "begin": "Giganotosaurus-Torpid-In",
+      "during": "Giganotosaurus-Torpid-Idle",
+      "end": "Giganotosaurus-Torpid-Out-Wild"
+    }
+  ],
+  "combat_attacks": [
+    {
+      "key": "trex_stamp",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 180.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_tail",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 180.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_tail_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_bite_normal",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_bite_normal_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar",
+      "meta": {
+        "motion": "Giganotosaurus-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_bite",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_bite_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_wounded_tail",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_wounded_tail_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_head",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_head_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_tail_back",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_tail_back_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_stamp_right",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_right_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_stamp_left",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_left_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_stamp_foot",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_foot_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar_02",
+      "meta": {
+        "motion": "Giganotosaurus-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_02_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar_04",
+      "meta": {
+        "motion": "Giganotosaurus-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_04_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar_03",
+      "meta": {
+        "motion": "Giganotosaurus-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_03_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_attack_turn",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_attack_turn_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "attack_normal",
+      "meta": {
+        "motion": "Giganotosaurus-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0
+      },
+      "attack_info": [],
+      "SameAbove": 0
+    }
+  ],
+  "active_skills": [
+    {
+      "key": "active_default",
+      "motion": "Giganotosaurus-Idle"
+    }
+  ],
+  "etc_motions": [
+    {
+      "key": "trex_idle_walk",
+      "motion": "Giganotosaurus-Move-Fwd"
+    },
+    {
+      "key": "trex_run_stop",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "trex_walk_pet",
+      "motion": "Giganotosaurus-Move-Fwd"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_center",
+      "motion": "Giganotosaurus-Aim-Center"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_dwn",
+      "motion": "Giganotosaurus-Aim-Dwn"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_dwn_lft",
+      "motion": "Giganotosaurus-Aim-Dwn-Lft"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_dwn_rit",
+      "motion": "Giganotosaurus-Aim-Dwn-Rit"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_lft",
+      "motion": "Giganotosaurus-Aim-Lft"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_rit",
+      "motion": "Giganotosaurus-Aim-Rit"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_up",
+      "motion": "Giganotosaurus-Aim-Up"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_up_lft",
+      "motion": "Giganotosaurus-Aim-Up-Lft"
+    },
+    {
+      "key": "giganotosaurus_extra_aim_up_rit",
+      "motion": "Giganotosaurus-Aim-Up-Rit"
+    },
+    {
+      "key": "giganotosaurus_extra_attack_bite",
+      "motion": "Giganotosaurus-Attack-Bite"
+    },
+    {
+      "key": "giganotosaurus_extra_attack_bite_montage",
+      "motion": "Giganotosaurus-Attack-Bite_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_blink",
+      "motion": "Giganotosaurus-Blink"
+    },
+    {
+      "key": "giganotosaurus_extra_charge_fwd",
+      "motion": "Giganotosaurus-Charge-Fwd"
+    },
+    {
+      "key": "giganotosaurus_extra_charge_lft",
+      "motion": "Giganotosaurus-Charge-Lft"
+    },
+    {
+      "key": "giganotosaurus_extra_charge_rit",
+      "motion": "Giganotosaurus-Charge-Rit"
+    },
+    {
+      "key": "giganotosaurus_extra_cuddle",
+      "motion": "Giganotosaurus-Cuddle"
+    },
+    {
+      "key": "giganotosaurus_extra_cuddle_montage",
+      "motion": "Giganotosaurus-Cuddle_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_eat",
+      "motion": "Giganotosaurus-Eat"
+    },
+    {
+      "key": "giganotosaurus_extra_eat_montage",
+      "motion": "Giganotosaurus-Eat_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_hurt_small_rit",
+      "motion": "Giganotosaurus-Hurt-Small-Rit"
+    },
+    {
+      "key": "giganotosaurus_extra_hurt_small_rit_montage",
+      "motion": "Giganotosaurus-Hurt-Small-Rit_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_idle",
+      "motion": "Giganotosaurus-Idle"
+    },
+    {
+      "key": "giganotosaurus_extra_lay_egg",
+      "motion": "Giganotosaurus-Lay-Egg"
+    },
+    {
+      "key": "giganotosaurus_extra_lay_egg_montage",
+      "motion": "Giganotosaurus-Lay-Egg_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_move_fwd",
+      "motion": "Giganotosaurus-Move-Fwd"
+    },
+    {
+      "key": "giganotosaurus_extra_move_lft",
+      "motion": "Giganotosaurus-Move-Lft"
+    },
+    {
+      "key": "giganotosaurus_extra_move_rit",
+      "motion": "Giganotosaurus-Move-Rit"
+    },
+    {
+      "key": "giganotosaurus_extra_rage_montage",
+      "motion": "Giganotosaurus-Rage_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_roar",
+      "motion": "Giganotosaurus-Roar"
+    },
+    {
+      "key": "giganotosaurus_extra_roar_montage",
+      "motion": "Giganotosaurus-Roar_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_startled",
+      "motion": "Giganotosaurus-Startled"
+    },
+    {
+      "key": "giganotosaurus_extra_startled_montage",
+      "motion": "Giganotosaurus-Startled_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_swim_fwd",
+      "motion": "Giganotosaurus-Swim-Fwd"
+    },
+    {
+      "key": "giganotosaurus_extra_swim_idle",
+      "motion": "Giganotosaurus-Swim-Idle"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_eat",
+      "motion": "Giganotosaurus-Torpid-Eat"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_eat_montage",
+      "motion": "Giganotosaurus-Torpid-Eat_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_idle",
+      "motion": "Giganotosaurus-Torpid-Idle"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_in",
+      "motion": "Giganotosaurus-Torpid-In"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_in_montage",
+      "motion": "Giganotosaurus-Torpid-In_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_out_tamed",
+      "motion": "Giganotosaurus-Torpid-Out-Tamed"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_out_tamed_montage",
+      "motion": "Giganotosaurus-Torpid-Out-Tamed_Montage"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_out_wild",
+      "motion": "Giganotosaurus-Torpid-Out-Wild"
+    },
+    {
+      "key": "giganotosaurus_extra_torpid_out_wild_montage",
+      "motion": "Giganotosaurus-Torpid-Out-Wild_Montage"
+    }
+  ]
+}

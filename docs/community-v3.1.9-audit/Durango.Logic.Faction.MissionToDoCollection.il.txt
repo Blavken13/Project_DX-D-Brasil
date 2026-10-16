@@ -1,0 +1,517 @@
+Durango.Logic.Faction.MissionToDoCollection : Durango.Logic.PlayGuide.ToDoCollection
+FIELD Shared.Faction.FactionType Durango.Logic.Faction.MissionToDoCollection::_factionType
+FIELD System.String Durango.Logic.Faction.MissionToDoCollection::_regionName
+FIELD Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+FIELD Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+METHOD System.Boolean Durango.Logic.Faction.MissionToDoCollection::get_IsSkippable()
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+ldfld System.Double Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::DelayedTime
+cgt 
+ret 
+METHOD System.String Durango.Logic.Faction.MissionToDoCollection::get_Id()
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldfld System.String Messages.Mission::Id
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::.ctor(Shared.Faction.FactionType)
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::.ctor()
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+call System.Void Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::Reset()
+ldarg.0 
+ldarg.1 
+stfld Shared.Faction.FactionType Durango.Logic.Faction.MissionToDoCollection::_factionType
+ldarg.0 
+ldarg.1 
+call Durango.Logic.PlayGuide.NPCType Durango.Logic.PlayGuide.Util::FactionTypeToNPCType(Shared.Faction.FactionType)
+call System.String Durango.Logic.PlayGuide.NPCTypeExtensions::ToDoIcon(Durango.Logic.PlayGuide.NPCType)
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Icon
+ldarg.0 
+ldarg.1 
+call System.String Durango.Logic.Faction.MissionToDoUpdater::GenerateKey(Shared.Faction.FactionType)
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::set_Key(System.String)
+ldarg.0 
+ldarg.0 
+ldftn System.Void Durango.Logic.Faction.MissionToDoCollection::<.ctor>b__9_0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::SetHelpClicked(System.Action)
+ldarg.1 
+ldnull 
+call TV Yaml.Util.SingletonDict`2<Shared.Faction.FactionType,Yaml.Faction>::Get(TK,TV)
+stloc.0 
+ldloc.0 
+brfalse.s IL_005e: ret
+ldarg.0 
+ldloc.0 
+ldfld System.String Yaml.Faction::Season
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Season
+ret 
+METHOD System.Nullable`1<Durango.Logic.PlayGuide.ToDoCollection/Detail> Durango.Logic.Faction.MissionToDoCollection::GetDetail()
+ldarg.0 
+call System.Nullable`1<Durango.Logic.PlayGuide.ToDoCollection/Detail> Durango.Logic.PlayGuide.ToDoCollection::GetDetail()
+stloc.0 
+ldloca.s V_0
+call System.Boolean System.Nullable`1<Durango.Logic.PlayGuide.ToDoCollection/Detail>::get_HasValue()
+brfalse.s IL_0018: ldloc.0
+ldarg.0 
+call System.Boolean Durango.Logic.Faction.MissionToDoCollection::get_IsSkippable()
+brtrue.s IL_001a: ldloca.s V_0
+ldloc.0 
+ret 
+ldloca.s V_0
+call !0 System.Nullable`1<Durango.Logic.PlayGuide.ToDoCollection/Detail>::get_Value()
+stloc.1 
+ldloca.s V_1
+ldstr 즉시 완료
+call System.String L10N.T::_(System.String)
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection/Detail::ButtonText
+ldloca.s V_1
+ldc.i4.0 
+stfld Durango.UI.Control.PresetButton/Style Durango.Logic.PlayGuide.ToDoCollection/Detail::ButtonStyle
+ldloca.s V_1
+ldarg.0 
+ldftn System.Void Durango.Logic.Faction.MissionToDoCollection::<GetDetail>b__10_0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stfld System.Action Durango.Logic.PlayGuide.ToDoCollection/Detail::ButtonClicked
+ldloc.1 
+newobj System.Void System.Nullable`1<Durango.Logic.PlayGuide.ToDoCollection/Detail>::.ctor(!0)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateMission(Messages.Mission)
+ldarg.0 
+ldarg.1 
+stfld Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Mission::Subject
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Title
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.Logic.Faction.MissionToDoCollection::_regionName
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.String Durango.Logic.Explore.Region::get_Id()
+ldarg.1 
+ldfld System.String Messages.Mission::RegionId
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_0058: ret
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::set_IsDisabled(System.Boolean)
+call T GameSystem`1<MapSystem>::Instance()
+ldarg.1 
+ldfld System.String Messages.Mission::RegionId
+ldarg.0 
+ldftn System.Void Durango.Logic.Faction.MissionToDoCollection::RegionReceived(Messages.Region)
+newobj System.Void System.Action`1<Messages.Region>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void MapSystem::GetRegion(System.String,System.Action`1<Messages.Region>)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateTodos(System.Boolean)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+stloc.0 
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+call System.Int32 KUtility::GetSize<Messages.MissionToDo>(System.Collections.Generic.ICollection`1<T>)
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br IL_01cd: ldloc.2
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldfld Messages.MissionToDo[] Messages.Mission::Todos
+ldloc.2 
+ldelem.any Messages.MissionToDo
+stloc.3 
+ldloc.2 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::get_Count()
+bge.s IL_004a: newobj System.Void Durango.Logic.Faction.MissionToDo::.ctor()
+ldloc.0 
+ldloc.2 
+callvirt !0 System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::get_Item(System.Int32)
+castclass Durango.Logic.Faction.MissionToDo
+stloc.s V_4
+br.s IL_0059: ldloc.s V_4
+newobj System.Void Durango.Logic.Faction.MissionToDo::.ctor()
+stloc.s V_4
+ldloc.0 
+ldloc.s V_4
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::Add(!0)
+ldloc.s V_4
+ldarg.0 
+call System.String Durango.Logic.PlayGuide.ToDoCollection::get_Key()
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_Key(System.String)
+ldloc.s V_4
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse.s IL_00b5: ldloca.s V_5
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call System.Boolean System.Nullable`1<System.Int32>::get_HasValue()
+brfalse.s IL_00b5: ldloca.s V_5
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call !0 System.Nullable`1<System.Int32>::get_Value()
+conv.r8 
+add 
+newobj System.Void System.Nullable`1<System.Double>::.ctor(!0)
+br.s IL_00bf: stfld System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+ldloca.s V_5
+initobj System.Nullable`1<System.Double>
+ldloc.s V_5
+stfld System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+ldarg.1 
+brtrue.s IL_00fc: ldc.i4.0
+ldloc.s V_4
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_TargetProgress()
+ldloc.3 
+ldfld System.Int32 Messages.MissionToDo::GoalCount
+bne.un.s IL_00f9: ldc.i4.1
+ldloc.s V_4
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_CurrentProgress()
+ldloc.3 
+ldfld System.Int32 Messages.MissionToDo::Progress
+bne.un.s IL_00f9: ldc.i4.1
+ldloc.s V_4
+callvirt System.String Durango.Logic.PlayGuide.ToDoBase::get_LocalText()
+ldloc.3 
+ldfld System.String Messages.MissionToDo::Label
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+br.s IL_00fd: ldloc.s V_4
+ldc.i4.1 
+br.s IL_00fd: ldloc.s V_4
+ldc.i4.0 
+ldloc.s V_4
+ldloc.3 
+ldfld System.String Messages.MissionToDo::Id
+stfld System.String Durango.Logic.Faction.MissionToDo::Id
+ldloc.s V_4
+ldloc.3 
+ldfld System.String Messages.MissionToDo::Label
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_LocalText(System.String)
+ldloc.s V_4
+ldloc.3 
+ldfld System.String Messages.MissionToDo::Label
+stfld System.String Durango.Logic.Faction.MissionToDo::DisplayText
+ldloc.s V_4
+ldloc.3 
+ldfld System.Int32 Messages.MissionToDo::GoalCount
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_TargetProgress(System.Int32)
+ldloc.s V_4
+ldloc.3 
+ldfld System.Int32 Messages.MissionToDo::Progress
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_CurrentProgress(System.Int32)
+ldloc.s V_4
+ldloc.s V_4
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_TargetProgress()
+ldloc.s V_4
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_CurrentProgress()
+ceq 
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_IsCompleted(System.Boolean)
+ldloc.s V_4
+ldloc.3 
+ldfld System.String Messages.MissionToDo::Tooltip
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_Tooltip(System.String)
+ldloc.s V_4
+ldarg.0 
+ldfld Shared.Faction.FactionType Durango.Logic.Faction.MissionToDoCollection::_factionType
+stfld Shared.Faction.FactionType Durango.Logic.Faction.MissionToDo::FactionType
+ldloc.s V_4
+ldloca.s V_3
+ldflda System.Nullable`1<Point2> Messages.MissionToDo::Destination
+call System.Boolean System.Nullable`1<Point2>::get_HasValue()
+brfalse.s IL_0196: call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldloca.s V_3
+ldflda System.Nullable`1<Point2> Messages.MissionToDo::Destination
+call !0 System.Nullable`1<Point2>::get_Value()
+stloc.s V_6
+ldloca.s V_6
+call UnityEngine.Vector2 Point2::ToVector2()
+br.s IL_019b: stfld UnityEngine.Vector2 Durango.Logic.Faction.MissionToDo::TargetTile
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+stfld UnityEngine.Vector2 Durango.Logic.Faction.MissionToDo::TargetTile
+ldloc.s V_4
+ldloc.3 
+ldfld Shared.Faction.MissionTodoType Messages.MissionToDo::Type
+stfld Shared.Faction.MissionTodoType Durango.Logic.Faction.MissionToDo::MissionType
+ldloc.s V_4
+ldloc.3 
+ldfld Shared.Faction.MissionTodoOrder Messages.MissionToDo::Order
+stfld Shared.Faction.MissionTodoOrder Durango.Logic.Faction.MissionToDo::MissionOrder
+brfalse.s IL_01c9: ldloc.2
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldloc.s V_4
+ldc.i4.0 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoBase,System.Boolean)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+blt IL_001f: ldarg.0
+ldarg.0 
+call System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateNavigate()
+ldarg.0 
+call System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateSkippable()
+ret 
+METHOD Durango.Logic.Faction.MissionToDo Durango.Logic.Faction.MissionToDoCollection::GetCurrentToDo()
+ldarg.0 
+call System.Boolean Durango.Logic.PlayGuide.ToDoCollection::get_IsDisabled()
+brtrue.s IL_0010: ldnull
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+brtrue.s IL_0012: ldnull
+ldnull 
+ret 
+ldnull 
+stloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::GetEnumerator()
+stloc.1 
+br.s IL_004c: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.PlayGuide.ToDoBase>::get_Current()
+isinst Durango.Logic.Faction.MissionToDo
+stloc.2 
+ldloc.2 
+brfalse.s IL_004c: ldloca.s V_1
+ldloc.2 
+ldfld Shared.Faction.MissionTodoOrder Durango.Logic.Faction.MissionToDo::MissionOrder
+ldc.i4.1 
+beq.s IL_003d: ldloc.2
+ldloc.2 
+stloc.0 
+ldloc.2 
+callvirt System.Boolean Durango.Logic.PlayGuide.ToDoBase::get_IsCompleted()
+brtrue.s IL_004c: ldloca.s V_1
+ldloc.0 
+brfalse.s IL_004c: ldloca.s V_1
+ldloc.0 
+stloc.3 
+leave.s IL_0067: ldloc.3
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.PlayGuide.ToDoBase>::MoveNext()
+brtrue.s IL_0022: ldloca.s V_1
+leave.s IL_0065: ldnull
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.PlayGuide.ToDoBase>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldnull 
+ret 
+ldloc.3 
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::Update()
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::Update()
+ldarg.0 
+call System.Boolean Durango.Logic.Faction.MissionToDoCollection::get_IsSkippable()
+brfalse.s IL_0033: ret
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+ldfld System.Boolean Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::IsNotified
+brtrue.s IL_0033: ret
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+ldc.i4.1 
+stfld System.Boolean Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::IsNotified
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldc.i4.1 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ret 
+METHOD SyncString Durango.Logic.Faction.MissionToDoCollection::GetMessage()
+ldarg.0 
+ldfld System.String Durango.Logic.Faction.MissionToDoCollection::_regionName
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0014: ldstr "<em>{0}</em> 섬에서 임무를 진행할 수 있습니다."
+ldarg.0 
+call SyncString Durango.Logic.PlayGuide.ToDoCollection::GetMessage()
+ret 
+ldstr <em>{0}</em> 섬에서 임무를 진행할 수 있습니다.
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.String Durango.Logic.Faction.MissionToDoCollection::_regionName
+stelem.ref 
+call System.String L10N.T::_(System.String,System.Object[])
+call SyncString SyncString::op_Implicit(System.String)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::OnAddItem()
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::OnAddItem()
+ldarg.0 
+call System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateNavigate()
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateSkippable()
+newobj System.Void Durango.Logic.Faction.MissionToDoCollection/<>c__DisplayClass17_0::.ctor()
+stloc.0 
+ldloc.0 
+call T Yaml.Util.Singleton`1<Yaml.Constants>::get_Instance()
+ldfld System.Collections.Generic.Dictionary`2<System.String,Yaml.SkipTutorialMissions> Yaml.Constants::SkipTutorialMissionses
+ldarg.0 
+ldflda Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+ldfld System.String Messages.Mission::Id
+ldnull 
+call TV DictionaryExtensions::Get<System.String,Yaml.SkipTutorialMissions>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+stfld Yaml.SkipTutorialMissions Durango.Logic.Faction.MissionToDoCollection/<>c__DisplayClass17_0::skippableMission
+ldloc.0 
+ldfld Yaml.SkipTutorialMissions Durango.Logic.Faction.MissionToDoCollection/<>c__DisplayClass17_0::skippableMission
+brfalse IL_00d1: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+ldsfld System.Func`2<Durango.Logic.PlayGuide.ToDoBase,Durango.Logic.Faction.MissionToDo> Durango.Logic.Faction.MissionToDoCollection/<>c::<>9__17_0
+dup 
+brtrue.s IL_0057: call System.Collections.Generic.IEnumerable`1<!!1> System.Linq.Enumerable::Select<Durango.Logic.PlayGuide.ToDoBase,Durango.Logic.Faction.MissionToDo>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,!!1>)
+pop 
+ldsfld Durango.Logic.Faction.MissionToDoCollection/<>c Durango.Logic.Faction.MissionToDoCollection/<>c::<>9
+ldftn Durango.Logic.Faction.MissionToDo Durango.Logic.Faction.MissionToDoCollection/<>c::<UpdateSkippable>b__17_0(Durango.Logic.PlayGuide.ToDoBase)
+newobj System.Void System.Func`2<Durango.Logic.PlayGuide.ToDoBase,Durango.Logic.Faction.MissionToDo>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Func`2<Durango.Logic.PlayGuide.ToDoBase,Durango.Logic.Faction.MissionToDo> Durango.Logic.Faction.MissionToDoCollection/<>c::<>9__17_0
+call System.Collections.Generic.IEnumerable`1<!!1> System.Linq.Enumerable::Select<Durango.Logic.PlayGuide.ToDoBase,Durango.Logic.Faction.MissionToDo>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,!!1>)
+ldloc.0 
+ldftn System.Boolean Durango.Logic.Faction.MissionToDoCollection/<>c__DisplayClass17_0::<UpdateSkippable>b__1(Durango.Logic.Faction.MissionToDo)
+newobj System.Void System.Func`2<Durango.Logic.Faction.MissionToDo,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call !!0 System.Linq.Enumerable::FirstOrDefault<Durango.Logic.Faction.MissionToDo>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+stloc.1 
+ldloc.1 
+brfalse.s IL_00d1: ldarg.0
+ldloc.1 
+callvirt System.Boolean Durango.Logic.PlayGuide.ToDoBase::get_IsCompleted()
+brtrue.s IL_00d1: ldarg.0
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+ldfld System.Int32 Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::LastProgressCount
+ldloc.1 
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_CurrentProgress()
+beq.s IL_00d0: ret
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+ldloc.1 
+ldfld System.String Durango.Logic.Faction.MissionToDo::Id
+stfld System.String Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::TodoId
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+ldloc.1 
+callvirt System.Int32 Durango.Logic.PlayGuide.ToDoBase::get_CurrentProgress()
+stfld System.Int32 Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::LastProgressCount
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+ldloc.0 
+ldfld Yaml.SkipTutorialMissions Durango.Logic.Faction.MissionToDoCollection/<>c__DisplayClass17_0::skippableMission
+ldfld System.Int32 Yaml.SkipTutorialMissions::SkipTime
+conv.r8 
+add 
+stfld System.Double Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::DelayedTime
+ret 
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+call System.Boolean Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::IsEmpty()
+brtrue.s IL_00f5: ret
+ldarg.0 
+ldflda Durango.Logic.Faction.MissionToDoCollection/SkippableInfo Durango.Logic.Faction.MissionToDoCollection::_skippableInfo
+call System.Void Durango.Logic.Faction.MissionToDoCollection/SkippableInfo::Reset()
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldc.i4.1 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::UpdateNavigate()
+ldarg.0 
+call Durango.Logic.Faction.MissionToDo Durango.Logic.Faction.MissionToDoCollection::GetCurrentToDo()
+stloc.0 
+ldloc.0 
+brfalse.s IL_0012: call TV UIManager::FindScript<Durango.UI.NavigateGroup>()
+ldloc.0 
+callvirt System.Boolean Durango.Logic.Faction.MissionToDo::HasTile()
+brtrue.s IL_0028: ldloc.0
+call TV UIManager::FindScript<Durango.UI.NavigateGroup>()
+callvirt Durango.UI.PointTargetController Durango.UI.NavigateGroup::get_Point()
+ldarg.0 
+call System.String Durango.Logic.PlayGuide.ToDoCollection::get_Key()
+callvirt System.Void Durango.UI.PointTargetController::ClearTarget(System.String)
+ret 
+ldloc.0 
+ldfld UnityEngine.Vector2 Durango.Logic.Faction.MissionToDo::TargetTile
+ldc.i4.0 
+call UnityEngine.Vector3 Durango.Terrain.Util::TilePositionToClientPosition(UnityEngine.Vector2,System.Boolean)
+stloc.1 
+call TV UIManager::FindScript<Durango.UI.NavigateGroup>()
+callvirt Durango.UI.PointTargetController Durango.UI.NavigateGroup::get_Point()
+ldarg.0 
+call System.String Durango.Logic.PlayGuide.ToDoCollection::get_Key()
+ldloca.s V_2
+initobj Durango.UI.PointTargetController/Arguments
+ldloca.s V_2
+ldloc.1 
+newobj System.Void System.Nullable`1<UnityEngine.Vector3>::.ctor(!0)
+stfld System.Nullable`1<UnityEngine.Vector3> Durango.UI.PointTargetController/Arguments::Position
+ldloca.s V_2
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.ToDoCollection::Icon
+stfld System.String Durango.UI.PointTargetController/Arguments::Icon
+ldloca.s V_2
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.ToDoCollection::Season
+stfld System.String Durango.UI.PointTargetController/Arguments::Season
+ldloc.2 
+callvirt System.Void Durango.UI.PointTargetController::SetTarget(System.String,Durango.UI.PointTargetController/Arguments)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::OnRemoveItem()
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoCollection::OnRemoveItem()
+call TV UIManager::FindScript<Durango.UI.NavigateGroup>()
+callvirt Durango.UI.PointTargetController Durango.UI.NavigateGroup::get_Point()
+ldarg.0 
+call System.String Durango.Logic.PlayGuide.ToDoCollection::get_Key()
+callvirt System.Void Durango.UI.PointTargetController::ClearTarget(System.String)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::RegionReceived(Messages.Region)
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Region::Name
+stfld System.String Durango.Logic.Faction.MissionToDoCollection::_regionName
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldc.i4.1 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::<.ctor>b__9_0()
+call TV UIManager::FindScript<Durango.UI.MissionGroup>()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0022: ret
+ldloc.0 
+ldarg.0 
+ldfld Messages.Mission Durango.Logic.Faction.MissionToDoCollection::_mission
+newobj System.Void Durango.UI.MissionInfoPopup/Data::.ctor(Messages.Mission)
+ldc.i4.1 
+ldc.i4.1 
+callvirt System.Void Durango.UI.MissionGroup::Open(Durango.UI.MissionInfoPopup/Data,System.Boolean,System.Boolean)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDoCollection::<GetDetail>b__10_0()
+ldarg.0 
+call System.String Durango.Logic.Faction.MissionToDoCollection::get_Id()
+call System.Void FactionSystem::RequestSkipTutorialMission(System.String)
+ret 

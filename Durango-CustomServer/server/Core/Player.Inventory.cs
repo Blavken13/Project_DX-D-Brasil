@@ -470,9 +470,12 @@ public partial class Player
         touched |= _survival.Add(SurvivalState.KeyHealth, food.Health +
             _survival.MaxOf(SurvivalState.KeyHealth, Gauge.CurrentTime) * food.HealthRatio);
         touched |= _survival.Add(SurvivalState.KeyFatigue, food.Fatigue);
-        // energy_potential = พลังงานที่อาหารชิ้นนี้ให้ได้ทั้งหมด
-        // Recovery is immediate: expressed nutrition plus any maximum-based recovery.
-        touched |= _survival.Add(SurvivalState.KeyEnergy, food.EnergyPotential * food.EnergyExpression +
+        // The in-game food description uses satiety as the immediate recovery amount.
+        // Older/custom items without satiety retain the energy_potential calculation.
+        float energyRecovery = food.HasSatiety
+            ? food.Satiety
+            : food.EnergyPotential * food.EnergyExpression;
+        touched |= _survival.Add(SurvivalState.KeyEnergy, energyRecovery +
             _survival.MaxOf(SurvivalState.KeyEnergy, Gauge.CurrentTime) * food.EnergyRatio);
         if (touched) FlushSurvival();
 
@@ -1478,10 +1481,10 @@ public partial class Player
     /// ค่าของอาหารแต่ละชนิดจาก data/assets/performance.json → "food"
     ///
     /// รูปแบบในไฟล์: <c>{ prototypeId: { "[minLv, maxLv]": { life, health, fatigue,
-    /// energy_potential, eat_motion, ... } } }</c> — ค่าเป็นสูตรข้อความ เช่น
+    /// satiety, energy_potential, eat_motion, ... } } }</c> — ค่าเป็นสูตรข้อความ เช่น
     /// "20 + 0.50 * (level -1)" หรือ "(16 + 0.3 * level) * -1" ⇒ ต้องคิดเลขเอง (ดู Formula)
     ///
-    /// ฟิลด์ที่ **ยังไม่ได้ใช้** และเหตุผล: satiety/water (ยังไม่มีหลอดความอิ่ม/น้ำในเซิร์ฟนี้) ·
+    /// ฟิลด์ที่ **ยังไม่ได้ใช้** และเหตุผล: water (ยังไม่มีหลอดน้ำในเซิร์ฟนี้) ·
     /// energy_expression / energy_per_sec / digestivetime (ระบบย่อยตามเวลา — ความหมายยืนยัน
     /// จากซอร์สเกมไม่ได้ เพราะ client ไม่เคยอ่านฟิลด์พวกนี้เลย) · effect_on/modifier_effect_time
     /// (สถานะบัฟจากอาหาร — ต้องมีระบบ status effect แบบมีอายุก่อน) · *_plus (ค่าความสามารถ)
@@ -1493,6 +1496,8 @@ public partial class Player
             public float Life;
             public float Health;
             public float Fatigue;
+            public float Satiety;
+            public bool HasSatiety;
             public float EnergyPotential;
             public float EnergyExpression = 1;
             public float LifeRatio, HealthRatio, EnergyRatio;
@@ -1514,6 +1519,7 @@ public partial class Player
             [JsonProperty("life")] public string Life { get; set; }
             [JsonProperty("health")] public string Health { get; set; }
             [JsonProperty("fatigue")] public string Fatigue { get; set; }
+            [JsonProperty("satiety")] public string Satiety { get; set; }
             [JsonProperty("energy_potential")] public string EnergyPotential { get; set; }
             [JsonProperty("eat_motion")] public string EatMotion { get; set; }
             [JsonProperty("digestivetime")] public string DigestiveTime { get; set; }
@@ -1536,6 +1542,11 @@ public partial class Player
             food.Life = Value("life", food.Life);
             food.Health = Value("health", food.Health);
             food.Fatigue = Value("fatigue", food.Fatigue);
+            if (performance.Value.Nums?.TryGetValue("satiety", out float satiety) == true)
+            {
+                food.Satiety = satiety;
+                food.HasSatiety = true;
+            }
             food.EnergyPotential = Value("energy_potential", food.EnergyPotential);
             food.EnergyExpression = Math.Max(0, Value("energy_expression", 1));
             food.LifeRatio = Value("life_ratio", 0);
@@ -1583,6 +1594,8 @@ double? effectTime = null;
                 Life = Eval(def.Life, level),
                 Health = Eval(def.Health, level),
                 Fatigue = Eval(def.Fatigue, level),
+                Satiety = Eval(def.Satiety, level),
+                HasSatiety = !string.IsNullOrEmpty(def.Satiety),
                 EnergyPotential = Eval(def.EnergyPotential, level),
                 // ท่าทางในไฟล์คือ "Eat"/"Drink" ตรงกับชื่อ motion ที่ client ใช้
                 EatMotion = string.IsNullOrEmpty(def.EatMotion) ? "Eat" : def.EatMotion,

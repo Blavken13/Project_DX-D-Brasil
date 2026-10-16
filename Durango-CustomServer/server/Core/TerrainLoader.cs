@@ -47,6 +47,7 @@ public static class TerrainLoader
     {
         string theme = null;
         data.Biomes = null;
+        data.Elevations = null;
         data.Ocean = null;
         data.Rivers = null;
         data.Landmarks = null;
@@ -65,6 +66,7 @@ public static class TerrainLoader
             foreach (ZipArchiveEntry entry in archive.Entries)
             {
                 if (CheckEntry(entry, "whole.biomes")) data.Biomes = LoadEntry(entry);
+                else if (CheckEntry(entry, "whole.elevations")) data.Elevations = LoadEntry(entry);
                 else if (CheckEntry(entry, "whole.ocean")) data.Ocean = LoadEntry(entry);
                 else if (CheckEntry(entry, "whole.rivers")) data.Rivers = LoadEntry(entry);
                 else if (CheckEntry(entry, "whole.landmarks")) data.Landmarks = LoadEntry(entry);

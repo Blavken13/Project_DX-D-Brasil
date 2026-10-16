@@ -1,0 +1,156 @@
+OffServerBundleFallback : System.Object
+FIELD System.String OffServerBundleFallback::Folder
+FIELD System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object> OffServerBundleFallback::_cache
+FIELD System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_missing
+FIELD System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_gaveUp
+FIELD System.Int32 OffServerBundleFallback::Served
+METHOD System.String OffServerBundleFallback::ResourceName(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: ldarg.0
+ldnull 
+ret 
+ldarg.0 
+callvirt System.String System.String::ToLowerInvariant()
+stloc.0 
+ldloc.0 
+ldstr .bundle
+callvirt System.Boolean System.String::EndsWith(System.String)
+brfalse.s IL_0037: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+ldstr .bundle
+call System.Int32 System.String::get_Length()
+sub 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stloc.0 
+ldloc.0 
+ldstr .prefab
+callvirt System.Boolean System.String::EndsWith(System.String)
+brfalse.s IL_005f: ldnull
+ldloc.0 
+ldc.i4.0 
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+ldstr .prefab
+call System.Int32 System.String::get_Length()
+sub 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stloc.0 
+br.s IL_0061: ldloc.0
+ldnull 
+ret 
+ldloc.0 
+ldstr $
+ldstr __
+callvirt System.String System.String::Replace(System.String,System.String)
+ret 
+METHOD System.Void OffServerBundleFallback::MarkGaveUp(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0014: ret
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_gaveUp
+ldarg.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Add(!0)
+pop 
+ret 
+METHOD System.Boolean OffServerBundleFallback::GaveUp(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0014: ldc.i4.0
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_gaveUp
+ldarg.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Contains(!0)
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Boolean OffServerBundleFallback::Has(System.String)
+ldarg.0 
+ldnull 
+call UnityEngine.Object OffServerBundleFallback::Load(System.String,System.Type)
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+ret 
+METHOD UnityEngine.Object OffServerBundleFallback::Load(System.String,System.Type)
+ldarg.0 
+call System.String OffServerBundleFallback::ResourceName(System.String)
+stloc.0 
+ldloc.0 
+brfalse.s IL_0017: ldnull
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_missing
+ldloc.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Contains(!0)
+brfalse.s IL_0019: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object> OffServerBundleFallback::_cache
+ldnull 
+ret 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object> OffServerBundleFallback::_cache
+ldloc.0 
+ldloca.s V_1
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object>::TryGetValue(!0,!1&)
+brfalse.s IL_0031: nop
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0098: ldarg.1
+nop 
+ldstr BundleFallback/
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String)
+call UnityEngine.Object UnityEngine.Resources::Load(System.String)
+stloc.1 
+leave.s IL_0065: ldloc.1
+stloc.2 
+ldstr [ABM] fallback 
+ldloc.0 
+ldstr  ล้ม: 
+ldloc.2 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldnull 
+stloc.1 
+leave.s IL_0065: ldloc.1
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_007c: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object> OffServerBundleFallback::_cache
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_missing
+ldloc.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Add(!0)
+pop 
+ldnull 
+ret 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object> OffServerBundleFallback::_cache
+ldloc.0 
+ldloc.1 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object>::set_Item(!0,!1)
+ldstr [ABM] fallback ใช้ prefab ในเกมแทน bundle: 
+ldarg.0 
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldarg.1 
+ldnull 
+call System.Boolean System.Type::op_Inequality(System.Type,System.Type)
+brfalse.s IL_00ac: ldsfld System.Int32 OffServerBundleFallback::Served
+ldarg.1 
+ldloc.1 
+callvirt System.Boolean System.Type::IsInstanceOfType(System.Object)
+brtrue.s IL_00ac: ldsfld System.Int32 OffServerBundleFallback::Served
+ldnull 
+ret 
+ldsfld System.Int32 OffServerBundleFallback::Served
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerBundleFallback::Served
+ldloc.1 
+ret 
+METHOD System.Void OffServerBundleFallback::.cctor()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Object> OffServerBundleFallback::_cache
+newobj System.Void System.Collections.Generic.HashSet`1<System.String>::.ctor()
+stsfld System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_missing
+newobj System.Void System.Collections.Generic.HashSet`1<System.String>::.ctor()
+stsfld System.Collections.Generic.HashSet`1<System.String> OffServerBundleFallback::_gaveUp
+ret 

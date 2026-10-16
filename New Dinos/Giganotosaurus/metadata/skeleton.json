@@ -1,0 +1,854 @@
+{
+  "skeletonAsset": "Skeleton'ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/Giganotosaurus_Skeleton.Giganotosaurus_Skeleton'",
+  "skeletonBoneNames": [
+    "root",
+    "c_back1",
+    "c_back2",
+    "c_back3",
+    "c_back4",
+    "c_neck1",
+    "c_neck2",
+    "c_neck3",
+    "c_head",
+    "c_jaw",
+    "c_tongue1",
+    "c_tongue2",
+    "c_tongue3",
+    "c_tongue4",
+    "l_eye",
+    "r_eye",
+    "r_upperEye",
+    "r_lowerEye",
+    "l_upperEye",
+    "l_lowerEye",
+    "l_scapula",
+    "l_shoulder",
+    "l_elbow",
+    "l_wrist",
+    "l_fingerC1",
+    "l_fingerC2",
+    "l_fingerC3",
+    "l_fingerB1",
+    "l_fingerB2",
+    "l_fingerB3",
+    "l_fingerA1",
+    "l_fingerA2",
+    "l_fingerA3",
+    "l_forearmTwist",
+    "l_armTiwst",
+    "r_scapula",
+    "r_shoulder",
+    "r_elbow",
+    "r_wrist",
+    "r_fingerC1",
+    "r_fingerC2",
+    "r_fingerC3",
+    "r_fingerB1",
+    "r_fingerB2",
+    "r_fingerB3",
+    "r_fingerA1",
+    "r_fingerA2",
+    "r_fingerA3",
+    "transform5",
+    "r_forearmTwist",
+    "r_armTiwst",
+    "c_tail1",
+    "c_tail2",
+    "c_tail3",
+    "c_tail4",
+    "c_tail5",
+    "l_leg",
+    "l_knee",
+    "l_ankle",
+    "l_toeD1",
+    "l_toeD2",
+    "l_toeD3",
+    "l_ankle1",
+    "l_toeB1",
+    "l_toeB2",
+    "l_toeB3",
+    "l_toeA1",
+    "l_toeA2",
+    "l_toeA3",
+    "l_toeC1",
+    "l_toeC2",
+    "l_toeC3",
+    "l_legTwist",
+    "r_leg",
+    "r_knee",
+    "r_ankle",
+    "r_toeD1",
+    "r_toeD2",
+    "r_toeD3",
+    "r_ankle1",
+    "r_toeB1",
+    "r_toeB2",
+    "r_toeB3",
+    "r_toeA1",
+    "r_toeA2",
+    "r_toeA3",
+    "r_toeC1",
+    "r_toeC2",
+    "r_toeC3",
+    "r_legTwist"
+  ],
+  "meshBoneNames": [
+    "root",
+    "c_back1",
+    "c_back2",
+    "c_back3",
+    "c_back4",
+    "c_neck1",
+    "c_neck2",
+    "c_neck3",
+    "c_head",
+    "c_jaw",
+    "c_tongue1",
+    "c_tongue2",
+    "c_tongue3",
+    "c_tongue4",
+    "l_eye",
+    "r_eye",
+    "r_upperEye",
+    "r_lowerEye",
+    "l_upperEye",
+    "l_lowerEye",
+    "l_scapula",
+    "l_shoulder",
+    "l_elbow",
+    "l_wrist",
+    "l_fingerC1",
+    "l_fingerC2",
+    "l_fingerC3",
+    "l_fingerB1",
+    "l_fingerB2",
+    "l_fingerB3",
+    "l_fingerA1",
+    "l_fingerA2",
+    "l_fingerA3",
+    "l_forearmTwist",
+    "l_armTiwst",
+    "r_scapula",
+    "r_shoulder",
+    "r_elbow",
+    "r_wrist",
+    "r_fingerC1",
+    "r_fingerC2",
+    "r_fingerC3",
+    "r_fingerB1",
+    "r_fingerB2",
+    "r_fingerB3",
+    "r_fingerA1",
+    "r_fingerA2",
+    "r_fingerA3",
+    "transform5",
+    "r_forearmTwist",
+    "r_armTiwst",
+    "c_tail1",
+    "c_tail2",
+    "c_tail3",
+    "c_tail4",
+    "c_tail5",
+    "l_leg",
+    "l_knee",
+    "l_ankle",
+    "l_toeD1",
+    "l_toeD2",
+    "l_toeD3",
+    "l_ankle1",
+    "l_toeB1",
+    "l_toeB2",
+    "l_toeB3",
+    "l_toeA1",
+    "l_toeA2",
+    "l_toeA3",
+    "l_toeC1",
+    "l_toeC2",
+    "l_toeC3",
+    "l_legTwist",
+    "r_leg",
+    "r_knee",
+    "r_ankle",
+    "r_toeD1",
+    "r_toeD2",
+    "r_toeD3",
+    "r_ankle1",
+    "r_toeB1",
+    "r_toeB2",
+    "r_toeB3",
+    "r_toeA1",
+    "r_toeA2",
+    "r_toeA3",
+    "r_toeC1",
+    "r_toeC2",
+    "r_toeC3",
+    "r_legTwist"
+  ],
+  "pskBones": [
+    {
+      "index": 0,
+      "name": "root",
+      "parent": -1,
+      "kind": "bone"
+    },
+    {
+      "index": 1,
+      "name": "c_back1",
+      "parent": 0,
+      "kind": "bone"
+    },
+    {
+      "index": 2,
+      "name": "c_back2",
+      "parent": 1,
+      "kind": "bone"
+    },
+    {
+      "index": 3,
+      "name": "c_back3",
+      "parent": 2,
+      "kind": "bone"
+    },
+    {
+      "index": 4,
+      "name": "c_back4",
+      "parent": 3,
+      "kind": "bone"
+    },
+    {
+      "index": 5,
+      "name": "c_neck1",
+      "parent": 4,
+      "kind": "bone"
+    },
+    {
+      "index": 6,
+      "name": "c_neck2",
+      "parent": 5,
+      "kind": "bone"
+    },
+    {
+      "index": 7,
+      "name": "c_neck3",
+      "parent": 6,
+      "kind": "bone"
+    },
+    {
+      "index": 8,
+      "name": "c_head",
+      "parent": 7,
+      "kind": "bone"
+    },
+    {
+      "index": 9,
+      "name": "c_jaw",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 10,
+      "name": "c_tongue1",
+      "parent": 9,
+      "kind": "bone"
+    },
+    {
+      "index": 11,
+      "name": "c_tongue2",
+      "parent": 10,
+      "kind": "bone"
+    },
+    {
+      "index": 12,
+      "name": "c_tongue3",
+      "parent": 11,
+      "kind": "bone"
+    },
+    {
+      "index": 13,
+      "name": "c_tongue4",
+      "parent": 12,
+      "kind": "bone"
+    },
+    {
+      "index": 14,
+      "name": "l_eye",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 15,
+      "name": "r_eye",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 16,
+      "name": "r_upperEye",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 17,
+      "name": "r_lowerEye",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 18,
+      "name": "l_upperEye",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 19,
+      "name": "l_lowerEye",
+      "parent": 8,
+      "kind": "bone"
+    },
+    {
+      "index": 20,
+      "name": "l_scapula",
+      "parent": 4,
+      "kind": "bone"
+    },
+    {
+      "index": 21,
+      "name": "l_shoulder",
+      "parent": 20,
+      "kind": "bone"
+    },
+    {
+      "index": 22,
+      "name": "l_elbow",
+      "parent": 21,
+      "kind": "bone"
+    },
+    {
+      "index": 23,
+      "name": "l_wrist",
+      "parent": 22,
+      "kind": "bone"
+    },
+    {
+      "index": 24,
+      "name": "l_fingerC1",
+      "parent": 23,
+      "kind": "bone"
+    },
+    {
+      "index": 25,
+      "name": "l_fingerC2",
+      "parent": 24,
+      "kind": "bone"
+    },
+    {
+      "index": 26,
+      "name": "l_fingerC3",
+      "parent": 25,
+      "kind": "bone"
+    },
+    {
+      "index": 27,
+      "name": "l_fingerB1",
+      "parent": 23,
+      "kind": "bone"
+    },
+    {
+      "index": 28,
+      "name": "l_fingerB2",
+      "parent": 27,
+      "kind": "bone"
+    },
+    {
+      "index": 29,
+      "name": "l_fingerB3",
+      "parent": 28,
+      "kind": "bone"
+    },
+    {
+      "index": 30,
+      "name": "l_fingerA1",
+      "parent": 23,
+      "kind": "bone"
+    },
+    {
+      "index": 31,
+      "name": "l_fingerA2",
+      "parent": 30,
+      "kind": "bone"
+    },
+    {
+      "index": 32,
+      "name": "l_fingerA3",
+      "parent": 31,
+      "kind": "bone"
+    },
+    {
+      "index": 33,
+      "name": "l_forearmTwist",
+      "parent": 22,
+      "kind": "bone"
+    },
+    {
+      "index": 34,
+      "name": "l_armTiwst",
+      "parent": 21,
+      "kind": "bone"
+    },
+    {
+      "index": 35,
+      "name": "r_scapula",
+      "parent": 4,
+      "kind": "bone"
+    },
+    {
+      "index": 36,
+      "name": "r_shoulder",
+      "parent": 35,
+      "kind": "bone"
+    },
+    {
+      "index": 37,
+      "name": "r_elbow",
+      "parent": 36,
+      "kind": "bone"
+    },
+    {
+      "index": 38,
+      "name": "r_wrist",
+      "parent": 37,
+      "kind": "bone"
+    },
+    {
+      "index": 39,
+      "name": "r_fingerC1",
+      "parent": 38,
+      "kind": "bone"
+    },
+    {
+      "index": 40,
+      "name": "r_fingerC2",
+      "parent": 39,
+      "kind": "bone"
+    },
+    {
+      "index": 41,
+      "name": "r_fingerC3",
+      "parent": 40,
+      "kind": "bone"
+    },
+    {
+      "index": 42,
+      "name": "r_fingerB1",
+      "parent": 38,
+      "kind": "bone"
+    },
+    {
+      "index": 43,
+      "name": "r_fingerB2",
+      "parent": 42,
+      "kind": "bone"
+    },
+    {
+      "index": 44,
+      "name": "r_fingerB3",
+      "parent": 43,
+      "kind": "bone"
+    },
+    {
+      "index": 45,
+      "name": "r_fingerA1",
+      "parent": 38,
+      "kind": "bone"
+    },
+    {
+      "index": 46,
+      "name": "r_fingerA2",
+      "parent": 45,
+      "kind": "bone"
+    },
+    {
+      "index": 47,
+      "name": "r_fingerA3",
+      "parent": 46,
+      "kind": "bone"
+    },
+    {
+      "index": 48,
+      "name": "transform5",
+      "parent": 37,
+      "kind": "bone"
+    },
+    {
+      "index": 49,
+      "name": "r_forearmTwist",
+      "parent": 37,
+      "kind": "bone"
+    },
+    {
+      "index": 50,
+      "name": "r_armTiwst",
+      "parent": 36,
+      "kind": "bone"
+    },
+    {
+      "index": 51,
+      "name": "c_tail1",
+      "parent": 1,
+      "kind": "bone"
+    },
+    {
+      "index": 52,
+      "name": "c_tail2",
+      "parent": 51,
+      "kind": "bone"
+    },
+    {
+      "index": 53,
+      "name": "c_tail3",
+      "parent": 52,
+      "kind": "bone"
+    },
+    {
+      "index": 54,
+      "name": "c_tail4",
+      "parent": 53,
+      "kind": "bone"
+    },
+    {
+      "index": 55,
+      "name": "c_tail5",
+      "parent": 54,
+      "kind": "bone"
+    },
+    {
+      "index": 56,
+      "name": "l_leg",
+      "parent": 1,
+      "kind": "bone"
+    },
+    {
+      "index": 57,
+      "name": "l_knee",
+      "parent": 56,
+      "kind": "bone"
+    },
+    {
+      "index": 58,
+      "name": "l_ankle",
+      "parent": 57,
+      "kind": "bone"
+    },
+    {
+      "index": 59,
+      "name": "l_toeD1",
+      "parent": 58,
+      "kind": "bone"
+    },
+    {
+      "index": 60,
+      "name": "l_toeD2",
+      "parent": 59,
+      "kind": "bone"
+    },
+    {
+      "index": 61,
+      "name": "l_toeD3",
+      "parent": 60,
+      "kind": "bone"
+    },
+    {
+      "index": 62,
+      "name": "l_ankle1",
+      "parent": 58,
+      "kind": "bone"
+    },
+    {
+      "index": 63,
+      "name": "l_toeB1",
+      "parent": 62,
+      "kind": "bone"
+    },
+    {
+      "index": 64,
+      "name": "l_toeB2",
+      "parent": 63,
+      "kind": "bone"
+    },
+    {
+      "index": 65,
+      "name": "l_toeB3",
+      "parent": 64,
+      "kind": "bone"
+    },
+    {
+      "index": 66,
+      "name": "l_toeA1",
+      "parent": 62,
+      "kind": "bone"
+    },
+    {
+      "index": 67,
+      "name": "l_toeA2",
+      "parent": 66,
+      "kind": "bone"
+    },
+    {
+      "index": 68,
+      "name": "l_toeA3",
+      "parent": 67,
+      "kind": "bone"
+    },
+    {
+      "index": 69,
+      "name": "l_toeC1",
+      "parent": 62,
+      "kind": "bone"
+    },
+    {
+      "index": 70,
+      "name": "l_toeC2",
+      "parent": 69,
+      "kind": "bone"
+    },
+    {
+      "index": 71,
+      "name": "l_toeC3",
+      "parent": 70,
+      "kind": "bone"
+    },
+    {
+      "index": 72,
+      "name": "l_legTwist",
+      "parent": 56,
+      "kind": "bone"
+    },
+    {
+      "index": 73,
+      "name": "r_leg",
+      "parent": 1,
+      "kind": "bone"
+    },
+    {
+      "index": 74,
+      "name": "r_knee",
+      "parent": 73,
+      "kind": "bone"
+    },
+    {
+      "index": 75,
+      "name": "r_ankle",
+      "parent": 74,
+      "kind": "bone"
+    },
+    {
+      "index": 76,
+      "name": "r_toeD1",
+      "parent": 75,
+      "kind": "bone"
+    },
+    {
+      "index": 77,
+      "name": "r_toeD2",
+      "parent": 76,
+      "kind": "bone"
+    },
+    {
+      "index": 78,
+      "name": "r_toeD3",
+      "parent": 77,
+      "kind": "bone"
+    },
+    {
+      "index": 79,
+      "name": "r_ankle1",
+      "parent": 75,
+      "kind": "bone"
+    },
+    {
+      "index": 80,
+      "name": "r_toeB1",
+      "parent": 79,
+      "kind": "bone"
+    },
+    {
+      "index": 81,
+      "name": "r_toeB2",
+      "parent": 80,
+      "kind": "bone"
+    },
+    {
+      "index": 82,
+      "name": "r_toeB3",
+      "parent": 81,
+      "kind": "bone"
+    },
+    {
+      "index": 83,
+      "name": "r_toeA1",
+      "parent": 79,
+      "kind": "bone"
+    },
+    {
+      "index": 84,
+      "name": "r_toeA2",
+      "parent": 83,
+      "kind": "bone"
+    },
+    {
+      "index": 85,
+      "name": "r_toeA3",
+      "parent": 84,
+      "kind": "bone"
+    },
+    {
+      "index": 86,
+      "name": "r_toeC1",
+      "parent": 79,
+      "kind": "bone"
+    },
+    {
+      "index": 87,
+      "name": "r_toeC2",
+      "parent": 86,
+      "kind": "bone"
+    },
+    {
+      "index": 88,
+      "name": "r_toeC3",
+      "parent": 87,
+      "kind": "bone"
+    },
+    {
+      "index": 89,
+      "name": "r_legTwist",
+      "parent": 73,
+      "kind": "bone"
+    },
+    {
+      "index": 90,
+      "name": "LookOffsetSocket",
+      "parent": 0,
+      "kind": "socket"
+    },
+    {
+      "index": 91,
+      "name": "RiderSocket",
+      "parent": 4,
+      "kind": "socket"
+    },
+    {
+      "index": 92,
+      "name": "MeleeSwing1",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 93,
+      "name": "MeleeSwing2",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 94,
+      "name": "MeleeSwing3",
+      "parent": 5,
+      "kind": "socket"
+    },
+    {
+      "index": 95,
+      "name": "MeleeSwing4",
+      "parent": 5,
+      "kind": "socket"
+    },
+    {
+      "index": 96,
+      "name": "PoopSocket",
+      "parent": 1,
+      "kind": "socket"
+    },
+    {
+      "index": 97,
+      "name": "LeftFoot_SKT",
+      "parent": 63,
+      "kind": "socket"
+    },
+    {
+      "index": 98,
+      "name": "RightFoot_SKT",
+      "parent": 80,
+      "kind": "socket"
+    },
+    {
+      "index": 99,
+      "name": "root_SKT",
+      "parent": 0,
+      "kind": "socket"
+    },
+    {
+      "index": 100,
+      "name": "EyeFX",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 101,
+      "name": "buffsocketcenterdynamic",
+      "parent": 2,
+      "kind": "socket"
+    },
+    {
+      "index": 102,
+      "name": "DragSocket",
+      "parent": 9,
+      "kind": "socket"
+    },
+    {
+      "index": 103,
+      "name": "GlassesSocket",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 104,
+      "name": "WitchHatSocket",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 105,
+      "name": "SantaHatSocket",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 106,
+      "name": "BunnyEarsSocket",
+      "parent": 8,
+      "kind": "socket"
+    },
+    {
+      "index": 107,
+      "name": "CollarSocket",
+      "parent": 6,
+      "kind": "socket"
+    },
+    {
+      "index": 108,
+      "name": "HeadSocket",
+      "parent": 9,
+      "kind": "socket"
+    },
+    {
+      "index": 109,
+      "name": "TailSocket",
+      "parent": 55,
+      "kind": "socket"
+    }
+  ],
+  "skeletonBonesNotInMesh": [],
+  "socketAssets": {
+    "skeletonSockets": 20,
+    "meshSockets": 0
+  }
+}

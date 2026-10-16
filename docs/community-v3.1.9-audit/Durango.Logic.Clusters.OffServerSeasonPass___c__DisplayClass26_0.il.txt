@@ -1,0 +1,109 @@
+Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0 : System.Object
+FIELD System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::done
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::<Claim>b__0(Newtonsoft.Json.Linq.JObject,System.Int32)
+ldarg.1 
+brfalse.s IL_0010: ldc.i4.0
+ldarg.1 
+ldstr ok
+call System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+br.s IL_0011: stloc.0
+ldc.i4.0 
+stloc.0 
+ldarg.1 
+brtrue.s IL_001c: ldarg.1
+ldsfld System.String System.String::Empty
+br.s IL_0027: stloc.1
+ldarg.1 
+ldstr reason
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.1 
+ldarg.1 
+brfalse.s IL_0052: ldloc.0
+ldarg.1 
+ldstr status
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+brfalse.s IL_0052: ldloc.0
+ldarg.1 
+ldstr status
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+castclass Newtonsoft.Json.Linq.JObject
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Apply(Newtonsoft.Json.Linq.JObject)
+ldloc.0 
+brfalse.s IL_00b2: ldloc.1
+ldarg.1 
+ldstr tiers
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.2 
+ldloc.2 
+brtrue.s IL_0070: ldstr ","
+ldsfld System.String System.String::Empty
+br.s IL_0080: stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+ldstr ,
+ldloc.2 
+callvirt !!0 Newtonsoft.Json.Linq.JToken::ToObject<System.String[]>()
+call System.String System.String::Join(System.String,System.String[])
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+ldstr claim ok 
+ldsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+call System.String System.String::Concat(System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+ldstr [OffServer] Season Pass claim 
+ldsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+br IL_014f: ldarg.0
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+brtrue.s IL_00c8: ldstr "claim fail HTTP "
+ldarg.2 
+ldc.i4 404
+bne.un.s IL_00c8: ldstr "claim fail HTTP "
+ldstr unsupported
+stloc.1 
+ldstr claim fail HTTP 
+ldarga.s http
+call System.String System.Int32::ToString()
+ldstr  
+ldloc.1 
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+ldstr [OffServer] Season Pass 
+ldsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerSeasonPass::Texts
+ldstr fail_
+ldloc.1 
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::ContainsKey(!0)
+brtrue.s IL_0130: ldstr "fail_"
+ldstr claim_failed
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldstr  (
+ldloc.1 
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+br.s IL_0145: ldc.r4 3
+ldstr fail_
+ldloc.1 
+call System.String System.String::Concat(System.String,System.String)
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldarg.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::done
+brfalse.s IL_0164: ret
+ldarg.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::done
+ldloc.0 
+ldloc.1 
+callvirt System.Void System.Action`2<System.Boolean,System.String>::Invoke(!0,!1)
+ret 

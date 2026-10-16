@@ -1,0 +1,441 @@
+Durango.UI.WarpRushGroup : UIBase
+FIELD Durango.UI.Control.UITitle Durango.UI.WarpRushGroup::_titleWidget
+FIELD NestedPrefab.NestedPrefabLinker Durango.UI.WarpRushGroup::_tabLinker
+FIELD NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushGroup::_contents
+FIELD Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.WarpRushGroup::_currencyWidgets
+FIELD Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+FIELD System.Int32 Durango.UI.WarpRushGroup::_selectedTab
+FIELD Durango.Logic.Notification.Toggle Durango.UI.WarpRushGroup::_notification
+FIELD System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+METHOD Durango.Logic.Notification.Notification Durango.UI.WarpRushGroup::get_Notification()
+ldarg.0 
+ldfld Durango.Logic.Notification.Toggle Durango.UI.WarpRushGroup::_notification
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::IUIInitializable.Init()
+ldarg.0 
+ldc.i4.1 
+stfld UISound/GroupType UIBase::_openCloseSound
+ldarg.0 
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker Durango.UI.WarpRushGroup::_tabLinker
+callvirt T NestedPrefab.NestedPrefabLinker`1<UnityEngine.Transform>::get_Object()
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.Control.IconTabList>()
+stfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+ldarg.0 
+ldftn System.Void Durango.UI.WarpRushGroup::OnClickTab(System.Int32)
+newobj System.Void System.Action`1<System.Int32>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.Control.IconTabList::add_Clicked(System.Action`1<System.Int32>)
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+callvirt System.Void Durango.UI.Control.IconTabList::BeginLoad()
+ldc.i4.0 
+stloc.0 
+br.s IL_007c: ldloc.0
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldc.i4.2 
+bne.un.s IL_0050: ldarg.0
+call System.Boolean OptionSystem::IsWarpRushRankingEnabled()
+brfalse.s IL_0078: ldloc.0
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+ldloc.1 
+box Durango.UI.WarpRushGroup/Tab
+ldnull 
+call System.String IconMap::Get(System.Enum,System.String)
+ldloc.1 
+box Durango.UI.WarpRushGroup/Tab
+call System.String L10N.T::GetName(System.Enum)
+call SyncString SyncString::op_Implicit(System.String)
+callvirt Durango.UI.Control.IconTabWidget Durango.UI.Control.IconTabList::Add(System.String,SyncString)
+pop 
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushGroup::_contents
+ldlen 
+conv.i4 
+blt.s IL_0043: ldloc.0
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+callvirt System.Void Durango.UI.Control.IconTabList::EndLoad()
+ldarg.0 
+ldfld Durango.UI.Control.UITitle Durango.UI.WarpRushGroup::_titleWidget
+callvirt T NestedPrefab.NestedPrefabLinker`1<Durango.UI.Control.UITitleWidget>::get_Object()
+ldstr 워프 러시
+call System.String L10N.T::_(System.String)
+callvirt System.Void Durango.UI.Control.UITitleWidget::SetTitle(System.String)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.WarpRushGroup::_currencyWidgets
+ldc.i4.0 
+ldelem.ref 
+ldc.i4.1 
+ldc.i4.1 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetWarpRushResource(Shared.Season2.ResourceType,System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.WarpRushGroup::_currencyWidgets
+ldc.i4.1 
+ldelem.ref 
+ldc.i4.0 
+ldc.i4.1 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetWarpRushResource(Shared.Season2.ResourceType,System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.WarpRushGroup::_currencyWidgets
+ldc.i4.2 
+ldelem.ref 
+call T Yaml.Util.Singleton`1<Yaml.Constants>::get_Instance()
+ldflda Yaml.Season2 Yaml.Constants::Season2
+ldflda Yaml.Season2Voucher Yaml.Season2::Voucher
+ldfld System.String Yaml.Season2Voucher::Id
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetVoucherType(System.String)
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ldsfld System.Action`1<Shared.Season2.ResourceType> Durango.UI.WarpRushGroup/<>c::<>9__11_0
+dup 
+brtrue.s IL_010f: callvirt System.Void Durango.Logic.WarpRushSystem::add_SurvivorRegionChanged(System.Action`1<Shared.Season2.ResourceType>)
+pop 
+ldsfld Durango.UI.WarpRushGroup/<>c Durango.UI.WarpRushGroup/<>c::<>9
+ldftn System.Void Durango.UI.WarpRushGroup/<>c::<IUIInitializable.Init>b__11_0(Shared.Season2.ResourceType)
+newobj System.Void System.Action`1<Shared.Season2.ResourceType>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action`1<Shared.Season2.ResourceType> Durango.UI.WarpRushGroup/<>c::<>9__11_0
+callvirt System.Void Durango.Logic.WarpRushSystem::add_SurvivorRegionChanged(System.Action`1<Shared.Season2.ResourceType>)
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.WarpRushGroup::OnRewardStatusChange(Shared.Season2.ResourceType,Messages.S02RewardStatus,Messages.S02RewardStatus)
+newobj System.Void System.Action`3<Shared.Season2.ResourceType,Messages.S02RewardStatus,Messages.S02RewardStatus>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.Logic.WarpRushSystem::add_RewardStatusChanged(System.Action`3<Shared.Season2.ResourceType,Messages.S02RewardStatus,Messages.S02RewardStatus>)
+ldarg.0 
+ldftn System.Void Durango.UI.WarpRushGroup::<IUIInitializable.Init>b__11_1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::add_Updated(System.Action)
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.WarpRushGroup::<IUIInitializable.Init>b__11_2()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.Logic.WarpRushSystem::add_RewardedRankingUpdated(System.Action)
+ldarg.0 
+ldc.i4.0 
+call System.Void UIBase::SetChildrenActive(System.Boolean)
+ret 
+METHOD System.Boolean Durango.UI.WarpRushGroup::TryOpen()
+ldarg.0 
+call System.Void Durango.UI.WarpRushGroup::ApplySeasonPassMode()
+ldsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+brfalse.s IL_0016: ldarg.0
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.UI.WarpRushGroup::SelectTab(System.Int32)
+br.s IL_0026: ldarg.0
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushGroup::_selectedTab
+ldc.i4.m1 
+bne.un.s IL_0026: ldarg.0
+ldarg.0 
+ldc.i4.0 
+call System.Void Durango.UI.WarpRushGroup::SelectTab(System.Int32)
+ldarg.0 
+call System.Boolean UIBase::TryOpen()
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::ApplySeasonPassMode()
+ldsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+stloc.0 
+ldarg.0 
+ldfld Durango.UI.Control.UITitle Durango.UI.WarpRushGroup::_titleWidget
+callvirt T NestedPrefab.NestedPrefabLinker`1<Durango.UI.Control.UITitleWidget>::get_Object()
+ldloc.0 
+brtrue.s IL_0020: ldstr "title"
+ldstr 워프 러시
+call System.String L10N.T::_(System.String)
+br.s IL_002f: callvirt System.Void Durango.UI.Control.UITitleWidget::SetTitle(System.String)
+ldstr title
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+callvirt System.Void Durango.UI.Control.UITitleWidget::SetTitle(System.String)
+ldc.i4.0 
+stloc.1 
+br.s IL_00a7: ldloc.1
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+ldloc.1 
+callvirt Durango.UI.Control.IconTabWidget Durango.UI.Control.IconTabList::Get(System.Int32)
+stloc.2 
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_00a3: ldloc.1
+ldloc.1 
+ldc.i4.1 
+beq.s IL_0063: ldloc.2
+ldloc.2 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldloc.0 
+ldc.i4.0 
+ceq 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+br.s IL_00a3: ldloc.1
+ldloc.2 
+ldloc.0 
+brtrue.s IL_0075: ldstr "icon_warprush_reward"
+ldc.i4.1 
+box Durango.UI.WarpRushGroup/Tab
+ldnull 
+call System.String IconMap::Get(System.Enum,System.String)
+br.s IL_007a: ldloc.0
+ldstr icon_warprush_reward
+ldloc.0 
+brtrue.s IL_008a: ldstr "tab_rewards"
+ldc.i4.1 
+box Durango.UI.WarpRushGroup/Tab
+call System.String L10N.T::GetName(System.Enum)
+br.s IL_0099: call SyncString SyncString::op_Implicit(System.String)
+ldstr tab_rewards
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+call SyncString SyncString::op_Implicit(System.String)
+callvirt System.Void Durango.UI.Control.IconTabWidget::Set(System.String,SyncString)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushGroup::_contents
+ldlen 
+conv.i4 
+blt.s IL_0038: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.WarpRushGroup::_currencyWidgets
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_00e4: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+ldelem.ref 
+stloc.s V_5
+ldloc.s V_5
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00de: ldloc.s V_4
+ldloc.s V_5
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldloc.0 
+ldc.i4.0 
+ceq 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+ldlen 
+conv.i4 
+blt.s IL_00be: ldloc.3
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::OnClickTab(System.Int32)
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushGroup::_selectedTab
+ldarg.1 
+beq.s IL_0010: ret
+ldarg.0 
+ldarg.1 
+call System.Void Durango.UI.WarpRushGroup::SelectTab(System.Int32)
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::SelectTab(System.Int32)
+ldarg.0 
+ldarg.1 
+stfld System.Int32 Durango.UI.WarpRushGroup::_selectedTab
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+ldarg.1 
+callvirt System.Void Durango.UI.Control.IconTabList::Select(System.Int32)
+ldc.i4.0 
+stloc.0 
+br.s IL_0031: ldloc.0
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushGroup::_contents
+ldloc.0 
+ldelem.ref 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.1 
+ldloc.0 
+ceq 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld NestedPrefab.NestedPrefabLinker[] Durango.UI.WarpRushGroup::_contents
+ldlen 
+conv.i4 
+blt.s IL_0017: ldarg.0
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::OnRewardStatusChange(Shared.Season2.ResourceType,Messages.S02RewardStatus,Messages.S02RewardStatus)
+ldarg.2 
+ldfld System.Int32 Messages.S02RewardStatus::Level
+brfalse.s IL_0074: ret
+ldarg.2 
+ldfld System.Int32 Messages.S02RewardStatus::Level
+ldarg.3 
+ldfld System.Int32 Messages.S02RewardStatus::Level
+beq.s IL_0074: ret
+call Durango.UI.AlarmGroup UIManager::get_Alarm()
+ldloca.s V_0
+initobj Durango.UI.AlarmRewardQueue/Args
+ldloca.s V_0
+ldstr <em>{0:lv:}</em>
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.3 
+ldfld System.Int32 Messages.S02RewardStatus::Level
+box System.Int32
+stelem.ref 
+call System.String L10N.T::_(System.String,System.Object[])
+stfld System.String Durango.UI.AlarmRewardQueue/Args::Main
+ldloca.s V_0
+ldarg.1 
+call System.String Durango.Logic.WarpRushSystem::GetBoxName(Shared.Season2.ResourceType)
+stfld System.String Durango.UI.AlarmRewardQueue/Args::Sub
+ldloca.s V_0
+ldarg.1 
+call System.String Durango.Logic.WarpRushSystem::GetResourceBoxIcon(Shared.Season2.ResourceType)
+call Durango.Logic.Item.ItemIcon Durango.Logic.Item.ItemIcon::op_Implicit(System.String)
+stfld Durango.Logic.Item.ItemIcon Durango.UI.AlarmRewardQueue/Args::Icon
+ldloc.0 
+ldc.i4.s 17
+ldc.r4 1
+callvirt System.Void Durango.UI.AlarmGroup::RewardAlarm(Durango.UI.AlarmRewardQueue/Args,Durango.UI.AlarmGroup/RewardEffectType,System.Single)
+ret 
+METHOD SyncString Durango.UI.WarpRushGroup::GetDateLimitSyncString(System.Double,System.String)
+newobj System.Void Durango.UI.WarpRushGroup/<>c__DisplayClass17_0::.ctor()
+dup 
+ldarg.0 
+stfld System.Double Durango.UI.WarpRushGroup/<>c__DisplayClass17_0::until
+dup 
+ldarg.1 
+stfld System.String Durango.UI.WarpRushGroup/<>c__DisplayClass17_0::decorator
+ldftn System.Void Durango.UI.WarpRushGroup/<>c__DisplayClass17_0::<GetDateLimitSyncString>b__0(System.String&,System.Single&)
+newobj System.Void SyncString/UpdateDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void SyncString::.ctor(SyncString/UpdateDelegate)
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::RefreshNotification(System.Boolean)
+ldarg.0 
+ldfld Durango.Logic.Notification.Toggle Durango.UI.WarpRushGroup::_notification
+ldarg.1 
+callvirt System.Void Durango.Logic.Notification.Notification::set_On(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.IconTabList Durango.UI.WarpRushGroup::_tabList
+ldc.i4.2 
+ldarg.0 
+ldfld Durango.Logic.Notification.Toggle Durango.UI.WarpRushGroup::_notification
+callvirt System.Boolean Durango.Logic.Notification.Notification::get_On()
+ldc.i4.1 
+callvirt System.Void Durango.UI.Control.IconTabList::SetNotification(System.Int32,System.Boolean,Durango.Logic.Notification.Type)
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::DefaultUri()
+ldc.i4.0 
+stsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+ldstr Tab
+ldnull 
+call System.String Durango.UI.UriParser::GetArgument(System.String,System.String)
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_002c: ldarg.0
+ldloc.0 
+ldloca.s V_1
+ldc.i4.0 
+call System.Boolean Durango.Utils.Extensions.StringExtensions::TryEnum<Durango.UI.WarpRushGroup/Tab>(System.String,T&,System.Boolean)
+brfalse.s IL_002c: ldarg.0
+ldarg.0 
+ldloc.1 
+call System.Void Durango.UI.WarpRushGroup::SelectTab(System.Int32)
+ldarg.0 
+callvirt System.Boolean UIBase::Open()
+pop 
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::.ctor()
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.UI.WarpRushGroup::_selectedTab
+ldarg.0 
+ldc.i4.1 
+ldnull 
+newobj System.Void Durango.Logic.Notification.Toggle::.ctor(Durango.Logic.Notification.Type,System.String)
+stfld Durango.Logic.Notification.Toggle Durango.UI.WarpRushGroup::_notification
+ldarg.0 
+call System.Void UIBase::.ctor()
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::<IUIInitializable.Init>b__11_1()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brfalse.s IL_001a: ret
+ldarg.0 
+ldfld Durango.Logic.Notification.Toggle Durango.UI.WarpRushGroup::_notification
+call System.Int32 Durango.Logic.Clusters.OffServerSeasonPass::get_ClaimableCount()
+ldc.i4.0 
+cgt 
+callvirt System.Void Durango.Logic.Notification.Notification::set_On(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.WarpRushGroup::<IUIInitializable.Init>b__11_2()
+ldc.i4.0 
+stloc.0 
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+call System.DateTime Durango.Utils.Times::UnixTimeToDateTimeUtc(System.Double)
+stloc.1 
+call T Yaml.Util.Singleton`1<Yaml.Constants>::get_Instance()
+ldflda Yaml.Season2 Yaml.Constants::Season2
+ldfld System.Collections.Generic.List`1<Shared.Rank.Category> Yaml.Season2::Rankings
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Shared.Rank.Category>::GetEnumerator()
+stloc.2 
+br.s IL_006f: ldloca.s V_2
+ldloca.s V_2
+call !0 System.Collections.Generic.List`1/Enumerator<Shared.Rank.Category>::get_Current()
+stloc.3 
+call System.Collections.Generic.Dictionary`2<TK,TV> Yaml.Util.SingletonDict`2<Shared.Rank.Category,Yaml.Ranking>::get_Instance()
+ldloc.3 
+ldnull 
+call TV DictionaryExtensions::Get<Shared.Rank.Category,Yaml.Ranking>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+stloc.s V_4
+ldloc.s V_4
+brtrue.s IL_0046: ldloc.s V_4
+ldnull 
+br.s IL_0057: call System.Boolean System.String::IsNullOrEmpty(System.String)
+ldloc.s V_4
+ldloc.1 
+callvirt System.Collections.Generic.KeyValuePair`2<System.String,System.String> Yaml.Ranking::GetCurrentAndPrevRevisionId(System.DateTime)
+stloc.s V_5
+ldloca.s V_5
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Value()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_006f: ldloca.s V_2
+call T GameSystem`1<Durango.Logic.WarpRushSystem>::Instance()
+ldloc.3 
+callvirt System.Boolean Durango.Logic.WarpRushSystem::AnyRewardLeft(Shared.Rank.Category)
+brfalse.s IL_006f: ldloca.s V_2
+ldc.i4.1 
+stloc.0 
+leave.s IL_0088: ldarg.0
+ldloca.s V_2
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Shared.Rank.Category>::MoveNext()
+brtrue.s IL_0029: ldloca.s V_2
+leave.s IL_0088: ldarg.0
+ldloca.s V_2
+constrained. System.Collections.Generic.List`1/Enumerator<Shared.Rank.Category>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldloc.0 
+call System.Void Durango.UI.WarpRushGroup::RefreshNotification(System.Boolean)
+ret 

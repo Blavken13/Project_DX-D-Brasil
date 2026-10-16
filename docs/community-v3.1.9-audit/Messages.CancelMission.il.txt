@@ -1,0 +1,55 @@
+Messages.CancelMission : System.ValueType
+FIELD System.UInt32 Messages.CancelMission::TypeCode
+FIELD System.String Messages.CancelMission::MissionId
+METHOD System.Void Messages.CancelMission::Pack(MsgPack.Packer,Messages.CancelMission,System.Boolean)
+ldarg.2 
+brfalse.s IL_0019: ldarg.0
+ldarg.0 
+ldc.i4.2 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 3624
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+br.s IL_0021: ldarg.1
+ldarg.0 
+ldc.i4.1 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.String Messages.CancelMission::MissionId
+brtrue.s IL_0036: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ret 
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.CancelMission::MissionId
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ret 
+METHOD Messages.CancelMission Messages.CancelMission::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+initobj Messages.CancelMission
+ldloca.s V_0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.1 
+ldloca.s V_1
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.CancelMission::MissionId
+ldloc.0 
+ret 
+METHOD System.String Messages.CancelMission::ToString()
+ldstr <CancelMission MissionId=
+ldarg.0 
+ldfld System.String Messages.CancelMission::MissionId
+ldstr >
+call System.String System.String::Concat(System.String,System.String,System.String)
+ret 

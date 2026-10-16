@@ -1,0 +1,1014 @@
+Durango.Logic.Clusters.OffServerWalletExchange : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerWalletExchange::ToGem
+FIELD System.String Durango.Logic.Clusters.OffServerWalletExchange::ToTStone
+FIELD System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::HttpTimeoutSec
+FIELD System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+FIELD System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::Busy
+FIELD System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerWalletExchange::Texts
+METHOD System.String Durango.Logic.Clusters.OffServerWalletExchange::get_GatewayUrl()
+call System.String GameManager::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0014: ldloc.0
+call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+stloc.0 
+ldloc.0 
+dup 
+brtrue.s IL_001e: ldc.i4.s 47
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::get_Available()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brfalse.s IL_0022: ldc.i4.0
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::get_GatewayUrl()
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_0022: ldc.i4.0
+call System.String GameManager::get_SessionToken()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Int64 Durango.Logic.Clusters.OffServerWalletExchange::Balance(Shared.Economy.Currency)
+call Messages.Wallet InventorySystem::get_Wallet()
+ldarg.0 
+call System.Int64 WalletExtension::GetBalance(Messages.Wallet,Shared.Economy.Currency)
+stloc.0 
+leave.s IL_0014: ldloc.0
+pop 
+ldc.i4.0 
+conv.i8 
+stloc.0 
+leave.s IL_0014: ldloc.0
+ldloc.0 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange::Open()
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::Busy
+brfalse.s IL_0021: call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr busy
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+dup 
+ldc.i4.0 
+callvirt System.Void Durango.UI.MessageBox::SetCurrencyInfo(Shared.Economy.Currency)
+dup 
+ldc.i4.1 
+callvirt System.Void Durango.UI.MessageBox::SetCurrencyInfo(Shared.Economy.Currency)
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+conv.i8 
+ldc.i4.0 
+call System.String Durango.Logic.Item.Inventory::GetIcon(Shared.Economy.Currency)
+ldc.r4 1
+call System.String Durango.Logic.Item.Inventory::CurrencyFormat(System.Int64,System.String,System.Single)
+stloc.0 
+ldc.i4.1 
+conv.i8 
+ldc.i4.1 
+call System.String Durango.Logic.Item.Inventory::GetIcon(Shared.Economy.Currency)
+ldc.r4 1
+call System.String Durango.Logic.Item.Inventory::CurrencyFormat(System.Int64,System.String,System.Single)
+stloc.1 
+ldstr title
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldstr rate
+ldc.i4.2 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.1 
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldsfld System.Action`1<System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c::<>9__11_0
+dup 
+brtrue.s IL_00a4: ldc.i4.3
+pop 
+ldsfld Durango.Logic.Clusters.OffServerWalletExchange/<>c Durango.Logic.Clusters.OffServerWalletExchange/<>c::<>9
+ldftn System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c::<Open>b__11_0(System.Int32)
+newobj System.Void System.Action`1<System.Int32>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action`1<System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c::<>9__11_0
+ldc.i4.3 
+newarr Durango.UI.MessageBox/Button
+dup 
+ldc.i4.0 
+ldstr btn_t2g
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.i4.0 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+stelem.any Durango.UI.MessageBox/Button
+dup 
+ldc.i4.1 
+ldstr btn_g2t
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.i4.0 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+newobj System.Void Durango.UI.MessageBox/Button::.ctor(System.String,Durango.UI.Control.PresetButton/Style,System.String,System.Boolean,Durango.UI.Control.PresetButton/Effect)
+stelem.any Durango.UI.MessageBox/Button
+dup 
+ldc.i4.2 
+ldstr close
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+call Durango.UI.MessageBox/Button Durango.UI.MessageBox/Button::op_Implicit(System.String)
+stelem.any Durango.UI.MessageBox/Button
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action`1<System.Int32>,Durango.UI.MessageBox/Button[])
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange::AskAmount(System.String)
+newobj System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass12_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass12_0::dir
+ldc.i4.1 
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stloc.1 
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass12_0::dir
+ldstr t2g
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0033: ldc.i4.0
+ldc.i4.1 
+call System.Int64 Durango.Logic.Clusters.OffServerWalletExchange::Balance(Shared.Economy.Currency)
+br.s IL_003c: stloc.2
+ldc.i4.0 
+call System.Int64 Durango.Logic.Clusters.OffServerWalletExchange::Balance(Shared.Economy.Currency)
+ldloc.1 
+conv.i8 
+div 
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+conv.i8 
+bgt.s IL_0089: call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass12_0::dir
+ldstr t2g
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0065: ldstr "fail_tstone_min"
+ldstr fail_gem
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+br.s IL_007e: ldc.r4 3
+ldstr fail_tstone_min
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.1 
+box System.Int32
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.NumberInputPopup>()
+ldc.i4.1 
+conv.i8 
+ldc.i4.1 
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass12_0::dir
+ldstr t2g
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00af: ldstr "amount_t2g"
+ldstr amount_g2t
+br.s IL_00b4: call !!0[] System.Array::Empty<System.Object>()
+ldstr amount_t2g
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass12_0::<AskAmount>b__0(System.Int64)
+newobj System.Void System.Action`1<System.Int64>::.ctor(System.Object,System.IntPtr)
+ldloc.2 
+callvirt System.Void Durango.UI.Popup.NumberInputPopup::Show(System.Int64,Shared.Economy.Currency,System.String,System.Action`1<System.Int64>,System.Int64)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange::Confirm(System.String,System.Int64)
+newobj System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::dir
+ldloc.0 
+ldarg.1 
+stfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+ldloc.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+ldc.i4.0 
+conv.i8 
+bgt.s IL_001f: ldc.i4.1
+ret 
+ldc.i4.1 
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stloc.1 
+ldloc.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+ldloc.1 
+conv.i8 
+mul 
+stloc.2 
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::dir
+ldstr t2g
+call System.Boolean System.String::op_Equality(System.String,System.String)
+stloc.3 
+ldloc.3 
+brtrue.s IL_0051: ldloc.2
+ldloc.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+br.s IL_0052: stloc.s V_4
+ldloc.2 
+stloc.s V_4
+ldloc.3 
+brtrue.s IL_005a: ldc.i4.0
+ldc.i4.1 
+br.s IL_005b: stloc.s V_5
+ldc.i4.0 
+stloc.s V_5
+ldloc.s V_4
+ldloc.s V_5
+call System.Int64 Durango.Logic.Clusters.OffServerWalletExchange::Balance(Shared.Economy.Currency)
+ble.s IL_008c: ldloc.3
+ldloc.3 
+brtrue.s IL_0072: ldstr "fail_tstone"
+ldstr fail_gem
+br.s IL_0077: call !!0[] System.Array::Empty<System.Object>()
+ldstr fail_tstone
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+ldloc.3 
+brtrue.s IL_00a2: ldloc.0
+ldloc.2 
+ldc.i4.0 
+call System.String Durango.Logic.Item.Inventory::GetIcon(Shared.Economy.Currency)
+ldc.r4 1
+call System.String Durango.Logic.Item.Inventory::CurrencyFormat(System.Int64,System.String,System.Single)
+br.s IL_00b8: stloc.s V_6
+ldloc.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+ldc.i4.1 
+call System.String Durango.Logic.Item.Inventory::GetIcon(Shared.Economy.Currency)
+ldc.r4 1
+call System.String Durango.Logic.Item.Inventory::CurrencyFormat(System.Int64,System.String,System.Single)
+stloc.s V_6
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.s V_4
+ldloc.s V_5
+ldstr confirm
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.s V_6
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::<Confirm>b__0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+ldstr btn_exchange
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::ShowPayConfirm(System.Int64,Shared.Economy.Currency,System.String,System.Action`1<System.Boolean>,System.String,System.String)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange::Exchange(System.String,System.Int64,System.Action`2<System.Boolean,System.String>)
+newobj System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.1 
+stfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::dir
+ldloc.0 
+ldarg.2 
+stfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::done
+call System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::get_Available()
+brtrue.s IL_005f: ldstr "/wallet/exchange"
+ldstr unavailable
+stsfld System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+ldstr fail_offline
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldloc.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::done
+brfalse.s IL_005e: ret
+ldloc.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::done
+ldc.i4.0 
+ldstr unavailable
+callvirt System.Void System.Action`2<System.Boolean,System.String>::Invoke(!0,!1)
+ret 
+ldstr /wallet/exchange
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+dup 
+ldstr dir
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::dir
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::Add(!0,!1)
+dup 
+ldstr gem
+ldloc.0 
+ldflda System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+call System.String System.Int64::ToString()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::Add(!0,!1)
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::<Exchange>b__0(Newtonsoft.Json.Linq.JObject,System.Int32)
+newobj System.Void System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerWalletExchange::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>)
+newobj System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::path
+ldloc.0 
+ldarg.2 
+stfld System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::done
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::Busy
+brfalse.s IL_0033: ldc.i4.1
+ldstr busy
+stsfld System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+ldloc.0 
+ldfld System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::done
+ldnull 
+ldc.i4.0 
+callvirt System.Void System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>::Invoke(!0,!1)
+ret 
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerWalletExchange::Busy
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::get_GatewayUrl()
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::path
+call System.String System.String::Concat(System.String,System.String)
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.2 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass15_0::<Post>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+stloc.1 
+ldloc.1 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_FormUsage(BestHTTP.Forms.HTTPFormUsage)
+ldloc.1 
+ldstr Authorization
+call System.String GameManager::get_SessionToken()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr Accept
+ldstr application/json
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr X-OffServer-Client
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr X-OffServer-Caps
+ldstr nametag-emoji, item-link, server-popup, voice-chat, i18n-keys
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr lang
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+ldarg.1 
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<System.String,System.String>::GetEnumerator()
+stloc.2 
+br.s IL_00dd: ldloca.s V_2
+ldloca.s V_2
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.String>::get_Current()
+stloc.3 
+ldloc.1 
+ldloca.s V_3
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Key()
+ldloca.s V_3
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Value()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+ldloca.s V_2
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.String>::MoveNext()
+brtrue.s IL_00c1: ldloca.s V_2
+leave.s IL_00f6: ldloc.1
+ldloca.s V_2
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.String>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.1 
+ldc.r8 10
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_ConnectTimeout(System.TimeSpan)
+ldloc.1 
+ldc.r8 15
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+ldloc.1 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+ldloc.1 
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerWalletExchange::Texts
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.2 
+ldloc.2 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldloc.0
+ldloc.2 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0046: ldloc.0
+ldloc.2 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004c: ldloc.0
+br.s IL_0052: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.2 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.3 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+stloc.1 
+ldarg.1 
+brfalse.s IL_005d: ldloc.1
+ldarg.1 
+ldlen 
+brtrue.s IL_005f: nop
+ldloc.1 
+ret 
+nop 
+ldloc.1 
+ldarg.1 
+call System.String System.String::Format(System.String,System.Object[])
+stloc.2 
+leave.s IL_006f: ldloc.2
+pop 
+ldloc.1 
+stloc.2 
+leave.s IL_006f: ldloc.2
+ldloc.2 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange::.cctor()
+ldc.i4.s 10
+stsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลกเปลี่ยน T-Stone ↔ Gem
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchange T-Stone ↔ Gem
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tukar T-Stone ↔ Gem
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr T-Stone ↔ 젬 교환
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr rate
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr อัตรา {0} = {1} (แลกได้ทั้งสองทาง)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Rate {0} = {1} (both ways)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kurs {0} = {1} (dua arah)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 교환 비율 {0} = {1} (양방향)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr btn_t2g
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr T-Stone → Gem
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr T-Stone → Gem
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr T-Stone → Gem
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr T-Stone → 젬
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr btn_g2t
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Gem → T-Stone
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Gem → T-Stone
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Gem → T-Stone
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 젬 → T-Stone
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr close
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปิด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Close
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tutup
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 닫기
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr amount_t2g
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr จำนวน Gem ที่ต้องการ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Gems to get
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Jumlah Gem yang diinginkan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 받을 젬 수량
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr amount_g2t
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr จำนวน Gem ที่จะแลก
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Gems to exchange
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Jumlah Gem yang ditukar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 교환할 젬 수량
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr confirm
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลกแล้วจะได้ {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr You will get {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kamu akan mendapat {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr {0}을(를) 받습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr btn_exchange
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลก
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchange
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tukar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 교환
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr done_t2g
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลก T-Stone {0:N0} → Gem {1:N0} แล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchanged {0:N0} T-Stone for {1:N0} Gem
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Menukar {0:N0} T-Stone menjadi {1:N0} Gem
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr T-Stone {0:N0} → 젬 {1:N0} 교환 완료
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr done_g2t
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลก Gem {0:N0} → T-Stone {1:N0} แล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchanged {0:N0} Gem for {1:N0} T-Stone
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Menukar {0:N0} Gem menjadi {1:N0} T-Stone
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 젬 {0:N0} → T-Stone {1:N0} 교환 완료
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr busy
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กำลังแลกอยู่ — รอสักครู่
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchange in progress — please wait
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Sedang menukar — tunggu sebentar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 교환 중입니다. 잠시 기다려 주세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr failed
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลกไม่สำเร็จ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchange failed
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Penukaran gagal
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 교환 실패
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_tstone
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr T-Stone ไม่พอ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Not enough T-Stone
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr T-Stone tidak cukup
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr T-Stone이 부족합니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_tstone_min
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr T-Stone ไม่พอ (ต้องมีอย่างน้อย {0:N0})
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Not enough T-Stone (need at least {0:N0})
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr T-Stone tidak cukup (minimal {0:N0})
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr T-Stone이 부족합니다 (최소 {0:N0})
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_gem
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Gem ไม่พอ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Not enough Gem
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Gem tidak cukup
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 젬이 부족합니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_full
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ยอดปลายทางเต็มแล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Balance limit reached
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Saldo sudah maksimal
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 보유 한도를 초과합니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_frozen
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr บัญชีถูกระงับการเงินชั่วคราว ติดต่อ GM
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Your wallet is frozen — contact a GM
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Dompetmu dibekukan — hubungi GM
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 재화 사용이 일시 정지되었습니다. GM에게 문의하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_bad_amount
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr จำนวนไม่ถูกต้อง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Invalid amount
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Jumlah tidak valid
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 잘못된 수량입니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_disabled
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปิดการแลกชั่วคราว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Exchange is disabled for now
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Penukaran sedang dinonaktifkan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 교환이 일시 중지되었습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_rate_limited
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แลกถี่เกินไป — รอสักครู่
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Too many exchanges — wait a moment
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Terlalu sering — tunggu sebentar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 너무 자주 교환했습니다. 잠시 후 다시 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_unsupported
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เซิร์ฟนี้ยังไม่รองรับการแลก
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This server doesn't support exchange yet
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Server ini belum mendukung penukaran
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 서버는 아직 교환을 지원하지 않습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_unauthorized
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ต้องเข้าเกมก่อน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Enter the world first
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Masuk ke dunia dulu
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 먼저 게임에 접속하세요
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_offline
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ติดต่อเซิร์ฟไม่ได้ — ลองใหม่อีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't reach the server. Try again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak dapat menghubungi server. Coba lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 서버에 연결할 수 없습니다. 다시 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerWalletExchange::Texts
+ret 

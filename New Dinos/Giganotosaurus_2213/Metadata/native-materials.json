@@ -1,0 +1,18 @@
+[
+  {
+    "platform": "Windows",
+    "shader": "LitSphere/DualMode/Animal",
+    "matcap": "litsphere_dino_giant",
+    "albedo": "giga_d_colorized.png",
+    "prefab_md5": "8640d579ae8413325ed5d0af77b5e128",
+    "native_preload": "c4408d73cff6e7ad670c0c93a2b04385"
+  },
+  {
+    "platform": "Android",
+    "shader": "LitSphere/DualMode/Animal",
+    "matcap": "litsphere_dino_giant",
+    "albedo": "giga_d_colorized.png",
+    "prefab_md5": "45848d101d06bb6330fc4c3802c12b0e",
+    "native_preload": "527ec31c957201159d83da5dcb3c396a"
+  }
+]

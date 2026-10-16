@@ -1,0 +1,100 @@
+Durango.Logic.PlayGuide.MissionStartToDo : Durango.Logic.PlayGuide.ToDoBase
+FIELD System.String Durango.Logic.PlayGuide.MissionStartToDo::_id
+METHOD System.Void Durango.Logic.PlayGuide.MissionStartToDo::.ctor(System.String)
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoBase::.ctor()
+ldarg.0 
+ldarg.1 
+stfld System.String Durango.Logic.PlayGuide.MissionStartToDo::_id
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionStartToDo::OnAddItem()
+ldarg.0 
+call System.Boolean Durango.Logic.PlayGuide.MissionStartToDo::CheckMissionStarted()
+brfalse.s IL_000f: call T GameSystem`1<FactionSystem>::Instance()
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoBase::CallComplete()
+ret 
+call T GameSystem`1<FactionSystem>::Instance()
+dup 
+ldarg.0 
+ldftn System.Void Durango.Logic.PlayGuide.MissionStartToDo::FactionSystem_FactionsUpdated()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void FactionSystem::add_FactionsUpdated(System.Action)
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.MissionStartToDo::_id
+ldarg.0 
+ldftn System.Void Durango.Logic.PlayGuide.MissionStartToDo::<OnAddItem>b__2_0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void FactionSystem::CheckSequenceMissionCleared(System.String,System.Action`1<System.Boolean>)
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionStartToDo::OnRemoveItem()
+call T GameSystem`1<FactionSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.Logic.PlayGuide.MissionStartToDo::FactionSystem_FactionsUpdated()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void FactionSystem::remove_FactionsUpdated(System.Action)
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionStartToDo::FactionSystem_FactionsUpdated()
+ldarg.0 
+call System.Boolean Durango.Logic.PlayGuide.MissionStartToDo::CheckMissionStarted()
+brfalse.s IL_000e: ret
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoBase::CallComplete()
+ret 
+METHOD System.Boolean Durango.Logic.PlayGuide.MissionStartToDo::CheckMissionStarted()
+call T GameSystem`1<FactionSystem>::Instance()
+callvirt System.Collections.Generic.IEnumerable`1<Durango.Logic.Faction.Faction> FactionSystem::GetFactions()
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Durango.Logic.Faction.Faction>::GetEnumerator()
+stloc.0 
+br.s IL_006b: ldloc.0
+ldloc.0 
+callvirt !0 System.Collections.Generic.IEnumerator`1<Durango.Logic.Faction.Faction>::get_Current()
+stloc.1 
+ldloc.1 
+callvirt System.Nullable`1<Messages.Mission> Durango.Logic.Faction.Faction::get_Mission()
+stloc.2 
+ldloca.s V_2
+call System.Boolean System.Nullable`1<Messages.Mission>::get_HasValue()
+brfalse.s IL_006b: ldloc.0
+ldloc.1 
+callvirt System.Nullable`1<Messages.Mission> Durango.Logic.Faction.Faction::get_Mission()
+stloc.2 
+ldloca.s V_2
+call !0 System.Nullable`1<Messages.Mission>::get_Value()
+stloc.3 
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.MissionStartToDo::_id
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0058: ldloca.s V_3
+ldloc.3 
+ldfld System.String Messages.Mission::Id
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.MissionStartToDo::_id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_006b: ldloc.0
+ldloca.s V_3
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse.s IL_006b: ldloc.0
+ldc.i4.1 
+stloc.s V_4
+leave.s IL_0081: ldloc.s V_4
+ldloc.0 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_0012: ldloc.0
+leave.s IL_007f: ldc.i4.0
+ldloc.0 
+brfalse.s IL_007e: endfinally
+ldloc.0 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldc.i4.0 
+ret 
+ldloc.s V_4
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionStartToDo::<OnAddItem>b__2_0(System.Boolean)
+ldarg.1 
+brfalse.s IL_0009: ret
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoBase::CallComplete()
+ret 

@@ -1,0 +1,59 @@
+Messages.DailyMissionCompletedEffect : System.ValueType
+FIELD System.UInt32 Messages.DailyMissionCompletedEffect::TypeCode
+FIELD Shared.System.RewardEffect Messages.DailyMissionCompletedEffect::Type
+METHOD System.Void Messages.DailyMissionCompletedEffect::Pack(MsgPack.Packer,Messages.DailyMissionCompletedEffect,System.Boolean)
+ldarg.2 
+brfalse.s IL_0019: ldarg.0
+ldarg.0 
+ldc.i4.2 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 19843572
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+br.s IL_0021: ldarg.0
+ldarg.0 
+ldc.i4.1 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Shared.System.RewardEffect Messages.DailyMissionCompletedEffect::Type
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ret 
+METHOD Messages.DailyMissionCompletedEffect Messages.DailyMissionCompletedEffect::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.2 
+ldloca.s V_2
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.0 
+ldloca.s V_1
+initobj Messages.DailyMissionCompletedEffect
+ldloc.0 
+ldc.i4.0 
+blt.s IL_0027: ldloca.s V_1
+ldc.i4.s 23
+ldloc.0 
+bge.s IL_0031: ldloca.s V_1
+ldloca.s V_1
+ldc.i4.m1 
+stfld Shared.System.RewardEffect Messages.DailyMissionCompletedEffect::Type
+br.s IL_0039: ldloc.1
+ldloca.s V_1
+ldloc.0 
+stfld Shared.System.RewardEffect Messages.DailyMissionCompletedEffect::Type
+ldloc.1 
+ret 
+METHOD System.String Messages.DailyMissionCompletedEffect::ToString()
+ldstr <DailyMissionCompletedEffect Type={0}>
+ldarg.0 
+ldfld Shared.System.RewardEffect Messages.DailyMissionCompletedEffect::Type
+box Shared.System.RewardEffect
+call System.String System.String::Format(System.String,System.Object)
+ret 

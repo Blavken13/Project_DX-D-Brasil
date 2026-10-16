@@ -1,0 +1,18 @@
+{
+  "FileList": [
+    {
+      "Name": "models$maps$aridbasin$aridbasinterrain.prefab.bundle",
+      "Hash": "58b675266c14f8cf6ef418276654e0bb",
+      "Crc": "58b675266c14f8cf6ef418276654e0bb",
+      "Size": 2023688,
+      "Dependencies": [],
+      "Priority": 750
+    }
+  ],
+  "ItemList": [
+    {
+      "Name": "models$maps$aridbasin$aridbasinterrain.prefab.bundle",
+      "SavePerDirectory": false
+    }
+  ]
+}

@@ -34,6 +34,8 @@ public partial class Player
         // ⇒ รับไว้เงียบ ๆ + log ไว้ให้ตามรอยได้ว่าสคริปต์ยิงคำไหนมาบ้าง
         _connection.Recv(delegate(CustomQuestEvent msg, PacketHeader header)
         {
+            if (!string.IsNullOrWhiteSpace(msg.Keyword))
+                NoteQuestEvent(Shared.Quest.QuestEventType.CustomEvent, msg.Keyword.Trim());
             Console.WriteLine($"[เควส] {Short(EntityId)} แจ้งเหตุการณ์เควส '{msg.Keyword}' — ยังไม่มีเอนจินเควสรับไปเดินต่อ");
         });
 

@@ -1,0 +1,968 @@
+OffServerVoiceStream : UnityEngine.MonoBehaviour
+FIELD System.Int32 OffServerVoiceStream::Capacity
+FIELD System.Int32 OffServerVoiceStream::PrebufferSamples
+FIELD System.Int32 OffServerVoiceStream::MaxBufferedSamples
+FIELD System.Int32 OffServerVoiceStream::KeepAfterSkip
+FIELD System.Single[] OffServerVoiceStream::_ring
+FIELD System.Object OffServerVoiceStream::_gate
+FIELD System.Int32 OffServerVoiceStream::_read
+FIELD System.Int32 OffServerVoiceStream::_count
+FIELD System.Boolean OffServerVoiceStream::_prebuffering
+FIELD System.Double OffServerVoiceStream::_frac
+FIELD System.Double OffServerVoiceStream::_step
+FIELD System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainL
+FIELD System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainR
+FIELD System.Single OffServerVoiceStream::_curL
+FIELD System.Single OffServerVoiceStream::_curR
+FIELD System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_filterCalls
+FIELD Concentus.Structs.OpusDecoder OffServerVoiceStream::_decoder
+FIELD System.Single[] OffServerVoiceStream::_decoded
+FIELD System.Boolean OffServerVoiceStream::_hasSeq
+FIELD System.UInt32 OffServerVoiceStream::_lastSeq
+FIELD System.Int32 OffServerVoiceStream::_lastFrames
+FIELD UnityEngine.AudioSource OffServerVoiceStream::_source
+FIELD System.Single OffServerVoiceStream::_startedAt
+FIELD System.Boolean OffServerVoiceStream::_clipFallback
+FIELD System.String OffServerVoiceStream::<SpeakerId>k__BackingField
+FIELD System.Single OffServerVoiceStream::<LastPacketAt>k__BackingField
+FIELD System.Single OffServerVoiceStream::<LastAudibleAt>k__BackingField
+FIELD System.Int32 OffServerVoiceStream::<Level>k__BackingField
+FIELD System.Single OffServerVoiceStream::<ServerDist>k__BackingField
+FIELD System.Single OffServerVoiceStream::<Distance>k__BackingField
+FIELD System.Boolean OffServerVoiceStream::<Ended>k__BackingField
+FIELD System.Int32 OffServerVoiceStream::<Packets>k__BackingField
+FIELD System.Int32 OffServerVoiceStream::<FramesDecoded>k__BackingField
+METHOD System.String OffServerVoiceStream::get_SpeakerId()
+ldarg.0 
+ldfld System.String OffServerVoiceStream::<SpeakerId>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_SpeakerId(System.String)
+ldarg.0 
+ldarg.1 
+stfld System.String OffServerVoiceStream::<SpeakerId>k__BackingField
+ret 
+METHOD System.Single OffServerVoiceStream::get_LastPacketAt()
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::<LastPacketAt>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_LastPacketAt(System.Single)
+ldarg.0 
+ldarg.1 
+stfld System.Single OffServerVoiceStream::<LastPacketAt>k__BackingField
+ret 
+METHOD System.Single OffServerVoiceStream::get_LastAudibleAt()
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::<LastAudibleAt>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_LastAudibleAt(System.Single)
+ldarg.0 
+ldarg.1 
+stfld System.Single OffServerVoiceStream::<LastAudibleAt>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoiceStream::get_Level()
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::<Level>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_Level(System.Int32)
+ldarg.0 
+ldarg.1 
+stfld System.Int32 OffServerVoiceStream::<Level>k__BackingField
+ret 
+METHOD System.Single OffServerVoiceStream::get_ServerDist()
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::<ServerDist>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_ServerDist(System.Single)
+ldarg.0 
+ldarg.1 
+stfld System.Single OffServerVoiceStream::<ServerDist>k__BackingField
+ret 
+METHOD System.Single OffServerVoiceStream::get_Distance()
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::<Distance>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_Distance(System.Single)
+ldarg.0 
+ldarg.1 
+stfld System.Single OffServerVoiceStream::<Distance>k__BackingField
+ret 
+METHOD System.Boolean OffServerVoiceStream::get_Ended()
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::<Ended>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_Ended(System.Boolean)
+ldarg.0 
+ldarg.1 
+stfld System.Boolean OffServerVoiceStream::<Ended>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoiceStream::get_Packets()
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::<Packets>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_Packets(System.Int32)
+ldarg.0 
+ldarg.1 
+stfld System.Int32 OffServerVoiceStream::<Packets>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoiceStream::get_FramesDecoded()
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::<FramesDecoded>k__BackingField
+ret 
+METHOD System.Void OffServerVoiceStream::set_FramesDecoded(System.Int32)
+ldarg.0 
+ldarg.1 
+stfld System.Int32 OffServerVoiceStream::<FramesDecoded>k__BackingField
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> OffServerVoiceStream::Debug()
+ldarg.0 
+ldfld System.Object OffServerVoiceStream::_gate
+stloc.1 
+ldc.i4.0 
+stloc.2 
+ldloc.1 
+ldloca.s V_2
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+stloc.0 
+leave.s IL_0024: newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::.ctor()
+ldloc.2 
+brfalse.s IL_0023: endfinally
+ldloc.1 
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::.ctor()
+dup 
+ldstr speaker
+ldarg.0 
+call System.String OffServerVoiceStream::get_SpeakerId()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr level
+ldarg.0 
+call System.Int32 OffServerVoiceStream::get_Level()
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr speaking
+ldarg.0 
+call System.Boolean OffServerVoiceStream::get_Speaking()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr packets
+ldarg.0 
+call System.Int32 OffServerVoiceStream::get_Packets()
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr frames
+ldarg.0 
+call System.Int32 OffServerVoiceStream::get_FramesDecoded()
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr filterCalls
+ldarg.0 
+volatile. 
+ldfld System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_filterCalls
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr bufferedMs
+ldloc.0 
+ldc.i4 1000
+mul 
+ldc.i4 16000
+div 
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr dist
+ldarg.0 
+call System.Single OffServerVoiceStream::get_Distance()
+conv.r8 
+ldc.i4.2 
+call System.Double System.Math::Round(System.Double,System.Int32)
+box System.Double
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr serverDist
+ldarg.0 
+call System.Single OffServerVoiceStream::get_ServerDist()
+conv.r8 
+ldc.i4.2 
+call System.Double System.Math::Round(System.Double,System.Int32)
+box System.Double
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr gainL
+ldarg.0 
+volatile. 
+ldfld System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainL
+conv.r8 
+ldc.i4.2 
+call System.Double System.Math::Round(System.Double,System.Int32)
+box System.Double
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr gainR
+ldarg.0 
+volatile. 
+ldfld System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainR
+conv.r8 
+ldc.i4.2 
+call System.Double System.Math::Round(System.Double,System.Int32)
+box System.Double
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+dup 
+ldstr clipFallback
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::_clipFallback
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ret 
+METHOD System.Boolean OffServerVoiceStream::get_Speaking()
+ldarg.0 
+call System.Boolean OffServerVoiceStream::get_Ended()
+brtrue.s IL_001c: ldc.i4.0
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+call System.Single OffServerVoiceStream::get_LastPacketAt()
+sub 
+ldc.r4 0,5
+clt 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void OffServerVoiceStream::Init(System.String)
+ldarg.0 
+ldarg.1 
+call System.Void OffServerVoiceStream::set_SpeakerId(System.String)
+ldarg.0 
+ldc.i4 16000
+ldc.i4.1 
+call Concentus.Structs.OpusDecoder Concentus.Structs.OpusDecoder::Create(System.Int32,System.Int32)
+stfld Concentus.Structs.OpusDecoder OffServerVoiceStream::_decoder
+call System.Int32 UnityEngine.AudioSettings::get_outputSampleRate()
+stloc.0 
+ldarg.0 
+ldc.r8 16000
+ldloc.0 
+ldc.i4.0 
+bgt.s IL_0033: ldloc.0
+ldc.i4 48000
+br.s IL_0034: conv.r8
+ldloc.0 
+conv.r8 
+div 
+stfld System.Double OffServerVoiceStream::_step
+ldarg.0 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt !!0 UnityEngine.GameObject::AddComponent<UnityEngine.AudioSource>()
+stfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldc.i4.0 
+callvirt System.Void UnityEngine.AudioSource::set_playOnAwake(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldc.i4.1 
+callvirt System.Void UnityEngine.AudioSource::set_loop(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldc.r4 0
+callvirt System.Void UnityEngine.AudioSource::set_spatialBlend(System.Single)
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldc.r4 1
+callvirt System.Void UnityEngine.AudioSource::set_volume(System.Single)
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldc.i4.s 64
+callvirt System.Void UnityEngine.AudioSource::set_priority(System.Int32)
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+callvirt System.Void UnityEngine.AudioSource::Play()
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stfld System.Single OffServerVoiceStream::_startedAt
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+call System.Void OffServerVoiceStream::set_LastPacketAt(System.Single)
+ret 
+METHOD System.Void OffServerVoiceStream::Feed(System.UInt32,System.Byte,System.Single,System.Byte[])
+ldarg.0 
+ldarg.2 
+ldc.i4.0 
+ldc.i4.2 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+call System.Void OffServerVoiceStream::set_Level(System.Int32)
+ldarg.0 
+ldarg.3 
+call System.Void OffServerVoiceStream::set_ServerDist(System.Single)
+ldarg.0 
+call System.Int32 OffServerVoiceStream::get_Packets()
+stloc.2 
+ldarg.0 
+ldloc.2 
+ldc.i4.1 
+add 
+call System.Void OffServerVoiceStream::set_Packets(System.Int32)
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+call System.Void OffServerVoiceStream::set_LastPacketAt(System.Single)
+ldarg.0 
+ldc.i4.0 
+call System.Void OffServerVoiceStream::set_Ended(System.Boolean)
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::_hasSeq
+brfalse.s IL_007d: ldarg.0
+ldarg.1 
+ldarg.0 
+ldfld System.UInt32 OffServerVoiceStream::_lastSeq
+ldc.i4.1 
+add 
+ble.un.s IL_007d: ldarg.0
+ldarg.1 
+ldarg.0 
+ldfld System.UInt32 OffServerVoiceStream::_lastSeq
+sub 
+ldc.i4.6 
+bge.un.s IL_007d: ldarg.0
+ldarg.0 
+ldfld System.UInt32 OffServerVoiceStream::_lastSeq
+ldc.i4.1 
+add 
+stloc.3 
+br.s IL_0079: ldloc.3
+ldarg.0 
+ldnull 
+ldc.i4.0 
+ldc.i4.0 
+ldc.i4 320
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_lastFrames
+mul 
+call System.Void OffServerVoiceStream::Decode(System.Byte[],System.Int32,System.Int32,System.Int32)
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldarg.1 
+blt.un.s IL_0060: ldarg.0
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::_hasSeq
+brfalse.s IL_009d: ldarg.0
+ldarg.1 
+ldarg.0 
+ldfld System.UInt32 OffServerVoiceStream::_lastSeq
+bgt.un.s IL_009d: ldarg.0
+ldarg.0 
+ldfld System.UInt32 OffServerVoiceStream::_lastSeq
+ldarg.1 
+sub 
+ldc.i4 1000
+ble.un.s IL_00ab: ldc.i4.0
+ldarg.0 
+ldarg.1 
+stfld System.UInt32 OffServerVoiceStream::_lastSeq
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoiceStream::_hasSeq
+ldc.i4.0 
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_00e7: ldloc.0
+ldarg.s data
+ldloc.0 
+ldelem.u1 
+stloc.s V_4
+ldloc.s V_4
+brfalse.s IL_00ee: ldloc.1
+ldloc.0 
+ldc.i4.1 
+add 
+ldloc.s V_4
+add 
+ldarg.s data
+ldlen 
+conv.i4 
+bgt.s IL_00ee: ldloc.1
+ldarg.0 
+ldarg.s data
+ldloc.0 
+ldc.i4.1 
+add 
+ldloc.s V_4
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_decoded
+ldlen 
+conv.i4 
+call System.Void OffServerVoiceStream::Decode(System.Byte[],System.Int32,System.Int32,System.Int32)
+ldloc.0 
+ldc.i4.1 
+ldloc.s V_4
+add 
+add 
+stloc.0 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.0 
+ldarg.s data
+ldlen 
+conv.i4 
+blt.s IL_00b1: ldarg.s data
+ldloc.1 
+ldc.i4.0 
+ble.s IL_00f9: ldarg.0
+ldarg.0 
+ldloc.1 
+stfld System.Int32 OffServerVoiceStream::_lastFrames
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::_clipFallback
+brtrue.s IL_016a: ret
+ldarg.0 
+volatile. 
+ldfld System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_filterCalls
+brtrue.s IL_016a: ret
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_startedAt
+sub 
+ldc.r4 1
+ble.un.s IL_016a: ret
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoiceStream::_clipFallback
+call System.Int32 UnityEngine.AudioSettings::get_outputSampleRate()
+stloc.s V_5
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+ldstr voice-silence
+ldloc.s V_5
+ldc.i4.0 
+bgt.s IL_0143: ldloc.s V_5
+ldc.i4 48000
+br.s IL_0145: ldc.i4.1
+ldloc.s V_5
+ldc.i4.1 
+ldloc.s V_5
+ldc.i4.0 
+bgt.s IL_0152: ldloc.s V_5
+ldc.i4 48000
+br.s IL_0154: ldc.i4.0
+ldloc.s V_5
+ldc.i4.0 
+call UnityEngine.AudioClip UnityEngine.AudioClip::Create(System.String,System.Int32,System.Int32,System.Int32,System.Boolean)
+callvirt System.Void UnityEngine.AudioSource::set_clip(UnityEngine.AudioClip)
+ldarg.0 
+ldfld UnityEngine.AudioSource OffServerVoiceStream::_source
+callvirt System.Void UnityEngine.AudioSource::Play()
+ret 
+METHOD System.Void OffServerVoiceStream::Decode(System.Byte[],System.Int32,System.Int32,System.Int32)
+ldarg.0 
+ldfld Concentus.Structs.OpusDecoder OffServerVoiceStream::_decoder
+ldarg.1 
+ldarg.2 
+ldarg.3 
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_decoded
+ldc.i4.0 
+ldarg.s frameSize
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_decoded
+ldlen 
+conv.i4 
+call System.Int32 UnityEngine.Mathf::Min(System.Int32,System.Int32)
+ldc.i4.0 
+callvirt System.Int32 Concentus.Structs.OpusDecoder::Decode(System.Byte[],System.Int32,System.Int32,System.Single[],System.Int32,System.Int32,System.Boolean)
+stloc.0 
+leave.s IL_002e: ldloc.0
+pop 
+leave IL_010a: ret
+ldloc.0 
+ldc.i4.0 
+bgt.s IL_0033: ldarg.1
+ret 
+ldarg.1 
+brfalse.s IL_0046: ldarg.0
+ldarg.0 
+call System.Int32 OffServerVoiceStream::get_FramesDecoded()
+stloc.1 
+ldarg.0 
+ldloc.1 
+ldc.i4.1 
+add 
+call System.Void OffServerVoiceStream::set_FramesDecoded(System.Int32)
+ldarg.0 
+ldfld System.Object OffServerVoiceStream::_gate
+stloc.2 
+ldc.i4.0 
+stloc.3 
+ldloc.2 
+ldloca.s V_3
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldc.i4.0 
+stloc.s V_4
+br.s IL_00ba: ldloc.s V_4
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_read
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+add 
+ldc.i4 16000
+rem 
+stloc.s V_5
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_ring
+ldloc.s V_5
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_decoded
+ldloc.s V_4
+ldelem.r4 
+stelem.r4 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4 16000
+bge.s IL_00a0: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerVoiceStream::_count
+br.s IL_00b4: ldloc.s V_4
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_read
+ldc.i4.1 
+add 
+ldc.i4 16000
+rem 
+stfld System.Int32 OffServerVoiceStream::_read
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.0 
+blt.s IL_005c: ldarg.0
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4 4800
+ble.s IL_00fe: leave.s IL_010a
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4 1920
+sub 
+stloc.s V_6
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_read
+ldloc.s V_6
+add 
+ldc.i4 16000
+rem 
+stfld System.Int32 OffServerVoiceStream::_read
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldloc.s V_6
+sub 
+stfld System.Int32 OffServerVoiceStream::_count
+leave.s IL_010a: ret
+ldloc.3 
+brfalse.s IL_0109: endfinally
+ldloc.2 
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+ret 
+METHOD System.Void OffServerVoiceStream::End()
+ldarg.0 
+ldc.i4.1 
+call System.Void OffServerVoiceStream::set_Ended(System.Boolean)
+ret 
+METHOD System.Void OffServerVoiceStream::UpdateGains(UnityEngine.Vector3,UnityEngine.Vector3,System.Boolean)
+ldarg.0 
+call System.Single OffServerVoiceStream::get_ServerDist()
+stloc.0 
+ldc.r4 0
+stloc.1 
+ldnull 
+stloc.2 
+call System.Boolean Durango.Utils.Singleton`1<PlayerManager>::Exist()
+brfalse.s IL_0027: leave.s IL_002c
+call T Durango.Utils.Singleton`1<PlayerManager>::Instance()
+ldarg.0 
+call System.String OffServerVoiceStream::get_SpeakerId()
+callvirt PlayerBehavior PlayerManager::GetPlayer(System.String)
+stloc.2 
+leave.s IL_002c: ldarg.3
+pop 
+leave.s IL_002c: ldarg.3
+ldarg.3 
+brfalse IL_00cb: ldarg.0
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_00cb: ldarg.0
+ldloc.2 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00cb: ldarg.0
+ldloc.2 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+ldarg.1 
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Subtraction(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.s V_5
+ldloca.s V_5
+ldc.r4 0
+stfld System.Single UnityEngine.Vector3::y
+ldloca.s V_5
+call System.Single UnityEngine.Vector3::get_magnitude()
+ldc.r4 200
+div 
+stloc.0 
+ldarg.2 
+stloc.s V_6
+ldloca.s V_6
+ldc.r4 0
+stfld System.Single UnityEngine.Vector3::y
+ldloca.s V_5
+call System.Single UnityEngine.Vector3::get_sqrMagnitude()
+ldc.r4 1
+ble.un.s IL_00cb: ldarg.0
+ldloca.s V_6
+call System.Single UnityEngine.Vector3::get_sqrMagnitude()
+ldc.r4 1E-06
+ble.un.s IL_00cb: ldarg.0
+ldloca.s V_5
+call UnityEngine.Vector3 UnityEngine.Vector3::get_normalized()
+ldloca.s V_6
+call UnityEngine.Vector3 UnityEngine.Vector3::get_normalized()
+call System.Single UnityEngine.Vector3::Dot(UnityEngine.Vector3,UnityEngine.Vector3)
+ldloc.0 
+ldc.r4 1,5
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+mul 
+ldc.r4 0,85
+mul 
+stloc.1 
+ldarg.0 
+ldloc.0 
+call System.Void OffServerVoiceStream::set_Distance(System.Single)
+ldsfld System.Single[] OffServerVoice::Ranges
+ldarg.0 
+call System.Int32 OffServerVoiceStream::get_Level()
+ldelem.r4 
+ldc.r4 0,5
+add 
+stloc.3 
+ldloc.0 
+ldc.r4 0,5
+ble.s IL_011c: ldc.r4 1
+ldc.r4 1
+ldc.r4 0,35
+ldloc.0 
+ldc.r4 0,5
+sub 
+ldc.r4 0,5
+ldloc.3 
+ldc.r4 0,5
+sub 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+br.s IL_0121: call System.Single OffServerVoice::get_Volume()
+ldc.r4 1
+call System.Single OffServerVoice::get_Volume()
+mul 
+stloc.s V_4
+ldarg.0 
+ldloc.s V_4
+ldc.r4 1
+ldc.r4 1
+ldloc.1 
+sub 
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+mul 
+volatile. 
+stfld System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainL
+ldarg.0 
+ldloc.s V_4
+ldc.r4 1
+ldc.r4 1
+ldloc.1 
+add 
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+mul 
+volatile. 
+stfld System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainR
+ldarg.0 
+call System.Boolean OffServerVoiceStream::get_Speaking()
+brfalse.s IL_0174: ret
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+call System.Void OffServerVoiceStream::set_LastAudibleAt(System.Single)
+ret 
+METHOD System.Void OffServerVoiceStream::OnAudioFilterRead(System.Single[],System.Int32)
+ldarg.0 
+ldarg.0 
+volatile. 
+ldfld System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_filterCalls
+ldc.i4.1 
+add 
+volatile. 
+stfld System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_filterCalls
+ldarg.2 
+ldc.i4.0 
+bgt.s IL_0017: ldarg.1
+ret 
+ldarg.1 
+ldlen 
+conv.i4 
+ldarg.2 
+div 
+stloc.0 
+ldarg.0 
+volatile. 
+ldfld System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainL
+stloc.1 
+ldarg.0 
+volatile. 
+ldfld System.Single modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoiceStream::_gainR
+stloc.2 
+ldloc.1 
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curL
+sub 
+ldc.i4.1 
+ldloc.0 
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+conv.r4 
+div 
+stloc.3 
+ldloc.2 
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curR
+sub 
+ldc.i4.1 
+ldloc.0 
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+conv.r4 
+div 
+stloc.s V_4
+ldarg.0 
+ldfld System.Object OffServerVoiceStream::_gate
+stloc.s V_5
+ldc.i4.0 
+stloc.s V_6
+ldloc.s V_5
+ldloca.s V_6
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::_prebuffering
+brfalse.s IL_0084: ldc.i4.0
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4 960
+blt.s IL_0084: ldc.i4.0
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean OffServerVoiceStream::_prebuffering
+ldc.i4.0 
+stloc.s V_7
+br IL_01d3: ldloc.s V_7
+ldc.r4 0
+stloc.s V_8
+ldarg.0 
+ldfld System.Boolean OffServerVoiceStream::_prebuffering
+brtrue IL_0152: ldarg.0
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4.2 
+blt IL_014b: ldarg.0
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_ring
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_read
+ldelem.r4 
+stloc.s V_10
+ldarg.0 
+ldfld System.Single[] OffServerVoiceStream::_ring
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_read
+ldc.i4.1 
+add 
+ldc.i4 16000
+rem 
+ldelem.r4 
+stloc.s V_11
+ldloc.s V_10
+ldloc.s V_11
+ldloc.s V_10
+sub 
+ldarg.0 
+ldfld System.Double OffServerVoiceStream::_frac
+conv.r4 
+mul 
+add 
+stloc.s V_8
+ldarg.0 
+ldarg.0 
+ldfld System.Double OffServerVoiceStream::_frac
+ldarg.0 
+ldfld System.Double OffServerVoiceStream::_step
+add 
+stfld System.Double OffServerVoiceStream::_frac
+br.s IL_012f: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Double OffServerVoiceStream::_frac
+ldc.r8 1
+sub 
+stfld System.Double OffServerVoiceStream::_frac
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_read
+ldc.i4.1 
+add 
+ldc.i4 16000
+rem 
+stfld System.Int32 OffServerVoiceStream::_read
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4.1 
+sub 
+stfld System.Int32 OffServerVoiceStream::_count
+ldarg.0 
+ldfld System.Double OffServerVoiceStream::_frac
+ldc.r8 1
+blt.un.s IL_0152: ldarg.0
+ldarg.0 
+ldfld System.Int32 OffServerVoiceStream::_count
+ldc.i4.2 
+bge.s IL_00f7: ldarg.0
+br.s IL_0152: ldarg.0
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoiceStream::_prebuffering
+ldarg.0 
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curL
+ldloc.3 
+add 
+stfld System.Single OffServerVoiceStream::_curL
+ldarg.0 
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curR
+ldloc.s V_4
+add 
+stfld System.Single OffServerVoiceStream::_curR
+ldloc.s V_7
+ldarg.2 
+mul 
+stloc.s V_9
+ldarg.2 
+ldc.i4.1 
+bne.un.s IL_0195: ldarg.1
+ldarg.1 
+ldloc.s V_9
+ldloc.s V_8
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curL
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curR
+add 
+mul 
+ldc.r4 0,5
+mul 
+stelem.r4 
+br.s IL_01cd: ldloc.s V_7
+ldarg.1 
+ldloc.s V_9
+ldloc.s V_8
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curL
+mul 
+stelem.r4 
+ldarg.1 
+ldloc.s V_9
+ldc.i4.1 
+add 
+ldloc.s V_8
+ldarg.0 
+ldfld System.Single OffServerVoiceStream::_curR
+mul 
+stelem.r4 
+ldc.i4.2 
+stloc.s V_12
+br.s IL_01c8: ldloc.s V_12
+ldarg.1 
+ldloc.s V_9
+ldloc.s V_12
+add 
+ldc.r4 0
+stelem.r4 
+ldloc.s V_12
+ldc.i4.1 
+add 
+stloc.s V_12
+ldloc.s V_12
+ldarg.2 
+blt.s IL_01b6: ldarg.1
+ldloc.s V_7
+ldc.i4.1 
+add 
+stloc.s V_7
+ldloc.s V_7
+ldloc.0 
+blt IL_008c: ldc.r4 0
+leave.s IL_01e9: ldarg.0
+ldloc.s V_6
+brfalse.s IL_01e8: endfinally
+ldloc.s V_5
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+ldarg.0 
+ldloc.1 
+stfld System.Single OffServerVoiceStream::_curL
+ldarg.0 
+ldloc.2 
+stfld System.Single OffServerVoiceStream::_curR
+ret 
+METHOD System.Void OffServerVoiceStream::.ctor()
+ldarg.0 
+ldc.i4 16000
+newarr System.Single
+stfld System.Single[] OffServerVoiceStream::_ring
+ldarg.0 
+newobj System.Void System.Object::.ctor()
+stfld System.Object OffServerVoiceStream::_gate
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoiceStream::_prebuffering
+ldarg.0 
+ldc.r8 0,3333333333333333
+stfld System.Double OffServerVoiceStream::_step
+ldarg.0 
+ldc.i4 960
+newarr System.Single
+stfld System.Single[] OffServerVoiceStream::_decoded
+ldarg.0 
+ldc.i4.2 
+stfld System.Int32 OffServerVoiceStream::_lastFrames
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

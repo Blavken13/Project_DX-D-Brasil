@@ -1,0 +1,276 @@
+OffServerI18n/Po : System.Object
+METHOD System.Collections.Generic.List`1<OffServerI18n/PoEntry> OffServerI18n/Po::Parse(System.String)
+newobj System.Void OffServerI18n/Po/<>c__DisplayClass0_0::.ctor()
+stloc.0 
+ldloc.0 
+newobj System.Void System.Collections.Generic.List`1<OffServerI18n/PoEntry>::.ctor()
+stfld System.Collections.Generic.List`1<OffServerI18n/PoEntry> OffServerI18n/Po/<>c__DisplayClass0_0::list
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0020: ldarg.0
+ldloc.0 
+ldfld System.Collections.Generic.List`1<OffServerI18n/PoEntry> OffServerI18n/Po/<>c__DisplayClass0_0::list
+ret 
+ldarg.0 
+ldc.i4.0 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4 65279
+bne.un.s IL_0037: ldloc.0
+ldarg.0 
+ldc.i4.1 
+callvirt System.String System.String::Substring(System.Int32)
+starg.s text
+ldloc.0 
+newobj System.Void OffServerI18n/PoEntry::.ctor()
+stfld OffServerI18n/PoEntry OffServerI18n/Po/<>c__DisplayClass0_0::cur
+ldloc.0 
+ldnull 
+stfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+ldloc.0 
+newobj System.Void System.Text.StringBuilder::.ctor()
+stfld System.Text.StringBuilder OffServerI18n/Po/<>c__DisplayClass0_0::sb
+ldloc.0 
+ldc.i4.0 
+stfld System.Boolean OffServerI18n/Po/<>c__DisplayClass0_0::any
+ldloc.0 
+ldloc.0 
+ldftn System.Void OffServerI18n/Po/<>c__DisplayClass0_0::<Parse>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stfld System.Action OffServerI18n/Po/<>c__DisplayClass0_0::flushField
+ldloc.0 
+ldftn System.Void OffServerI18n/Po/<>c__DisplayClass0_0::<Parse>b__1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stloc.1 
+ldarg.0 
+ldstr 
+
+ldstr 
+
+callvirt System.String System.String::Replace(System.String,System.String)
+ldc.i4.s 10
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.2 
+ldc.i4.0 
+stloc.3 
+br IL_0202: ldloc.3
+ldloc.2 
+ldloc.3 
+ldelem.ref 
+callvirt System.String System.String::Trim()
+stloc.s V_4
+ldloc.s V_4
+callvirt System.Int32 System.String::get_Length()
+brtrue.s IL_00cd: ldloc.s V_4
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+ldnull 
+cgt.un 
+ldloc.0 
+ldfld System.Boolean OffServerI18n/Po/<>c__DisplayClass0_0::any
+or 
+brfalse IL_01fe: ldloc.3
+ldloc.1 
+callvirt System.Void System.Action::Invoke()
+br IL_01fe: ldloc.3
+ldloc.s V_4
+ldc.i4.0 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 35
+bne.un.s IL_012c: ldloc.s V_4
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+brfalse.s IL_00f9: ldloc.s V_4
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+ldstr msgstr
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_00f9: ldloc.s V_4
+ldloc.1 
+callvirt System.Void System.Action::Invoke()
+ldloc.s V_4
+ldstr #,
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse IL_01fe: ldloc.3
+ldloc.s V_4
+ldstr fuzzy
+callvirt System.Boolean System.String::Contains(System.String)
+brfalse IL_01fe: ldloc.3
+ldloc.0 
+ldfld OffServerI18n/PoEntry OffServerI18n/Po/<>c__DisplayClass0_0::cur
+ldc.i4.1 
+stfld System.Boolean OffServerI18n/PoEntry::Fuzzy
+br IL_01fe: ldloc.3
+ldloc.s V_4
+ldc.i4.0 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 34
+bne.un.s IL_015b: ldloc.s V_4
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+brfalse IL_01fe: ldloc.3
+ldloc.0 
+ldfld System.Text.StringBuilder OffServerI18n/Po/<>c__DisplayClass0_0::sb
+ldloc.s V_4
+call System.String OffServerI18n/Po::Unquote(System.String)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+br IL_01fe: ldloc.3
+ldloc.s V_4
+ldc.i4.s 32
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.s V_5
+ldloc.s V_5
+ldc.i4.0 
+blt IL_01fe: ldloc.3
+ldloc.s V_4
+ldc.i4.0 
+ldloc.s V_5
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stloc.s V_6
+ldloc.s V_6
+ldstr msgctxt
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_01a8: ldloc.0
+ldloc.s V_6
+ldstr msgid
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_01c8: ldloc.0
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+ldstr msgctxt
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_01c8: ldloc.0
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+brfalse.s IL_01c8: ldloc.0
+ldloc.0 
+ldfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+ldstr msgstr
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_01c8: ldloc.0
+ldloc.1 
+callvirt System.Void System.Action::Invoke()
+ldloc.0 
+ldfld System.Action OffServerI18n/Po/<>c__DisplayClass0_0::flushField
+callvirt System.Void System.Action::Invoke()
+ldloc.0 
+ldloc.s V_6
+stfld System.String OffServerI18n/Po/<>c__DisplayClass0_0::field
+ldloc.0 
+ldc.i4.1 
+stfld System.Boolean OffServerI18n/Po/<>c__DisplayClass0_0::any
+ldloc.0 
+ldfld System.Text.StringBuilder OffServerI18n/Po/<>c__DisplayClass0_0::sb
+ldloc.s V_4
+ldloc.s V_5
+ldc.i4.1 
+add 
+callvirt System.String System.String::Substring(System.Int32)
+call System.String OffServerI18n/Po::Unquote(System.String)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.2 
+ldlen 
+conv.i4 
+blt IL_009a: ldloc.2
+ldloc.1 
+callvirt System.Void System.Action::Invoke()
+ldloc.0 
+ldfld System.Collections.Generic.List`1<OffServerI18n/PoEntry> OffServerI18n/Po/<>c__DisplayClass0_0::list
+ret 
+METHOD System.String OffServerI18n/Po::Unquote(System.String)
+ldarg.0 
+callvirt System.String System.String::Trim()
+starg.s q
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.2 
+blt.s IL_002e: ldstr ""
+ldarg.0 
+ldc.i4.0 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 34
+bne.un.s IL_002e: ldstr ""
+ldarg.0 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.1 
+sub 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 34
+beq.s IL_0034: ldarg.0
+ldstr 
+ret 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+newobj System.Void System.Text.StringBuilder::.ctor(System.Int32)
+stloc.0 
+ldc.i4.1 
+stloc.1 
+br.s IL_009b: ldloc.1
+ldarg.0 
+ldloc.1 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.2 
+ldloc.2 
+ldc.i4.s 92
+bne.un.s IL_008f: ldloc.0
+ldloc.1 
+ldc.i4.1 
+add 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.1 
+sub 
+bge.s IL_008f: ldloc.0
+ldarg.0 
+ldloc.1 
+ldc.i4.1 
+add 
+dup 
+stloc.1 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.0 
+ldloc.3 
+ldc.i4.s 110
+beq.s IL_0085: ldc.i4.s 10
+ldloc.3 
+ldc.i4.s 116
+beq.s IL_0081: ldc.i4.s 9
+ldloc.3 
+ldc.i4.s 114
+beq.s IL_007d: ldc.i4.s 13
+ldloc.3 
+br.s IL_0087: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+ldc.i4.s 13
+br.s IL_0087: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+ldc.i4.s 9
+br.s IL_0087: callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+ldc.i4.s 10
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+br.s IL_0097: ldloc.1
+ldloc.0 
+ldloc.2 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.1 
+sub 
+blt.s IL_0044: ldarg.0
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 

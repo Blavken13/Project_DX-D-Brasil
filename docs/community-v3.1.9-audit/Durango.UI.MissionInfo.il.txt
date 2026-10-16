@@ -1,0 +1,120 @@
+Durango.UI.MissionInfo : Durango.UI.DiscoveryInfo
+METHOD System.Void Durango.UI.MissionInfo::ShowUnknown()
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionInfo::Set(Messages.ArchipelagoRegionInfo[])
+ldarg.1 
+call System.Int32 KUtility::GetSize<Messages.ArchipelagoRegionInfo>(System.Collections.Generic.ICollection`1<T>)
+stloc.0 
+ldloc.0 
+brtrue.s IL_0017: ldc.i4.0
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+ldc.i4.0 
+stloc.1 
+ldloca.s V_2
+initobj System.Nullable`1<Messages.ArchipelagoRegionInfo>
+ldarg.0 
+ldfld ListObjectPool Durango.UI.DiscoveryInfo::_nodes
+callvirt System.Void ListObjectPoolBase`1<UnityEngine.GameObject>::BeginLoad()
+ldc.i4.0 
+stloc.s V_5
+br.s IL_00aa: ldloc.s V_5
+ldarg.1 
+ldloc.s V_5
+ldelem.any Messages.ArchipelagoRegionInfo
+stloc.s V_6
+ldloc.1 
+ldloc.s V_6
+ldfld System.Int32 Messages.ArchipelagoRegionInfo::Progess
+add 
+stloc.1 
+call T GameSystem`1<ExploreSystem>::Instance()
+ldloc.s V_6
+ldfld System.String Messages.ArchipelagoRegionInfo::Id
+callvirt Durango.Logic.Explore.Region ExploreSystem::GetRegion(System.String)
+stloc.s V_7
+ldloca.s V_2
+call System.Boolean System.Nullable`1<Messages.ArchipelagoRegionInfo>::get_HasValue()
+brfalse.s IL_0073: ldc.i4.0
+ldloca.s V_2
+call !0 System.Nullable`1<Messages.ArchipelagoRegionInfo>::get_Value()
+ldfld System.Int32 Messages.ArchipelagoRegionInfo::Progess
+ldc.i4.s 100
+clt 
+br.s IL_0074: stloc.s V_8
+ldc.i4.0 
+stloc.s V_8
+ldloca.s V_2
+ldloc.s V_6
+call System.Void System.Nullable`1<Messages.ArchipelagoRegionInfo>::.ctor(!0)
+ldarg.0 
+ldfld ListObjectPool Durango.UI.DiscoveryInfo::_nodes
+callvirt T ListObjectPoolBase`1<UnityEngine.GameObject>::GetNext()
+callvirt !!0 UnityEngine.GameObject::GetComponent<Durango.UI.DiscoverMissionNode>()
+ldloc.s V_7
+callvirt System.String Durango.Logic.Explore.Region::get_Name()
+ldloc.s V_6
+ldfld System.Int32 Messages.ArchipelagoRegionInfo::Progess
+ldloc.s V_8
+callvirt System.Void Durango.UI.DiscoverMissionNode::Set(System.String,System.Int32,System.Boolean)
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_0031: ldarg.1
+ldarg.0 
+ldfld ListObjectPool Durango.UI.DiscoveryInfo::_nodes
+callvirt System.Void ListObjectPoolBase`1<UnityEngine.GameObject>::EndLoad()
+ldstr <em>{0:P0}</em>
+ldloc.1 
+conv.r4 
+ldloc.0 
+conv.r4 
+ldc.r4 100
+mul 
+div 
+box System.Single
+call System.String System.String::Format(System.String,System.Object)
+stloc.3 
+ldarg.0 
+ldloc.3 
+call System.Void Durango.UI.DiscoveryInfo::SetCountLabel(System.String)
+ldarg.0 
+ldfld ListObjectPool Durango.UI.DiscoveryInfo::_nodes
+ldarg.0 
+ldfld UIWidget Durango.UI.DiscoveryInfo::_nodesWidget
+call UnityEngine.Vector3 UnityEngine.Vector3::get_down()
+ldc.r4 0
+ldc.r4 0
+ldc.i4.1 
+call System.Single UIUtility::WidgetsReposition<UnityEngine.GameObject>(System.Collections.Generic.IEnumerable`1<T>,UIWidget,UnityEngine.Vector3,System.Single,System.Single,System.Boolean)
+stloc.s V_4
+ldarg.0 
+ldfld UIWidget Durango.UI.DiscoveryInfo::_nodesWidget
+ldloc.s V_4
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+callvirt System.Void UIWidget::set_height(System.Int32)
+ldarg.0 
+ldfld RectLayout Durango.UI.DiscoveryInfo::_layout
+callvirt UnityEngine.Vector2 RectLayout::UpdateLayout()
+pop 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionInfo::.ctor()
+ldarg.0 
+call System.Void Durango.UI.DiscoveryInfo::.ctor()
+ret 

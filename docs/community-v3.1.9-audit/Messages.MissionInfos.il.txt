@@ -1,0 +1,398 @@
+Messages.MissionInfos : System.ValueType
+FIELD System.UInt32 Messages.MissionInfos::TypeCode
+FIELD Messages.Mission[] Messages.MissionInfos::Missions
+FIELD System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+FIELD System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+FIELD System.Byte Messages.MissionInfos::ShuffleCount
+FIELD System.Nullable`1<System.Double> Messages.MissionInfos::ShuffleAt
+METHOD System.Void Messages.MissionInfos::Pack(MsgPack.Packer,Messages.MissionInfos,System.Boolean)
+ldarg.2 
+brfalse.s IL_0019: ldarg.0
+ldarg.0 
+ldc.i4.6 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 3622
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+br.s IL_0021: ldarg.1
+ldarg.0 
+ldc.i4.5 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld Messages.Mission[] Messages.MissionInfos::Missions
+brtrue.s IL_0033: ldarg.0
+ldarg.0 
+ldc.i4.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+br.s IL_0068: ldarg.1
+ldarg.0 
+ldarg.1 
+ldfld Messages.Mission[] Messages.MissionInfos::Missions
+ldlen 
+conv.i4 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldc.i4.0 
+stloc.0 
+br.s IL_005d: ldloc.0
+ldarg.0 
+ldarg.1 
+ldfld Messages.Mission[] Messages.MissionInfos::Missions
+ldloc.0 
+ldelem.any Messages.Mission
+ldc.i4.0 
+call System.Void Messages.Mission::Pack(MsgPack.Packer,Messages.Mission,System.Boolean)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.1 
+ldfld Messages.Mission[] Messages.MissionInfos::Missions
+ldlen 
+conv.i4 
+blt.s IL_0046: ldarg.0
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+brtrue.s IL_007a: ldarg.0
+ldarg.0 
+ldc.i4.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackMapHeader(System.Int32)
+pop 
+br.s IL_00d7: ldarg.1
+ldarg.0 
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double>::get_Count()
+callvirt MsgPack.Packer MsgPack.Packer::PackMapHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double>::GetEnumerator()
+stloc.1 
+br.s IL_00be: ldloca.s V_1
+ldloca.s V_1
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<Shared.Faction.FactionType,System.Double>::get_Current()
+stloc.2 
+ldarg.0 
+ldloca.s V_2
+call !0 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,System.Double>::get_Key()
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.0 
+ldloca.s V_2
+call !1 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,System.Double>::get_Value()
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Double)
+pop 
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<Shared.Faction.FactionType,System.Double>::MoveNext()
+brtrue.s IL_009a: ldloca.s V_1
+leave.s IL_00d7: ldarg.1
+ldloca.s V_1
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<Shared.Faction.FactionType,System.Double>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+brtrue.s IL_00e8: ldarg.1
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+br.s IL_0158: ldarg.0
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+brtrue.s IL_00fa: ldarg.0
+ldarg.0 
+ldc.i4.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackMapHeader(System.Int32)
+pop 
+br.s IL_0158: ldarg.0
+ldarg.0 
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String>::get_Count()
+callvirt MsgPack.Packer MsgPack.Packer::PackMapHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String>::GetEnumerator()
+stloc.3 
+br.s IL_013f: ldloca.s V_3
+ldloca.s V_3
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<Shared.Faction.FactionType,System.String>::get_Current()
+stloc.s V_4
+ldarg.0 
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,System.String>::get_Key()
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.0 
+ldloca.s V_4
+call !1 System.Collections.Generic.KeyValuePair`2<Shared.Faction.FactionType,System.String>::get_Value()
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldloca.s V_3
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<Shared.Faction.FactionType,System.String>::MoveNext()
+brtrue.s IL_011a: ldloca.s V_3
+leave.s IL_0158: ldarg.0
+ldloca.s V_3
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<Shared.Faction.FactionType,System.String>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldarg.1 
+ldfld System.Byte Messages.MissionInfos::ShuffleCount
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Byte)
+pop 
+ldarga.s val
+ldflda System.Nullable`1<System.Double> Messages.MissionInfos::ShuffleAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brtrue.s IL_017b: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+ret 
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<System.Double> Messages.MissionInfos::ShuffleAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Double)
+pop 
+ret 
+METHOD Messages.MissionInfos Messages.MissionInfos::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.0 
+ldloca.s V_4
+initobj Messages.MissionInfos
+ldloca.s V_4
+ldloc.0 
+newarr Messages.Mission
+stfld Messages.Mission[] Messages.MissionInfos::Missions
+ldloc.s V_4
+stloc.1 
+ldc.i4.0 
+stloc.s V_5
+br.s IL_0053: ldloc.s V_5
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloc.1 
+ldfld Messages.Mission[] Messages.MissionInfos::Missions
+ldloc.s V_5
+ldarg.0 
+call Messages.Mission Messages.Mission::Unpack(MsgPack.Unpacker)
+stelem.any Messages.Mission
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.0 
+blt.s IL_0033: ldarg.0
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.2 
+ldloca.s V_1
+ldloc.2 
+ldloca.s V_6
+initobj Shared.Faction.FactionTypeComparer
+ldloc.s V_6
+box Shared.Faction.FactionTypeComparer
+newobj System.Void System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double>::.ctor(System.Int32,System.Collections.Generic.IEqualityComparer`1<!0>)
+stfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+ldc.i4.0 
+stloc.s V_7
+br.s IL_00e4: ldloc.s V_7
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.s V_8
+ldloc.s V_8
+ldc.i4.0 
+blt.s IL_00b1: ldc.i4.m1
+ldc.i4.s 101
+ldloc.s V_8
+bge.s IL_00b4: ldloc.s V_8
+ldc.i4.m1 
+br.s IL_00b6: stloc.s V_9
+ldloc.s V_8
+stloc.s V_9
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Double MsgPack.MessagePackObject::AsDouble()
+stloc.s V_10
+ldloc.1 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+ldloc.s V_9
+ldloc.s V_10
+callvirt System.Void System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double>::Add(!0,!1)
+ldloc.s V_7
+ldc.i4.1 
+add 
+stloc.s V_7
+ldloc.s V_7
+ldloc.2 
+blt.s IL_008f: ldarg.0
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_010d: ldarg.0
+ldloca.s V_1
+ldnull 
+stfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+br IL_0192: ldarg.0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.s V_11
+ldloc.s V_11
+ldloca.s V_6
+initobj Shared.Faction.FactionTypeComparer
+ldloc.s V_6
+box Shared.Faction.FactionTypeComparer
+newobj System.Void System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String>::.ctor(System.Int32,System.Collections.Generic.IEqualityComparer`1<!0>)
+stloc.s V_12
+ldc.i4.0 
+stloc.s V_13
+br.s IL_0183: ldloc.s V_13
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.s V_14
+ldloc.s V_14
+ldc.i4.0 
+blt.s IL_015c: ldc.i4.m1
+ldc.i4.s 101
+ldloc.s V_14
+bge.s IL_015f: ldloc.s V_14
+ldc.i4.m1 
+br.s IL_0161: stloc.s V_15
+ldloc.s V_14
+stloc.s V_15
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+call System.String LocalizeSystem::UnpackGettextFromMsgPack(MsgPack.Unpacker)
+stloc.s V_16
+ldloc.s V_12
+ldloc.s V_15
+ldloc.s V_16
+callvirt System.Void System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String>::Add(!0,!1)
+ldloc.s V_13
+ldc.i4.1 
+add 
+stloc.s V_13
+ldloc.s V_13
+ldloc.s V_11
+blt.s IL_013a: ldarg.0
+ldloca.s V_1
+ldloc.s V_12
+stfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_1
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Byte MsgPack.MessagePackObject::AsByte()
+stfld System.Byte Messages.MissionInfos::ShuffleCount
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_01d4: ldarg.0
+ldloca.s V_1
+ldflda System.Nullable`1<System.Double> Messages.MissionInfos::ShuffleAt
+initobj System.Nullable`1<System.Double>
+br.s IL_01f2: ldloc.1
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.3 
+ldloca.s V_3
+call System.Double MsgPack.MessagePackObject::AsDouble()
+stloc.s V_17
+ldloca.s V_1
+ldloc.s V_17
+newobj System.Void System.Nullable`1<System.Double>::.ctor(!0)
+stfld System.Nullable`1<System.Double> Messages.MissionInfos::ShuffleAt
+ldloc.1 
+ret 
+METHOD System.String Messages.MissionInfos::ToString()
+ldstr <MissionInfos Missions={0} MissionActivatesAt={1} RecommendFailReasons={2} ShuffleCount={3} ShuffleAt={4}>
+ldc.i4.5 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld Messages.Mission[] Messages.MissionInfos::Missions
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Double> Messages.MissionInfos::MissionActivatesAt
+stelem.ref 
+dup 
+ldc.i4.2 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.String> Messages.MissionInfos::RecommendFailReasons
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+ldfld System.Byte Messages.MissionInfos::ShuffleCount
+box System.Byte
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.0 
+ldfld System.Nullable`1<System.Double> Messages.MissionInfos::ShuffleAt
+box System.Nullable`1<System.Double>
+stelem.ref 
+call System.String System.String::Format(System.String,System.Object[])
+ret 

@@ -1,0 +1,97 @@
+Durango.Logic.Clusters.OffServerSeasonPass/Reward : System.Object
+FIELD System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+FIELD System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+METHOD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Reward::get_IsEmpty()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Int32 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Count()
+brtrue.s IL_001b: ldc.i4.0
+ldarg.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+ldc.i4.0 
+conv.i8 
+cgt 
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerSeasonPass/Reward::Describe()
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor()
+stloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Yaml.WarpRushReward>::GetEnumerator()
+stloc.1 
+br.s IL_007b: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<Yaml.WarpRushReward>::get_Current()
+stloc.2 
+ldloc.2 
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+brfalse.s IL_007b: ldloca.s V_1
+ldloc.2 
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+ldfld System.String Yaml.WarpRushReward/ItemInfo::PrototypeId
+ldloc.2 
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+ldfld System.Int32 Yaml.WarpRushReward/ItemInfo::Level
+call Yaml.Prototype Yaml.PrototypeYaml::GetItemPrototype(System.String,System.Int32)
+stloc.3 
+ldloc.0 
+ldstr {0} x{1}
+ldloc.3 
+brtrue.s IL_0056: ldloc.3
+ldloc.2 
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+ldfld System.String Yaml.WarpRushReward/ItemInfo::PrototypeId
+br.s IL_0061: ldloc.2
+ldloc.3 
+ldfld Gettext Yaml.Prototype::Name
+box Gettext
+ldloc.2 
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+ldfld System.Int32 Yaml.WarpRushReward/ItemInfo::Count
+box System.Int32
+call System.String System.String::Format(System.String,System.Object,System.Object)
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Yaml.WarpRushReward>::MoveNext()
+brtrue.s IL_0014: ldloca.s V_1
+leave.s IL_0094: ldarg.0
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<Yaml.WarpRushReward>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+ldc.i4.0 
+conv.i8 
+ble.s IL_00c7: ldstr "
+"
+ldloc.0 
+ldstr tstone
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldflda System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+ldstr N0
+call System.String System.Int64::ToString(System.String)
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+ldstr 
+
+ldloc.0 
+callvirt !0[] System.Collections.Generic.List`1<System.String>::ToArray()
+call System.String System.String::Join(System.String,System.String[])
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/Reward::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<Yaml.WarpRushReward>::.ctor()
+stfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

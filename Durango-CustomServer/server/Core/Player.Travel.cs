@@ -282,7 +282,10 @@ public partial class Player
         // ⇒ ตอบราคา 0 จะพาไปหน้าต่างที่กดยืนยันแล้วไม่มีอะไรรับต่อ — ปฏิเสธตรงนี้ชัดกว่า
         _connection.Recv(delegate(GetWarpAcceleratorCost msg, PacketHeader header)
         {
-            Send(new Abort { Text = "Os eventos de aceleração de teleporte ainda não estão disponíveis." }, header.Seq);
+            long amount = BuildTuning.TStoneReference is double reference
+                ? (long)Math.Round(reference * 30, -1, MidpointRounding.AwayFromZero)
+                : 0;
+            Send(new Cost { Currency = Shared.Economy.Currency.TStone, Amount = amount }, header.Seq);
         });
 
         // RecommendPersonalRegion (3002) {TemplateId} — สร้าง/เลือกภูมิประเทศเกาะส่วนตัวของตัวเอง

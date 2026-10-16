@@ -1,0 +1,495 @@
+MenuSystem : GameSystem`1<MenuSystem>
+FIELD System.String MenuSystem::StorageKey
+FIELD Durango.Logic.MenuType[] MenuSystem::HideInTutorial
+FIELD Durango.Logic.MenuType[] MenuSystem::HideInSafeHouse
+FIELD Durango.Logic.MenuType[] MenuSystem::HideInWarpRush
+FIELD Durango.Logic.MenuType[] MenuSystem::HiddenInOnline
+FIELD Durango.Logic.MenuType[] MenuSystem::ShowInOffline
+FIELD Durango.Logic.MenuType[] MenuSystem::ShowInEditable
+FIELD Durango.Logic.MenuType[] MenuSystem::ShowInPvpIsland
+FIELD System.Boolean[] MenuSystem::_menuEnabled
+FIELD System.Boolean[] MenuSystem::_recentlyUnlocked
+FIELD Durango.Utils.DelayedFunction MenuSystem::_enableMenuUpdated
+FIELD System.Action MenuSystem::EnableMenuUpdated
+METHOD System.Void MenuSystem::add_EnableMenuUpdated(System.Action)
+ldarg.0 
+ldfld System.Action MenuSystem::EnableMenuUpdated
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldarg.0 
+ldflda System.Action MenuSystem::EnableMenuUpdated
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void MenuSystem::remove_EnableMenuUpdated(System.Action)
+ldarg.0 
+ldfld System.Action MenuSystem::EnableMenuUpdated
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldarg.0 
+ldflda System.Action MenuSystem::EnableMenuUpdated
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void MenuSystem::Awake()
+call T[] Durango.Utils.Enums`1<Durango.Logic.MenuType>::All()
+stloc.0 
+ldarg.0 
+ldloc.0 
+ldlen 
+conv.i4 
+newarr System.Boolean
+stfld System.Boolean[] MenuSystem::_menuEnabled
+ldc.i4.0 
+stloc.1 
+br.s IL_0025: ldloc.1
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_menuEnabled
+ldloc.1 
+ldc.i4.1 
+stelem.i1 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_0018: ldarg.0
+ldarg.0 
+ldloc.0 
+ldlen 
+conv.i4 
+newarr System.Boolean
+stfld System.Boolean[] MenuSystem::_recentlyUnlocked
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+ldarg.0 
+ldftn System.Void MenuSystem::GameManager_MainSceneLoaded()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void GameManager::add_MainSceneLoaded(System.Action)
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+ldarg.0 
+ldftn System.Void MenuSystem::OnWelcome(Messages.Welcome)
+newobj System.Void System.Action`1<Messages.Welcome>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void GameManager::add_WelcomeReceived(System.Action`1<Messages.Welcome>)
+ldarg.0 
+ldarg.0 
+ldftn System.Void MenuSystem::<Awake>b__14_0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+newobj System.Void Durango.Utils.DelayedFunction::.ctor(System.Action,UnityEngine.YieldInstruction)
+stfld Durango.Utils.DelayedFunction MenuSystem::_enableMenuUpdated
+ret 
+METHOD System.Void MenuSystem::GameManager_MainSceneLoaded()
+call T[] Durango.Utils.Enums`1<Durango.Logic.MenuType>::All()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0023: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.i4 
+stloc.2 
+ldloc.2 
+call System.Boolean MenuSystem::IsHiddenMenu(Durango.Logic.MenuType)
+brfalse.s IL_001f: ldloc.1
+ldarg.0 
+ldloc.2 
+ldc.i4.0 
+ldc.i4.1 
+call System.Void MenuSystem::EnableMenu(Durango.Logic.MenuType,System.Boolean,System.Boolean)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.0
+ldarg.0 
+ldc.i4.s 23
+call Durango.System.Platform Durango.System.Platform::get_Instance()
+callvirt System.Boolean Durango.System.Platform::get_IsAvailableOfferwall()
+ldc.i4.1 
+call System.Void MenuSystem::EnableMenu(Durango.Logic.MenuType,System.Boolean,System.Boolean)
+ret 
+METHOD System.Collections.IEnumerator MenuSystem::FetchSeasonPassSoon()
+ldc.i4.0 
+newobj System.Void MenuSystem/<FetchSeasonPassSoon>d__16::.ctor(System.Int32)
+ret 
+METHOD System.Boolean MenuSystem::IsHiddenMenu(Durango.Logic.MenuType)
+ldarg.0 
+ldc.i4.s 37
+bne.un.s IL_000e: call Durango.System.Platform Durango.System.Platform::get_Instance()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brtrue.s IL_000e: call Durango.System.Platform Durango.System.Platform::get_Instance()
+ldc.i4.1 
+ret 
+call Durango.System.Platform Durango.System.Platform::get_Instance()
+callvirt System.Boolean Durango.System.Platform::get_UsePCUI()
+brfalse.s IL_0021: call Durango.Logic.Clusters.Mode GameManager::get_ClusterMode()
+ldarg.0 
+ldc.i4.s 31
+bne.un.s IL_0021: call Durango.Logic.Clusters.Mode GameManager::get_ClusterMode()
+ldc.i4.1 
+ret 
+call Durango.Logic.Clusters.Mode GameManager::get_ClusterMode()
+stloc.0 
+ldloc.0 
+switch Mono.Cecil.Cil.Instruction[]
+br.s IL_0068: call Durango.Logic.Explore.Region GameManager::get_Region()
+ldsfld Durango.Logic.MenuType[] MenuSystem::HiddenInOnline
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+brfalse.s IL_0068: call Durango.Logic.Explore.Region GameManager::get_Region()
+ldc.i4.1 
+ret 
+ldsfld Durango.Logic.MenuType[] MenuSystem::ShowInOffline
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+ldc.i4.0 
+ceq 
+ret 
+ldsfld Durango.Logic.MenuType[] MenuSystem::ShowInEditable
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+ldc.i4.0 
+ceq 
+ret 
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Boolean Durango.Logic.Explore.Region::IsTutorial()
+brfalse.s IL_0080: call Durango.Logic.Explore.Region GameManager::get_Region()
+ldsfld Durango.Logic.MenuType[] MenuSystem::HideInTutorial
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+ret 
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Boolean Durango.Logic.Explore.Region::IsSafeHouse()
+brfalse.s IL_0098: call Durango.Logic.Explore.Region GameManager::get_Region()
+ldsfld Durango.Logic.MenuType[] MenuSystem::HideInSafeHouse
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+ret 
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Boolean Durango.Logic.Explore.Region::IsWarpRush()
+brfalse.s IL_00b0: call Durango.Logic.Explore.Region GameManager::get_Region()
+ldsfld Durango.Logic.MenuType[] MenuSystem::HideInWarpRush
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+ret 
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Boolean Durango.Logic.Explore.Region::IsPvpIsland()
+brfalse.s IL_00cb: ldc.i4.0
+ldsfld Durango.Logic.MenuType[] MenuSystem::ShowInPvpIsland
+ldarg.0 
+call System.Boolean Durango.Utils.Extensions.ArrayExtensions::Contains<Durango.Logic.MenuType>(T[],T)
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void MenuSystem::OnWelcome(Messages.Welcome)
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Reset()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brfalse.s IL_0019: ldarg.1
+ldarg.0 
+ldarg.0 
+call System.Collections.IEnumerator MenuSystem::FetchSeasonPassSoon()
+call UnityEngine.Coroutine UnityEngine.MonoBehaviour::StartCoroutine(System.Collections.IEnumerator)
+pop 
+ldarg.1 
+ldfld Messages.Storage Messages.Welcome::Storage
+ldfld System.Collections.Generic.Dictionary`2<System.String,System.Byte[]> Messages.Storage::Data
+stloc.0 
+ldloc.0 
+brtrue.s IL_002b: ldloc.0
+ldnull 
+br.s IL_0037: stloc.1
+ldloc.0 
+ldstr RecentlyUnlockedMenuList
+ldnull 
+call TV DictionaryExtensions::Get<System.String,System.Byte[]>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+stloc.1 
+ldloc.1 
+call System.Int32 KUtility::GetSize<System.Byte>(System.Collections.Generic.ICollection`1<T>)
+brtrue.s IL_004f: ldarg.0
+ldarg.0 
+call Durango.Logic.Clusters.Mode GameManager::get_ClusterMode()
+ldc.i4.0 
+ceq 
+call System.Void MenuSystem::InitRecentlyUnlocked(System.Boolean)
+ret 
+ldarg.0 
+ldloc.1 
+call System.Boolean MenuSystem::LoadRecentlyUnlocked(System.Byte[])
+brtrue.s IL_005f: ret
+ldarg.0 
+ldc.i4.1 
+call System.Void MenuSystem::InitRecentlyUnlocked(System.Boolean)
+ret 
+METHOD System.Boolean MenuSystem::LoadRecentlyUnlocked(System.Byte[])
+ldarg.1 
+ldc.i4.0 
+call T Durango.Utils.Json::Read<System.Collections.Generic.Dictionary`2<System.String,System.Boolean>>(System.Byte[],System.Boolean)
+stloc.0 
+ldloc.0 
+brtrue.s IL_000d: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::GetEnumerator()
+stloc.1 
+br.s IL_0043: ldloca.s V_1
+ldloca.s V_1
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.Boolean>::get_Current()
+stloc.2 
+ldloca.s V_2
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.Boolean>::get_Key()
+ldloca.s V_3
+ldc.i4.0 
+call System.Boolean Durango.Utils.Extensions.StringExtensions::TryEnum<Durango.Logic.MenuType>(System.String,T&,System.Boolean)
+brtrue.s IL_0034: ldarg.0
+ldc.i4.0 
+stloc.s V_4
+leave.s IL_005e: ldloc.s V_4
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_recentlyUnlocked
+ldloc.3 
+ldloca.s V_2
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.Boolean>::get_Value()
+stelem.i1 
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.Boolean>::MoveNext()
+brtrue.s IL_0016: ldloca.s V_1
+leave.s IL_005c: ldc.i4.1
+ldloca.s V_1
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.Boolean>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldc.i4.1 
+ret 
+ldloc.s V_4
+ret 
+METHOD System.Void MenuSystem::InitRecentlyUnlocked(System.Boolean)
+ldsfld Durango.Logic.MenuType[] MenuSystem::HideInSafeHouse
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_001b: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.i4 
+stloc.2 
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_recentlyUnlocked
+ldloc.2 
+ldarg.1 
+stelem.i1 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.0
+ret 
+METHOD System.Void MenuSystem::SaveRecentlyUnlocked()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::.ctor()
+stloc.0 
+ldsfld Durango.Logic.MenuType[] MenuSystem::HideInSafeHouse
+stloc.1 
+ldc.i4.0 
+stloc.3 
+br.s IL_0035: ldloc.3
+ldloc.1 
+ldloc.3 
+ldelem.i4 
+stloc.s V_4
+ldloc.0 
+ldloca.s V_4
+constrained. Durango.Logic.MenuType
+callvirt System.String System.Object::ToString()
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_recentlyUnlocked
+ldloc.s V_4
+ldelem.u1 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Boolean>::Add(!0,!1)
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0010: ldloc.1
+ldloca.s V_5
+initobj Messages.SetStorageItem
+ldloca.s V_5
+ldstr RecentlyUnlockedMenuList
+stfld System.String Messages.SetStorageItem::Key
+ldloca.s V_5
+ldloc.0 
+ldc.i4.0 
+ldnull 
+call System.Byte[] Durango.Utils.Json::WriteToBytes<System.Collections.Generic.Dictionary`2<System.String,System.Boolean>>(T,System.Boolean,Newtonsoft.Json.JsonSerializerSettings)
+stfld System.Byte[] Messages.SetStorageItem::Value
+ldloc.s V_5
+stloc.2 
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldloc.2 
+ldc.i4.0 
+ldc.i4.0 
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.SetStorageItem>(T,System.Boolean,System.UInt32)
+pop 
+ret 
+METHOD System.Void MenuSystem::EnableMenu(Durango.Logic.MenuType,System.Boolean,System.Boolean)
+ldarg.3 
+brfalse.s IL_000e: ldarg.0
+ldarg.1 
+call System.Boolean MenuSystem::IsHiddenMenu(Durango.Logic.MenuType)
+brfalse.s IL_000e: ldarg.0
+ldc.i4.0 
+starg.s enable
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_menuEnabled
+ldarg.1 
+ldelem.u1 
+ldarg.2 
+beq.s IL_002e: ret
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_menuEnabled
+ldarg.1 
+ldarg.2 
+stelem.i1 
+ldarg.0 
+ldfld Durango.Utils.DelayedFunction MenuSystem::_enableMenuUpdated
+ldarg.0 
+callvirt System.Void Durango.Utils.DelayedFunction::Call(UnityEngine.MonoBehaviour)
+ret 
+METHOD System.Boolean MenuSystem::IsEnabled(Durango.Logic.MenuType)
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_menuEnabled
+ldarg.1 
+ldelem.u1 
+ret 
+METHOD System.Collections.Generic.IEnumerable`1<Durango.Logic.MenuType> MenuSystem::GetRecentlyUnlockedMenus()
+call T[] Durango.Utils.Enums`1<Durango.Logic.MenuType>::All()
+ldarg.0 
+ldftn System.Boolean MenuSystem::IsRecentlyUnlocked(Durango.Logic.MenuType)
+newobj System.Void System.Func`2<Durango.Logic.MenuType,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call System.Collections.Generic.IEnumerable`1<!!0> System.Linq.Enumerable::Where<Durango.Logic.MenuType>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+ret 
+METHOD System.Boolean MenuSystem::IsRecentlyUnlocked(Durango.Logic.MenuType)
+ldarg.0 
+ldarg.1 
+call System.Boolean MenuSystem::IsEnabled(Durango.Logic.MenuType)
+brtrue.s IL_000b: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_recentlyUnlocked
+ldarg.1 
+ldelem.u1 
+ret 
+METHOD System.Void MenuSystem::SetRecentlyUnlocked(Durango.Logic.MenuType,System.Boolean)
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_recentlyUnlocked
+ldarg.1 
+ldelem.u1 
+ldarg.2 
+beq.s IL_0026: ret
+ldarg.0 
+ldfld System.Boolean[] MenuSystem::_recentlyUnlocked
+ldarg.1 
+ldarg.2 
+stelem.i1 
+ldarg.0 
+call System.Void MenuSystem::SaveRecentlyUnlocked()
+ldarg.0 
+ldfld Durango.Utils.DelayedFunction MenuSystem::_enableMenuUpdated
+ldarg.0 
+callvirt System.Void Durango.Utils.DelayedFunction::Call(UnityEngine.MonoBehaviour)
+ret 
+METHOD System.Void MenuSystem::.ctor()
+ldarg.0 
+call System.Void GameSystem`1<MenuSystem>::.ctor()
+ret 
+METHOD System.Void MenuSystem::.cctor()
+ldc.i4.s 15
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=60 <PrivateImplementationDetails>::6848F1D34302BA833E273EE501E17BBC49A33D312A3C57FD2D5D0131E8298457
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::HideInTutorial
+ldc.i4.s 10
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=40 <PrivateImplementationDetails>::DD952C17A5FE3D9847F452B685D161D61AD547A8949AA6FB9A54BFAE3C29CF2B
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::HideInSafeHouse
+ldc.i4.s 18
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=72 <PrivateImplementationDetails>::CE3E3DB127BD993CEFE132D1353155CDC872671D86E6DB6AD5BC65BE730B4796
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::HideInWarpRush
+ldc.i4.6 
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=24 <PrivateImplementationDetails>::A807E06C2C1750167B45222DC020D9E215C3617BA24F25644090E59D1509C393
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::HiddenInOnline
+ldc.i4.s 10
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=40 <PrivateImplementationDetails>::ED52BFC6DF083E168C40C5569AA02E650824F002ED276F559F3C143B69249397
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::ShowInOffline
+ldc.i4.s 12
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=48 <PrivateImplementationDetails>::16D1F6D1D7B6056240701737D01DF5E185B07BE3FFB32E2FDD80494AE9886BCD
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::ShowInEditable
+ldc.i4.6 
+newarr Durango.Logic.MenuType
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=24 <PrivateImplementationDetails>::2F979ED6C12AFE5174C582D57E4A35B627DA716625397F5B74216F4703B31171
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.MenuType[] MenuSystem::ShowInPvpIsland
+ret 
+METHOD System.Void MenuSystem::<Awake>b__14_0()
+ldarg.0 
+ldfld System.Action MenuSystem::EnableMenuUpdated
+brfalse.s IL_0013: ret
+ldarg.0 
+ldfld System.Action MenuSystem::EnableMenuUpdated
+callvirt System.Void System.Action::Invoke()
+ret 

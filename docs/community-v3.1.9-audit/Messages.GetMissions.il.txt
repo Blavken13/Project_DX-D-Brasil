@@ -1,0 +1,27 @@
+Messages.GetMissions : System.ValueType
+FIELD System.UInt32 Messages.GetMissions::TypeCode
+METHOD System.Void Messages.GetMissions::Pack(MsgPack.Packer,Messages.GetMissions,System.Boolean)
+ldarg.2 
+brfalse.s IL_0018: ldarg.0
+ldarg.0 
+ldc.i4.1 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 3620
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+ret 
+ldarg.0 
+ldc.i4.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ret 
+METHOD Messages.GetMissions Messages.GetMissions::Unpack(MsgPack.Unpacker)
+ldloca.s V_0
+initobj Messages.GetMissions
+ldloc.0 
+ret 
+METHOD System.String Messages.GetMissions::ToString()
+ldstr <GetMissions>
+ret 

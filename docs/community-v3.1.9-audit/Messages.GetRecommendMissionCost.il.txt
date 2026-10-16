@@ -1,0 +1,59 @@
+Messages.GetRecommendMissionCost : System.ValueType
+FIELD System.UInt32 Messages.GetRecommendMissionCost::TypeCode
+FIELD Shared.Faction.FactionType Messages.GetRecommendMissionCost::FactionType
+METHOD System.Void Messages.GetRecommendMissionCost::Pack(MsgPack.Packer,Messages.GetRecommendMissionCost,System.Boolean)
+ldarg.2 
+brfalse.s IL_0019: ldarg.0
+ldarg.0 
+ldc.i4.2 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 3628
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+br.s IL_0021: ldarg.0
+ldarg.0 
+ldc.i4.1 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Shared.Faction.FactionType Messages.GetRecommendMissionCost::FactionType
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ret 
+METHOD Messages.GetRecommendMissionCost Messages.GetRecommendMissionCost::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.2 
+ldloca.s V_2
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.0 
+ldloca.s V_1
+initobj Messages.GetRecommendMissionCost
+ldloc.0 
+ldc.i4.0 
+blt.s IL_0027: ldloca.s V_1
+ldc.i4.s 101
+ldloc.0 
+bge.s IL_0031: ldloca.s V_1
+ldloca.s V_1
+ldc.i4.m1 
+stfld Shared.Faction.FactionType Messages.GetRecommendMissionCost::FactionType
+br.s IL_0039: ldloc.1
+ldloca.s V_1
+ldloc.0 
+stfld Shared.Faction.FactionType Messages.GetRecommendMissionCost::FactionType
+ldloc.1 
+ret 
+METHOD System.String Messages.GetRecommendMissionCost::ToString()
+ldstr <GetRecommendMissionCost FactionType={0}>
+ldarg.0 
+ldfld Shared.Faction.FactionType Messages.GetRecommendMissionCost::FactionType
+box Shared.Faction.FactionType
+call System.String System.String::Format(System.String,System.Object)
+ret 

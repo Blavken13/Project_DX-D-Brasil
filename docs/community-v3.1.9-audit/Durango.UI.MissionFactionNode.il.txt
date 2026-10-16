@@ -1,0 +1,746 @@
+Durango.UI.MissionFactionNode : Durango.UI.Control.SelectableWidget
+FIELD UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoContainer
+FIELD UnityEngine.GameObject Durango.UI.MissionFactionNode::_unknownContainer
+FIELD UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoesObject
+FIELD UIWidget Durango.UI.MissionFactionNode::_mainWidget
+FIELD UIWidget Durango.UI.MissionFactionNode::_contentWidget
+FIELD UITexture Durango.UI.MissionFactionNode::_portraitWidget
+FIELD UILabel Durango.UI.MissionFactionNode::_titleLabel
+FIELD UILabel Durango.UI.MissionFactionNode::_commentLabel
+FIELD UILabel Durango.UI.MissionFactionNode::_infoLabel
+FIELD UILabel Durango.UI.MissionFactionNode::_unknownLabel
+FIELD UILabel Durango.UI.MissionFactionNode::_hasntMissionLabel
+FIELD UnityEngine.GameObject Durango.UI.MissionFactionNode::_doingLabel
+FIELD UITexture Durango.UI.MissionFactionNode::_noiseTexture
+FIELD UnityEngine.Texture2D Durango.UI.MissionFactionNode::_noiseTexture1
+FIELD UnityEngine.Texture2D Durango.UI.MissionFactionNode::_noiseTexture2
+FIELD Durango.UI.MissionBonusInfoWidget Durango.UI.MissionFactionNode::_bonusWidget
+FIELD System.String Durango.UI.MissionFactionNode::NoiseSoundEffect
+FIELD UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+FIELD System.String Durango.UI.MissionFactionNode::_commentText
+FIELD System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+FIELD Messages.Mission Durango.UI.MissionFactionNode::_mission
+FIELD System.Double Durango.UI.MissionFactionNode::_availableAt
+FIELD System.String Durango.UI.MissionFactionNode::_commentSubColor
+FIELD System.Int32 Durango.UI.MissionFactionNode::_saturationId
+FIELD Durango.Utils.ICoroutineBinder Durango.UI.MissionFactionNode::_noiseCoroutine
+FIELD System.Boolean Durango.UI.MissionFactionNode::<MissionWidgetOpened>k__BackingField
+FIELD Shared.Faction.FactionType Durango.UI.MissionFactionNode::<Type>k__BackingField
+METHOD System.Boolean Durango.UI.MissionFactionNode::get_MissionWidgetOpened()
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionFactionNode::<MissionWidgetOpened>k__BackingField
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::set_MissionWidgetOpened(System.Boolean)
+ldarg.0 
+ldarg.1 
+stfld System.Boolean Durango.UI.MissionFactionNode::<MissionWidgetOpened>k__BackingField
+ret 
+METHOD Shared.Faction.FactionType Durango.UI.MissionFactionNode::get_Type()
+ldarg.0 
+ldfld Shared.Faction.FactionType Durango.UI.MissionFactionNode::<Type>k__BackingField
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::set_Type(Shared.Faction.FactionType)
+ldarg.0 
+ldarg.1 
+stfld Shared.Faction.FactionType Durango.UI.MissionFactionNode::<Type>k__BackingField
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::OnInit()
+ldarg.0 
+call System.Void Durango.UI.Control.SelectableWidget::OnInit()
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+callvirt UnityEngine.Color UIWidget::get_color()
+stloc.0 
+ldloca.s V_0
+ldflda System.Single UnityEngine.Color::a
+dup 
+ldind.r4 
+ldc.r4 0,7
+mul 
+stind.r4 
+ldarg.0 
+ldloc.0 
+call System.String NGUIText::EncodeColor32(UnityEngine.Color)
+stfld System.String Durango.UI.MissionFactionNode::_commentSubColor
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldstr _Saturation
+call System.Int32 UnityEngine.Shader::PropertyToID(System.String)
+stfld System.Int32 Durango.UI.MissionFactionNode::_saturationId
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::OnRefresh(Durango.UI.Control.Selectable/State)
+ldarg.0 
+ldarg.1 
+call System.Void Durango.UI.Control.SelectableWidget::OnRefresh(Durango.UI.Control.Selectable/State)
+ldarg.0 
+call System.Boolean Durango.UI.Control.Selectable::get_IsChangeSelected()
+brfalse.s IL_0085: ret
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0085: ret
+ldarg.1 
+ldc.i4.1 
+bne.un.s IL_0028: ldc.r4 0
+ldc.r4 1
+br.s IL_002d: stloc.0
+ldc.r4 0
+stloc.0 
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+ldarg.0 
+ldfld System.Int32 Durango.UI.MissionFactionNode::_saturationId
+ldloc.0 
+callvirt System.Void UnityEngine.Material::SetFloat(System.Int32,System.Single)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldfld UIDrawCall UIWidget::drawCall
+call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+brfalse.s IL_0085: ret
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldfld UIDrawCall UIWidget::drawCall
+callvirt UnityEngine.Material UIDrawCall::get_dynamicMaterial()
+call System.Boolean UnityEngine.Object::op_Implicit(UnityEngine.Object)
+brfalse.s IL_0085: ret
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldfld UIDrawCall UIWidget::drawCall
+callvirt UnityEngine.Material UIDrawCall::get_dynamicMaterial()
+ldarg.0 
+ldfld System.Int32 Durango.UI.MissionFactionNode::_saturationId
+ldloc.0 
+callvirt System.Void UnityEngine.Material::SetFloat(System.Int32,System.Single)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::Update()
+ldarg.0 
+ldfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+ldc.r4 0
+ble.un.s IL_0020: ret
+ldarg.0 
+ldfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+call System.Single UnityEngine.Time::get_time()
+bge.un.s IL_0020: ret
+ldarg.0 
+call System.Void Durango.UI.MissionFactionNode::UpdateTimerLabel()
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetFactionType(Shared.Faction.FactionType,UnityEngine.Material,UnityEngine.Rect)
+ldarg.0 
+ldarg.1 
+call System.Void Durango.UI.MissionFactionNode::set_Type(Shared.Faction.FactionType)
+ldarg.1 
+ldnull 
+call TV Yaml.Util.SingletonDict`2<Shared.Faction.FactionType,Yaml.Faction>::Get(TK,TV)
+stloc.0 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_titleLabel
+ldstr [icon={0}:1.3]  {1}
+ldarg.1 
+box Shared.Faction.FactionType
+ldnull 
+call System.String IconMap::Get(System.Enum,System.String)
+ldloc.0 
+ldfld Gettext Yaml.Faction::Name
+box Gettext
+call System.String System.String::Format(System.String,System.Object,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0095: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0060: ldarg.0
+ldarg.0 
+ldarg.2 
+newobj System.Void UnityEngine.Material::.ctor(UnityEngine.Material)
+stfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+br.s IL_006c: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+ldarg.2 
+callvirt System.Void UnityEngine.Material::CopyPropertiesFromMaterial(UnityEngine.Material)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+ldarg.0 
+ldfld System.Int32 Durango.UI.MissionFactionNode::_saturationId
+ldc.r4 0
+callvirt System.Void UnityEngine.Material::SetFloat(System.Int32,System.Single)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.MissionFactionNode::_portrait
+callvirt System.Void UIWidget::set_material(UnityEngine.Material)
+br.s IL_00a1: ldarg.0
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldnull 
+callvirt System.Void UIWidget::set_material(UnityEngine.Material)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldarg.3 
+callvirt System.Void UITexture::set_uvRect(UnityEngine.Rect)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_unknownLabel
+ldloc.0 
+ldfld Gettext Yaml.Faction::UnknownText
+call System.String Gettext::op_Implicit(Gettext)
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::UpdateLayout()
+ldarg.0 
+call UIWidget Durango.UI.Control.Selectable::get_Widget()
+stloc.0 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionFactionNode::_mainWidget
+ldloc.0 
+callvirt System.Int32 UIWidget::get_width()
+ldloc.0 
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+ldc.r4 0,8
+mul 
+conv.i4 
+sub 
+ldloc.0 
+callvirt System.Int32 UIWidget::get_height()
+callvirt System.Void UIWidget::SetDimensions(System.Int32,System.Int32)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldloc.0 
+callvirt System.Int32 UIWidget::get_height()
+ldloc.0 
+callvirt System.Int32 UIWidget::get_height()
+callvirt System.Void UIWidget::SetDimensions(System.Int32,System.Int32)
+ldloc.0 
+callvirt UnityEngine.Vector3[] UIRect::get_localCorners()
+stloc.1 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionFactionNode::_mainWidget
+ldloc.1 
+ldc.i4.0 
+ldelem.any UnityEngine.Vector3
+ldc.r4 0
+ldc.r4 0
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_portraitWidget
+ldloc.1 
+ldc.i4.3 
+ldelem.any UnityEngine.Vector3
+ldc.r4 1
+ldc.r4 0
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldarg.0 
+call UnityEngine.Transform UnityEngine.Component::get_transform()
+call System.Void UIUtility::UpdateAnchors(UnityEngine.Transform)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::Set(Messages.Mission)
+newobj System.Void Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.MissionFactionNode Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::<>4__this
+ldloc.0 
+ldarg.1 
+stfld Messages.Mission Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::mission
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldfld System.String Messages.Mission::Id
+ldarg.0 
+ldloc.0 
+ldfld Messages.Mission Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::mission
+stfld Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldloc.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::mission
+ldfld System.String Messages.Mission::Id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_004a: ldarg.0
+ldarg.0 
+ldloc.0 
+ldfld Messages.Mission Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::mission
+call System.Void Durango.UI.MissionFactionNode::UpdateMission(Messages.Mission)
+ret 
+ldarg.0 
+ldloc.0 
+ldftn System.Void Durango.UI.MissionFactionNode/<>c__DisplayClass38_0::<Set>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.UI.MissionFactionNode::TryChangeNoise(System.Action)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetCooltime(System.Double)
+newobj System.Void Durango.UI.MissionFactionNode/<>c__DisplayClass39_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.MissionFactionNode Durango.UI.MissionFactionNode/<>c__DisplayClass39_0::<>4__this
+ldloc.0 
+ldarg.1 
+stfld System.Double Durango.UI.MissionFactionNode/<>c__DisplayClass39_0::availableAt
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldfld System.String Messages.Mission::Id
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0045: ldarg.0
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+initobj Messages.Mission
+ldarg.0 
+ldloc.0 
+ldftn System.Void Durango.UI.MissionFactionNode/<>c__DisplayClass39_0::<SetCooltime>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.UI.MissionFactionNode::TryChangeNoise(System.Action)
+ret 
+ldarg.0 
+ldloc.0 
+ldfld System.Double Durango.UI.MissionFactionNode/<>c__DisplayClass39_0::availableAt
+call System.Void Durango.UI.MissionFactionNode::UpdateCooltime(System.Double)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetHasntMission(System.String)
+newobj System.Void Durango.UI.MissionFactionNode/<>c__DisplayClass40_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.MissionFactionNode Durango.UI.MissionFactionNode/<>c__DisplayClass40_0::<>4__this
+ldloc.0 
+ldarg.1 
+stfld System.String Durango.UI.MissionFactionNode/<>c__DisplayClass40_0::text
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+initobj Messages.Mission
+ldarg.0 
+ldc.r8 0
+stfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+ldarg.0 
+ldloc.0 
+ldftn System.Void Durango.UI.MissionFactionNode/<>c__DisplayClass40_0::<SetHasntMission>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.UI.MissionFactionNode::TryChangeNoise(System.Action)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetUnknown()
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+initobj Messages.Mission
+ldarg.0 
+ldc.r8 0
+stfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoContainer
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_unknownContainer
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::UpdateMission(Messages.Mission)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoContainer
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_unknownContainer
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoesObject
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_hasntMissionLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.Mission::Subject
+stfld System.String Durango.UI.MissionFactionNode::_commentText
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_infoLabel
+ldarg.1 
+ldfld System.Nullable`1<Messages.RewardInfo> Messages.Mission::Reward
+call System.String FactionSystem::MissionRewardToString(System.Nullable`1<Messages.RewardInfo>)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld Durango.UI.MissionBonusInfoWidget Durango.UI.MissionFactionNode::_bonusWidget
+ldarg.1 
+ldfld System.Nullable`1<Messages.MissionBonusReward> Messages.Mission::BonusReward
+ldarg.0 
+call Shared.Faction.FactionType Durango.UI.MissionFactionNode::get_Type()
+callvirt System.Void Durango.UI.MissionBonusInfoWidget::Set(System.Nullable`1<Messages.MissionBonusReward>,Shared.Faction.FactionType)
+ldarg.0 
+ldfld Durango.UI.MissionBonusInfoWidget Durango.UI.MissionFactionNode::_bonusWidget
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_infoLabel
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldfld System.Single UnityEngine.Vector3::x
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_infoLabel
+callvirt UnityEngine.Vector2 UILabel::get_printedSize()
+ldfld System.Single UnityEngine.Vector2::x
+add 
+ldc.r4 10
+add 
+ldc.r4 0
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_doingLabel
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldarga.s mission
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_doingLabel
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+call System.Void UIUtility::UpdateAnchors(UnityEngine.Transform)
+ldarg.0 
+ldc.r8 0
+stfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldarg.0 
+call System.Void Durango.UI.MissionFactionNode::UpdateTimerLabel()
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::UpdateCooltime(System.Double)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoContainer
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_unknownContainer
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_doingLabel
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionFactionNode::_infoesObject
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_hasntMissionLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldarg.1 
+stfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_infoLabel
+ldstr -
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld Durango.UI.MissionBonusInfoWidget Durango.UI.MissionFactionNode::_bonusWidget
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+call System.Void Durango.UI.MissionFactionNode::UpdateTimerLabel()
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::UpdateTimerLabel()
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+stloc.0 
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+ldarg.0 
+ldfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldc.r8 0
+ble.un.s IL_0091: ldarg.0
+ldarg.0 
+ldfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldloc.0 
+ble.un.s IL_0080: ldarg.0
+ldarg.0 
+ldfld System.Double Durango.UI.MissionFactionNode::_availableAt
+ldloc.0 
+sub 
+stloc.1 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+ldstr [icon=icon_timer2:0.8] [{2}][size=20]{0}[/size][-]
+{1}
+ldstr 다음 임무까지 남은 시간
+call System.String L10N.T::_(System.String)
+ldloc.1 
+ldc.i4.2 
+ldstr sec
+call System.String TimedeltaFormatter::Format(System.Double,System.Int32,System.String)
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentSubColor
+call System.String System.String::Format(System.String,System.Object,System.Object,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Single UnityEngine.Time::get_time()
+ldloc.1 
+call System.Int32 TimedeltaFormatter::CurrentMinUnit()
+conv.r8 
+rem 
+conv.r4 
+add 
+stfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+ret 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+ldsfld System.String System.String::Empty
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call System.Boolean System.Nullable`1<System.Int32>::get_HasValue()
+brfalse IL_019b: ldarg.0
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse IL_015b: ldarg.0
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldflda System.Nullable`1<System.Double> Messages.Mission::StartedAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call !0 System.Nullable`1<System.Int32>::get_Value()
+conv.r8 
+add 
+ldloc.0 
+sub 
+stloc.2 
+ldloc.2 
+ldc.r8 0
+bge.un.s IL_0118: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+ldstr {0}
+[icon=icon_timer2:0.8] [{2}][size=20]{1}[-]
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentText
+ldstr 제한 시간 만료
+call System.String L10N.T::_(System.String)
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentSubColor
+call System.String System.String::Format(System.String,System.Object,System.Object,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+ldstr {0}
+[icon=icon_timer2:0.8] [{2}][size=20]{1}[-]
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentText
+ldloc.2 
+ldc.i4.2 
+ldstr sec
+call System.String TimedeltaFormatter::Format(System.Double,System.Int32,System.String)
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentSubColor
+call System.String System.String::Format(System.String,System.Object,System.Object,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Single UnityEngine.Time::get_time()
+ldloc.2 
+call System.Int32 TimedeltaFormatter::CurrentMinUnit()
+conv.r8 
+rem 
+conv.r4 
+add 
+stfld System.Single Durango.UI.MissionFactionNode::_nextTimerUpdateAt
+ret 
+ldarg.0 
+ldflda Messages.Mission Durango.UI.MissionFactionNode::_mission
+ldflda System.Nullable`1<System.Int32> Messages.Mission::TimeLimit
+call !0 System.Nullable`1<System.Int32>::get_Value()
+conv.r8 
+stloc.3 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+ldstr {0}
+[icon=icon_timer2:0.8] [{2}][size=20]{1}[-]
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentText
+ldloc.3 
+ldc.i4.2 
+ldstr sec
+call System.String TimedeltaFormatter::Format(System.Double,System.Int32,System.String)
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentSubColor
+call System.String System.String::Format(System.String,System.Object,System.Object,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionFactionNode::_commentLabel
+ldarg.0 
+ldfld System.String Durango.UI.MissionFactionNode::_commentText
+callvirt System.Void UILabel::set_text(System.String)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::TryChangeNoise(System.Action)
+ldarg.0 
+call System.Boolean Durango.UI.MissionFactionNode::get_MissionWidgetOpened()
+brtrue.s IL_0016: ldarg.0
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.UI.MissionFactionNode::set_MissionWidgetOpened(System.Boolean)
+ldarg.1 
+callvirt System.Void System.Action::Invoke()
+ret 
+ldarg.0 
+ldarg.0 
+ldflda Durango.Utils.ICoroutineBinder Durango.UI.MissionFactionNode::_noiseCoroutine
+ldarg.0 
+ldarg.1 
+call System.Collections.IEnumerator Durango.UI.MissionFactionNode::CoPlayNoiseAction(System.Action)
+call UnityEngine.Coroutine Durango.Utils.UniqueCoroutineExtension::StartCoroutine(UnityEngine.MonoBehaviour,Durango.Utils.ICoroutineBinder&,System.Collections.IEnumerator)
+pop 
+ret 
+METHOD System.Collections.IEnumerator Durango.UI.MissionFactionNode::CoPlayNoiseAction(System.Action)
+ldc.i4.0 
+newobj System.Void Durango.UI.MissionFactionNode/<CoPlayNoiseAction>d__46::.ctor(System.Int32)
+dup 
+ldarg.0 
+stfld Durango.UI.MissionFactionNode Durango.UI.MissionFactionNode/<CoPlayNoiseAction>d__46::<>4__this
+dup 
+ldarg.1 
+stfld System.Action Durango.UI.MissionFactionNode/<CoPlayNoiseAction>d__46::method
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetNoiseFadeOut(System.Int32)
+ldc.r4 1
+ldarg.1 
+conv.r4 
+ldc.r4 0,125
+mul 
+sub 
+stloc.0 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionFactionNode::_contentWidget
+ldloc.0 
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetNoiseFadeIn(System.Int32)
+ldarg.1 
+conv.r4 
+ldc.r4 0,125
+mul 
+stloc.0 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionFactionNode::_contentWidget
+ldloc.0 
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::SetNoiseTexture(System.Int32)
+ldarg.1 
+ldc.i4.4 
+rem 
+stloc.0 
+ldloc.0 
+switch Mono.Cecil.Cil.Instruction[]
+br IL_00de: ldarg.1
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.MissionFactionNode::_noiseTexture1
+callvirt System.Void UIWidget::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+callvirt UnityEngine.Transform UIRect::get_cachedTransform()
+call UnityEngine.Vector3 UnityEngine.Vector3::get_zero()
+callvirt System.Void UnityEngine.Transform::set_localEulerAngles(UnityEngine.Vector3)
+br IL_00de: ldarg.1
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.MissionFactionNode::_noiseTexture2
+callvirt System.Void UIWidget::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+callvirt UnityEngine.Transform UIRect::get_cachedTransform()
+call UnityEngine.Vector3 UnityEngine.Vector3::get_zero()
+callvirt System.Void UnityEngine.Transform::set_localEulerAngles(UnityEngine.Vector3)
+br.s IL_00de: ldarg.1
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.MissionFactionNode::_noiseTexture1
+callvirt System.Void UIWidget::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+callvirt UnityEngine.Transform UIRect::get_cachedTransform()
+ldc.r4 0
+ldc.r4 0
+ldc.r4 180
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localEulerAngles(UnityEngine.Vector3)
+br.s IL_00de: ldarg.1
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.MissionFactionNode::_noiseTexture2
+callvirt System.Void UIWidget::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+callvirt UnityEngine.Transform UIRect::get_cachedTransform()
+ldc.r4 0
+ldc.r4 0
+ldc.r4 180
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localEulerAngles(UnityEngine.Vector3)
+ldarg.1 
+brfalse.s IL_00fc: ldarg.0
+ldarg.1 
+ldc.i4.1 
+beq.s IL_010d: ldarg.0
+ldarg.1 
+ldc.i4.s 11
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+br.s IL_012f: ldarg.0
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldc.r4 0,1
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldc.r4 0,15
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldc.r4 0,05
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+ldarg.0 
+ldfld UITexture Durango.UI.MissionFactionNode::_noiseTexture
+ldc.r4 0,2
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+METHOD System.Void Durango.UI.MissionFactionNode::.ctor()
+ldarg.0 
+call System.Void Durango.UI.Control.SelectableWidget::.ctor()
+ret 

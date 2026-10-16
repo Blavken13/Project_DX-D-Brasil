@@ -1,0 +1,46 @@
+OffServerBundleEmbed/<>c__DisplayClass26_0 : System.Object
+FIELD UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+METHOD System.Void OffServerBundleEmbed/<>c__DisplayClass26_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerBundleEmbed/<>c__DisplayClass26_0::<StartProbe>b__0(UnityEngine.AsyncOperation)
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+callvirt UnityEngine.Networking.UnityWebRequest/Result UnityEngine.Networking.UnityWebRequest::get_result()
+ldc.i4.1 
+bne.un.s IL_0053: leave.s IL_006d
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.Byte[] UnityEngine.Networking.DownloadHandler::get_data()
+brfalse.s IL_0053: leave.s IL_006d
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.Byte[] UnityEngine.Networking.DownloadHandler::get_data()
+ldlen 
+brfalse.s IL_0053: leave.s IL_006d
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+callvirt UnityEngine.Networking.DownloadHandler UnityEngine.Networking.UnityWebRequest::get_downloadHandler()
+callvirt System.String UnityEngine.Networking.DownloadHandler::get_text()
+stsfld System.String OffServerBundleEmbed::_marker
+ldc.i4.1 
+stsfld System.Boolean OffServerBundleEmbed::_active
+call System.Void OffServerBundleEmbed::ReadTestOverride()
+leave.s IL_006d: ldarg.0
+stloc.0 
+ldstr [ABM] embed marker: 
+ldloc.0 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_006d: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Networking.UnityWebRequest OffServerBundleEmbed/<>c__DisplayClass26_0::request
+callvirt System.Void UnityEngine.Networking.UnityWebRequest::Dispose()
+ldc.i4.1 
+stsfld System.Boolean OffServerBundleEmbed::_probeDone
+call System.Void OffServerBundleEmbed::Log()
+ret 

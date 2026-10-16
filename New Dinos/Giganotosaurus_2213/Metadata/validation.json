@@ -1,0 +1,46 @@
+{
+  "bundle_checks": [
+    {
+      "platform": "Windows",
+      "clips": 44,
+      "required_clips": [
+        "Giganotosaurus-Attack-Bite",
+        "Giganotosaurus-Die",
+        "Giganotosaurus-Eat",
+        "Giganotosaurus-Hurt-Small-Rit",
+        "Giganotosaurus-Idle",
+        "Giganotosaurus-Move-Fwd",
+        "Giganotosaurus-Startled",
+        "Giganotosaurus-Torpid-Idle"
+      ],
+      "bundles": 2,
+      "schema_binding": "Assembly-CSharp",
+      "animation_curves_shared": true,
+      "death_hold_last_frame": true,
+      "checks": "passed"
+    },
+    {
+      "platform": "Android",
+      "clips": 44,
+      "required_clips": [
+        "Giganotosaurus-Attack-Bite",
+        "Giganotosaurus-Die",
+        "Giganotosaurus-Eat",
+        "Giganotosaurus-Hurt-Small-Rit",
+        "Giganotosaurus-Idle",
+        "Giganotosaurus-Move-Fwd",
+        "Giganotosaurus-Startled",
+        "Giganotosaurus-Torpid-Idle"
+      ],
+      "bundles": 2,
+      "schema_binding": "Assembly-CSharp",
+      "animation_curves_shared": true,
+      "death_hold_last_frame": true,
+      "checks": "passed"
+    }
+  ],
+  "installer_merge": "passed",
+  "installer_idempotency": "passed",
+  "existing_catalog_preserved": true,
+  "in_game_server_session_test": false
+}

@@ -1,0 +1,10 @@
+OffServerVoiceUI/Row : System.Object
+FIELD UnityEngine.GameObject OffServerVoiceUI/Row::Go
+FIELD UILabel OffServerVoiceUI/Row::Name
+FIELD UILabel OffServerVoiceUI/Row::Info
+FIELD OffServerVoiceUI/Button OffServerVoiceUI/Row::Mute
+FIELD System.String OffServerVoiceUI/Row::EntityId
+METHOD System.Void OffServerVoiceUI/Row::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

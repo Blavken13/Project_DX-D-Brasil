@@ -1,0 +1,80 @@
+Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0 : System.Object
+FIELD System.Int32 Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::generation
+FIELD Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+FIELD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::openBrowser
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<StartFlow>b__0(Newtonsoft.Json.Linq.JObject)
+ldarg.0 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::generation
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+ldfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_generation
+bne.un.s IL_0020: ret
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+brtrue.s IL_0021: ldarg.1
+ret 
+ldarg.1 
+brfalse.s IL_0031: ldsfld System.String System.String::Empty
+ldarg.1 
+ldstr url
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+br.s IL_0036: stloc.0
+ldsfld System.String System.String::Empty
+stloc.0 
+ldarg.1 
+brfalse.s IL_004a: ldarg.0
+ldarg.1 
+call System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::IsOk(Newtonsoft.Json.Linq.JObject)
+brfalse.s IL_004a: ldarg.0
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+brtrue.s IL_0075: ldarg.0
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ldarg.1 
+brtrue.s IL_006e: ldarg.1
+ldnull 
+ldstr net_error
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldarg.1 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::PopupFail(Newtonsoft.Json.Linq.JObject)
+ret 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+ldarg.1 
+ldstr state
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_state
+ldarg.1 
+ldstr redirect_uri
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.1 
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_00ac: ldloc.0
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+ldloc.1 
+stfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_redirectUri
+ldloc.0 
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastAuthorizeUrl
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::openBrowser
+brfalse.s IL_00c0: ldstr "opened"
+ldloc.0 
+call System.Void UnityEngine.Application::OpenURL(System.String)
+ldstr opened
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Toast(System.String)
+ret 

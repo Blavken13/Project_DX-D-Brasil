@@ -1,0 +1,68 @@
+Durango.UI.ExploreAreaMissionMarker : UnityEngine.MonoBehaviour
+FIELD UnityEngine.GameObject Durango.UI.ExploreAreaMissionMarker::_missionCompletedMarker
+FIELD Durango.UI.Control.TweenerPlayer Durango.UI.ExploreAreaMissionMarker::_missionMarker
+FIELD Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker::_missionState
+METHOD System.Void Durango.UI.ExploreAreaMissionMarker::ResetState()
+ldarg.0 
+ldc.i4.m1 
+stfld Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker::_missionState
+ret 
+METHOD System.Void Durango.UI.ExploreAreaMissionMarker::TrySetState(Durango.UI.ExploreAreaMissionMarker/MissionState)
+ldarg.1 
+ldarg.0 
+ldfld Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker::_missionState
+ble.s IL_0010: ret
+ldarg.0 
+ldarg.1 
+stfld Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker::_missionState
+ret 
+METHOD System.Void Durango.UI.ExploreAreaMissionMarker::Show()
+ldarg.0 
+ldfld Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker::_missionState
+stloc.0 
+ldloc.0 
+brfalse.s IL_0010: ldarg.0
+ldloc.0 
+ldc.i4.2 
+beq.s IL_002e: ldarg.0
+br.s IL_0062: ldarg.0
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.ExploreAreaMissionMarker::_missionCompletedMarker
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.TweenerPlayer Durango.UI.ExploreAreaMissionMarker::_missionMarker
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.ExploreAreaMissionMarker::_missionCompletedMarker
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.TweenerPlayer Durango.UI.ExploreAreaMissionMarker::_missionMarker
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.TweenerPlayer Durango.UI.ExploreAreaMissionMarker::_missionMarker
+ldc.r4 0
+ldc.i4.0 
+ldc.r4 0
+callvirt System.Void Durango.UI.Control.TweenerPlayer::Play(System.Single,System.Int32,System.Single)
+ret 
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.ExploreAreaMissionMarker::_missionCompletedMarker
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.TweenerPlayer Durango.UI.ExploreAreaMissionMarker::_missionMarker
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.ExploreAreaMissionMarker::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

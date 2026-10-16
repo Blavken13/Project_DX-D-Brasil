@@ -1,0 +1,52 @@
+Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0 : System.Object
+FIELD Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::<>4__this
+FIELD System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::client
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::<OnCallback>b__0(Newtonsoft.Json.Linq.JObject)
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::<>4__this
+ldc.i4.0 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+ldarg.0 
+ldfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::client
+brfalse.s IL_0064: ldarg.1
+ldarg.1 
+brfalse.s IL_0033: ldsfld System.String System.String::Empty
+ldarg.1 
+ldstr page
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+ldstr html
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+br.s IL_0038: stloc.0
+ldsfld System.String System.String::Empty
+stloc.0 
+ldarg.0 
+ldfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::client
+ldstr 200 OK
+ldstr text/html; charset=utf-8
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+bgt.s IL_005e: ldloc.0
+ldstr page_net
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::LocalPage(System.String)
+br.s IL_005f: call System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+ldloc.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+ldarg.1 
+brtrue.s IL_007d: ldarg.0
+ldnull 
+ldstr net_error
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::<>4__this
+ldarg.1 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::HandleResult(Newtonsoft.Json.Linq.JObject)
+ret 

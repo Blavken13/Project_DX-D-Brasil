@@ -1,0 +1,24 @@
+Durango.Logic.Clusters.OffServerWalletExchange/<>c : System.Object
+FIELD Durango.Logic.Clusters.OffServerWalletExchange/<>c Durango.Logic.Clusters.OffServerWalletExchange/<>c::<>9
+FIELD System.Action`1<System.Int32> Durango.Logic.Clusters.OffServerWalletExchange/<>c::<>9__11_0
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c::.cctor()
+newobj System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c::.ctor()
+stsfld Durango.Logic.Clusters.OffServerWalletExchange/<>c Durango.Logic.Clusters.OffServerWalletExchange/<>c::<>9
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c::<Open>b__11_0(System.Int32)
+ldarg.1 
+brfalse.s IL_0008: ldstr "t2g"
+ldarg.1 
+ldc.i4.1 
+beq.s IL_0013: ldstr "g2t"
+ret 
+ldstr t2g
+call System.Void Durango.Logic.Clusters.OffServerWalletExchange::AskAmount(System.String)
+ret 
+ldstr g2t
+call System.Void Durango.Logic.Clusters.OffServerWalletExchange::AskAmount(System.String)
+ret 

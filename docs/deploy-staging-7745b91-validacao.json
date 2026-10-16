@@ -1,0 +1,65 @@
+{
+  "commit": "7745b91fd5069ea54f3c9caa58e8a3bb901a53f2",
+  "image": "sha256:2cf00a2e2f874f8a45ef8b5e420e6e741cba255c6b3d97436ed442ea6a270821",
+  "healthy": true,
+  "backup": "/opt/durango/backups/state-pre-7745b91-20261008T025104Z.tar.gz",
+  "state": [
+    {
+      "cluster": "Durango Brasil",
+      "accounts_preserved": 45,
+      "characters_preserved": 52
+    },
+    {
+      "cluster": "Durango Brasil - STAGING",
+      "accounts_preserved": 9,
+      "characters_preserved": 12
+    }
+  ],
+  "admin_checks": [
+    "loja: bilhete de reset gratuito e catalogo da release confirmado",
+    "12 terrenos adicionais: SHA-256 confirmado",
+    "/admin/: arquivo da release confirmado",
+    "/admin/app.js: arquivo da release confirmado",
+    "/admin/style.css: arquivo da release confirmado",
+    "/health: acesso an\u00f4nimo bloqueado",
+    "/admin/players: acesso an\u00f4nimo bloqueado",
+    "/admin/premium: acesso an\u00f4nimo bloqueado",
+    "/admin/mail/status: acesso an\u00f4nimo bloqueado",
+    "/admin/catalog: acesso an\u00f4nimo bloqueado",
+    "/admin/client-reports: acesso an\u00f4nimo bloqueado",
+    "/admin/client-reports/export?format=csv: acesso an\u00f4nimo bloqueado",
+    "/admin/client-reports/export?format=json: acesso an\u00f4nimo bloqueado",
+    "bundle masculino original: SHA-256 confirmado"
+  ],
+  "regression_results": [
+    "[safehouse-missions-check] PASS 47 verifica\u00e7\u00f5es. Saves tempor\u00e1rios: /tmp/Durango-safehouse-missions-d30f20ae937d44898de228c07fd99f57",
+    "[tester-check] PASS 106 verifica\u00e7\u00f5es",
+    "[bugs-check] PASS",
+    "[polish-check] PASS 253 verificacoes. Saves temporarios: /tmp/Durango-polish-check-852a6061a9464c0984b2a7293f06b397",
+    "[induction-check] PASS 29 verificacoes",
+    "[world-check] PASS 2795 verificacoes. Saves temporarios: /tmp/Durango-world-check-59a750ba24434834ac3c0bd626f23418",
+    "[gameplay-check] PASS 58 verificacoes. Saves temporarios: /tmp/Durango-gameplay-check-0358bb42a3cb4aa882b18d04cc942e75",
+    "[social-check] PASS 96 verifica\u00e7\u00f5es",
+    "[premium-check] PASS 52 verifica\u00e7\u00f5es",
+    "[economy-check] PASS 304 verificacoes. Arquivos temporarios: /tmp/Durango-economy-check-8fe67da4a4684b08afe343129ed4dc48",
+    "[progression-check] PASS 148 verificacoes",
+    "[fauna-check] PASS 404 verificacoes",
+    "[xp-coupon-check] PASS: 178 verifica\u00e7\u00f5es",
+    "PASS: coupon regression adapted to property in isolated validation image; production image unchanged"
+  ],
+  "coupon_test_validation": {
+    "passed": true,
+    "production_image": "sha256:2cf00a2e2f874f8a45ef8b5e420e6e741cba255c6b3d97436ed442ea6a270821",
+    "production_source_unchanged": true,
+    "validation_only_changes": [
+      "SkillXpCouponCheck.cs"
+    ],
+    "original_test_sha256": "be454b941f9330dc9b80e25f8f449f71e32b2835de32362de60ba21983e2ec9c",
+    "validation_test_sha256": "2f302934ba5b3ba7110c37f85637ef73ec80eb8fbab58fdda3ac3d7ae0fbdb17",
+    "reason": "Commit 6dd89a4 changed _lockedItemIds from field to property; the old coupon test used only GetField."
+  },
+  "private_admin_configuration_verified": true,
+  "https_verified": false,
+  "https_pending_reason": "HTTPS proxy was already stopped before this deployment; previous certificate attempts timed out during external validation",
+  "android_bundle_files": 1609
+}

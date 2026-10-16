@@ -1,0 +1,2130 @@
+{
+    "unityVersion": "6000.6.0f1",
+    "platform": "WindowsEditor",
+    "graphicsRenderingTested": false,
+    "bundles": [
+        {
+            "name": "models$ancora$npc$materials$bagsncart_ancora.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/ancora/npc/materials/bagsncart_ancora.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "bagsNcart_ancora",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "bagsNcart_ancora",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$animals$brachio$materials$brachio-texture1.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/animals/brachio/materials/brachio-texture1.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "Brachio-texture1",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_dino_giant",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "matcap_metal_04",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "Brachio_sub",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "Brachio-texture1",
+                    "shader": "LitSphere/DualMode/Animal",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$animals$brachio_junior$materials$brachio_junior.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/animals/brachio_junior/materials/brachio_junior.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "Brachio_junior",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "aging_skin",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_dino_giant",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "Brachio_Amask",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "matcap_metal_04",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "Brachio_sub",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "Brachio_junior",
+                    "shader": "LitSphere/DualMode/Animal",
+                    "nonNullTextures": 6
+                }
+            ]
+        },
+        {
+            "name": "models$animals$compso$materials$compsognathus.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/animals/compso/materials/compsognathus.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "Compsognathus",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_dino",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "Compsognathus_sub",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "Compsognathus",
+                    "shader": "LitSphere/DualMode/Animal",
+                    "nonNullTextures": 3
+                }
+            ]
+        },
+        {
+            "name": "models$animals$compso$materials$compsognathus_ancora.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/animals/compso/materials/compsognathus_ancora.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "Compsognathus_ancora",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "aging_skin",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_dino",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "Compsognathus_Amask",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "Compsognathus_sub",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "Compsognathus_ancora",
+                    "shader": "LitSphere/DualMode/Animal",
+                    "nonNullTextures": 5
+                }
+            ]
+        },
+        {
+            "name": "models$animals$parasaurolophus$materials$edmontosaurus.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/animals/parasaurolophus/materials/edmontosaurus.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "Edmontosaurus",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_dino",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "Edmontosaurus_sub",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "Edmontosaurus",
+                    "shader": "LitSphere/DualMode/Animal",
+                    "nonNullTextures": 3
+                }
+            ]
+        },
+        {
+            "name": "models$animals$phenacodus$materials$phenacodus-texture1.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/animals/phenacodus/materials/phenacodus-texture1.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "phenacodus-texture1",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "aging_fur_bright",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_dino",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "phenacodus_Amask",
+                    "width": 32,
+                    "height": 32,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "phenacodus_sub",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "phenacodus-texture1",
+                    "shader": "LitSphere/DualMode/Animal",
+                    "nonNullTextures": 5
+                }
+            ]
+        },
+        {
+            "name": "models$cliff$tropical$materials$cliff_tropical_blue_btm.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/cliff/tropical/materials/cliff_tropical_blue_btm.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "cliff_tropical_blue_btm",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "cliff_tropical_btm_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "cliff_tropical_blue_btm",
+                    "shader": "Durango/Building/Floor1",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$cliff$tropical$materials$cliff_tropical_btm.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/cliff/tropical/materials/cliff_tropical_btm.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "cliff_tropical_btm",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "cliff_tropical_btm_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "cliff_tropical_btm",
+                    "shader": "Durango/Building/Floor1",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$cliff$tropical$materials$cliff_tropical_ivy.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/cliff/tropical/materials/cliff_tropical_ivy.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "cliff_tropical_ivy",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "cliff_tropical_ivy_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "cliff_tropical_ivy",
+                    "shader": "Durango/Unlit/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$cliff$tropical$materials$cliff_tropical_shadow_alpha.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/cliff/tropical/materials/cliff_tropical_shadow_alpha.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "cliff_tropical_shadow_alpha",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "cliff_tropical_shadow_alpha",
+                    "shader": "Durango/Particle/Legacy/Multiply",
+                    "nonNullTextures": 1
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$scoop$model$materials$scoop_ground_crack_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/scoop/model/materials/scoop_ground_crack_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "scoop_ground_crack_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "scoop_ground_crack_01_alpha",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "scoop_ground_crack_01",
+                    "shader": "Durango/Building/Floor1",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$scoop$model$materials$scoop_ground_railroad_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/scoop/model/materials/scoop_ground_railroad_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "scoop_ground_railroad_01",
+                    "width": 1024,
+                    "height": 1024,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "scoop_ground_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "scoop_ground_railroad_01",
+                    "shader": "Durango/Building/Floor2AlphaUV",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$scoop$model$materials$scoop_ground_road_00.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/scoop/model/materials/scoop_ground_road_00.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "scoop_ground_road_00",
+                    "width": 1024,
+                    "height": 1024,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "scoop_ground_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "scoop_ground_road_00",
+                    "shader": "Durango/Building/Floor2AlphaUV",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$scoop$model$materials$scoop_ground_road_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/scoop/model/materials/scoop_ground_road_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "scoop_ground_road_01",
+                    "width": 1024,
+                    "height": 1024,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "scoop_ground_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "scoop_ground_road_01",
+                    "shader": "Durango/Building/Floor2AlphaUV",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$scoop$model$materials$scoop_ground_tile_02.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/scoop/model/materials/scoop_ground_tile_02.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "scoop_ground_tile_02",
+                    "width": 1024,
+                    "height": 1024,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "scoop_ground_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "scoop_ground_tile_02",
+                    "shader": "Durango/Building/Floor2AlphaUV",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$scoop$model$materials$scoop_side_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/scoop/model/materials/scoop_side_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "scoop_side_01",
+                    "width": 128,
+                    "height": 16,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "scoop_ground_alpha",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "scoop_side_01",
+                    "shader": "Durango/Building/Floor2AlphaUV",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$static$model$materials$st_ivy.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/static/model/materials/st_ivy.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "ST_ivy",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "ST_ivy_alpha",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "ST_ivy",
+                    "shader": "Durango/Unlit/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$static$model$materials$st_train_wreckage_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/static/model/materials/st_train_wreckage_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "ST_train_wreckage_01",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "ST_train_wreckage_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$static$model$materials$st_train_wreckage_01_railroad.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/static/model/materials/st_train_wreckage_01_railroad.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "ST_train_wreckage_01",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "ST_landmark_buildingfloor_alpha",
+                    "width": 32,
+                    "height": 32,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "ST_train_wreckage_01_railroad",
+                    "shader": "Durango/Building/Floor4",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$landmark$static$model$materials$st_train_wreckage_01_railroad_shadow.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/landmark/static/model/materials/st_train_wreckage_01_railroad_shadow.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "ST_train_wreckage_01_railroad_shadow_alpha",
+                    "width": 32,
+                    "height": 32,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "ST_train_wreckage_01_railroad_shadow",
+                    "shader": "Durango/Building/Floor3",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$npc$materials$npc_k_body.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/npc/materials/npc_k_body.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "NPC_K_body",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_common",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "matcap_metal_02",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "NPC_K_body_sub",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "NPC_K_body",
+                    "shader": "LitSphere/DualMode/Diffuse",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$npc$materials$npc_k_hair2.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/npc/materials/npc_k_hair2.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "NPC_k_hair2",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "litsphere_hair",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "NPC_k_hair2",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$npc$materials$npc_k_skin2.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/npc/materials/npc_k_skin2.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "NPC_K_skin2",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_skin_new",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "skin_ramp_k",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "NPC_K_skin2",
+                    "shader": "LitSphere/Skin",
+                    "nonNullTextures": 3
+                }
+            ]
+        },
+        {
+            "name": "models$pc$male$beard$m_beard_large_short.fbx.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 2,
+            "assetNames": [
+                "assets/models/pc/male/beard/m_beard_large_short.fbx"
+            ],
+            "meshVertices": 51,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "m_beard_short",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "litsphere_hair",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "m_beard_short",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$pc$male$hair$materials$m_hair_base-texture1.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/pc/male/hair/materials/m_hair_base-texture1.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "m_hair_base-texture1",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "litsphere_hair",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC2_RGBA8"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "m_hair_base-texture1",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$dubiza$model$materials$pool_set_01_a.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/dubiza/model/materials/pool_set_01_a.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "pool_set_01_a",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "pool_set_01_a",
+                    "shader": "Durango/Unlit/Diffuse",
+                    "nonNullTextures": 1
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$dubiza$model$materials$pool_set_01_b.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/dubiza/model/materials/pool_set_01_b.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "pool_set_01_b",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "pool_set_01_b_alpha",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "pool_set_01_b_reflection",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "flowmap_09_WaterFlow",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "pool_set_01_b",
+                    "shader": "Durango/Sprite/FloorPuddle",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$dubiza$model$materials$pool_set_01_c.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/dubiza/model/materials/pool_set_01_c.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "pool_set_01_c",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "pool_set_01_c",
+                    "shader": "Durango/Unlit/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$dubiza$model$materials$pool_set_01_d.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/dubiza/model/materials/pool_set_01_d.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "pool_set_01_d",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "pool_set_01_d",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$dubiza$model$materials$pool_set_01_shadow.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/dubiza/model/materials/pool_set_01_shadow.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "pool_set_01_shadow",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "pool_set_01_shadow",
+                    "shader": "Durango/Unlit/MostlyOpaque",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$newyearsday$beanbag_compi$model$materials$beanbag_compi_green_mini.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/newyearsday/beanbag_compi/model/materials/beanbag_compi_green_mini.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "compsodoll_01_leather",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "compsodoll_01_leather_mask",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "leather_compsognathus_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "beanbag_compi_green_mini",
+                    "shader": "LitSphere/DualMode/Detail",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$newyearsday$beanbag_compi$model$materials$beanbag_compi_pink_mini.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/newyearsday/beanbag_compi/model/materials/beanbag_compi_pink_mini.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "compsodoll_01_leather",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "compsodoll_01_leather_mask",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "leather_pink_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "beanbag_compi_pink_mini",
+                    "shader": "LitSphere/DualMode/Detail",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$newyearsday$beanbag_compi$model$materials$beanbag_compi_yellow_mini.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/newyearsday/beanbag_compi/model/materials/beanbag_compi_yellow_mini.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "compsodoll_01_leather",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "compsodoll_01_leather_mask",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "leather_yellow_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "beanbag_compi_yellow_mini",
+                    "shader": "LitSphere/DualMode/Detail",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$prop$event$school$school_lecturetable$model$materials$school_lecturetable.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/event/school/school_lecturetable/model/materials/school_lecturetable.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "school_lecturetable",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "school_lecturetable",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$chair_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/chair_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "chair_01",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "chair_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$compi_pool_water_w.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/compi_pool_water_w.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "compi_pool_water_w",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "tile03",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "sky_puddle_reflection",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "flowmap_09_WaterFlow",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "compi_pool_water_w",
+                    "shader": "Durango/Sprite/FloorPuddle",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$compi_pool_waterdrop_w.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/compi_pool_waterdrop_w.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "water_029",
+                    "width": 128,
+                    "height": 256,
+                    "format": "ETC2_RGBA8"
+                },
+                {
+                    "name": "mask_71_alpha",
+                    "width": 256,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "tile03",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "mask_12_alpha",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "compi_pool_waterdrop_w",
+                    "shader": "Durango/Particle/UnionDistortion",
+                    "nonNullTextures": 4
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$fireplace_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/fireplace_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "fireplace_01",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "fireplace_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$furniture_museum_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/furniture_museum_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "furniture_museum_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "furniture_museum_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$ladder_01_steel.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/ladder_01_steel.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "ladder_01_steel",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "ladder_01_steel",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$outdoor_table_01_w.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/outdoor_table_01_w.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "outdoor_table_01_w",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "outdoor_table_01_w",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$prime_sunbed_01_w.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/prime_sunbed_01_w.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "prime_sunbed_01_w",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "prime_sunbed_01_w",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$shelf_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/shelf_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "shelf_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "shelf_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$sofa_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/sofa_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "sofa_01",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "sofa_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$sofa_02_w_a.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/sofa_02_w_a.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "sofa_02_w_a",
+                    "width": 512,
+                    "height": 512,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "sofa_02_w_a",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$table_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/table_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "table_01",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "table_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$table_02.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/table_02.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "table_02",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "table_02",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_01",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_02.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_02.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_02",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_02",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_03.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_03.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_03",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_03",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_04.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_04.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_04",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_04",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_05.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_05.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_05",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_05",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_06.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_06.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_06",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_06",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_07.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_07.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_07",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_07",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_08.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_08.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_08",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_08",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$tube_unicon_w.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/tube_unicon_w.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "tube_unicon_w",
+                    "width": 256,
+                    "height": 256,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "tube_unicon_w",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$furniture_warp$housing$model$materials$velvet_rope_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/furniture_warp/housing/model/materials/velvet_rope_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "velvet_rope_01",
+                    "width": 32,
+                    "height": 32,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "velvet_rope_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$system$ao$model$materials$prop_shadow_ao_05.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/system/ao/model/materials/prop_shadow_ao_05.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "prop_shadow_ao_05_alpha",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "prop_shadow_ao_05",
+                    "shader": "Durango/Building/Floor5Multiply",
+                    "nonNullTextures": 1
+                }
+            ]
+        },
+        {
+            "name": "models$prop$warp$city_prop_set$model$materials$city_prop_set_01.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/warp/city_prop_set/model/materials/city_prop_set_01.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "city_prop_set_01",
+                    "width": 1024,
+                    "height": 1024,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "city_prop_set_01",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "models$prop$warp$city_prop_set$model$materials$city_prop_set_02.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/models/prop/warp/city_prop_set/model/materials/city_prop_set_02.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "city_prop_set_02",
+                    "width": 1024,
+                    "height": 1024,
+                    "format": "ETC_RGB4"
+                },
+                {
+                    "name": "litsphere_prop",
+                    "width": 64,
+                    "height": 64,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "city_prop_set_02",
+                    "shader": "LitSphere/Diffuse",
+                    "nonNullTextures": 2
+                }
+            ]
+        },
+        {
+            "name": "particle$fx_materials$durango_common$fx_common_glow_05.mat.bundle",
+            "loaded": true,
+            "exception": "",
+            "assets": 1,
+            "assetNames": [
+                "assets/particle/fx_materials/durango_common/fx_common_glow_05.mat"
+            ],
+            "meshVertices": 0,
+            "missingRendererMaterials": 0,
+            "textures": [
+                {
+                    "name": "glow_ball3_grey",
+                    "width": 128,
+                    "height": 128,
+                    "format": "ETC_RGB4"
+                }
+            ],
+            "materials": [
+                {
+                    "name": "FX_Common_Glow_05",
+                    "shader": "Durango/Particle/Union",
+                    "nonNullTextures": 1
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

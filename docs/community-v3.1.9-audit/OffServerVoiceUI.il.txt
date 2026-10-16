@@ -1,0 +1,2891 @@
+OffServerVoiceUI : UnityEngine.MonoBehaviour
+FIELD System.Int32 OffServerVoiceUI::PanelDepth
+FIELD System.Int32 OffServerVoiceUI::Width
+FIELD System.Int32 OffServerVoiceUI::RowHeight
+FIELD System.Int32 OffServerVoiceUI::NearbyRows
+FIELD System.Single OffServerVoiceUI::NearbyTiles
+FIELD UnityEngine.Color OffServerVoiceUI::BtnOff
+FIELD UnityEngine.Color OffServerVoiceUI::BtnOn
+FIELD UnityEngine.Color OffServerVoiceUI::BtnMuted
+FIELD UnityEngine.Color OffServerVoiceUI::TextOn
+FIELD UnityEngine.Color OffServerVoiceUI::TextOff
+FIELD UnityEngine.Color OffServerVoiceUI::Talk
+FIELD OffServerVoiceUI OffServerVoiceUI::_panel
+FIELD UnityEngine.GameObject OffServerVoiceUI::_micButton
+FIELD System.Action OffServerVoiceUI::_relayout
+FIELD UISprite OffServerVoiceUI::_micIcon
+FIELD UnityEngine.GameObject OffServerVoiceUI::_wave1
+FIELD UnityEngine.GameObject OffServerVoiceUI::_wave2
+FIELD System.Boolean OffServerVoiceUI::_micHooked
+FIELD UIPanel OffServerVoiceUI::_uiPanel
+FIELD UILabel OffServerVoiceUI::_style
+FIELD UILabel OffServerVoiceUI::_status
+FIELD UISprite OffServerVoiceUI::_meter
+FIELD OffServerVoiceUI/Button OffServerVoiceUI::_hold
+FIELD OffServerVoiceUI/Button OffServerVoiceUI::_auto
+FIELD OffServerVoiceUI/Button[] OffServerVoiceUI::_levels
+FIELD UILabel OffServerVoiceUI::_volume
+FIELD OffServerVoiceUI/Button OffServerVoiceUI::_deaf
+FIELD UILabel OffServerVoiceUI::_sens
+FIELD UILabel OffServerVoiceUI::_nearbyHead
+FIELD System.Collections.Generic.List`1<OffServerVoiceUI/Row> OffServerVoiceUI::_rows
+FIELD System.Single OffServerVoiceUI::_refreshAt
+FIELD System.Int32 OffServerVoiceUI::_top
+FIELD System.Func`1<System.Boolean> OffServerVoiceUI::_micVisible
+FIELD OffServerVoiceRing OffServerVoiceUI::_myRing
+FIELD System.Single OffServerVoiceUI::_flashUntil
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String[]> OffServerVoiceUI::Texts
+METHOD UnityEngine.Color OffServerVoiceUI::LevelColor(System.Int32)
+ldarg.0 
+brfalse.s IL_0009: ldc.r4 0.3
+ldarg.0 
+ldc.i4.2 
+beq.s IL_0023: ldc.r4 1
+br.s IL_003d: ldc.r4 0.72
+ldc.r4 0,3
+ldc.r4 0,95
+ldc.r4 0,4
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ret 
+ldc.r4 1
+ldc.r4 0,25
+ldc.r4 0,22
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ret 
+ldc.r4 0,72
+ldc.r4 0,4
+ldc.r4 1
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ret 
+METHOD System.Void OffServerVoiceUI::FlashRange()
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 2,5
+add 
+stsfld System.Single OffServerVoiceUI::_flashUntil
+call System.Int32 OffServerVoice::get_Level()
+call System.String OffServerVoiceUI::LevelLabel(System.Int32)
+ldc.r4 1,5
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+METHOD System.String OffServerVoiceUI::LevelLabel(System.Int32)
+ldarg.0 
+ldc.i4.0 
+ldc.i4.2 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+starg.s level
+ldsfld System.Single[] OffServerVoice::Ranges
+ldarg.0 
+ldelem.r4 
+stloc.0 
+ldstr level
+ldarga.s level
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String)
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.0 
+call System.String OffServerVoiceUI::Tiles(System.Single)
+call System.String System.String::Format(System.String,System.Object)
+ldstr  
+ldloc.0 
+ldc.r4 1
+sub 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+ldc.r4 0,05
+blt.s IL_0052: ldstr "tile_word"
+ldstr tiles_word
+br.s IL_0057: call System.String OffServerVoiceUI::Text(System.String)
+ldstr tile_word
+call System.String OffServerVoiceUI::Text(System.String)
+call System.String System.String::Concat(System.String,System.String,System.String)
+ret 
+METHOD System.Boolean OffServerVoiceUI::get_PanelOpen()
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001d: ldc.i4.0
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void OffServerVoiceUI::AttachMicButton(UnityEngine.GameObject,System.Action,System.Func`1<System.Boolean>)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000a: ldarg.0
+ret 
+ldarg.0 
+stsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldarg.1 
+stsfld System.Action OffServerVoiceUI::_relayout
+ldarg.2 
+stsfld System.Func`1<System.Boolean> OffServerVoiceUI::_micVisible
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ldstr Sprite
+callvirt UnityEngine.Transform UnityEngine.Transform::Find(System.String)
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0039: ldloc.0
+ldnull 
+br.s IL_003f: stsfld UISprite OffServerVoiceUI::_micIcon
+ldloc.0 
+callvirt !!0 UnityEngine.Component::GetComponent<UISprite>()
+stsfld UISprite OffServerVoiceUI::_micIcon
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ldstr WaveSprite1
+callvirt UnityEngine.Transform UnityEngine.Transform::Find(System.String)
+stloc.1 
+ldarg.0 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ldstr WaveSprite2
+callvirt UnityEngine.Transform UnityEngine.Transform::Find(System.String)
+stloc.2 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0072: ldloc.1
+ldnull 
+br.s IL_0078: stsfld UnityEngine.GameObject OffServerVoiceUI::_wave1
+ldloc.1 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+stsfld UnityEngine.GameObject OffServerVoiceUI::_wave1
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0089: ldloc.2
+ldnull 
+br.s IL_008f: stsfld UnityEngine.GameObject OffServerVoiceUI::_wave2
+ldloc.2 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+stsfld UnityEngine.GameObject OffServerVoiceUI::_wave2
+ldarg.0 
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/BoolDelegate UIEventListener::onPress
+ldnull 
+ldftn System.Void OffServerVoiceUI::OnMicPress(UnityEngine.GameObject,System.Boolean)
+newobj System.Void UIEventListener/BoolDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/BoolDelegate
+stfld UIEventListener/BoolDelegate UIEventListener::onPress
+ldsfld System.Boolean OffServerVoiceUI::_micHooked
+brtrue.s IL_00d9: call System.Void OffServerVoiceUI::RefreshMicButton()
+ldc.i4.1 
+stsfld System.Boolean OffServerVoiceUI::_micHooked
+ldnull 
+ldftn System.Void OffServerVoiceUI::RefreshMicButton()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void OffServerVoice::add_Changed(System.Action)
+call System.Void OffServerVoiceUI::RefreshMicButton()
+ldarg.0 
+callvirt !!0 UnityEngine.GameObject::GetComponent<OffServerVoiceButtonTicker>()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00f3: ret
+ldarg.0 
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerVoiceButtonTicker>()
+pop 
+ret 
+METHOD System.Void OffServerVoiceUI::AttachPcMicButton(UnityEngine.Transform,System.Func`1<System.Boolean>)
+newobj System.Void OffServerVoiceUI/<>c__DisplayClass43_0::.ctor()
+stloc.0 
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0012: ldarg.0
+ldnull 
+br.s IL_001d: stloc.1
+ldarg.0 
+ldstr ChatButton
+callvirt UnityEngine.Transform UnityEngine.Transform::Find(System.String)
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0028: ldloc.0
+ret 
+ldloc.0 
+ldarg.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+call T NGUITools::AddWidget<UIWidget>(UnityEngine.GameObject,System.Int32)
+stfld UIWidget OffServerVoiceUI/<>c__DisplayClass43_0::uIWidget
+ldloc.0 
+ldfld UIWidget OffServerVoiceUI/<>c__DisplayClass43_0::uIWidget
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+dup 
+ldstr OffServerVoiceButton
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+ldloc.0 
+ldfld UIWidget OffServerVoiceUI/<>c__DisplayClass43_0::uIWidget
+ldc.i4.s 30
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldloc.0 
+ldfld UIWidget OffServerVoiceUI/<>c__DisplayClass43_0::uIWidget
+ldc.i4.s 30
+callvirt System.Void UIWidget::set_height(System.Int32)
+dup 
+ldstr icon_stt
+ldc.i4.2 
+call UISprite NGUITools::AddSprite(UnityEngine.GameObject,System.String,System.Int32)
+dup 
+ldstr Sprite
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+dup 
+ldc.i4.0 
+callvirt System.Void UIBasicSprite::set_type(UIBasicSprite/Type)
+dup 
+ldc.i4.s 17
+callvirt System.Void UIWidget::set_width(System.Int32)
+dup 
+ldc.i4.s 30
+callvirt System.Void UIWidget::set_height(System.Int32)
+call UnityEngine.Color UnityEngine.Color::get_white()
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+dup 
+ldstr icon_stt_sound1
+ldc.i4.3 
+call UISprite NGUITools::AddSprite(UnityEngine.GameObject,System.String,System.Int32)
+dup 
+ldstr WaveSprite1
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+dup 
+ldc.i4.0 
+callvirt System.Void UIBasicSprite::set_type(UIBasicSprite/Type)
+dup 
+ldc.i4.s 27
+callvirt System.Void UIWidget::set_width(System.Int32)
+dup 
+ldc.i4.s 10
+callvirt System.Void UIWidget::set_height(System.Int32)
+dup 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldc.r4 0
+ldc.r4 21
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+dup 
+ldstr icon_stt_sound2
+ldc.i4.3 
+call UISprite NGUITools::AddSprite(UnityEngine.GameObject,System.String,System.Int32)
+dup 
+ldstr WaveSprite2
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+dup 
+ldc.i4.0 
+callvirt System.Void UIBasicSprite::set_type(UIBasicSprite/Type)
+dup 
+ldc.i4.s 36
+callvirt System.Void UIWidget::set_width(System.Int32)
+dup 
+ldc.i4.s 10
+callvirt System.Void UIWidget::set_height(System.Int32)
+dup 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldc.r4 0
+ldc.r4 29
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+dup 
+call System.Void NGUITools::AddWidgetCollider(UnityEngine.GameObject)
+dup 
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerVoicePcMicPlacer>()
+dup 
+ldloc.1 
+stfld UnityEngine.Transform OffServerVoicePcMicPlacer::Chat
+dup 
+ldarg.0 
+ldstr CommunicationButton
+callvirt UnityEngine.Transform UnityEngine.Transform::Find(System.String)
+stfld UnityEngine.Transform OffServerVoicePcMicPlacer::Emote
+callvirt System.Void OffServerVoicePcMicPlacer::Place()
+dup 
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/BoolDelegate UIEventListener::onHover
+ldloc.0 
+ldftn System.Void OffServerVoiceUI/<>c__DisplayClass43_0::<AttachPcMicButton>b__0(UnityEngine.GameObject,System.Boolean)
+newobj System.Void UIEventListener/BoolDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/BoolDelegate
+stfld UIEventListener/BoolDelegate UIEventListener::onHover
+ldnull 
+ldarg.1 
+call System.Void OffServerVoiceUI::AttachMicButton(UnityEngine.GameObject,System.Action,System.Func`1<System.Boolean>)
+ret 
+METHOD System.Void OffServerVoiceUI::ShowPcMicTooltip(UIWidget,System.Boolean)
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.ButtonInfoTooltip>()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0015: ldloc.0
+ret 
+ldloc.0 
+ldc.i4.1 
+callvirt System.Void Durango.UI.Popup.TooltipBase::set_Sign(System.Int32)
+ldarg.1 
+brfalse.s IL_004d: ldloc.0
+ldloc.0 
+ldc.i4.s 102
+ldstr pc_button_tip
+call System.String OffServerVoiceUI::Text(System.String)
+callvirt System.Void Durango.UI.Popup.ButtonInfoTooltip::Set(InputCommand,System.String)
+ldloc.0 
+ldarg.0 
+ldc.r4 -5
+ldc.r4 20
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldc.r4 3,4028235E+38
+callvirt System.Void Durango.UI.Popup.TooltipBase::Show(UIWidget,UnityEngine.Vector2,System.Single)
+ret 
+ldloc.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Hide()
+ret 
+METHOD System.Void OffServerVoiceUI::OnMicPress(UnityEngine.GameObject,System.Boolean)
+ldarg.1 
+call System.Void OffServerVoice::ButtonPress(System.Boolean)
+ret 
+METHOD System.Void OffServerVoiceUI::RefreshMicButton()
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000e: call System.Boolean OffServerVoice::get_Available()
+ret 
+call System.Boolean OffServerVoice::get_Available()
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+brfalse.s IL_0034: ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldsfld System.Func`1<System.Boolean> OffServerVoiceUI::_micVisible
+brfalse.s IL_0034: ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldsfld System.Func`1<System.Boolean> OffServerVoiceUI::_micVisible
+callvirt !0 System.Func`1<System.Boolean>::Invoke()
+stloc.1 
+leave.s IL_0034: ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_0034: ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+ldloc.1 
+beq.s IL_0066: ldloc.0
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldloc.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldsfld System.Action OffServerVoiceUI::_relayout
+brfalse.s IL_0066: ldloc.0
+ldsfld System.Action OffServerVoiceUI::_relayout
+callvirt System.Void System.Action::Invoke()
+leave.s IL_0066: ldloc.0
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_0066: ldloc.0
+ldloc.0 
+brtrue.s IL_0075: ret
+call System.Boolean OffServerVoiceUI::get_PanelOpen()
+brfalse.s IL_0075: ret
+call System.Void OffServerVoiceUI::ClosePanel()
+ret 
+METHOD System.Void OffServerVoiceUI::TickMicButton()
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0019: ret
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brtrue.s IL_001a: call System.Boolean OffServerVoice::get_Talking()
+ret 
+call System.Boolean OffServerVoice::get_Talking()
+stloc.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stloc.1 
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_wave1
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0051: ldsfld UnityEngine.GameObject OffServerVoiceUI::_wave2
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_wave1
+ldloc.0 
+brfalse.s IL_004b: ldc.i4.0
+ldloc.1 
+ldc.r4 0,6
+rem 
+ldc.r4 0,45
+clt 
+br.s IL_004c: callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_wave2
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_007f: ldsfld UISprite OffServerVoiceUI::_micIcon
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_wave2
+ldloc.0 
+brfalse.s IL_0079: ldc.i4.0
+ldloc.1 
+ldc.r4 0,6
+rem 
+ldc.r4 0,15
+clt.un 
+ldc.i4.0 
+ceq 
+br.s IL_007a: callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldsfld UISprite OffServerVoiceUI::_micIcon
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0108: ret
+call UnityEngine.Color UnityEngine.Color::get_white()
+stloc.2 
+call System.Int32 OffServerVoice::get_GmMutedHours()
+ldc.i4.0 
+bgt.s IL_00a1: ldloca.s V_2
+call System.String OffServerVoice::get_MicProblem()
+brfalse.s IL_00be: ldloc.0
+ldloca.s V_2
+ldc.r4 1
+ldc.r4 0,4
+ldc.r4 0,35
+ldc.r4 1
+call System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+br.s IL_00eb: ldsfld UISprite OffServerVoiceUI::_micIcon
+ldloc.0 
+brfalse.s IL_00c9: call System.Boolean OffServerVoice::get_AutoMode()
+ldsfld UnityEngine.Color OffServerVoiceUI::Talk
+stloc.2 
+br.s IL_00eb: ldsfld UISprite OffServerVoiceUI::_micIcon
+call System.Boolean OffServerVoice::get_AutoMode()
+brfalse.s IL_00eb: ldsfld UISprite OffServerVoiceUI::_micIcon
+ldloca.s V_2
+ldc.r4 0,75
+ldc.r4 1
+ldc.r4 0,8
+ldc.r4 1
+call System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldsfld UISprite OffServerVoiceUI::_micIcon
+callvirt UnityEngine.Color UIWidget::get_color()
+ldloc.2 
+call System.Boolean UnityEngine.Color::op_Inequality(UnityEngine.Color,UnityEngine.Color)
+brfalse.s IL_0108: ret
+ldsfld UISprite OffServerVoiceUI::_micIcon
+ldloc.2 
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ret 
+METHOD System.Void OffServerVoiceUI::TogglePanel()
+call System.Boolean OffServerVoiceUI::get_PanelOpen()
+brfalse.s IL_000d: call System.Void OffServerVoiceUI::OpenPanel()
+call System.Void OffServerVoiceUI::ClosePanel()
+ret 
+call System.Void OffServerVoiceUI::OpenPanel()
+ret 
+METHOD System.Void OffServerVoiceUI::ClosePanel()
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001d: ret
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void OffServerVoiceUI::OpenPanel()
+call System.Boolean OffServerVoice::get_Available()
+brtrue.s IL_0008: ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ret 
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_005e: ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+call System.Boolean Durango.Utils.Singleton`1<UIManager>::HasInstance()
+brtrue.s IL_001f: call T Durango.Utils.Singleton`1<UIManager>::Instance()
+ldnull 
+br.s IL_0029: stloc.0
+call T Durango.Utils.Singleton`1<UIManager>::Instance()
+callvirt UIRoot UIManager::get_UIRoot()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0034: ldloc.0
+ret 
+ldloc.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UnityEngine.GameObject NGUITools::AddChild(UnityEngine.GameObject)
+dup 
+ldstr OffServerVoicePanel
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerVoiceUI>()
+stsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+callvirt System.Void OffServerVoiceUI::Build()
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ldc.r4 0
+stfld System.Single OffServerVoiceUI::_refreshAt
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+callvirt System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::Build()
+ldarg.0 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt !!0 UnityEngine.GameObject::AddComponent<UIPanel>()
+stfld UIPanel OffServerVoiceUI::_uiPanel
+ldarg.0 
+ldfld UIPanel OffServerVoiceUI::_uiPanel
+ldc.i4 6000
+callvirt System.Void UIPanel::set_depth(System.Int32)
+ldarg.0 
+call UILabel OffServerVoiceUI::FindStyle()
+stfld UILabel OffServerVoiceUI::_style
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+call T NGUITools::AddWidget<UIWidget>(UnityEngine.GameObject,System.Int32)
+dup 
+ldc.i4 4000
+callvirt System.Void UIWidget::set_width(System.Int32)
+dup 
+ldc.i4 4000
+callvirt System.Void UIWidget::set_height(System.Int32)
+dup 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void NGUITools::AddWidgetCollider(UnityEngine.GameObject)
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+ldsfld UIEventListener/VoidDelegate OffServerVoiceUI/<>c::<>9__51_0
+dup 
+brtrue.s IL_0082: stfld UIEventListener/VoidDelegate UIEventListener::onClick
+pop 
+ldsfld OffServerVoiceUI/<>c OffServerVoiceUI/<>c::<>9
+ldftn System.Void OffServerVoiceUI/<>c::<Build>b__51_0(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld UIEventListener/VoidDelegate OffServerVoiceUI/<>c::<>9__51_0
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldc.i4 616
+stloc.0 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldstr bg_white
+ldc.i4.1 
+call UISprite NGUITools::AddSprite(UnityEngine.GameObject,System.String,System.Int32)
+dup 
+ldc.i4.0 
+callvirt System.Void UIBasicSprite::set_type(UIBasicSprite/Type)
+dup 
+ldc.i4 640
+callvirt System.Void UIWidget::set_width(System.Int32)
+dup 
+ldloc.0 
+callvirt System.Void UIWidget::set_height(System.Int32)
+dup 
+ldc.r4 0,07
+ldc.r4 0,07
+ldc.r4 0,09
+ldc.r4 0,94
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void NGUITools::AddWidgetCollider(UnityEngine.GameObject)
+ldarg.0 
+ldloc.0 
+ldc.i4.2 
+div 
+stfld System.Int32 OffServerVoiceUI::_top
+ldc.i4 -296
+stloc.1 
+ldarg.0 
+ldfld System.Int32 OffServerVoiceUI::_top
+ldc.i4.s 34
+sub 
+stloc.2 
+ldarg.0 
+ldstr title
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.1 
+ldloc.2 
+ldc.i4.s 30
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4 420
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+pop 
+ldarg.0 
+ldstr X
+ldc.i4 280
+ldloc.2 
+ldc.i4.s 56
+ldc.i4.s 44
+ldsfld System.Action OffServerVoiceUI/<>c::<>9__51_1
+dup 
+brtrue.s IL_0149: ldnull
+pop 
+ldsfld OffServerVoiceUI/<>c OffServerVoiceUI/<>c::<>9
+ldftn System.Void OffServerVoiceUI/<>c::<Build>b__51_1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action OffServerVoiceUI/<>c::<>9__51_1
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldarg.0 
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldloc.1 
+ldloc.2 
+ldc.i4.s 22
+ldc.r4 1
+ldc.r4 0,85
+ldc.r4 0,4
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldc.i4 592
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+stfld UILabel OffServerVoiceUI::_status
+ldarg.0 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldstr bg_white
+ldc.i4.4 
+call UISprite NGUITools::AddSprite(UnityEngine.GameObject,System.String,System.Int32)
+stfld UISprite OffServerVoiceUI::_meter
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldc.i4.0 
+callvirt System.Void UIBasicSprite::set_type(UIBasicSprite/Type)
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldc.i4.3 
+callvirt System.Void UIWidget::set_pivot(UIWidget/Pivot)
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldc.i4.6 
+callvirt System.Void UIWidget::set_height(System.Int32)
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldc.i4.1 
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldsfld UnityEngine.Color OffServerVoiceUI::Talk
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldloc.1 
+conv.r4 
+ldloc.2 
+ldc.i4.s 20
+sub 
+conv.r4 
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldc.i4.s -90
+stloc.3 
+ldarg.0 
+ldstr mode
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.1 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4 200
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+pop 
+ldarg.0 
+ldarg.0 
+ldstr mode_hold
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.3 
+ldc.i4.s 90
+add 
+ldloc.2 
+ldc.i4 176
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_2()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+stfld OffServerVoiceUI/Button OffServerVoiceUI::_hold
+ldarg.0 
+ldarg.0 
+ldstr mode_auto
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.3 
+ldc.i4 280
+add 
+ldloc.2 
+ldc.i4 176
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_3()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+stfld OffServerVoiceUI/Button OffServerVoiceUI::_auto
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldarg.0 
+ldstr range
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.1 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4 200
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+pop 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_0317: ldloc.s V_4
+newobj System.Void OffServerVoiceUI/<>c__DisplayClass51_0::.ctor()
+stloc.s V_5
+ldloc.s V_5
+ldarg.0 
+stfld OffServerVoiceUI OffServerVoiceUI/<>c__DisplayClass51_0::<>4__this
+ldloc.s V_5
+ldloc.s V_4
+stfld System.Int32 OffServerVoiceUI/<>c__DisplayClass51_0::level
+ldarg.0 
+ldfld OffServerVoiceUI/Button[] OffServerVoiceUI::_levels
+ldloc.s V_4
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldloc.3 
+ldc.i4.s 58
+add 
+ldloc.s V_4
+ldc.i4 128
+mul 
+add 
+ldloc.2 
+ldc.i4.s 120
+ldc.i4.s 40
+ldloc.s V_5
+ldftn System.Void OffServerVoiceUI/<>c__DisplayClass51_0::<Build>b__9()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+stelem.ref 
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.3 
+blt.s IL_02c5: newobj System.Void OffServerVoiceUI/<>c__DisplayClass51_0::.ctor()
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldarg.0 
+ldstr volume
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.1 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4 200
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+pop 
+ldarg.0 
+ldstr -
+ldloc.3 
+ldc.i4.s 24
+add 
+ldloc.2 
+ldc.i4.s 52
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_4()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldloc.3 
+ldc.i4.s 100
+add 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4.s 90
+ldc.i4.4 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+stfld UILabel OffServerVoiceUI::_volume
+ldarg.0 
+ldstr +
+ldloc.3 
+ldc.i4 176
+add 
+ldloc.2 
+ldc.i4.s 52
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_5()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldarg.0 
+ldstr deaf
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.3 
+ldc.i4 312
+add 
+ldloc.2 
+ldc.i4 196
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_6()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+stfld OffServerVoiceUI/Button OffServerVoiceUI::_deaf
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldarg.0 
+ldstr sens
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.1 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4 210
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+pop 
+ldarg.0 
+ldstr -
+ldloc.3 
+ldc.i4.s 24
+add 
+ldloc.2 
+ldc.i4.s 52
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_7()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldloc.3 
+ldc.i4.s 100
+add 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4.s 90
+ldc.i4.4 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+stfld UILabel OffServerVoiceUI::_sens
+ldarg.0 
+ldstr +
+ldloc.3 
+ldc.i4 176
+add 
+ldloc.2 
+ldc.i4.s 52
+ldc.i4.s 40
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::<Build>b__51_8()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldarg.0 
+ldarg.0 
+ldstr nearby
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.1 
+ldloc.2 
+ldc.i4.6 
+add 
+ldc.i4.s 22
+ldc.r4 0,8
+ldc.r4 0,8
+ldc.r4 0,8
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldc.i4 592
+ldc.i4.3 
+ldnull 
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+stfld UILabel OffServerVoiceUI::_nearbyHead
+ldloc.2 
+ldc.i4.s 34
+sub 
+stloc.2 
+ldc.i4.0 
+stloc.s V_6
+br IL_05d3: ldloc.s V_6
+newobj System.Void OffServerVoiceUI/<>c__DisplayClass51_1::.ctor()
+stloc.s V_7
+ldloc.s V_7
+ldarg.0 
+stfld OffServerVoiceUI OffServerVoiceUI/<>c__DisplayClass51_1::<>4__this
+newobj System.Void OffServerVoiceUI/Row::.ctor()
+stloc.s V_8
+ldloc.s V_8
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UnityEngine.GameObject NGUITools::AddChild(UnityEngine.GameObject)
+stfld UnityEngine.GameObject OffServerVoiceUI/Row::Go
+ldloc.s V_8
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldloc.1 
+ldloc.2 
+ldc.i4.s 24
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.i4 300
+ldc.i4.3 
+ldloc.s V_8
+ldfld UnityEngine.GameObject OffServerVoiceUI/Row::Go
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+stfld UILabel OffServerVoiceUI/Row::Name
+ldloc.s V_8
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldloc.1 
+ldc.i4 330
+add 
+ldloc.2 
+ldc.i4.s 20
+ldc.r4 0,75
+ldc.r4 0,75
+ldc.r4 0,75
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldc.i4.s 110
+ldc.i4.3 
+ldloc.s V_8
+ldfld UnityEngine.GameObject OffServerVoiceUI/Row::Go
+call UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+stfld UILabel OffServerVoiceUI/Row::Info
+ldloc.s V_7
+ldloc.s V_8
+stfld OffServerVoiceUI/Row OffServerVoiceUI/<>c__DisplayClass51_1::captured
+ldloc.s V_8
+ldarg.0 
+ldsfld System.String System.String::Empty
+ldc.i4 220
+ldloc.2 
+ldc.i4 160
+ldc.i4.s 38
+ldloc.s V_7
+ldftn System.Void OffServerVoiceUI/<>c__DisplayClass51_1::<Build>b__10()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldloc.s V_8
+ldfld UnityEngine.GameObject OffServerVoiceUI/Row::Go
+call OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+stfld OffServerVoiceUI/Button OffServerVoiceUI/Row::Mute
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerVoiceUI/Row> OffServerVoiceUI::_rows
+ldloc.s V_8
+callvirt System.Void System.Collections.Generic.List`1<OffServerVoiceUI/Row>::Add(!0)
+ldloc.2 
+ldc.i4.s 46
+sub 
+stloc.2 
+ldloc.s V_6
+ldc.i4.1 
+add 
+stloc.s V_6
+ldloc.s V_6
+ldc.i4.5 
+blt IL_04f0: newobj System.Void OffServerVoiceUI/<>c__DisplayClass51_1::.ctor()
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::OnVoiceChanged()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void OffServerVoice::add_Changed(System.Action)
+ret 
+METHOD System.Void OffServerVoiceUI::OnDestroy()
+ldarg.0 
+ldftn System.Void OffServerVoiceUI::OnVoiceChanged()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void OffServerVoice::remove_Changed(System.Action)
+ldsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ldarg.0 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0024: ret
+ldnull 
+stsfld OffServerVoiceUI OffServerVoiceUI::_panel
+ret 
+METHOD System.Void OffServerVoiceUI::OnVoiceChanged()
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_0013: ret
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD UILabel OffServerVoiceUI::FindStyle()
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_004f: leave.s IL_0054
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldc.i4.1 
+callvirt !!0[] UnityEngine.Component::GetComponentsInChildren<UILabel>(System.Boolean)
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0049: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+callvirt UnityEngine.Font UILabel::get_trueTypeFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_003d: ldloc.3
+ldloc.3 
+callvirt UIFont UILabel::get_bitmapFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0045: ldloc.2
+ldloc.3 
+stloc.s V_4
+leave IL_00c8: ldloc.s V_4
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_001d: ldloc.1
+leave.s IL_0054: ldnull
+pop 
+leave.s IL_0054: ldnull
+ldnull 
+stloc.0 
+ldc.i4.0 
+call !!0[] UnityEngine.Object::FindObjectsByType<UILabel>(UnityEngine.FindObjectsSortMode)
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_00c0: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.s V_5
+ldloc.s V_5
+callvirt UIFont UILabel::get_bitmapFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0084: ldloc.0
+ldloc.s V_5
+callvirt UnityEngine.Font UILabel::get_trueTypeFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_00bc: ldloc.2
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_009c: ldloc.s V_5
+ldloc.s V_5
+callvirt System.Int32 UILabel::get_fontSize()
+ldloc.0 
+callvirt System.Int32 UILabel::get_fontSize()
+ble.s IL_009f: ldloc.s V_5
+ldloc.s V_5
+stloc.0 
+ldloc.s V_5
+callvirt UnityEngine.Font UILabel::get_trueTypeFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00bc: ldloc.2
+ldloc.s V_5
+callvirt System.Int32 UILabel::get_fontSize()
+ldc.i4.s 20
+blt.s IL_00bc: ldloc.2
+ldloc.s V_5
+ret 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0061: ldloc.1
+ldloc.0 
+ret 
+ldloc.s V_4
+ret 
+METHOD UILabel OffServerVoiceUI::Label(System.String,System.Int32,System.Int32,System.Int32,UnityEngine.Color,System.Int32,UIWidget/Pivot,UnityEngine.GameObject)
+ldarg.s parent
+dup 
+brtrue.s IL_000c: ldc.i4.6
+pop 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.6 
+call T NGUITools::AddWidget<UILabel>(UnityEngine.GameObject,System.Int32)
+stloc.0 
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0058: ldloc.0
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+callvirt UIFont UILabel::get_bitmapFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0047: ldloc.0
+ldloc.0 
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+callvirt UIFont UILabel::get_bitmapFont()
+callvirt System.Void UILabel::set_bitmapFont(UIFont)
+br.s IL_0058: ldloc.0
+ldloc.0 
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+callvirt UnityEngine.Font UILabel::get_trueTypeFont()
+callvirt System.Void UILabel::set_trueTypeFont(UnityEngine.Font)
+ldloc.0 
+ldarg.s size
+callvirt System.Void UILabel::set_fontSize(System.Int32)
+ldloc.0 
+ldarg.s color
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldloc.0 
+ldarg.s pivot
+callvirt System.Void UIWidget::set_pivot(UIWidget/Pivot)
+ldloc.0 
+ldarg.s pivot
+ldc.i4.4 
+beq.s IL_0079: ldc.i4.2
+ldc.i4.1 
+br.s IL_007a: callvirt System.Void UILabel::set_alignment(NGUIText/Alignment)
+ldc.i4.2 
+callvirt System.Void UILabel::set_alignment(NGUIText/Alignment)
+ldloc.0 
+ldc.i4.0 
+callvirt System.Void UILabel::set_overflowMethod(UILabel/Overflow)
+ldloc.0 
+ldarg.s width
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldloc.0 
+ldarg.s size
+ldc.i4.s 10
+add 
+callvirt System.Void UIWidget::set_height(System.Int32)
+ldloc.0 
+ldarg.1 
+callvirt System.Void UILabel::set_text(System.String)
+ldloc.0 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldarg.2 
+conv.r4 
+ldarg.3 
+conv.r4 
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldloc.0 
+ret 
+METHOD OffServerVoiceUI/Button OffServerVoiceUI::MakeButton(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Action,UnityEngine.GameObject)
+newobj System.Void OffServerVoiceUI/<>c__DisplayClass56_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.s onClick
+stfld System.Action OffServerVoiceUI/<>c__DisplayClass56_0::onClick
+newobj System.Void OffServerVoiceUI/Button::.ctor()
+stloc.1 
+ldloc.1 
+ldarg.s parent
+dup 
+brtrue.s IL_0021: ldstr "bg_white"
+pop 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldstr bg_white
+ldc.i4.3 
+call UISprite NGUITools::AddSprite(UnityEngine.GameObject,System.String,System.Int32)
+stfld UISprite OffServerVoiceUI/Button::Bg
+ldloc.1 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldc.i4.0 
+callvirt System.Void UIBasicSprite::set_type(UIBasicSprite/Type)
+ldloc.1 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldarg.s w
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldloc.1 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldarg.s h
+callvirt System.Void UIWidget::set_height(System.Int32)
+ldloc.1 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldloc.1 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldarg.2 
+conv.r4 
+ldarg.3 
+conv.r4 
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldloc.1 
+ldloc.1 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+stfld UnityEngine.GameObject OffServerVoiceUI/Button::Go
+ldloc.1 
+ldloc.1 
+ldfld UnityEngine.GameObject OffServerVoiceUI/Button::Go
+ldc.i4.7 
+call T NGUITools::AddWidget<UILabel>(UnityEngine.GameObject,System.Int32)
+stfld UILabel OffServerVoiceUI/Button::Label
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00f7: ldloc.1
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+callvirt UIFont UILabel::get_bitmapFont()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00e1: ldloc.1
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+callvirt UIFont UILabel::get_bitmapFont()
+callvirt System.Void UILabel::set_bitmapFont(UIFont)
+br.s IL_00f7: ldloc.1
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_style
+callvirt UnityEngine.Font UILabel::get_trueTypeFont()
+callvirt System.Void UILabel::set_trueTypeFont(UnityEngine.Font)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldc.i4.s 22
+callvirt System.Void UILabel::set_fontSize(System.Int32)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldc.i4.2 
+callvirt System.Void UILabel::set_alignment(NGUIText/Alignment)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldc.i4.0 
+callvirt System.Void UILabel::set_overflowMethod(UILabel/Overflow)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldarg.s w
+ldc.i4.8 
+sub 
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldarg.s h
+ldc.i4.4 
+sub 
+callvirt System.Void UIWidget::set_height(System.Int32)
+ldloc.1 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldarg.1 
+callvirt System.Void UILabel::set_text(System.String)
+ldloc.1 
+ldfld UnityEngine.GameObject OffServerVoiceUI/Button::Go
+call System.Void NGUITools::AddWidgetCollider(UnityEngine.GameObject)
+ldloc.1 
+ldfld UnityEngine.GameObject OffServerVoiceUI/Button::Go
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+ldloc.0 
+ldftn System.Void OffServerVoiceUI/<>c__DisplayClass56_0::<MakeButton>b__0(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldloc.1 
+ret 
+METHOD System.Void OffServerVoiceUI::Paint(OffServerVoiceUI/Button,System.Boolean,System.Nullable`1<UnityEngine.Color>)
+ldarg.0 
+brfalse.s IL_004b: ret
+ldarg.0 
+ldfld UISprite OffServerVoiceUI/Button::Bg
+ldarg.1 
+brtrue.s IL_0013: ldarg.2
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+br.s IL_002c: callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.2 
+stloc.0 
+ldloca.s V_0
+call System.Boolean System.Nullable`1<UnityEngine.Color>::get_HasValue()
+brtrue.s IL_0025: ldloca.s V_0
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnOn
+br.s IL_002c: callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldloca.s V_0
+call !0 System.Nullable`1<UnityEngine.Color>::GetValueOrDefault()
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldarg.1 
+brtrue.s IL_0041: ldsfld UnityEngine.Color OffServerVoiceUI::TextOn
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOff
+br.s IL_0046: callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldsfld UnityEngine.Color OffServerVoiceUI::TextOn
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ret 
+METHOD System.Void OffServerVoiceUI::Update()
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single OffServerVoiceUI::_refreshAt
+blt.un.s IL_0013: ldarg.0
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0083: call System.Boolean OffServerVoice::get_Available()
+call System.Single OffServerVoice::get_MicLevelDb()
+ldc.r4 60
+add 
+ldc.r4 60
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stloc.0 
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+ldc.i4.1 
+ldc.r4 592
+ldloc.0 
+mul 
+conv.i4 
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldarg.0 
+ldfld UISprite OffServerVoiceUI::_meter
+call System.Boolean OffServerVoice::get_Talking()
+brtrue.s IL_0079: ldsfld UnityEngine.Color OffServerVoiceUI::Talk
+ldc.r4 0,6
+ldc.r4 0,6
+ldc.r4 0,6
+ldc.r4 0,8
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+br.s IL_007e: callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldsfld UnityEngine.Color OffServerVoiceUI::Talk
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+call System.Boolean OffServerVoice::get_Available()
+brtrue.s IL_008f: ret
+call System.Void OffServerVoiceUI::ClosePanel()
+ret 
+METHOD System.Void OffServerVoiceUI::Refresh()
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 0,3
+add 
+stfld System.Single OffServerVoiceUI::_refreshAt
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_status
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0020: ldarg.0
+ret 
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_status
+ldarg.0 
+call System.String OffServerVoiceUI::StatusText()
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld OffServerVoiceUI/Button OffServerVoiceUI::_hold
+call System.Boolean OffServerVoice::get_AutoMode()
+ldc.i4.0 
+ceq 
+ldloca.s V_1
+initobj System.Nullable`1<UnityEngine.Color>
+ldloc.1 
+call System.Void OffServerVoiceUI::Paint(OffServerVoiceUI/Button,System.Boolean,System.Nullable`1<UnityEngine.Color>)
+ldarg.0 
+ldfld OffServerVoiceUI/Button OffServerVoiceUI::_auto
+call System.Boolean OffServerVoice::get_AutoMode()
+ldloca.s V_1
+initobj System.Nullable`1<UnityEngine.Color>
+ldloc.1 
+call System.Void OffServerVoiceUI::Paint(OffServerVoiceUI/Button,System.Boolean,System.Nullable`1<UnityEngine.Color>)
+ldc.i4.0 
+stloc.2 
+br.s IL_00c7: ldloc.2
+ldarg.0 
+ldfld OffServerVoiceUI/Button[] OffServerVoiceUI::_levels
+ldloc.2 
+ldelem.ref 
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldstr level
+ldloca.s V_2
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String)
+call System.String OffServerVoiceUI::Text(System.String)
+ldsfld System.Single[] OffServerVoice::Ranges
+ldloc.2 
+ldelem.r4 
+call System.String OffServerVoiceUI::Tiles(System.Single)
+call System.String System.String::Format(System.String,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld OffServerVoiceUI/Button[] OffServerVoiceUI::_levels
+ldloc.2 
+ldelem.ref 
+call System.Int32 OffServerVoice::get_Level()
+ldloc.2 
+ceq 
+ldloc.2 
+call UnityEngine.Color OffServerVoiceUI::LevelColor(System.Int32)
+newobj System.Void System.Nullable`1<UnityEngine.Color>::.ctor(!0)
+call System.Void OffServerVoiceUI::Paint(OffServerVoiceUI/Button,System.Boolean,System.Nullable`1<UnityEngine.Color>)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldc.i4.3 
+blt.s IL_006a: ldarg.0
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_volume
+call System.Single OffServerVoice::get_Volume()
+ldc.r4 100
+mul 
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+ldstr %
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld OffServerVoiceUI/Button OffServerVoiceUI::_deaf
+call System.Boolean OffServerVoice::get_Deaf()
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnMuted
+newobj System.Void System.Nullable`1<UnityEngine.Color>::.ctor(!0)
+call System.Void OffServerVoiceUI::Paint(OffServerVoiceUI/Button,System.Boolean,System.Nullable`1<UnityEngine.Color>)
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_sens
+call System.Int32 OffServerVoice::get_Sensitivity()
+ldc.i4.1 
+add 
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+ldstr /
+ldsfld System.Single[] OffServerVoice::SensitivityDb
+ldlen 
+conv.i4 
+stloc.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String,System.String)
+callvirt System.Void UILabel::set_text(System.String)
+call System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>> OffServerVoiceUI::Nearby()
+stloc.0 
+ldarg.0 
+ldfld UILabel OffServerVoiceUI::_nearbyHead
+ldstr nearby
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::get_Count()
+box System.Int32
+call System.String System.String::Format(System.String,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldc.i4.0 
+stloc.s V_4
+br IL_02a3: ldloc.s V_4
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerVoiceUI/Row> OffServerVoiceUI::_rows
+ldloc.s V_4
+callvirt !0 System.Collections.Generic.List`1<OffServerVoiceUI/Row>::get_Item(System.Int32)
+stloc.s V_5
+ldloc.s V_4
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::get_Count()
+blt.s IL_01ab: ldloc.0
+ldloc.s V_5
+ldnull 
+stfld System.String OffServerVoiceUI/Row::EntityId
+ldloc.s V_5
+ldfld UnityEngine.GameObject OffServerVoiceUI/Row::Go
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+br IL_029d: ldloc.s V_4
+ldloc.0 
+ldloc.s V_4
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::get_Item(System.Int32)
+stloc.s V_9
+ldloca.s V_9
+call !0 System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::get_Key()
+stloc.s V_6
+ldloc.s V_5
+ldfld UnityEngine.GameObject OffServerVoiceUI/Row::Go
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldloc.s V_5
+ldloc.s V_6
+callvirt System.String CharacterBehavior::get_EntityId()
+stfld System.String OffServerVoiceUI/Row::EntityId
+ldloc.s V_6
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean OffServerVoice::IsMuted(System.String)
+stloc.s V_7
+ldloc.s V_6
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean OffServerVoice::IsSpeaking(System.String)
+stloc.s V_8
+ldloc.s V_5
+ldfld UILabel OffServerVoiceUI/Row::Name
+ldloc.s V_8
+brtrue.s IL_020e: ldstr "[44ff66]"
+ldloc.s V_6
+callvirt System.String PlayerBehavior::get_PlayerName()
+call System.String OffServerVoiceUI::PlainName(System.String)
+br.s IL_0229: callvirt System.Void UILabel::set_text(System.String)
+ldstr [44ff66]
+ldloc.s V_6
+callvirt System.String PlayerBehavior::get_PlayerName()
+call System.String OffServerVoiceUI::PlainName(System.String)
+ldstr [-]
+call System.String System.String::Concat(System.String,System.String,System.String)
+callvirt System.Void UILabel::set_text(System.String)
+ldloc.s V_5
+ldfld UILabel OffServerVoiceUI/Row::Info
+ldstr dist
+call System.String OffServerVoiceUI::Text(System.String)
+ldloc.0 
+ldloc.s V_4
+callvirt !0 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::get_Item(System.Int32)
+stloc.s V_9
+ldloca.s V_9
+call !1 System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::get_Value()
+call System.String OffServerVoiceUI::Tiles(System.Single)
+call System.String System.String::Format(System.String,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldloc.s V_5
+ldfld OffServerVoiceUI/Button OffServerVoiceUI/Row::Mute
+ldfld UILabel OffServerVoiceUI/Button::Label
+ldloc.s V_7
+brtrue.s IL_0276: ldstr "unmute"
+ldstr mute
+br.s IL_027b: call System.String OffServerVoiceUI::Text(System.String)
+ldstr unmute
+call System.String OffServerVoiceUI::Text(System.String)
+callvirt System.Void UILabel::set_text(System.String)
+ldloc.s V_5
+ldfld OffServerVoiceUI/Button OffServerVoiceUI/Row::Mute
+ldloc.s V_7
+ldsfld UnityEngine.Color OffServerVoiceUI::BtnMuted
+newobj System.Void System.Nullable`1<UnityEngine.Color>::.ctor(!0)
+call System.Void OffServerVoiceUI::Paint(OffServerVoiceUI/Button,System.Boolean,System.Nullable`1<UnityEngine.Color>)
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerVoiceUI/Row> OffServerVoiceUI::_rows
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerVoiceUI/Row>::get_Count()
+blt IL_0178: ldarg.0
+ret 
+METHOD System.String OffServerVoiceUI::StatusText()
+call System.Int32 OffServerVoice::get_GmMutedHours()
+ldc.i4.0 
+ble.s IL_0022: call System.String OffServerVoice::get_MicProblem()
+ldstr gm_muted
+call System.String OffServerVoiceUI::Text(System.String)
+call System.Int32 OffServerVoice::get_GmMutedHours()
+box System.Int32
+call System.String System.String::Format(System.String,System.Object)
+ret 
+call System.String OffServerVoice::get_MicProblem()
+brfalse.s IL_002f: call System.Boolean OffServerVoice::get_Talking()
+call System.String OffServerVoice::get_MicProblem()
+ret 
+call System.Boolean OffServerVoice::get_Talking()
+brfalse.s IL_0050: call System.Boolean OffServerVoice::get_AutoMode()
+ldstr talking
+call System.String OffServerVoiceUI::Text(System.String)
+call System.Single OffServerVoice::get_RangeTiles()
+call System.String OffServerVoiceUI::Tiles(System.Single)
+call System.String System.String::Format(System.String,System.Object)
+ret 
+call System.Boolean OffServerVoice::get_AutoMode()
+brfalse.s IL_0062: call System.Boolean UnityEngine.Application::get_isMobilePlatform()
+ldstr auto_hint
+call System.String OffServerVoiceUI::Text(System.String)
+ret 
+call System.Boolean UnityEngine.Application::get_isMobilePlatform()
+brtrue.s IL_0070: ldstr "hold_hint_mobile"
+ldstr hold_hint_pc
+br.s IL_0075: call System.String OffServerVoiceUI::Text(System.String)
+ldstr hold_hint_mobile
+call System.String OffServerVoiceUI::Text(System.String)
+ldstr {key}
+call System.String OffServerVoiceUI::OffServerHotkeys_KeyCaption()
+callvirt System.String System.String::Replace(System.String,System.String)
+ldstr {range}
+ldstr voice_range
+ldstr B
+call System.String Durango.System.Config.OffServerHotkeys::CaptionOf(System.String,System.String)
+callvirt System.String System.String::Replace(System.String,System.String)
+ret 
+METHOD System.String OffServerVoiceUI::OffServerHotkeys_KeyCaption()
+ldstr voice_talk
+ldstr X
+call System.String Durango.System.Config.OffServerHotkeys::CaptionOf(System.String,System.String)
+ret 
+METHOD System.String OffServerVoiceUI::Tiles(System.Single)
+ldarga.s t
+ldarg.0 
+ldarg.0 
+call System.Single UnityEngine.Mathf::Round(System.Single)
+sub 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+ldc.r4 0,05
+blt.s IL_001d: ldstr "0"
+ldstr 0.#
+br.s IL_0022: call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldstr 0
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Single::ToString(System.String,System.IFormatProvider)
+ret 
+METHOD System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>> OffServerVoiceUI::Nearby()
+newobj System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::.ctor()
+stloc.0 
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_002a: ldloc.0
+ldloc.1 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_002a: ldloc.0
+call System.Boolean Durango.Utils.Singleton`1<PlayerManager>::Exist()
+brtrue.s IL_002c: ldloc.1
+ldloc.0 
+ret 
+ldloc.1 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+stloc.2 
+call T Durango.Utils.Singleton`1<PlayerManager>::Instance()
+callvirt System.Collections.Generic.IEnumerable`1<PlayerBehavior> PlayerManager::GetPlayers()
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<PlayerBehavior>::GetEnumerator()
+stloc.3 
+br IL_00e7: ldloc.3
+ldloc.3 
+callvirt !0 System.Collections.Generic.IEnumerator`1<PlayerBehavior>::get_Current()
+stloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_00e7: ldloc.3
+ldloc.s V_4
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_00e7: ldloc.3
+ldloc.s V_4
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_00e7: ldloc.3
+ldloc.s V_4
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.String GameManager::get_PlayerId()
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00e7: ldloc.3
+ldloc.s V_4
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+ldloc.2 
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Subtraction(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.s V_5
+ldloca.s V_5
+ldc.r4 0
+stfld System.Single UnityEngine.Vector3::y
+ldloca.s V_5
+call System.Single UnityEngine.Vector3::get_magnitude()
+ldc.r4 200
+div 
+stloc.s V_6
+ldloc.s V_6
+ldc.r4 12
+ble.s IL_00d8: ldloc.0
+ldloc.s V_4
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean OffServerVoice::IsSpeaking(System.String)
+brfalse.s IL_00e7: ldloc.3
+ldloc.0 
+ldloc.s V_4
+ldloc.s V_6
+newobj System.Void System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::.ctor(!0,!1)
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::Add(!0)
+ldloc.3 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue IL_004d: ldloc.3
+leave.s IL_00fe: ldloc.0
+ldloc.3 
+brfalse.s IL_00fd: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ldsfld System.Comparison`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>> OffServerVoiceUI/<>c::<>9__63_0
+dup 
+brtrue.s IL_011e: callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::Sort(System.Comparison`1<!0>)
+pop 
+ldsfld OffServerVoiceUI/<>c OffServerVoiceUI/<>c::<>9
+ldftn System.Int32 OffServerVoiceUI/<>c::<Nearby>b__63_0(System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>,System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>)
+newobj System.Void System.Comparison`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Comparison`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>> OffServerVoiceUI/<>c::<>9__63_0
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::Sort(System.Comparison`1<!0>)
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::get_Count()
+ldc.i4.5 
+ble.s IL_013b: ldloc.0
+ldloc.0 
+ldc.i4.5 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::get_Count()
+ldc.i4.5 
+sub 
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>>::RemoveRange(System.Int32,System.Int32)
+ldloc.0 
+ret 
+METHOD System.String OffServerVoiceUI::PlainName(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000e: ldarg.0
+ldstr ?
+ret 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+newobj System.Void System.Text.StringBuilder::.ctor(System.Int32)
+stloc.0 
+ldarg.0 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_004e: ldloc.2
+ldloc.1 
+ldloc.2 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.3 
+call System.Boolean System.Char::IsSurrogate(System.Char)
+brtrue.s IL_004a: ldloc.2
+ldloc.3 
+ldc.i4 65039
+beq.s IL_004a: ldloc.2
+ldloc.3 
+ldc.i4.s 91
+beq.s IL_004a: ldloc.2
+ldloc.3 
+ldc.i4.s 93
+beq.s IL_004a: ldloc.2
+ldloc.0 
+ldloc.3 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+blt.s IL_0020: ldloc.1
+ldloc.0 
+callvirt System.String System.Object::ToString()
+callvirt System.String System.String::Trim()
+ret 
+METHOD System.Void OffServerVoiceUI::TickRings()
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+stloc.0 
+call System.Boolean OffServerVoice::get_Available()
+brfalse.s IL_0043: ldc.i4.0
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0043: ldc.i4.0
+ldloc.0 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0043: ldc.i4.0
+call System.Boolean OffServerVoice::get_Talking()
+brtrue.s IL_0040: ldc.i4.1
+call System.Boolean OffServerVoiceUI::get_PanelOpen()
+brtrue.s IL_0040: ldc.i4.1
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldsfld System.Single OffServerVoiceUI::_flashUntil
+clt 
+br.s IL_0044: stloc.1
+ldc.i4.1 
+br.s IL_0044: stloc.1
+ldc.i4.0 
+stloc.1 
+ldloc.1 
+brfalse.s IL_0065: ldsfld OffServerVoiceRing OffServerVoiceUI::_myRing
+ldsfld OffServerVoiceRing OffServerVoiceUI::_myRing
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0065: ldsfld OffServerVoiceRing OffServerVoiceUI::_myRing
+ldstr OffServerVoiceRing
+ldc.i4.0 
+call OffServerVoiceRing OffServerVoiceRing::Create(System.String,System.Boolean)
+stsfld OffServerVoiceRing OffServerVoiceUI::_myRing
+ldsfld OffServerVoiceRing OffServerVoiceUI::_myRing
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_009d: ret
+ldsfld OffServerVoiceRing OffServerVoiceUI::_myRing
+ldloc.1 
+brtrue.s IL_007d: ldloc.0
+ldnull 
+br.s IL_0083: call System.Single OffServerVoice::get_RangeTiles()
+ldloc.0 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+call System.Single OffServerVoice::get_RangeTiles()
+ldc.r4 200
+mul 
+call System.Int32 OffServerVoice::get_Level()
+call System.Boolean OffServerVoice::get_Talking()
+callvirt System.Void OffServerVoiceRing::Show(UnityEngine.Transform,System.Single,System.Int32,System.Boolean)
+ret 
+METHOD System.Void OffServerVoiceUI::SetupHeadIcon(UISprite)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0039: ret
+call T ResourceSingleton`1<UISpriteManager>::Instance()
+ldstr icon_stt
+ldloca.s V_0
+ldloca.s V_1
+callvirt System.Boolean UISpriteManager::TryGet(System.String,UIAtlas&,UISpriteData&)
+brfalse.s IL_0039: ret
+ldarg.0 
+ldstr icon_stt
+callvirt System.Void UISprite::set_spriteName(System.String)
+ldarg.0 
+ldc.i4.s 24
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldarg.0 
+ldc.i4.s 42
+callvirt System.Void UIWidget::set_height(System.Int32)
+ret 
+METHOD System.Boolean OffServerVoiceUI::HeadIconFor(PlayerBehavior)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001d: ldc.i4.0
+ldarg.0 
+callvirt System.Boolean PlayerBehavior::get_IsLocalPlayer()
+brtrue.s IL_001d: ldc.i4.0
+ldarg.0 
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean OffServerVoice::IsSpeaking(System.String)
+ret 
+ldc.i4.0 
+ret 
+METHOD System.String OffServerVoiceUI::DebugMicButton()
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0013: ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+ldstr none
+ret 
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt System.String UnityEngine.Object::get_name()
+stloc.0 
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+stloc.1 
+br.s IL_0049: ldloc.1
+ldloc.1 
+callvirt System.String UnityEngine.Object::get_name()
+ldstr /
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String,System.String)
+stloc.0 
+ldloc.1 
+callvirt UnityEngine.Transform UnityEngine.Transform::get_parent()
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0030: ldloc.1
+ldsfld System.String System.String::Empty
+stloc.2 
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt System.Int32 UnityEngine.GameObject::get_layer()
+call UnityEngine.Camera NGUITools::FindCameraForLayer(System.Int32)
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_0110: ldsfld UISprite OffServerVoiceUI::_micIcon
+ldloc.3 
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+callvirt UnityEngine.Vector3 UnityEngine.Camera::WorldToScreenPoint(UnityEngine.Vector3)
+stloc.s V_5
+ldc.i4.8 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr  screen 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_5
+ldfld System.Single UnityEngine.Vector3::x
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+stloc.s V_6
+ldloca.s V_6
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr ,
+stelem.ref 
+dup 
+ldc.i4.3 
+call System.Int32 UnityEngine.Screen::get_height()
+conv.r4 
+ldloc.s V_5
+ldfld System.Single UnityEngine.Vector3::y
+sub 
+call System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+stloc.s V_6
+ldloca.s V_6
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  of 
+stelem.ref 
+dup 
+ldc.i4.5 
+call System.Int32 UnityEngine.Screen::get_width()
+stloc.s V_6
+ldloca.s V_6
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr x
+stelem.ref 
+dup 
+ldc.i4.7 
+call System.Int32 UnityEngine.Screen::get_height()
+stloc.s V_6
+ldloca.s V_6
+call System.String System.Int32::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stloc.2 
+ldsfld UISprite OffServerVoiceUI::_micIcon
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0124: ldstr " sprite "
+ldstr  no sprite
+br.s IL_0150: stloc.s V_4
+ldstr  sprite 
+ldsfld UISprite OffServerVoiceUI::_micIcon
+callvirt System.String UISprite::get_spriteName()
+ldsfld UISprite OffServerVoiceUI::_micIcon
+callvirt System.Boolean UISprite::get_isValid()
+brtrue.s IL_0146: ldstr ""
+ldstr  (MISSING)
+br.s IL_014b: call System.String System.String::Concat(System.String,System.String,System.String)
+ldstr 
+call System.String System.String::Concat(System.String,System.String,System.String)
+stloc.s V_4
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr  active 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldsfld UnityEngine.GameObject OffServerVoiceUI::_micButton
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+stloc.s V_7
+ldloca.s V_7
+call System.String System.Boolean::ToString()
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_4
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.2 
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+ret 
+METHOD System.Collections.Generic.List`1<System.Object> OffServerVoiceUI::DebugHeadIcons()
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.0 
+call !!0[] UnityEngine.Object::FindObjectsByType<Durango.UI.PlayerFloatingControl>()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br IL_0096: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldstr Top/VoiceIcon
+callvirt UnityEngine.Transform UnityEngine.Transform::Find(System.String)
+stloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0092: ldloc.2
+ldloc.s V_4
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brfalse.s IL_0092: ldloc.2
+ldloc.s V_4
+callvirt !!0 UnityEngine.Component::GetComponent<UISprite>()
+stloc.s V_5
+ldloc.0 
+ldloc.3 
+callvirt PlayerBehavior Durango.UI.PlayerFloatingControl::get_Target()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0060: ldloc.3
+ldstr ?
+br.s IL_006b: ldstr " "
+ldloc.3 
+callvirt PlayerBehavior Durango.UI.PlayerFloatingControl::get_Target()
+callvirt System.String CharacterBehavior::get_EntityId()
+ldstr  
+ldloc.s V_5
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0081: ldloc.s V_5
+ldstr ?
+br.s IL_0088: call System.String System.String::Concat(System.String,System.String,System.String)
+ldloc.s V_5
+callvirt System.String UISprite::get_spriteName()
+call System.String System.String::Concat(System.String,System.String,System.String)
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt IL_0013: ldloc.1
+ldloc.0 
+ret 
+METHOD System.String OffServerVoiceUI::Text(System.String)
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> OffServerVoiceUI::Texts
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.1 
+ldloc.1 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldloc.0
+ldloc.1 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0044: ldloc.0
+ldloc.1 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0048: ldloc.0
+br.s IL_004c: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+ret 
+ldloc.0 
+ldc.i4.2 
+ldelem.ref 
+ret 
+ldloc.0 
+ldc.i4.3 
+ldelem.ref 
+ret 
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+ret 
+METHOD System.Void OffServerVoiceUI::.ctor()
+ldarg.0 
+ldc.i4.3 
+newarr OffServerVoiceUI/Button
+stfld OffServerVoiceUI/Button[] OffServerVoiceUI::_levels
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<OffServerVoiceUI/Row>::.ctor()
+stfld System.Collections.Generic.List`1<OffServerVoiceUI/Row> OffServerVoiceUI::_rows
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 
+METHOD System.Void OffServerVoiceUI::.cctor()
+ldc.r4 0,22
+ldc.r4 0,22
+ldc.r4 0,24
+ldc.r4 0,95
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color OffServerVoiceUI::BtnOff
+ldc.r4 0,98
+ldc.r4 0,72
+ldc.r4 0,18
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color OffServerVoiceUI::BtnOn
+ldc.r4 0,75
+ldc.r4 0,25
+ldc.r4 0,22
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color OffServerVoiceUI::BtnMuted
+ldc.r4 0,1
+ldc.r4 0,08
+ldc.r4 0,05
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color OffServerVoiceUI::TextOn
+ldc.r4 0,95
+ldc.r4 0,95
+ldc.r4 0,95
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color OffServerVoiceUI::TextOff
+ldc.r4 0,35
+ldc.r4 1
+ldc.r4 0,45
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color OffServerVoiceUI::Talk
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไมค์พูดตามระยะ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Proximity voice
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Suara jarak dekat
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 근거리 음성
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr mode
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr โหมดพูด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Talk mode
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Mode bicara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 말하기 방식
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr mode_hold
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กดค้างพูด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Hold to talk
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tahan untuk bicara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 누르고 말하기
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr mode_auto
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr อัตโนมัติ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Auto (voice)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Otomatis
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 자동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr range
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ระยะเสียง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Range
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Jangkauan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 범위
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr level0
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กระซิบ {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Whisper {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Bisik {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 속삭임 {0}
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr level1
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปกติ {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Normal {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Normal {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 보통 {0}
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr level2
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ตะโกน {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Shout {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Teriak {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 외침 {0}
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr volume
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เสียงคนอื่น
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Others' volume
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Volume orang lain
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 다른 사람 음량
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr deaf
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปิดเสียงทุกคน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Mute everyone
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Bisukan semua
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 모두 음소거
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr sens
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ความไวไมค์ (อัตโนมัติ)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Mic sensitivity (Auto)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Sensitivitas mik (Otomatis)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 마이크 감도 (자동)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr tab
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไมค์
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Voice chat
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Suara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 음성 채팅
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr nearby_button
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ผู้เล่นใกล้ตัว · ปิดเสียงรายคน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Nearby players · mute someone
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Pemain terdekat · bisukan pemain
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 주변 플레이어 · 개별 음소거
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr nearby
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ผู้เล่นใกล้ตัว ({0}) · ชื่อสีเขียว = กำลังพูด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Nearby players ({0}) · green name = talking
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Pemain terdekat ({0}) · nama hijau = bicara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 주변 플레이어 ({0}) · 초록 이름 = 말하는 중
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr dist
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr {0} ช่อง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr {0} tiles
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr {0} petak
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr {0}칸
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr tiles_word
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ช่อง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr tiles
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr petak
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 칸
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr tile_word
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ช่อง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr tile
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr petak
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 칸
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr mute
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปิดเสียง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Mute
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Bisukan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 음소거
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr unmute
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เปิดเสียง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Unmute
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Bunyikan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 음소거 해제
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr talking
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กำลังพูด — คนในระยะ {0} ช่อง (วงกลมที่เท้า) ได้ยิน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Talking — players within {0} tiles (circle at your feet) hear you
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Bicara — pemain dalam {0} petak (lingkaran di kaki) mendengar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 말하는 중 — {0}칸 안(발밑 원)의 플레이어가 듣습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr hold_hint_pc
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กด {key} ค้างเพื่อพูด · {range} = สลับระยะ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Hold {key} to talk · {range} = change range
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tahan {key} untuk bicara · {range} = ganti jangkauan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr {key}를 누르고 말하기 · {range} = 범위 변경
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr pc_button_tip
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไมค์ — กดค้างพูด · คลิก = แผงไมค์
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Voice — hold to talk · click = voice panel
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Suara — tahan untuk bicara · klik = panel suara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 음성 — 누르고 말하기 · 클릭 = 음성 설정 창
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr hold_hint_mobile
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กดปุ่มไมค์ค้างเพื่อพูด · แตะ = เปิดแผงนี้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Hold the mic button to talk · tap = this panel
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tahan tombol mik untuk bicara · ketuk = panel ini
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 마이크 버튼을 누르고 말하기 · 탭 = 이 창
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr auto_hint
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr อัตโนมัติ: ไมค์ส่งเสียงเองเมื่อพูด (ใส่หูฟังกันเสียงสะท้อน)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Auto: sends when you speak (use headphones to avoid echo)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Otomatis: terkirim saat bicara (pakai headset agar tidak bergema)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 자동: 말하면 전송 (메아리 방지를 위해 이어폰 권장)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr gm_muted
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ถูกปิดแชทและไมค์อีก {0} ชม.
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Chat and voice are blocked for {0} more hour(s)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Chat dan suara diblokir {0} jam lagi
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 채팅과 음성이 {0}시간 동안 제한됩니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr no_mic
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไม่พบไมค์ในเครื่องนี้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr No microphone found
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Mikrofon tidak ditemukan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 마이크를 찾을 수 없습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr perm_denied
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ต้องอนุญาตไมค์ในตั้งค่าเครื่องก่อนจึงจะพูดได้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Allow the microphone in the phone settings to talk
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Izinkan mikrofon di pengaturan ponsel untuk bicara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 말하려면 휴대폰 설정에서 마이크를 허용하세요
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> OffServerVoiceUI::Texts
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_2()
+ldc.i4.0 
+call System.Void OffServerVoice::SetAutoMode(System.Boolean)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_3()
+ldc.i4.1 
+call System.Void OffServerVoice::SetAutoMode(System.Boolean)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_4()
+call System.Single OffServerVoice::get_Volume()
+ldc.r4 0,25
+sub 
+call System.Void OffServerVoice::SetVolume(System.Single)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_5()
+call System.Single OffServerVoice::get_Volume()
+ldc.r4 0,25
+add 
+call System.Void OffServerVoice::SetVolume(System.Single)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_6()
+call System.Boolean OffServerVoice::get_Deaf()
+ldc.i4.0 
+ceq 
+call System.Void OffServerVoice::SetDeaf(System.Boolean)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_7()
+call System.Int32 OffServerVoice::get_Sensitivity()
+ldc.i4.1 
+sub 
+call System.Void OffServerVoice::SetSensitivity(System.Int32)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 
+METHOD System.Void OffServerVoiceUI::<Build>b__51_8()
+call System.Int32 OffServerVoice::get_Sensitivity()
+ldc.i4.1 
+add 
+call System.Void OffServerVoice::SetSensitivity(System.Int32)
+ldarg.0 
+call System.Void OffServerVoiceUI::Refresh()
+ret 

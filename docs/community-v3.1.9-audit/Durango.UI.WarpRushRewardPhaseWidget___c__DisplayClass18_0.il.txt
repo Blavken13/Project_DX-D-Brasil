@@ -1,0 +1,12 @@
+Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0 : System.Object
+FIELD System.Int32 Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::tierNumber
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::<SetSeasonRow>b__0()
+ldarg.0 
+ldfld System.Int32 Durango.UI.WarpRushRewardPhaseWidget/<>c__DisplayClass18_0::tierNumber
+ldnull 
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Claim(System.Int32,System.Action`2<System.Boolean,System.String>)
+ret 

@@ -1,0 +1,246 @@
+Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0 : System.Object
+FIELD System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+FIELD System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::dir
+FIELD System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::done
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::<Exchange>b__0(Newtonsoft.Json.Linq.JObject,System.Int32)
+ldarg.1 
+brfalse.s IL_0036: ldc.i4.0
+ldarg.1 
+ldstr ok
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+brfalse.s IL_0036: ldc.i4.0
+ldarg.1 
+ldstr ok
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.s 9
+bne.un.s IL_0036: ldc.i4.0
+ldarg.1 
+ldstr ok
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+call System.Boolean Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+br.s IL_0037: stloc.0
+ldc.i4.0 
+stloc.0 
+ldarg.1 
+brfalse.s IL_0048: ldsfld System.String System.String::Empty
+ldarg.1 
+ldstr reason
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+brtrue.s IL_004f: ldarg.1
+ldsfld System.String System.String::Empty
+br.s IL_0068: stloc.1
+ldarg.1 
+ldstr reason
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+call System.String Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+dup 
+brtrue.s IL_0068: stloc.1
+pop 
+ldsfld System.String System.String::Empty
+stloc.1 
+ldarg.1 
+brfalse.s IL_00b4: ldloc.0
+ldarg.1 
+ldstr rate
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+brfalse.s IL_00b4: ldloc.0
+ldarg.1 
+ldstr rate
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.6 
+bne.un.s IL_00b4: ldloc.0
+ldarg.1 
+ldstr rate
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+call System.Int32 Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+ldc.i4.0 
+ble.s IL_00b4: ldloc.0
+ldarg.1 
+ldstr rate
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+call System.Int32 Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+stsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+ldloc.0 
+brfalse IL_01f9: ldloc.1
+ldarg.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+ldc.i4.1 
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+conv.i8 
+mul 
+stloc.2 
+ldstr ok 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::dir
+ldstr  
+ldarg.0 
+ldflda System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+call System.String System.Int64::ToString()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+ldc.i4.8 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] wallet exchange 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::dir
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  gem=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+ldflda System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+call System.String System.Int64::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  → tStone=
+stelem.ref 
+dup 
+ldc.i4.5 
+ldarg.1 
+ldstr tStone
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+brtrue.s IL_013e: ldarg.1
+ldstr ?
+br.s IL_014e: stelem.ref
+ldarg.1 
+ldstr tStone
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr  gem=
+stelem.ref 
+dup 
+ldc.i4.7 
+ldarg.1 
+ldstr gem
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+brtrue.s IL_016d: ldarg.1
+ldstr ?
+br.s IL_017d: stelem.ref
+ldarg.1 
+ldstr gem
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+callvirt System.String System.Object::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::dir
+ldstr t2g
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_01c3: ldstr "done_t2g"
+ldstr done_g2t
+ldc.i4.2 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+box System.Int64
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.2 
+box System.Int64
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+br.s IL_01ea: ldc.r4 3
+ldstr done_t2g
+ldc.i4.2 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.2 
+box System.Int64
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::gem
+box System.Int64
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+br IL_02bb: ldarg.0
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+brtrue.s IL_0220: ldstr "fail HTTP "
+ldarg.2 
+ldc.i4 404
+beq.s IL_021a: ldstr "unsupported"
+ldarg.1 
+brfalse.s IL_0213: ldstr "offline"
+ldstr failed
+br.s IL_021f: stloc.1
+ldstr offline
+br.s IL_021f: stloc.1
+ldstr unsupported
+stloc.1 
+ldstr fail HTTP 
+ldarga.s http
+call System.String System.Int32::ToString()
+ldstr  
+ldloc.1 
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+ldstr [OffServer] wallet exchange 
+ldsfld System.String Durango.Logic.Clusters.OffServerWalletExchange::LastEvent
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerWalletExchange::Texts
+ldstr fail_
+ldloc.1 
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::ContainsKey(!0)
+brtrue.s IL_0288: ldstr "fail_"
+ldstr failed
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldstr  (
+ldloc.1 
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+br.s IL_02b1: ldc.r4 3
+ldstr fail_
+ldloc.1 
+call System.String System.String::Concat(System.String,System.String)
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldc.i4.1 
+ldsfld System.Int32 Durango.Logic.Clusters.OffServerWalletExchange::Rate
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+box System.Int32
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerWalletExchange::Text(System.String,System.Object[])
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ldarg.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::done
+brfalse.s IL_02d0: ret
+ldarg.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass14_0::done
+ldloc.0 
+ldloc.1 
+callvirt System.Void System.Action`2<System.Boolean,System.String>::Invoke(!0,!1)
+ret 

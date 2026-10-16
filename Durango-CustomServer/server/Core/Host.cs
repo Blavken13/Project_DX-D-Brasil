@@ -251,7 +251,7 @@ public class Host
             _contexts.Select(c => c.EntityId));
     }
 
-    public void Start(int gamePort, int gatewayPort, string publicHost, string androidBundlesDir, string assetsDir, string dataDir = null)
+    public void Start(int gamePort, int gatewayPort, string publicHost, string androidBundlesDir, string assetsDir, string dataDir = null, string windowsBundlesDir = null)
     {
         Economy = new EconomyStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "economy.json"), new ShopCatalog());
         Mail = new MailStore(System.IO.Path.Combine(AppData.CombinePath(WorldContext.GetBasePath(_storageKey)), "mail.json"));
@@ -282,7 +282,7 @@ public class Host
         Gateway = new Gateway(this, GameServer, _worldCtx, _fallbackPlayer)
         {
             PublicHost = publicHost,
-            AssetBundleAndroidDir = androidBundlesDir,
+            AssetBundleAndroidDir = androidBundlesDir,            AssetBundleWindowsDir = windowsBundlesDir,
             AssetsDir = assetsDir,
             AdminToken = this.AdminToken,
             MinClientVersion = this.MinClientVersion,

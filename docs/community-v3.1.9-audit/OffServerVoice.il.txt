@@ -1,0 +1,2803 @@
+OffServerVoice : GameSystem`1<OffServerVoice>
+FIELD System.String OffServerVoice::Caps
+FIELD System.Byte OffServerVoice::UpAudio
+FIELD System.Byte OffServerVoice::UpEnd
+FIELD System.Byte OffServerVoice::UpMuteList
+FIELD System.Byte OffServerVoice::UpHello
+FIELD System.Byte OffServerVoice::DownAudio
+FIELD System.Byte OffServerVoice::DownEnd
+FIELD System.Byte OffServerVoice::DownConfig
+FIELD System.Byte OffServerVoice::DownMuted
+FIELD System.Int32 OffServerVoice::SampleRate
+FIELD System.Int32 OffServerVoice::FrameSamples
+FIELD System.Single OffServerVoice::TileUnits
+FIELD System.Single OffServerVoice::HelloEverySec
+FIELD System.Single OffServerVoice::MicKeepSec
+FIELD System.Single OffServerVoice::HoldDelaySec
+FIELD System.Int32 OffServerVoice::PreRollFrames
+FIELD System.Single OffServerVoice::VadHangSec
+FIELD System.Single OffServerVoice::StreamIdleDestroySec
+FIELD System.String OffServerVoice::PrefMode
+FIELD System.String OffServerVoice::PrefLevel
+FIELD System.String OffServerVoice::PrefVolume
+FIELD System.String OffServerVoice::PrefSens
+FIELD System.String OffServerVoice::PrefMuted
+FIELD System.String OffServerVoice::PrefDeaf
+FIELD System.Single[] OffServerVoice::SensitivityDb
+FIELD System.Boolean OffServerVoice::<ConfigReceived>k__BackingField
+FIELD System.Boolean OffServerVoice::<ServerEnabled>k__BackingField
+FIELD System.Single[] OffServerVoice::Ranges
+FIELD System.Int32 OffServerVoice::_serverDefaultLevel
+FIELD System.Int32 OffServerVoice::_bitrate
+FIELD System.Int32 OffServerVoice::_framesPerPacket
+FIELD System.Int32 OffServerVoice::<MaxSpeakers>k__BackingField
+FIELD System.Int32 OffServerVoice::<GmMutedHours>k__BackingField
+FIELD System.String OffServerVoice::<GmMutedText>k__BackingField
+FIELD System.Boolean OffServerVoice::<AutoMode>k__BackingField
+FIELD System.Int32 OffServerVoice::_level
+FIELD System.Single OffServerVoice::<Volume>k__BackingField
+FIELD System.Int32 OffServerVoice::<Sensitivity>k__BackingField
+FIELD System.Boolean OffServerVoice::<Deaf>k__BackingField
+FIELD System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+FIELD System.Boolean OffServerVoice::_prefsLoaded
+FIELD System.Action OffServerVoice::Changed
+FIELD System.Boolean OffServerVoice::<Talking>k__BackingField
+FIELD System.Single OffServerVoice::<MicLevelDb>k__BackingField
+FIELD System.String OffServerVoice::<MicProblem>k__BackingField
+FIELD System.Boolean OffServerVoice::_wasReady
+FIELD System.Single OffServerVoice::_nextHelloAt
+FIELD System.Boolean OffServerVoice::_pttKey
+FIELD System.Boolean OffServerVoice::_pttButton
+FIELD System.Single OffServerVoice::_buttonDownAt
+FIELD System.Boolean OffServerVoice::_buttonHeld
+FIELD System.Single OffServerVoice::_micKeepUntil
+FIELD UnityEngine.AudioClip OffServerVoice::_micClip
+FIELD System.String OffServerVoice::_micDevice
+FIELD System.Int32 OffServerVoice::_micFreq
+FIELD System.Int32 OffServerVoice::_micReadPos
+FIELD System.Single[] OffServerVoice::_micTemp
+FIELD System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+FIELD System.Double OffServerVoice::_resamplePos
+FIELD System.Single OffServerVoice::_resampleLast
+FIELD System.Single OffServerVoice::_boxSum
+FIELD System.Int32 OffServerVoice::_boxCount
+FIELD System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+FIELD System.Int32 OffServerVoice::_vadOverFrames
+FIELD System.Single OffServerVoice::_vadLastVoiceAt
+FIELD Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+FIELD System.Byte[] OffServerVoice::_encodeBuf
+FIELD System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+FIELD System.Int32 OffServerVoice::_packetFrames
+FIELD System.UInt32 OffServerVoice::_seq
+FIELD System.Boolean OffServerVoice::_permissionAsked
+FIELD System.Boolean OffServerVoice::_permissionPending
+FIELD System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoice::_permissionResult
+FIELD System.Single OffServerVoice::_micRetryAt
+FIELD System.Single OffServerVoice::_listenerCheckAt
+FIELD UnityEngine.AudioListener OffServerVoice::_ownListener
+FIELD System.Single OffServerVoice::_lastRemoteAudioAt
+FIELD System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+FIELD System.Boolean OffServerVoice::_debugTalk
+FIELD System.Single OffServerVoice::AgcTargetRms
+FIELD System.Single OffServerVoice::AgcMaxGain
+FIELD System.Single OffServerVoice::AgcNoiseRms
+FIELD System.Single OffServerVoice::_agcGain
+METHOD System.Boolean OffServerVoice::get_ConfigReceived()
+ldsfld System.Boolean OffServerVoice::<ConfigReceived>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_ConfigReceived(System.Boolean)
+ldarg.0 
+stsfld System.Boolean OffServerVoice::<ConfigReceived>k__BackingField
+ret 
+METHOD System.Boolean OffServerVoice::get_ServerEnabled()
+ldsfld System.Boolean OffServerVoice::<ServerEnabled>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_ServerEnabled(System.Boolean)
+ldarg.0 
+stsfld System.Boolean OffServerVoice::<ServerEnabled>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoice::get_MaxSpeakers()
+ldsfld System.Int32 OffServerVoice::<MaxSpeakers>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_MaxSpeakers(System.Int32)
+ldarg.0 
+stsfld System.Int32 OffServerVoice::<MaxSpeakers>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoice::get_GmMutedHours()
+ldsfld System.Int32 OffServerVoice::<GmMutedHours>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_GmMutedHours(System.Int32)
+ldarg.0 
+stsfld System.Int32 OffServerVoice::<GmMutedHours>k__BackingField
+ret 
+METHOD System.String OffServerVoice::get_GmMutedText()
+ldsfld System.String OffServerVoice::<GmMutedText>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_GmMutedText(System.String)
+ldarg.0 
+stsfld System.String OffServerVoice::<GmMutedText>k__BackingField
+ret 
+METHOD System.Boolean OffServerVoice::get_AutoMode()
+ldsfld System.Boolean OffServerVoice::<AutoMode>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_AutoMode(System.Boolean)
+ldarg.0 
+stsfld System.Boolean OffServerVoice::<AutoMode>k__BackingField
+ret 
+METHOD System.Single OffServerVoice::get_Volume()
+ldsfld System.Single OffServerVoice::<Volume>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_Volume(System.Single)
+ldarg.0 
+stsfld System.Single OffServerVoice::<Volume>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoice::get_Sensitivity()
+ldsfld System.Int32 OffServerVoice::<Sensitivity>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_Sensitivity(System.Int32)
+ldarg.0 
+stsfld System.Int32 OffServerVoice::<Sensitivity>k__BackingField
+ret 
+METHOD System.Boolean OffServerVoice::get_Deaf()
+ldsfld System.Boolean OffServerVoice::<Deaf>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_Deaf(System.Boolean)
+ldarg.0 
+stsfld System.Boolean OffServerVoice::<Deaf>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::add_Changed(System.Action)
+ldsfld System.Action OffServerVoice::Changed
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.0 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldsflda System.Action OffServerVoice::Changed
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0006: ldloc.0
+ret 
+METHOD System.Void OffServerVoice::remove_Changed(System.Action)
+ldsfld System.Action OffServerVoice::Changed
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.0 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldsflda System.Action OffServerVoice::Changed
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0006: ldloc.0
+ret 
+METHOD System.Boolean OffServerVoice::get_Talking()
+ldsfld System.Boolean OffServerVoice::<Talking>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_Talking(System.Boolean)
+ldarg.0 
+stsfld System.Boolean OffServerVoice::<Talking>k__BackingField
+ret 
+METHOD System.Single OffServerVoice::get_MicLevelDb()
+ldsfld System.Single OffServerVoice::<MicLevelDb>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_MicLevelDb(System.Single)
+ldarg.0 
+stsfld System.Single OffServerVoice::<MicLevelDb>k__BackingField
+ret 
+METHOD System.String OffServerVoice::get_MicProblem()
+ldsfld System.String OffServerVoice::<MicProblem>k__BackingField
+ret 
+METHOD System.Void OffServerVoice::set_MicProblem(System.String)
+ldarg.0 
+stsfld System.String OffServerVoice::<MicProblem>k__BackingField
+ret 
+METHOD System.Int32 OffServerVoice::get_Level()
+ldsfld System.Int32 OffServerVoice::_level
+ldc.i4.0 
+bge.s IL_000f: ldsfld System.Int32 OffServerVoice::_level
+ldsfld System.Int32 OffServerVoice::_serverDefaultLevel
+br.s IL_0014: ldc.i4.0
+ldsfld System.Int32 OffServerVoice::_level
+ldc.i4.0 
+ldc.i4.2 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+ret 
+METHOD System.Single OffServerVoice::get_RangeTiles()
+ldsfld System.Single[] OffServerVoice::Ranges
+call System.Int32 OffServerVoice::get_Level()
+ldelem.r4 
+ret 
+METHOD System.Boolean OffServerVoice::get_Available()
+call System.Boolean OffServerVoice::get_ConfigReceived()
+brfalse.s IL_0014: ldc.i4.0
+call System.Boolean OffServerVoice::get_ServerEnabled()
+brfalse.s IL_0014: ldc.i4.0
+call System.Boolean GameManager::get_IsReady()
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Boolean OffServerVoice::IsMuted(System.String)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0019: ldc.i4.0
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldarg.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Contains(!0)
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Collections.Generic.IEnumerable`1<OffServerVoiceStream> OffServerVoice::get_Streams()
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brtrue.s IL_000e: call T GameSystem`1<OffServerVoice>::Instance()
+ldc.i4.0 
+newarr OffServerVoiceStream
+ret 
+call T GameSystem`1<OffServerVoice>::Instance()
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Collections.Generic.Dictionary`2/ValueCollection<!0,!1> System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::get_Values()
+ret 
+METHOD System.Boolean OffServerVoice::IsSpeaking(System.String)
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brfalse.s IL_0033: ldc.i4.0
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0033: ldc.i4.0
+call T GameSystem`1<OffServerVoice>::Instance()
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::TryGetValue(!0,!1&)
+brfalse.s IL_0033: ldc.i4.0
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0033: ldc.i4.0
+ldloc.0 
+callvirt System.Boolean OffServerVoiceStream::get_Speaking()
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.Object> OffServerVoice::DebugState()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr available
+call System.Boolean OffServerVoice::get_Available()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr config
+call System.Boolean OffServerVoice::get_ConfigReceived()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr serverEnabled
+call System.Boolean OffServerVoice::get_ServerEnabled()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr ranges
+ldstr /
+ldsfld System.Single[] OffServerVoice::Ranges
+ldsfld System.Converter`2<System.Single,System.String> OffServerVoice/<>c::<>9__126_0
+dup 
+brtrue.s IL_0074: call !!1[] System.Array::ConvertAll<System.Single,System.String>(!!0[],System.Converter`2<!!0,!!1>)
+pop 
+ldsfld OffServerVoice/<>c OffServerVoice/<>c::<>9
+ldftn System.String OffServerVoice/<>c::<DebugState>b__126_0(System.Single)
+newobj System.Void System.Converter`2<System.Single,System.String>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Converter`2<System.Single,System.String> OffServerVoice/<>c::<>9__126_0
+call !!1[] System.Array::ConvertAll<System.Single,System.String>(!!0[],System.Converter`2<!!0,!!1>)
+call System.String System.String::Join(System.String,System.String[])
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr level
+call System.Int32 OffServerVoice::get_Level()
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr auto
+call System.Boolean OffServerVoice::get_AutoMode()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr talking
+call System.Boolean OffServerVoice::get_Talking()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr micDb
+call System.Single OffServerVoice::get_MicLevelDb()
+conv.r8 
+ldc.i4.1 
+call System.Double System.Math::Round(System.Double,System.Int32)
+box System.Double
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr micProblem
+call System.String OffServerVoice::get_MicProblem()
+dup 
+brtrue.s IL_00f2: callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+pop 
+ldsfld System.String System.String::Empty
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr gmMutedHours
+call System.Int32 OffServerVoice::get_GmMutedHours()
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr deaf
+call System.Boolean OffServerVoice::get_Deaf()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr volume
+call System.Single OffServerVoice::get_Volume()
+box System.Single
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr panel
+call System.Boolean OffServerVoiceUI::get_PanelOpen()
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brtrue.s IL_0155: call T GameSystem`1<OffServerVoice>::Instance()
+ldnull 
+br.s IL_015a: stloc.1
+call T GameSystem`1<OffServerVoice>::Instance()
+stloc.1 
+ldloc.0 
+ldstr micOn
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0178: ldc.i4.0
+ldloc.1 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+br.s IL_0179: box System.Boolean
+ldc.i4.0 
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr micFreq
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0195: ldloc.1
+ldc.i4.0 
+br.s IL_019b: box System.Int32
+ldloc.1 
+ldfld System.Int32 OffServerVoice::_micFreq
+box System.Int32
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr sent
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_01b8: ldloc.1
+ldc.i4.0 
+conv.i8 
+br.s IL_01bf: box System.Int64
+ldloc.1 
+ldfld System.UInt32 OffServerVoice::_seq
+conv.u8 
+box System.Int64
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr devices
+ldstr , 
+call System.String[] UnityEngine.Microphone::get_devices()
+dup 
+brtrue.s IL_01e3: call System.String System.String::Join(System.String,System.String[])
+pop 
+ldc.i4.0 
+newarr System.String
+call System.String System.String::Join(System.String,System.String[])
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr listener
+call !!0 UnityEngine.Object::FindAnyObjectByType<UnityEngine.AudioListener>()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+box System.Boolean
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.2 
+call System.Collections.Generic.IEnumerable`1<OffServerVoiceStream> OffServerVoice::get_Streams()
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<OffServerVoiceStream>::GetEnumerator()
+stloc.3 
+br.s IL_023a: ldloc.3
+ldloc.3 
+callvirt !0 System.Collections.Generic.IEnumerator`1<OffServerVoiceStream>::get_Current()
+stloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_023a: ldloc.3
+ldloc.2 
+ldloc.s V_4
+callvirt System.Collections.Generic.Dictionary`2<System.String,System.Object> OffServerVoiceStream::Debug()
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloc.3 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_021b: ldloc.3
+leave.s IL_024e: ldloc.0
+ldloc.3 
+brfalse.s IL_024d: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ldstr streams
+ldloc.2 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr hudButton
+call System.String OffServerVoiceUI::DebugMicButton()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ldstr headIcons
+call System.Collections.Generic.List`1<System.Object> OffServerVoiceUI::DebugHeadIcons()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Object>::set_Item(!0,!1)
+ldloc.0 
+ret 
+METHOD System.String OffServerVoice::DebugCommand(System.String[])
+ldarg.0 
+brfalse.s IL_0007: ldnull
+ldarg.0 
+ldlen 
+brtrue.s IL_0009: ldarg.0
+ldnull 
+ret 
+ldarg.0 
+ldlen 
+conv.i4 
+ldc.i4.1 
+bgt.s IL_0016: ldarg.0
+ldsfld System.String System.String::Empty
+br.s IL_0019: stloc.0
+ldarg.0 
+ldc.i4.1 
+ldelem.ref 
+stloc.0 
+ldarg.0 
+ldc.i4.0 
+ldelem.ref 
+stloc.1 
+ldloc.1 
+brfalse IL_0264: ldstr "unknown: "
+ldloc.1 
+call System.Int32 System.String::get_Length()
+stloc.2 
+ldloc.2 
+ldc.i4.4 
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldc.i4.0 
+call System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.3 
+ldc.i4.s 108
+beq.s IL_009b: ldloc.1
+ldloc.3 
+ldc.i4.s 112
+beq.s IL_0086: ldloc.1
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldc.i4.0 
+call System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.3 
+ldc.i4.s 100
+bgt.un.s IL_0077: ldloc.3
+ldloc.3 
+ldc.i4.s 97
+beq.s IL_00b0: ldloc.1
+ldloc.3 
+ldc.i4.s 100
+beq.s IL_00ec: ldloc.1
+br IL_0264: ldstr "unknown: "
+ldloc.3 
+ldc.i4.s 109
+beq.s IL_00d7: ldloc.1
+ldloc.3 
+ldc.i4.s 116
+beq.s IL_00c2: ldloc.1
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr panel
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0116: call System.Void OffServerVoiceUI::TogglePanel()
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr level
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_015d: ldloc.0
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr auto
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0134: ldloc.0
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr talk
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0186: call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr mute
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_01c2: ldarg.0
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr deaf
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0207: ldloc.0
+br IL_0264: ldstr "unknown: "
+ldloc.1 
+ldstr volume
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0230: ldloc.0
+br IL_0264: ldstr "unknown: "
+call System.Void OffServerVoiceUI::TogglePanel()
+ldstr panel 
+call System.Boolean OffServerVoiceUI::get_PanelOpen()
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Boolean::ToString()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldloc.0 
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+call System.Void OffServerVoice::SetAutoMode(System.Boolean)
+ldstr auto 
+call System.Boolean OffServerVoice::get_AutoMode()
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Boolean::ToString()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldloc.0 
+ldloca.s V_5
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_016e: ldstr "level "
+ldloc.s V_5
+call System.Void OffServerVoice::SetLevel(System.Int32)
+ldstr level 
+call System.Int32 OffServerVoice::get_Level()
+stloc.2 
+ldloca.s V_2
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brfalse.s IL_01b6: ldstr "talk "
+call T GameSystem`1<OffServerVoice>::Instance()
+stloc.s V_6
+ldloc.s V_6
+ldloc.0 
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+stfld System.Boolean OffServerVoice::_debugTalk
+ldloc.s V_6
+ldfld System.Boolean OffServerVoice::_debugTalk
+brfalse.s IL_01b6: ldstr "talk "
+ldloc.s V_6
+callvirt System.Void OffServerVoice::StartWanted()
+ldstr talk 
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldarg.0 
+ldlen 
+conv.i4 
+ldc.i4.2 
+ble.s IL_0201: ldstr "usage: mute <entityId> 0|1"
+ldarg.0 
+ldc.i4.1 
+ldelem.ref 
+ldarg.0 
+ldc.i4.2 
+ldelem.ref 
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+call System.Void OffServerVoice::SetMuted(System.String,System.Boolean)
+ldstr mute 
+ldarg.0 
+ldc.i4.1 
+ldelem.ref 
+ldstr  
+ldarg.0 
+ldc.i4.1 
+ldelem.ref 
+call System.Boolean OffServerVoice::IsMuted(System.String)
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Boolean::ToString()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+ret 
+ldstr usage: mute <entityId> 0|1
+ret 
+ldloc.0 
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+call System.Void OffServerVoice::SetDeaf(System.Boolean)
+ldstr deaf 
+call System.Boolean OffServerVoice::get_Deaf()
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Boolean::ToString()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldloc.0 
+ldc.i4 167
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_7
+call System.Boolean System.Single::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Single&)
+brfalse.s IL_024b: ldstr "volume "
+ldloc.s V_7
+call System.Void OffServerVoice::SetVolume(System.Single)
+ldstr volume 
+call System.Single OffServerVoice::get_Volume()
+stloc.s V_8
+ldloca.s V_8
+call System.String System.Single::ToString()
+call System.String System.String::Concat(System.String,System.String)
+ret 
+ldstr unknown: 
+ldarg.0 
+ldc.i4.0 
+ldelem.ref 
+call System.String System.String::Concat(System.String,System.String)
+ret 
+METHOD System.Void OffServerVoice::Awake()
+call System.Void OffServerVoice::LoadPrefs()
+ldc.i4.4 
+call System.Void OffServerVoice::set_MaxSpeakers(System.Int32)
+ldsfld System.String System.String::Empty
+call System.Void OffServerVoice::set_GmMutedText(System.String)
+ldc.i4.0 
+call System.Void OffServerVoice::set_ConfigReceived(System.Boolean)
+ldc.i4.0 
+call System.Void OffServerVoice::set_ServerEnabled(System.Boolean)
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldarg.0 
+ldftn System.Void OffServerVoice::OnVoiceDown(Messages.VoiceDown,Durango.Network.PacketHeader)
+newobj System.Void Durango.Network.Connection/MessageHandler`1<Messages.VoiceDown>::.ctor(System.Object,System.IntPtr)
+callvirt System.Boolean Durango.Network.Connection::On<Messages.VoiceDown>(Durango.Network.Connection/MessageHandler`1<T>)
+pop 
+call T GameSystem`1<InputSystem>::Instance()
+dup 
+ldc.i4.s 102
+ldarg.0 
+ldftn System.Void OffServerVoice::OnTalkKey(InputCommandMessage)
+newobj System.Void System.Action`1<InputCommandMessage>::.ctor(System.Object,System.IntPtr)
+ldc.i4.2 
+callvirt System.Void InputSystem::On(InputCommand,System.Action`1<InputCommandMessage>,InputSystem/Priority)
+dup 
+ldc.i4.s 103
+ldarg.0 
+ldftn System.Void OffServerVoice::OnPanelKey(InputCommandMessage)
+newobj System.Void System.Action`1<InputCommandMessage>::.ctor(System.Object,System.IntPtr)
+ldc.i4.2 
+callvirt System.Void InputSystem::On(InputCommand,System.Action`1<InputCommandMessage>,InputSystem/Priority)
+ldc.i4.s 104
+ldarg.0 
+ldftn System.Void OffServerVoice::OnRangeKey(InputCommandMessage)
+newobj System.Void System.Action`1<InputCommandMessage>::.ctor(System.Object,System.IntPtr)
+ldc.i4.2 
+callvirt System.Void InputSystem::On(InputCommand,System.Action`1<InputCommandMessage>,InputSystem/Priority)
+ret 
+METHOD System.Void OffServerVoice::OnDestroy()
+ldarg.0 
+call System.Void OffServerVoice::StopMic()
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Collections.Generic.Dictionary`2/ValueCollection<!0,!1> System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::get_Values()
+callvirt System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2/ValueCollection<System.String,OffServerVoiceStream>::GetEnumerator()
+stloc.0 
+br.s IL_0035: ldloca.s V_0
+ldloca.s V_0
+call !1 System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator<System.String,OffServerVoiceStream>::get_Current()
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0035: ldloca.s V_0
+ldloc.1 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ldloca.s V_0
+call System.Boolean System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator<System.String,OffServerVoiceStream>::MoveNext()
+brtrue.s IL_0019: ldloca.s V_0
+leave.s IL_004e: ldarg.0
+ldloca.s V_0
+constrained. System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator<System.String,OffServerVoiceStream>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::Clear()
+ldc.i4.0 
+call System.Void OffServerVoice::set_Talking(System.Boolean)
+ldc.i4.0 
+call System.Void OffServerVoice::set_ConfigReceived(System.Boolean)
+ldc.i4.0 
+call System.Void OffServerVoice::set_ServerEnabled(System.Boolean)
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::LoadPrefs()
+ldsfld System.Boolean OffServerVoice::_prefsLoaded
+brfalse.s IL_0008: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean OffServerVoice::_prefsLoaded
+ldstr offserver.voice.mode
+ldc.i4.0 
+call System.Int32 UnityEngine.PlayerPrefs::GetInt(System.String,System.Int32)
+ldc.i4.1 
+ceq 
+call System.Void OffServerVoice::set_AutoMode(System.Boolean)
+ldstr offserver.voice.level
+ldc.i4.m1 
+call System.Int32 UnityEngine.PlayerPrefs::GetInt(System.String,System.Int32)
+stsfld System.Int32 OffServerVoice::_level
+ldstr offserver.voice.volume
+ldc.r4 1
+call System.Single UnityEngine.PlayerPrefs::GetFloat(System.String,System.Single)
+ldc.r4 0
+ldc.r4 2
+call System.Single UnityEngine.Mathf::Clamp(System.Single,System.Single,System.Single)
+call System.Void OffServerVoice::set_Volume(System.Single)
+ldstr offserver.voice.sens
+ldc.i4.3 
+call System.Int32 UnityEngine.PlayerPrefs::GetInt(System.String,System.Int32)
+ldc.i4.0 
+ldsfld System.Single[] OffServerVoice::SensitivityDb
+ldlen 
+conv.i4 
+ldc.i4.1 
+sub 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+call System.Void OffServerVoice::set_Sensitivity(System.Int32)
+ldstr offserver.voice.deaf
+ldc.i4.0 
+call System.Int32 UnityEngine.PlayerPrefs::GetInt(System.String,System.Int32)
+ldc.i4.1 
+ceq 
+call System.Void OffServerVoice::set_Deaf(System.Boolean)
+call System.StringComparer System.StringComparer::get_Ordinal()
+newobj System.Void System.Collections.Generic.HashSet`1<System.String>::.ctor(System.Collections.Generic.IEqualityComparer`1<!0>)
+stsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldstr offserver.voice.muted
+ldsfld System.String System.String::Empty
+call System.String UnityEngine.PlayerPrefs::GetString(System.String,System.String)
+ldc.i4.s 44
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_00d8: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldloc.2 
+callvirt System.String System.String::Trim()
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_00d4: ldloc.1
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldloc.2 
+callvirt System.String System.String::Trim()
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Add(!0)
+pop 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_00b1: ldloc.0
+ret 
+METHOD System.Void OffServerVoice::RaiseChanged()
+ldsfld System.Action OffServerVoice::Changed
+brfalse.s IL_001a: ret
+ldsfld System.Action OffServerVoice::Changed
+callvirt System.Void System.Action::Invoke()
+leave.s IL_001a: ret
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_001a: ret
+ret 
+METHOD System.Void OffServerVoice::SetAutoMode(System.Boolean)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+call System.Void OffServerVoice::set_AutoMode(System.Boolean)
+ldstr offserver.voice.mode
+ldarg.0 
+ldc.i4.0 
+cgt.un 
+call System.Void UnityEngine.PlayerPrefs::SetInt(System.String,System.Int32)
+call System.Void UnityEngine.PlayerPrefs::Save()
+ldarg.0 
+brfalse.s IL_0032: call System.Void OffServerVoice::RaiseChanged()
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brfalse.s IL_0032: call System.Void OffServerVoice::RaiseChanged()
+call T GameSystem`1<OffServerVoice>::Instance()
+callvirt System.Void OffServerVoice::EnsurePermission()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::SetLevel(System.Int32)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+ldc.i4.0 
+ldc.i4.2 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+stsfld System.Int32 OffServerVoice::_level
+ldstr offserver.voice.level
+ldsfld System.Int32 OffServerVoice::_level
+call System.Void UnityEngine.PlayerPrefs::SetInt(System.String,System.Int32)
+call System.Void UnityEngine.PlayerPrefs::Save()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::SetVolume(System.Single)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+ldc.r4 4
+mul 
+call System.Single UnityEngine.Mathf::Round(System.Single)
+ldc.r4 4
+div 
+ldc.r4 0
+ldc.r4 2
+call System.Single UnityEngine.Mathf::Clamp(System.Single,System.Single,System.Single)
+call System.Void OffServerVoice::set_Volume(System.Single)
+ldstr offserver.voice.volume
+call System.Single OffServerVoice::get_Volume()
+call System.Void UnityEngine.PlayerPrefs::SetFloat(System.String,System.Single)
+call System.Void UnityEngine.PlayerPrefs::Save()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::SetSensitivity(System.Int32)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+ldc.i4.0 
+ldsfld System.Single[] OffServerVoice::SensitivityDb
+ldlen 
+conv.i4 
+ldc.i4.1 
+sub 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+call System.Void OffServerVoice::set_Sensitivity(System.Int32)
+ldstr offserver.voice.sens
+call System.Int32 OffServerVoice::get_Sensitivity()
+call System.Void UnityEngine.PlayerPrefs::SetInt(System.String,System.Int32)
+call System.Void UnityEngine.PlayerPrefs::Save()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::SetDeaf(System.Boolean)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+call System.Void OffServerVoice::set_Deaf(System.Boolean)
+ldstr offserver.voice.deaf
+ldarg.0 
+ldc.i4.0 
+cgt.un 
+call System.Void UnityEngine.PlayerPrefs::SetInt(System.String,System.Int32)
+call System.Void UnityEngine.PlayerPrefs::Save()
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brfalse.s IL_003a: call System.Void OffServerVoice::RaiseChanged()
+call T GameSystem`1<OffServerVoice>::Instance()
+stloc.0 
+ldarg.0 
+brfalse.s IL_0034: ldloc.0
+ldloc.0 
+callvirt System.Void OffServerVoice::ClearStreams()
+ldloc.0 
+callvirt System.Void OffServerVoice::SendMuteList()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::SetMuted(System.String,System.Boolean)
+call System.Void OffServerVoice::LoadPrefs()
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_001a: ret
+ldarg.0 
+call System.String GameManager::get_PlayerId()
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_001b: ldarg.1
+ret 
+ldarg.1 
+brtrue.s IL_002b: ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldarg.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Remove(!0)
+br.s IL_0036: brtrue.s IL_0061
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldarg.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Add(!0)
+brtrue.s IL_0061: ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ret 
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+callvirt System.Collections.Generic.HashSet`1/Enumerator<!0> System.Collections.Generic.HashSet`1<System.String>::GetEnumerator()
+box System.Collections.Generic.HashSet`1/Enumerator<System.String>
+stloc.0 
+ldloc.0 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+pop 
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldloc.0 
+callvirt !0 System.Collections.Generic.IEnumerator`1<System.String>::get_Current()
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Remove(!0)
+pop 
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+callvirt System.Int32 System.Collections.Generic.HashSet`1<System.String>::get_Count()
+ldc.i4 200
+bgt.s IL_0039: ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldstr offserver.voice.muted
+ldstr ,
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor(System.Collections.Generic.IEnumerable`1<!0>)
+call !0[] System.Collections.Generic.List`1<System.String>::ToArray()
+call System.String System.String::Join(System.String,System.String[])
+call System.Void UnityEngine.PlayerPrefs::SetString(System.String,System.String)
+call System.Void UnityEngine.PlayerPrefs::Save()
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brfalse.s IL_00b7: call System.Void OffServerVoice::RaiseChanged()
+call T GameSystem`1<OffServerVoice>::Instance()
+stloc.1 
+ldarg.1 
+brfalse.s IL_00b1: ldloc.1
+ldloc.1 
+ldarg.0 
+callvirt System.Void OffServerVoice::DropStream(System.String)
+ldloc.1 
+callvirt System.Void OffServerVoice::SendMuteList()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::OnTalkKey(InputCommandMessage)
+ldarg.1 
+ldfld Durango.Logic.InputSystem.Trigger InputCommandMessage::CurrentTrigger
+ldc.i4.1 
+and 
+brfalse.s IL_0018: ldarg.1
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoice::_pttKey
+ldarg.0 
+call System.Void OffServerVoice::StartWanted()
+ret 
+ldarg.1 
+ldfld Durango.Logic.InputSystem.Trigger InputCommandMessage::CurrentTrigger
+ldc.i4.2 
+and 
+brfalse.s IL_0029: ret
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean OffServerVoice::_pttKey
+ret 
+METHOD System.Void OffServerVoice::OnPanelKey(InputCommandMessage)
+ldarg.1 
+ldfld Durango.Logic.InputSystem.Trigger InputCommandMessage::CurrentTrigger
+ldc.i4.1 
+and 
+brfalse.s IL_0016: ret
+call System.Boolean OffServerVoice::get_Available()
+brfalse.s IL_0016: ret
+call System.Void OffServerVoiceUI::TogglePanel()
+ret 
+METHOD System.Void OffServerVoice::OnRangeKey(InputCommandMessage)
+ldarg.1 
+ldfld Durango.Logic.InputSystem.Trigger InputCommandMessage::CurrentTrigger
+ldc.i4.1 
+and 
+brfalse.s IL_0024: ret
+call System.Boolean OffServerVoice::get_Available()
+brfalse.s IL_0024: ret
+call System.Int32 OffServerVoice::get_Level()
+ldc.i4.1 
+add 
+ldc.i4.3 
+rem 
+call System.Void OffServerVoice::SetLevel(System.Int32)
+call System.Void OffServerVoiceUI::FlashRange()
+ret 
+METHOD System.Void OffServerVoice::ButtonPress(System.Boolean)
+call System.Boolean GameSystem`1<OffServerVoice>::HasInstance()
+brtrue.s IL_0008: call T GameSystem`1<OffServerVoice>::Instance()
+ret 
+call T GameSystem`1<OffServerVoice>::Instance()
+stloc.0 
+ldarg.0 
+brfalse.s IL_002a: ldloc.0
+ldloc.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stfld System.Single OffServerVoice::_buttonDownAt
+ldloc.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoice::_buttonHeld
+ldloc.0 
+callvirt System.Void OffServerVoice::StartWanted()
+ret 
+ldloc.0 
+ldfld System.Boolean OffServerVoice::_pttButton
+stloc.1 
+ldloc.0 
+ldc.i4.0 
+stfld System.Boolean OffServerVoice::_buttonHeld
+ldloc.0 
+ldc.i4.0 
+stfld System.Boolean OffServerVoice::_pttButton
+ldloc.0 
+ldc.r4 -1
+stfld System.Single OffServerVoice::_buttonDownAt
+ldloc.1 
+brtrue.s IL_0052: ret
+call System.Void OffServerVoiceUI::TogglePanel()
+ret 
+METHOD System.Boolean OffServerVoice::get_PttHeld()
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_pttKey
+brtrue.s IL_0017: ldc.i4.1
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_pttButton
+brtrue.s IL_0017: ldc.i4.1
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_debugTalk
+ret 
+ldc.i4.1 
+ret 
+METHOD System.Void OffServerVoice::StartWanted()
+call System.Boolean OffServerVoice::get_Available()
+brtrue.s IL_0008: call System.Int32 OffServerVoice::get_GmMutedHours()
+ret 
+call System.Int32 OffServerVoice::get_GmMutedHours()
+ldc.i4.0 
+ble.s IL_0034: ldarg.0
+ldstr gm_muted
+call System.String OffServerVoiceUI::Text(System.String)
+call System.Int32 OffServerVoice::get_GmMutedHours()
+box System.Int32
+call System.String System.String::Format(System.String,System.Object)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 10
+add 
+stfld System.Single OffServerVoice::_micKeepUntil
+ldarg.0 
+call System.Void OffServerVoice::EnsurePermission()
+ret 
+METHOD System.Void OffServerVoice::Update()
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stloc.0 
+call System.Boolean GameManager::get_IsReady()
+stloc.1 
+ldloc.1 
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_wasReady
+beq.s IL_0040: ldloc.1
+ldarg.0 
+ldloc.0 
+ldc.r4 60
+add 
+stfld System.Single OffServerVoice::_nextHelloAt
+ldloc.1 
+brtrue.s IL_0032: ldarg.0
+ldarg.0 
+ldc.i4.1 
+call System.Void OffServerVoice::StopTalking(System.Boolean)
+ldarg.0 
+call System.Void OffServerVoice::ClearStreams()
+ldarg.0 
+ldloc.1 
+stfld System.Boolean OffServerVoice::_wasReady
+call System.Void OffServerVoice::RaiseChanged()
+br.s IL_0059: ldarg.0
+ldloc.1 
+brfalse.s IL_0059: ldarg.0
+call System.Boolean OffServerVoice::get_ConfigReceived()
+brfalse.s IL_0059: ldarg.0
+ldloc.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_nextHelloAt
+blt.un.s IL_0059: ldarg.0
+ldarg.0 
+call System.Void OffServerVoice::SendHello()
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_pttKey
+brfalse.s IL_007d: ldarg.0
+call System.Boolean UnityEngine.Application::get_isFocused()
+brfalse.s IL_0076: ldarg.0
+ldstr voice_talk
+ldc.i4.s 120
+call System.Boolean Durango.System.Config.OffServerHotkeys::IsHeld(System.String,UnityEngine.KeyCode)
+brtrue.s IL_007d: ldarg.0
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean OffServerVoice::_pttKey
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_buttonHeld
+brfalse.s IL_00b0: call System.Boolean OffServerVoice::get_Available()
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_pttButton
+brtrue.s IL_00b0: call System.Boolean OffServerVoice::get_Available()
+ldarg.0 
+ldfld System.Single OffServerVoice::_buttonDownAt
+ldc.r4 0
+blt.un.s IL_00b0: call System.Boolean OffServerVoice::get_Available()
+ldloc.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_buttonDownAt
+sub 
+ldc.r4 0,25
+blt.un.s IL_00b0: call System.Boolean OffServerVoice::get_Available()
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean OffServerVoice::_pttButton
+call System.Boolean OffServerVoice::get_Available()
+brfalse.s IL_00d4: ldc.i4.0
+call System.Boolean OffServerVoice::get_AutoMode()
+brtrue.s IL_00d1: ldc.i4.1
+ldarg.0 
+call System.Boolean OffServerVoice::get_PttHeld()
+brtrue.s IL_00d1: ldc.i4.1
+ldloc.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_micKeepUntil
+clt 
+br.s IL_00d5: ldarg.0
+ldc.i4.1 
+br.s IL_00d5: ldarg.0
+ldc.i4.0 
+ldarg.0 
+call System.Boolean OffServerVoice::get_PttHeld()
+brfalse.s IL_00ea: ldarg.0
+ldarg.0 
+ldloc.0 
+ldc.r4 10
+add 
+stfld System.Single OffServerVoice::_micKeepUntil
+ldarg.0 
+volatile. 
+ldfld System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoice::_permissionResult
+stloc.2 
+ldloc.2 
+brfalse.s IL_013a: dup
+ldarg.0 
+ldc.i4.0 
+volatile. 
+stfld System.Int32 modreq(System.Runtime.CompilerServices.IsVolatile) OffServerVoice::_permissionResult
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean OffServerVoice::_permissionPending
+ldarg.0 
+ldc.r4 0
+stfld System.Single OffServerVoice::_micRetryAt
+ldloc.2 
+ldc.i4.1 
+beq.s IL_0121: ldnull
+ldstr perm_denied
+call System.String OffServerVoiceUI::Text(System.String)
+br.s IL_0122: call System.Void OffServerVoice::SetMicProblem(System.String)
+ldnull 
+call System.Void OffServerVoice::SetMicProblem(System.String)
+ldloc.2 
+ldc.i4.2 
+bne.un.s IL_013a: dup
+call System.String OffServerVoice::get_MicProblem()
+ldc.r4 4
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+dup 
+brfalse.s IL_0153: brfalse.s IL_0190
+ldarg.0 
+call System.Boolean OffServerVoice::HasPermission()
+brtrue.s IL_0153: brfalse.s IL_0190
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_permissionAsked
+brtrue.s IL_0153: brfalse.s IL_0190
+ldarg.0 
+call System.Void OffServerVoice::EnsurePermission()
+brfalse.s IL_0190: ldarg.0
+ldarg.0 
+call System.Boolean OffServerVoice::HasPermission()
+brfalse.s IL_0190: ldarg.0
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0187: ldarg.0
+ldloc.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_micRetryAt
+blt.un.s IL_0187: ldarg.0
+ldarg.0 
+ldloc.0 
+ldc.r4 5
+add 
+stfld System.Single OffServerVoice::_micRetryAt
+ldarg.0 
+call System.Void OffServerVoice::StartMic()
+ldarg.0 
+ldloc.0 
+call System.Void OffServerVoice::PumpMic(System.Single)
+br.s IL_01b2: ldarg.0
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_01a4: call System.Boolean OffServerVoice::get_Talking()
+ldarg.0 
+call System.Void OffServerVoice::StopMic()
+call System.Boolean OffServerVoice::get_Talking()
+brfalse.s IL_01b2: ldarg.0
+ldarg.0 
+ldc.i4.1 
+call System.Void OffServerVoice::StopTalking(System.Boolean)
+ldarg.0 
+ldloc.0 
+call System.Void OffServerVoice::UpdateStreams(System.Single)
+ldloc.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_listenerCheckAt
+blt.un.s IL_01d5: ret
+ldarg.0 
+ldloc.0 
+ldc.r4 2
+add 
+stfld System.Single OffServerVoice::_listenerCheckAt
+ldarg.0 
+call System.Void OffServerVoice::CheckListener()
+ret 
+METHOD System.Void OffServerVoice::LateUpdate()
+call System.Void OffServerVoiceUI::TickRings()
+leave.s IL_000e: ret
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_000e: ret
+ret 
+METHOD System.Boolean OffServerVoice::HasPermission()
+ldc.i4.1 
+ret 
+METHOD System.Void OffServerVoice::EnsurePermission()
+ret 
+METHOD System.Void OffServerVoice::StartMic()
+call System.String[] UnityEngine.Microphone::get_devices()
+stloc.0 
+ldloc.0 
+brfalse.s IL_000d: ldstr "no_mic"
+ldloc.0 
+ldlen 
+brtrue.s IL_002c: ldarg.0
+ldstr no_mic
+call System.String OffServerVoiceUI::Text(System.String)
+call System.Void OffServerVoice::SetMicProblem(System.String)
+ldarg.0 
+ldc.r4 0
+stfld System.Single OffServerVoice::_micKeepUntil
+leave IL_01d5: ret
+ldarg.0 
+ldnull 
+stfld System.String OffServerVoice::_micDevice
+ldarg.0 
+ldfld System.String OffServerVoice::_micDevice
+ldloca.s V_1
+ldloca.s V_2
+call System.Void UnityEngine.Microphone::GetDeviceCaps(System.String,System.Int32&,System.Int32&)
+ldarg.0 
+ldloc.1 
+brtrue.s IL_0049: ldloc.1
+ldloc.2 
+brfalse.s IL_0067: ldc.i4 16000
+ldloc.1 
+ldc.i4 16000
+bgt.s IL_0059: ldloc.2
+ldc.i4 16000
+ldloc.2 
+ble.s IL_0067: ldc.i4 16000
+ldloc.2 
+ldc.i4.0 
+bgt.s IL_0064: ldloc.2
+ldc.i4 48000
+br.s IL_006c: stfld System.Int32 OffServerVoice::_micFreq
+ldloc.2 
+br.s IL_006c: stfld System.Int32 OffServerVoice::_micFreq
+ldc.i4 16000
+stfld System.Int32 OffServerVoice::_micFreq
+ldarg.0 
+ldarg.0 
+ldfld System.String OffServerVoice::_micDevice
+ldc.i4.1 
+ldc.i4.1 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micFreq
+call UnityEngine.AudioClip UnityEngine.Microphone::Start(System.String,System.Boolean,System.Int32,System.Int32)
+stfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00ac: ldarg.0
+ldstr no_mic
+call System.String OffServerVoiceUI::Text(System.String)
+call System.Void OffServerVoice::SetMicProblem(System.String)
+leave IL_01d5: ret
+ldarg.0 
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+callvirt System.Int32 UnityEngine.AudioClip::get_frequency()
+stfld System.Int32 OffServerVoice::_micFreq
+ldarg.0 
+ldarg.0 
+ldfld System.String OffServerVoice::_micDevice
+call System.Int32 UnityEngine.Microphone::GetPosition(System.String)
+stfld System.Int32 OffServerVoice::_micReadPos
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micReadPos
+ldc.i4.0 
+bge.s IL_00de: ldarg.0
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerVoice::_micReadPos
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::Clear()
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+callvirt System.Void System.Collections.Generic.Queue`1<System.Single[]>::Clear()
+ldarg.0 
+ldc.r8 0
+stfld System.Double OffServerVoice::_resamplePos
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+brtrue.s IL_0153: ldarg.0
+ldarg.0 
+ldc.i4 16000
+ldc.i4.1 
+ldc.i4 2048
+call Concentus.Structs.OpusEncoder Concentus.Structs.OpusEncoder::Create(System.Int32,System.Int32,Concentus.Enums.OpusApplication)
+stfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+call System.Boolean UnityEngine.Application::get_isMobilePlatform()
+brtrue.s IL_0131: ldc.i4.3
+ldc.i4.5 
+br.s IL_0132: callvirt System.Void Concentus.Structs.OpusEncoder::set_Complexity(System.Int32)
+ldc.i4.3 
+callvirt System.Void Concentus.Structs.OpusEncoder::set_Complexity(System.Int32)
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+ldc.i4 3001
+callvirt System.Void Concentus.Structs.OpusEncoder::set_SignalType(Concentus.Enums.OpusSignal)
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+ldc.i4.1 
+callvirt System.Void Concentus.Structs.OpusEncoder::set_UseVBR(System.Boolean)
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+ldsfld System.Int32 OffServerVoice::_bitrate
+callvirt System.Void Concentus.Structs.OpusEncoder::set_Bitrate(System.Int32)
+ldnull 
+call System.Void OffServerVoice::SetMicProblem(System.String)
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Voice] mic on (
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldflda System.Int32 OffServerVoice::_micFreq
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  Hz, 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_01d5: ret
+stloc.3 
+ldarg.0 
+ldnull 
+stfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldstr no_mic
+call System.String OffServerVoiceUI::Text(System.String)
+call System.Void OffServerVoice::SetMicProblem(System.String)
+ldstr [Voice] mic start failed: 
+ldloc.3 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_01d5: ret
+ret 
+METHOD System.Void OffServerVoice::StopMic()
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0025: ldarg.0
+ldarg.0 
+ldfld System.String OffServerVoice::_micDevice
+call System.Void UnityEngine.Microphone::End(System.String)
+leave.s IL_001e: ldarg.0
+pop 
+leave.s IL_001e: ldarg.0
+ldarg.0 
+ldnull 
+stfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::Clear()
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+callvirt System.Void System.Collections.Generic.Queue`1<System.Single[]>::Clear()
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerVoice::_vadOverFrames
+ldc.r4 -100
+call System.Void OffServerVoice::set_MicLevelDb(System.Single)
+ret 
+METHOD System.Void OffServerVoice::SetMicProblem(System.String)
+call System.String OffServerVoice::get_MicProblem()
+ldarg.0 
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_0018: ret
+ldarg.0 
+call System.Void OffServerVoice::set_MicProblem(System.String)
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::PumpMic(System.Single)
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000f: ldarg.0
+ret 
+ldarg.0 
+ldfld System.String OffServerVoice::_micDevice
+call System.Int32 UnityEngine.Microphone::GetPosition(System.String)
+stloc.0 
+ldloc.0 
+ldc.i4.0 
+bge.s IL_0020: ldarg.0
+ret 
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+callvirt System.Int32 UnityEngine.AudioClip::get_samples()
+stloc.1 
+ldloc.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micReadPos
+sub 
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+bge.s IL_003d: ldloc.2
+ldloc.2 
+ldloc.1 
+add 
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+ble.s IL_00bd: ldarg.0
+ldarg.0 
+ldfld System.Single[] OffServerVoice::_micTemp
+ldlen 
+conv.i4 
+ldloc.2 
+beq.s IL_0058: ldarg.0
+ldarg.0 
+ldloc.2 
+newarr System.Single
+stfld System.Single[] OffServerVoice::_micTemp
+ldarg.0 
+ldfld UnityEngine.AudioClip OffServerVoice::_micClip
+ldarg.0 
+ldfld System.Single[] OffServerVoice::_micTemp
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micReadPos
+callvirt System.Boolean UnityEngine.AudioClip::GetData(System.Single[],System.Int32)
+pop 
+ldarg.0 
+ldloc.0 
+stfld System.Int32 OffServerVoice::_micReadPos
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] OffServerVoice::_micTemp
+ldloc.2 
+call System.Void OffServerVoice::AppendResampled(System.Single[],System.Int32)
+br.s IL_00bd: ldarg.0
+ldc.i4 320
+newarr System.Single
+stloc.3 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+ldc.i4.0 
+ldloc.3 
+ldc.i4.0 
+ldc.i4 320
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::CopyTo(System.Int32,!0[],System.Int32,System.Int32)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+ldc.i4.0 
+ldc.i4 320
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::RemoveRange(System.Int32,System.Int32)
+ldarg.0 
+ldloc.3 
+ldarg.1 
+call System.Void OffServerVoice::ProcessFrame(System.Single[],System.Single)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+callvirt System.Int32 System.Collections.Generic.List`1<System.Single>::get_Count()
+ldc.i4 320
+bge.s IL_0086: ldc.i4 320
+ret 
+METHOD System.Void OffServerVoice::AppendResampled(System.Single[],System.Int32)
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micFreq
+ldc.i4 16000
+bne.un.s IL_0028: ldarg.0
+ldc.i4.0 
+stloc.1 
+br.s IL_0023: ldloc.1
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+ldarg.1 
+ldloc.1 
+ldelem.r4 
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::Add(!0)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.2 
+blt.s IL_0011: ldarg.0
+ret 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micFreq
+ldc.i4 16000
+rem 
+brtrue.s IL_009d: ldarg.0
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micFreq
+ldc.i4 16000
+div 
+stloc.2 
+ldc.i4.0 
+stloc.3 
+br.s IL_0098: ldloc.3
+ldarg.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_boxSum
+ldarg.1 
+ldloc.3 
+ldelem.r4 
+add 
+stfld System.Single OffServerVoice::_boxSum
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_boxCount
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+stfld System.Int32 OffServerVoice::_boxCount
+ldloc.s V_4
+ldloc.2 
+blt.s IL_0094: ldloc.3
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+ldarg.0 
+ldfld System.Single OffServerVoice::_boxSum
+ldloc.2 
+conv.r4 
+div 
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::Add(!0)
+ldarg.0 
+ldc.r4 0
+stfld System.Single OffServerVoice::_boxSum
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerVoice::_boxCount
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldarg.2 
+blt.s IL_0047: ldarg.0
+ret 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_micFreq
+conv.r8 
+ldc.r8 16000
+div 
+stloc.0 
+br.s IL_0107: ldarg.0
+ldarg.0 
+ldfld System.Double OffServerVoice::_resamplePos
+conv.i4 
+stloc.s V_5
+ldarg.0 
+ldfld System.Double OffServerVoice::_resamplePos
+ldloc.s V_5
+conv.r8 
+sub 
+stloc.s V_6
+ldloc.s V_5
+brfalse.s IL_00d2: ldarg.0
+ldarg.1 
+ldloc.s V_5
+ldc.i4.1 
+sub 
+ldelem.r4 
+br.s IL_00d8: stloc.s V_7
+ldarg.0 
+ldfld System.Single OffServerVoice::_resampleLast
+stloc.s V_7
+ldarg.1 
+ldloc.s V_5
+ldelem.r4 
+stloc.s V_8
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+ldloc.s V_7
+conv.r8 
+ldloc.s V_8
+ldloc.s V_7
+sub 
+conv.r8 
+ldloc.s V_6
+mul 
+add 
+conv.r4 
+callvirt System.Void System.Collections.Generic.List`1<System.Single>::Add(!0)
+ldarg.0 
+ldarg.0 
+ldfld System.Double OffServerVoice::_resamplePos
+ldloc.0 
+add 
+stfld System.Double OffServerVoice::_resamplePos
+ldarg.0 
+ldfld System.Double OffServerVoice::_resamplePos
+ldarg.2 
+conv.r8 
+blt.s IL_00b1: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Double OffServerVoice::_resamplePos
+ldarg.2 
+conv.r8 
+sub 
+stfld System.Double OffServerVoice::_resamplePos
+ldarg.0 
+ldarg.1 
+ldarg.2 
+ldc.i4.1 
+sub 
+ldelem.r4 
+stfld System.Single OffServerVoice::_resampleLast
+ret 
+METHOD System.Void OffServerVoice::ProcessFrame(System.Single[],System.Single)
+ldc.r8 0
+stloc.0 
+ldc.i4.0 
+stloc.3 
+br.s IL_001d: ldloc.3
+ldloc.0 
+ldarg.1 
+ldloc.3 
+ldelem.r4 
+ldarg.1 
+ldloc.3 
+ldelem.r4 
+mul 
+conv.r8 
+add 
+stloc.0 
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_000e: ldloc.0
+ldloc.0 
+ldarg.1 
+ldlen 
+conv.i4 
+conv.r8 
+div 
+call System.Double System.Math::Sqrt(System.Double)
+conv.r4 
+stloc.1 
+ldloc.1 
+ldc.r4 1E-05
+bgt.s IL_003f: ldc.r4 20
+ldc.r4 -100
+br.s IL_004b: call System.Void OffServerVoice::set_MicLevelDb(System.Single)
+ldc.r4 20
+ldloc.1 
+call System.Single UnityEngine.Mathf::Log10(System.Single)
+mul 
+call System.Void OffServerVoice::set_MicLevelDb(System.Single)
+ldarg.0 
+call System.Boolean OffServerVoice::get_PttHeld()
+stloc.2 
+ldloc.2 
+brtrue.s IL_00c7: ldloc.2
+call System.Boolean OffServerVoice::get_AutoMode()
+brfalse.s IL_00c7: ldloc.2
+ldsfld System.Single[] OffServerVoice::SensitivityDb
+call System.Int32 OffServerVoice::get_Sensitivity()
+ldelem.r4 
+stloc.s V_4
+ldarg.2 
+ldarg.0 
+ldfld System.Single OffServerVoice::_lastRemoteAudioAt
+sub 
+ldc.r4 0,3
+bge.un.s IL_0087: call System.Single OffServerVoice::get_MicLevelDb()
+ldloc.s V_4
+ldc.r4 8
+add 
+stloc.s V_4
+call System.Single OffServerVoice::get_MicLevelDb()
+ldloc.s V_4
+ble.un.s IL_00b0: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_vadOverFrames
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerVoice::_vadOverFrames
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_vadOverFrames
+ldc.i4.2 
+blt.s IL_00b7: ldarg.2
+ldarg.0 
+ldarg.2 
+stfld System.Single OffServerVoice::_vadLastVoiceAt
+br.s IL_00b7: ldarg.2
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerVoice::_vadOverFrames
+ldarg.2 
+ldarg.0 
+ldfld System.Single OffServerVoice::_vadLastVoiceAt
+sub 
+ldc.r4 0,5
+clt 
+stloc.2 
+ldloc.2 
+brfalse.s IL_00db: ldc.i4.0
+call System.Boolean OffServerVoice::get_Available()
+brfalse.s IL_00db: ldc.i4.0
+call System.Int32 OffServerVoice::get_GmMutedHours()
+ldc.i4.0 
+ceq 
+br.s IL_00dc: brtrue.s IL_0121
+ldc.i4.0 
+brtrue.s IL_0121: call System.Boolean OffServerVoice::get_Talking()
+call System.Boolean OffServerVoice::get_Talking()
+brfalse.s IL_00ec: ldarg.0
+ldarg.0 
+ldc.i4.1 
+call System.Void OffServerVoice::StopTalking(System.Boolean)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+ldarg.1 
+callvirt System.Void System.Collections.Generic.Queue`1<System.Single[]>::Enqueue(!0)
+br.s IL_0106: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+callvirt !0 System.Collections.Generic.Queue`1<System.Single[]>::Dequeue()
+pop 
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+callvirt System.Int32 System.Collections.Generic.Queue`1<System.Single[]>::get_Count()
+ldarg.0 
+ldfld System.Boolean OffServerVoice::_buttonHeld
+brtrue.s IL_011c: ldc.i4.s 15
+ldc.i4.3 
+br.s IL_011e: bgt.s IL_00fa
+ldc.i4.s 15
+bgt.s IL_00fa: ldarg.0
+ret 
+call System.Boolean OffServerVoice::get_Talking()
+brtrue.s IL_0154: ldarg.0
+ldc.i4.1 
+call System.Void OffServerVoice::set_Talking(System.Boolean)
+call System.Void OffServerVoice::RaiseChanged()
+br.s IL_0146: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+callvirt !0 System.Collections.Generic.Queue`1<System.Single[]>::Dequeue()
+call System.Void OffServerVoice::EncodeAndQueue(System.Single[])
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+callvirt System.Int32 System.Collections.Generic.Queue`1<System.Single[]>::get_Count()
+ldc.i4.0 
+bgt.s IL_0135: ldarg.0
+ldarg.0 
+ldarg.1 
+call System.Void OffServerVoice::EncodeAndQueue(System.Single[])
+ret 
+METHOD System.Void OffServerVoice::ApplyAgc(System.Single[])
+ldc.r8 0
+stloc.0 
+ldc.i4.0 
+stloc.2 
+br.s IL_001d: ldloc.2
+ldloc.0 
+ldarg.1 
+ldloc.2 
+ldelem.r4 
+ldarg.1 
+ldloc.2 
+ldelem.r4 
+mul 
+conv.r8 
+add 
+stloc.0 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_000e: ldloc.0
+ldloc.0 
+ldarg.1 
+ldlen 
+conv.i4 
+conv.r8 
+div 
+call System.Double System.Math::Sqrt(System.Double)
+conv.r4 
+stloc.1 
+ldloc.1 
+ldc.r4 0,0032
+ble.un.s IL_0082: ldc.i4.0
+ldc.r4 0,1
+ldloc.1 
+div 
+ldc.r4 1
+ldc.r4 20
+call System.Single UnityEngine.Mathf::Clamp(System.Single,System.Single,System.Single)
+stloc.3 
+ldarg.0 
+ldloc.3 
+ldarg.0 
+ldfld System.Single OffServerVoice::_agcGain
+blt.s IL_006c: ldarg.0
+ldarg.0 
+ldfld System.Single OffServerVoice::_agcGain
+ldloc.3 
+ldc.r4 0,06
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+br.s IL_007d: stfld System.Single OffServerVoice::_agcGain
+ldarg.0 
+ldfld System.Single OffServerVoice::_agcGain
+ldloc.3 
+ldc.r4 0,5
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+stfld System.Single OffServerVoice::_agcGain
+ldc.i4.0 
+stloc.s V_4
+br.s IL_00e1: ldloc.s V_4
+ldarg.1 
+ldloc.s V_4
+ldelem.r4 
+ldarg.0 
+ldfld System.Single OffServerVoice::_agcGain
+mul 
+stloc.s V_5
+ldloc.s V_5
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+stloc.s V_6
+ldloc.s V_6
+ldc.r4 0,7
+ble.un.s IL_00d5: ldarg.1
+ldloc.s V_5
+call System.Single UnityEngine.Mathf::Sign(System.Single)
+ldc.r4 0,7
+ldc.r4 0,3
+ldc.r4 1
+ldc.r4 0,7
+ldloc.s V_6
+sub 
+ldc.r4 0,3
+div 
+call System.Single UnityEngine.Mathf::Exp(System.Single)
+sub 
+mul 
+add 
+mul 
+stloc.s V_5
+ldarg.1 
+ldloc.s V_4
+ldloc.s V_5
+stelem.r4 
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_0087: ldarg.1
+ret 
+METHOD System.Void OffServerVoice::EncodeAndQueue(System.Single[])
+ldarg.0 
+ldarg.1 
+call System.Void OffServerVoice::ApplyAgc(System.Single[])
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+ldarg.1 
+ldc.i4.0 
+ldc.i4 320
+ldarg.0 
+ldfld System.Byte[] OffServerVoice::_encodeBuf
+ldc.i4.0 
+ldc.i4 255
+callvirt System.Int32 Concentus.Structs.OpusEncoder::Encode(System.Single[],System.Int32,System.Int32,System.Byte[],System.Int32,System.Int32)
+stloc.0 
+leave.s IL_0040: ldloc.0
+stloc.1 
+ldstr [Voice] encode failed: 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_00a0: ret
+ldloc.0 
+ldc.i4.0 
+ble.s IL_004c: ret
+ldloc.0 
+ldc.i4 255
+ble.s IL_004d: ldarg.0
+ret 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+ldloc.0 
+conv.u1 
+callvirt System.Void System.Collections.Generic.List`1<System.Byte>::Add(!0)
+ldc.i4.0 
+stloc.2 
+br.s IL_0075: ldloc.2
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+ldarg.0 
+ldfld System.Byte[] OffServerVoice::_encodeBuf
+ldloc.2 
+ldelem.u1 
+callvirt System.Void System.Collections.Generic.List`1<System.Byte>::Add(!0)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.0 
+blt.s IL_005e: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_packetFrames
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerVoice::_packetFrames
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_packetFrames
+ldc.i4.1 
+ldsfld System.Int32 OffServerVoice::_framesPerPacket
+call System.Int32 UnityEngine.Mathf::Max(System.Int32,System.Int32)
+blt.s IL_00a0: ret
+ldarg.0 
+call System.Void OffServerVoice::FlushPacket()
+ret 
+METHOD System.Void OffServerVoice::FlushPacket()
+ldarg.0 
+ldfld System.Int32 OffServerVoice::_packetFrames
+brtrue.s IL_0009: ldloca.s V_0
+ret 
+ldloca.s V_0
+initobj Messages.VoiceUp
+ldloca.s V_0
+ldc.i4.0 
+stfld System.Byte Messages.VoiceUp::Kind
+ldloca.s V_0
+call System.Int32 OffServerVoice::get_Level()
+conv.u1 
+stfld System.Byte Messages.VoiceUp::Level
+ldloca.s V_0
+ldarg.0 
+ldarg.0 
+ldfld System.UInt32 OffServerVoice::_seq
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+stfld System.UInt32 OffServerVoice::_seq
+ldloc.1 
+stfld System.UInt32 Messages.VoiceUp::Seq
+ldloca.s V_0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+callvirt !0[] System.Collections.Generic.List`1<System.Byte>::ToArray()
+stfld System.Byte[] Messages.VoiceUp::Data
+ldloca.s V_0
+ldsfld System.String System.String::Empty
+stfld System.String Messages.VoiceUp::Text
+ldloc.0 
+call System.Void OffServerVoice::Send(Messages.VoiceUp)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+callvirt System.Void System.Collections.Generic.List`1<System.Byte>::Clear()
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerVoice::_packetFrames
+ret 
+METHOD System.Void OffServerVoice::StopTalking(System.Boolean)
+call System.Boolean OffServerVoice::get_Talking()
+brtrue.s IL_001a: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+callvirt System.Void System.Collections.Generic.List`1<System.Byte>::Clear()
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerVoice::_packetFrames
+ret 
+ldarg.0 
+call System.Void OffServerVoice::FlushPacket()
+ldc.i4.0 
+call System.Void OffServerVoice::set_Talking(System.Boolean)
+ldarg.1 
+brfalse.s IL_0072: call System.Void OffServerVoice::RaiseChanged()
+ldloca.s V_0
+initobj Messages.VoiceUp
+ldloca.s V_0
+ldc.i4.1 
+stfld System.Byte Messages.VoiceUp::Kind
+ldloca.s V_0
+call System.Int32 OffServerVoice::get_Level()
+conv.u1 
+stfld System.Byte Messages.VoiceUp::Level
+ldloca.s V_0
+ldarg.0 
+ldfld System.UInt32 OffServerVoice::_seq
+stfld System.UInt32 Messages.VoiceUp::Seq
+ldloca.s V_0
+ldc.i4.0 
+newarr System.Byte
+stfld System.Byte[] Messages.VoiceUp::Data
+ldloca.s V_0
+ldsfld System.String System.String::Empty
+stfld System.String Messages.VoiceUp::Text
+ldloc.0 
+call System.Void OffServerVoice::Send(Messages.VoiceUp)
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::Send(Messages.VoiceUp)
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+stloc.0 
+ldloc.0 
+brfalse.s IL_001b: leave.s IL_0035
+ldloc.0 
+callvirt System.Boolean Durango.Network.Connection::Connected()
+brfalse.s IL_001b: leave.s IL_0035
+ldloc.0 
+ldarg.0 
+ldc.i4.1 
+ldc.i4.0 
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.VoiceUp>(T,System.Boolean,System.UInt32)
+pop 
+leave.s IL_0035: ret
+stloc.1 
+ldstr [Voice] send failed: 
+ldloc.1 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_0035: ret
+ret 
+METHOD System.Void OffServerVoice::SendHello()
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 60
+add 
+stfld System.Single OffServerVoice::_nextHelloAt
+ldloca.s V_0
+initobj Messages.VoiceUp
+ldloca.s V_0
+ldc.i4.3 
+stfld System.Byte Messages.VoiceUp::Kind
+ldloca.s V_0
+ldc.i4.0 
+newarr System.Byte
+stfld System.Byte[] Messages.VoiceUp::Data
+ldloca.s V_0
+ldsfld System.String System.String::Empty
+stfld System.String Messages.VoiceUp::Text
+ldloc.0 
+call System.Void OffServerVoice::Send(Messages.VoiceUp)
+ret 
+METHOD System.Void OffServerVoice::SendMuteList()
+call System.Void OffServerVoice::LoadPrefs()
+call System.Boolean OffServerVoice::get_ConfigReceived()
+brtrue.s IL_000d: ldloca.s V_0
+ret 
+ldloca.s V_0
+initobj Messages.VoiceUp
+ldloca.s V_0
+ldc.i4.2 
+stfld System.Byte Messages.VoiceUp::Kind
+ldloca.s V_0
+call System.Boolean OffServerVoice::get_Deaf()
+ldc.i4.0 
+cgt.un 
+conv.u1 
+stfld System.Byte Messages.VoiceUp::Level
+ldloca.s V_0
+ldc.i4.0 
+newarr System.Byte
+stfld System.Byte[] Messages.VoiceUp::Data
+ldloca.s V_0
+ldstr ,
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor(System.Collections.Generic.IEnumerable`1<!0>)
+call !0[] System.Collections.Generic.List`1<System.String>::ToArray()
+call System.String System.String::Join(System.String,System.String[])
+stfld System.String Messages.VoiceUp::Text
+ldloc.0 
+call System.Void OffServerVoice::Send(Messages.VoiceUp)
+ret 
+METHOD System.Void OffServerVoice::OnVoiceDown(Messages.VoiceDown,Durango.Network.PacketHeader)
+ldarg.1 
+ldfld System.Byte Messages.VoiceDown::Kind
+stloc.0 
+ldloc.0 
+switch Mono.Cecil.Cil.Instruction[]
+br IL_00ac: leave.s IL_00b5
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Text
+call System.Void OffServerVoice::ApplyConfig(System.String)
+ldarg.0 
+call System.Void OffServerVoice::SendMuteList()
+br.s IL_00ac: leave.s IL_00b5
+ldarg.1 
+ldfld System.Byte Messages.VoiceDown::Level
+call System.Void OffServerVoice::set_GmMutedHours(System.Int32)
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Text
+dup 
+brtrue.s IL_0050: call System.Void OffServerVoice::set_GmMutedText(System.String)
+pop 
+ldsfld System.String System.String::Empty
+call System.Void OffServerVoice::set_GmMutedText(System.String)
+call System.Int32 OffServerVoice::get_GmMutedHours()
+ldc.i4.0 
+ble.s IL_006b: call System.Void OffServerVoice::RaiseChanged()
+call System.Boolean OffServerVoice::get_Talking()
+brfalse.s IL_006b: call System.Void OffServerVoice::RaiseChanged()
+ldarg.0 
+ldc.i4.0 
+call System.Void OffServerVoice::StopTalking(System.Boolean)
+call System.Void OffServerVoice::RaiseChanged()
+br.s IL_00ac: leave.s IL_00b5
+ldarg.0 
+ldarg.1 
+call System.Void OffServerVoice::OnAudio(Messages.VoiceDown)
+br.s IL_00ac: leave.s IL_00b5
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_00ac: leave.s IL_00b5
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+ldloca.s V_1
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::TryGetValue(!0,!1&)
+brfalse.s IL_00ac: leave.s IL_00b5
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00ac: leave.s IL_00b5
+ldloc.1 
+callvirt System.Void OffServerVoiceStream::End()
+leave.s IL_00b5: ret
+call System.Void Debug::LogException(System.Exception)
+leave.s IL_00b5: ret
+ret 
+METHOD System.Void OffServerVoice::ApplyConfig(System.String)
+call System.Boolean OffServerVoice::get_ServerEnabled()
+stloc.0 
+ldarg.1 
+dup 
+brtrue.s IL_0010: ldc.i4.s 59
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 59
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br IL_01db: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+ldc.i4.s 61
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.0 
+ble IL_01d7: ldloc.2
+ldloc.3 
+ldc.i4.0 
+ldloc.s V_4
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+callvirt System.String System.String::Trim()
+stloc.s V_5
+ldloc.3 
+ldloc.s V_4
+ldc.i4.1 
+add 
+callvirt System.String System.String::Substring(System.Int32)
+callvirt System.String System.String::Trim()
+stloc.s V_6
+ldloc.s V_5
+ldstr enabled
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00bc: ldloc.s V_6
+ldloc.s V_5
+ldstr ranges
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00d2: ldloc.s V_6
+ldloc.s V_5
+ldstr default
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0149: ldloc.s V_6
+ldloc.s V_5
+ldstr bitrate
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0167: ldloc.s V_6
+ldloc.s V_5
+ldstr frames
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_01a2: ldloc.s V_6
+ldloc.s V_5
+ldstr max_speakers
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_01bd: ldloc.s V_6
+br IL_01d7: ldloc.2
+ldloc.s V_6
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+call System.Void OffServerVoice::set_ServerEnabled(System.Boolean)
+br IL_01d7: ldloc.2
+ldloc.s V_6
+ldc.i4.s 44
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.s V_8
+ldloc.s V_8
+ldlen 
+conv.i4 
+ldc.i4.3 
+bne.un IL_01d7: ldloc.2
+ldc.i4.3 
+newarr System.Single
+stloc.s V_9
+ldc.i4.1 
+stloc.s V_10
+ldc.i4.0 
+stloc.s V_11
+br.s IL_0131: ldloc.s V_11
+ldloc.s V_10
+ldloc.s V_8
+ldloc.s V_11
+ldelem.ref 
+ldc.i4 167
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloc.s V_9
+ldloc.s V_11
+ldelema System.Single
+call System.Boolean System.Single::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Single&)
+brfalse.s IL_0127: ldc.i4.0
+ldloc.s V_9
+ldloc.s V_11
+ldelem.r4 
+ldc.r4 0
+cgt 
+br.s IL_0128: and
+ldc.i4.0 
+and 
+stloc.s V_10
+ldloc.s V_11
+ldc.i4.1 
+add 
+stloc.s V_11
+ldloc.s V_11
+ldc.i4.3 
+blt.s IL_00f8: ldloc.s V_10
+ldloc.s V_10
+brfalse IL_01d7: ldloc.2
+ldloc.s V_9
+stsfld System.Single[] OffServerVoice::Ranges
+br IL_01d7: ldloc.2
+ldloc.s V_6
+ldloca.s V_7
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse IL_01d7: ldloc.2
+ldloc.s V_7
+ldc.i4.0 
+ldc.i4.2 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+stsfld System.Int32 OffServerVoice::_serverDefaultLevel
+br.s IL_01d7: ldloc.2
+ldloc.s V_6
+ldloca.s V_7
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_01d7: ldloc.2
+ldloc.s V_7
+ldc.i4 6000
+ldc.i4 64000
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+stsfld System.Int32 OffServerVoice::_bitrate
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+brfalse.s IL_01d7: ldloc.2
+ldarg.0 
+ldfld Concentus.Structs.OpusEncoder OffServerVoice::_encoder
+ldsfld System.Int32 OffServerVoice::_bitrate
+callvirt System.Void Concentus.Structs.OpusEncoder::set_Bitrate(System.Int32)
+br.s IL_01d7: ldloc.2
+ldloc.s V_6
+ldloca.s V_7
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_01d7: ldloc.2
+ldloc.s V_7
+ldc.i4.1 
+ldc.i4.6 
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+stsfld System.Int32 OffServerVoice::_framesPerPacket
+br.s IL_01d7: ldloc.2
+ldloc.s V_6
+ldloca.s V_7
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_01d7: ldloc.2
+ldloc.s V_7
+ldc.i4.1 
+ldc.i4.s 16
+call System.Int32 UnityEngine.Mathf::Clamp(System.Int32,System.Int32,System.Int32)
+call System.Void OffServerVoice::set_MaxSpeakers(System.Int32)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt IL_0020: ldloc.1
+call System.Boolean OffServerVoice::get_ConfigReceived()
+brfalse.s IL_01f3: ldstr "[Voice] config: "
+ldloc.0 
+call System.Boolean OffServerVoice::get_ServerEnabled()
+beq.s IL_0203: ldc.i4.1
+ldstr [Voice] config: 
+ldarg.1 
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+ldc.i4.1 
+call System.Void OffServerVoice::set_ConfigReceived(System.Boolean)
+call System.Boolean OffServerVoice::get_ServerEnabled()
+brtrue.s IL_021d: call System.Void OffServerVoice::RaiseChanged()
+ldarg.0 
+ldc.i4.1 
+call System.Void OffServerVoice::StopTalking(System.Boolean)
+ldarg.0 
+call System.Void OffServerVoice::ClearStreams()
+call System.Void OffServerVoice::RaiseChanged()
+ret 
+METHOD System.Void OffServerVoice::OnAudio(Messages.VoiceDown)
+call System.Void OffServerVoice::LoadPrefs()
+call System.Boolean OffServerVoice::get_Deaf()
+brtrue.s IL_0050: ret
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0050: ret
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+call System.String GameManager::get_PlayerId()
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0050: ret
+ldsfld System.Collections.Generic.HashSet`1<System.String> OffServerVoice::_muted
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+callvirt System.Boolean System.Collections.Generic.HashSet`1<System.String>::Contains(!0)
+brtrue.s IL_0050: ret
+ldarg.1 
+ldfld System.Byte[] Messages.VoiceDown::Data
+brfalse.s IL_0050: ret
+ldarg.1 
+ldfld System.Byte[] Messages.VoiceDown::Data
+ldlen 
+conv.i4 
+ldc.i4.2 
+bge.s IL_0051: ldarg.0
+ret 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::TryGetValue(!0,!1&)
+brfalse.s IL_006f: ldstr "Voice "
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00c0: ldloc.0
+ldstr Voice 
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+call System.String System.String::Concat(System.String,System.String)
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ldarg.0 
+call UnityEngine.Transform UnityEngine.Component::get_transform()
+ldc.i4.0 
+callvirt System.Void UnityEngine.Transform::SetParent(UnityEngine.Transform,System.Boolean)
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerVoiceStream>()
+stloc.0 
+ldloc.0 
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+callvirt System.Void OffServerVoiceStream::Init(System.String)
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.1 
+ldfld System.String Messages.VoiceDown::Speaker
+ldloc.0 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::set_Item(!0,!1)
+ldarg.0 
+call System.Void OffServerVoice::EnsureListener()
+ldloc.0 
+ldarg.1 
+ldfld System.UInt32 Messages.VoiceDown::Seq
+ldarg.1 
+ldfld System.Byte Messages.VoiceDown::Level
+ldarg.1 
+ldfld System.Single Messages.VoiceDown::Dist
+ldarg.1 
+ldfld System.Byte[] Messages.VoiceDown::Data
+callvirt System.Void OffServerVoiceStream::Feed(System.UInt32,System.Byte,System.Single,System.Byte[])
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stfld System.Single OffServerVoice::_lastRemoteAudioAt
+ret 
+METHOD System.Void OffServerVoice::UpdateStreams(System.Single)
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::get_Count()
+brtrue.s IL_000e: call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+ret 
+call PlayerBehavior PlayerBehavior::get_LocalPlayer()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002b: call UnityEngine.Vector3 UnityEngine.Vector3::get_zero()
+ldloc.0 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0032: ldloc.0
+call UnityEngine.Vector3 UnityEngine.Vector3::get_zero()
+br.s IL_003d: stloc.1
+ldloc.0 
+ldfld UnityEngine.Transform PlayerBehavior::MainTransform
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_position()
+stloc.1 
+call UnityEngine.Vector3 UnityEngine.Vector3::get_right()
+stloc.2 
+call System.Boolean Durango.Utils.Singleton`1<Durango.Render.Camera.MainCamera>::Exist()
+brtrue.s IL_004e: call T Durango.Utils.Singleton`1<Durango.Render.Camera.MainCamera>::Instance()
+ldnull 
+br.s IL_0058: stloc.s V_4
+call T Durango.Utils.Singleton`1<Durango.Render.Camera.MainCamera>::Instance()
+callvirt UnityEngine.Camera Durango.Render.Camera.MainCamera::get_Camera()
+stloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0071: leave.s IL_0076
+ldloc.s V_4
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_right()
+stloc.2 
+leave.s IL_0076: ldnull
+pop 
+leave.s IL_0076: ldnull
+ldnull 
+stloc.3 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::GetEnumerator()
+stloc.s V_5
+br.s IL_00fc: ldloca.s V_5
+ldloca.s V_5
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<System.String,OffServerVoiceStream>::get_Current()
+stloc.s V_6
+ldloca.s V_6
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,OffServerVoiceStream>::get_Value()
+stloc.s V_7
+ldloc.s V_7
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_00b3: ldloc.3
+ldarg.1 
+ldloc.s V_7
+callvirt System.Single OffServerVoiceStream::get_LastPacketAt()
+sub 
+ldc.r4 15
+ble.un.s IL_00cb: ldloc.s V_7
+ldloc.3 
+brtrue.s IL_00bc: ldloc.3
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor()
+stloc.3 
+ldloc.3 
+ldloca.s V_6
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,OffServerVoiceStream>::get_Key()
+callvirt System.Void System.Collections.Generic.List`1<System.String>::Add(!0)
+br.s IL_00fc: ldloca.s V_5
+ldloc.s V_7
+ldloc.1 
+ldloc.2 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+callvirt System.Void OffServerVoiceStream::UpdateGains(UnityEngine.Vector3,UnityEngine.Vector3,System.Boolean)
+ldloc.s V_7
+callvirt System.Boolean OffServerVoiceStream::get_Speaking()
+brfalse.s IL_00fc: ldloca.s V_5
+ldarg.0 
+ldarg.0 
+ldfld System.Single OffServerVoice::_lastRemoteAudioAt
+ldloc.s V_7
+callvirt System.Single OffServerVoiceStream::get_LastPacketAt()
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stfld System.Single OffServerVoice::_lastRemoteAudioAt
+ldloca.s V_5
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<System.String,OffServerVoiceStream>::MoveNext()
+brtrue.s IL_0087: ldloca.s V_5
+leave.s IL_0115: ldloc.3
+ldloca.s V_5
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<System.String,OffServerVoiceStream>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.3 
+brfalse.s IL_014c: ret
+ldloc.3 
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.String>::GetEnumerator()
+stloc.s V_8
+br.s IL_0133: ldloca.s V_8
+ldloca.s V_8
+call !0 System.Collections.Generic.List`1/Enumerator<System.String>::get_Current()
+stloc.s V_9
+ldarg.0 
+ldloc.s V_9
+call System.Void OffServerVoice::DropStream(System.String)
+ldloca.s V_8
+call System.Boolean System.Collections.Generic.List`1/Enumerator<System.String>::MoveNext()
+brtrue.s IL_0122: ldloca.s V_8
+leave.s IL_014c: ret
+ldloca.s V_8
+constrained. System.Collections.Generic.List`1/Enumerator<System.String>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Void OffServerVoice::DropStream(System.String)
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.1 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::TryGetValue(!0,!1&)
+brfalse.s IL_0031: ret
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.1 
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::Remove(!0)
+pop 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0031: ret
+ldloc.0 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ret 
+METHOD System.Void OffServerVoice::ClearStreams()
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Collections.Generic.Dictionary`2/KeyCollection<!0,!1> System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::get_Keys()
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor(System.Collections.Generic.IEnumerable`1<!0>)
+call System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.String>::GetEnumerator()
+stloc.0 
+br.s IL_0027: ldloca.s V_0
+ldloca.s V_0
+call !0 System.Collections.Generic.List`1/Enumerator<System.String>::get_Current()
+stloc.1 
+ldarg.0 
+ldloc.1 
+call System.Void OffServerVoice::DropStream(System.String)
+ldloca.s V_0
+call System.Boolean System.Collections.Generic.List`1/Enumerator<System.String>::MoveNext()
+brtrue.s IL_0018: ldloca.s V_0
+leave.s IL_0040: ret
+ldloca.s V_0
+constrained. System.Collections.Generic.List`1/Enumerator<System.String>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Void OffServerVoice::EnsureListener()
+ldarg.0 
+ldfld UnityEngine.AudioListener OffServerVoice::_ownListener
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000f: call !!0 UnityEngine.Object::FindAnyObjectByType<UnityEngine.AudioListener>()
+ret 
+call !!0 UnityEngine.Object::FindAnyObjectByType<UnityEngine.AudioListener>()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0026: ldarg.0
+ldloc.0 
+callvirt System.Boolean UnityEngine.Behaviour::get_isActiveAndEnabled()
+brtrue.s IL_0037: ret
+ldarg.0 
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt !!0 UnityEngine.GameObject::AddComponent<UnityEngine.AudioListener>()
+stfld UnityEngine.AudioListener OffServerVoice::_ownListener
+ret 
+METHOD System.Void OffServerVoice::CheckListener()
+ldarg.0 
+ldfld UnityEngine.AudioListener OffServerVoice::_ownListener
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002c: ldarg.0
+ldc.i4.0 
+call !!0[] UnityEngine.Object::FindObjectsByType<UnityEngine.AudioListener>(UnityEngine.FindObjectsSortMode)
+ldlen 
+conv.i4 
+ldc.i4.1 
+ble.s IL_0040: ret
+ldarg.0 
+ldfld UnityEngine.AudioListener OffServerVoice::_ownListener
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ldarg.0 
+ldnull 
+stfld UnityEngine.AudioListener OffServerVoice::_ownListener
+ret 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::get_Count()
+ldc.i4.0 
+ble.s IL_0040: ret
+ldarg.0 
+call System.Void OffServerVoice::EnsureListener()
+ret 
+METHOD System.Void OffServerVoice::.ctor()
+ldarg.0 
+ldc.r4 -1
+stfld System.Single OffServerVoice::_buttonDownAt
+ldarg.0 
+ldc.i4.0 
+newarr System.Single
+stfld System.Single[] OffServerVoice::_micTemp
+ldarg.0 
+ldc.i4 4096
+newobj System.Void System.Collections.Generic.List`1<System.Single>::.ctor(System.Int32)
+stfld System.Collections.Generic.List`1<System.Single> OffServerVoice::_pcm
+ldarg.0 
+newobj System.Void System.Collections.Generic.Queue`1<System.Single[]>::.ctor()
+stfld System.Collections.Generic.Queue`1<System.Single[]> OffServerVoice::_preRoll
+ldarg.0 
+ldc.r4 -100
+stfld System.Single OffServerVoice::_vadLastVoiceAt
+ldarg.0 
+ldc.i4 512
+newarr System.Byte
+stfld System.Byte[] OffServerVoice::_encodeBuf
+ldarg.0 
+ldc.i4 512
+newobj System.Void System.Collections.Generic.List`1<System.Byte>::.ctor(System.Int32)
+stfld System.Collections.Generic.List`1<System.Byte> OffServerVoice::_packet
+ldarg.0 
+ldc.r4 -100
+stfld System.Single OffServerVoice::_lastRemoteAudioAt
+ldarg.0 
+call System.StringComparer System.StringComparer::get_Ordinal()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream>::.ctor(System.Collections.Generic.IEqualityComparer`1<!0>)
+stfld System.Collections.Generic.Dictionary`2<System.String,OffServerVoiceStream> OffServerVoice::_streams
+ldarg.0 
+ldc.r4 6
+stfld System.Single OffServerVoice::_agcGain
+ldarg.0 
+call System.Void GameSystem`1<OffServerVoice>::.ctor()
+ret 
+METHOD System.Void OffServerVoice::.cctor()
+ldc.i4.5 
+newarr System.Single
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=20 <PrivateImplementationDetails>::F6D70A7C91E01CBD7051119589CEE807A6D9FFB779F50234371090A17887234E
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld System.Single[] OffServerVoice::SensitivityDb
+ldc.i4.3 
+newarr System.Single
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=12 <PrivateImplementationDetails>::8B2B3D292F17FAF97146959F3446F6FC8D151684669825D987C8DE448174D280
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld System.Single[] OffServerVoice::Ranges
+ldc.i4.1 
+stsfld System.Int32 OffServerVoice::_serverDefaultLevel
+ldc.i4 16000
+stsfld System.Int32 OffServerVoice::_bitrate
+ldc.i4.2 
+stsfld System.Int32 OffServerVoice::_framesPerPacket
+ldc.i4.m1 
+stsfld System.Int32 OffServerVoice::_level
+ret 

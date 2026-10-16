@@ -265,6 +265,7 @@ public class AnimalManager
             WorldPosition here = PositionAt(now);
             Position = here;
             WalkStartAt = WalkEndAt = 0;         // ไม่ได้เดินแล้ว
+            StopWalkingAt = 0;
             Yaw = yaw;
 
             byte option = (byte)(loop ? 1 | 4 : 8 | 4);
@@ -311,7 +312,7 @@ public class AnimalManager
             string clip = m?.PickAttack(rng);
             if (string.IsNullOrEmpty(clip)) return default;
             float yaw = YawTo(PositionAt(now), targetPos);
-            return MakeMotion(clip, yaw, now, AttackClipSeconds);
+            return MakeMotion(clip, yaw, now, m.AttackDuration);
         }
 
         /// <summary>
@@ -330,7 +331,11 @@ public class AnimalManager
         /// ขั้นต่ำที่เกมต้องมีคืออะไร** (EntityId · EntityType · IsAlive · Move 1 ท่อน ·
         /// Survival ที่มีหลอด Life · Display ที่มี BaseScale) ไม่ต้องเดา
         /// </summary>
-        public AppearAnimal ToMessage() => new()
+        public AppearAnimal ToMessage()
+        {
+            double now = Gauge.CurrentTime;
+            bool moving = IsAlive && !IsKnockedDown && WalkEndAt > now && WalkEndAt > WalkStartAt;
+            return new()
         {
             EntityId = EntityId,
             EntityType = EntityType,
@@ -347,13 +352,16 @@ public class AnimalManager
                         // client/AnimalBehavior.cs:1007-1011 PlayAnimationMovement return ทันที
                         // ถ้าชื่อว่าง และ AnimalBehavior.Update() ไม่มีตรรกะเล่นท่ายืนเองเลย
                         // ชื่อ clip ถอดจาก asset ของเกมเอง — ดู Support/AnimalMotions.cs
-                        MotionName = CurrentMotion,
-                        MotionOption = (byte)CurrentMotionOption,   // ท่ายืนต้องวนซ้ำ ไม่งั้นเล่นจบแล้วค้าง
-                        PlaybackRate = 1f,                          // 0 = หยุดนิ่ง (ค่าปริยายของ struct)
+                        MotionName = moving ? AnimalMotions.Of(EntityType)?.Move : CurrentMotion,
+                        MotionOption = (byte)(moving ? MotionOption.LOOPING | MotionOption.ALIGN_TO_PATH : CurrentMotionOption),
+                        PlaybackRate = moving ? MovingPlaybackRateFor(this) : 1f,
                         RotSpeed = DefaultRotateSpeed,
                         // ⚠️ ต้องใส่ Yaw ไม่งั้นสัตว์ที่โผล่มาหันไปทางเหนือหมดทุกตัว
                         // (client/PathMovable.cs:154 TurnToYaw(value.Yaw, bSnap: true) — 0 = หันเหนือ)
-                        Path = new[] { new Location { Position = Position, Yaw = Yaw, Time = Gauge.CurrentTime } }
+                        Path = moving ? new[] {
+                            new Location { Position = PositionAt(now), Yaw = Yaw, Time = now },
+                            new Location { Position = WalkTo, Yaw = Yaw, Time = WalkEndAt }
+                        } : new[] { new Location { Position = PositionAt(now), Yaw = Yaw, Time = now } }
                     }
                 }
             },
@@ -371,6 +379,7 @@ public class AnimalManager
                 BaseScale = AnimalTypes.Get(EntityType)?.BaseScale ?? 1f
             }
         };
+        }
     }
 
     /// <summary>
@@ -381,6 +390,21 @@ public class AnimalManager
     /// </summary>
     private const float WanderRadius = 500f;
     private const float MovingSpeed = 100f;
+    private static float WanderRadiusFor(Animal animal) => Math.Max(
+        WanderRadius * (AnimalTypes.Get(animal.EntityType)?.BaseScale ?? 1f),
+        MovingSpeedFor(animal) * 1.25f);
+
+    // A clip's stride grows with the displayed animal. Use the framework's
+    // native speed/cadence, rather than playing every walk at 100 units/second.
+    private static float MovingSpeedFor(Animal animal)
+    {
+        var motion = AnimalMotions.Of(animal.EntityType);
+        return Math.Max(1f, (motion?.MoveSpeed ?? MovingSpeed) * MovingPlaybackRateFor(animal) *
+            (AnimalTypes.Get(animal.EntityType)?.BaseScale ?? 1f));
+    }
+
+    private static float MovingPlaybackRateFor(Animal animal) =>
+        Math.Max(.05f, AnimalMotions.Of(animal.EntityType)?.MovePlaybackRate ?? 1f);
 
     /// <summary>**ค่าของเรา** — หยุดพักกี่วินาทีระหว่างเดินแต่ละรอบ (สุ่มในช่วงนี้)</summary>
     private const double WanderPauseMin = 4.0;
@@ -399,9 +423,9 @@ public class AnimalManager
     public int Count => _animals.Count;
     public event Action<Animal> GroggyStateChanged;
 
-    public AnimalManager(TerrainData terrain, RegionCatalog.TemplateInfo template)
+    public AnimalManager(TerrainData terrain, RegionCatalog.TemplateInfo template, string terrainId = null)
     {
-        Spawn(terrain, template);
+        Spawn(terrain, template, terrainId);
     }
 
     /// <summary>
@@ -519,7 +543,7 @@ public class AnimalManager
         if (string.IsNullOrEmpty(walk)) return default;               // ไม่มีท่าเดิน = อย่าให้ขยับแบบไถลไป
 
         double angle = _rng.NextDouble() * Math.PI * 2.0;
-        float radius = (float)(_rng.NextDouble() * WanderRadius);
+        float radius = (float)(_rng.NextDouble() * WanderRadiusFor(animal));
         var home = new WorldPosition(animal.HomeTile.x * TileSize, animal.HomeTile.y * TileSize);
         var dest = new WorldPosition(home.x + (float)(Math.Cos(angle) * radius),
                                      home.y + (float)(Math.Sin(angle) * radius));
@@ -531,7 +555,7 @@ public class AnimalManager
         float distance = (float)Math.Sqrt(dx * dx + dy * dy);
         if (distance < 1f) return default;
 
-        double travel = distance / MovingSpeed;
+        double travel = distance / MovingSpeedFor(animal);
         float yaw = Animal.YawTo(from, dest);   // ต้องเป็น 0-360 ไม่งั้นตัวหันผิดด้าน
 
         // ขยับตำแหน่งฝั่งเซิร์ฟตามไปด้วย ไม่งั้นระยะไล่กัด/ระยะจับจะอ้างจุดเก่า
@@ -552,7 +576,7 @@ public class AnimalManager
                 {
                     MotionName = walk,
                     MotionOption = (byte)(MotionOption.LOOPING | MotionOption.ALIGN_TO_PATH),
-                    PlaybackRate = 1f,
+                    PlaybackRate = MovingPlaybackRateFor(animal),
                     RotSpeed = DefaultRotateSpeed,
                     Path = new[]
                     {
@@ -590,7 +614,7 @@ public class AnimalManager
         float ratio = (distance - stopAtDistance) / distance;
         var dest = new WorldPosition(from.x + dx * ratio, from.y + dy * ratio);
 
-        double travel = (distance - stopAtDistance) / MovingSpeed;
+        double travel = (distance - stopAtDistance) / MovingSpeedFor(animal);
         if (travel <= 0.01) return default;
         float yaw = Animal.YawTo(from, dest);
 
@@ -611,7 +635,7 @@ public class AnimalManager
                 {
                     MotionName = walk,
                     MotionOption = (byte)(MotionOption.LOOPING | MotionOption.ALIGN_TO_PATH),
-                    PlaybackRate = 1f,
+                    PlaybackRate = MovingPlaybackRateFor(animal),
                     RotSpeed = DefaultRotateSpeed,
                     Path = new[]
                     {
@@ -690,8 +714,45 @@ public class AnimalManager
     /// id ของสัตว์ผูกกับ (กลุ่ม, ลำดับ) เช่น <c>herd_land_7</c> ให้คงที่ทุกครั้งที่เปิดเซิร์ฟ
     /// เหตุผลเดียวกับ POI: ถ้าไล่เลขใหม่ทุกรอบ ระบบที่อ้างถึงสัตว์ตัวเดิมจะหลงทันที
     /// </summary>
-    private void Spawn(TerrainData terrain, RegionCatalog.TemplateInfo template)
+    private void Spawn(TerrainData terrain, RegionCatalog.TemplateInfo template, string terrainId)
     {
+        // Arid Basin keeps its single showcase Giganotosaurus, then continues
+        // through the native level-60 desert fauna population below.
+        if (terrain != null && AridBasinContent.IsTerrain(terrainId))
+        {
+            Point2 center = new(128, 128);
+            if (!TerrainEcology.IsLand(terrain, center))
+            {
+                bool found = false;
+                for (int radius = 1; radius <= 16 && !found; radius++)
+                for (int y = 128 - radius; y <= 128 + radius && !found; y++)
+                for (int x = 128 - radius; x <= 128 + radius && !found; x++)
+                {
+                    if (Math.Max(Math.Abs(x - 128), Math.Abs(y - 128)) != radius) continue;
+                    Point2 candidate = new(x, y);
+                    if (!TerrainEcology.IsLand(terrain, candidate)) continue;
+                    center = candidate;
+                    found = true;
+                }
+            }
+
+            if (TerrainEcology.IsLand(terrain, center))
+            {
+                Animal giganotosaurus = Create("arid_basin_giganotosaurus",
+                    new RegionCatalog.HerdSpawn(2213, 60), center, 60);
+                if (giganotosaurus != null)
+                {
+                    _animals.Add(giganotosaurus);
+                    _byId[giganotosaurus.EntityId] = giganotosaurus;
+                }
+                Console.WriteLine($"[fauna] Arid Basin: Giganotosaurus único lv60 em {center.x},{center.y}");
+            }
+            else
+            {
+                Console.WriteLine("[fauna] Arid Basin: sem terreno seco próximo ao centro; Giganotosaurus não criado.");
+            }
+        }
+
         if (template?.Role == Shared.Region.Role.Safehouse)
         {
             const ushort compsognathus = 2015;
@@ -771,7 +832,7 @@ public class AnimalManager
         if (template.Role is Shared.Region.Role.Personal or Shared.Region.Role.Tutorial) return;
 
         int resolvedWildLevel = Math.Max(1, template.Level);
-        int target = AnimalTuning.TargetAnimalsPerRegion;
+        int target = Math.Max(0, AnimalTuning.TargetAnimalsPerRegion - _animals.Count);
         var encounters = template.RestoredEncounters;
         var encounterTypes = encounters.Select(e => e.EntityType).ToHashSet();
         var definitions = template.Herds.Values.SelectMany(group => group)
@@ -781,7 +842,8 @@ public class AnimalManager
         // Validate native anchors too: converted maps can have herd points in water
         // or outside their new terrain bounds. Never stack extras at old anchors.
         bool WildPositionAllowed(Point2 tile) => TerrainEcology.IsLand(terrain, tile) &&
-            !(terrain.Pois?.PortPoints.Any(p => Math.Abs(p.x - tile.x) < 8 && Math.Abs(p.y - tile.y) < 8) ?? false);
+            !(terrain.Pois?.PortPoints.Any(p => Math.Abs(p.x - tile.x) < 8 && Math.Abs(p.y - tile.y) < 8) ?? false) &&
+            !_animals.Any(a => a.IsAlive && Math.Abs(a.Tile.x - tile.x) < 8 && Math.Abs(a.Tile.y - tile.y) < 8);
         var anchors = new List<Point2>();
         foreach (var group in template.Herds)
         foreach (Point2 tile in terrain.Herds?.Of(group.Key) ?? Array.Empty<Point2>())

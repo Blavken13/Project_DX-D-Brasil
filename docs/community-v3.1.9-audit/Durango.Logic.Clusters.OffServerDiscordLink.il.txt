@@ -1,0 +1,2042 @@
+Durango.Logic.Clusters.OffServerDiscordLink : UnityEngine.MonoBehaviour
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::SettingKey
+FIELD System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink::DefaultPorts
+FIELD System.Single Durango.Logic.Clusters.OffServerDiscordLink::WaitSeconds
+FIELD System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::HttpTimeoutSec
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::ReturnScheme
+FIELD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::s_answerCallbackAtOnce
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::s_returnToGameUrl
+FIELD Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::LastAuthorizeUrl
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::LastEvent
+FIELD System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+FIELD System.Net.Sockets.TcpListener Durango.Logic.Clusters.OffServerDiscordLink::_listener
+FIELD System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Logic.Clusters.OffServerDiscordLink::_listening
+FIELD System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_port
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::_state
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::_redirectUri
+FIELD System.Single Durango.Logic.Clusters.OffServerDiscordLink::_deadline
+FIELD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+FIELD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+FIELD System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_generation
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink::LastCaller
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerDiscordLink::Texts
+METHOD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::get_Busy()
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0026: ldc.i4.0
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+brtrue.s IL_0024: ldc.i4.1
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+ret 
+ldc.i4.1 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::get_Port()
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_000f: ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldc.i4.0 
+ret 
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_port
+ret 
+METHOD Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::get_Instance()
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0027: ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldstr OffServerDiscordLink
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.Logic.Clusters.OffServerDiscordLink>()
+stsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+call System.String LocalizeSystem::get_Locale()
+dup 
+brtrue.s IL_000e: callvirt System.String System.String::ToLowerInvariant()
+pop 
+ldsfld System.String System.String::Empty
+callvirt System.String System.String::ToLowerInvariant()
+stloc.0 
+ldloc.0 
+ldstr th
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_0027: ldloc.0
+ldstr th
+ret 
+ldloc.0 
+ldstr id
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_0041: ldstr "id"
+ldloc.0 
+ldstr in
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_0047: ldloc.0
+ldstr id
+ret 
+ldloc.0 
+ldstr ko
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_005a: ldstr "en"
+ldstr ko
+ret 
+ldstr en
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::get_ButtonLabel()
+ldsfld System.String Durango.Logic.Clusters.OffServerLink::DiscordName
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_001e: ldstr "button_linked"
+ldstr button
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+ret 
+ldstr button_linked
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.0 
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::get_GatewayUrl()
+call System.String GameManager::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0014: ldloc.0
+call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+stloc.0 
+ldloc.0 
+dup 
+brtrue.s IL_001e: ldc.i4.s 47
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Begin(System.Boolean)
+call System.String System.Environment::get_StackTrace()
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastCaller
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.s 11
+ceq 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::s_answerCallbackAtOnce
+ldstr intent://discord-link#Intent;scheme=durangooffserver;package=
+call System.String UnityEngine.Application::get_identifier()
+ldstr ;end
+call System.String System.String::Concat(System.String,System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::s_returnToGameUrl
+ldarg.0 
+brfalse.s IL_0055: call Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::get_Instance()
+call System.Int32 Durango.Logic.Clusters.OffServerLink::get_TestBridgePort()
+ldc.i4.0 
+ble.s IL_0055: call Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::get_Instance()
+ldstr OFFSERVER_TEST_NO_BROWSER
+call System.String System.Environment::GetEnvironmentVariable(System.String)
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0055: call Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::get_Instance()
+ldc.i4.0 
+starg.s openBrowser
+call Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::get_Instance()
+ldarg.0 
+callvirt System.Void Durango.Logic.Clusters.OffServerDiscordLink::BeginInternal(System.Boolean)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Cancel()
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0017: ret
+ldsfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink::_instance
+callvirt System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::BeginInternal(System.Boolean)
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::<>4__this
+ldloc.0 
+ldarg.1 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::openBrowser
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brfalse.s IL_0033: ldnull
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_GatewayUrl()
+callvirt System.Int32 System.String::get_Length()
+brfalse.s IL_0033: ldnull
+call System.String GameManager::get_SessionToken()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0049: ldarg.0
+ldnull 
+ldstr not_online
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+brfalse.s IL_0066: ldarg.0
+ldstr finishing
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Toast(System.String)
+ret 
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+brfalse.s IL_00a2: ldstr "status"
+ldloc.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::openBrowser
+brfalse.s IL_008d: ldstr "waiting_again"
+ldsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastAuthorizeUrl
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_008d: ldstr "waiting_again"
+ldsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastAuthorizeUrl
+call System.Void UnityEngine.Application::OpenURL(System.String)
+ldstr waiting_again
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Toast(System.String)
+ret 
+ldstr status
+ldnull 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass35_0::<BeginInternal>b__0(Newtonsoft.Json.Linq.JObject)
+newobj System.Void System.Action`1<Newtonsoft.Json.Linq.JObject>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`1<Newtonsoft.Json.Linq.JObject>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::StartFlow(System.Int32[],System.Boolean)
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<>4__this
+ldloc.0 
+ldarg.2 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::openBrowser
+ldarg.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ldnull 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+ldarg.1 
+stloc.s V_4
+ldc.i4.0 
+stloc.s V_5
+br.s IL_004e: ldloc.s V_5
+ldloc.s V_4
+ldloc.s V_5
+ldelem.i4 
+stloc.s V_6
+ldsfld System.Net.IPAddress System.Net.IPAddress::Loopback
+ldloc.s V_6
+newobj System.Void System.Net.Sockets.TcpListener::.ctor(System.Net.IPAddress,System.Int32)
+dup 
+callvirt System.Void System.Net.Sockets.TcpListener::Start()
+stloc.1 
+ldloc.s V_6
+stloc.2 
+leave.s IL_0056: ldloc.1
+pop 
+leave.s IL_0048: ldloc.s V_5
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.s V_4
+ldlen 
+conv.i4 
+blt.s IL_0026: ldloc.s V_4
+ldloc.1 
+brtrue.s IL_00ad: ldloc.0
+ldarg.1 
+ldlen 
+conv.i4 
+newarr System.String
+stloc.s V_7
+ldc.i4.0 
+stloc.s V_8
+br.s IL_0080: ldloc.s V_8
+ldloc.s V_7
+ldloc.s V_8
+ldarg.1 
+ldloc.s V_8
+ldelema System.Int32
+call System.String System.Int32::ToString()
+stelem.ref 
+ldloc.s V_8
+ldc.i4.1 
+add 
+stloc.s V_8
+ldloc.s V_8
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_0068: ldloc.s V_7
+ldnull 
+ldstr no_port
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr , 
+ldloc.s V_7
+call System.String System.String::Join(System.String,System.String[])
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldloc.0 
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_generation
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+stfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_generation
+ldloc.s V_5
+stfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::generation
+ldarg.0 
+ldloc.1 
+stfld System.Net.Sockets.TcpListener Durango.Logic.Clusters.OffServerDiscordLink::_listener
+ldarg.0 
+ldloc.2 
+stfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_port
+ldarg.0 
+ldstr http://127.0.0.1:
+ldloca.s V_2
+call System.String System.Int32::ToString()
+ldstr /callback
+call System.String System.String::Concat(System.String,System.String,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_redirectUri
+ldarg.0 
+ldnull 
+stfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_state
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 300
+add 
+stfld System.Single Durango.Logic.Clusters.OffServerDiscordLink::_deadline
+ldarg.0 
+ldc.i4.1 
+volatile. 
+stfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Logic.Clusters.OffServerDiscordLink::_listening
+ldarg.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink::AcceptLoop(System.Object)
+newobj System.Void System.Threading.ParameterizedThreadStart::.ctor(System.Object,System.IntPtr)
+newobj System.Void System.Threading.Thread::.ctor(System.Threading.ParameterizedThreadStart)
+dup 
+ldc.i4.1 
+callvirt System.Void System.Threading.Thread::set_IsBackground(System.Boolean)
+dup 
+ldstr OffServerDiscordLink
+callvirt System.Void System.Threading.Thread::set_Name(System.String)
+ldloc.1 
+callvirt System.Void System.Threading.Thread::Start(System.Object)
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+stloc.3 
+ldloc.3 
+ldstr redirect_uri
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_redirectUri
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldloc.3 
+ldstr account_id
+call System.String Durango.Logic.Clusters.OffServerLink::get_AccountId()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+call System.Boolean GameManager::get_IsTitleScene()
+brtrue.s IL_018c: ldstr "start"
+call System.String GameManager::get_PlayerId()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_018c: ldstr "start"
+ldloc.3 
+ldstr entity_id
+call System.String GameManager::get_PlayerId()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldstr start
+ldloc.3 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass36_0::<StartFlow>b__0(Newtonsoft.Json.Linq.JObject)
+newobj System.Void System.Action`1<Newtonsoft.Json.Linq.JObject>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`1<Newtonsoft.Json.Linq.JObject>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+ldarg.0 
+ldc.i4.0 
+volatile. 
+stfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Logic.Clusters.OffServerDiscordLink::_listening
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_generation
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.Logic.Clusters.OffServerDiscordLink::_generation
+ldarg.0 
+ldfld System.Net.Sockets.TcpListener Durango.Logic.Clusters.OffServerDiscordLink::_listener
+stloc.0 
+ldarg.0 
+ldnull 
+stfld System.Net.Sockets.TcpListener Durango.Logic.Clusters.OffServerDiscordLink::_listener
+ldloc.0 
+brfalse.s IL_003a: ret
+ldloc.0 
+callvirt System.Void System.Net.Sockets.TcpListener::Stop()
+leave.s IL_003a: ret
+pop 
+leave.s IL_003a: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::AcceptLoop(System.Object)
+ldarg.1 
+castclass System.Net.Sockets.TcpListener
+stloc.0 
+br.s IL_0034: ldarg.0
+nop 
+ldloc.0 
+callvirt System.Net.Sockets.TcpClient System.Net.Sockets.TcpListener::AcceptTcpClient()
+stloc.1 
+leave.s IL_0016: ldarg.0
+pop 
+leave.s IL_003e: ret
+ldarg.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink::HandleClient(System.Object)
+newobj System.Void System.Threading.ParameterizedThreadStart::.ctor(System.Object,System.IntPtr)
+newobj System.Void System.Threading.Thread::.ctor(System.Threading.ParameterizedThreadStart)
+dup 
+ldc.i4.1 
+callvirt System.Void System.Threading.Thread::set_IsBackground(System.Boolean)
+ldloc.1 
+callvirt System.Void System.Threading.Thread::Start(System.Object)
+ldarg.0 
+volatile. 
+ldfld System.Boolean modreq(System.Runtime.CompilerServices.IsVolatile) Durango.Logic.Clusters.OffServerDiscordLink::_listening
+brtrue.s IL_0009: nop
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::HandleClient(System.Object)
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::<>4__this
+ldarg.1 
+castclass System.Net.Sockets.TcpClient
+stloc.1 
+ldloc.1 
+ldc.i4 10000
+callvirt System.Void System.Net.Sockets.TcpClient::set_ReceiveTimeout(System.Int32)
+ldloc.1 
+ldc.i4 10000
+callvirt System.Void System.Net.Sockets.TcpClient::set_SendTimeout(System.Int32)
+ldloc.1 
+callvirt System.Net.Sockets.NetworkStream System.Net.Sockets.TcpClient::GetStream()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::ReadRequestLine(System.Net.Sockets.NetworkStream)
+dup 
+brtrue.s IL_003e: ldc.i4.s 32
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 32
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.2 
+ldloc.2 
+ldlen 
+conv.i4 
+ldc.i4.2 
+blt.s IL_005c: ldloc.1
+ldloc.2 
+ldc.i4.0 
+ldelem.ref 
+ldstr GET
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_0076: ldloc.2
+ldloc.1 
+ldstr 405 Method Not Allowed
+ldstr text/plain; charset=utf-8
+ldstr method not allowed
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+leave IL_014d: ret
+ldloc.2 
+ldc.i4.1 
+ldelem.ref 
+stloc.3 
+ldsfld System.String System.String::Empty
+stloc.s V_4
+ldloc.3 
+ldc.i4.s 63
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.s V_5
+ldloc.s V_5
+ldc.i4.0 
+blt.s IL_00a6: ldloc.3
+ldloc.3 
+ldloc.s V_5
+ldc.i4.1 
+add 
+callvirt System.String System.String::Substring(System.Int32)
+stloc.s V_4
+ldloc.3 
+ldc.i4.0 
+ldloc.s V_5
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stloc.3 
+ldloc.3 
+ldstr /callback
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_00cd: ldloc.0
+ldloc.1 
+ldstr 404 Not Found
+ldstr text/plain; charset=utf-8
+ldstr not found
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+leave IL_014d: ret
+ldloc.0 
+ldloc.s V_4
+call System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Logic.Clusters.OffServerDiscordLink::ParseQuery(System.String)
+stfld System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::query
+ldloc.0 
+ldloc.1 
+stfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::pendingClient
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::s_answerCallbackAtOnce
+brfalse.s IL_0104: ldarg.0
+ldloc.1 
+ldstr 200 OK
+ldstr text/html; charset=utf-8
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::ReturnToGamePage()
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+ldloc.0 
+ldnull 
+stfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::pendingClient
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+stloc.s V_6
+ldc.i4.0 
+stloc.s V_7
+ldloc.s V_6
+ldloca.s V_7
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::<HandleClient>b__0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void System.Collections.Generic.Queue`1<System.Action>::Enqueue(!0)
+leave.s IL_013d: leave.s IL_014d
+ldloc.s V_7
+brfalse.s IL_013c: endfinally
+ldloc.s V_6
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+leave.s IL_014d: ret
+pop 
+ldloc.1 
+callvirt System.Void System.Net.Sockets.TcpClient::Close()
+leave.s IL_014b: leave.s IL_014d
+pop 
+leave.s IL_014b: leave.s IL_014d
+leave.s IL_014d: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::OnCallback(System.Net.Sockets.TcpClient,System.Collections.Generic.Dictionary`2<System.String,System.String>)
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::<>4__this
+ldloc.0 
+ldarg.1 
+stfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::client
+ldarg.2 
+ldstr state
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Get(System.Collections.Generic.Dictionary`2<System.String,System.String>,System.String)
+stloc.1 
+ldarg.2 
+ldstr code
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Get(System.Collections.Generic.Dictionary`2<System.String,System.String>,System.String)
+stloc.2 
+ldarg.2 
+ldstr error
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Get(System.Collections.Generic.Dictionary`2<System.String,System.String>,System.String)
+stloc.3 
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+brfalse.s IL_0063: ldstr "callback state_mismatch"
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+brtrue.s IL_0063: ldstr "callback state_mismatch"
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_state
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0063: ldstr "callback state_mismatch"
+ldloc.1 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_state
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brfalse.s IL_00b9: ldarg.0
+ldstr callback state_mismatch
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastEvent
+ldloc.0 
+ldfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::client
+brfalse.s IL_0095: ldstr "page_state_title"
+ldloc.0 
+ldfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::client
+ldstr 400 Bad Request
+ldstr text/html; charset=utf-8
+ldstr page_state
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::LocalPage(System.String)
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+ret 
+ldstr page_state_title
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+ldstr page_state
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_state
+stloc.s V_4
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink::_redirectUri
+stloc.s V_5
+ldarg.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+stloc.s V_6
+ldloc.s V_6
+ldstr state
+ldloc.s V_4
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldloc.s V_6
+ldstr redirect_uri
+ldloc.s V_5
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldloc.2 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_0111: ldloc.s V_6
+ldloc.s V_6
+ldstr code
+ldloc.2 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+br.s IL_012e: ldstr "finish"
+ldloc.s V_6
+ldstr error
+ldloc.3 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+bgt.s IL_0128: ldloc.3
+ldstr access_denied
+br.s IL_0129: callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldloc.3 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldstr finish
+ldloc.s V_6
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass40_0::<OnCallback>b__0(Newtonsoft.Json.Linq.JObject)
+newobj System.Void System.Action`1<Newtonsoft.Json.Linq.JObject>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`1<Newtonsoft.Json.Linq.JObject>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::HandleResult(Newtonsoft.Json.Linq.JObject)
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::<>4__this
+ldarg.1 
+call System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::IsOk(Newtonsoft.Json.Linq.JObject)
+brtrue.s IL_001c: ldarg.1
+ldarg.1 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::PopupFail(Newtonsoft.Json.Linq.JObject)
+ret 
+ldarg.1 
+ldstr result
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.1 
+ldarg.1 
+ldstr title
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.2 
+ldarg.1 
+ldstr message
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.3 
+ldarg.1 
+ldstr discord_name
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.s V_4
+ldloc.1 
+ldstr linked
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0086: ldloc.s V_4
+ldloc.1 
+ldstr already
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0086: ldloc.s V_4
+ldloc.1 
+ldstr needs_confirm
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00a4: ldloc.0
+ldloc.1 
+ldstr moved
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00da: newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_1::.ctor()
+br IL_0139: ldloc.2
+ldloc.s V_4
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_0097: call System.Void Durango.Logic.Clusters.OffServerDiscordLink::RefreshUi()
+ldloc.s V_4
+stsfld System.String Durango.Logic.Clusters.OffServerLink::DiscordName
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::RefreshUi()
+ldloc.2 
+ldloc.3 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldloc.0 
+ldarg.1 
+ldstr state
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::state
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.2 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldloc.3 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::<HandleResult>b__0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+ldnull 
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action`1<System.Boolean>,System.String,System.String)
+ret 
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_1::.ctor()
+stloc.s V_5
+ldloc.s V_5
+ldarg.1 
+ldstr relogin
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+brfalse.s IL_00fd: ldc.i4.1
+ldarg.1 
+ldstr relogin
+call System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+br.s IL_00fe: stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_1::relogin
+ldc.i4.1 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_1::relogin
+ldloc.s V_4
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_0114: call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.s V_4
+stsfld System.String Durango.Logic.Clusters.OffServerLink::DiscordName
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.2 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldloc.3 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldloc.s V_5
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_1::<HandleResult>b__1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action,System.String)
+ret 
+ldloc.2 
+ldloc.3 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Confirm(System.String)
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+brfalse.s IL_0009: ldarg.0
+ret 
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr state
+ldarg.1 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldstr confirm
+ldloc.0 
+ldarg.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink::<Confirm>b__42_0(Newtonsoft.Json.Linq.JObject)
+newobj System.Void System.Action`1<Newtonsoft.Json.Linq.JObject>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`1<Newtonsoft.Json.Linq.JObject>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::BackToTitle()
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+callvirt System.Void GameManager::MoveToTitle()
+leave.s IL_000f: ret
+pop 
+leave.s IL_000f: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::RefreshUi()
+call System.Void Durango.UI.ConfigMainWidget::RefreshOffServerAccount()
+leave.s IL_000a: ret
+pop 
+leave.s IL_000a: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Update()
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+stloc.1 
+ldc.i4.0 
+stloc.2 
+ldloc.1 
+ldloca.s V_2
+call System.Void System.Threading.Monitor::Enter(System.Object,System.Boolean&)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+callvirt System.Int32 System.Collections.Generic.Queue`1<System.Action>::get_Count()
+brtrue.s IL_0020: ldarg.0
+leave.s IL_0044: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+callvirt !0 System.Collections.Generic.Queue`1<System.Action>::Dequeue()
+stloc.0 
+leave.s IL_0038: nop
+ldloc.2 
+brfalse.s IL_0037: endfinally
+ldloc.1 
+call System.Void System.Threading.Monitor::Exit(System.Object)
+endfinally 
+nop 
+ldloc.0 
+callvirt System.Void System.Action::Invoke()
+leave.s IL_0000: ldarg.0
+pop 
+leave.s IL_0000: ldarg.0
+ldarg.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_waiting
+brfalse.s IL_007e: ret
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single Durango.Logic.Clusters.OffServerDiscordLink::_deadline
+ble.un.s IL_007e: ret
+ldarg.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ldstr timeout
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastEvent
+ldnull 
+ldstr timeout
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::OnDestroy()
+ldarg.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::OnApplicationQuit()
+ldarg.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::StopWaiting()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Post(System.String,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Action`1<Newtonsoft.Json.Linq.JObject>)
+newobj System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::op
+ldloc.0 
+ldarg.2 
+stfld System.Action`1<Newtonsoft.Json.Linq.JObject> Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::callback
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_GatewayUrl()
+ldstr /discord/oauth/
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::op
+call System.String System.String::Concat(System.String,System.String,System.String)
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.2 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass48_0::<Post>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+stloc.1 
+ldloc.1 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_FormUsage(BestHTTP.Forms.HTTPFormUsage)
+ldloc.1 
+ldstr Authorization
+call System.String GameManager::get_SessionToken()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr Accept
+ldstr application/json
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr X-OffServer-Client
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr X-OffServer-Caps
+ldstr nametag-emoji, item-link, server-popup, voice-chat, i18n-keys
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr lang
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+ldarg.1 
+brfalse.s IL_00e2: ldloc.1
+ldarg.1 
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<System.String,System.String>::GetEnumerator()
+stloc.2 
+br.s IL_00c9: ldloca.s V_2
+ldloca.s V_2
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.String>::get_Current()
+stloc.3 
+ldloca.s V_3
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Value()
+brfalse.s IL_00c9: ldloca.s V_2
+ldloc.1 
+ldloca.s V_3
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Key()
+ldloca.s V_3
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Value()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+ldloca.s V_2
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.String>::MoveNext()
+brtrue.s IL_00a4: ldloca.s V_2
+leave.s IL_00e2: ldloc.1
+ldloca.s V_2
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<System.String,System.String>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.1 
+ldc.r8 10
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_ConnectTimeout(System.TimeSpan)
+ldloc.1 
+ldc.r8 20
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+ldloc.1 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+ldloc.1 
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::IsOk(Newtonsoft.Json.Linq.JObject)
+ldarg.0 
+ldstr ok
+call System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0005: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldarg.1 
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+stloc.0 
+ldloc.0 
+brfalse.s IL_0021: ldc.i4.0
+ldloc.0 
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.s 9
+bne.un.s IL_0021: ldc.i4.0
+ldloc.0 
+call System.Boolean Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+ret 
+ldc.i4.0 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0009: ldarg.0
+ldsfld System.String System.String::Empty
+ret 
+ldarg.0 
+ldarg.1 
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+stloc.0 
+ldloc.0 
+brfalse.s IL_001e: ldsfld System.String System.String::Empty
+ldloc.0 
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.s 10
+bne.un.s IL_0024: ldloc.0
+ldsfld System.String System.String::Empty
+ret 
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink::Ports(Newtonsoft.Json.Linq.JObject)
+newobj System.Void System.Collections.Generic.List`1<System.Int32>::.ctor()
+stloc.0 
+ldarg.0 
+ldstr ports
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.1 
+ldloc.1 
+brfalse.s IL_005e: ldloc.0
+ldloc.1 
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Newtonsoft.Json.Linq.JToken>::GetEnumerator()
+stloc.2 
+br.s IL_004a: ldloc.2
+ldloc.2 
+callvirt !0 System.Collections.Generic.IEnumerator`1<Newtonsoft.Json.Linq.JToken>::get_Current()
+callvirt System.String System.Object::ToString()
+ldloca.s V_3
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_004a: ldloc.2
+ldloc.3 
+ldc.i4.0 
+ble.s IL_004a: ldloc.2
+ldloc.3 
+ldc.i4 65536
+bge.s IL_004a: ldloc.2
+ldloc.0 
+ldloc.3 
+callvirt System.Void System.Collections.Generic.List`1<System.Int32>::Add(!0)
+ldloc.2 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_0023: ldloc.2
+leave.s IL_005e: ldloc.0
+ldloc.2 
+brfalse.s IL_005d: endfinally
+ldloc.2 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+callvirt System.Int32 System.Collections.Generic.List`1<System.Int32>::get_Count()
+brfalse.s IL_006d: ldsfld System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink::DefaultPorts
+ldloc.0 
+callvirt !0[] System.Collections.Generic.List`1<System.Int32>::ToArray()
+ret 
+ldsfld System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink::DefaultPorts
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::Get(System.Collections.Generic.Dictionary`2<System.String,System.String>,System.String)
+ldarg.0 
+ldarg.1 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: ldloc.0
+ldsfld System.String System.String::Empty
+ret 
+ldloc.0 
+dup 
+brtrue.s IL_001b: ret
+pop 
+ldsfld System.String System.String::Empty
+ret 
+METHOD System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Logic.Clusters.OffServerDiscordLink::ParseQuery(System.String)
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::.ctor()
+stloc.0 
+ldarg.0 
+ldc.i4.s 38
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br IL_0099: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+callvirt System.Int32 System.String::get_Length()
+brfalse.s IL_0095: ldloc.2
+ldloc.3 
+ldc.i4.s 61
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.0 
+blt.s IL_003d: ldloc.3
+ldloc.3 
+ldc.i4.0 
+ldloc.s V_4
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+br.s IL_003e: stloc.s V_5
+ldloc.3 
+stloc.s V_5
+ldloc.s V_4
+ldc.i4.0 
+blt.s IL_0051: ldsfld System.String System.String::Empty
+ldloc.3 
+ldloc.s V_4
+ldc.i4.1 
+add 
+callvirt System.String System.String::Substring(System.Int32)
+br.s IL_0056: stloc.s V_6
+ldsfld System.String System.String::Empty
+stloc.s V_6
+ldloc.s V_5
+ldc.i4.s 43
+ldc.i4.s 32
+callvirt System.String System.String::Replace(System.Char,System.Char)
+call System.String System.Uri::UnescapeDataString(System.String)
+stloc.s V_5
+ldloc.s V_6
+ldc.i4.s 43
+ldc.i4.s 32
+callvirt System.String System.String::Replace(System.Char,System.Char)
+call System.String System.Uri::UnescapeDataString(System.String)
+stloc.s V_6
+leave.s IL_0081: ldloc.0
+pop 
+leave.s IL_0081: ldloc.0
+ldloc.0 
+ldloc.s V_5
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String>::ContainsKey(!0)
+brtrue.s IL_0095: ldloc.2
+ldloc.0 
+ldloc.s V_5
+ldloc.s V_6
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String>::set_Item(!0,!1)
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt IL_0017: ldloc.1
+ldloc.0 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::ReadRequestLine(System.Net.Sockets.NetworkStream)
+ldc.i4 16384
+newarr System.Byte
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0053: ldloc.1
+ldarg.0 
+ldloc.0 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+ldloc.1 
+sub 
+callvirt System.Int32 System.IO.Stream::Read(System.Byte[],System.Int32,System.Int32)
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.0 
+ble.s IL_0059: ldloc.1
+ldloc.1 
+ldloc.s V_4
+add 
+stloc.1 
+call System.Text.Encoding System.Text.Encoding::get_ASCII()
+ldloc.0 
+ldc.i4.0 
+ldloc.1 
+callvirt System.String System.Text.Encoding::GetString(System.Byte[],System.Int32,System.Int32)
+stloc.s V_5
+ldloc.s V_5
+ldstr 
+
+
+callvirt System.Boolean System.String::Contains(System.String)
+brtrue.s IL_0059: ldloc.1
+ldloc.s V_5
+ldstr 
+
+
+callvirt System.Boolean System.String::Contains(System.String)
+brtrue.s IL_0059: ldloc.1
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_000f: ldarg.0
+ldloc.1 
+brtrue.s IL_005e: call System.Text.Encoding System.Text.Encoding::get_ASCII()
+ldnull 
+ret 
+call System.Text.Encoding System.Text.Encoding::get_ASCII()
+ldloc.0 
+ldc.i4.0 
+ldloc.1 
+callvirt System.String System.Text.Encoding::GetString(System.Byte[],System.Int32,System.Int32)
+stloc.2 
+ldloc.2 
+ldc.i4.s 10
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.3 
+ldloc.3 
+ldc.i4.0 
+blt.s IL_0083: ldloc.2
+ldloc.2 
+ldc.i4.0 
+ldloc.3 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+br.s IL_0084: callvirt System.String System.String::Trim()
+ldloc.2 
+callvirt System.String System.String::Trim()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::WriteResponse(System.Net.Sockets.TcpClient,System.String,System.String,System.String)
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldarg.3 
+dup 
+brtrue.s IL_000f: callvirt System.Byte[] System.Text.Encoding::GetBytes(System.String)
+pop 
+ldsfld System.String System.String::Empty
+callvirt System.Byte[] System.Text.Encoding::GetBytes(System.String)
+stloc.0 
+call System.Text.Encoding System.Text.Encoding::get_ASCII()
+ldc.i4.7 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr HTTP/1.1 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.1 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr 
+Content-Type: 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.2 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr 
+Content-Length: 
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.0 
+ldlen 
+conv.i4 
+stloc.2 
+ldloca.s V_2
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr 
+Cache-Control: no-store
+Connection: close
+
+
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+callvirt System.Byte[] System.Text.Encoding::GetBytes(System.String)
+stloc.1 
+ldarg.0 
+callvirt System.Net.Sockets.NetworkStream System.Net.Sockets.TcpClient::GetStream()
+dup 
+ldloc.1 
+ldc.i4.0 
+ldloc.1 
+ldlen 
+conv.i4 
+callvirt System.Void System.IO.Stream::Write(System.Byte[],System.Int32,System.Int32)
+dup 
+ldloc.0 
+ldc.i4.0 
+ldloc.0 
+ldlen 
+conv.i4 
+callvirt System.Void System.IO.Stream::Write(System.Byte[],System.Int32,System.Int32)
+callvirt System.Void System.IO.Stream::Flush()
+leave.s IL_0094: ret
+pop 
+leave.s IL_0094: ret
+nop 
+ldarg.0 
+callvirt System.Void System.Net.Sockets.TcpClient::Close()
+leave.s IL_0093: endfinally
+pop 
+leave.s IL_0093: endfinally
+endfinally 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_001c: call Durango.UI.MessageBox UIManager::get_MessageBox()
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldarg.1 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldnull 
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.Action,System.String)
+br.s IL_0034: leave.s IL_0039
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldarg.0 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldarg.1 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldnull 
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action,System.String)
+leave.s IL_0039: ret
+pop 
+leave.s IL_0039: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::PopupFail(Newtonsoft.Json.Linq.JObject)
+ldarg.0 
+ldstr title
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+ldstr message
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.0 
+ldloc.0 
+callvirt System.Int32 System.String::get_Length()
+brtrue.s IL_0049: ldloc.0
+ldstr failed
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+ldstr  (
+ldarg.0 
+ldstr reason
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Str(Newtonsoft.Json.Linq.JObject,System.String)
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+stloc.0 
+ldloc.0 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::Toast(System.String)
+ldarg.0 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldc.r4 6
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+leave.s IL_0015: ret
+pop 
+leave.s IL_0015: ret
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000e: ldarg.0
+ldsfld System.String System.String::Empty
+ret 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+newobj System.Void System.Text.StringBuilder::.ctor(System.Int32)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0062: ldloc.1
+ldarg.0 
+ldloc.1 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.2 
+ldloc.2 
+call System.Boolean System.Char::IsSurrogate(System.Char)
+brtrue.s IL_005e: ldloc.1
+ldloc.2 
+ldc.i4 65039
+beq.s IL_005e: ldloc.1
+ldloc.2 
+ldc.i4 8205
+beq.s IL_005e: ldloc.1
+ldloc.2 
+ldc.i4 9728
+blt.s IL_0056: ldloc.0
+ldloc.2 
+ldc.i4 10175
+bgt.s IL_0056: ldloc.0
+ldloc.2 
+ldc.i4 10003
+bne.un.s IL_005e: ldloc.1
+ldloc.0 
+ldloc.2 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+blt.s IL_001e: ldarg.0
+ldloc.0 
+callvirt System.String System.Object::ToString()
+callvirt System.String System.String::Trim()
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+ldarg.0 
+dup 
+brtrue.s IL_000a: ldstr "&"
+pop 
+ldsfld System.String System.String::Empty
+ldstr &
+ldstr &amp;
+callvirt System.String System.String::Replace(System.String,System.String)
+ldstr <
+ldstr &lt;
+callvirt System.String System.String::Replace(System.String,System.String)
+ldstr >
+ldstr &gt;
+callvirt System.String System.String::Replace(System.String,System.String)
+ldstr "
+ldstr &quot;
+callvirt System.String System.String::Replace(System.String,System.String)
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::ReturnToGamePage()
+ldstr page_return_title
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+stloc.0 
+ldstr page_return
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+stloc.1 
+ldstr page_return_button
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+stloc.2 
+ldsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::s_returnToGameUrl
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+stloc.3 
+ldc.i4.s 13
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr <!doctype html><html lang="
+stelem.ref 
+dup 
+ldc.i4.1 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr "><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr </title><style>body{font-family:system-ui,'Segoe UI',Tahoma,sans-serif;background:#1e1f22;color:#f2f3f5;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}main{max-width:520px;padding:32px;background:#2b2d31;border-radius:12px;border-top:6px solid #5865f2;text-align:center}h1{font-size:22px;margin:0 0 12px}p{line-height:1.6;margin:0 0 24px}a{display:inline-block;padding:14px 28px;background:#5865f2;color:#fff;border-radius:8px;text-decoration:none;font-size:18px}</style></head><body><main><h1>
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr </h1><p>
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.1 
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr </p><a href="
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldloc.3 
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr ">
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldloc.2 
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr </a></main></body></html>
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::LocalPage(System.String)
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.0 
+ldarg.0 
+ldstr _title
+call System.String System.String::Concat(System.String,System.String)
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+stloc.1 
+ldarg.0 
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::HtmlEscape(System.String)
+stloc.2 
+ldc.i4.s 9
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr <!doctype html><html lang="
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr "><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.1 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr </title><style>body{font-family:system-ui,'Segoe UI',Tahoma,sans-serif;background:#1e1f22;color:#f2f3f5;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}main{max-width:520px;padding:32px;background:#2b2d31;border-radius:12px;border-top:6px solid #da373c}h1{font-size:22px;margin:0 0 12px}p{line-height:1.6;margin:0}</style></head><body><main><h1>
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.1 
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr </h1><p>
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.2 
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr </p></main></body></html>
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerDiscordLink::Texts
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.2 
+ldloc.2 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldloc.0
+ldloc.2 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0046: ldloc.0
+ldloc.2 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004c: ldloc.0
+br.s IL_0052: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.2 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.3 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+stloc.1 
+ldarg.1 
+brfalse.s IL_005d: ldloc.1
+ldarg.1 
+ldlen 
+brtrue.s IL_005f: nop
+ldloc.1 
+ret 
+nop 
+ldloc.1 
+ldarg.1 
+call System.String System.String::Format(System.String,System.Object[])
+stloc.2 
+leave.s IL_006f: ldloc.2
+pop 
+ldloc.1 
+stloc.2 
+leave.s IL_006f: ldloc.2
+ldloc.2 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.Queue`1<System.Action>::.ctor()
+stfld System.Collections.Generic.Queue`1<System.Action> Durango.Logic.Clusters.OffServerDiscordLink::_main
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::.cctor()
+ldc.i4.3 
+newarr System.Int32
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=12 <PrivateImplementationDetails>::899991F04158BBB11D463A4C755E2DA0722A074141BE3F020B96F410F87256B8
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld System.Int32[] Durango.Logic.Clusters.OffServerDiscordLink::DefaultPorts
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::s_returnToGameUrl
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastAuthorizeUrl
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastEvent
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerDiscordLink::LastCaller
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr button
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Link Discord
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Link Discord
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Link Discord
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr Link Discord
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr button_linked
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ผูกกับ @{0} ✓
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Linked: @{0} ✓
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tertaut: @{0} ✓
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 연동됨: @{0} ✓
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr opened
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เปิดเบราว์เซอร์แล้ว — กด «อนุญาต» (Authorize) ใน Discord แล้วกลับมาที่เกม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Browser opened — press Authorize on Discord, then come back to the game.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Browser dibuka — tekan Authorize di Discord, lalu kembali ke game.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 브라우저가 열렸습니다 — Discord에서 승인(Authorize)을 누른 뒤 게임으로 돌아오세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr waiting_again
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ยังรอผลจาก Discord อยู่ — เปิดหน้าเบราว์เซอร์ให้อีกครั้งแล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Still waiting for Discord — the page was opened again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Masih menunggu Discord — halaman dibuka lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 아직 Discord 응답을 기다리는 중입니다 — 페이지를 다시 열었습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr finishing
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กำลังผูกกับ Discord อยู่ รอสักครู่…
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Linking with Discord, please wait…
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Sedang menautkan dengan Discord, tunggu sebentar…
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr Discord 연동 중입니다. 잠시만 기다려 주세요…
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr timeout
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr หมดเวลารอ Discord (5 นาที) — กด Link Discord ใหม่อีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Timed out waiting for Discord (5 minutes). Press Link Discord again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Waktu menunggu Discord habis (5 menit). Tekan Link Discord lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr Discord 응답 대기 시간이 초과되었습니다(5분). Link Discord를 다시 누르세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr no_port
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เปิดช่องรับผลจาก Discord ในเครื่องไม่ได้ (พอร์ต {0} ถูกโปรแกรมอื่นใช้อยู่) — ปิดโปรแกรมนั้นแล้วลองใหม่ หรือใช้ panel ในดิสแทน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't open the local callback port ({0} are used by another program). Close that program and try again, or use the panel in Discord instead.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak bisa membuka port callback lokal ({0} dipakai program lain). Tutup program itu lalu coba lagi, atau gunakan panel di Discord.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 로컬 콜백 포트를 열 수 없습니다({0} 포트를 다른 프로그램이 사용 중). 해당 프로그램을 닫고 다시 시도하거나 Discord 패널을 이용하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr net_error
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ติดต่อเซิร์ฟไม่ได้ — ลองใหม่อีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't reach the server. Please try again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak dapat menghubungi server. Silakan coba lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 서버에 연결할 수 없습니다. 다시 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr not_online
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ต้องเข้าเซิร์ฟก่อนถึงจะผูก Discord ได้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Connect to a server first to link Discord.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Masuk ke server dulu untuk menautkan Discord.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr Discord를 연동하려면 먼저 서버에 접속하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr disabled
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มนี้ปิดอยู่ — ใช้ panel ในดิสแทน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This button is turned off — use the panel in Discord instead.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol ini sedang nonaktif — gunakan panel di Discord.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 버튼은 꺼져 있습니다 — Discord 패널을 이용하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr failed
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ผูกไม่สำเร็จ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Link failed
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Gagal menautkan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 연동 실패
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr linked_ask
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr บัญชีนี้ผูกกับ Discord @{0} อยู่แล้ว ✓
+ต้องการผูก Discord บัญชีอื่นแทนไหม?
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This account is already linked with Discord @{0} ✓
+Link a different Discord account instead?
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Akun ini sudah tertaut dengan Discord @{0} ✓
+Tautkan akun Discord lain sebagai gantinya?
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 계정은 이미 Discord @{0}와(과) 연동되어 있습니다 ✓
+다른 Discord 계정으로 연동하시겠습니까?
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_state_title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ❌ ลิงก์นี้ไม่ตรงกับคำขอของเกม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr ❌ This link doesn't match the game's request
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr ❌ Tautan ini tidak cocok dengan permintaan game
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr ❌ 게임의 요청과 일치하지 않는 링크입니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_state
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กลับไปที่เกมแล้วกด Link Discord ใหม่อีกครั้ง — ปิดแท็บนี้ได้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Go back to the game and press Link Discord again. You can close this tab.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kembali ke game dan tekan Link Discord lagi. Tab ini boleh ditutup.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 게임으로 돌아가 Link Discord를 다시 누르세요. 이 탭은 닫아도 됩니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_return_title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ได้รับผลจาก Discord แล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Discord answered
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Discord sudah menjawab
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr Discord 응답을 받았습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_return
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กลับเข้าเกมเพื่อผูกให้เสร็จ — ผลจะขึ้นในเกม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Go back to the game to finish linking — the result shows in the game.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kembali ke game untuk menyelesaikan penautan — hasilnya muncul di game.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 게임으로 돌아가 연동을 마치세요 — 결과는 게임에 표시됩니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_return_button
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กลับเข้าเกม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Back to the game
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kembali ke game
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 게임으로 돌아가기
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_net_title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ❌ ติดต่อเซิร์ฟเกมไม่ได้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr ❌ Couldn't reach the game server
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr ❌ Tidak dapat menghubungi server game
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr ❌ 게임 서버에 연결할 수 없습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr page_net
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กลับไปที่เกมแล้วลองกด Link Discord ใหม่อีกครั้ง — ปิดแท็บนี้ได้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Go back to the game and try Link Discord again. You can close this tab.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kembali ke game dan coba Link Discord lagi. Tab ini boleh ditutup.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 게임으로 돌아가 Link Discord를 다시 시도하세요. 이 탭은 닫아도 됩니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerDiscordLink::Texts
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink::<Confirm>b__42_0(Newtonsoft.Json.Linq.JObject)
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.Logic.Clusters.OffServerDiscordLink::_finishing
+ldarg.1 
+brtrue.s IL_0020: ldarg.0
+ldnull 
+ldstr net_error
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Popup(System.String,System.String)
+ret 
+ldarg.0 
+ldarg.1 
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::HandleResult(Newtonsoft.Json.Linq.JObject)
+ret 

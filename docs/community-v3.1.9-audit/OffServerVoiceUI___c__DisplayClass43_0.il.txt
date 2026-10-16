@@ -1,0 +1,12 @@
+OffServerVoiceUI/<>c__DisplayClass43_0 : System.Object
+FIELD UIWidget OffServerVoiceUI/<>c__DisplayClass43_0::uIWidget
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass43_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass43_0::<AttachPcMicButton>b__0(UnityEngine.GameObject,System.Boolean)
+ldarg.0 
+ldfld UIWidget OffServerVoiceUI/<>c__DisplayClass43_0::uIWidget
+ldarg.2 
+call System.Void OffServerVoiceUI::ShowPcMicTooltip(UIWidget,System.Boolean)
+ret 

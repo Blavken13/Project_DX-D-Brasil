@@ -1,0 +1,368 @@
+{
+  "commit": "9ed8e54c24f23026fc5c9accb5f7bbef17fe6b22",
+  "image": "sha256:101b493d1a3098aacada87947d7d0688c57db4e1345601b37c31be7726e72475",
+  "healthy": true,
+  "backup": "/opt/durango/backups/state-pre-9ed8e54-20261010T014736Z.tar.gz",
+  "state": [
+    {
+      "cluster": "Durango Brasil",
+      "accounts_preserved": 49,
+      "characters_preserved": 57
+    },
+    {
+      "cluster": "Durango Brasil - STAGING",
+      "accounts_preserved": 9,
+      "characters_preserved": 12
+    }
+  ],
+  "admin_checks": [
+    "loja: bilhete de reset gratuito e catalogo da release confirmado",
+    "12 terrenos adicionais: SHA-256 confirmado",
+    "/admin/: arquivo da release confirmado",
+    "/admin/app.js: arquivo da release confirmado",
+    "/admin/style.css: arquivo da release confirmado",
+    "/health: acesso anônimo bloqueado",
+    "/admin/players: acesso anônimo bloqueado",
+    "/admin/premium: acesso anônimo bloqueado",
+    "/admin/mail/status: acesso anônimo bloqueado",
+    "/admin/catalog: acesso anônimo bloqueado",
+    "/admin/client-reports: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=csv: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=json: acesso anônimo bloqueado",
+    "bundle masculino original: SHA-256 confirmado"
+  ],
+  "regression_results": [
+    "[safehouse-missions-check] PASS 49 verificações. Saves temporários: /tmp/Durango-safehouse-missions-66160134f48e4d4eb2bc885003dc865d",
+    "[tester-check] PASS 106 verificações",
+    "[bugs-check] PASS",
+    "[polish-check] PASS 1249 verificacoes. Saves temporarios: /tmp/Durango-polish-check-42aa9936dcf34bbdb99ff87b5eec38ed",
+    "[induction-check] PASS 29 verificacoes",
+    "[world-check] PASS 2795 verificacoes. Saves temporarios: /tmp/Durango-world-check-2b698e99ccb24c37870d0847ef3339a9",
+    "[gameplay-check] PASS 58 verificacoes. Saves temporarios: /tmp/Durango-gameplay-check-265498b3fdea4201bbc81f50a5d7b28e",
+    "[social-check] PASS 97 verificações",
+    "[premium-check] PASS 52 verificações",
+    "[economy-check] PASS 303 verificacoes. Arquivos temporarios: /tmp/Durango-economy-check-17cf7553894b47688dd196995f9bf83d",
+    "[progression-check] PASS 148 verificacoes",
+    "[fauna-check] PASS 404 verificacoes",
+    "[combat-bags] PASS 2415 verificações. Saves temporários: /tmp/Durango-combat-bags-da2d2195ed0d49feabac778e94f47e5d",
+    "[world-combat] PASS 52 verificacoes. Saves temporarios: /tmp/Durango-world-combat-3ab441f200a64b73af060dd6c5b341bc",
+    "[volcano-crater] PASS 204 verificacoes. Saves temporarios: /tmp/Durango-volcano-crater-b68a2513f31a4885a38d40c262b0cfcf",
+    "[reported-gameplay] PASS 107 verificações",
+    "[xp-coupon-check] PASS: 178 verificações",
+    "PASS: coupon regression adapted to property in isolated validation image; production image unchanged"
+  ],
+  "coupon_test_validation": {
+    "passed": true,
+    "production_image": "sha256:101b493d1a3098aacada87947d7d0688c57db4e1345601b37c31be7726e72475",
+    "production_source_unchanged": true,
+    "validation_only_changes": [
+      "SkillXpCouponCheck.cs"
+    ],
+    "original_test_sha256": "c7187cc7b6d48103c1a7a6e950354aaa7bad3b171df08194e9e6f2c1759f3daa",
+    "validation_test_sha256": "d2bbc5e2efcecdb949e2cd9e5c31852f584273eaf5ebe86f5f8a7ef0deb35f07",
+    "reason": "Commit 6dd89a4 changed _lockedItemIds from field to property; the old coupon test used only GetField."
+  },
+  "private_admin_configuration_verified": true,
+  "https_verified": false,
+  "https_pending_reason": "HTTPS proxy was already stopped before this deployment; previous certificate attempts timed out during external validation",
+  "android_bundle_files": 1609,
+  "pocket_restoration": {
+    "applied": true,
+    "reference_backup": "/opt/durango/backups/state-pre-d1a245f-20261010T012030Z.tar.gz",
+    "reference_backup_sha256_verified": true,
+    "requested_item_ids": 28,
+    "restored_unique_items": 28,
+    "changed_files": 13,
+    "only_pocket_level_changes_verified": true,
+    "already_restored": [],
+    "absent_item_ids": [],
+    "items": [
+      {
+        "id": "1029699c-ae77-4025-879d-ca8239eb511b",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/20.player",
+        "path": "$.inventory_items[4]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "2154bd50-3cb4-4d0a-af91-fcf0fc7e720e",
+        "prototype": "bag_leaf",
+        "item_level": 30,
+        "file": "offline/Durango Brasil/31.player",
+        "path": "$.inventory_items[80]",
+        "pocket_before_recovery": 2,
+        "pocket_restored": 30
+      },
+      {
+        "id": "21e4bfd5-5b1d-424e-8e2a-4a0788599554",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[0]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "2a125834-bd74-4e08-b808-0df963f68344",
+        "prototype": "bag_leaf",
+        "item_level": 30,
+        "file": "offline/Durango Brasil/32.player",
+        "path": "$.inventory_items[23]",
+        "pocket_before_recovery": 2,
+        "pocket_restored": 30
+      },
+      {
+        "id": "31b25518-2e73-4308-863c-3c2726bc4707",
+        "prototype": "bag_leaf",
+        "item_level": 10,
+        "file": "offline/Durango Brasil/52.player",
+        "path": "$.inventory_items[6]",
+        "pocket_before_recovery": 2,
+        "pocket_restored": 10
+      },
+      {
+        "id": "34674fc4-af76-448c-9f74-376ceb6d564d",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[1]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "43b24c29-9b65-4587-902b-5a8939605d81",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/28.player",
+        "path": "$.inventory_items[189]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "44c21aea-0526-4ffb-a99d-c74d89bb18db",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[2]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "4703b38b-cc90-4d93-bebd-aa209880f020",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[3]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "57100a4c-aba5-482a-b4d6-6e64ce24bc62",
+        "prototype": "bag_cross",
+        "item_level": 34,
+        "file": "offline/Durango Brasil/46.player",
+        "path": "$.inventory_items[56]",
+        "pocket_before_recovery": 9,
+        "pocket_restored": 34
+      },
+      {
+        "id": "5d6f1603-2ffb-4f48-8403-5c305647783d",
+        "prototype": "clothes_builder_01",
+        "item_level": 59,
+        "file": "offline/Durango Brasil/28.player",
+        "path": "$.inventory_items[192]",
+        "pocket_before_recovery": 2,
+        "pocket_restored": 59
+      },
+      {
+        "id": "616892e2-95ed-48a0-b059-f6392d7e5583",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[4]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "65e11021-50aa-47a1-8f28-f2387cf121e4",
+        "prototype": "clothes_linen_01",
+        "item_level": 29,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[10]",
+        "pocket_before_recovery": 1,
+        "pocket_restored": 29
+      },
+      {
+        "id": "75c451e3-9360-416c-a209-898ae45baa10",
+        "prototype": "bag_fabric",
+        "item_level": 15,
+        "file": "offline/Durango Brasil/50.player",
+        "path": "$.inventory_items[56]",
+        "pocket_before_recovery": 4,
+        "pocket_restored": 15
+      },
+      {
+        "id": "79ad6245-990f-409b-a2e4-2da4a56db43a",
+        "prototype": "clothes_linen_01",
+        "item_level": 29,
+        "file": "offline/Durango Brasil/46.player",
+        "path": "$.inventory_items[57]",
+        "pocket_before_recovery": 1,
+        "pocket_restored": 29
+      },
+      {
+        "id": "7b361bda-66cc-4566-a604-98d0900662d1",
+        "prototype": "bag_fabric",
+        "item_level": 15,
+        "file": "offline/Durango Brasil/46.player",
+        "path": "$.inventory_items[83]",
+        "pocket_before_recovery": 4,
+        "pocket_restored": 15
+      },
+      {
+        "id": "7c4afb56-d4c5-4778-b23b-6d5a87d12521",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[5]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "976dec7c-ddf4-4617-9938-7fe22696294e",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[6]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "98cea21c-2fd7-4acb-8709-75463ee34ded",
+        "prototype": "bag_fabric",
+        "item_level": 12,
+        "file": "offline/Durango Brasil/45.player",
+        "path": "$.inventory_items[9]",
+        "pocket_before_recovery": 4,
+        "pocket_restored": 12
+      },
+      {
+        "id": "aa2a6793-3ed5-4b6b-bad5-ecc99fae9a04",
+        "prototype": "bag_fabric",
+        "item_level": 20,
+        "file": "offline/Durango Brasil/46.player",
+        "path": "$.inventory_items[80]",
+        "pocket_before_recovery": 4,
+        "pocket_restored": 20
+      },
+      {
+        "id": "ae8d0207-5a5a-4122-b07b-2131babc41fa",
+        "prototype": "clothes_linen_01",
+        "item_level": 35,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[11]",
+        "pocket_before_recovery": 1,
+        "pocket_restored": 35
+      },
+      {
+        "id": "b7293e6f-6744-4c01-8c7e-c1b878f3e2c0",
+        "prototype": "bag_fabric",
+        "item_level": 15,
+        "file": "offline/Durango Brasil/25.player",
+        "path": "$.inventory_items[90]",
+        "pocket_before_recovery": 4,
+        "pocket_restored": 15
+      },
+      {
+        "id": "b7a82824-b8ea-411b-9cc9-78779d83b38a",
+        "prototype": "bag_leaf",
+        "item_level": 10,
+        "file": "offline/Durango Brasil/30.player",
+        "path": "$.inventory_items[60]",
+        "pocket_before_recovery": 2,
+        "pocket_restored": 10
+      },
+      {
+        "id": "c376e4e3-d590-405d-a41c-f3196a437f0a",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[7]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "c613a3e5-8ad0-4bf2-8025-12a9b623e9ec",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[8]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      },
+      {
+        "id": "d92ba29b-cae3-4196-aa52-d236799f67e8",
+        "prototype": "bag_cross",
+        "item_level": 30,
+        "file": "offline/Durango Brasil/regions/tamed_01.world",
+        "path": "$.warehouses.6d30ff3d-8ce4-4bac-84f2-4d7abdc19689.sections.[15]",
+        "pocket_before_recovery": 9,
+        "pocket_restored": 30
+      },
+      {
+        "id": "e0394ff9-8e50-4c64-b434-d3ea193ae939",
+        "prototype": "bag_leaf",
+        "item_level": 12,
+        "file": "offline/Durango Brasil/33.player",
+        "path": "$.inventory_items[3]",
+        "pocket_before_recovery": 2,
+        "pocket_restored": 12
+      },
+      {
+        "id": "e8e4138f-22c2-4310-819f-775521eaab94",
+        "prototype": "bag_back",
+        "item_level": 60,
+        "file": "offline/Durango Brasil/7.player",
+        "path": "$.inventory_items[111]",
+        "pocket_before_recovery": 15,
+        "pocket_restored": 60
+      }
+    ],
+    "fresh_backup": "/opt/durango/backups/state-pre-9ed8e54-20261010T014736Z.tar.gz",
+    "after_restart": {
+      "verified_item_ids": 28,
+      "restored_levels_persisted": true
+    },
+    "final_verification": {
+      "verified_item_ids": 28,
+      "restored_levels_persisted": true
+    }
+  },
+  "public_verification": {
+    "host": "179.197.72.129",
+    "checks": {
+      "/status": {
+        "ok": true,
+        "version": "5.2.1"
+      },
+      "/knock?platform=Android&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "/knock?platform=Windows&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "tcp_8191": {
+        "ok": true
+      }
+    }
+  },
+  "mail_regression": {
+    "passed": true,
+    "checks": 42,
+    "evidence": "deploy console; command completed with exit code 0 before rollout"
+  }
+}

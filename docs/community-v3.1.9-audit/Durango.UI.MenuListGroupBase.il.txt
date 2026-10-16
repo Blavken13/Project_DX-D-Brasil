@@ -1,0 +1,1286 @@
+Durango.UI.MenuListGroupBase : UIBase
+FIELD System.String Durango.UI.MenuListGroupBase::MenuLockKey
+FIELD System.String Durango.UI.MenuListGroupBase::MenuAnchorKey
+FIELD Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+FIELD Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+FIELD Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+FIELD Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+FIELD UnityEngine.GameObject Durango.UI.MenuListGroupBase::_menuBtn
+FIELD UISprite Durango.UI.MenuListGroupBase::_newIcon
+FIELD UnityEngine.Transform Durango.UI.MenuListGroupBase::_lastActionButtons
+FIELD UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+FIELD UISprite Durango.UI.MenuListGroupBase::_lastOpenUISprite
+FIELD UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+FIELD Durango.UI.Control.ItemIconTex Durango.UI.MenuListGroupBase::_lastAddedItemIcon
+FIELD UIWidget Durango.UI.MenuListGroupBase::TouchBlockBox
+FIELD RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+FIELD System.String Durango.UI.MenuListGroupBase::_lastOpenCraftId
+FIELD UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+FIELD System.String Durango.UI.MenuListGroupBase::_lastOpenUriLink
+FIELD System.String Durango.UI.MenuListGroupBase::_lastAddedItemId
+FIELD UnityEngine.Vector3 Durango.UI.MenuListGroupBase::_lastActionButtonsPos
+FIELD Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+FIELD Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+FIELD Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+FIELD System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+FIELD System.Boolean Durango.UI.MenuListGroupBase::_prevOpened
+FIELD System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+FIELD System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+METHOD System.Boolean Durango.UI.MenuListGroupBase::get_IsSoundOcclusion()
+ldc.i4.0 
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::add_MenuClicked(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action`1<Durango.Logic.MenuType>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Durango.Logic.MenuType>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::remove_MenuClicked(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action`1<Durango.Logic.MenuType>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Durango.Logic.MenuType>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::add_MenuOpened(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action`1<Durango.Logic.MenuType>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Durango.Logic.MenuType>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::remove_MenuOpened(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action`1<Durango.Logic.MenuType>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Durango.Logic.MenuType>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::IsMenuVisible()
+ldarg.0 
+call System.Boolean UIBase::get_IsOpened()
+brtrue.s IL_000f: ldc.i4.1
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+ret 
+ldc.i4.1 
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::Awake()
+ldarg.0 
+ldc.i4.2 
+stfld UISound/GroupType UIBase::_openCloseSound
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::ClearLastOpenUI()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::ClearLastCollectItem()
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_newIcon
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::OnUpdateNotification()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.Logic.Notification.Notification::add_Changed(System.Action)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::Start()
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::ClosableUIOpened()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void UIBase::add_UIOpened(System.Action)
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::ClosableUIClosed()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void UIBase::add_UIClosed(System.Action)
+ldarg.0 
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void UIBase::add_OnOpenSucceed(System.Action)
+ldarg.0 
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+call System.Void UIBase::add_OnCloseSucceed(System.Action)
+call TV UIManager::FindScript<Durango.UI.CombatGroup>()
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::<Start>b__39_0(Durango.UI.CombatGroup/BattleViewMode)
+newobj System.Void System.Action`1<Durango.UI.CombatGroup/BattleViewMode>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.CombatGroup::add_BattleViewChanged(System.Action`1<Durango.UI.CombatGroup/BattleViewMode>)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::OnClickLastOpenUI(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+ldnull 
+ldftn System.Void UIManager::IgnoreUIDrag(UnityEngine.GameObject,UnityEngine.Vector2)
+newobj System.Void UIEventListener/VectorDelegate::.ctor(System.Object,System.IntPtr)
+stfld UIEventListener/VectorDelegate UIEventListener::onDrag
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::OnClickLastGatheringItem(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+ldnull 
+ldftn System.Void UIManager::IgnoreUIDrag(UnityEngine.GameObject,UnityEngine.Vector2)
+newobj System.Void UIEventListener/VectorDelegate::.ctor(System.Object,System.IntPtr)
+stfld UIEventListener/VectorDelegate UIEventListener::onDrag
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroupBase::_menuBtn
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::<Start>b__39_1(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/VoidDelegate
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+call Durango.UI.InventoryGroup UIManager::get_Inventory()
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::ClearLastCollectItem()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void UIBase::add_OnOpenSucceed(System.Action)
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+ldarg.0 
+dup 
+ldvirtftn System.Void Durango.UI.MenuListGroupBase::OnMenuClick(Durango.Logic.MenuType)
+newobj System.Void System.Action`1<Durango.Logic.MenuType>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.LandscapeMenuListBase::add_MenuClicked(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+ldarg.0 
+dup 
+ldvirtftn System.Void Durango.UI.MenuListGroupBase::OnMenuClick(Durango.Logic.MenuType)
+newobj System.Void System.Action`1<Durango.Logic.MenuType>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.MenuListWidgetBase::add_MenuClicked(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0178: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldarg.0 
+dup 
+ldvirtftn System.Void Durango.UI.MenuListGroupBase::OnMenuClick(Durango.Logic.MenuType)
+newobj System.Void System.Action`1<Durango.Logic.MenuType>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.MenuListWidgetBase::add_MenuClicked(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+ldarg.0 
+dup 
+ldvirtftn System.Void Durango.UI.MenuListGroupBase::OnMenuClick(Durango.Logic.MenuType)
+newobj System.Void System.Action`1<Durango.Logic.MenuType>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.MenuListWidgetBase::add_MenuClicked(System.Action`1<Durango.Logic.MenuType>)
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::ToggleLockMode()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.LandscapeMenuListBase::add_LockClicked(System.Action)
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::ToggleLockMode()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.LockedMenuList::add_LockClicked(System.Action)
+ldarg.0 
+ldarg.0 
+ldfld UnityEngine.Transform Durango.UI.MenuListGroupBase::_lastActionButtons
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+stfld UnityEngine.Vector3 Durango.UI.MenuListGroupBase::_lastActionButtonsPos
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::RefreshMenuLayout()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+ldarg.0 
+call System.Boolean UIBase::TryOpen()
+pop 
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::TouchBlockBox
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0239: call T GameSystem`1<MenuSystem>::Instance()
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+call T GameSystem`1<MenuSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::MenuSystem_EnableMenuUpdated()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void MenuSystem::add_EnableMenuUpdated(System.Action)
+call T GameSystem`1<InventorySystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::OnItemAdded(Durango.Logic.Item.ItemData)
+newobj System.Void System.Action`1<Durango.Logic.Item.ItemData>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void InventorySystem::add_ItemAdded(System.Action`1<Durango.Logic.Item.ItemData>)
+call T GameSystem`1<InputSystem>::Instance()
+ldc.i4.s 81
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::OnReceivedInputCommandMessage(InputCommandMessage)
+newobj System.Void System.Action`1<InputCommandMessage>::.ctor(System.Object,System.IntPtr)
+ldc.i4.2 
+callvirt System.Void InputSystem::On(InputCommand,System.Action`1<InputCommandMessage>,InputSystem/Priority)
+call T GameSystem`1<InputSystem>::Instance()
+ldc.i4.s 82
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroupBase::OnReceivedInputCommandMessage(InputCommandMessage)
+newobj System.Void System.Action`1<InputCommandMessage>::.ctor(System.Object,System.IntPtr)
+ldc.i4.2 
+callvirt System.Void InputSystem::On(InputCommand,System.Action`1<InputCommandMessage>,InputSystem/Priority)
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::RefreshMenuList()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::Update()
+ldarg.0 
+callvirt System.Void Durango.UI.MenuListGroupBase::CheckLastAddedItemQueue()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnScreenResized()
+ldarg.0 
+call System.Void UIBase::OnScreenResized()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::RefreshMenuLayout()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::SaveMenuLockState()
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+stloc.0 
+ldloc.0 
+ldc.i4.1 
+beq.s IL_000f: ldstr "menu_lock"
+ldloc.0 
+ldc.i4.2 
+bne.un.s IL_0023: ret
+ldstr menu_lock
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+ldc.i4.1 
+ceq 
+ldc.i4.0 
+call System.Void Preferences::SetBool(System.String,System.Boolean,Preferences/Level)
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::GetMenuLockState()
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+brtrue.s IL_0020: ldarg.0
+ldarg.0 
+ldstr menu_lock
+ldc.i4.0 
+ldc.i4.0 
+call System.Boolean Preferences::GetBool(System.String,System.Boolean,Preferences/Level)
+brtrue.s IL_001a: ldc.i4.1
+ldc.i4.2 
+br.s IL_001b: stfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+ldc.i4.1 
+stfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+ldc.i4.1 
+ceq 
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+ldc.i4.2 
+ceq 
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::IsMenuVisible(Durango.Logic.MenuType)
+ldarg.0 
+ldarg.1 
+call Durango.UI.MenuWidget Durango.UI.MenuListGroupBase::GetMenuItem(Durango.Logic.MenuType)
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+ret 
+METHOD Durango.UI.MenuWidget Durango.UI.MenuListGroupBase::GetMenuItem(Durango.Logic.MenuType)
+ldnull 
+stloc.0 
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+stloc.1 
+ldloc.1 
+switch Mono.Cecil.Cil.Instruction[]
+br.s IL_0050: ldloc.0
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+ldarg.1 
+ldloca.s V_0
+callvirt System.Boolean Durango.UI.LandscapeMenuListBase::TryGetMenuItem(Durango.Logic.MenuType,Durango.UI.MenuWidget&)
+pop 
+ldloc.0 
+ret 
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+ldarg.1 
+ldloca.s V_0
+callvirt System.Boolean Durango.UI.MenuListWidgetBase::TryGetMenuItem(Durango.Logic.MenuType,Durango.UI.MenuWidget&)
+pop 
+ldloc.0 
+ret 
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+ldarg.1 
+ldloca.s V_0
+callvirt System.Boolean Durango.UI.MenuListWidgetBase::TryGetMenuItem(Durango.Logic.MenuType,Durango.UI.MenuWidget&)
+pop 
+ldloc.0 
+ret 
+ldloc.0 
+ret 
+METHOD UnityEngine.Transform Durango.UI.MenuListGroupBase::GetBottomLeftMenuTransform()
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroupBase::_menuBtn
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+ret 
+METHOD UnityEngine.Transform Durango.UI.MenuListGroupBase::GetMenuTransform(Durango.Logic.MenuType)
+ldarg.0 
+ldarg.1 
+call Durango.UI.MenuWidget Durango.UI.MenuListGroupBase::GetMenuItem(Durango.Logic.MenuType)
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0013: ldloc.0
+ldnull 
+ret 
+ldloc.0 
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::RefreshMenuList()
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+callvirt System.Void Durango.UI.LandscapeMenuListBase::Refresh()
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+callvirt System.Void Durango.UI.PortraitMenuList::Refresh()
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002f: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+callvirt System.Void Durango.UI.MenuBannerList::Refresh()
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+callvirt System.Void Durango.UI.LockedMenuList::Refresh()
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+callvirt System.Void Durango.Logic.Notification.Notification::BeginSetting()
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+callvirt System.Void Durango.Logic.Notification.Container::ClearChild()
+call T[] Durango.Utils.Enums`1<Durango.Logic.MenuType>::All()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0081: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.i4 
+stloc.2 
+ldarg.0 
+ldloc.2 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuVisible(Durango.Logic.MenuType)
+brfalse.s IL_007d: ldloc.1
+ldloc.2 
+call Durango.Logic.Notification.INotificationable Durango.UI.MenuHelper::GetNotificationable(Durango.Logic.MenuType)
+stloc.3 
+ldloc.3 
+brfalse.s IL_007d: ldloc.1
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+ldloc.3 
+callvirt System.Void Durango.Logic.Notification.Container::AddChild(Durango.Logic.Notification.INotificationable)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_005a: ldloc.0
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+callvirt System.Void Durango.Logic.Notification.Notification::EndSetting()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::OnUpdateNotification()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::MenuSystem_EnableMenuUpdated()
+call System.Void Durango.UI.MenuHelper::RefreshCategoryMenuNotification()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::RefreshMenuList()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnMenuClick(Durango.Logic.MenuType)
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean UIBase::PlayCloseSound
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+brfalse.s IL_001b: call T GameSystem`1<MenuSystem>::Instance()
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuClicked
+ldarg.1 
+callvirt System.Void System.Action`1<Durango.Logic.MenuType>::Invoke(!0)
+call T GameSystem`1<MenuSystem>::Instance()
+ldarg.1 
+ldc.i4.0 
+callvirt System.Void MenuSystem::SetRecentlyUnlocked(Durango.Logic.MenuType,System.Boolean)
+ldarg.1 
+ldc.i4.s 20
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+ldarg.1 
+ldc.i4.s 31
+beq.s IL_0073: newobj System.Void Durango.UI.MenuListGroupBase/TryKnockLoaclNetwork::.ctor()
+ldarg.1 
+ldc.i4.s 35
+beq.s IL_0068: call T Durango.Utils.Singleton`1<GameManager>::Instance()
+br.s IL_007e: ldarg.1
+call T GameSystem`1<NoticeSystem>::Instance()
+callvirt System.Void NoticeSystem::Show()
+ret 
+call System.Void Durango.System.Config.ConfigInstance::OpenOfficialCommunityUrl()
+ret 
+call Durango.System.Platform Durango.System.Platform::get_Instance()
+callvirt System.Void Durango.System.Platform::ShowOfferwall()
+ret 
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+callvirt System.Void GameManager::MoveToTitle()
+ret 
+newobj System.Void Durango.UI.MenuListGroupBase/TryKnockLoaclNetwork::.ctor()
+call System.Void Durango.UI.MenuListGroupBase/TryKnockLoaclNetwork::Start()
+ret 
+ldarg.1 
+ldc.i4.s 37
+ceq 
+stsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+ldarg.1 
+call UIBase Durango.UI.MenuHelper::GetScript(Durango.Logic.MenuType)
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_00b2: ret
+ldarg.0 
+ldarg.1 
+box Durango.Logic.MenuType
+ldnull 
+call System.String IconMap::Get(System.Enum,System.String)
+ldloc.0 
+call System.Void Durango.UI.MenuListGroupBase::SetLastOpenUI(System.String,UIBase)
+ldarg.1 
+ldc.i4.0 
+call System.Void Durango.UI.MenuHelper::Open(Durango.Logic.MenuType,System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::NotifyMenuOpened(Durango.Logic.MenuType)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+brfalse.s IL_0014: ret
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.MenuType> Durango.UI.MenuListGroupBase::MenuOpened
+ldarg.1 
+callvirt System.Void System.Action`1<Durango.Logic.MenuType>::Invoke(!0)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnClickLastOpenUI(UnityEngine.GameObject)
+ldc.i4.1 
+call System.Void UISound::PlayClick(UISound/ClickType)
+ldarg.0 
+ldfld RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+stloc.0 
+ldloc.0 
+brfalse.s IL_0017: ldarg.0
+ldloc.0 
+ldc.i4.1 
+sub 
+ldc.i4.1 
+ble.un.s IL_0050: call TV UIManager::FindScript<Durango.UI.RecipeSelectorGroup>()
+ret 
+ldarg.0 
+ldfld System.String Durango.UI.MenuListGroupBase::_lastOpenUriLink
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_003f: call T Durango.Utils.Singleton`1<UIManager>::Instance()
+ldarg.0 
+ldfld UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0066: ret
+ldarg.0 
+ldfld UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+callvirt System.Boolean UIBase::Open()
+pop 
+ret 
+call T Durango.Utils.Singleton`1<UIManager>::Instance()
+ldarg.0 
+ldfld System.String Durango.UI.MenuListGroupBase::_lastOpenUriLink
+call System.Void Durango.UI.UriParser::OpenUri(Durango.UI.IUriInvokable,System.String)
+ret 
+call TV UIManager::FindScript<Durango.UI.RecipeSelectorGroup>()
+ldarg.0 
+ldfld RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+ldarg.0 
+ldfld System.String Durango.UI.MenuListGroupBase::_lastOpenCraftId
+callvirt System.Void Durango.UI.RecipeSelectorGroup::QuickOpenCraftingUI(RecipeSystem/RecipeType,System.String)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnClickLastGatheringItem(UnityEngine.GameObject)
+ldarg.0 
+ldfld System.String Durango.UI.MenuListGroupBase::_lastAddedItemId
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0023: ret
+ldc.i4.1 
+call System.Void UISound::PlayClick(UISound/ClickType)
+call Durango.UI.InventoryGroup UIManager::get_Inventory()
+ldarg.0 
+ldfld System.String Durango.UI.MenuListGroupBase::_lastAddedItemId
+callvirt System.Void Durango.UI.InventoryGroup::OpenAndSelectItem(System.String)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnReceivedInputCommandMessage(InputCommandMessage)
+ldarg.1 
+ldfld InputCommand InputCommandMessage::Command
+ldc.i4.s 81
+bne.un.s IL_0012: ldarg.1
+ldarg.0 
+ldnull 
+call System.Void Durango.UI.MenuListGroupBase::OnClickLastGatheringItem(UnityEngine.GameObject)
+ret 
+ldarg.1 
+ldfld InputCommand InputCommandMessage::Command
+ldc.i4.s 82
+bne.un.s IL_0023: ret
+ldarg.0 
+ldnull 
+call System.Void Durango.UI.MenuListGroupBase::OnClickLastOpenUI(UnityEngine.GameObject)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::ClearLastCollectItem()
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.Control.TweenerPlayer>()
+callvirt System.Void Durango.UI.Control.TweenerPlayer::Stop()
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+ldc.r4 0
+callvirt System.Void UIRect::set_alpha(System.Single)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+callvirt System.Void System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::Clear()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::CheckLastAddedItemQueue()
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+callvirt System.Int32 System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::get_Count()
+brfalse IL_0095: ret
+call System.Single UnityEngine.Time::get_time()
+stloc.0 
+ldloca.s V_1
+initobj Durango.UI.MenuListGroupBase/AddedItem
+br.s IL_002c: ldarg.0
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+callvirt !0 System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::Dequeue()
+stloc.1 
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+callvirt System.Int32 System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::get_Count()
+ldc.i4.0 
+ble.s IL_004d: ldloc.1
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+callvirt !0 System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::Peek()
+ldfld System.Single Durango.UI.MenuListGroupBase/AddedItem::DisplayAt
+bge.un.s IL_0020: ldarg.0
+ldloc.1 
+ldfld Durango.Logic.Item.ItemData Durango.UI.MenuListGroupBase/AddedItem::Item
+brfalse.s IL_0095: ret
+ldloc.1 
+ldfld Durango.Logic.Item.ItemData Durango.UI.MenuListGroupBase/AddedItem::Item
+stloc.2 
+ldarg.0 
+ldloc.2 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+stfld System.String Durango.UI.MenuListGroupBase::_lastAddedItemId
+ldarg.0 
+ldfld Durango.UI.Control.ItemIconTex Durango.UI.MenuListGroupBase::_lastAddedItemIcon
+ldloc.2 
+callvirt System.Void Durango.UI.Control.ItemIconTex::SetIcon(Durango.Logic.Item.ItemData)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+callvirt !!0 UnityEngine.Component::GetComponent<Durango.UI.Control.TweenerPlayer>()
+ldc.r4 0
+ldc.i4.0 
+ldc.r4 0
+callvirt System.Void Durango.UI.Control.TweenerPlayer::Play(System.Single,System.Int32,System.Single)
+ldarg.0 
+callvirt System.Void Durango.UI.MenuListGroupBase::RefreshLastButtonsLayout()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::RefreshLastButtonsLayout()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnItemAdded(Durango.Logic.Item.ItemData)
+ldarg.0 
+ldfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+ldloca.s V_0
+initobj Durango.UI.MenuListGroupBase/AddedItem
+ldloca.s V_0
+ldarg.1 
+stfld Durango.Logic.Item.ItemData Durango.UI.MenuListGroupBase/AddedItem::Item
+ldloca.s V_0
+call System.Single UnityEngine.Time::get_time()
+ldc.r4 1,5
+add 
+stfld System.Single Durango.UI.MenuListGroupBase/AddedItem::DisplayAt
+ldloc.0 
+callvirt System.Void System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::Enqueue(!0)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::ClearLastOpenUI()
+ldarg.0 
+ldc.i4.0 
+stfld RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenCraftId
+ldarg.0 
+ldnull 
+stfld UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+ldc.r4 0
+callvirt System.Void UIRect::set_alpha(System.Single)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::SetLastOpenUI(System.String,UIBase)
+ldarg.0 
+ldc.i4.0 
+stfld RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenCraftId
+ldarg.0 
+ldarg.2 
+stfld UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+ldarg.0 
+ldnull 
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenUriLink
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_lastOpenUISprite
+ldarg.1 
+callvirt System.Void UISprite::set_spriteName(System.String)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+ldc.r4 1
+callvirt System.Void UIRect::set_alpha(System.Single)
+ldarg.0 
+callvirt System.Void Durango.UI.MenuListGroupBase::RefreshLastButtonsLayout()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::SetLastOpenCraft(System.String,RecipeSystem/RecipeType,System.String)
+ldarg.0 
+ldarg.2 
+stfld RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+ldarg.0 
+ldarg.3 
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenCraftId
+ldarg.0 
+ldnull 
+stfld UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+ldarg.0 
+ldnull 
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenUriLink
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_lastOpenUISprite
+ldarg.1 
+callvirt System.Void UISprite::set_spriteName(System.String)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+ldc.r4 1
+callvirt System.Void UIRect::set_alpha(System.Single)
+ldarg.0 
+callvirt System.Void Durango.UI.MenuListGroupBase::RefreshLastButtonsLayout()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::SetLastOpenUri(System.String,System.String)
+ldarg.0 
+ldc.i4.0 
+stfld RecipeSystem/RecipeType Durango.UI.MenuListGroupBase::_lastOpenCraftType
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenCraftId
+ldarg.0 
+ldnull 
+stfld UIBase Durango.UI.MenuListGroupBase::_lastOpenUILink
+ldarg.0 
+ldarg.2 
+stfld System.String Durango.UI.MenuListGroupBase::_lastOpenUriLink
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_lastOpenUISprite
+ldarg.1 
+callvirt System.Void UISprite::set_spriteName(System.String)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+ldc.r4 1
+callvirt System.Void UIRect::set_alpha(System.Single)
+ldarg.0 
+callvirt System.Void Durango.UI.MenuListGroupBase::RefreshLastButtonsLayout()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::OnUpdateNotification()
+call T GameSystem`1<MenuSystem>::Instance()
+callvirt System.Collections.Generic.IEnumerable`1<Durango.Logic.MenuType> MenuSystem::GetRecentlyUnlockedMenus()
+ldarg.0 
+ldftn System.Boolean Durango.UI.MenuListGroupBase::IsMenuVisible(Durango.Logic.MenuType)
+newobj System.Void System.Func`2<Durango.Logic.MenuType,System.Boolean>::.ctor(System.Object,System.IntPtr)
+call System.Boolean System.Linq.Enumerable::Any<Durango.Logic.MenuType>(System.Collections.Generic.IEnumerable`1<!!0>,System.Func`2<!!0,System.Boolean>)
+brfalse.s IL_0040: ldarg.0
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_newIcon
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_newIcon
+ldc.i4.1 
+call UnityEngine.Color Durango.Logic.Notification.Notification::GetTypeColor(Durango.Logic.Notification.Type)
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ret 
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+callvirt System.Boolean Durango.Logic.Notification.Notification::get_On()
+brfalse.s IL_007a: ldarg.0
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_newIcon
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_newIcon
+ldarg.0 
+ldfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+callvirt Durango.Logic.Notification.Type Durango.Logic.Notification.Notification::get_Type()
+call UnityEngine.Color Durango.Logic.Notification.Notification::GetTypeColor(Durango.Logic.Notification.Type)
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ret 
+ldarg.0 
+ldfld UISprite Durango.UI.MenuListGroupBase::_newIcon
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::TryOpen()
+ldarg.0 
+ldfld System.Boolean Durango.UI.MenuListGroupBase::_prevOpened
+stloc.0 
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+stloc.1 
+ldloc.1 
+switch Mono.Cecil.Cil.Instruction[]
+br.s IL_0076: ldarg.0
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+ldloc.0 
+callvirt System.Void Durango.UI.LandscapeMenuListBase::Show(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0076: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldloc.0 
+ldc.i4.0 
+callvirt System.Void Durango.UI.MenuBannerList::Show(System.Boolean,System.Boolean)
+br.s IL_0076: ldarg.0
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+ldloc.0 
+callvirt System.Void Durango.UI.PortraitMenuList::Show(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0076: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldloc.0 
+ldc.i4.1 
+callvirt System.Void Durango.UI.MenuBannerList::Show(System.Boolean,System.Boolean)
+br.s IL_0076: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::TouchBlockBox
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+dup 
+ldvirtftn System.Boolean Durango.UI.MenuListGroupBase::HideUIFunc(Durango.UI.Control.VisibleController)
+newobj System.Void System.Predicate`1<Durango.UI.Control.VisibleController>::.ctor(System.Object,System.IntPtr)
+ldc.i4.1 
+ldstr LeftMenu
+ldc.r4 0
+call System.Void Durango.UI.Control.VisibleController::Hide(System.Predicate`1<Durango.UI.Control.VisibleController>,System.Boolean,System.String,System.Single)
+ldc.i4.1 
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::TryClose()
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::TouchBlockBox
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+callvirt System.Void Durango.UI.LandscapeMenuListBase::Hide()
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+callvirt System.Void Durango.UI.PortraitMenuList::Hide()
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0040: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+callvirt System.Void Durango.UI.MenuBannerList::Hide()
+ldarg.0 
+dup 
+ldvirtftn System.Boolean Durango.UI.MenuListGroupBase::HideUIFunc(Durango.UI.Control.VisibleController)
+newobj System.Void System.Predicate`1<Durango.UI.Control.VisibleController>::.ctor(System.Object,System.IntPtr)
+ldc.i4.0 
+ldstr LeftMenu
+ldc.r4 0,1
+call System.Void Durango.UI.Control.VisibleController::Hide(System.Predicate`1<Durango.UI.Control.VisibleController>,System.Boolean,System.String,System.Single)
+ldc.i4.1 
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::HideUIFunc(Durango.UI.Control.VisibleController)
+ldarg.1 
+ldarg.0 
+call Durango.UI.Control.VisibleController UIBase::get_VisibleController()
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0033: ldc.i4.0
+ldarg.1 
+callvirt Durango.UI.Control.VisibleType Durango.UI.Control.VisibleController::get_Flag()
+ldc.i4.1 
+and 
+brfalse.s IL_0033: ldc.i4.0
+call Durango.System.Platform Durango.System.Platform::get_Instance()
+callvirt System.Boolean Durango.System.Platform::get_UsePCUI()
+brfalse.s IL_0031: ldc.i4.1
+ldarg.1 
+callvirt Durango.UI.Control.VisibleType Durango.UI.Control.VisibleController::get_Flag()
+ldc.i4.s 32
+and 
+ldc.i4.0 
+cgt.un 
+ret 
+ldc.i4.1 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::ClosableUIOpened()
+ldarg.0 
+ldarg.0 
+call System.Boolean UIBase::get_IsOpened()
+stfld System.Boolean Durango.UI.MenuListGroupBase::_prevOpened
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::ClosableUIClosed()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+call System.Boolean UIBase::get_HasOpenedUI()
+brtrue.s IL_0023: ret
+ldarg.0 
+ldfld System.Boolean Durango.UI.MenuListGroupBase::_prevOpened
+brfalse.s IL_001c: ldarg.0
+ldarg.0 
+callvirt System.Boolean UIBase::Open()
+pop 
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.UI.MenuListGroupBase::_prevOpened
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroupBase::IsButtonVisible()
+ldarg.0 
+call System.Boolean UIBase::get_IsOpened()
+brtrue.s IL_0019: ldc.i4.0
+call System.Boolean UIBase::get_HasOpenedFullscreenUI()
+brtrue.s IL_0019: ldc.i4.0
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+ldarg.0 
+call System.Boolean UIBase::get_IsOpened()
+brtrue.s IL_0012: ldc.i4.0
+call System.Boolean UIBase::get_HasOpenedUI()
+ldc.i4.0 
+ceq 
+br.s IL_0013: stloc.0
+ldc.i4.0 
+stloc.0 
+ldarg.0 
+callvirt System.Boolean Durango.UI.MenuListGroupBase::IsButtonVisible()
+stloc.1 
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroupBase::_menuBtn
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldloc.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastOpenUI
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldloc.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::_lastAddedItemWidget
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldloc.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.Transform Durango.UI.MenuListGroupBase::_lastActionButtons
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldarg.0 
+ldfld UnityEngine.Vector3 Durango.UI.MenuListGroupBase::_lastActionButtonsPos
+call UnityEngine.Vector3 UnityEngine.Vector3::get_right()
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+brfalse.s IL_007a: ldc.r4 0
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+callvirt System.Int32 UIWidget::get_width()
+conv.r4 
+br.s IL_007f: call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+ldc.r4 0
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldarg.0 
+callvirt System.Void Durango.UI.MenuListGroupBase::RefreshLastButtonsLayout()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::ToggleLockMode()
+ldarg.0 
+callvirt System.Boolean Durango.UI.MenuListGroupBase::GetMenuLockState()
+stloc.0 
+ldarg.0 
+ldloc.0 
+brfalse.s IL_000e: ldc.i4.1
+ldc.i4.2 
+br.s IL_000f: stfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+ldc.i4.1 
+stfld Durango.UI.MenuListGroupBase/LockState Durango.UI.MenuListGroupBase::_lockState
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::SaveMenuLockState()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::RefreshMenuLayout()
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+brtrue.s IL_002f: ret
+ldarg.0 
+callvirt System.Boolean UIBase::Open()
+pop 
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::RefreshMenuLayout()
+ldarg.0 
+ldarg.0 
+call System.Boolean UIBase::get_IsPortrait()
+brtrue.s IL_0017: ldc.i4.1
+ldarg.0 
+callvirt System.Boolean Durango.UI.MenuListGroupBase::GetMenuLockState()
+brtrue.s IL_0014: ldc.i4.2
+ldc.i4.0 
+br.s IL_0018: callvirt System.Void Durango.UI.MenuListGroupBase::SetMenuLayout(Durango.UI.MenuListGroupBase/MenuLayout)
+ldc.i4.2 
+br.s IL_0018: callvirt System.Void Durango.UI.MenuListGroupBase::SetMenuLayout(Durango.UI.MenuListGroupBase/MenuLayout)
+ldc.i4.1 
+callvirt System.Void Durango.UI.MenuListGroupBase::SetMenuLayout(Durango.UI.MenuListGroupBase/MenuLayout)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::SetMenuLayout(Durango.UI.MenuListGroupBase/MenuLayout)
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+stloc.0 
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ldarg.0 
+ldarg.1 
+stfld Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+stloc.2 
+ldloc.2 
+ldc.i4.1 
+ble.un.s IL_0026: ldarg.0
+ldloc.2 
+ldc.i4.2 
+beq.s IL_0062: ldarg.0
+br.s IL_009d: ldarg.0
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+callvirt System.Void Durango.UI.LandscapeMenuListBase::Hide()
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+callvirt System.Void Durango.UI.PortraitMenuList::Hide()
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0055: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+callvirt System.Void Durango.UI.MenuBannerList::Hide()
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+callvirt System.Void Durango.UI.LockedMenuList::Hide()
+br.s IL_009d: ldarg.0
+ldarg.0 
+ldfld Durango.UI.LandscapeMenuListBase Durango.UI.MenuListGroupBase::_landscapeMenuList
+callvirt System.Void Durango.UI.LandscapeMenuListBase::Hide()
+ldarg.0 
+ldfld Durango.UI.PortraitMenuList Durango.UI.MenuListGroupBase::_portraitMenuList
+callvirt System.Void Durango.UI.PortraitMenuList::Hide()
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0091: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MenuBannerList Durango.UI.MenuListGroupBase::_bannerList
+callvirt System.Void Durango.UI.MenuBannerList::Hide()
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+ldc.i4.0 
+callvirt System.Void Durango.UI.LockedMenuList::Show(System.Boolean)
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+stloc.1 
+ldloc.0 
+ldloc.1 
+beq.s IL_0117: ret
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::UpdateMenuBtnVisibleState()
+ldloc.1 
+brfalse.s IL_00e8: ldstr "Menu"
+ldstr Menu
+ldc.i4.1 
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+callvirt System.Int32 UIWidget::get_width()
+newobj System.Void System.Nullable`1<System.Int32>::.ctor(!0)
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+call System.Void UIRootAnchor::Set(System.String,UIBase/AnchorType,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>)
+ret 
+ldstr Menu
+ldc.i4.1 
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+ldloca.s V_3
+initobj System.Nullable`1<System.Int32>
+ldloc.3 
+call System.Void UIRootAnchor::Set(System.String,UIBase/AnchorType,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::SetAirballoonMode(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.MenuListGroupBase/MenuLayout Durango.UI.MenuListGroupBase::_menuLayout
+ldc.i4.2 
+bne.un.s IL_004f: ret
+ldarg.1 
+brfalse.s IL_0017: ldarg.0
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+br.s IL_0027: stloc.0
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+callvirt System.Int32 UIWidget::get_width()
+newobj System.Void System.Nullable`1<System.Int32>::.ctor(!0)
+stloc.0 
+ldstr Menu
+ldc.i4.1 
+ldloc.0 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+call System.Void UIRootAnchor::Set(System.String,UIBase/AnchorType,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::.ctor()
+ldarg.0 
+newobj System.Void Durango.Logic.Notification.Container::.ctor()
+stfld Durango.Logic.Notification.Container Durango.UI.MenuListGroupBase::_notification
+ldarg.0 
+newobj System.Void System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem>::.ctor()
+stfld System.Collections.Generic.Queue`1<Durango.UI.MenuListGroupBase/AddedItem> Durango.UI.MenuListGroupBase::_lastAddedItemQueue
+ldarg.0 
+call System.Void UIBase::.ctor()
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::<Start>b__39_0(Durango.UI.CombatGroup/BattleViewMode)
+ldarg.1 
+ldc.i4.0 
+cgt.un 
+stloc.0 
+ldloc.0 
+brfalse.s IL_000f: ldarg.0
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::IsMenuLocked()
+brfalse.s IL_0080: ret
+ldloc.0 
+brfalse.s IL_004a: ldstr "Menu"
+ldstr Menu
+ldc.i4.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+call System.Void UIRootAnchor::Set(System.String,UIBase/AnchorType,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>)
+ret 
+ldstr Menu
+ldc.i4.1 
+ldarg.0 
+ldfld Durango.UI.LockedMenuList Durango.UI.MenuListGroupBase::_lockedMenuList
+callvirt System.Int32 UIWidget::get_width()
+newobj System.Void System.Nullable`1<System.Int32>::.ctor(!0)
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+ldloca.s V_1
+initobj System.Nullable`1<System.Int32>
+ldloc.1 
+call System.Void UIRootAnchor::Set(System.String,UIBase/AnchorType,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>,System.Nullable`1<System.Int32>)
+ret 
+METHOD System.Void Durango.UI.MenuListGroupBase::<Start>b__39_1(UnityEngine.GameObject)
+ldarg.0 
+callvirt System.Boolean UIBase::Open()
+pop 
+ret 

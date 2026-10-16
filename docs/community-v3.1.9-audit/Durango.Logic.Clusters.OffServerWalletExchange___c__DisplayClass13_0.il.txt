@@ -1,0 +1,17 @@
+Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0 : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::dir
+FIELD System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::<Confirm>b__0(System.Boolean)
+ldarg.1 
+brfalse.s IL_0015: ret
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::dir
+ldarg.0 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerWalletExchange/<>c__DisplayClass13_0::gem
+ldnull 
+call System.Void Durango.Logic.Clusters.OffServerWalletExchange::Exchange(System.String,System.Int64,System.Action`2<System.Boolean,System.String>)
+ret 

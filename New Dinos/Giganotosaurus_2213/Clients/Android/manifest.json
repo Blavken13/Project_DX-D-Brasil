@@ -1,0 +1,20 @@
+{
+  "entity_type": 2213,
+  "unity_version": "6000.6.0f1",
+  "platform": "Android",
+  "model_path": "Giganotosaurus/GiganotosaurusPrefab",
+  "prefab_asset": "assets/models/animals/giganotosaurus/giganotosaurusprefab.prefab",
+  "framework_asset": "assets/models/animals/giganotosaurus/giganotosaurus_framework.asset",
+  "files": [
+    {
+      "name": "models$animals$giganotosaurus$giganotosaurusprefab.prefab.45848d101d06bb6330fc4c3802c12b0e.bundle",
+      "size": 1992456,
+      "sha256": "7c1cffef4685c99e81823c3128abc1657ded45d0d1ea260fe7540d62cff1c44a"
+    },
+    {
+      "name": "models$animals$giganotosaurus$giganotosaurus_framework.asset.2734e1a6f588865ebdd774c2ad4edb1f.bundle",
+      "size": 18684446,
+      "sha256": "67da7060ba3c35416fc265df163b21437cccad23329ba74fe16c8c9ef486ba4e"
+    }
+  ]
+}

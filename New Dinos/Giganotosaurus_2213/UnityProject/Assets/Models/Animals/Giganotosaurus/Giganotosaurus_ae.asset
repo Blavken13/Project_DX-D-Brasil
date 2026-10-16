@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6997d9e190c493242904429eadd95aa5, type: 3}
+  m_Name: Giganotosaurus_ae
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventResource
+  AnimationEventPairs:
+  - Name: Giganotosaurus-Eat_Montage
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Eat
+    Infos: []
+  - Name: Giganotosaurus-Cuddle_Montage
+    Infos: []
+  - Name: Giganotosaurus-Swim-Fwd
+    Infos: []
+  - Name: Giganotosaurus-Aim-Lft
+    Infos: []
+  - Name: Giganotosaurus-Roar
+    Infos: []
+  - Name: Giganotosaurus-Attack-Bite_Montage
+    Infos: []
+  - Name: Giganotosaurus-Aim-Dwn-Lft
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Idle
+    Infos: []
+  - Name: Giganotosaurus-Charge-Fwd
+    Infos: []
+  - Name: Giganotosaurus-Torpid-In_Montage
+    Infos: []
+  - Name: Giganotosaurus-Startled
+    Infos: []
+  - Name: Giganotosaurus-Aim-Dwn
+    Infos: []
+  - Name: Giganotosaurus-Swim-Idle
+    Infos: []
+  - Name: Giganotosaurus-Hurt-Small-Rit
+    Infos: []
+  - Name: Giganotosaurus-Attack-Bite
+    Infos: []
+  - Name: Giganotosaurus-Aim-Up-Lft
+    Infos: []
+  - Name: Giganotosaurus-Move-Lft
+    Infos: []
+  - Name: Giganotosaurus-Move-Rit
+    Infos: []
+  - Name: Giganotosaurus-Aim-Up
+    Infos: []
+  - Name: Giganotosaurus-Aim-Dwn-Rit
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Out-Wild
+    Infos: []
+  - Name: Giganotosaurus-Charge-Lft
+    Infos: []
+  - Name: Giganotosaurus-Idle
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Out-Wild_Montage
+    Infos: []
+  - Name: Giganotosaurus-Hurt-Small-Rit_Montage
+    Infos: []
+  - Name: Giganotosaurus-Aim-Center
+    Infos: []
+  - Name: Giganotosaurus-Charge-Rit
+    Infos: []
+  - Name: Giganotosaurus-Rage_Montage
+    Infos: []
+  - Name: Giganotosaurus-Roar_Montage
+    Infos: []
+  - Name: Giganotosaurus-Aim-Rit
+    Infos: []
+  - Name: Giganotosaurus-Lay-Egg
+    Infos: []
+  - Name: Giganotosaurus-Torpid-In
+    Infos: []
+  - Name: Giganotosaurus-Blink
+    Infos: []
+  - Name: Giganotosaurus-Move-Fwd
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Out-Tamed
+    Infos: []
+  - Name: Giganotosaurus-Aim-Up-Rit
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Out-Tamed_Montage
+    Infos: []
+  - Name: Giganotosaurus-Cuddle
+    Infos: []
+  - Name: Giganotosaurus-Torpid-Eat_Montage
+    Infos: []
+  - Name: Giganotosaurus-Eat
+    Infos: []
+  - Name: Giganotosaurus-Startled_Montage
+    Infos: []
+  - Name: Giganotosaurus-Lay-Egg_Montage
+    Infos: []
+  - Name: Giganotosaurus-Die
+    Infos: []

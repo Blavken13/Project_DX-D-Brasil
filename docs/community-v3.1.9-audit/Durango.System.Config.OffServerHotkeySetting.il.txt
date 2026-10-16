@@ -1,0 +1,7 @@
+Durango.System.Config.OffServerHotkeySetting : Durango.System.Config.ValueSetting
+FIELD System.String Durango.System.Config.OffServerHotkeySetting::TextKey
+FIELD System.String Durango.System.Config.OffServerHotkeySetting::ActionId
+METHOD System.Void Durango.System.Config.OffServerHotkeySetting::.ctor()
+ldarg.0 
+call System.Void Durango.System.Config.ValueSetting::.ctor()
+ret 

@@ -1,0 +1,17 @@
+Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0 : System.Object
+FIELD Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::<>4__this
+FIELD System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::pendingClient
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::query
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::<HandleClient>b__0()
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::<>4__this
+ldarg.0 
+ldfld System.Net.Sockets.TcpClient Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::pendingClient
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,System.String> Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass39_0::query
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::OnCallback(System.Net.Sockets.TcpClient,System.Collections.Generic.Dictionary`2<System.String,System.String>)
+ret 

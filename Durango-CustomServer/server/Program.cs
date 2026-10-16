@@ -87,6 +87,7 @@ internal static class Program
         int gamePort = GameServer.DefaultPort;   // 8191
         string dataDir = Path.Combine(AppContext.BaseDirectory, "data");
         string androidBundles = null;
+        string windowsBundles = null;
         bool androidAssetsCheck = false;
         string publicHost = null;
         int maxPlayers = 200;
@@ -182,6 +183,10 @@ internal static class Program
                         if (args[j] == "--data") dataDir = args[j + 1];
                     if (args[i] == "--gameplay-bugs-check") return GameplayBugsCheck.Run(dataDir);
                     return GameplayPolishCheck.Run(dataDir);
+                case "--arid-basin-check":
+                    for (int j = 0; j + 1 < args.Length; j++)
+                        if (args[j] == "--data") dataDir = args[j + 1];
+                    return AridBasinCheck.Run(dataDir);
                 case "--world-check":
                     for (int j = 0; j + 1 < args.Length; j++)
                         if (args[j] == "--data") dataDir = args[j + 1];
@@ -324,6 +329,7 @@ internal static class Program
                 case "--terrains": TerrainLoader.TerrainDir = args[++i]; break;
                 case "--terrain": TerrainLoader.DefaultTerrainFile = args[++i]; break;
                 case "--assetbundles-android": androidBundles = args[++i]; break;
+                case "--assetbundles-windows": windowsBundles = args[++i]; break;
                 case "--android-assets-check": androidAssetsCheck = true; break;
                 case "--public-host": publicHost = args[++i]; break;
                 case "--url-prefix":
@@ -376,6 +382,7 @@ internal static class Program
                     Console.WriteLine("  --mail-check [--data <dir>] Valida correio, anexos, persistência e protocolo TCP");
                     Console.WriteLine("  --gateway-port, --game-port, --data, --terrains, --terrain,");
                     Console.WriteLine("  --assetbundles-android, --public-host, --url-prefix, --max-players, --tps, --cluster-mode,");
+                    Console.WriteLine("  --assetbundles-windows <dir>  catálogo e bundles Unity 6 Windows servidos pelo gateway");
                     Console.WriteLine("  --admin-token <t>   Token opcional para automação via X-Admin-Token (ou env DURANGO_ADMIN_TOKEN)");
                     Console.WriteLine("  --adopt-orphans     ให้บัญชีแรกที่เข้ามารับตัวละครที่ยังไม่มีเจ้าของ (ใช้ตอนย้ายข้อมูลครั้งเดียว ห้ามเปิดค้าง)");
                     Console.WriteLine("  --admins <id,id>    entity id ของผู้ดูแล (หรือ env DURANGO_ADMINS) — ไม่ตั้ง = คำสั่ง cheat ปิดสนิท");
@@ -402,9 +409,40 @@ internal static class Program
             string candidate = Path.GetFullPath(Path.Combine(dataDir, "..", "assetbundles", "android"));
             if (File.Exists(Path.Combine(candidate, "Info.5.2.1.json")))
                 androidBundles = candidate;
+            else
+            {
+                for (DirectoryInfo ancestor = new(Path.GetFullPath(dataDir)); ancestor != null; ancestor = ancestor.Parent)
+                {
+                    candidate = Path.Combine(ancestor.FullName, "assetbundles", "android");
+                    if (!File.Exists(Path.Combine(candidate, "Info.5.2.1.json"))) continue;
+                    androidBundles = candidate;
+                    break;
+                }
+            }
         }
         if (androidBundles != null)
             Console.WriteLine($"[boot] recursos Android: {androidBundles}");
+
+        // Índice e bundles Windows servidos pelo gateway para clientes Unity 6.
+        if (windowsBundles == null)
+        {
+            string candidate = Path.GetFullPath(Path.Combine(dataDir, "..", "assetbundles", "windows"));
+            if (File.Exists(Path.Combine(candidate, AndroidAssetBundleCheck.IndexName)))
+                windowsBundles = candidate;
+            else
+            {
+                for (DirectoryInfo ancestor = new(Path.GetFullPath(dataDir)); ancestor != null; ancestor = ancestor.Parent)
+                {
+                    candidate = Path.Combine(ancestor.FullName, "Lost-Horizon-PC", "Lost Horizon Game_Data",
+                        "StreamingAssets", "AssetBundles");
+                    if (!File.Exists(Path.Combine(candidate, AndroidAssetBundleCheck.IndexName))) continue;
+                    windowsBundles = candidate;
+                    break;
+                }
+            }
+        }
+        if (windowsBundles != null)
+            Console.WriteLine($"[boot] recursos Windows: {windowsBundles}");
 
         if (androidAssetsCheck)
             return AndroidAssetBundleCheck.Run(androidBundles);
@@ -469,7 +507,7 @@ internal static class Program
         {
             // assets = ตารางข้อมูลเกมที่ client โหลดผ่าน HTTP เมื่อ cluster_mode = Online
             // (client/Yaml.Util/Loader.cs:164 — โหมดอื่นมันอ่านจาก Resources ในตัวเกมแทน)
-            host.Start(gamePort, gatewayPort, publicHost, androidBundles, Path.Combine(dataDir, "assets"), dataDir);
+            host.Start(gamePort, gatewayPort, publicHost, androidBundles, Path.Combine(dataDir, "assets"), dataDir, windowsBundles);
         }
         catch (Exception e)
         {

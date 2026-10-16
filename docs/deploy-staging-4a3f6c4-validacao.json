@@ -1,0 +1,174 @@
+{
+  "commit": "4a3f6c452d5fd56c3d42ec0955dc602fcf78645d",
+  "image": "sha256:eb163286c3b4c7408faa58cc4ed71783fb13e135df467ecf1e0229883c6d71fb",
+  "healthy": true,
+  "backup": "/opt/durango/backups/state-pre-4a3f6c4-20261015T023322Z.tar.gz",
+  "state": [
+    {
+      "cluster": "Durango Brasil",
+      "accounts_preserved": 51,
+      "characters_preserved": 62
+    },
+    {
+      "cluster": "Durango Brasil - STAGING",
+      "accounts_preserved": 9,
+      "characters_preserved": 12
+    }
+  ],
+  "admin_checks": [
+    "encontros Alfa: catalogo da release confirmado no container ativo",
+    "loja: bilhete de reset gratuito e catalogo da release confirmado",
+    "12 terrenos adicionais: SHA-256 confirmado",
+    "/admin/: arquivo da release confirmado",
+    "/admin/app.js: arquivo da release confirmado",
+    "/admin/style.css: arquivo da release confirmado",
+    "/health: acesso anônimo bloqueado",
+    "/admin/players: acesso anônimo bloqueado",
+    "/admin/premium: acesso anônimo bloqueado",
+    "/admin/mail/status: acesso anônimo bloqueado",
+    "/admin/catalog: acesso anônimo bloqueado",
+    "/admin/client-reports: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=csv: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=json: acesso anônimo bloqueado",
+    "bundle masculino original: SHA-256 confirmado"
+  ],
+  "regression_results": [
+    "[survival-continuity-check] PASS 14 verificacoes",
+    "[estate-return-check] PASS 96 verificacoes",
+    "[restored-encounters-check] PASS 166 verificacoes",
+    "[gathering-duplicate-check] PASS 57 verificacoes",
+    "[safehouse-missions-check] PASS 49 verificações. Saves temporários: /tmp/Durango-safehouse-missions-6cd48de71aab41c8a1e647a566477e60",
+    "[tester-check] PASS 106 verificações",
+    "[bugs-check] PASS",
+    "[polish-check] PASS 1249 verificacoes. Saves temporarios: /tmp/Durango-polish-check-8da64c4e4efc47ff8e09b11121589f9c",
+    "[induction-check] PASS 29 verificacoes",
+    "[world-check] PASS 2795 verificacoes. Saves temporarios: /tmp/Durango-world-check-504fb6c0535b4206a56c244eb247b2fa",
+    "[gameplay-check] PASS 62 verificacoes. Saves temporarios: /tmp/Durango-gameplay-check-32758f37db6f4946bc5c6b5a1723e5ed",
+    "[social-check] PASS 97 verificações",
+    "[premium-check] PASS 52 verificações",
+    "[economy-check] PASS 303 verificacoes. Arquivos temporarios: /tmp/Durango-economy-check-218eb59e615741eea057b873553a4823",
+    "[progression-check] PASS 148 verificacoes",
+    "[fauna-check] PASS 404 verificacoes",
+    "[combat-bags] PASS 2415 verificações. Saves temporários: /tmp/Durango-combat-bags-1c0d7f3a77e948959a0b526ef2b8ede1",
+    "[world-combat] PASS 52 verificacoes. Saves temporarios: /tmp/Durango-world-combat-02fef3ee35e94d09bbcfc029a76cfe32",
+    "[volcano-crater] PASS 210 verificacoes. Saves temporarios: /tmp/Durango-volcano-crater-b3ce2d0012664ea089d27618b87d277f",
+    "[reported-gameplay] PASS 113 verificações",
+    "PASS 7 native Android models",
+    "[xp-coupon-check] PASS: 178 verificações",
+    "PASS: coupon regression adapted to property in isolated validation image; production image unchanged",
+    "[attributes-check] PASS 29 verificações",
+    "[season-pass-check] PASS 28 verificações",
+    "[pet-feeding-check] PASS 87 verificacoes",
+    "[mail-check] PASS 42 verificações"
+  ],
+  "coupon_test_validation": {
+    "passed": true,
+    "production_image": "sha256:eb163286c3b4c7408faa58cc4ed71783fb13e135df467ecf1e0229883c6d71fb",
+    "production_source_unchanged": true,
+    "validation_only_changes": [
+      "SkillXpCouponCheck.cs"
+    ],
+    "original_test_sha256": "c7187cc7b6d48103c1a7a6e950354aaa7bad3b171df08194e9e6f2c1759f3daa",
+    "validation_test_sha256": "d2bbc5e2efcecdb949e2cd9e5c31852f584273eaf5ebe86f5f8a7ef0deb35f07",
+    "reason": "Commit 6dd89a4 changed _lockedItemIds from field to property; the old coupon test used only GetField."
+  },
+  "private_admin_configuration_verified": true,
+  "https_verified": false,
+  "https_pending_reason": "HTTPS proxy was already stopped before this deployment; previous certificate attempts timed out during external validation",
+  "android_bundle_files": 1609,
+  "public_verification": {
+    "host": "179.197.72.129",
+    "checks": {
+      "/status": {
+        "ok": true,
+        "version": "5.2.1"
+      },
+      "/knock?platform=Android&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "/knock?platform=Windows&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "tcp_8191": {
+        "ok": true
+      }
+    }
+  },
+  "herbivore_taming_food": {
+    "public_catalog_matches_committed_release": true,
+    "source_sha256": "77ea55122dad419fee5e44dd5016d58f3fb1a2911b0040aeea2430a08927b3ae",
+    "leaf_ids": [
+      "leaf",
+      "leaf_large",
+      "leaf_needle",
+      "leaf_small",
+      "lotus_leaf",
+      "leaf_herb",
+      "leaf_bud",
+      "tea_leaf",
+      "sheaf_leaf"
+    ],
+    "domestication_time_reduction_seconds": 10
+  },
+  "season_pass": {
+    "public_catalog_matches_committed_release": true,
+    "active_at_server_time": true,
+    "season_id": "lost-horizon-s1",
+    "since": 1790812800,
+    "until": 1798761600,
+    "max_tier": 15,
+    "points_per_tier": 2000,
+    "authenticated_routes_confirmed": [
+      "/season/pass",
+      "/season/claim"
+    ],
+    "hat_tier": 8,
+    "clothes_tier": 15,
+    "warp_gems_bonus_total": 250,
+    "integration_check_used_isolated_accounts": true
+  },
+  "crafting_catalogs": {
+    "crafting_rewards_datas": {
+      "matches_committed_release": true,
+      "source_sha256": "a498337dc27625aab560f3250f2ec41164038d8226b337dfe04f67fc961df749",
+      "quality_pill_cooking_unlock": 160
+    },
+    "item/recipes": {
+      "matches_committed_release": true,
+      "source_sha256": "8e1195c375a376bac6bba1b532a6f49c6831f0f1a3bc577b4b485f619f0fe1c7"
+    }
+  },
+  "source_matches_committed_release": true,
+  "deployment_source_comparison": {
+    "image": "durango-brasil-server:4a3f6c4",
+    "created": "2026-10-15T02:33:25.208941295Z",
+    "release": "/opt/durango/releases/4a3f6c452d5fd56c3d42ec0955dc602fcf78645d",
+    "deployment": {
+      "commit": "4a3f6c452d5fd56c3d42ec0955dc602fcf78645d",
+      "image": "sha256:eb163286c3b4c7408faa58cc4ed71783fb13e135df467ecf1e0229883c6d71fb",
+      "backup": "/opt/durango/backups/state-pre-4a3f6c4-20261015T023322Z.tar.gz",
+      "state": [
+        {
+          "cluster": "Durango Brasil",
+          "accounts_preserved": 51,
+          "characters_preserved": 62
+        },
+        {
+          "cluster": "Durango Brasil - STAGING",
+          "accounts_preserved": 9,
+          "characters_preserved": 12
+        }
+      ],
+      "healthy": true,
+      "pocket_restoration": null
+    },
+    "changed_files": [],
+    "only_in_target": [],
+    "only_in_active": [],
+    "expected_commit": "4a3f6c452d5fd56c3d42ec0955dc602fcf78645d",
+    "source_matches_committed_release": true,
+    "running_expected_release": true
+  }
+}

@@ -1,0 +1,13 @@
+OffServerDyeUI/<>c__DisplayClass7_0 : System.Object
+FIELD System.String OffServerDyeUI/<>c__DisplayClass7_0::id
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass7_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Boolean OffServerDyeUI/<>c__DisplayClass7_0::<DyeChanged>b__0(Durango.Logic.Item.ItemData)
+ldarg.1 
+callvirt System.String Durango.Logic.Item.ItemData::get_Id()
+ldarg.0 
+ldfld System.String OffServerDyeUI/<>c__DisplayClass7_0::id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+ret 

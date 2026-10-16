@@ -1,0 +1,141 @@
+Durango.UI.OffServerLoadProgress : System.Object
+FIELD System.Single Durango.UI.OffServerLoadProgress::TitleShare
+FIELD System.String Durango.UI.OffServerLoadProgress::BarSprite
+FIELD System.Int32 Durango.UI.OffServerLoadProgress::BarHeight
+FIELD UnityEngine.Color Durango.UI.OffServerLoadProgress::BarColor
+FIELD System.Single Durango.UI.OffServerLoadProgress::_target
+FIELD System.Single Durango.UI.OffServerLoadProgress::_shown
+FIELD Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress::_stage
+METHOD System.Single Durango.UI.OffServerLoadProgress::get_Value()
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ret 
+METHOD System.Void Durango.UI.OffServerLoadProgress::Begin()
+ldc.r4 0
+stsfld System.Single Durango.UI.OffServerLoadProgress::_target
+ldc.r4 0
+stsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ldc.i4.0 
+stsfld Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress::_stage
+call System.Void Durango.Logic.Clusters.OffServerLink::BeginLoadRun()
+ret 
+METHOD System.Void Durango.UI.OffServerLoadProgress::EnterIsland()
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_target
+ldc.r4 0,45099998
+ble.un.s IL_0020: ret
+ldc.r4 0
+stsfld System.Single Durango.UI.OffServerLoadProgress::_target
+ldc.r4 0
+stsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ret 
+METHOD System.Single Durango.UI.OffServerLoadProgress::Tick(Durango.UI.OffServerLoadProgress/Stage,System.Single)
+ldarg.0 
+stsfld Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress::_stage
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_target
+ldarg.1 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stsfld System.Single Durango.UI.OffServerLoadProgress::_target
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_target
+call System.Single UnityEngine.Time::get_unscaledDeltaTime()
+ldc.r4 0,8
+mul 
+call System.Single UnityEngine.Mathf::MoveTowards(System.Single,System.Single,System.Single)
+stsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ret 
+METHOD System.String Durango.UI.OffServerLoadProgress::Text()
+call System.String Durango.UI.OffServerLoadProgress::StageText()
+ldstr   
+ldsfld System.Single Durango.UI.OffServerLoadProgress::_shown
+ldc.r4 100
+mul 
+call System.Int32 UnityEngine.Mathf::FloorToInt(System.Single)
+stloc.0 
+ldloca.s V_0
+call System.String System.Int32::ToString()
+ldstr %
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+ret 
+METHOD System.String Durango.UI.OffServerLoadProgress::StageText()
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.0 
+ldsfld Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress::_stage
+stloc.1 
+ldloc.1 
+brfalse.s IL_0018: ldloc.0
+ldloc.1 
+ldc.i4.1 
+beq.s IL_0059: ldloc.0
+br IL_009a: ldloc.0
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0041: ldstr "กำลังเชื่อมต่อเซิร์ฟเวอร์"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0047: ldstr "Menghubungkan ke server"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004d: ldstr "서버에 접속 중"
+br.s IL_0053: ldstr "Connecting to server"
+ldstr กำลังเชื่อมต่อเซิร์ฟเวอร์
+ret 
+ldstr Menghubungkan ke server
+ret 
+ldstr 서버에 접속 중
+ret 
+ldstr Connecting to server
+ret 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0082: ldstr "กำลังโหลดข้อมูลเกม"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0088: ldstr "Memuat data game"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_008e: ldstr "게임 데이터 불러오는 중"
+br.s IL_0094: ldstr "Loading game data"
+ldstr กำลังโหลดข้อมูลเกม
+ret 
+ldstr Memuat data game
+ret 
+ldstr 게임 데이터 불러오는 중
+ret 
+ldstr Loading game data
+ret 
+ldloc.0 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00c3: ldstr "กำลังโหลดเกาะ"
+ldloc.0 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00c9: ldstr "Memuat pulau"
+ldloc.0 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00cf: ldstr "섬 불러오는 중"
+br.s IL_00d5: ldstr "Loading island"
+ldstr กำลังโหลดเกาะ
+ret 
+ldstr Memuat pulau
+ret 
+ldstr 섬 불러오는 중
+ret 
+ldstr Loading island
+ret 
+METHOD System.Void Durango.UI.OffServerLoadProgress::.cctor()
+ldc.r4 0,080774225
+ldc.r4 0,6102941
+ldc.r4 0,34736007
+ldc.r4 0,5019608
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color Durango.UI.OffServerLoadProgress::BarColor
+ret 

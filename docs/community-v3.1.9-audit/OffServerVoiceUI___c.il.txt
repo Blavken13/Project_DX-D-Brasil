@@ -1,0 +1,47 @@
+OffServerVoiceUI/<>c : System.Object
+FIELD OffServerVoiceUI/<>c OffServerVoiceUI/<>c::<>9
+FIELD UIEventListener/VoidDelegate OffServerVoiceUI/<>c::<>9__51_0
+FIELD System.Action OffServerVoiceUI/<>c::<>9__51_1
+FIELD System.Comparison`1<System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>> OffServerVoiceUI/<>c::<>9__63_0
+METHOD System.Void OffServerVoiceUI/<>c::.cctor()
+newobj System.Void OffServerVoiceUI/<>c::.ctor()
+stsfld OffServerVoiceUI/<>c OffServerVoiceUI/<>c::<>9
+ret 
+METHOD System.Void OffServerVoiceUI/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerVoiceUI/<>c::<Build>b__51_0(UnityEngine.GameObject)
+call System.Void OffServerVoiceUI::ClosePanel()
+ret 
+METHOD System.Void OffServerVoiceUI/<>c::<Build>b__51_1()
+call System.Void OffServerVoiceUI::ClosePanel()
+ret 
+METHOD System.Int32 OffServerVoiceUI/<>c::<Nearby>b__63_0(System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>,System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>)
+ldarga.s a
+call !0 System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::get_Key()
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean OffServerVoice::IsSpeaking(System.String)
+stloc.0 
+ldarga.s b
+call !0 System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::get_Key()
+callvirt System.String CharacterBehavior::get_EntityId()
+call System.Boolean OffServerVoice::IsSpeaking(System.String)
+stloc.1 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_003f: ldloc.0
+ldarga.s a
+call !1 System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::get_Value()
+stloc.2 
+ldloca.s V_2
+ldarga.s b
+call !1 System.Collections.Generic.KeyValuePair`2<PlayerBehavior,System.Single>::get_Value()
+call System.Int32 System.Single::CompareTo(System.Single)
+ret 
+ldloc.0 
+brfalse.s IL_0044: ldc.i4.1
+ldc.i4.m1 
+ret 
+ldc.i4.1 
+ret 

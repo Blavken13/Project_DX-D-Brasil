@@ -1,0 +1,302 @@
+OffServerEmojiLinks : System.Object
+FIELD System.Int32 OffServerEmojiLinks::DepthOffset
+FIELD System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+FIELD System.Int32 OffServerEmojiLinks::_count
+METHOD System.Int32 OffServerEmojiLinks::get_Count()
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+ret 
+METHOD System.Void OffServerEmojiLinks::BeginParse()
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 OffServerEmojiLinks::_count
+ret 
+METHOD System.Void OffServerEmojiLinks::DestroyOrphans(UILabel,OffServerEmojiLinks)
+call System.Boolean UnityEngine.Application::get_isPlaying()
+brtrue.s IL_0008: ldarg.0
+ret 
+ldarg.0 
+callvirt UnityEngine.Transform UIRect::get_cachedTransform()
+stloc.0 
+ldloc.0 
+callvirt System.Int32 UnityEngine.Transform::get_childCount()
+ldc.i4.1 
+sub 
+stloc.1 
+br.s IL_0066: ldloc.1
+ldloc.0 
+ldloc.1 
+callvirt UnityEngine.Transform UnityEngine.Transform::GetChild(System.Int32)
+stloc.2 
+ldloc.2 
+callvirt System.String UnityEngine.Object::get_name()
+ldstr emoji
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brtrue.s IL_0062: ldloc.1
+ldloc.2 
+callvirt !!0 UnityEngine.Component::GetComponent<UITexture>()
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0062: ldloc.1
+ldarg.1 
+brfalse.s IL_0050: ldloc.3
+ldarg.1 
+ldloc.3 
+callvirt System.Boolean OffServerEmojiLinks::Owns(UITexture)
+brtrue.s IL_0062: ldloc.1
+ldloc.3 
+ldc.i4.0 
+callvirt System.Void UnityEngine.Behaviour::set_enabled(System.Boolean)
+ldloc.2 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ldloc.1 
+ldc.i4.1 
+sub 
+stloc.1 
+ldloc.1 
+ldc.i4.0 
+bge.s IL_001a: ldloc.0
+ret 
+METHOD System.Boolean OffServerEmojiLinks::Owns(UITexture)
+ldc.i4.0 
+stloc.0 
+br.s IL_0023: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldarg.1 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001f: ldloc.0
+ldc.i4.1 
+ret 
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+blt.s IL_0004: ldarg.0
+ldc.i4.0 
+ret 
+METHOD ITextRectLayout OffServerEmojiLinks::Get(UILabel,System.Int32)
+call UnityEngine.Texture2D OffServerEmoji::get_Texture()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0011: ldarg.0
+ldnull 
+ret 
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+bge.s IL_0038: newobj System.Void OffServerEmojiLinks/Link::.ctor()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+stloc.1 
+br.s IL_004a: ldarg.0
+newobj System.Void OffServerEmojiLinks/Link::.ctor()
+stloc.1 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.1 
+callvirt System.Void System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::Add(!0)
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerEmojiLinks::_count
+ldloc.1 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00a6: ldloc.1
+ldarg.1 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call T NGUITools::AddChild<UITexture>(UnityEngine.GameObject)
+stloc.2 
+ldloc.2 
+ldstr emoji
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+ldloc.2 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.s 52
+callvirt System.Void UnityEngine.Object::set_hideFlags(UnityEngine.HideFlags)
+ldloc.2 
+ldc.i4.6 
+callvirt System.Void UIWidget::set_pivot(UIWidget/Pivot)
+ldloc.2 
+ldloc.0 
+callvirt System.Void UIWidget::set_mainTexture(UnityEngine.Texture)
+ldloc.1 
+ldarg.1 
+stfld UILabel OffServerEmojiLinks/Link::Parent
+ldloc.1 
+ldloc.2 
+stfld UITexture OffServerEmojiLinks/Link::Widget
+ldloc.1 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldarg.1 
+callvirt System.Int32 UIWidget::get_depth()
+ldc.i4.1 
+add 
+callvirt System.Void UIWidget::set_depth(System.Int32)
+ldloc.1 
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldarg.2 
+call UnityEngine.Rect OffServerEmoji::GetUV(System.Int32)
+callvirt System.Void UITexture::set_uvRect(UnityEngine.Rect)
+ldloc.1 
+ldc.i4.0 
+stfld System.Boolean OffServerEmojiLinks/Link::Valid
+ldloc.1 
+ret 
+METHOD System.Void OffServerEmojiLinks::EndParse()
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+stloc.0 
+br.s IL_0033: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002f: ldloc.0
+ldloc.1 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+blt.s IL_0009: ldarg.0
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+bge.s IL_0077: ret
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+ldarg.0 
+ldfld System.Int32 OffServerEmojiLinks::_count
+sub 
+callvirt System.Void System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::RemoveRange(System.Int32,System.Int32)
+ret 
+METHOD System.Void OffServerEmojiLinks::BeginLayout()
+ldc.i4.0 
+stloc.0 
+br.s IL_001a: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldc.i4.0 
+stfld System.Boolean OffServerEmojiLinks/Link::Valid
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+blt.s IL_0004: ldarg.0
+ret 
+METHOD System.Void OffServerEmojiLinks::EndLayout()
+ldc.i4.0 
+stloc.0 
+br.s IL_0048: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0044: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld System.Boolean OffServerEmojiLinks/Link::Valid
+callvirt System.Void UIRect::set_visible(System.Boolean)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+blt.s IL_0004: ldarg.0
+ret 
+METHOD System.Void OffServerEmojiLinks::SetDepth(System.Int32)
+ldc.i4.0 
+stloc.0 
+br.s IL_003a: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0036: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Item(System.Int32)
+ldfld UITexture OffServerEmojiLinks/Link::Widget
+ldarg.1 
+ldc.i4.1 
+add 
+callvirt System.Void UIWidget::set_depth(System.Int32)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+callvirt System.Int32 System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::get_Count()
+blt.s IL_0004: ldarg.0
+ret 
+METHOD System.Void OffServerEmojiLinks::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<OffServerEmojiLinks/Link>::.ctor()
+stfld System.Collections.Generic.List`1<OffServerEmojiLinks/Link> OffServerEmojiLinks::_links
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

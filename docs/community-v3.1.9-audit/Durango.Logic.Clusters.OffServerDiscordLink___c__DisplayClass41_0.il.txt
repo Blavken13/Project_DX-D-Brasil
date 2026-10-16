@@ -1,0 +1,16 @@
+Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0 : System.Object
+FIELD Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::<>4__this
+FIELD System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::state
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::<HandleResult>b__0(System.Boolean)
+ldarg.1 
+brfalse.s IL_0014: ret
+ldarg.0 
+ldfld Durango.Logic.Clusters.OffServerDiscordLink Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::<>4__this
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerDiscordLink/<>c__DisplayClass41_0::state
+call System.Void Durango.Logic.Clusters.OffServerDiscordLink::Confirm(System.String)
+ret 

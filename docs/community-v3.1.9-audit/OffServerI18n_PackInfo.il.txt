@@ -1,0 +1,6 @@
+OffServerI18n/PackInfo : System.ValueType
+FIELD System.String OffServerI18n/PackInfo::Locale
+FIELD System.String OffServerI18n/PackInfo::Name
+FIELD System.String OffServerI18n/PackInfo::Version
+FIELD System.Boolean OffServerI18n/PackInfo::HasClient
+FIELD System.Boolean OffServerI18n/PackInfo::HasServer

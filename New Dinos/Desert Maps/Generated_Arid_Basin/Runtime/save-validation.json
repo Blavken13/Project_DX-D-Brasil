@@ -1,0 +1,31 @@
+{
+  "backup": "C:\\code\\ProjectDX\\Project_DX-D-Brasil\\tools\\state-before-arid-20261015-162134.zip",
+  "files": [
+    {
+      "file": "offline/Durango Brasil/1.player",
+      "identical": true
+    },
+    {
+      "file": "offline/Durango Brasil/2.player",
+      "identical": false,
+      "changed_fields": [
+        "/appear_player/Move/Movements/0/MotionName"
+      ]
+    },
+    {
+      "file": "offline/Durango Brasil/3.player",
+      "identical": true
+    },
+    {
+      "file": "offline/Durango Brasil/4.player",
+      "identical": true
+    },
+    {
+      "file": "offline/Durango Brasil/accounts.json",
+      "identical": true
+    }
+  ],
+  "online": 0,
+  "gameplay_save_data_preserved": true,
+  "note": "Startup normalized only the current movement animation name; character/account data otherwise match the verified backup."
+}

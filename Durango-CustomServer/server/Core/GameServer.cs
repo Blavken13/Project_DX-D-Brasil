@@ -874,7 +874,7 @@
                 SettlementRegionKind.SharedTamed => "Ilha Domada",
                 SettlementRegionKind.PrivatePlayer => "Ilha Particular",
                 SettlementRegionKind.Clan => "Ilha de Clã",
-                _ => RegionCatalog.DisplayName(RegionCatalog.GetTemplate(playerWorld.TerrainInfo.region_template))
+                _ => RegionCatalog.DisplayName(RegionCatalog.GetTemplate(playerWorld.TerrainInfo.region_template), playerWorld.TerrainId)
             };
             msg.Region.TemplateId = onSettlement
                 ? settlementRegion.TemplateId

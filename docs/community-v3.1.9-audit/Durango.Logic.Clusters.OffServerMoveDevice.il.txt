@@ -1,0 +1,598 @@
+Durango.Logic.Clusters.OffServerMoveDevice : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerMoveDevice::SettingKey
+FIELD System.Int32 Durango.Logic.Clusters.OffServerMoveDevice::HttpTimeoutSec
+FIELD System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::s_busy
+FIELD System.String Durango.Logic.Clusters.OffServerMoveDevice::LastCode
+FIELD System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerMoveDevice::Texts
+METHOD System.String Durango.Logic.Clusters.OffServerMoveDevice::get_ButtonLabel()
+ldstr button
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerMoveDevice::get_GatewayUrl()
+call System.String GameManager::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0014: ldloc.0
+call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+stloc.0 
+ldloc.0 
+dup 
+brtrue.s IL_001e: ldc.i4.s 47
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::LooksLikeCode(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: ldc.i4.0
+ldc.i4.0 
+ret 
+ldc.i4.0 
+stloc.0 
+ldarg.0 
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_003d: ldloc.2
+ldloc.1 
+ldloc.2 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.3 
+ldloc.3 
+ldc.i4.s 48
+blt.s IL_002a: ldloc.3
+ldloc.3 
+ldc.i4.s 57
+bgt.s IL_002a: ldloc.3
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+br.s IL_0039: ldloc.2
+ldloc.3 
+ldc.i4.s 45
+beq.s IL_0039: ldloc.2
+ldloc.3 
+call System.Boolean System.Char::IsWhiteSpace(System.Char)
+brtrue.s IL_0039: ldloc.2
+ldc.i4.0 
+ret 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+callvirt System.Int32 System.String::get_Length()
+blt.s IL_0012: ldloc.1
+ldloc.0 
+ldc.i4.s 9
+ceq 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice::Begin()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brfalse.s IL_001f: ldnull
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::get_GatewayUrl()
+callvirt System.Int32 System.String::get_Length()
+brfalse.s IL_001f: ldnull
+call System.String GameManager::get_SessionToken()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0035: ldsfld System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::s_busy
+ldnull 
+ldstr not_online
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerMoveDevice::Popup(System.String,System.String)
+ret 
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::s_busy
+brfalse.s IL_003d: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::s_busy
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::get_GatewayUrl()
+ldstr /account/move-code
+call System.String System.String::Concat(System.String,System.String)
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.2 
+ldsfld BestHTTP.OnRequestFinishedDelegate Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9__10_0
+dup 
+brtrue.s IL_0077: newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+pop 
+ldsfld Durango.Logic.Clusters.OffServerMoveDevice/<>c Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9
+ldftn System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::<Begin>b__10_0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld BestHTTP.OnRequestFinishedDelegate Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9__10_0
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+dup 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_FormUsage(BestHTTP.Forms.HTTPFormUsage)
+dup 
+ldstr Authorization
+call System.String GameManager::get_SessionToken()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+dup 
+ldstr Accept
+ldstr application/json
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+dup 
+ldstr X-OffServer-Client
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+dup 
+ldstr X-OffServer-Caps
+ldstr nametag-emoji, item-link, server-popup, voice-chat, i18n-keys
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+dup 
+ldstr lang
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+dup 
+ldc.r8 10
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_ConnectTimeout(System.TimeSpan)
+dup 
+ldc.r8 20
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+dup 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice::OnRedeemed()
+ldstr redeemed
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+ldstr [OffServer] Move Device: กรอกรหัสสำเร็จ → กลับหน้า Title
+call System.Void UnityEngine.Debug::Log(System.Object)
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr moved_title
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldstr moved
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldsfld System.Action Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9__11_0
+dup 
+brtrue.s IL_0060: ldnull
+pop 
+ldsfld Durango.Logic.Clusters.OffServerMoveDevice/<>c Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9
+ldftn System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::<OnRedeemed>b__11_0()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9__11_0
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action,System.String)
+leave.s IL_0080: ret
+stloc.0 
+ldstr [OffServer] Move Device popup: 
+ldloc.0 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogWarning(System.Object)
+leave.s IL_0080: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice::Popup(System.String,System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_001c: call Durango.UI.MessageBox UIManager::get_MessageBox()
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldarg.1 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldnull 
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.Action,System.String)
+br.s IL_0034: leave.s IL_004e
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldarg.0 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldarg.1 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::Clean(System.String)
+ldnull 
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action,System.String)
+leave.s IL_004e: ret
+stloc.0 
+ldstr [OffServer] Move Device popup: 
+ldloc.0 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogWarning(System.Object)
+leave.s IL_004e: ret
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0006: ldarg.0
+ldnull 
+br.s IL_000d: stloc.0
+ldarg.0 
+ldarg.1 
+call Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+stloc.0 
+ldloc.0 
+brfalse.s IL_0022: ldc.i4.0
+ldloc.0 
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.s 9
+bne.un.s IL_0022: ldc.i4.0
+ldloc.0 
+call System.Boolean Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+ret 
+ldc.i4.0 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerMoveDevice::Str(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0006: ldarg.0
+ldnull 
+br.s IL_000d: stloc.0
+ldarg.0 
+ldarg.1 
+call Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+stloc.0 
+ldloc.0 
+brfalse.s IL_001b: ldsfld System.String System.String::Empty
+ldloc.0 
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.s 10
+bne.un.s IL_0021: ldloc.0
+ldsfld System.String System.String::Empty
+ret 
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerMoveDevice::Texts
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.2 
+ldloc.2 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldloc.0
+ldloc.2 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0046: ldloc.0
+ldloc.2 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004c: ldloc.0
+br.s IL_0052: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.2 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.3 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+stloc.1 
+ldarg.1 
+brfalse.s IL_005d: ldloc.1
+ldarg.1 
+ldlen 
+brtrue.s IL_005f: nop
+ldloc.1 
+ret 
+nop 
+ldloc.1 
+ldarg.1 
+call System.String System.String::Format(System.String,System.Object[])
+stloc.2 
+leave.s IL_006f: ldloc.2
+pop 
+ldloc.1 
+stloc.2 
+leave.s IL_006f: ldloc.2
+ldloc.2 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice::.cctor()
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastCode
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr button
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ย้ายเครื่อง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Move Device
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Pindah Perangkat
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 기기 이전
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr code_title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr รหัสย้ายเครื่อง: {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Move code: {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kode pindah: {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이전 코드: {0}
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr code_howto
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ที่เครื่องใหม่: เข้าเกม > ตั้งค่า > บัญชี > ใส่คูปอง > กรอกรหัสนี้
+ใช้ได้ครั้งเดียว ภายใน {0} นาที — อย่าบอกรหัสนี้กับคนอื่น
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr On the new device: enter the game > Settings > Account > Enter Coupon > type this code.
+One use only, within {0} minutes. Don't share this code.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Di perangkat baru: masuk game > Pengaturan > Akun > Masukkan Kupon > ketik kode ini.
+Sekali pakai, dalam {0} menit. Jangan bagikan kode ini.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 새 기기에서: 게임 접속 > 설정 > 계정 > 쿠폰 입력 > 이 코드를 입력하세요.
+1회용이며 {0}분 안에 사용하세요. 다른 사람에게 알려주지 마세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr moved_title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ย้ายเครื่องสำเร็จ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Device moved
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Perangkat dipindahkan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 기기 이전 완료
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr moved
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr บัญชีเดิมผูกกับเครื่องนี้แล้ว — กด OK เพื่อกลับหน้า Title แล้วเข้าใหม่เพื่อโหลดตัวละครของบัญชีนี้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Your account is now on this device. Press OK to go back to the title screen and enter again to load its characters.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Akun Anda sekarang ada di perangkat ini. Tekan OK untuk kembali ke layar judul lalu masuk lagi untuk memuat karakternya.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이제 이 기기에서 계정을 사용할 수 있습니다. OK를 눌러 타이틀 화면으로 돌아간 뒤 다시 접속하면 캐릭터를 불러옵니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr not_online
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ต้องเข้าเซิร์ฟก่อนถึงจะขอรหัสย้ายเครื่องได้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Connect to a server first to get a move code.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Masuk ke server dulu untuk mendapatkan kode pindah.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이전 코드를 받으려면 먼저 서버에 접속하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr net_error
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ติดต่อเซิร์ฟไม่ได้ — ลองใหม่อีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't reach the server. Please try again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak dapat menghubungi server. Silakan coba lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 서버에 연결할 수 없습니다. 다시 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr failed
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ขอรหัสย้ายเครื่องไม่สำเร็จ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't get a move code
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Gagal mendapatkan kode pindah
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이전 코드를 받지 못했습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_rate_limited
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ขอรหัสถี่เกินไป — รอสักครู่แล้วลองใหม่
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Too many requests — wait a moment and try again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Terlalu sering — tunggu sebentar lalu coba lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 요청이 너무 많습니다 — 잠시 후 다시 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_disabled
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ระบบย้ายเครื่องด้วยรหัสปิดอยู่ชั่วคราว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Moving with a code is turned off for now.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Pindah dengan kode sedang dinonaktifkan.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 코드로 기기 이전은 현재 꺼져 있습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_no_account
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr บัญชีนี้ยังไม่มีตัวละคร — สร้างตัวละครก่อนแล้วค่อยขอรหัส
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This account has no character yet — create one first.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Akun ini belum punya karakter — buat dulu.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 계정에는 아직 캐릭터가 없습니다 — 먼저 캐릭터를 만드세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_unsupported
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เซิร์ฟนี้ยังไม่รองรับการย้ายเครื่องด้วยรหัส — รอเซิร์ฟอัปเดตก่อน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This server doesn't support move codes yet — wait for the server update.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Server ini belum mendukung kode pindah — tunggu pembaruan server.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 서버는 아직 이전 코드를 지원하지 않습니다 — 서버 업데이트를 기다려 주세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_unauthorized
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ยืนยันตัวไม่ผ่าน — กลับหน้า Title แล้วเข้าใหม่ แล้วลองอีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Session check failed — go back to the title screen, enter again and retry.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Verifikasi sesi gagal — kembali ke layar judul, masuk lagi lalu coba lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 세션 확인 실패 — 타이틀 화면으로 돌아가 다시 접속한 뒤 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerMoveDevice::Texts
+ret 

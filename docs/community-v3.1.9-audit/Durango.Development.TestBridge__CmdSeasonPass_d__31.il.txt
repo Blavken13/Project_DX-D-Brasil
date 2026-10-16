@@ -1,0 +1,497 @@
+Durango.Development.TestBridge/<CmdSeasonPass>d__31 : System.Object
+FIELD System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+FIELD System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+FIELD System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+FIELD Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+FIELD Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+METHOD System.Void Durango.Development.TestBridge/<CmdSeasonPass>d__31::.ctor(System.Int32)
+ldarg.0 
+call System.Void System.Object::.ctor()
+ldarg.0 
+ldarg.1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ret 
+METHOD System.Void Durango.Development.TestBridge/<CmdSeasonPass>d__31::System.IDisposable.Dispose()
+ret 
+METHOD System.Boolean Durango.Development.TestBridge/<CmdSeasonPass>d__31::MoveNext()
+ldarg.0 
+ldfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+stloc.0 
+ldloc.0 
+switch Mono.Cecil.Cil.Instruction[]
+ldc.i4.0 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ldarg.0 
+ldfld System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+ldlen 
+conv.i4 
+ldc.i4.1 
+bgt.s IL_003c: ldarg.0
+ldstr status
+br.s IL_0049: stloc.1
+ldarg.0 
+ldfld System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+ldc.i4.1 
+ldelem.ref 
+callvirt System.String System.String::ToLowerInvariant()
+stloc.1 
+ldloc.1 
+ldstr fetch
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0096: ldnull
+ldloc.1 
+ldstr open
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00c1: ldarg.0
+ldloc.1 
+ldstr close
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_00c1: ldarg.0
+ldloc.1 
+ldstr claim
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_0187: ldarg.0
+ldloc.1 
+ldstr missions
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue IL_01e4: ldarg.0
+br IL_01ff: ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldnull 
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Fetch(System.Action`1<System.Boolean>)
+ldarg.0 
+ldc.r4 2
+newobj System.Void UnityEngine.WaitForSeconds::.ctor(System.Single)
+stfld System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+ldarg.0 
+ldc.i4.1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ldc.i4.1 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+br IL_01ff: ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldarg.0 
+call System.Boolean Durango.Development.TestBridge::UiReady()
+brtrue.s IL_00cc: call TV UIManager::FindScript<Durango.UI.WarpRushGroup>()
+ldnull 
+br.s IL_00d1: stfld Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+call TV UIManager::FindScript<Durango.UI.WarpRushGroup>()
+stfld Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+ldarg.0 
+ldfld Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00f7: ldloc.1
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr ไม่มี WarpRushGroup (ยังไม่เข้าโลก?)
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Fail(System.String)
+pop 
+ldc.i4.0 
+ret 
+ldloc.1 
+ldstr open
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0138: ldarg.0
+ldc.i4.1 
+stsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+ldarg.0 
+ldfld Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+callvirt System.Boolean UIBase::Open()
+pop 
+ldarg.0 
+ldc.r4 2,5
+newobj System.Void UnityEngine.WaitForSeconds::.ctor(System.Single)
+stfld System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+ldarg.0 
+ldc.i4.2 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ldc.i4.1 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+br.s IL_0164: ldarg.0
+ldarg.0 
+ldfld Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+callvirt System.Boolean UIBase::Close()
+pop 
+ldarg.0 
+ldc.r4 0,5
+newobj System.Void UnityEngine.WaitForSeconds::.ctor(System.Single)
+stfld System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+ldarg.0 
+ldc.i4.3 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ldc.i4.1 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr opened
+ldarg.0 
+ldfld Durango.UI.WarpRushGroup Durango.Development.TestBridge/<CmdSeasonPass>d__31::<warpRushGroup>5__2
+callvirt System.Boolean UIBase::get_IsOpened()
+box System.Boolean
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+br.s IL_01ff: ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldarg.0 
+ldfld System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+ldlen 
+conv.i4 
+ldc.i4.2 
+ble.s IL_01b7: ldc.i4.0
+ldarg.0 
+ldfld System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+ldc.i4.2 
+ldelem.ref 
+ldstr all
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_01b7: ldc.i4.0
+ldarg.0 
+ldfld System.String[] Durango.Development.TestBridge/<CmdSeasonPass>d__31::args
+ldc.i4.2 
+ldelem.ref 
+ldloca.s V_5
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brtrue.s IL_01ba: ldloc.s V_5
+ldc.i4.0 
+stloc.s V_5
+ldloc.s V_5
+ldnull 
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Claim(System.Int32,System.Action`2<System.Boolean,System.String>)
+ldarg.0 
+ldc.r4 2,5
+newobj System.Void UnityEngine.WaitForSeconds::.ctor(System.Single)
+stfld System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+ldarg.0 
+ldc.i4.4 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+ldc.i4.1 
+ret 
+ldarg.0 
+ldc.i4.m1 
+stfld System.Int32 Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>1__state
+br.s IL_01ff: ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr lines
+call System.String[] Durango.Logic.Clusters.OffServerSeasonPass::MissionLines()
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor(System.Collections.Generic.IEnumerable`1<!0>)
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+stloc.2 
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr available
+call System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::get_Available()
+box System.Boolean
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr last
+ldsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr claimed
+ldsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr mode
+ldsfld System.Boolean Durango.UI.WarpRushGroup::SeasonPassMode
+box System.Boolean
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+ldloc.2 
+brtrue.s IL_026d: ldarg.0
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr status
+ldstr none
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+ldc.i4.0 
+ret 
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr active
+ldloc.2 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+box System.Boolean
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr season
+ldloc.2 
+ldfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonId
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr name
+ldloc.2 
+ldfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonName
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr points
+ldloc.2 
+ldfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Status::Points
+box System.Int64
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr tier
+ldloc.2 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Tier
+box System.Int32
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr maxTier
+ldloc.2 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::MaxTier
+box System.Int32
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr pointsPerTier
+ldloc.2 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::PointsPerTier
+box System.Int32
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr claimable
+ldloc.2 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Claimable
+box System.Int32
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+ldstr until
+ldloc.2 
+ldfld System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Until
+box System.Double
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.3 
+ldloc.2 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier> Durango.Logic.Clusters.OffServerSeasonPass/Status::Tiers
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::GetEnumerator()
+stloc.s V_6
+br IL_0403: ldloca.s V_6
+ldloca.s V_6
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::get_Current()
+stloc.s V_7
+ldloc.3 
+ldc.i4.8 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr tier
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_7
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr state
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_7
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::State
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr box
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.s V_7
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Box
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Int32 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Count()
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr special
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.s V_7
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+callvirt System.Int32 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Count()
+ldc.i4.0 
+ble.s IL_03d5: ldsfld System.String System.String::Empty
+ldloc.s V_7
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Item(System.Int32)
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+brtrue.s IL_03dc: ldloc.s V_7
+ldsfld System.String System.String::Empty
+br.s IL_03f8: stelem.ref
+ldloc.s V_7
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<Yaml.WarpRushReward>::get_Item(System.Int32)
+ldfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+ldfld System.String Yaml.WarpRushReward/ItemInfo::PrototypeId
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_6
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::MoveNext()
+brtrue IL_033f: ldloca.s V_6
+leave.s IL_041f: ldarg.0
+ldloca.s V_6
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr tiers
+ldloc.3 
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+newobj System.Void System.Collections.Generic.List`1<System.Object>::.ctor()
+stloc.s V_4
+ldloc.2 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Daily
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::GetEnumerator()
+stloc.s V_8
+br.s IL_04be: ldloca.s V_8
+ldloca.s V_8
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::get_Current()
+stloc.s V_9
+ldloc.s V_4
+ldc.i4.8 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr id
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_9
+ldfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Id
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr progress
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_9
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Progress
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr count
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.s V_9
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Count
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr done
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.s V_9
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+box System.Boolean
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_8
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::MoveNext()
+brtrue.s IL_044c: ldloca.s V_8
+leave.s IL_04d7: ldloc.2
+ldloca.s V_8
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.2 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Weekly
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::GetEnumerator()
+stloc.s V_8
+br.s IL_055d: ldloca.s V_8
+ldloca.s V_8
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::get_Current()
+stloc.s V_10
+ldloc.s V_4
+ldc.i4.8 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldstr id
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_10
+ldfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Id
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr progress
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_10
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Progress
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr count
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloc.s V_10
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Count
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr done
+stelem.ref 
+dup 
+ldc.i4.7 
+ldloc.s V_10
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+box System.Boolean
+stelem.ref 
+call System.Collections.Generic.Dictionary`2<System.String,System.Object> Durango.Development.TestBridge::Dict(System.Object[])
+callvirt System.Void System.Collections.Generic.List`1<System.Object>::Add(!0)
+ldloca.s V_8
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::MoveNext()
+brtrue.s IL_04eb: ldloca.s V_8
+leave.s IL_0576: ldarg.0
+ldloca.s V_8
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldarg.0 
+ldfld Durango.Development.TestBridge/Result Durango.Development.TestBridge/<CmdSeasonPass>d__31::r
+ldstr missions
+ldloc.s V_4
+callvirt Durango.Development.TestBridge/Result Durango.Development.TestBridge/Result::Set(System.String,System.Object)
+pop 
+ldc.i4.0 
+ret 
+METHOD System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::System.Collections.Generic.IEnumerator<System.Object>.get_Current()
+ldarg.0 
+ldfld System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+ret 
+METHOD System.Void Durango.Development.TestBridge/<CmdSeasonPass>d__31::System.Collections.IEnumerator.Reset()
+newobj System.Void System.NotSupportedException::.ctor()
+throw 
+METHOD System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::System.Collections.IEnumerator.get_Current()
+ldarg.0 
+ldfld System.Object Durango.Development.TestBridge/<CmdSeasonPass>d__31::<>2__current
+ret 

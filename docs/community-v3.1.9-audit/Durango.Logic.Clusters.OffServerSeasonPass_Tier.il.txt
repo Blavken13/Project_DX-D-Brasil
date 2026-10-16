@@ -1,0 +1,15 @@
+Durango.Logic.Clusters.OffServerSeasonPass/Tier : System.Object
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::State
+FIELD Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Box
+FIELD Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/Tier::.ctor()
+ldarg.0 
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/Reward::.ctor()
+stfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Box
+ldarg.0 
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/Reward::.ctor()
+stfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

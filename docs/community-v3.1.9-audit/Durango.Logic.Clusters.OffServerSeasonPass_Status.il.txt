@@ -1,0 +1,96 @@
+Durango.Logic.Clusters.OffServerSeasonPass/Status : System.Object
+FIELD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonId
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonName
+FIELD System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Since
+FIELD System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Until
+FIELD System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Now
+FIELD System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Status::Points
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Tier
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::MaxTier
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::PointsPerTier
+FIELD System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Status::TierPoints
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Claimable
+FIELD System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier> Durango.Logic.Clusters.OffServerSeasonPass/Status::Tiers
+FIELD Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Daily
+FIELD Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Weekly
+FIELD System.Single Durango.Logic.Clusters.OffServerSeasonPass/Status::ReceivedAt
+METHOD Durango.Logic.Clusters.OffServerSeasonPass/Tier Durango.Logic.Clusters.OffServerSeasonPass/Status::GetTier(System.Int32)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier> Durango.Logic.Clusters.OffServerSeasonPass/Status::Tiers
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::GetEnumerator()
+stloc.0 
+br.s IL_0023: ldloca.s V_0
+ldloca.s V_0
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::get_Current()
+stloc.1 
+ldloc.1 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+ldarg.1 
+bne.un.s IL_0023: ldloca.s V_0
+ldloc.1 
+stloc.2 
+leave.s IL_003e: ldloc.2
+ldloca.s V_0
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::MoveNext()
+brtrue.s IL_000e: ldloca.s V_0
+leave.s IL_003c: ldnull
+ldloca.s V_0
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldnull 
+ret 
+ldloc.2 
+ret 
+METHOD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::get_FirstClaimable()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier> Durango.Logic.Clusters.OffServerSeasonPass/Status::Tiers
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::GetEnumerator()
+stloc.0 
+br.s IL_0028: ldloca.s V_0
+ldloca.s V_0
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::get_Current()
+stloc.1 
+ldloc.1 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::State
+ldc.i4.1 
+bne.un.s IL_0028: ldloca.s V_0
+ldloc.1 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+stloc.2 
+leave.s IL_0043: ldloc.2
+ldloca.s V_0
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::MoveNext()
+brtrue.s IL_000e: ldloca.s V_0
+leave.s IL_0041: ldc.i4.0
+ldloca.s V_0
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Tier>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldc.i4.0 
+ret 
+ldloc.2 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/Status::.ctor()
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonId
+ldarg.0 
+ldsfld System.String System.String::Empty
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonName
+ldarg.0 
+ldc.i4.1 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::PointsPerTier
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::.ctor()
+stfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier> Durango.Logic.Clusters.OffServerSeasonPass/Status::Tiers
+ldarg.0 
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/MissionList::.ctor()
+stfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Daily
+ldarg.0 
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/MissionList::.ctor()
+stfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Weekly
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

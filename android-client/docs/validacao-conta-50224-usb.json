@@ -1,0 +1,76 @@
+{
+  "version_code": 50224,
+  "apk_sha256": "e616a8655041267944eb75d581c169855d2286a00f60da4be52e70380523a96a",
+  "device_model": "Xiaomi 23021RAAEG",
+  "android_api": 35,
+  "page_size": 4096,
+  "pid": 11571,
+  "session_id": "9b77ee4a-8938-47f6-8a68-d00ed7904f22",
+  "characters_validated": 3,
+  "ordering_verified": true,
+  "prefetch_consumed": true,
+  "manual_review": {
+    "world_visible": true,
+    "screenshot": "android-client/work/usb-account-test/current-screen.png",
+    "fresh_password_login_separately_tested": false,
+    "poco_f7_tested": false
+  },
+  "prefetch_duration_ms": 111.332,
+  "unity_to_cache_consumed_ms": 4273.25,
+  "java_event_count": 99,
+  "native_event_count": 455,
+  "timeline": [
+    {
+      "event": "ACCOUNT_PREFETCH_START",
+      "utc_ms": 1791508409199,
+      "mono_ns": 779668687996692,
+      "seq": 48
+    },
+    {
+      "event": "ACCOUNT_PREFETCH_HTTP_200",
+      "utc_ms": 1791508409308,
+      "mono_ns": 779668797238151,
+      "seq": 49
+    },
+    {
+      "event": "ACCOUNT_PREFETCH_VALIDATED_3",
+      "utc_ms": 1791508409311,
+      "mono_ns": 779668799328828,
+      "seq": 50
+    },
+    {
+      "event": "LOGIN_VIDEO_RELEASING",
+      "utc_ms": 1791508409330,
+      "mono_ns": 779668819045390,
+      "seq": 51
+    },
+    {
+      "event": "GAME_PREPARING",
+      "utc_ms": 1791508409441,
+      "mono_ns": 779668929907213,
+      "seq": 54
+    },
+    {
+      "event": "ACCOUNT_CACHE_BRIDGE_READY",
+      "utc_ms": 1791508409518,
+      "mono_ns": 779669006832942,
+      "seq": 56
+    },
+    {
+      "event": "UNITY_STARTING",
+      "utc_ms": 1791508409519,
+      "mono_ns": 779669008193359,
+      "seq": 57
+    },
+    {
+      "event": "ACCOUNT_PREFETCH_CONSUMED",
+      "utc_ms": 1791508413793,
+      "mono_ns": 779673281443462,
+      "seq": 63
+    }
+  ],
+  "limitations": [
+    "USB device is not the Poco F7; this does not establish the Poco crash cause.",
+    "Integration used Continue with an existing session; fresh password login was not separately exercised."
+  ]
+}

@@ -1,0 +1,27 @@
+OffServerLangPack/<>c__DisplayClass15_0 : System.Object
+FIELD System.String OffServerLangPack/<>c__DisplayClass15_0::dir
+FIELD System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+METHOD System.Void OffServerLangPack/<>c__DisplayClass15_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass15_0::<ShowFolderMenu>b__0()
+ldarg.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass15_0::dir
+call System.Void OffServerLangPack::OpenFolder(System.String)
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass15_0::<ShowFolderMenu>b__3(System.Int32)
+ldarg.1 
+ldc.i4.0 
+blt.s IL_0023: ret
+ldarg.1 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+callvirt System.Int32 System.Collections.Generic.List`1<System.Action>::get_Count()
+bge.s IL_0023: ret
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass15_0::actions
+ldarg.1 
+callvirt !0 System.Collections.Generic.List`1<System.Action>::get_Item(System.Int32)
+callvirt System.Void System.Action::Invoke()
+ret 

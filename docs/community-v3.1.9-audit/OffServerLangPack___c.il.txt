@@ -1,0 +1,55 @@
+OffServerLangPack/<>c : System.Object
+FIELD OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+FIELD System.Action`1<System.Byte[]> OffServerLangPack/<>c::<>9__11_0
+FIELD System.Action OffServerLangPack/<>c::<>9__14_1
+FIELD System.Action OffServerLangPack/<>c::<>9__14_2
+FIELD System.Action OffServerLangPack/<>c::<>9__15_1
+FIELD System.Action OffServerLangPack/<>c::<>9__15_2
+METHOD System.Void OffServerLangPack/<>c::.cctor()
+newobj System.Void OffServerLangPack/<>c::.ctor()
+stsfld OffServerLangPack/<>c OffServerLangPack/<>c::<>9
+ret 
+METHOD System.Void OffServerLangPack/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerLangPack/<>c::<Open>b__11_0(System.Byte[])
+ldc.i4.0 
+stsfld System.Boolean OffServerLangPack::_busy
+ldarg.1 
+brtrue.s IL_000c: call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldnull 
+br.s IL_001c: stloc.0
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldarg.1 
+callvirt System.String System.Text.Encoding::GetString(System.Byte[])
+call System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack::ParseIndex(System.String)
+stloc.0 
+ldloc.0 
+brtrue.s IL_0035: ldloc.0
+ldstr โหลดรายการภาษาจากเซิร์ฟไม่ได้ — ใส่ไฟล์ภาษาเองในโฟลเดอร์ได้
+ldstr Could not load the language list — you can still add language files to the folder
+call System.String OffServerLangPack::Tx(System.String,System.String)
+call System.Void OffServerLangPack::ShowFolderMenu(System.String)
+ret 
+ldloc.0 
+ldc.i4.0 
+call System.Void OffServerLangPack::ShowPage(System.Collections.Generic.List`1<OffServerLangPack/Pack>,System.Int32)
+ret 
+METHOD System.Void OffServerLangPack/<>c::<ShowPage>b__14_1()
+ldnull 
+call System.Void OffServerLangPack::ShowFolderMenu(System.String)
+ret 
+METHOD System.Void OffServerLangPack/<>c::<ShowPage>b__14_2()
+ret 
+METHOD System.Void OffServerLangPack/<>c::<ShowFolderMenu>b__15_1()
+call System.Void LocalizeSystem::ReloadLanguages()
+call System.Void Durango.UI.ConfigMainWidget::RefreshOffServerLanguages()
+ldstr อัปเดตรายการภาษาแล้ว
+ldstr Language list refreshed
+call System.String OffServerLangPack::Tx(System.String,System.String)
+ldc.r4 3
+call System.Void UIManager::SystemMsg(System.String,System.Single)
+ret 
+METHOD System.Void OffServerLangPack/<>c::<ShowFolderMenu>b__15_2()
+ret 

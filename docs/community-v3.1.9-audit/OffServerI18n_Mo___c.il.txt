@@ -1,0 +1,24 @@
+OffServerI18n/Mo/<>c : System.Object
+FIELD OffServerI18n/Mo/<>c OffServerI18n/Mo/<>c::<>9
+FIELD System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]> OffServerI18n/Mo/<>c::<>9__1_0
+FIELD System.Func`2<System.Collections.Generic.KeyValuePair`2<System.String,System.String>,System.Byte[]> OffServerI18n/Mo/<>c::<>9__1_1
+METHOD System.Void OffServerI18n/Mo/<>c::.cctor()
+newobj System.Void OffServerI18n/Mo/<>c::.ctor()
+stsfld OffServerI18n/Mo/<>c OffServerI18n/Mo/<>c::<>9
+ret 
+METHOD System.Void OffServerI18n/Mo/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Byte[] OffServerI18n/Mo/<>c::<Write>b__1_0(System.Collections.Generic.KeyValuePair`2<System.String,System.String>)
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldarga.s p
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Key()
+callvirt System.Byte[] System.Text.Encoding::GetBytes(System.String)
+ret 
+METHOD System.Byte[] OffServerI18n/Mo/<>c::<Write>b__1_1(System.Collections.Generic.KeyValuePair`2<System.String,System.String>)
+call System.Text.Encoding System.Text.Encoding::get_UTF8()
+ldarga.s p
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Value()
+callvirt System.Byte[] System.Text.Encoding::GetBytes(System.String)
+ret 

@@ -39,6 +39,10 @@ public static class AnimalMotions
         public string Stand;        // ยืนเฉย ๆ (ท่าหลักที่ใช้ตอนสัตว์ไม่ได้ทำอะไร)
         public string Idle;         // ยืนแบบมีลูกเล่นเป็นครั้งคราว
         public string Move;         // เดิน
+        public float MoveSpeed = 100f;
+        public float MovePlaybackRate = 1f;
+        public float AttackDuration = .8f;
+        public float AttackImpact = .35f;
         public string Eat;
         public string Alert;
         public string Dead;
@@ -131,6 +135,10 @@ public static class AnimalMotions
                     Stand = (string)o["stand"],
                     Idle = (string)o["idle"],
                     Move = (string)o["move"],
+                    MoveSpeed = (float?)o["move_speed"] ?? 100f,
+                    MovePlaybackRate = (float?)o["move_playback_rate"] ?? 1f,
+                    AttackDuration = (float?)o["attack_duration"] ?? .8f,
+                    AttackImpact = (float?)o["attack_impact"] ?? .35f,
                     Eat = (string)o["eat"],
                     Alert = (string)o["alert"],
                     Dead = (string)o["dead"],

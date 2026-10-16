@@ -1,0 +1,270 @@
+Durango.Logic.Clusters.OffServerMoveDevice/<>c : System.Object
+FIELD Durango.Logic.Clusters.OffServerMoveDevice/<>c Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9
+FIELD BestHTTP.OnRequestFinishedDelegate Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9__10_0
+FIELD System.Action Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9__11_0
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::.cctor()
+newobj System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::.ctor()
+stsfld Durango.Logic.Clusters.OffServerMoveDevice/<>c Durango.Logic.Clusters.OffServerMoveDevice/<>c::<>9
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::<Begin>b__10_0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+ldc.i4.0 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::s_busy
+ldnull 
+stloc.0 
+ldarg.2 
+brtrue.s IL_000e: ldarg.2
+ldc.i4.0 
+br.s IL_0014: stloc.1
+ldarg.2 
+callvirt System.Int32 BestHTTP.HTTPResponse::get_StatusCode()
+stloc.1 
+ldarg.2 
+brfalse.s IL_0031: leave.s IL_0038
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0031: leave.s IL_0038
+ldarg.2 
+callvirt System.String BestHTTP.HTTPResponse::get_DataAsText()
+call Newtonsoft.Json.Linq.JObject Newtonsoft.Json.Linq.JObject::Parse(System.String)
+stloc.0 
+leave.s IL_0038: ldloc.0
+pop 
+ldnull 
+stloc.0 
+leave.s IL_0038: ldloc.0
+ldloc.0 
+brtrue IL_00ed: ldloc.0
+ldstr error 
+ldarg.1 
+callvirt BestHTTP.HTTPRequestStates BestHTTP.HTTPRequest::get_State()
+stloc.s V_5
+ldloca.s V_5
+constrained. BestHTTP.HTTPRequestStates
+callvirt System.String System.Object::ToString()
+ldstr  
+ldloca.s V_1
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] Move Device ล้ม: 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.1 
+callvirt BestHTTP.HTTPRequestStates BestHTTP.HTTPRequest::get_State()
+stloc.s V_5
+ldloca.s V_5
+constrained. BestHTTP.HTTPRequestStates
+callvirt System.String System.Object::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  HTTP 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.1 
+callvirt System.Exception BestHTTP.HTTPRequest::get_Exception()
+brtrue.s IL_00b7: ldstr " "
+ldsfld System.String System.String::Empty
+br.s IL_00cc: stelem.ref
+ldstr  
+ldarg.1 
+callvirt System.Exception BestHTTP.HTTPRequest::get_Exception()
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldnull 
+ldstr net_error
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerMoveDevice::Popup(System.String,System.String)
+ret 
+ldloc.0 
+ldstr code
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.2 
+ldloc.0 
+ldstr ok
+call System.Boolean Durango.Logic.Clusters.OffServerMoveDevice::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+brfalse.s IL_0113: ldloc.0
+ldloc.2 
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.s 9
+beq IL_01c0: ldloc.2
+ldloc.0 
+ldstr reason
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stloc.s V_6
+ldloc.s V_6
+callvirt System.Int32 System.String::get_Length()
+brtrue.s IL_0138: ldstr "HTTP "
+ldloc.1 
+ldc.i4 404
+bne.un.s IL_0138: ldstr "HTTP "
+ldstr unsupported
+stloc.s V_6
+ldstr HTTP 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+ldstr  ok=false reason=
+ldloc.s V_6
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+ldstr [OffServer] Move Device 
+ldsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldnull 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerMoveDevice::Texts
+ldstr fail_
+ldloc.s V_6
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::ContainsKey(!0)
+brtrue.s IL_01a4: ldstr "fail_"
+ldstr failed
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+ldstr  (
+ldloc.s V_6
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+br.s IL_01ba: call System.Void Durango.Logic.Clusters.OffServerMoveDevice::Popup(System.String,System.String)
+ldstr fail_
+ldloc.s V_6
+call System.String System.String::Concat(System.String,System.String)
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerMoveDevice::Popup(System.String,System.String)
+ret 
+ldloc.2 
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastCode
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr HTTP 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  ok=true code=
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.2 
+ldc.i4.0 
+ldc.i4.3 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr …
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+ldstr [OffServer] Move Device 
+ldsfld System.String Durango.Logic.Clusters.OffServerMoveDevice::LastEvent
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldc.i4.s 10
+stloc.3 
+ldloc.0 
+ldstr expires_in
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+stloc.s V_4
+ldloc.s V_4
+brfalse.s IL_0246: ldstr "code_title"
+ldloc.s V_4
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.6 
+bne.un.s IL_0246: ldstr "code_title"
+ldc.i4.1 
+ldloc.s V_4
+call System.Int32 Newtonsoft.Json.Linq.JToken::op_Explicit(Newtonsoft.Json.Linq.JToken)
+ldc.i4.s 60
+div 
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stloc.3 
+ldstr code_title
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldloc.2 
+ldc.i4.0 
+ldc.i4.3 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.2 
+ldloc.2 
+ldc.i4.3 
+ldc.i4.3 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr  
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.2 
+ldc.i4.6 
+ldc.i4.3 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+ldstr code_howto
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.3 
+box System.Int32
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerMoveDevice::Text(System.String,System.Object[])
+call System.Void Durango.Logic.Clusters.OffServerMoveDevice::Popup(System.String,System.String)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerMoveDevice/<>c::<OnRedeemed>b__11_0()
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+callvirt System.Void GameManager::MoveToTitle()
+leave.s IL_0024: ret
+stloc.0 
+ldstr [OffServer] Move Device: กลับหน้า Title ไม่ได้: 
+ldloc.0 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogWarning(System.Object)
+leave.s IL_0024: ret
+ret 

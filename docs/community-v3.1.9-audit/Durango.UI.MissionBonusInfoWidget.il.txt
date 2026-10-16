@@ -1,0 +1,180 @@
+Durango.UI.MissionBonusInfoWidget : UIWidget
+FIELD UIWidget Durango.UI.MissionBonusInfoWidget::_iconSprite
+FIELD UIWidget Durango.UI.MissionBonusInfoWidget::_bgSprite
+FIELD UILabel Durango.UI.MissionBonusInfoWidget::_infoLabel
+FIELD UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+METHOD System.Void Durango.UI.MissionBonusInfoWidget::OnClick()
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.WidgetTooltipControl>()
+dup 
+ldnull 
+ldstr 보너스 보상은 <em>매일 5회</em> 충전됩니다
+call System.String L10N.T::_(System.String)
+ldc.i4.0 
+ldc.i4.0 
+callvirt System.Void Durango.UI.Popup.WidgetTooltipControl::Set(System.String,System.String,System.Int32,System.Int32)
+dup 
+ldc.i4.1 
+callvirt System.Void Durango.UI.Popup.TooltipBase::set_Sign(System.Int32)
+dup 
+ldc.i4.1 
+callvirt System.Void Durango.UI.Popup.TooltipBase::set_Direction(Durango.UI.Popup.TooltipBase/TooltipDirection)
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionBonusInfoWidget::_bgSprite
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldc.r4 60
+callvirt System.Void Durango.UI.Popup.TooltipBase::Show(UIWidget,UnityEngine.Vector2,System.Single)
+ret 
+METHOD System.Void Durango.UI.MissionBonusInfoWidget::Set(System.Nullable`1<Messages.MissionBonusReward>,Shared.Faction.FactionType)
+newobj System.Void Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.UI.MissionBonusInfoWidget Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::<>4__this
+ldc.i4.0 
+stloc.1 
+ldarga.s bonusReward
+call System.Boolean System.Nullable`1<Messages.MissionBonusReward>::get_HasValue()
+brfalse.s IL_0042: ldc.i4.0
+ldarga.s bonusReward
+call !0 System.Nullable`1<Messages.MissionBonusReward>::get_Value()
+ldfld Messages.RewardInfo Messages.MissionBonusReward::Rewards
+ldfld System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Int32> Messages.RewardInfo::FriendshipPoint
+stloc.s V_4
+ldloc.s V_4
+brfalse.s IL_003b: ldc.i4.0
+ldloc.s V_4
+ldarg.2 
+ldloca.s V_1
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<Shared.Faction.FactionType,System.Int32>::TryGetValue(!0,!1&)
+brtrue.s IL_003e: ldc.i4.1
+ldc.i4.0 
+br.s IL_003f: stloc.2
+ldc.i4.1 
+stloc.2 
+br.s IL_0044: ldloc.2
+ldc.i4.0 
+stloc.2 
+ldloc.2 
+conv.u1 
+ldc.i4.0 
+cgt.un 
+stloc.3 
+ldloc.3 
+brfalse IL_0101: ldarg.0
+ldloc.0 
+ldarga.s bonusReward
+call !0 System.Nullable`1<Messages.MissionBonusReward>::get_Value()
+stfld Messages.MissionBonusReward Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::bonus
+ldloc.0 
+ldflda Messages.MissionBonusReward Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::bonus
+ldfld System.Int32 Messages.MissionBonusReward::LeftCount
+ldc.i4.0 
+ble.s IL_00d4: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_infoLabel
+ldstr <em>{0}</em> [icon=bg_line_height] 
+ldloc.1 
+box System.Int32
+call System.String System.String::Format(System.String,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+ldstr <em>{0}</em>/{1}[icon=img_loading_unknown_question2]
+ldloc.0 
+ldflda Messages.MissionBonusReward Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::bonus
+ldfld System.Int32 Messages.MissionBonusReward::LeftCount
+box System.Int32
+ldloc.0 
+ldflda Messages.MissionBonusReward Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::bonus
+ldfld System.Int32 Messages.MissionBonusReward::MaxCount
+box System.Int32
+call System.String System.String::Format(System.String,System.Object,System.Object)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Void Durango.UI.MissionBonusInfoWidget::UpdateLayout()
+br.s IL_0101: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_infoLabel
+ldloc.0 
+ldftn System.Void Durango.UI.MissionBonusInfoWidget/<>c__DisplayClass5_0::<Set>b__0(System.String&,System.Single&)
+newobj System.Void SyncString/UpdateDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void SyncString::.ctor(SyncString/UpdateDelegate)
+callvirt System.Void UILabel::SetText(SyncString)
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldloc.3 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionBonusInfoWidget::UpdateLayout()
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionBonusInfoWidget::_iconSprite
+callvirt System.Int32 UIWidget::get_width()
+ldc.i4.6 
+add 
+conv.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_infoLabel
+callvirt UnityEngine.Vector2 UILabel::get_printedSize()
+ldfld System.Single UnityEngine.Vector2::x
+add 
+ldc.r4 6
+add 
+conv.i4 
+stloc.0 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_004d: ldarg.0
+ldloc.0 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+callvirt UnityEngine.Vector2 UILabel::get_printedSize()
+ldfld System.Single UnityEngine.Vector2::x
+conv.i4 
+add 
+stloc.0 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionBonusInfoWidget::_bgSprite
+ldloc.0 
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_countLabel
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_infoLabel
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldfld System.Single UnityEngine.Vector3::x
+ldarg.0 
+ldfld UILabel Durango.UI.MissionBonusInfoWidget::_infoLabel
+callvirt UnityEngine.Vector2 UILabel::get_printedSize()
+ldfld System.Single UnityEngine.Vector2::x
+add 
+ldc.r4 0
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ldarg.0 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionBonusInfoWidget::_bgSprite
+callvirt System.Int32 UIWidget::get_width()
+ldc.i4.s 20
+add 
+call System.Void UIWidget::set_width(System.Int32)
+ret 
+METHOD System.Void Durango.UI.MissionBonusInfoWidget::.ctor()
+ldarg.0 
+call System.Void UIWidget::.ctor()
+ret 

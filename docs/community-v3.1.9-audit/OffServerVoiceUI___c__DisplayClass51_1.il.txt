@@ -1,0 +1,27 @@
+OffServerVoiceUI/<>c__DisplayClass51_1 : System.Object
+FIELD OffServerVoiceUI/Row OffServerVoiceUI/<>c__DisplayClass51_1::captured
+FIELD OffServerVoiceUI OffServerVoiceUI/<>c__DisplayClass51_1::<>4__this
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass51_1::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerVoiceUI/<>c__DisplayClass51_1::<Build>b__10()
+ldarg.0 
+ldfld OffServerVoiceUI/Row OffServerVoiceUI/<>c__DisplayClass51_1::captured
+ldfld System.String OffServerVoiceUI/Row::EntityId
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0040: ret
+ldarg.0 
+ldfld OffServerVoiceUI/Row OffServerVoiceUI/<>c__DisplayClass51_1::captured
+ldfld System.String OffServerVoiceUI/Row::EntityId
+ldarg.0 
+ldfld OffServerVoiceUI/Row OffServerVoiceUI/<>c__DisplayClass51_1::captured
+ldfld System.String OffServerVoiceUI/Row::EntityId
+call System.Boolean OffServerVoice::IsMuted(System.String)
+ldc.i4.0 
+ceq 
+call System.Void OffServerVoice::SetMuted(System.String,System.Boolean)
+ldarg.0 
+ldfld OffServerVoiceUI OffServerVoiceUI/<>c__DisplayClass51_1::<>4__this
+call System.Void OffServerVoiceUI::Refresh()
+ret 

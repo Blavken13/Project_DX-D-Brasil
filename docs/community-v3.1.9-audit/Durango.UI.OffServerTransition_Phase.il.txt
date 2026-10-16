@@ -1,0 +1,6 @@
+Durango.UI.OffServerTransition/Phase : System.Enum
+FIELD System.Int32 Durango.UI.OffServerTransition/Phase::value__
+FIELD Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition/Phase::Idle
+FIELD Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition/Phase::Closing
+FIELD Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition/Phase::Covered
+FIELD Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition/Phase::Opening

@@ -1,0 +1,7 @@
+Yaml.SkipTutorialMissions : System.Object
+FIELD System.Int32 Yaml.SkipTutorialMissions::SkipTime
+FIELD System.String Yaml.SkipTutorialMissions::TodoId
+METHOD System.Void Yaml.SkipTutorialMissions::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

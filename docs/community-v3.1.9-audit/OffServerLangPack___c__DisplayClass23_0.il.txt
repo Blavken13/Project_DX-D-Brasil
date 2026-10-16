@@ -1,0 +1,25 @@
+OffServerLangPack/<>c__DisplayClass23_0 : System.Object
+FIELD System.Action`1<System.Byte[]> OffServerLangPack/<>c__DisplayClass23_0::done
+METHOD System.Void OffServerLangPack/<>c__DisplayClass23_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass23_0::<Get>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+ldnull 
+stloc.0 
+ldarg.2 
+brfalse.s IL_0014: leave.s IL_0019
+ldarg.2 
+callvirt System.Boolean BestHTTP.HTTPResponse::get_IsSuccess()
+brfalse.s IL_0014: leave.s IL_0019
+ldarg.2 
+callvirt System.Byte[] BestHTTP.HTTPResponse::get_Data()
+stloc.0 
+leave.s IL_0019: ldarg.0
+pop 
+leave.s IL_0019: ldarg.0
+ldarg.0 
+ldfld System.Action`1<System.Byte[]> OffServerLangPack/<>c__DisplayClass23_0::done
+ldloc.0 
+callvirt System.Void System.Action`1<System.Byte[]>::Invoke(!0)
+ret 

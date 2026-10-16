@@ -1,0 +1,13 @@
+OffServerDyeUI/<>c__DisplayClass5_0 : System.Object
+FIELD OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass5_0::state
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass5_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerDyeUI/<>c__DisplayClass5_0::<StateOf>b__0()
+ldarg.0 
+ldfld OffServerDyeUI/State OffServerDyeUI/<>c__DisplayClass5_0::state
+ldfld DyeSelection OffServerDyeUI/State::Selection
+ldnull 
+callvirt System.Void DyeSelection::SetTarget(System.String)
+ret 

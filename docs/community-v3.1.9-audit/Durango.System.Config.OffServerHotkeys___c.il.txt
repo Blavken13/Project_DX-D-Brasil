@@ -1,0 +1,16 @@
+Durango.System.Config.OffServerHotkeys/<>c : System.Object
+FIELD Durango.System.Config.OffServerHotkeys/<>c Durango.System.Config.OffServerHotkeys/<>c::<>9
+FIELD System.Action`1<System.Boolean> Durango.System.Config.OffServerHotkeys/<>c::<>9__27_0
+METHOD System.Void Durango.System.Config.OffServerHotkeys/<>c::.cctor()
+newobj System.Void Durango.System.Config.OffServerHotkeys/<>c::.ctor()
+stsfld Durango.System.Config.OffServerHotkeys/<>c Durango.System.Config.OffServerHotkeys/<>c::<>9
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys/<>c::<HandleAction>b__27_0(System.Boolean)
+ldarg.1 
+brfalse.s IL_0008: ret
+call System.Void Durango.System.Config.OffServerHotkeys::ResetAll()
+ret 

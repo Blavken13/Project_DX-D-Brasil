@@ -1200,6 +1200,9 @@ public partial class Player
 
     private void HandleTouchMsg(Messages.Touch touch, uint seq)
     {
+        if (touch.EntityType == 9001 &&
+            string.Equals(_world.TerrainInfo?.region_template, "i01ancora180107", StringComparison.Ordinal))
+            NoteQuestEvent(Shared.Quest.QuestEventType.CustomEvent, "tutorial_bonfire_interacted");
         if (TryTouchGroundPackage(touch.EntityId, seq)) return;
         Console.WriteLine(
             $"[touch-entry-v3] entity={touch.EntityId} type={touch.EntityType} seq={seq}");
@@ -1449,6 +1452,9 @@ public partial class Player
                 if (blueprint.Components.Contains("FactionCenter"))
                     list.Add(Shared.System.Interaction.AcceptMission);
                 if (blueprint.Components.Contains("Warphole")) list.Add(Shared.System.Interaction.Warp);
+                if (blueprint.Components.Contains("WarpAccelerator") &&
+                    touched?.States.Warpaccelerator?.Status == Shared.Accelerator.AcceleratorStatus.RiftInactivated)
+                    list.Add(Shared.System.Interaction.ParticipateAcceleration);
                 if (touched?.States.Crack is { } crack &&
                     (!crack.ActivatedUntil.HasValue || crack.ActivatedUntil.Value <= Gauge.CurrentTime))
                     list.Add(Shared.System.Interaction.Invest);
@@ -2353,6 +2359,7 @@ public partial class Player
 
     public void Process()
     {
+        ExpireGrazedPets(Times.UnixTimeNow());
         UpdatePremium();
         UpdateParty();
         SyncClanBenefits();
@@ -2584,7 +2591,7 @@ public partial class Player
             TemplateId = null,          // ไม่ผูกกับ ArchipelagoMission ที่ยังไม่ได้ทำ
             UnstableFactor = 1,
             Name = included.Count > 0 && RegionCatalog.TryGet(included[0].Id, out var firstIsland)
-                ? RegionCatalog.DisplayName(RegionCatalog.GetTemplate(firstIsland.TemplateId)) : "Arquipélago",
+                ? RegionCatalog.DisplayName(RegionCatalog.GetTemplate(firstIsland.TemplateId), firstIsland.Id) : "Arquipélago",
             ExpiresAt = 0.0,            // client ไม่ได้ใช้ฟิลด์นี้เลย
             IncludedRegions = included.ToArray()
         }, seq);

@@ -1,0 +1,16 @@
+OffServerVoice/<>c : System.Object
+FIELD OffServerVoice/<>c OffServerVoice/<>c::<>9
+FIELD System.Converter`2<System.Single,System.String> OffServerVoice/<>c::<>9__126_0
+METHOD System.Void OffServerVoice/<>c::.cctor()
+newobj System.Void OffServerVoice/<>c::.ctor()
+stsfld OffServerVoice/<>c OffServerVoice/<>c::<>9
+ret 
+METHOD System.Void OffServerVoice/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.String OffServerVoice/<>c::<DebugState>b__126_0(System.Single)
+ldarga.s r
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.String System.Single::ToString(System.IFormatProvider)
+ret 

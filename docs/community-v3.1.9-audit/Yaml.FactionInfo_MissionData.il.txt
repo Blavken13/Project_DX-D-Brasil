@@ -1,0 +1,3 @@
+Yaml.FactionInfo/MissionData : System.ValueType
+FIELD System.Int32 Yaml.FactionInfo/MissionData::ActivationLevel
+FIELD Yaml.FactionInfo/MissionData/ShuffleData Yaml.FactionInfo/MissionData::Shuffle

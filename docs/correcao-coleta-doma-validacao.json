@@ -1,0 +1,46 @@
+{
+  "commit": "98640823fcd6477dfb1e7e2f92bb659484ed6263",
+  "verified_at_utc": "2026-10-10T02:15:41.446721+00:00",
+  "baseline_movement_handler_commit": "9ed8e54c24f23026fc5c9accb5f7bbef17fe6b22",
+  "baseline_used_live_saves": false,
+  "reproduction": {
+    "gameplay": {
+      "expected_failure_reproduced": true,
+      "assertion": "primeira doma permanece ativa",
+      "log_sha256": "0497220351f9caa21499a6de033fd8d77d6f37dbe9833e2c406ad66d4ecfad12"
+    },
+    "volcano-crater": {
+      "expected_failure_reproduced": true,
+      "assertion": "primeira coleta de mineral nao cancela",
+      "log_sha256": "ebacd69025dd5da1d84719950bfdad5ca2dc0d6f3685b125b1c19759cabad0b0"
+    }
+  },
+  "regressions": {
+    "reported-gameplay": {
+      "passed": true,
+      "checks": 113,
+      "log_sha256": "97c653c33d27f41ecfbd1352f001d740c607f503156e2297add6f1de3c5c052a"
+    },
+    "gameplay": {
+      "passed": true,
+      "checks": 62,
+      "log_sha256": "8e74426c035b0ab244efe78c43c7de2bd3da9341e2b3fe9a420e01921a2eb159"
+    },
+    "volcano-crater": {
+      "passed": true,
+      "checks": 210,
+      "log_sha256": "d2fc510ca8f53eb0436b45355f75173375aa866384288f051a1dc1c22428ca29"
+    },
+    "combat-bags": {
+      "passed": true,
+      "checks": 2415,
+      "log_sha256": "1adbb4dace6f41dd96c2cfe49a6546c8f37326b3a1f7158d10f91c9003487572"
+    },
+    "world-combat": {
+      "passed": true,
+      "checks": 52,
+      "log_sha256": "54281a2789f7961b5502cfa9136dc6b7da57b184c459d6781c28a97f2312e4e9"
+    }
+  },
+  "total_checks_passed": 2852
+}

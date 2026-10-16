@@ -1,0 +1,55 @@
+Messages.CheckSequenceMissionCleared : System.ValueType
+FIELD System.UInt32 Messages.CheckSequenceMissionCleared::TypeCode
+FIELD System.String Messages.CheckSequenceMissionCleared::MissionId
+METHOD System.Void Messages.CheckSequenceMissionCleared::Pack(MsgPack.Packer,Messages.CheckSequenceMissionCleared,System.Boolean)
+ldarg.2 
+brfalse.s IL_0019: ldarg.0
+ldarg.0 
+ldc.i4.2 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldc.i4 3631
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt32)
+pop 
+br.s IL_0021: ldarg.1
+ldarg.0 
+ldc.i4.1 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.String Messages.CheckSequenceMissionCleared::MissionId
+brtrue.s IL_0036: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ret 
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.CheckSequenceMissionCleared::MissionId
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ret 
+METHOD Messages.CheckSequenceMissionCleared Messages.CheckSequenceMissionCleared::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+initobj Messages.CheckSequenceMissionCleared
+ldloca.s V_0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.1 
+ldloca.s V_1
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.CheckSequenceMissionCleared::MissionId
+ldloc.0 
+ret 
+METHOD System.String Messages.CheckSequenceMissionCleared::ToString()
+ldstr <CheckSequenceMissionCleared MissionId=
+ldarg.0 
+ldfld System.String Messages.CheckSequenceMissionCleared::MissionId
+ldstr >
+call System.String System.String::Concat(System.String,System.String,System.String)
+ret 

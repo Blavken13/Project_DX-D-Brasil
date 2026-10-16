@@ -1,0 +1,18 @@
+OffServerLangPack/Pack : System.Object
+FIELD System.String OffServerLangPack/Pack::Locale
+FIELD System.String OffServerLangPack/Pack::Name
+FIELD System.String OffServerLangPack/Pack::Version
+FIELD System.Int32 OffServerLangPack/Pack::Translated
+FIELD System.Int32 OffServerLangPack/Pack::Total
+FIELD System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerLangPack/Pack::Files
+FIELD System.Collections.Generic.List`1<System.String> OffServerLangPack/Pack::Urls
+METHOD System.Void OffServerLangPack/Pack::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::.ctor()
+stfld System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>> OffServerLangPack/Pack::Files
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<System.String>::.ctor()
+stfld System.Collections.Generic.List`1<System.String> OffServerLangPack/Pack::Urls
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

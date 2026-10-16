@@ -1,0 +1,891 @@
+OffServerEmoji : System.Object
+FIELD System.String OffServerEmoji::Caps
+FIELD System.String OffServerEmoji::CapsHeader
+FIELD System.Single OffServerEmoji::Scale
+FIELD System.String OffServerEmoji::AtlasPath
+FIELD System.String OffServerEmoji::IndexPath
+FIELD System.Collections.Generic.Dictionary`2<System.Int64,System.Int32> OffServerEmoji::_cells
+FIELD UnityEngine.Rect[] OffServerEmoji::_uv
+FIELD UnityEngine.Texture2D OffServerEmoji::_texture
+FIELD System.Boolean OffServerEmoji::_loaded
+FIELD System.String OffServerEmoji::ShowNameTagsKey
+FIELD System.Int32[] OffServerEmoji::NameTagToggleFromVersion
+FIELD System.String OffServerEmoji::NameTagTogglePrefKey
+FIELD System.Boolean OffServerEmoji::_hideNameTags
+FIELD System.Int32 OffServerEmoji::_toggleSupported
+METHOD System.Boolean OffServerEmoji::get_HideNameTags()
+ldsfld System.Boolean OffServerEmoji::_hideNameTags
+ret 
+METHOD System.Boolean OffServerEmoji::get_NameTagToggleSupported()
+ldsfld System.Int32 OffServerEmoji::_toggleSupported
+ldc.i4.0 
+bge.s IL_005a: ldsfld System.Int32 OffServerEmoji::_toggleSupported
+ldloca.s V_0
+call System.Boolean OffServerEmoji::ResolveNameTagToggleGate(System.String&)
+ldc.i4.0 
+cgt.un 
+stsfld System.Int32 OffServerEmoji::_toggleSupported
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Emoji] name tag switch 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldsfld System.Int32 OffServerEmoji::_toggleSupported
+ldc.i4.1 
+beq.s IL_0036: ldstr "on"
+ldstr off
+br.s IL_003b: stelem.ref
+ldstr on
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  (
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ldsfld System.Int32 OffServerEmoji::_toggleSupported
+ldc.i4.1 
+ceq 
+ret 
+METHOD System.Boolean OffServerEmoji::SetShowNameTags(System.Boolean)
+ldarg.0 
+brtrue.s IL_000a: ldc.i4.0
+call System.Boolean OffServerEmoji::get_NameTagToggleSupported()
+br.s IL_000b: stloc.0
+ldc.i4.0 
+stloc.0 
+ldloc.0 
+ldsfld System.Boolean OffServerEmoji::_hideNameTags
+bne.un.s IL_0016: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+stsfld System.Boolean OffServerEmoji::_hideNameTags
+ldc.i4.1 
+ret 
+METHOD System.Boolean OffServerEmoji::ResolveNameTagToggleGate(System.String&)
+call System.String[] System.Environment::GetCommandLineArgs()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0046: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+ldstr -flagtoggle
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brfalse.s IL_0028: ldloc.3
+ldarg.0 
+ldstr -flagtoggle
+stind.ref 
+ldc.i4.1 
+stloc.s V_4
+leave.s IL_0070: ldloc.s V_4
+ldloc.3 
+ldstr -noflagtoggle
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brfalse.s IL_0042: ldloc.2
+ldarg.0 
+ldstr -noflagtoggle
+stind.ref 
+ldc.i4.0 
+stloc.s V_4
+leave.s IL_0070: ldloc.s V_4
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.1
+leave.s IL_0051: call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+pop 
+leave.s IL_0051: call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+stloc.0 
+ldarg.0 
+ldstr client 
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String)
+stind.ref 
+ldloc.0 
+ldsfld System.Int32[] OffServerEmoji::NameTagToggleFromVersion
+call System.Boolean OffServerEmoji::VersionAtLeast(System.String,System.Int32[])
+ret 
+ldloc.s V_4
+ret 
+METHOD System.Boolean OffServerEmoji::VersionAtLeast(System.String,System.Int32[])
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+callvirt System.String System.String::Trim()
+ldc.i4.s 46
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0076: ldloc.1
+ldc.i4.0 
+stloc.2 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+bge.s IL_0065: ldloc.2
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_0034: ldloc.s V_4
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_004d: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Boolean System.Char::IsDigit(System.Char)
+brtrue.s IL_002e: ldloc.s V_4
+ldloc.s V_4
+brfalse.s IL_0063: ldc.i4.0
+ldloc.3 
+ldc.i4.0 
+ldloc.s V_4
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+ldloca.s V_2
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brtrue.s IL_0065: ldloc.2
+ldc.i4.0 
+ret 
+ldloc.2 
+ldarg.1 
+ldloc.1 
+ldelem.i4 
+beq.s IL_0072: ldloc.1
+ldloc.2 
+ldarg.1 
+ldloc.1 
+ldelem.i4 
+cgt 
+ret 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_001d: ldc.i4.0
+ldc.i4.1 
+ret 
+METHOD System.Boolean OffServerEmoji::get_Available()
+call System.Void OffServerEmoji::Load()
+ldsfld UnityEngine.Texture2D OffServerEmoji::_texture
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+ret 
+METHOD UnityEngine.Texture2D OffServerEmoji::get_Texture()
+call System.Void OffServerEmoji::Load()
+ldsfld UnityEngine.Texture2D OffServerEmoji::_texture
+ret 
+METHOD System.Boolean OffServerEmoji::IsRegionalIndicator(System.Int32)
+ldarg.0 
+ldc.i4 127462
+blt.s IL_0014: ldc.i4.0
+ldarg.0 
+ldc.i4 127487
+cgt 
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Int32 OffServerEmoji::CodePointAt(System.String,System.Int32)
+ldarg.1 
+ldc.i4.1 
+add 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_003f: ldc.i4.m1
+ldarg.0 
+ldarg.1 
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Boolean System.Char::IsHighSurrogate(System.Char)
+brfalse.s IL_003f: ldc.i4.m1
+ldarg.0 
+ldarg.1 
+ldc.i4.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Boolean System.Char::IsLowSurrogate(System.Char)
+brfalse.s IL_003f: ldc.i4.m1
+ldarg.0 
+ldarg.1 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldarg.0 
+ldarg.1 
+ldc.i4.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Int32 System.Char::ConvertToUtf32(System.Char,System.Char)
+ret 
+ldc.i4.m1 
+ret 
+METHOD System.Int32 OffServerEmoji::Match(System.String,System.Int32,System.Int32&)
+ldarg.2 
+ldc.i4.m1 
+stind.i4 
+ldarg.0 
+ldarg.1 
+call System.Int32 OffServerEmoji::CodePointAt(System.String,System.Int32)
+stloc.0 
+ldloc.0 
+ldc.i4.0 
+bge.s IL_0011: ldc.i4.2
+ldc.i4.1 
+ret 
+ldc.i4.2 
+stloc.1 
+ldloc.0 
+conv.i8 
+stloc.2 
+ldloc.0 
+ldc.i4 128241
+beq.s IL_0028: ldc.i4.1
+ldloc.0 
+ldc.i4 128187
+ceq 
+br.s IL_0029: stloc.3
+ldc.i4.1 
+stloc.3 
+ldloc.0 
+call System.Boolean OffServerEmoji::IsRegionalIndicator(System.Int32)
+brfalse.s IL_005f: ldarg.1
+ldarg.0 
+ldarg.1 
+ldc.i4.2 
+add 
+call System.Int32 OffServerEmoji::CodePointAt(System.String,System.Int32)
+stloc.s V_5
+ldloc.s V_5
+call System.Boolean OffServerEmoji::IsRegionalIndicator(System.Int32)
+brfalse.s IL_0056: ldc.i4.m1
+ldloc.0 
+conv.i8 
+ldc.i4.s 21
+shl 
+ldloc.s V_5
+conv.u8 
+or 
+stloc.2 
+ldc.i4.4 
+stloc.1 
+ldc.i4.1 
+stloc.3 
+br.s IL_005f: ldarg.1
+ldc.i4.m1 
+conv.i8 
+stloc.2 
+br.s IL_005f: ldarg.1
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldarg.1 
+ldloc.1 
+add 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_008a: ldloc.3
+ldarg.0 
+ldarg.1 
+ldloc.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4 65039
+beq.s IL_005b: ldloc.1
+ldarg.0 
+ldarg.1 
+ldloc.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4 65038
+beq.s IL_005b: ldloc.1
+ldloc.3 
+brfalse.s IL_00b2: ldloc.2
+ldsfld System.Boolean OffServerEmoji::_hideNameTags
+brfalse.s IL_00b2: ldloc.2
+ldarg.1 
+ldloc.1 
+add 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_00b0: ldloc.1
+ldarg.0 
+ldarg.1 
+ldloc.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 32
+bne.un.s IL_00b0: ldloc.1
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ret 
+ldloc.2 
+ldc.i4.0 
+conv.i8 
+blt.s IL_00d1: ldloc.1
+call System.Boolean OffServerEmoji::get_Available()
+brfalse.s IL_00d1: ldloc.1
+ldsfld System.Collections.Generic.Dictionary`2<System.Int64,System.Int32> OffServerEmoji::_cells
+ldloc.2 
+ldloca.s V_4
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::TryGetValue(!0,!1&)
+brfalse.s IL_00d1: ldloc.1
+ldarg.2 
+ldloc.s V_4
+stind.i4 
+ldloc.1 
+ret 
+METHOD System.String OffServerEmoji::StripNameTags(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: ldc.i4.0
+ldarg.0 
+ret 
+ldc.i4.0 
+stloc.0 
+br IL_00e9: ldloc.0
+ldarg.0 
+ldloc.0 
+callvirt System.Char System.String::get_Chars(System.Int32)
+stloc.1 
+ldloc.1 
+ldc.i4.s 32
+beq.s IL_0026: ldloc.0
+ldloc.1 
+ldc.i4 65039
+bne.un.s IL_002f: ldarg.0
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+br IL_00e9: ldloc.0
+ldarg.0 
+ldloc.0 
+call System.Int32 OffServerEmoji::CodePointAt(System.String,System.Int32)
+stloc.2 
+ldloc.2 
+ldc.i4 128241
+beq.s IL_004f: ldloc.0
+ldloc.2 
+ldc.i4 128187
+beq.s IL_004f: ldloc.0
+ldloc.2 
+call System.Boolean OffServerEmoji::IsRegionalIndicator(System.Int32)
+brfalse.s IL_0058: ldloc.1
+ldloc.0 
+ldc.i4.2 
+add 
+stloc.0 
+br IL_00e9: ldloc.0
+ldloc.1 
+ldc.i4.s 91
+bne.un.s IL_0088: ldloc.1
+ldloc.0 
+ldc.i4.2 
+add 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_0088: ldloc.1
+ldarg.0 
+ldloc.0 
+ldc.i4.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 77
+bne.un.s IL_0088: ldloc.1
+ldarg.0 
+ldloc.0 
+ldc.i4.2 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 93
+bne.un.s IL_0088: ldloc.1
+ldloc.0 
+ldc.i4.3 
+add 
+stloc.0 
+br.s IL_00e9: ldloc.0
+ldloc.1 
+ldc.i4.s 91
+bne.un.s IL_00f5: ldloc.0
+ldloc.0 
+ldc.i4.3 
+add 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_00f5: ldloc.0
+ldarg.0 
+ldloc.0 
+ldc.i4.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Boolean System.Char::IsUpper(System.Char)
+brfalse.s IL_00f5: ldloc.0
+ldarg.0 
+ldloc.0 
+ldc.i4.2 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Boolean System.Char::IsUpper(System.Char)
+brfalse.s IL_00f5: ldloc.0
+ldarg.0 
+ldloc.0 
+ldc.i4.3 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 93
+bne.un.s IL_00f5: ldloc.0
+ldarg.0 
+ldloc.0 
+ldc.i4.1 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4 128
+bge.s IL_00f5: ldloc.0
+ldarg.0 
+ldloc.0 
+ldc.i4.2 
+add 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4 128
+bge.s IL_00f5: ldloc.0
+ldloc.0 
+ldc.i4.4 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+callvirt System.Int32 System.String::get_Length()
+blt IL_0011: ldarg.0
+ldloc.0 
+brfalse.s IL_0100: ldarg.0
+ldarg.0 
+ldloc.0 
+callvirt System.String System.String::Substring(System.Int32)
+ret 
+ldarg.0 
+ret 
+METHOD UnityEngine.Rect OffServerEmoji::GetUV(System.Int32)
+call System.Void OffServerEmoji::Load()
+ldsfld UnityEngine.Rect[] OffServerEmoji::_uv
+brfalse.s IL_001a: ldc.r4 0
+ldarg.0 
+ldc.i4.0 
+blt.s IL_001a: ldc.r4 0
+ldarg.0 
+ldsfld UnityEngine.Rect[] OffServerEmoji::_uv
+ldlen 
+conv.i4 
+blt.s IL_0034: ldsfld UnityEngine.Rect[] OffServerEmoji::_uv
+ldc.r4 0
+ldc.r4 0
+ldc.r4 0
+ldc.r4 0
+newobj System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+ret 
+ldsfld UnityEngine.Rect[] OffServerEmoji::_uv
+ldarg.0 
+ldelem.any UnityEngine.Rect
+ret 
+METHOD System.Void OffServerEmoji::Load()
+ldsfld System.Boolean OffServerEmoji::_loaded
+brfalse.s IL_0008: ldc.i4.1
+ret 
+ldc.i4.1 
+stsfld System.Boolean OffServerEmoji::_loaded
+ldstr OffServerEmoji/twemoji_atlas_index
+call !!0 UnityEngine.Resources::Load<UnityEngine.TextAsset>(System.String)
+stloc.0 
+ldstr OffServerEmoji/twemoji_atlas
+call !!0 UnityEngine.Resources::Load<UnityEngine.TextAsset>(System.String)
+stloc.1 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0036: ldstr "[Emoji] Twemoji atlas missing in Resources/OffServerEmoji - emoji are not drawn"
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0045: ldc.i4.0
+ldstr [Emoji] Twemoji atlas missing in Resources/OffServerEmoji - emoji are not drawn
+call System.Void OffServerLog::Info(System.String)
+leave IL_032d: ret
+ldc.i4.0 
+stloc.2 
+ldc.i4.0 
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+ldc.i4.0 
+stloc.s V_5
+ldc.i4.0 
+stloc.s V_6
+ldc.i4.0 
+stloc.s V_7
+newobj System.Void System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::.ctor()
+stloc.s V_8
+ldloc.0 
+callvirt System.String UnityEngine.TextAsset::get_text()
+ldc.i4.s 10
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.s V_9
+ldc.i4.0 
+stloc.s V_13
+br IL_0143: ldloc.s V_13
+ldloc.s V_9
+ldloc.s V_13
+ldelem.ref 
+callvirt System.String System.String::Trim()
+stloc.s V_14
+ldloc.s V_14
+callvirt System.Int32 System.String::get_Length()
+brfalse IL_013d: ldloc.s V_13
+ldloc.s V_14
+ldc.i4.0 
+callvirt System.Char System.String::get_Chars(System.Int32)
+ldc.i4.s 35
+beq IL_013d: ldloc.s V_13
+ldloc.s V_14
+ldstr size 
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_00ef: ldloc.s V_14
+ldloc.s V_14
+ldc.i4.s 32
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+dup 
+ldc.i4.1 
+ldelem.ref 
+call System.Int32 System.Int32::Parse(System.String)
+stloc.2 
+dup 
+ldc.i4.2 
+ldelem.ref 
+call System.Int32 System.Int32::Parse(System.String)
+stloc.3 
+dup 
+ldc.i4.4 
+ldelem.ref 
+call System.Int32 System.Int32::Parse(System.String)
+stloc.s V_4
+dup 
+ldc.i4.6 
+ldelem.ref 
+call System.Int32 System.Int32::Parse(System.String)
+stloc.s V_5
+dup 
+ldc.i4.8 
+ldelem.ref 
+call System.Int32 System.Int32::Parse(System.String)
+stloc.s V_6
+ldc.i4.s 10
+ldelem.ref 
+call System.Int32 System.Int32::Parse(System.String)
+stloc.s V_7
+br.s IL_013d: ldloc.s V_13
+ldloc.s V_14
+ldc.i4.s 45
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.s V_15
+ldloc.s V_15
+ldc.i4.0 
+ldelem.ref 
+ldc.i4.s 16
+call System.Int32 System.Convert::ToInt32(System.String,System.Int32)
+conv.i8 
+stloc.s V_16
+ldloc.s V_15
+ldlen 
+conv.i4 
+ldc.i4.2 
+bne.un.s IL_0126: ldloc.s V_15
+ldloc.s V_16
+ldc.i4.s 21
+shl 
+ldloc.s V_15
+ldc.i4.1 
+ldelem.ref 
+ldc.i4.s 16
+call System.Int32 System.Convert::ToInt32(System.String,System.Int32)
+conv.u8 
+or 
+stloc.s V_16
+br.s IL_012d: ldloc.s V_8
+ldloc.s V_15
+ldlen 
+conv.i4 
+ldc.i4.1 
+bne.un.s IL_013d: ldloc.s V_13
+ldloc.s V_8
+ldloc.s V_16
+ldloc.s V_8
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::get_Count()
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::set_Item(!0,!1)
+ldloc.s V_13
+ldc.i4.1 
+add 
+stloc.s V_13
+ldloc.s V_13
+ldloc.s V_9
+ldlen 
+conv.i4 
+blt IL_0074: ldloc.s V_9
+ldloc.2 
+ldc.i4.0 
+ble.s IL_0164: ldstr "[Emoji] bad twemoji_atlas_index header - emoji are not drawn"
+ldloc.3 
+ldc.i4.0 
+ble.s IL_0164: ldstr "[Emoji] bad twemoji_atlas_index header - emoji are not drawn"
+ldloc.s V_7
+ldc.i4.0 
+ble.s IL_0164: ldstr "[Emoji] bad twemoji_atlas_index header - emoji are not drawn"
+ldloc.s V_8
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::get_Count()
+brtrue.s IL_0173: ldc.i4.2
+ldstr [Emoji] bad twemoji_atlas_index header - emoji are not drawn
+call System.Void OffServerLog::Info(System.String)
+leave IL_032d: ret
+ldc.i4.2 
+ldc.i4.2 
+ldc.i4.4 
+ldc.i4.0 
+newobj System.Void UnityEngine.Texture2D::.ctor(System.Int32,System.Int32,UnityEngine.TextureFormat,System.Boolean)
+stloc.s V_10
+ldloc.s V_10
+ldloc.1 
+callvirt System.Byte[] UnityEngine.TextAsset::get_bytes()
+call System.Boolean UnityEngine.ImageConversion::LoadImage(UnityEngine.Texture2D,System.Byte[])
+brfalse.s IL_01a1: ldc.i4.5
+ldloc.s V_10
+callvirt System.Int32 UnityEngine.Texture::get_width()
+ldloc.2 
+bne.un.s IL_01a1: ldc.i4.5
+ldloc.s V_10
+callvirt System.Int32 UnityEngine.Texture::get_height()
+ldloc.3 
+beq.s IL_01e9: ldloc.2
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Emoji] twemoji_atlas.bytes does not decode to 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloca.s V_2
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr x
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  - emoji are not drawn
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+ldloc.s V_10
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+leave IL_032d: ret
+ldloc.2 
+ldloc.3 
+ldc.i4.4 
+ldc.i4.1 
+newobj System.Void UnityEngine.Texture2D::.ctor(System.Int32,System.Int32,UnityEngine.TextureFormat,System.Boolean)
+stloc.s V_11
+ldloc.s V_11
+ldstr OffServerEmoji
+callvirt System.Void UnityEngine.Object::set_name(System.String)
+ldloc.s V_11
+ldc.i4.1 
+callvirt System.Void UnityEngine.Texture::set_wrapMode(UnityEngine.TextureWrapMode)
+ldloc.s V_11
+ldc.i4.2 
+callvirt System.Void UnityEngine.Texture::set_filterMode(UnityEngine.FilterMode)
+ldloc.s V_11
+ldloc.s V_10
+callvirt UnityEngine.Color32[] UnityEngine.Texture2D::GetPixels32()
+callvirt System.Void UnityEngine.Texture2D::SetPixels32(UnityEngine.Color32[])
+ldloc.s V_11
+ldc.i4.1 
+ldc.i4.1 
+callvirt System.Void UnityEngine.Texture2D::Apply(System.Boolean,System.Boolean)
+ldloc.s V_11
+ldc.i4.s 32
+callvirt System.Void UnityEngine.Object::set_hideFlags(UnityEngine.HideFlags)
+ldloc.s V_10
+call System.Void UnityEngine.Object::Destroy(UnityEngine.Object)
+ldloc.1 
+call System.Void UnityEngine.Resources::UnloadAsset(UnityEngine.Object)
+ldloc.s V_8
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::get_Count()
+newarr UnityEngine.Rect
+stloc.s V_12
+ldc.i4.0 
+stloc.s V_17
+br.s IL_029f: ldloc.s V_17
+ldloc.s V_17
+ldloc.s V_7
+rem 
+ldloc.s V_4
+mul 
+ldloc.s V_6
+add 
+stloc.s V_18
+ldloc.s V_17
+ldloc.s V_7
+div 
+ldloc.s V_4
+mul 
+ldloc.s V_6
+add 
+stloc.s V_19
+ldloc.s V_12
+ldloc.s V_17
+ldloc.s V_18
+conv.r4 
+ldloc.2 
+conv.r4 
+div 
+ldc.r4 1
+ldloc.s V_19
+ldloc.s V_5
+add 
+conv.r4 
+ldloc.3 
+conv.r4 
+div 
+sub 
+ldloc.s V_5
+conv.r4 
+ldloc.2 
+conv.r4 
+div 
+ldloc.s V_5
+conv.r4 
+ldloc.3 
+conv.r4 
+div 
+newobj System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+stelem.any UnityEngine.Rect
+ldloc.s V_17
+ldc.i4.1 
+add 
+stloc.s V_17
+ldloc.s V_17
+ldloc.s V_12
+ldlen 
+conv.i4 
+blt.s IL_0250: ldloc.s V_17
+ldloc.s V_8
+stsfld System.Collections.Generic.Dictionary`2<System.Int64,System.Int32> OffServerEmoji::_cells
+ldloc.s V_12
+stsfld UnityEngine.Rect[] OffServerEmoji::_uv
+ldloc.s V_11
+stsfld UnityEngine.Texture2D OffServerEmoji::_texture
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [Emoji] Twemoji atlas loaded: 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.s V_8
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.Int64,System.Int32>::get_Count()
+stloc.s V_20
+ldloca.s V_20
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  emoji 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloca.s V_2
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr x
+stelem.ref 
+dup 
+ldc.i4.5 
+ldloca.s V_3
+call System.String System.Int32::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerLog::Info(System.String)
+leave.s IL_032d: ret
+stloc.s V_21
+ldstr [Emoji] Twemoji atlas load failed: 
+ldloc.s V_21
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void OffServerLog::Info(System.String)
+ldnull 
+stsfld UnityEngine.Texture2D OffServerEmoji::_texture
+leave.s IL_032d: ret
+ret 
+METHOD System.Void OffServerEmoji::.cctor()
+ldc.i4.3 
+newarr System.Int32
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=12 <PrivateImplementationDetails>::06FE38B19506D83BB3C27BACB14825FECEFEA19B9A1C681F1FF89A6CEB84D488
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld System.Int32[] OffServerEmoji::NameTagToggleFromVersion
+ldc.i4.m1 
+stsfld System.Int32 OffServerEmoji::_toggleSupported
+ret 

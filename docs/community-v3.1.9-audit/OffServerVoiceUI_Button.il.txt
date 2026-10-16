@@ -1,0 +1,8 @@
+OffServerVoiceUI/Button : System.Object
+FIELD UnityEngine.GameObject OffServerVoiceUI/Button::Go
+FIELD UISprite OffServerVoiceUI/Button::Bg
+FIELD UILabel OffServerVoiceUI/Button::Label
+METHOD System.Void OffServerVoiceUI/Button::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

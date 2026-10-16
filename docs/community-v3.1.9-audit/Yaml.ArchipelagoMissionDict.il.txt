@@ -1,0 +1,5 @@
+Yaml.ArchipelagoMissionDict : Yaml.Util.SingletonDict`2<System.String,System.Collections.Generic.Dictionary`2<System.String,Yaml.ArchipelagoMission>>
+METHOD System.Void Yaml.ArchipelagoMissionDict::.ctor()
+ldarg.0 
+call System.Void Yaml.Util.SingletonDict`2<System.String,System.Collections.Generic.Dictionary`2<System.String,Yaml.ArchipelagoMission>>::.ctor()
+ret 

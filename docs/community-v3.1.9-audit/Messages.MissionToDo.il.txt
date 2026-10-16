@@ -1,0 +1,286 @@
+Messages.MissionToDo : System.ValueType
+FIELD System.String Messages.MissionToDo::Id
+FIELD Shared.Faction.MissionTodoType Messages.MissionToDo::Type
+FIELD System.String Messages.MissionToDo::Label
+FIELD Shared.Faction.MissionTodoOrder Messages.MissionToDo::Order
+FIELD System.Int32 Messages.MissionToDo::Progress
+FIELD System.Int32 Messages.MissionToDo::GoalCount
+FIELD System.String Messages.MissionToDo::Tooltip
+FIELD System.Nullable`1<Point2> Messages.MissionToDo::Destination
+METHOD System.Void Messages.MissionToDo::Pack(MsgPack.Packer,Messages.MissionToDo,System.Boolean)
+ldarg.0 
+ldc.i4.8 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.1 
+ldfld System.String Messages.MissionToDo::Id
+brtrue.s IL_001e: ldarg.0
+ldarg.0 
+ldsfld System.String System.String::Empty
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+br.s IL_002b: ldarg.0
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.MissionToDo::Id
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Shared.Faction.MissionTodoType Messages.MissionToDo::Type
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.MissionToDo::Label
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld Shared.Faction.MissionTodoOrder Messages.MissionToDo::Order
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld System.Int32 Messages.MissionToDo::Progress
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.0 
+ldarg.1 
+ldfld System.Int32 Messages.MissionToDo::GoalCount
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.Int32)
+pop 
+ldarg.1 
+ldfld System.String Messages.MissionToDo::Tooltip
+brtrue.s IL_007d: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+br.s IL_008a: ldarga.s val
+ldarg.0 
+ldarg.1 
+ldfld System.String Messages.MissionToDo::Tooltip
+callvirt MsgPack.Packer MsgPack.Packer::PackString(System.String)
+pop 
+ldarga.s val
+ldflda System.Nullable`1<Point2> Messages.MissionToDo::Destination
+call System.Boolean System.Nullable`1<Point2>::get_HasValue()
+brtrue.s IL_00a0: ldarg.0
+ldarg.0 
+callvirt MsgPack.Packer MsgPack.Packer::PackNull()
+pop 
+ret 
+ldarg.0 
+ldc.i4.2 
+callvirt MsgPack.Packer MsgPack.Packer::PackArrayHeader(System.Int32)
+pop 
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<Point2> Messages.MissionToDo::Destination
+call !0 System.Nullable`1<Point2>::get_Value()
+ldfld System.Int32 Point2::x
+conv.u2 
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt16)
+pop 
+ldarg.0 
+ldarga.s val
+ldflda System.Nullable`1<Point2> Messages.MissionToDo::Destination
+call !0 System.Nullable`1<Point2>::get_Value()
+ldfld System.Int32 Point2::y
+conv.u2 
+callvirt MsgPack.Packer MsgPack.Packer::Pack(System.UInt16)
+pop 
+ret 
+METHOD Messages.MissionToDo Messages.MissionToDo::Unpack(MsgPack.Unpacker)
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_3
+initobj Messages.MissionToDo
+ldloca.s V_3
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.String MsgPack.MessagePackObject::AsString()
+stfld System.String Messages.MissionToDo::Id
+ldloc.3 
+stloc.0 
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.1 
+ldloc.1 
+ldc.i4.0 
+blt.s IL_0046: ldloca.s V_0
+ldc.i4.7 
+ldloc.1 
+bge.s IL_0050: ldloca.s V_0
+ldloca.s V_0
+ldc.i4.m1 
+stfld Shared.Faction.MissionTodoType Messages.MissionToDo::Type
+br.s IL_0058: ldarg.0
+ldloca.s V_0
+ldloc.1 
+stfld Shared.Faction.MissionTodoType Messages.MissionToDo::Type
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+call System.String LocalizeSystem::UnpackGettextFromMsgPack(MsgPack.Unpacker)
+stfld System.String Messages.MissionToDo::Label
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+blt.s IL_008b: ldloca.s V_0
+ldc.i4.1 
+ldloc.2 
+bge.s IL_0095: ldloca.s V_0
+ldloca.s V_0
+ldc.i4.m1 
+stfld Shared.Faction.MissionTodoOrder Messages.MissionToDo::Order
+br.s IL_009d: ldarg.0
+ldloca.s V_0
+ldloc.2 
+stfld Shared.Faction.MissionTodoOrder Messages.MissionToDo::Order
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stfld System.Int32 Messages.MissionToDo::Progress
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldloca.s V_0
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Int32 MsgPack.MessagePackObject::AsInt32()
+stfld System.Int32 Messages.MissionToDo::GoalCount
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_00f9: ldarg.0
+ldloca.s V_0
+ldnull 
+stfld System.String Messages.MissionToDo::Tooltip
+br.s IL_010a: ldarg.0
+ldarg.0 
+call System.String LocalizeSystem::UnpackGettextFromMsgPack(MsgPack.Unpacker)
+stloc.s V_5
+ldloca.s V_0
+ldloc.s V_5
+stfld System.String Messages.MissionToDo::Tooltip
+ldarg.0 
+callvirt System.Boolean MsgPack.Unpacker::Read()
+pop 
+ldarg.0 
+callvirt MsgPack.MessagePackObject MsgPack.Unpacker::get_LastReadData()
+stloc.s V_4
+ldloca.s V_4
+call System.Boolean MsgPack.MessagePackObject::get_IsNil()
+brfalse.s IL_0131: ldarg.0
+ldloca.s V_0
+ldflda System.Nullable`1<Point2> Messages.MissionToDo::Destination
+initobj System.Nullable`1<Point2>
+br.s IL_016f: ldloc.0
+ldarg.0 
+ldloca.s V_6
+callvirt System.Boolean MsgPack.Unpacker::ReadUInt16(System.UInt16&)
+pop 
+ldloca.s V_8
+initobj Point2
+ldloca.s V_8
+ldloc.s V_6
+stfld System.Int32 Point2::x
+ldloc.s V_8
+stloc.s V_7
+ldarg.0 
+ldloca.s V_6
+callvirt System.Boolean MsgPack.Unpacker::ReadUInt16(System.UInt16&)
+pop 
+ldloca.s V_7
+ldloc.s V_6
+stfld System.Int32 Point2::y
+ldloca.s V_0
+ldloc.s V_7
+newobj System.Void System.Nullable`1<Point2>::.ctor(!0)
+stfld System.Nullable`1<Point2> Messages.MissionToDo::Destination
+ldloc.0 
+ret 
+METHOD System.String Messages.MissionToDo::ToString()
+ldstr <MissionToDo Id={0} Type={1} Label={2} Order={3} Progress={4} GoalCount={5} Tooltip={6} Destination={7}>
+ldc.i4.8 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.String Messages.MissionToDo::Id
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld Shared.Faction.MissionTodoType Messages.MissionToDo::Type
+box Shared.Faction.MissionTodoType
+stelem.ref 
+dup 
+ldc.i4.2 
+ldarg.0 
+ldfld System.String Messages.MissionToDo::Label
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+ldfld Shared.Faction.MissionTodoOrder Messages.MissionToDo::Order
+box Shared.Faction.MissionTodoOrder
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.0 
+ldfld System.Int32 Messages.MissionToDo::Progress
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.5 
+ldarg.0 
+ldfld System.Int32 Messages.MissionToDo::GoalCount
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.6 
+ldarg.0 
+ldfld System.String Messages.MissionToDo::Tooltip
+stelem.ref 
+dup 
+ldc.i4.7 
+ldarg.0 
+ldfld System.Nullable`1<Point2> Messages.MissionToDo::Destination
+box System.Nullable`1<Point2>
+stelem.ref 
+call System.String System.String::Format(System.String,System.Object[])
+ret 

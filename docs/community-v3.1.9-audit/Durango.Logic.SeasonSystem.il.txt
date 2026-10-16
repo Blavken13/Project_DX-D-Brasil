@@ -1,0 +1,235 @@
+Durango.Logic.SeasonSystem : GameSystem`1<Durango.Logic.SeasonSystem>
+FIELD System.Single Durango.Logic.SeasonSystem::_seasonsValidAt
+FIELD System.Collections.Generic.Dictionary`2<System.String,Messages.Season> Durango.Logic.SeasonSystem::_seasons
+FIELD System.Boolean Durango.Logic.SeasonSystem::<Initialized>k__BackingField
+FIELD System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+METHOD System.Boolean Durango.Logic.SeasonSystem::get_Initialized()
+ldarg.0 
+ldfld System.Boolean Durango.Logic.SeasonSystem::<Initialized>k__BackingField
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::set_Initialized(System.Boolean)
+ldarg.0 
+ldarg.1 
+stfld System.Boolean Durango.Logic.SeasonSystem::<Initialized>k__BackingField
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::add_SeasonUpdated(System.Action)
+ldarg.0 
+ldfld System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldarg.0 
+ldflda System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::remove_SeasonUpdated(System.Action)
+ldarg.0 
+ldfld System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldarg.0 
+ldflda System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::Start()
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+ldarg.0 
+ldftn System.Void Durango.Logic.SeasonSystem::<Start>b__10_0(Messages.Welcome)
+newobj System.Void System.Action`1<Messages.Welcome>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void GameManager::add_WelcomeReceived(System.Action`1<Messages.Welcome>)
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::Update()
+ldarg.0 
+ldfld System.Single Durango.Logic.SeasonSystem::_seasonsValidAt
+ldc.r4 0
+ble.un.s IL_004f: ret
+call System.Single UnityEngine.Time::get_time()
+ldarg.0 
+ldfld System.Single Durango.Logic.SeasonSystem::_seasonsValidAt
+ble.un.s IL_004f: ret
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.Logic.SeasonSystem::_seasonsValidAt
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldloca.s V_0
+initobj Messages.GetSeasons
+ldloc.0 
+ldc.i4.0 
+ldc.i4.0 
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.GetSeasons>(T,System.Boolean,System.UInt32)
+stloc.1 
+ldloca.s V_1
+ldarg.0 
+ldftn System.Void Durango.Logic.SeasonSystem::OnSeasons(Messages.Seasons,Durango.Network.PacketHeader)
+newobj System.Void Durango.Network.Connection/MessageHandler`1<Messages.Seasons>::.ctor(System.Object,System.IntPtr)
+call Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.ReplyMessageHandlerRegistrar::On<Messages.Seasons>(Durango.Network.Connection/MessageHandler`1<T>)
+pop 
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::OnSeasons(Messages.Seasons,Durango.Network.PacketHeader)
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Messages.Season> Durango.Logic.SeasonSystem::_seasons
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,Messages.Season>::Clear()
+ldarg.1 
+ldfld Messages.Season[] Messages.Seasons::_Seasons
+brtrue.s IL_0014: ldloca.s V_0
+ret 
+ldloca.s V_0
+initobj System.Nullable`1<System.Double>
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+stloc.1 
+ldarg.1 
+ldfld Messages.Season[] Messages.Seasons::_Seasons
+stloc.2 
+ldc.i4.0 
+stloc.3 
+br.s IL_007e: ldloc.3
+ldloc.2 
+ldloc.3 
+ldelem.any Messages.Season
+stloc.s V_4
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Messages.Season> Durango.Logic.SeasonSystem::_seasons
+ldloc.s V_4
+ldfld System.String Messages.Season::Id
+ldloc.s V_4
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,Messages.Season>::Add(!0,!1)
+ldloc.s V_4
+ldfld System.Double Messages.Season::Until
+stloc.s V_5
+ldloc.1 
+ldloc.s V_5
+bge.un.s IL_007a: ldloc.3
+ldloca.s V_0
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse.s IL_0071: ldloca.s V_0
+ldloc.s V_5
+ldloca.s V_0
+call !0 System.Nullable`1<System.Double>::get_Value()
+bge.un.s IL_007a: ldloc.3
+ldloca.s V_0
+ldloc.s V_5
+call System.Void System.Nullable`1<System.Double>::.ctor(!0)
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.2 
+ldlen 
+conv.i4 
+blt.s IL_0032: ldloc.2
+ldarg.0 
+ldloca.s V_0
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse.s IL_00a8: ldc.r4 0
+ldloca.s V_0
+call !0 System.Nullable`1<System.Double>::get_Value()
+call System.Single Durango.Utils.Times::UnixTimeToUnityTime(System.Double)
+call System.Single UnityEngine.Random::get_value()
+ldc.r4 300
+mul 
+add 
+br.s IL_00ad: stfld System.Single Durango.Logic.SeasonSystem::_seasonsValidAt
+ldc.r4 0
+stfld System.Single Durango.Logic.SeasonSystem::_seasonsValidAt
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.Logic.SeasonSystem::set_Initialized(System.Boolean)
+ldarg.0 
+ldfld System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+brfalse.s IL_00cc: ret
+ldarg.0 
+ldfld System.Action Durango.Logic.SeasonSystem::SeasonUpdated
+callvirt System.Void System.Action::Invoke()
+ret 
+METHOD System.Nullable`1<Messages.Season> Durango.Logic.SeasonSystem::GetSeason(System.String)
+ldarg.1 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0012: ldarg.0
+ldloca.s V_1
+initobj System.Nullable`1<Messages.Season>
+ldloc.1 
+ret 
+ldarg.0 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Messages.Season> Durango.Logic.SeasonSystem::_seasons
+ldarg.1 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,Messages.Season>::TryGetValue(!0,!1&)
+brfalse.s IL_0029: ldloca.s V_1
+ldloc.0 
+newobj System.Void System.Nullable`1<Messages.Season>::.ctor(!0)
+ret 
+ldloca.s V_1
+initobj System.Nullable`1<Messages.Season>
+ldloc.1 
+ret 
+METHOD Durango.Logic.SeasonSystem/Period Durango.Logic.SeasonSystem::GetSeasonStatus(System.String)
+ldarg.0 
+ldarg.1 
+call System.Nullable`1<Messages.Season> Durango.Logic.SeasonSystem::GetSeason(System.String)
+stloc.0 
+ldloca.s V_0
+call System.Boolean System.Nullable`1<Messages.Season>::get_HasValue()
+brtrue.s IL_0013: ldloca.s V_0
+ldc.i4.0 
+ret 
+ldloca.s V_0
+call !0 System.Nullable`1<Messages.Season>::get_Value()
+stloc.1 
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldfld System.Double Messages.Season::Since
+bge.un.s IL_0031: ldloc.2
+ldc.i4.1 
+ret 
+ldloc.2 
+ldloc.1 
+ldfld System.Double Messages.Season::Until
+blt.un.s IL_003c: ldc.i4.2
+ldc.i4.3 
+ret 
+ldc.i4.2 
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,Messages.Season>::.ctor()
+stfld System.Collections.Generic.Dictionary`2<System.String,Messages.Season> Durango.Logic.SeasonSystem::_seasons
+ldarg.0 
+call System.Void GameSystem`1<Durango.Logic.SeasonSystem>::.ctor()
+ret 
+METHOD System.Void Durango.Logic.SeasonSystem::<Start>b__10_0(Messages.Welcome)
+ldarg.0 
+ldarg.1 
+ldfld Messages.Seasons Messages.Welcome::Seasons
+ldloca.s V_0
+initobj Durango.Network.PacketHeader
+ldloc.0 
+call System.Void Durango.Logic.SeasonSystem::OnSeasons(Messages.Seasons,Durango.Network.PacketHeader)
+ret 

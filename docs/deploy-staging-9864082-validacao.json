@@ -1,0 +1,94 @@
+{
+  "commit": "98640823fcd6477dfb1e7e2f92bb659484ed6263",
+  "image": "sha256:b67cf4632f300afee94360d0678fd4b028e9d9e9fce02f47146eaf72c4f7cf1b",
+  "healthy": true,
+  "backup": "/opt/durango/backups/state-pre-9864082-20261010T021848Z.tar.gz",
+  "state": [
+    {
+      "cluster": "Durango Brasil",
+      "accounts_preserved": 49,
+      "characters_preserved": 57
+    },
+    {
+      "cluster": "Durango Brasil - STAGING",
+      "accounts_preserved": 9,
+      "characters_preserved": 12
+    }
+  ],
+  "admin_checks": [
+    "loja: bilhete de reset gratuito e catalogo da release confirmado",
+    "12 terrenos adicionais: SHA-256 confirmado",
+    "/admin/: arquivo da release confirmado",
+    "/admin/app.js: arquivo da release confirmado",
+    "/admin/style.css: arquivo da release confirmado",
+    "/health: acesso anônimo bloqueado",
+    "/admin/players: acesso anônimo bloqueado",
+    "/admin/premium: acesso anônimo bloqueado",
+    "/admin/mail/status: acesso anônimo bloqueado",
+    "/admin/catalog: acesso anônimo bloqueado",
+    "/admin/client-reports: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=csv: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=json: acesso anônimo bloqueado",
+    "bundle masculino original: SHA-256 confirmado"
+  ],
+  "regression_results": [
+    "[safehouse-missions-check] PASS 49 verificações. Saves temporários: /tmp/Durango-safehouse-missions-57755e2715ed4e108948d11601c226c4",
+    "[tester-check] PASS 106 verificações",
+    "[bugs-check] PASS",
+    "[polish-check] PASS 1249 verificacoes. Saves temporarios: /tmp/Durango-polish-check-05d6e08e17d34d21a9898e3b8667fc26",
+    "[induction-check] PASS 29 verificacoes",
+    "[world-check] PASS 2795 verificacoes. Saves temporarios: /tmp/Durango-world-check-d0f96d1a343744949f5eb06cb9928f1e",
+    "[gameplay-check] PASS 62 verificacoes. Saves temporarios: /tmp/Durango-gameplay-check-44efa7cb57924ec4a72a357004d11778",
+    "[social-check] PASS 97 verificações",
+    "[premium-check] PASS 52 verificações",
+    "[economy-check] PASS 303 verificacoes. Arquivos temporarios: /tmp/Durango-economy-check-fa467ca85db24613a50b32347003e39f",
+    "[progression-check] PASS 148 verificacoes",
+    "[fauna-check] PASS 404 verificacoes",
+    "[combat-bags] PASS 2415 verificações. Saves temporários: /tmp/Durango-combat-bags-164691747261422d88006c28df2d121b",
+    "[world-combat] PASS 52 verificacoes. Saves temporarios: /tmp/Durango-world-combat-05cef4bfc1354b9a8dbf88f584ea93d9",
+    "[volcano-crater] PASS 210 verificacoes. Saves temporarios: /tmp/Durango-volcano-crater-85992b0f84d34d32ae6a5f603d4ff121",
+    "[reported-gameplay] PASS 113 verificações",
+    "[xp-coupon-check] PASS: 178 verificações",
+    "PASS: coupon regression adapted to property in isolated validation image; production image unchanged"
+  ],
+  "coupon_test_validation": {
+    "passed": true,
+    "production_image": "sha256:b67cf4632f300afee94360d0678fd4b028e9d9e9fce02f47146eaf72c4f7cf1b",
+    "production_source_unchanged": true,
+    "validation_only_changes": [
+      "SkillXpCouponCheck.cs"
+    ],
+    "original_test_sha256": "c7187cc7b6d48103c1a7a6e950354aaa7bad3b171df08194e9e6f2c1759f3daa",
+    "validation_test_sha256": "d2bbc5e2efcecdb949e2cd9e5c31852f584273eaf5ebe86f5f8a7ef0deb35f07",
+    "reason": "Commit 6dd89a4 changed _lockedItemIds from field to property; the old coupon test used only GetField."
+  },
+  "private_admin_configuration_verified": true,
+  "https_verified": false,
+  "https_pending_reason": "HTTPS proxy was already stopped before this deployment; previous certificate attempts timed out during external validation",
+  "android_bundle_files": 1609,
+  "public_verification": {
+    "host": "179.197.72.129",
+    "checks": {
+      "/status": {
+        "ok": true,
+        "version": "5.2.1"
+      },
+      "/knock?platform=Android&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "/knock?platform=Windows&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "tcp_8191": {
+        "ok": true
+      }
+    }
+  },
+  "mail_regression": {
+    "passed": true,
+    "checks": 42,
+    "evidence": "deploy console; command completed with exit code 0 before rollout"
+  }
+}

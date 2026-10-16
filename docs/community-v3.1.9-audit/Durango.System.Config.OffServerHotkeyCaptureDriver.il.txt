@@ -1,0 +1,21 @@
+Durango.System.Config.OffServerHotkeyCaptureDriver : UnityEngine.MonoBehaviour
+FIELD Durango.System.Config.OffServerHotkeyCaptureDriver Durango.System.Config.OffServerHotkeyCaptureDriver::s_instance
+METHOD System.Void Durango.System.Config.OffServerHotkeyCaptureDriver::Ensure()
+ldsfld Durango.System.Config.OffServerHotkeyCaptureDriver Durango.System.Config.OffServerHotkeyCaptureDriver::s_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0027: ret
+ldstr OffServerHotkeyCapture
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.System.Config.OffServerHotkeyCaptureDriver>()
+stsfld Durango.System.Config.OffServerHotkeyCaptureDriver Durango.System.Config.OffServerHotkeyCaptureDriver::s_instance
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeyCaptureDriver::Update()
+call System.Void Durango.System.Config.OffServerHotkeys::UpdateCapture()
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeyCaptureDriver::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

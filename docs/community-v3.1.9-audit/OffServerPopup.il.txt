@@ -1,0 +1,105 @@
+OffServerPopup : System.Object
+FIELD System.String OffServerPopup::Caps
+FIELD System.Byte OffServerPopup::LevelNotice
+FIELD System.Byte OffServerPopup::LevelConfirm
+FIELD System.Char OffServerPopup::Separator
+METHOD System.Boolean OffServerPopup::IsPopup(Messages.Announce)
+ldarg.0 
+ldfld System.Byte Messages.Announce::Level
+ldc.i4.s 100
+beq.s IL_0015: ldc.i4.1
+ldarg.0 
+ldfld System.Byte Messages.Announce::Level
+ldc.i4.s 101
+ceq 
+ret 
+ldc.i4.1 
+ret 
+METHOD System.Boolean OffServerPopup::TryShow(Messages.Announce,Durango.Network.PacketHeader,System.Action`1<System.Boolean>)
+newobj System.Void OffServerPopup/<>c__DisplayClass5_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.2 
+stfld System.Action`1<System.Boolean> OffServerPopup/<>c__DisplayClass5_0::onClose
+ldarg.0 
+call System.Boolean OffServerPopup::IsPopup(Messages.Announce)
+brfalse.s IL_0022: ldc.i4.0
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0024: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldfld System.String Messages.Announce::Text
+dup 
+brtrue.s IL_0033: ldc.i4.s 31
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 31
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+dup 
+ldc.i4.0 
+call System.String OffServerPopup::Part(System.String[],System.Int32)
+dup 
+brtrue.s IL_004b: stloc.1
+pop 
+ldsfld System.String System.String::Empty
+stloc.1 
+dup 
+ldc.i4.1 
+call System.String OffServerPopup::Part(System.String[],System.Int32)
+stloc.2 
+dup 
+ldc.i4.2 
+call System.String OffServerPopup::Part(System.String[],System.Int32)
+stloc.3 
+ldc.i4.3 
+call System.String OffServerPopup::Part(System.String[],System.Int32)
+stloc.s V_4
+ldloc.0 
+ldarg.1 
+ldfld System.UInt32 Durango.Network.PacketHeader::ReplyOf
+stfld System.UInt32 OffServerPopup/<>c__DisplayClass5_0::replyOf
+ldarg.0 
+ldfld System.Byte Messages.Announce::Level
+ldc.i4.s 101
+bne.un.s IL_0097: call Durango.UI.MessageBox UIManager::get_MessageBox()
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.1 
+ldloc.2 
+ldloc.0 
+ldftn System.Void OffServerPopup/<>c__DisplayClass5_0::<TryShow>b__0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+ldloc.3 
+ldloc.s V_4
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action`1<System.Boolean>,System.String,System.String)
+br.s IL_00b0: ldc.i4.1
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldloc.1 
+ldloc.2 
+ldloc.0 
+ldftn System.Void OffServerPopup/<>c__DisplayClass5_0::<TryShow>b__1()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+ldloc.3 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action,System.String)
+ldc.i4.1 
+ret 
+METHOD System.String OffServerPopup::Part(System.String[],System.Int32)
+ldarg.1 
+ldarg.0 
+ldlen 
+conv.i4 
+bge.s IL_0010: ldnull
+ldarg.0 
+ldarg.1 
+ldelem.ref 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0012: ldarg.0
+ldnull 
+ret 
+ldarg.0 
+ldarg.1 
+ldelem.ref 
+ret 

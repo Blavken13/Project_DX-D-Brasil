@@ -1,0 +1,40 @@
+OffServerPopup/<>c__DisplayClass5_0 : System.Object
+FIELD System.UInt32 OffServerPopup/<>c__DisplayClass5_0::replyOf
+FIELD System.Action`1<System.Boolean> OffServerPopup/<>c__DisplayClass5_0::onClose
+METHOD System.Void OffServerPopup/<>c__DisplayClass5_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerPopup/<>c__DisplayClass5_0::<TryShow>b__0(System.Boolean)
+ldarg.0 
+ldfld System.UInt32 OffServerPopup/<>c__DisplayClass5_0::replyOf
+brfalse.s IL_002b: ldarg.0
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldloca.s V_0
+initobj Messages.Confirm
+ldloca.s V_0
+ldarg.1 
+stfld System.Boolean Messages.Confirm::Confirmation
+ldloc.0 
+ldc.i4.0 
+ldarg.0 
+ldfld System.UInt32 OffServerPopup/<>c__DisplayClass5_0::replyOf
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.Confirm>(T,System.Boolean,System.UInt32)
+pop 
+ldarg.0 
+ldfld System.Action`1<System.Boolean> OffServerPopup/<>c__DisplayClass5_0::onClose
+brfalse.s IL_003f: ret
+ldarg.0 
+ldfld System.Action`1<System.Boolean> OffServerPopup/<>c__DisplayClass5_0::onClose
+ldarg.1 
+callvirt System.Void System.Action`1<System.Boolean>::Invoke(!0)
+ret 
+METHOD System.Void OffServerPopup/<>c__DisplayClass5_0::<TryShow>b__1()
+ldarg.0 
+ldfld System.Action`1<System.Boolean> OffServerPopup/<>c__DisplayClass5_0::onClose
+brfalse.s IL_0014: ret
+ldarg.0 
+ldfld System.Action`1<System.Boolean> OffServerPopup/<>c__DisplayClass5_0::onClose
+ldc.i4.1 
+callvirt System.Void System.Action`1<System.Boolean>::Invoke(!0)
+ret 

@@ -1,0 +1,10 @@
+Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0 : System.Object
+FIELD System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::root
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::<EnsureCacheRoots>b__0()
+ldarg.0 
+ldfld System.String Durango.Logic.Clusters.OffServerLink/<>c__DisplayClass43_0::root
+ret 

@@ -1,0 +1,123 @@
+[
+  {
+    "slot": 0,
+    "slotName": "Gigantosaurus_Colorize_MIC",
+    "material": "Gigantosaurus_Colorize_MIC",
+    "parent": "Material:Mobile_ColorMask",
+    "parentChain": [
+      "MaterialInstanceConstant:Gigantosaurus_Colorize_MIC",
+      "Material:Mobile_ColorMask"
+    ],
+    "master": "Mobile_ColorMask",
+    "blendMode": "BLEND_Masked",
+    "twoSided": true,
+    "textures": [
+      {
+        "parameter": "Color Texture",
+        "role": "colorMask",
+        "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_Colorize_m_mobile",
+        "setBy": "Gigantosaurus_Colorize_MIC"
+      },
+      {
+        "parameter": "Diffuse",
+        "role": "diffuse",
+        "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_Colorize_d",
+        "setBy": "Gigantosaurus_Colorize_MIC"
+      },
+      {
+        "parameter": "Normal",
+        "role": "normal",
+        "package": "ShooterGame/Content/PrimalEarth/Dinos/Giganotosaurus/gigantosaurus_N",
+        "setBy": "Gigantosaurus_Colorize_MIC"
+      }
+    ],
+    "scalars": {
+      "DetailNormal - Tile": 60.0,
+      "DiffuseMult": 4.0,
+      "Metallic": 0.3,
+      "RefractionDepthBias": 0.0,
+      "Roughness": 0.42,
+      "Specular": 0.28
+    },
+    "vectors": {
+      "Color0": {
+        "r": 0.37,
+        "g": 0.270021,
+        "b": 0.25345,
+        "a": 1.0,
+        "hex": "A48E8A"
+      },
+      "Color1": {
+        "r": 0.196191,
+        "g": 0.189833,
+        "b": 0.28,
+        "a": 1.0,
+        "hex": "7A7990"
+      },
+      "Color2": {
+        "r": 0.279388,
+        "g": 0.270175,
+        "b": 0.505,
+        "a": 1.0,
+        "hex": "908EBD"
+      }
+    },
+    "detected": {
+      "diffuse": true,
+      "normal": true,
+      "mask": true,
+      "detailNormal": true,
+      "opacity": "BLEND_Masked, but the diffuse texture has no alpha channel (opacity source unresolved)",
+      "furAtlas": false
+    },
+    "colorMask": {
+      "present": true,
+      "channels": "RGB",
+      "colors": {
+        "Color0": {
+          "r": 0.37,
+          "g": 0.270021,
+          "b": 0.25345,
+          "a": 1.0,
+          "hex": "A48E8A"
+        },
+        "Color1": {
+          "r": 0.196191,
+          "g": 0.189833,
+          "b": 0.28,
+          "a": 1.0,
+          "hex": "7A7990"
+        },
+        "Color2": {
+          "r": 0.279388,
+          "g": 0.270175,
+          "b": 0.505,
+          "a": 1.0,
+          "hex": "908EBD"
+        }
+      },
+      "sourceColorSpace": "sRGB",
+      "blenderInterpretation": "unresolved"
+    },
+    "masterDefaultTextures": [
+      {
+        "parameter": "Normal",
+        "package": "Engine/Content/EngineMaterials/T_Default_Normal",
+        "overriddenByInstance": true,
+        "role": "normal"
+      },
+      {
+        "parameter": "DetailNormal",
+        "package": "ShooterGame/Content/PrimalEarth/Dinos/Sauropod/skin_detail_N",
+        "overriddenByInstance": false,
+        "role": "detailNormal"
+      },
+      {
+        "parameter": "Color Texture",
+        "package": "ShooterGame/Content/PrimalEarth/Dinos/Achatina/textures/achintina_Colorize_m",
+        "overriddenByInstance": true,
+        "role": "colorMask"
+      }
+    ]
+  }
+]

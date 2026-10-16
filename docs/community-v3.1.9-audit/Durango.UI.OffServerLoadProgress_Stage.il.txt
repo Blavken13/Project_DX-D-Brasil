@@ -1,0 +1,5 @@
+Durango.UI.OffServerLoadProgress/Stage : System.Enum
+FIELD System.Int32 Durango.UI.OffServerLoadProgress/Stage::value__
+FIELD Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress/Stage::Connect
+FIELD Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress/Stage::Data
+FIELD Durango.UI.OffServerLoadProgress/Stage Durango.UI.OffServerLoadProgress/Stage::Island

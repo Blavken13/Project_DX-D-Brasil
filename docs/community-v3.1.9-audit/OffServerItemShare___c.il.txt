@@ -1,0 +1,19 @@
+OffServerItemShare/<>c : System.Object
+FIELD OffServerItemShare/<>c OffServerItemShare/<>c::<>9
+FIELD Durango.Logic.Item.Util/ItemDelegate OffServerItemShare/<>c::<>9__6_0
+METHOD System.Void OffServerItemShare/<>c::.cctor()
+newobj System.Void OffServerItemShare/<>c::.ctor()
+stsfld OffServerItemShare/<>c OffServerItemShare/<>c::<>9
+ret 
+METHOD System.Void OffServerItemShare/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerItemShare/<>c::<PickAndShare>b__6_0(Durango.Logic.Item.ItemData)
+ldarg.1 
+brfalse.s IL_000b: ret
+ldarg.1 
+ldc.i4.0 
+call System.Boolean OffServerItemShare::Share(Durango.Logic.Item.ItemData,System.Boolean)
+pop 
+ret 

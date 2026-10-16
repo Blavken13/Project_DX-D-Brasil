@@ -1,0 +1,100 @@
+{
+  "commit": "730fa4d42f0ebde1cf2c73c7f99595944d4deadf",
+  "image": "sha256:c8d0232f11d3e8ae58a5eb114055721e7f58d996bc8deb39645d0d96ddc395ed",
+  "healthy": true,
+  "backup": "/opt/durango/backups/state-pre-730fa4d-20261012T033411Z.tar.gz",
+  "state": [
+    {
+      "cluster": "Durango Brasil",
+      "accounts_preserved": 50,
+      "characters_preserved": 61
+    },
+    {
+      "cluster": "Durango Brasil - STAGING",
+      "accounts_preserved": 9,
+      "characters_preserved": 12
+    }
+  ],
+  "admin_checks": [
+    "encontros Alfa: catalogo da release confirmado no container ativo",
+    "loja: bilhete de reset gratuito e catalogo da release confirmado",
+    "12 terrenos adicionais: SHA-256 confirmado",
+    "/admin/: arquivo da release confirmado",
+    "/admin/app.js: arquivo da release confirmado",
+    "/admin/style.css: arquivo da release confirmado",
+    "/health: acesso anônimo bloqueado",
+    "/admin/players: acesso anônimo bloqueado",
+    "/admin/premium: acesso anônimo bloqueado",
+    "/admin/mail/status: acesso anônimo bloqueado",
+    "/admin/catalog: acesso anônimo bloqueado",
+    "/admin/client-reports: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=csv: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=json: acesso anônimo bloqueado",
+    "bundle masculino original: SHA-256 confirmado"
+  ],
+  "regression_results": [
+    "[survival-continuity-check] PASS 14 verificacoes",
+    "[estate-return-check] PASS 88 verificacoes",
+    "[restored-encounters-check] PASS 166 verificacoes",
+    "[gathering-duplicate-check] PASS 57 verificacoes",
+    "[safehouse-missions-check] PASS 49 verificações. Saves temporários: /tmp/Durango-safehouse-missions-299f8710542a4173a1afe9ab8ea466d1",
+    "[tester-check] PASS 106 verificações",
+    "[bugs-check] PASS",
+    "[polish-check] PASS 1249 verificacoes. Saves temporarios: /tmp/Durango-polish-check-afcc821143b745d798be69bf141bda86",
+    "[induction-check] PASS 29 verificacoes",
+    "[world-check] PASS 2795 verificacoes. Saves temporarios: /tmp/Durango-world-check-d743723e54e04b5cb37e7639d7021d53",
+    "[gameplay-check] PASS 62 verificacoes. Saves temporarios: /tmp/Durango-gameplay-check-7f59ec0d13024e22aa22ae7a496e9f3b",
+    "[social-check] PASS 97 verificações",
+    "[premium-check] PASS 52 verificações",
+    "[economy-check] PASS 308 verificacoes. Arquivos temporarios: /tmp/Durango-economy-check-8a6769a202e04bd09edae751ba1a1535",
+    "[progression-check] PASS 148 verificacoes",
+    "[fauna-check] PASS 404 verificacoes",
+    "[combat-bags] PASS 2415 verificações. Saves temporários: /tmp/Durango-combat-bags-f72cdd42f7c946d486aaf59e315a90de",
+    "[world-combat] PASS 52 verificacoes. Saves temporarios: /tmp/Durango-world-combat-9cf9c756cfc94274a8012f2b44d4c6ef",
+    "[volcano-crater] PASS 210 verificacoes. Saves temporarios: /tmp/Durango-volcano-crater-ec6f2da03cd74df1896826bee6fcd842",
+    "[reported-gameplay] PASS 113 verificações",
+    "PASS 7 native Android models",
+    "[xp-coupon-check] PASS: 178 verificações",
+    "PASS: coupon regression adapted to property in isolated validation image; production image unchanged"
+  ],
+  "coupon_test_validation": {
+    "passed": true,
+    "production_image": "sha256:c8d0232f11d3e8ae58a5eb114055721e7f58d996bc8deb39645d0d96ddc395ed",
+    "production_source_unchanged": true,
+    "validation_only_changes": [
+      "SkillXpCouponCheck.cs"
+    ],
+    "original_test_sha256": "c7187cc7b6d48103c1a7a6e950354aaa7bad3b171df08194e9e6f2c1759f3daa",
+    "validation_test_sha256": "d2bbc5e2efcecdb949e2cd9e5c31852f584273eaf5ebe86f5f8a7ef0deb35f07",
+    "reason": "Commit 6dd89a4 changed _lockedItemIds from field to property; the old coupon test used only GetField."
+  },
+  "private_admin_configuration_verified": true,
+  "https_verified": false,
+  "https_pending_reason": "HTTPS proxy was already stopped before this deployment; previous certificate attempts timed out during external validation",
+  "android_bundle_files": 1609,
+  "public_verification": {
+    "host": "179.197.72.129",
+    "checks": {
+      "/status": {
+        "ok": true,
+        "version": "5.2.1"
+      },
+      "/knock?platform=Android&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "/knock?platform=Windows&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "tcp_8191": {
+        "ok": true
+      }
+    }
+  },
+  "mail_regression": {
+    "passed": true,
+    "checks": 42,
+    "evidence": "deploy console; command completed with exit code 0 before rollout"
+  }
+}

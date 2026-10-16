@@ -1,0 +1,20 @@
+OffServerRenderDiag/<>c : System.Object
+FIELD OffServerRenderDiag/<>c OffServerRenderDiag/<>c::<>9
+FIELD System.Comparison`1<System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>> OffServerRenderDiag/<>c::<>9__5_0
+METHOD System.Void OffServerRenderDiag/<>c::.cctor()
+newobj System.Void OffServerRenderDiag/<>c::.ctor()
+stsfld OffServerRenderDiag/<>c OffServerRenderDiag/<>c::<>9
+ret 
+METHOD System.Void OffServerRenderDiag/<>c::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Int32 OffServerRenderDiag/<>c::<Dump>b__5_0(System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>,System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>)
+ldarga.s b
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>::get_Value()
+stloc.0 
+ldloca.s V_0
+ldarga.s a
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.Int32>::get_Value()
+call System.Int32 System.Int32::CompareTo(System.Int32)
+ret 

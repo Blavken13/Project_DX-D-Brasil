@@ -1,0 +1,2632 @@
+Durango.System.Config.OffServerHotkeys : System.Object
+FIELD System.String Durango.System.Config.OffServerHotkeys::Category
+FIELD System.String Durango.System.Config.OffServerHotkeys::ResetKey
+FIELD System.String Durango.System.Config.OffServerHotkeys::SettingPrefix
+FIELD System.String Durango.System.Config.OffServerHotkeys::PrefPrefix
+FIELD System.String[] Durango.System.Config.OffServerHotkeys::Sections
+FIELD Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+FIELD UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::Reserved
+FIELD UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+FIELD Durango.Logic.InputSystem.Modifier[] Durango.System.Config.OffServerHotkeys::ModifierFlags
+FIELD UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::s_candidates
+FIELD InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+FIELD Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+FIELD UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+FIELD System.Boolean Durango.System.Config.OffServerHotkeys::s_holdUntilRelease
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.System.Config.OffServerHotkeys::Texts
+METHOD System.Boolean Durango.System.Config.OffServerHotkeys::get_Supported()
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.2 
+beq.s IL_0011: ldc.i4.1
+call UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
+ldc.i4.7 
+ceq 
+ret 
+ldc.i4.1 
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerHotkeys::IsHeld(System.String,UnityEngine.KeyCode)
+newobj System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass18_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.System.Config.OffServerHotkeys/<>c__DisplayClass18_0::id
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+ldloc.0 
+ldftn System.Boolean Durango.System.Config.OffServerHotkeys/<>c__DisplayClass18_0::<IsHeld>b__0(Durango.System.Config.OffServerHotkeys/Entry)
+newobj System.Void System.Predicate`1<Durango.System.Config.OffServerHotkeys/Entry>::.ctor(System.Object,System.IntPtr)
+call !!0 System.Array::Find<Durango.System.Config.OffServerHotkeys/Entry>(!!0[],System.Predicate`1<!!0>)
+stloc.1 
+ldloc.1 
+brfalse.s IL_002e: ldarg.1
+call System.Boolean Durango.System.Config.OffServerHotkeys::get_Supported()
+brtrue.s IL_0031: ldloc.1
+ldarg.1 
+br.s IL_0037: stloc.2
+ldloc.1 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+stloc.2 
+ldloc.2 
+brfalse.s IL_0042: ldc.i4.1
+ldloc.2 
+call System.Boolean UnityEngine.Input::GetKey(UnityEngine.KeyCode)
+ret 
+ldc.i4.1 
+ret 
+METHOD System.String Durango.System.Config.OffServerHotkeys::CaptionOf(System.String,System.String)
+newobj System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::id
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+ldloc.0 
+ldftn System.Boolean Durango.System.Config.OffServerHotkeys/<>c__DisplayClass19_0::<CaptionOf>b__0(Durango.System.Config.OffServerHotkeys/Entry)
+newobj System.Void System.Predicate`1<Durango.System.Config.OffServerHotkeys/Entry>::.ctor(System.Object,System.IntPtr)
+call !!0 System.Array::Find<Durango.System.Config.OffServerHotkeys/Entry>(!!0[],System.Predicate`1<!!0>)
+stloc.1 
+ldloc.1 
+brtrue.s IL_0029: ldloc.1
+ldarg.1 
+ret 
+ldloc.1 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.1 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+call System.String Durango.System.Config.OffServerHotkeys::Caption(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerHotkeys::get_BlockKeyboard()
+ldsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+brtrue.s IL_000d: ldc.i4.1
+ldsfld System.Boolean Durango.System.Config.OffServerHotkeys::s_holdUntilRelease
+ret 
+ldc.i4.1 
+ret 
+METHOD Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+ldarg.0 
+ldarg.1 
+ldarg.2 
+ldc.i4.0 
+ldarg.3 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier,InputCommand[])
+ret 
+METHOD Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier,InputCommand[])
+newobj System.Void Durango.System.Config.OffServerHotkeys/Entry::.ctor()
+dup 
+ldarg.0 
+stfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+dup 
+ldarg.1 
+stfld System.String Durango.System.Config.OffServerHotkeys/Entry::Section
+dup 
+ldarg.s commands
+stfld InputCommand[] Durango.System.Config.OffServerHotkeys/Entry::Commands
+dup 
+ldarg.2 
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+dup 
+ldarg.3 
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+dup 
+ldarg.2 
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+dup 
+ldarg.3 
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::Attach(InputKeyboard)
+ldarg.0 
+stsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+ldnull 
+stsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+call System.Boolean Durango.System.Config.OffServerHotkeys::get_Supported()
+brfalse.s IL_0016: ret
+ldarg.0 
+brtrue.s IL_0017: ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+ret 
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br IL_00f7: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldloc.2 
+ldfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::Clear()
+ldloc.2 
+ldloc.2 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.2 
+ldloc.2 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldarg.0 
+callvirt KeyCodeDictionary InputKeyboard::get_KeyMap()
+callvirt System.Collections.Generic.Dictionary`2/Enumerator<!0,!1> System.Collections.Generic.Dictionary`2<KeySet,InputCommand>::GetEnumerator()
+stloc.3 
+br.s IL_00d7: ldloca.s V_3
+ldloca.s V_3
+call System.Collections.Generic.KeyValuePair`2<!0,!1> System.Collections.Generic.Dictionary`2/Enumerator<KeySet,InputCommand>::get_Current()
+stloc.s V_4
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<KeySet,InputCommand>::get_Key()
+stloc.s V_5
+ldloca.s V_5
+call UnityEngine.KeyCode KeySet::get_Code()
+ldloc.2 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+bne.un.s IL_00d7: ldloca.s V_3
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<KeySet,InputCommand>::get_Key()
+stloc.s V_5
+ldloca.s V_5
+call Durango.Logic.InputSystem.Modifier KeySet::get_Modifiers()
+ldloc.2 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+bne.un.s IL_00d7: ldloca.s V_3
+ldloc.2 
+ldfld InputCommand[] Durango.System.Config.OffServerHotkeys/Entry::Commands
+ldloca.s V_4
+call !1 System.Collections.Generic.KeyValuePair`2<KeySet,InputCommand>::get_Value()
+call System.Int32 System.Array::IndexOf<InputCommand>(!!0[],!!0)
+ldc.i4.0 
+blt.s IL_00d7: ldloca.s V_3
+newobj System.Void Durango.System.Config.OffServerHotkeys/Binding::.ctor()
+stloc.s V_6
+ldloc.s V_6
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<KeySet,InputCommand>::get_Key()
+stfld KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+ldloc.s V_6
+ldloca.s V_4
+call !1 System.Collections.Generic.KeyValuePair`2<KeySet,InputCommand>::get_Value()
+stfld InputCommand Durango.System.Config.OffServerHotkeys/Binding::Command
+ldloc.2 
+ldfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+ldloc.s V_6
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::Add(!0)
+ldloca.s V_3
+call System.Boolean System.Collections.Generic.Dictionary`2/Enumerator<KeySet,InputCommand>::MoveNext()
+brtrue IL_0059: ldloca.s V_3
+leave.s IL_00f3: ldloc.1
+ldloca.s V_3
+constrained. System.Collections.Generic.Dictionary`2/Enumerator<KeySet,InputCommand>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt IL_0024: ldloc.0
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_015b: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.s V_7
+ldloc.s V_7
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+ldloca.s V_8
+ldloca.s V_9
+call System.Boolean Durango.System.Config.OffServerHotkeys::Load(System.String,UnityEngine.KeyCode&,Durango.Logic.InputSystem.Modifier&)
+brfalse.s IL_0157: ldloc.1
+ldloc.s V_8
+ldloc.s V_7
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+bne.un.s IL_0137: ldloc.s V_7
+ldloc.s V_9
+ldloc.s V_7
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+beq.s IL_0157: ldloc.1
+ldloc.s V_7
+call System.Void Durango.System.Config.OffServerHotkeys::Unapply(Durango.System.Config.OffServerHotkeys/Entry)
+ldloc.s V_7
+ldloc.s V_8
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.s V_7
+ldloc.s V_9
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldloc.s V_7
+call System.Void Durango.System.Config.OffServerHotkeys::Apply(Durango.System.Config.OffServerHotkeys/Entry)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_010a: ldloc.0
+ret 
+METHOD System.Collections.Generic.List`1<Durango.System.Config.Setting> Durango.System.Config.OffServerHotkeys::BuildSettings()
+newobj System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::.ctor()
+stloc.0 
+ldc.i4.0 
+stloc.1 
+ldsfld System.String[] Durango.System.Config.OffServerHotkeys::Sections
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br IL_011a: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+ldelem.ref 
+stloc.s V_5
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+newobj System.Void Durango.System.Config.OffServerHotkeySetting::.ctor()
+stloc.s V_6
+ldloc.s V_6
+ldstr hotkey_cat_
+ldloc.s V_5
+call System.String System.String::Concat(System.String,System.String)
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.s V_6
+ldc.i4.7 
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.s V_6
+ldstr sec_
+ldloc.s V_5
+call System.String System.String::Concat(System.String,System.String)
+stfld System.String Durango.System.Config.OffServerHotkeySetting::TextKey
+ldloc.0 
+ldloc.s V_6
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+newobj System.Void Durango.System.Config.GridSetting::.ctor()
+stloc.s V_7
+ldloc.s V_7
+ldstr hotkey_grid_
+ldloc.s V_5
+call System.String System.String::Concat(System.String,System.String)
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.s V_7
+ldc.i4.8 
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.s V_7
+ldloc.1 
+stfld System.Int32 Durango.System.Config.GridSetting::Number
+ldloc.0 
+ldloc.s V_7
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.s V_8
+ldc.i4.0 
+stloc.s V_9
+br.s IL_010c: ldloc.s V_9
+ldloc.s V_8
+ldloc.s V_9
+ldelem.ref 
+stloc.s V_10
+ldloc.s V_10
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Section
+ldloc.s V_5
+call System.Boolean System.String::op_Inequality(System.String,System.String)
+brtrue.s IL_0106: ldloc.s V_9
+newobj System.Void Durango.System.Config.OffServerHotkeySetting::.ctor()
+stloc.s V_11
+ldloc.s V_11
+ldstr hotkey_
+ldloc.s V_10
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+call System.String System.String::Concat(System.String,System.String)
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.s V_11
+ldc.i4.s 12
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.s V_11
+ldloc.1 
+stfld System.Int32 Durango.System.Config.ValueSetting::GridNumber
+ldloc.s V_11
+ldloc.s V_10
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+stfld System.String Durango.System.Config.OffServerHotkeySetting::TextKey
+ldloc.s V_11
+ldloc.s V_10
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+stfld System.String Durango.System.Config.OffServerHotkeySetting::ActionId
+ldloc.0 
+ldloc.s V_11
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.s V_9
+ldc.i4.1 
+add 
+stloc.s V_9
+ldloc.s V_9
+ldloc.s V_8
+ldlen 
+conv.i4 
+blt.s IL_009b: ldloc.s V_8
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+ldlen 
+conv.i4 
+blt IL_0016: ldloc.3
+newobj System.Void Durango.System.Config.OffServerHotkeySetting::.ctor()
+stloc.2 
+ldloc.2 
+ldstr hotkey_reset
+stfld System.String Durango.System.Config.Setting::Key
+ldloc.2 
+ldc.i4.s 12
+stfld Durango.System.Config.SettingType Durango.System.Config.Setting::Type
+ldloc.2 
+ldstr reset_all
+stfld System.String Durango.System.Config.OffServerHotkeySetting::TextKey
+ldloc.0 
+ldloc.2 
+callvirt System.Void System.Collections.Generic.List`1<Durango.System.Config.Setting>::Add(!0)
+ldloc.0 
+ret 
+METHOD System.String Durango.System.Config.OffServerHotkeys::CaptionFor(Durango.System.Config.Setting)
+ldarg.0 
+isinst Durango.System.Config.OffServerHotkeySetting
+stloc.0 
+ldloc.0 
+brfalse.s IL_0017: ldnull
+ldloc.0 
+ldfld System.String Durango.System.Config.OffServerHotkeySetting::ActionId
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0019: ldloc.0
+ldnull 
+ret 
+ldloc.0 
+ldfld System.String Durango.System.Config.OffServerHotkeySetting::ActionId
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::Find(System.String)
+stloc.1 
+ldloc.1 
+brtrue.s IL_002a: ldloc.1
+ldnull 
+ret 
+ldloc.1 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.1 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+call System.String Durango.System.Config.OffServerHotkeys::Caption(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerHotkeys::HandleAction(System.String)
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0016: ldc.i4.0
+ldarg.0 
+ldstr hotkey_
+ldc.i4.4 
+callvirt System.Boolean System.String::StartsWith(System.String,System.StringComparison)
+brtrue.s IL_0018: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldstr hotkey_reset
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_007d: ldarg.0
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr reset_confirm
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+ldsfld System.Action`1<System.Boolean> Durango.System.Config.OffServerHotkeys/<>c::<>9__27_0
+dup 
+brtrue.s IL_0058: ldstr "reset_ok"
+pop 
+ldsfld Durango.System.Config.OffServerHotkeys/<>c Durango.System.Config.OffServerHotkeys/<>c::<>9
+ldftn System.Void Durango.System.Config.OffServerHotkeys/<>c::<HandleAction>b__27_0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Action`1<System.Boolean> Durango.System.Config.OffServerHotkeys/<>c::<>9__27_0
+ldstr reset_ok
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+ldstr cancel
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.Action`1<System.Boolean>,System.String,System.String)
+ldc.i4.1 
+ret 
+ldarg.0 
+ldstr hotkey_
+call System.Int32 System.String::get_Length()
+callvirt System.String System.String::Substring(System.Int32)
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::Find(System.String)
+stloc.0 
+ldloc.0 
+brtrue.s IL_0098: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+call System.Void Durango.System.Config.OffServerHotkeys::BeginCapture(Durango.System.Config.OffServerHotkeys/Entry)
+ldc.i4.1 
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::BeginCapture(Durango.System.Config.OffServerHotkeys/Entry)
+newobj System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+call System.Boolean Durango.System.Config.OffServerHotkeys::get_Supported()
+brfalse.s IL_001b: ret
+ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+brtrue.s IL_001c: ldloc.0
+ret 
+ldloc.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+stsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+ldc.i4.0 
+stsfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+ldc.i4.1 
+stsfld System.Boolean Durango.System.Config.OffServerHotkeys::s_holdUntilRelease
+call System.Void Durango.System.Config.OffServerHotkeyCaptureDriver::Ensure()
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr capture
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+stelem.ref 
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+ldstr capture_sub
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+call System.String Durango.System.Config.OffServerHotkeys::Caption(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+stelem.ref 
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+ldloc.0 
+ldftn System.Void Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::<BeginCapture>b__0(System.Int32)
+newobj System.Void System.Action`1<System.Int32>::.ctor(System.Object,System.IntPtr)
+ldc.i4.2 
+newarr Durango.UI.MessageBox/Button
+dup 
+ldc.i4.0 
+ldstr default
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+ldloc.0 
+ldfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys/<>c__DisplayClass28_0::entry
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+call System.String Durango.System.Config.OffServerHotkeys::Caption(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+stelem.ref 
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+call Durango.UI.MessageBox/Button Durango.UI.MessageBox/Button::op_Implicit(System.String)
+stelem.any Durango.UI.MessageBox/Button
+dup 
+ldc.i4.1 
+ldstr cancel
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+call Durango.UI.MessageBox/Button Durango.UI.MessageBox/Button::op_Implicit(System.String)
+stelem.any Durango.UI.MessageBox/Button
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.String,System.Action`1<System.Int32>,Durango.UI.MessageBox/Button[])
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::UpdateCapture()
+ldsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+brtrue.s IL_001c: call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldsfld System.Boolean Durango.System.Config.OffServerHotkeys::s_holdUntilRelease
+brfalse.s IL_001b: ret
+call System.Boolean UnityEngine.Input::get_anyKey()
+brtrue.s IL_001b: ret
+ldc.i4.0 
+stsfld System.Boolean Durango.System.Config.OffServerHotkeys::s_holdUntilRelease
+ret 
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0035: ldnull
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+callvirt System.Boolean Durango.UI.MessageBox::get_IsShow()
+brtrue.s IL_003c: ldc.i4.s 27
+ldnull 
+stsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+ret 
+ldc.i4.s 27
+call System.Boolean UnityEngine.Input::GetKeyDown(UnityEngine.KeyCode)
+brfalse.s IL_0057: ldc.i4.0
+ldnull 
+stsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldc.i4.0 
+callvirt System.Void Durango.UI.MessageBox::Hide(System.Boolean)
+ret 
+ldc.i4.0 
+stloc.0 
+ldc.i4.0 
+stloc.2 
+br.s IL_0093: ldloc.2
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldloc.2 
+ldelem.i4 
+call System.Boolean UnityEngine.Input::GetKey(UnityEngine.KeyCode)
+brfalse.s IL_0075: ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldloc.0 
+ldsfld Durango.Logic.InputSystem.Modifier[] Durango.System.Config.OffServerHotkeys::ModifierFlags
+ldloc.2 
+ldelem.i4 
+or 
+stloc.0 
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldloc.2 
+ldelem.i4 
+call System.Boolean UnityEngine.Input::GetKeyDown(UnityEngine.KeyCode)
+brfalse.s IL_008f: ldloc.2
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldloc.2 
+ldelem.i4 
+stsfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldlen 
+conv.i4 
+blt.s IL_005d: ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+call UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::Candidates()
+stloc.1 
+ldc.i4.0 
+stloc.3 
+br.s IL_00bf: ldloc.3
+ldloc.1 
+ldloc.3 
+ldelem.i4 
+call System.Boolean UnityEngine.Input::GetKeyDown(UnityEngine.KeyCode)
+brfalse.s IL_00bb: ldloc.3
+ldloc.1 
+ldloc.3 
+ldelem.i4 
+ldloc.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Finish(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ret 
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_00a7: ldloc.1
+ldsfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+brfalse.s IL_00f7: ret
+ldsfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+call System.Boolean UnityEngine.Input::GetKeyUp(UnityEngine.KeyCode)
+brfalse.s IL_00f7: ret
+ldsfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+ldsfld Durango.Logic.InputSystem.Modifier[] Durango.System.Config.OffServerHotkeys::ModifierFlags
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldsfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys::s_pendingModifierKey
+call System.Int32 System.Array::IndexOf<UnityEngine.KeyCode>(!!0[],!!0)
+ldelem.i4 
+call System.Void Durango.System.Config.OffServerHotkeys::Finish(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::Finish(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ldsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+stloc.0 
+ldnull 
+stsfld Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::s_capturing
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldc.i4.0 
+callvirt System.Void Durango.UI.MessageBox::Hide(System.Boolean)
+ldloc.0 
+brfalse.s IL_0022: ret
+ldloc.0 
+ldarg.0 
+ldarg.1 
+call System.Void Durango.System.Config.OffServerHotkeys::SetBinding(Durango.System.Config.OffServerHotkeys/Entry,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ret 
+METHOD UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::Candidates()
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::s_candidates
+brfalse.s IL_000d: newobj System.Void System.Collections.Generic.List`1<UnityEngine.KeyCode>::.ctor()
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::s_candidates
+ret 
+newobj System.Void System.Collections.Generic.List`1<UnityEngine.KeyCode>::.ctor()
+stloc.0 
+ldtoken UnityEngine.KeyCode
+call System.Type System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)
+call System.Array System.Enum::GetValues(System.Type)
+callvirt System.Collections.IEnumerator System.Array::GetEnumerator()
+stloc.1 
+br.s IL_006e: ldloc.1
+ldloc.1 
+callvirt System.Object System.Collections.IEnumerator::get_Current()
+unbox.any UnityEngine.KeyCode
+stloc.2 
+ldloc.2 
+ldc.i4.0 
+ble.s IL_006e: ldloc.1
+ldloc.2 
+ldc.i4 320
+bge.s IL_006e: ldloc.1
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldloc.2 
+call System.Int32 System.Array::IndexOf<UnityEngine.KeyCode>(!!0[],!!0)
+ldc.i4.0 
+bge.s IL_006e: ldloc.1
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::Reserved
+ldloc.2 
+call System.Int32 System.Array::IndexOf<UnityEngine.KeyCode>(!!0[],!!0)
+ldc.i4.0 
+bge.s IL_006e: ldloc.1
+ldloc.0 
+ldloc.2 
+callvirt System.Boolean System.Collections.Generic.List`1<UnityEngine.KeyCode>::Contains(!0)
+brtrue.s IL_006e: ldloc.1
+ldloc.0 
+ldloc.2 
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.KeyCode>::Add(!0)
+ldloc.1 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_002a: ldloc.1
+leave.s IL_0089: ldloc.0
+ldloc.1 
+isinst System.IDisposable
+stloc.3 
+ldloc.3 
+brfalse.s IL_0088: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+callvirt !0[] System.Collections.Generic.List`1<UnityEngine.KeyCode>::ToArray()
+stsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::s_candidates
+ldsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::s_candidates
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::SetBinding(Durango.System.Config.OffServerHotkeys/Entry,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ldarg.0 
+ldarg.1 
+ldarg.2 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::FindConflict(Durango.System.Config.OffServerHotkeys/Entry,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+stloc.0 
+ldloc.0 
+brtrue.s IL_001f: ldarg.0
+ldarg.1 
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+bne.un.s IL_001f: ldarg.0
+ldarg.2 
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+bne.un.s IL_001f: ldarg.0
+ret 
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+stloc.1 
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+stloc.2 
+ldarg.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Unapply(Durango.System.Config.OffServerHotkeys/Entry)
+ldloc.0 
+brfalse.s IL_0056: ldarg.0
+ldloc.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Unapply(Durango.System.Config.OffServerHotkeys/Entry)
+ldloc.0 
+ldloc.1 
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.0 
+ldloc.2 
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldloc.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Apply(Durango.System.Config.OffServerHotkeys/Entry)
+ldloc.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Save(Durango.System.Config.OffServerHotkeys/Entry)
+ldarg.0 
+ldarg.1 
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldarg.0 
+ldarg.2 
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldarg.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Apply(Durango.System.Config.OffServerHotkeys/Entry)
+ldarg.0 
+call System.Void Durango.System.Config.OffServerHotkeys::Save(Durango.System.Config.OffServerHotkeys/Entry)
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServer] hotkey 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  = 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.1 
+ldarg.2 
+call System.String Durango.System.Config.OffServerHotkeys::Caption(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+stelem.ref 
+dup 
+ldc.i4.4 
+ldloc.0 
+brtrue.s IL_00a5: ldstr " (swapped with "
+ldsfld System.String System.String::Empty
+br.s IL_00ba: stelem.ref
+ldstr  (swapped with 
+ldloc.0 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+ldstr )
+call System.String System.String::Concat(System.String,System.String,System.String)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+call System.Void Durango.UI.ConfigMainWidget::RefreshOffServerHotkeys()
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::ResetAll()
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0016: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+call System.Void Durango.System.Config.OffServerHotkeys::Unapply(Durango.System.Config.OffServerHotkeys/Entry)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.0
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0061: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldloc.2 
+ldloc.2 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+stfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldloc.2 
+ldloc.2 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+stfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldloc.2 
+call System.Void Durango.System.Config.OffServerHotkeys::Apply(Durango.System.Config.OffServerHotkeys/Entry)
+ldstr option:hotkey:
+ldloc.2 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.PlayerPrefs::DeleteKey(System.String)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_0026: ldloc.0
+call System.Void UnityEngine.PlayerPrefs::Save()
+call System.Void Durango.UI.ConfigMainWidget::RefreshOffServerHotkeys()
+ret 
+METHOD Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::FindConflict(Durango.System.Config.OffServerHotkeys/Entry,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ldarg.1 
+brtrue.s IL_0005: ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+ldnull 
+ret 
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br IL_00d5: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldloc.2 
+ldarg.0 
+beq IL_00d1: ldloc.1
+ldloc.2 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldarg.1 
+bne.un IL_00d1: ldloc.1
+ldloc.2 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldarg.2 
+bne.un IL_00d1: ldloc.1
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::GetEnumerator()
+stloc.3 
+br.s IL_00b8: ldloca.s V_3
+ldloca.s V_3
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::get_Current()
+stloc.s V_4
+ldloc.2 
+ldfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::GetEnumerator()
+stloc.s V_5
+br.s IL_009f: ldloca.s V_5
+ldloca.s V_5
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::get_Current()
+stloc.s V_6
+ldloc.s V_4
+ldflda KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+call Durango.Logic.InputSystem.Layer KeySet::get_Layers()
+ldloc.s V_6
+ldflda KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+call Durango.Logic.InputSystem.Layer KeySet::get_Layers()
+and 
+brfalse.s IL_009f: ldloca.s V_5
+ldloc.s V_4
+ldflda KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+call Durango.Logic.InputSystem.Trigger KeySet::get_Trigger()
+ldloc.s V_6
+ldflda KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+call Durango.Logic.InputSystem.Trigger KeySet::get_Trigger()
+and 
+brfalse.s IL_009f: ldloca.s V_5
+ldloc.2 
+stloc.s V_7
+leave.s IL_00e0: ldloc.s V_7
+ldloca.s V_5
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::MoveNext()
+brtrue.s IL_005b: ldloca.s V_5
+leave.s IL_00b8: ldloca.s V_3
+ldloca.s V_5
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloca.s V_3
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::MoveNext()
+brtrue.s IL_0043: ldloca.s V_3
+leave.s IL_00d1: ldloc.1
+ldloca.s V_3
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt IL_0012: ldloc.0
+ldnull 
+ret 
+ldloc.s V_7
+ret 
+METHOD KeySet Durango.System.Config.OffServerHotkeys::Make(KeySet,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ldarg.1 
+ldarg.2 
+ldarga.s template
+call Durango.Logic.InputSystem.Layer KeySet::get_Layers()
+ldarga.s template
+call Durango.Logic.InputSystem.Trigger KeySet::get_Trigger()
+ldarga.s template
+call System.Boolean KeySet::get_IgnoreModifier()
+newobj System.Void KeySet::.ctor(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier,Durango.Logic.InputSystem.Layer,Durango.Logic.InputSystem.Trigger,System.Boolean)
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::Apply(Durango.System.Config.OffServerHotkeys/Entry)
+ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+brfalse.s IL_000f: ret
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+brtrue.s IL_0010: ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+ret 
+ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+callvirt KeyCodeDictionary InputKeyboard::get_KeyMap()
+stloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::GetEnumerator()
+stloc.1 
+br.s IL_005e: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::get_Current()
+stloc.2 
+ldloc.2 
+ldfld KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+call KeySet Durango.System.Config.OffServerHotkeys::Make(KeySet,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+stloc.3 
+ldloc.0 
+ldloc.3 
+callvirt System.Boolean KeyCodeDictionary::RemoveBinding(KeySet)
+pop 
+ldloc.0 
+ldloc.3 
+ldloc.2 
+ldfld InputCommand Durango.System.Config.OffServerHotkeys/Binding::Command
+callvirt System.Void KeyCodeDictionary::Add(KeySet,InputCommand)
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::MoveNext()
+brtrue.s IL_0029: ldloca.s V_1
+leave.s IL_0077: ret
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::Unapply(Durango.System.Config.OffServerHotkeys/Entry)
+ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+brfalse.s IL_000f: ret
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+brtrue.s IL_0010: ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+ret 
+ldsfld InputKeyboard Durango.System.Config.OffServerHotkeys::s_keyboard
+callvirt KeyCodeDictionary InputKeyboard::get_KeyMap()
+stloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::GetEnumerator()
+stloc.1 
+br.s IL_0066: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::get_Current()
+stloc.2 
+ldloc.2 
+ldfld KeySet Durango.System.Config.OffServerHotkeys/Binding::Template
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+call KeySet Durango.System.Config.OffServerHotkeys::Make(KeySet,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+stloc.3 
+ldloc.0 
+ldloc.3 
+ldloca.s V_4
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<KeySet,InputCommand>::TryGetValue(!0,!1&)
+brfalse.s IL_0066: ldloca.s V_1
+ldloc.s V_4
+ldloc.2 
+ldfld InputCommand Durango.System.Config.OffServerHotkeys/Binding::Command
+bne.un.s IL_0066: ldloca.s V_1
+ldloc.0 
+ldloc.3 
+callvirt System.Boolean KeyCodeDictionary::RemoveBinding(KeySet)
+pop 
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>::MoveNext()
+brtrue.s IL_0029: ldloca.s V_1
+leave.s IL_007f: ret
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.System.Config.OffServerHotkeys/Binding>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::Find(System.String)
+ldsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0022: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldloc.2 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+ldarg.0 
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_001e: ldloc.1
+ldloc.2 
+ret 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.0
+ldnull 
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::Save(Durango.System.Config.OffServerHotkeys/Entry)
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+bne.un.s IL_0033: ldstr "option:hotkey:"
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+bne.un.s IL_0033: ldstr "option:hotkey:"
+ldstr option:hotkey:
+ldarg.0 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.PlayerPrefs::DeleteKey(System.String)
+br.s IL_006e: call System.Void UnityEngine.PlayerPrefs::Save()
+ldstr option:hotkey:
+ldarg.0 
+ldfld System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+call System.String System.String::Concat(System.String,System.String)
+ldarg.0 
+ldfld UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+stloc.0 
+ldloca.s V_0
+call System.String System.Int32::ToString()
+ldstr ,
+ldarg.0 
+ldfld Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+stloc.0 
+ldloca.s V_0
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void UnityEngine.PlayerPrefs::SetString(System.String,System.String)
+call System.Void UnityEngine.PlayerPrefs::Save()
+ret 
+METHOD System.Boolean Durango.System.Config.OffServerHotkeys::Load(System.String,UnityEngine.KeyCode&,Durango.Logic.InputSystem.Modifier&)
+ldarg.1 
+ldc.i4.0 
+stind.i4 
+ldarg.2 
+ldc.i4.0 
+stind.i4 
+ldstr option:hotkey:
+ldarg.0 
+call System.String System.String::Concat(System.String,System.String)
+ldsfld System.String System.String::Empty
+call System.String UnityEngine.PlayerPrefs::GetString(System.String,System.String)
+ldc.i4.s 44
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.0 
+ldloc.0 
+ldlen 
+conv.i4 
+ldc.i4.2 
+bne.un.s IL_0042: ldc.i4.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+ldloca.s V_1
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brfalse.s IL_0042: ldc.i4.0
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+ldloca.s V_2
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brtrue.s IL_0044: ldarg.1
+ldc.i4.0 
+ret 
+ldarg.1 
+ldloc.1 
+stind.i4 
+ldarg.2 
+ldloc.2 
+stind.i4 
+ldc.i4.1 
+ret 
+METHOD System.String Durango.System.Config.OffServerHotkeys::Caption(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier)
+ldarg.0 
+brtrue.s IL_0009: newobj System.Void System.Text.StringBuilder::.ctor()
+ldstr —
+ret 
+newobj System.Void System.Text.StringBuilder::.ctor()
+stloc.0 
+ldarg.0 
+ldarg.1 
+ldc.i4.s 15
+ldc.i4.1 
+ldc.i4.0 
+newobj System.Void KeySet::.ctor(UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier,Durango.Logic.InputSystem.Layer,Durango.Logic.InputSystem.Trigger,System.Boolean)
+stloc.2 
+ldloca.s V_2
+call System.Collections.Generic.List`1<UnityEngine.KeyCode> KeySet::ToKeyCodes()
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<UnityEngine.KeyCode>::GetEnumerator()
+stloc.1 
+br.s IL_0051: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<UnityEngine.KeyCode>::get_Current()
+stloc.3 
+ldloc.0 
+callvirt System.Int32 System.Text.StringBuilder::get_Length()
+ldc.i4.0 
+ble.s IL_0044: ldloc.0
+ldloc.0 
+ldc.i4.s 43
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.0 
+ldloc.3 
+call System.String InputKeyboard::KeyToCaption(UnityEngine.KeyCode)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<UnityEngine.KeyCode>::MoveNext()
+brtrue.s IL_002a: ldloca.s V_1
+leave.s IL_006a: ldloc.0
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<UnityEngine.KeyCode>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.String Durango.System.Config.OffServerHotkeys::Text(System.String,System.Object[])
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.System.Config.OffServerHotkeys::Texts
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.2 
+ldloc.2 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldloc.0
+ldloc.2 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0046: ldloc.0
+ldloc.2 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004c: ldloc.0
+br.s IL_0052: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.2 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.3 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+stloc.1 
+ldarg.1 
+brfalse.s IL_005d: ldloc.1
+ldarg.1 
+ldlen 
+brtrue.s IL_005f: nop
+ldloc.1 
+ret 
+nop 
+ldloc.1 
+ldarg.1 
+call System.String System.String::Format(System.String,System.Object[])
+stloc.2 
+leave.s IL_006f: ldloc.2
+pop 
+ldloc.1 
+stloc.2 
+leave.s IL_006f: ldloc.2
+ldloc.2 
+ret 
+METHOD System.Void Durango.System.Config.OffServerHotkeys::.cctor()
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr move
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr action
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr slots
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr menu
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr etc
+stelem.ref 
+stsfld System.String[] Durango.System.Config.OffServerHotkeys::Sections
+ldc.i4.s 31
+newarr Durango.System.Config.OffServerHotkeys/Entry
+dup 
+ldc.i4.0 
+ldstr move_up
+ldstr move
+ldc.i4.s 119
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.7 
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr move_down
+ldstr move
+ldc.i4.s 115
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.8 
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr move_left
+ldstr move
+ldc.i4.s 97
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 9
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr move_right
+ldstr move
+ldc.i4.s 100
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 10
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr jump
+ldstr move
+ldc.i4.s 32
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 89
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr dodge
+ldstr move
+ldc.i4.s 113
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 101
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr interact
+ldstr action
+ldc.i4.s 101
+ldc.i4.2 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 32
+stelem.i4 
+dup 
+ldc.i4.1 
+ldc.i4.s 34
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.7 
+ldstr mount
+ldstr action
+ldc.i4.s 103
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 33
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr helper
+ldstr action
+ldc.i4 308
+ldc.i4.1 
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 43
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,Durango.Logic.InputSystem.Modifier,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldstr voice_talk
+ldstr action
+ldc.i4.s 120
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 102
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr voice_panel
+ldstr action
+ldc.i4.s 118
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 103
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldstr voice_range
+ldstr action
+ldc.i4.s 98
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 104
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr slot1
+ldstr slots
+ldc.i4.s 49
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 70
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 13
+ldstr slot2
+ldstr slots
+ldc.i4.s 50
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 71
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 14
+ldstr slot3
+ldstr slots
+ldc.i4.s 51
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 72
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 15
+ldstr slot4
+ldstr slots
+ldc.i4.s 52
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 73
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 16
+ldstr slot5
+ldstr slots
+ldc.i4.s 53
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 74
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 17
+ldstr slot6
+ldstr slots
+ldc.i4.s 54
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 75
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 18
+ldstr slot7
+ldstr slots
+ldc.i4.s 55
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 76
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 19
+ldstr slot8
+ldstr slots
+ldc.i4.s 56
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 77
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 20
+ldstr inventory
+ldstr menu
+ldc.i4.s 105
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 90
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 21
+ldstr character
+ldstr menu
+ldc.i4.s 112
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 35
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 22
+ldstr skill
+ldstr menu
+ldc.i4.s 107
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 36
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 23
+ldstr worldmap
+ldstr menu
+ldc.i4.s 109
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 37
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 24
+ldstr craft
+ldstr menu
+ldc.i4.s 99
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 38
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 25
+ldstr quest
+ldstr menu
+ldc.i4.s 106
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 39
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 26
+ldstr menu_list
+ldstr menu
+ldc.i4.s 9
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 80
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 27
+ldstr last_menu
+ldstr menu
+ldc.i4.s 114
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 82
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 28
+ldstr last_item
+ldstr menu
+ldc.i4.s 122
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 81
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 29
+ldstr emote
+ldstr menu
+ldc.i4.s 116
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 42
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+dup 
+ldc.i4.s 30
+ldstr screenshot
+ldstr etc
+ldc.i4 293
+ldc.i4.1 
+newarr InputCommand
+dup 
+ldc.i4.0 
+ldc.i4.s 40
+stelem.i4 
+call Durango.System.Config.OffServerHotkeys/Entry Durango.System.Config.OffServerHotkeys::E(System.String,System.String,UnityEngine.KeyCode,InputCommand[])
+stelem.ref 
+stsfld Durango.System.Config.OffServerHotkeys/Entry[] Durango.System.Config.OffServerHotkeys::Entries
+ldc.i4.s 12
+newarr UnityEngine.KeyCode
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=48 <PrivateImplementationDetails>::7FD9153EB475C60396A0B1E24A4346D39A37B4F52E6A71E02F1EDBE4C0B4BE9D
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::Reserved
+ldc.i4.8 
+newarr UnityEngine.KeyCode
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=32 <PrivateImplementationDetails>::0112A31C0275042057A9895A4E4CCF07F25A53388026EF323572D06E6E867234
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld UnityEngine.KeyCode[] Durango.System.Config.OffServerHotkeys::ModifierKeys
+ldc.i4.8 
+newarr Durango.Logic.InputSystem.Modifier
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=32 <PrivateImplementationDetails>::5E618B9859B3ACB4C5C3ED8367F2B9E56A4470028B161659236919ABDD9C4B65
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld Durango.Logic.InputSystem.Modifier[] Durango.System.Config.OffServerHotkeys::ModifierFlags
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr tab
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มลัด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Hotkeys
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol Pintas
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 단축키
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr sec_move
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr การเคลื่อนที่
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Movement
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Gerakan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr sec_action
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr การกระทำ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Actions
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Aksi
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 행동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr sec_slots
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชันขวาล่าง (เรียงจากปุ่มแรก)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action buttons (bottom right, in order)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi (kanan bawah, berurutan)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 우측 하단 액션 버튼 (순서대로)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr sec_menu
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เมนู
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Menus
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Menu
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 메뉴
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr sec_etc
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr อื่นๆ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Other
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Lainnya
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 기타
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr move_up
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เดินหน้า
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Move forward
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Maju
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 앞으로 이동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr move_down
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ถอยหลัง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Move back
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Mundur
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 뒤로 이동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr move_left
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไปทางซ้าย
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Move left
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Ke kiri
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 왼쪽으로 이동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr move_right
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไปทางขวา
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Move right
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Ke kanan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 오른쪽으로 이동
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr jump
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กระโดด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Jump
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Lompat
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 점프
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr dodge
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กลิ้งหลบ (ตอนต่อสู้)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Dodge roll (in combat)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Berguling menghindar (saat bertarung)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 구르기 회피 (전투 중)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr interact
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr โต้ตอบสิ่งที่ใกล้ที่สุด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Interact with nearest
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Interaksi terdekat
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 가까운 대상과 상호작용
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr mount
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ขี่สัตว์เลี้ยง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Ride pet
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tunggangi hewan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 펫 타기
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr helper
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แสดงชื่อสิ่งของรอบตัว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Show nearby names
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tampilkan nama sekitar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 주변 이름 보기
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr voice_talk
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กดค้างพูด (ไมค์)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Hold to talk (voice)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tahan untuk bicara (suara)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 누르고 말하기 (음성)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr voice_panel
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แผงตั้งค่าไมค์
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Voice panel
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Panel suara
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 음성 설정 창
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr voice_range
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr สลับระยะเสียง (กระซิบ/ปกติ/ตะโกน)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Change voice range (whisper/normal/shout)
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Ganti jangkauan suara (bisik/normal/teriak)
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 음성 범위 변경 (속삭임/보통/외침)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot1
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 1
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 1
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 1
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 1
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot2
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 2
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 2
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 2
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 2
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot3
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 3
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 3
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 3
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 3
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot4
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 4
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 4
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 4
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 4
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot5
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 5
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 5
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 5
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 5
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot6
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 6
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 6
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 6
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 6
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot7
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 7
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 7
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 7
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 7
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr slot8
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ปุ่มแอคชัน 8
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Action button 8
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tombol aksi 8
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 액션 버튼 8
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr inventory
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กระเป๋า
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Inventory
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tas
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 가방
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr character
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ตัวละคร
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Character
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Karakter
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 캐릭터
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr skill
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr สกิล
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Skills
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Skill
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 스킬
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr worldmap
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr แผนที่โลก
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr World map
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Peta dunia
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 월드맵
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr craft
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr คราฟต์
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Crafting
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kerajinan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 제작
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr quest
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เควส
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Quests
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Misi
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 퀘스트
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr menu_list
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เมนูหลัก
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Game menu
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Menu game
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 게임 메뉴
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr last_menu
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เปิดเมนูล่าสุดอีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Reopen last menu
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Buka menu terakhir
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 최근 메뉴 다시 열기
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr last_item
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไอเทมที่ได้ล่าสุด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Last obtained item
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Item terakhir
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 최근 획득 아이템
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr emote
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr อีโมต
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Emotes
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Emote
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 감정 표현
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr screenshot
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ถ่ายภาพหน้าจอ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Screenshot
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tangkapan layar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 스크린샷
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr reset_all
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr คืนค่าปุ่มลัดทั้งหมด
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Reset all hotkeys
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Atur ulang semua tombol
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 단축키 모두 초기화
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr reset_confirm
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr คืนค่าปุ่มลัดทั้งหมดเป็นค่าเริ่มต้น?
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Reset every hotkey to the default?
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kembalikan semua tombol pintas ke bawaan?
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 모든 단축키를 기본값으로 되돌릴까요?
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr reset_ok
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr คืนค่า
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Reset
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Atur ulang
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 초기화
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr capture
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กดปุ่มใหม่สำหรับ «{0}»
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Press a new key for "{0}"
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tekan tombol baru untuk "{0}"
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr "{0}"에 쓸 키를 누르세요
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr capture_sub
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ตอนนี้: {0}  ·  Esc = ยกเลิก  ·  ปุ่มที่ซ้ำกับแถวอื่นจะสลับกัน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Now: {0}  ·  Esc = cancel  ·  a key used by another row is swapped
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Sekarang: {0}  ·  Esc = batal  ·  tombol yang sudah dipakai akan ditukar
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 현재: {0}  ·  Esc = 취소  ·  겹치는 키는 서로 바뀝니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr default
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ค่าเริ่มต้น ({0})
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Default ({0})
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Bawaan ({0})
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 기본값 ({0})
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr cancel
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ยกเลิก
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Cancel
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Batal
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 취소
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.System.Config.OffServerHotkeys::Texts
+ret 

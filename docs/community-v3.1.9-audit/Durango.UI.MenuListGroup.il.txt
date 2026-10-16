@@ -1,0 +1,200 @@
+Durango.UI.MenuListGroup : Durango.UI.MenuListGroupBase
+FIELD UnityEngine.Transform Durango.UI.MenuListGroup::_currencyContainer
+FIELD Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+FIELD UnityEngine.GameObject Durango.UI.MenuListGroup::_walletPopupButton
+FIELD UnityEngine.GameObject Durango.UI.MenuListGroup::_walletFolded
+FIELD UnityEngine.GameObject Durango.UI.MenuListGroup::_walletUnfolded
+METHOD System.Void Durango.UI.MenuListGroup::Start()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::Start()
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletPopupButton
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroup::<Start>b__5_0(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/VoidDelegate
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::TouchBlockBox
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroup::<Start>b__5_1(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/VoidDelegate
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldfld UIWidget Durango.UI.MenuListGroupBase::TouchBlockBox
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/VectorDelegate UIEventListener::onDrag
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroup::<Start>b__5_2(UnityEngine.GameObject,UnityEngine.Vector2)
+newobj System.Void UIEventListener/VectorDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/VectorDelegate
+stfld UIEventListener/VectorDelegate UIEventListener::onDrag
+ldarg.0 
+ldfld UnityEngine.Transform Durango.UI.MenuListGroup::_currencyContainer
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+call System.Void Durango.UI.MenuListGroup::InitCurrencyWidget()
+call Durango.Logic.Clusters.Mode GameManager::get_ClusterMode()
+brfalse.s IL_00be: call System.Boolean Durango.System.Config.OffServerHotkeys::get_Supported()
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletPopupButton
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+call System.Boolean Durango.System.Config.OffServerHotkeys::get_Supported()
+brfalse.s IL_00de: ret
+call T GameSystem`1<InputSystem>::Instance()
+ldc.i4.s 80
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroup::<Start>b__5_3(InputCommandMessage)
+newobj System.Void System.Action`1<InputCommandMessage>::.ctor(System.Object,System.IntPtr)
+ldc.i4.3 
+callvirt System.Void InputSystem::On(InputCommand,System.Action`1<InputCommandMessage>,InputSystem/Priority)
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroup::TryOpen()
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::TryOpen()
+brtrue.s IL_000a: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+ldfld UnityEngine.Transform Durango.UI.MenuListGroup::_currencyContainer
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldc.i4.1 
+ret 
+METHOD System.Boolean Durango.UI.MenuListGroup::TryClose()
+ldarg.0 
+ldfld UnityEngine.Transform Durango.UI.MenuListGroup::_currencyContainer
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+call System.Boolean Durango.UI.MenuListGroupBase::TryClose()
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::InitCurrencyWidget()
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Boolean Durango.Logic.Explore.Region::IsWarpRush()
+brfalse.s IL_003e: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+ldc.i4.0 
+ldelem.ref 
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+ldc.i4.1 
+ldelem.ref 
+ldc.i4.0 
+ldc.i4.0 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetWarpRushResource(Shared.Season2.ResourceType,System.Boolean)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+ldc.i4.2 
+ldelem.ref 
+ldc.i4.1 
+ldc.i4.0 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetWarpRushResource(Shared.Season2.ResourceType,System.Boolean)
+ret 
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+ldc.i4.0 
+ldelem.ref 
+ldc.i4.2 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetCurrencyType(Shared.Economy.Currency)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+ldc.i4.1 
+ldelem.ref 
+ldc.i4.1 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetCurrencyType(Shared.Economy.Currency)
+ldarg.0 
+ldfld Durango.UI.Control.CurrencyWidgetBase[] Durango.UI.MenuListGroup::_currencyWidgets
+ldc.i4.2 
+ldelem.ref 
+ldc.i4.0 
+callvirt System.Void Durango.UI.Control.CurrencyWidgetBase::SetCurrencyType(Shared.Economy.Currency)
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::.ctor()
+ldarg.0 
+call System.Void Durango.UI.MenuListGroupBase::.ctor()
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::<Start>b__5_0(UnityEngine.GameObject)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletFolded
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletUnfolded
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::Tooltip<Durango.UI.Popup.WalletInfoPopup>()
+dup 
+ldarg.0 
+ldftn System.Void Durango.UI.MenuListGroup::<Start>b__5_4()
+newobj System.Void EventDelegate/Callback::.ctor(System.Object,System.IntPtr)
+callvirt System.Void Durango.UI.Popup.TooltipBase::AddOnFinished(EventDelegate/Callback)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletPopupButton
+callvirt UnityEngine.Transform UnityEngine.GameObject::get_transform()
+call UnityEngine.Vector2 UnityEngine.Vector2::get_down()
+ldc.r4 50
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Multiply(UnityEngine.Vector2,System.Single)
+ldc.r4 0
+callvirt System.Void Durango.UI.Popup.TooltipBase::Show(UnityEngine.Transform,UnityEngine.Vector2,System.Single)
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::<Start>b__5_4()
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletFolded
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MenuListGroup::_walletUnfolded
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::<Start>b__5_1(UnityEngine.GameObject)
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::<Start>b__5_2(UnityEngine.GameObject,UnityEngine.Vector2)
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ldc.i4.0 
+call System.Void UIManager::SetCurrentUITouchEvent(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MenuListGroup::<Start>b__5_3(InputCommandMessage)
+ldarg.0 
+call System.Boolean UIBase::get_Visible()
+brfalse.s IL_001f: ret
+ldarg.0 
+call System.Boolean UIBase::get_IsOpened()
+brfalse.s IL_0018: ldarg.0
+ldarg.0 
+callvirt System.Boolean UIBase::Close()
+pop 
+ret 
+ldarg.0 
+callvirt System.Boolean UIBase::Open()
+pop 
+ret 

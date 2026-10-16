@@ -1,0 +1,517 @@
+Durango.Logic.ArchipelagoMissionSystem : GameSystem`1<Durango.Logic.ArchipelagoMissionSystem>
+FIELD Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+FIELD System.String Durango.Logic.ArchipelagoMissionSystem::ToDoCollectionKey
+FIELD System.String Durango.Logic.ArchipelagoMissionSystem::SeasonKey
+FIELD System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+FIELD System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::add_MissionStarted(System.Action`1<Yaml.ArchipelagoMission>)
+ldarg.0 
+ldfld System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action`1<Yaml.ArchipelagoMission>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Yaml.ArchipelagoMission>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::remove_MissionStarted(System.Action`1<Yaml.ArchipelagoMission>)
+ldarg.0 
+ldfld System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action`1<Yaml.ArchipelagoMission>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Yaml.ArchipelagoMission>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::add_MissionEnded(System.Action`1<Durango.Logic.ArchipelagoToDoCollection>)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action`1<Durango.Logic.ArchipelagoToDoCollection>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Durango.Logic.ArchipelagoToDoCollection>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::remove_MissionEnded(System.Action`1<Durango.Logic.ArchipelagoToDoCollection>)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action`1<Durango.Logic.ArchipelagoToDoCollection>
+stloc.2 
+ldarg.0 
+ldflda System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action`1<Durango.Logic.ArchipelagoToDoCollection>>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::Awake()
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldstr ArchipelagoToDo.Collection
+callvirt System.Void Durango.Logic.PlayGuide.ToDoCollection::set_Key(System.String)
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldstr Season.ArchipelagoMission
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Season
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldarg.0 
+ldftn System.Void Durango.Logic.ArchipelagoMissionSystem::OnCurrentArchipelagoTodos(Messages.CurrentArchipelagoTodos,Durango.Network.PacketHeader)
+newobj System.Void Durango.Network.Connection/MessageHandler`1<Messages.CurrentArchipelagoTodos>::.ctor(System.Object,System.IntPtr)
+callvirt System.Boolean Durango.Network.Connection::On<Messages.CurrentArchipelagoTodos>(Durango.Network.Connection/MessageHandler`1<T>)
+pop 
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldarg.0 
+ldftn System.Void Durango.Logic.ArchipelagoMissionSystem::OnNotifyArchipelagoTodoProceed(Messages.NotifyArchipelagoTodoProceed,Durango.Network.PacketHeader)
+newobj System.Void Durango.Network.Connection/MessageHandler`1<Messages.NotifyArchipelagoTodoProceed>::.ctor(System.Object,System.IntPtr)
+callvirt System.Boolean Durango.Network.Connection::On<Messages.NotifyArchipelagoTodoProceed>(Durango.Network.Connection/MessageHandler`1<T>)
+pop 
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::OnCurrentArchipelagoTodos(Messages.CurrentArchipelagoTodos,Durango.Network.PacketHeader)
+newobj System.Void Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass10_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld Durango.Logic.ArchipelagoMissionSystem Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass10_0::<>4__this
+call Yaml.ArchipelagoMission Durango.Logic.ArchipelagoMissionSystem::GetCurrentMission()
+stloc.1 
+ldloc.1 
+brfalse.s IL_0026: ret
+ldarg.1 
+ldfld System.Boolean Messages.CurrentArchipelagoTodos::IsClearedRegion
+brfalse.s IL_0027: ldarg.0
+ldarg.0 
+call System.String Durango.Logic.ArchipelagoMissionSystem::GetNextRegion()
+brtrue.s IL_0027: ldarg.0
+ret 
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::Clear()
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld Durango.Utils.Observable`1<System.Int32> Durango.Logic.ArchipelagoToDoCollection::CurrentPoint
+ldnull 
+stfld System.Action`1<T> Durango.Utils.Observable`1<System.Int32>::Changed
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld Durango.Utils.Observable`1<System.Int32> Durango.Logic.ArchipelagoToDoCollection::CurrentPoint
+ldc.i4.0 
+callvirt System.Void Durango.Utils.Observable`1<System.Int32>::set_Value(T)
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldflda System.Nullable`1<Messages.RewardInfo> Durango.Logic.ArchipelagoToDoCollection::Reward
+initobj System.Nullable`1<Messages.RewardInfo>
+ldarga.s packet
+ldflda System.Nullable`1<Messages.ArchipelagoTodos> Messages.CurrentArchipelagoTodos::CurrentTodos
+call System.Boolean System.Nullable`1<Messages.ArchipelagoTodos>::get_HasValue()
+brfalse IL_0180: ldarg.0
+ldarga.s packet
+ldflda System.Nullable`1<Messages.ArchipelagoTodos> Messages.CurrentArchipelagoTodos::CurrentTodos
+call !0 System.Nullable`1<Messages.ArchipelagoTodos>::get_Value()
+stloc.2 
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld Durango.Utils.Observable`1<System.Int32> Durango.Logic.ArchipelagoToDoCollection::CurrentPoint
+ldloc.2 
+ldfld System.Int32 Messages.ArchipelagoTodos::CurrentPoint
+callvirt System.Void Durango.Utils.Observable`1<System.Int32>::set_Value(T)
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.2 
+ldfld System.Nullable`1<Messages.RewardInfo> Messages.ArchipelagoTodos::Reward
+stfld System.Nullable`1<Messages.RewardInfo> Durango.Logic.ArchipelagoToDoCollection::Reward
+ldloc.2 
+ldfld Messages.ArchipelagoToDo[] Messages.ArchipelagoTodos::Todos
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br IL_015a: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+ldelem.any Messages.ArchipelagoToDo
+stloc.s V_5
+ldloc.1 
+ldfld System.Collections.Generic.Dictionary`2<System.String,Yaml.ToDoContents> Yaml.ArchipelagoMission::ToDos
+ldloc.s V_5
+ldfld System.String Messages.ArchipelagoToDo::Id
+ldnull 
+call TV DictionaryExtensions::Get<System.String,Yaml.ToDoContents>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+stloc.s V_6
+newobj System.Void Durango.Logic.ArchipelagoToDo::.ctor()
+dup 
+ldloc.s V_5
+ldfld System.String Messages.ArchipelagoToDo::Id
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_Key(System.String)
+dup 
+ldloc.s V_5
+ldfld System.Int32 Messages.ArchipelagoToDo::Progress
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_CurrentProgress(System.Int32)
+dup 
+ldloc.s V_5
+ldfld System.Int32 Messages.ArchipelagoToDo::GoalCount
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_TargetProgress(System.Int32)
+dup 
+ldloc.s V_6
+brtrue.s IL_0115: ldloc.s V_6
+ldsfld System.String System.String::Empty
+br.s IL_0127: callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_LocalText(System.String)
+ldloc.s V_6
+ldflda Gettext Yaml.ToDoContents::Subject
+constrained. Gettext
+callvirt System.String System.Object::ToString()
+callvirt System.Void Durango.Logic.PlayGuide.ToDoBase::set_LocalText(System.String)
+dup 
+ldloc.s V_6
+brtrue.s IL_0134: ldloc.s V_6
+ldc.i4.0 
+br.s IL_013b: stfld System.Int32 Durango.Logic.ArchipelagoToDo::Point
+ldloc.s V_6
+ldfld System.Int32 Yaml.ToDoContents::Point
+stfld System.Int32 Durango.Logic.ArchipelagoToDo::Point
+stloc.s V_7
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+ldloc.s V_7
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::Add(!0)
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+ldlen 
+conv.i4 
+blt IL_00be: ldloc.3
+ldloc.2 
+ldfld System.Boolean Messages.ArchipelagoTodos::IsNotified
+brtrue.s IL_0180: ldarg.0
+ldarg.0 
+ldfld System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+brfalse.s IL_0180: ldarg.0
+ldarg.0 
+ldfld System.Action`1<Yaml.ArchipelagoMission> Durango.Logic.ArchipelagoMissionSystem::MissionStarted
+ldloc.1 
+callvirt System.Void System.Action`1<Yaml.ArchipelagoMission>::Invoke(!0)
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.1 
+ldfld Gettext Yaml.ArchipelagoMission::Title
+call System.String Gettext::op_Implicit(Gettext)
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Title
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.1 
+ldfld Yaml.Dialogue Yaml.ArchipelagoMission::Intro
+stfld Yaml.Dialogue Durango.Logic.ArchipelagoToDoCollection::Intro
+ldloc.1 
+ldfld Yaml.Dialogue Yaml.ArchipelagoMission::Intro
+brfalse.s IL_01ee: ldarg.0
+ldloc.1 
+ldfld Yaml.Dialogue Yaml.ArchipelagoMission::Intro
+ldfld System.Collections.Generic.List`1<Yaml.MissionTalk> Yaml.Dialogue::Talks
+call System.Int32 KUtility::GetSize<Yaml.MissionTalk>(System.Collections.Generic.ICollection`1<T>)
+ldc.i4.0 
+ble.s IL_01ee: ldarg.0
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.1 
+ldfld Yaml.Dialogue Yaml.ArchipelagoMission::Intro
+ldfld System.Collections.Generic.List`1<Yaml.MissionTalk> Yaml.Dialogue::Talks
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<Yaml.MissionTalk>::get_Item(System.Int32)
+ldfld Shared.Faction.Messenger Yaml.MissionTalk::Messenger
+box Shared.Faction.Messenger
+ldnull 
+call System.String IconMap::Get(System.Enum,System.String)
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Icon
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld System.String Durango.Logic.PlayGuide.ToDoCollection::Icon
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0210: ldarg.0
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldstr todo_icon_walkie
+stfld System.String Durango.Logic.PlayGuide.ToDoCollection::Icon
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.1 
+ldfld Yaml.Dialogue Yaml.ArchipelagoMission::Outro
+stfld Yaml.Dialogue Durango.Logic.ArchipelagoToDoCollection::Outro
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.1 
+ldfld Gettext Yaml.ArchipelagoMission::Description
+call System.String Gettext::op_Implicit(Gettext)
+stfld System.String Durango.Logic.ArchipelagoToDoCollection::Description
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldloc.1 
+ldfld System.Int32 Yaml.ArchipelagoMission::ClearPoint
+stfld System.Int32 Durango.Logic.ArchipelagoToDoCollection::ClearPoint
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldarg.1 
+ldfld System.Boolean Messages.CurrentArchipelagoTodos::IsClearedRegion
+brtrue.s IL_0283: ldc.i4.2
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+callvirt System.Boolean Durango.Logic.ArchipelagoToDoCollection::get_HasEnoughPoint()
+brtrue.s IL_0280: ldc.i4.1
+ldarg.1 
+ldfld System.String Messages.CurrentArchipelagoTodos::ActiveRegionId
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.String Durango.Logic.Explore.Region::get_Id()
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_027d: ldc.i4.3
+ldc.i4.0 
+br.s IL_0284: stfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+ldc.i4.3 
+br.s IL_0284: stfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+ldc.i4.1 
+br.s IL_0284: stfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+ldc.i4.2 
+stfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldarg.1 
+ldfld System.Boolean Messages.CurrentArchipelagoTodos::IsEpic
+ldc.i4.0 
+ceq 
+stfld System.Boolean Durango.Logic.ArchipelagoToDoCollection::ShowUI
+ldloc.0 
+ldloc.0 
+ldftn System.Void Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass10_0::<OnCurrentArchipelagoTodos>b__0(Durango.Logic.Explore.Region)
+newobj System.Void System.Action`1<Durango.Logic.Explore.Region>::.ctor(System.Object,System.IntPtr)
+stfld System.Action`1<Durango.Logic.Explore.Region> Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass10_0::onRegion
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+ldc.i4.3 
+bne.un.s IL_02da: ldloc.0
+call T GameSystem`1<MapSystem>::Instance()
+ldarg.1 
+ldfld System.String Messages.CurrentArchipelagoTodos::ActiveRegionId
+ldloc.0 
+ldftn System.Void Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass10_0::<OnCurrentArchipelagoTodos>b__1(Messages.Region)
+newobj System.Void System.Action`1<Messages.Region>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void MapSystem::GetRegion(System.String,System.Action`1<Messages.Region>)
+ret 
+ldloc.0 
+ldfld System.Action`1<Durango.Logic.Explore.Region> Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass10_0::onRegion
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.Void System.Action`1<Durango.Logic.Explore.Region>::Invoke(!0)
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::OnNotifyArchipelagoTodoProceed(Messages.NotifyArchipelagoTodoProceed,Durango.Network.PacketHeader)
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldarg.1 
+callvirt System.Void Durango.Logic.ArchipelagoToDoCollection::Update(Messages.NotifyArchipelagoTodoProceed)
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+callvirt System.Boolean Durango.Logic.ArchipelagoToDoCollection::get_HasEnoughPoint()
+brfalse.s IL_0025: call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldc.i4.1 
+stfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldc.i4.0 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::EndMission()
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldc.i4.2 
+stfld Durango.Logic.ArchipelagoToDoCollection/State Durango.Logic.ArchipelagoToDoCollection::CurrentState
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldfld System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase> Durango.Logic.PlayGuide.ToDoCollection::ToDoList
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.PlayGuide.ToDoBase>::Clear()
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldc.i4.0 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoCollection,System.Boolean)
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+brfalse.s IL_0046: ret
+ldarg.0 
+ldfld System.Action`1<Durango.Logic.ArchipelagoToDoCollection> Durango.Logic.ArchipelagoMissionSystem::MissionEnded
+ldarg.0 
+ldfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+callvirt System.Void System.Action`1<Durango.Logic.ArchipelagoToDoCollection>::Invoke(!0)
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::RequestRegionClear()
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldloca.s V_0
+initobj Messages.RequestArchipelagoRegionClear
+ldloc.0 
+ldc.i4.0 
+ldc.i4.0 
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.RequestArchipelagoRegionClear>(T,System.Boolean,System.UInt32)
+pop 
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::RequestReissueArchipelagoTodos()
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldloca.s V_0
+initobj Messages.ReissueArchipelagoTodos
+ldloc.0 
+ldc.i4.0 
+ldc.i4.0 
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.ReissueArchipelagoTodos>(T,System.Boolean,System.UInt32)
+pop 
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::RequestWarpCost(System.Action`1<System.Int64>)
+newobj System.Void Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass15_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.Action`1<System.Int64> Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass15_0::callback
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldloca.s V_1
+initobj Messages.GetWarpCostToNextRegion
+ldloc.1 
+ldc.i4.0 
+ldc.i4.0 
+callvirt Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.Connection::Send<Messages.GetWarpCostToNextRegion>(T,System.Boolean,System.UInt32)
+stloc.2 
+ldloca.s V_2
+ldloc.0 
+ldftn System.Void Durango.Logic.ArchipelagoMissionSystem/<>c__DisplayClass15_0::<RequestWarpCost>b__0(Messages.WarpCosts,Durango.Network.PacketHeader)
+newobj System.Void Durango.Network.Connection/MessageHandler`1<Messages.WarpCosts>::.ctor(System.Object,System.IntPtr)
+call Durango.Network.ReplyMessageHandlerRegistrar Durango.Network.ReplyMessageHandlerRegistrar::On<Messages.WarpCosts>(Durango.Network.Connection/MessageHandler`1<T>)
+pop 
+ret 
+METHOD Yaml.ArchipelagoMission Durango.Logic.ArchipelagoMissionSystem::GetCurrentMission()
+call System.Nullable`1<Messages.Archipelago> GameManager::get_Archipelago()
+stloc.1 
+ldloca.s V_1
+call System.Boolean System.Nullable`1<Messages.Archipelago>::get_HasValue()
+brtrue.s IL_0011: call System.Collections.Generic.Dictionary`2<TK,TV> Yaml.Util.SingletonDict`2<System.String,System.Collections.Generic.Dictionary`2<System.String,Yaml.ArchipelagoMission>>::get_Instance()
+ldnull 
+ret 
+call System.Collections.Generic.Dictionary`2<TK,TV> Yaml.Util.SingletonDict`2<System.String,System.Collections.Generic.Dictionary`2<System.String,Yaml.ArchipelagoMission>>::get_Instance()
+call System.Nullable`1<Messages.Archipelago> GameManager::get_Archipelago()
+stloc.1 
+ldloca.s V_1
+call !0 System.Nullable`1<Messages.Archipelago>::get_Value()
+ldfld System.String Messages.Archipelago::TemplateId
+ldnull 
+call TV DictionaryExtensions::Get<System.String,System.Collections.Generic.Dictionary`2<System.String,Yaml.ArchipelagoMission>>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+stloc.0 
+ldloc.0 
+brtrue.s IL_0034: ldloc.0
+ldnull 
+ret 
+ldloc.0 
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.String Durango.Logic.Explore.Region::get_TemplateId()
+ldnull 
+call TV DictionaryExtensions::Get<System.String,Yaml.ArchipelagoMission>(System.Collections.Generic.IDictionary`2<TK,TV>,TK,TV)
+ret 
+METHOD System.String Durango.Logic.ArchipelagoMissionSystem::GetNextRegion()
+call System.Nullable`1<Messages.Archipelago> GameManager::get_Archipelago()
+stloc.1 
+ldloca.s V_1
+call System.Boolean System.Nullable`1<Messages.Archipelago>::get_HasValue()
+brtrue.s IL_0011: call System.Nullable`1<Messages.Archipelago> GameManager::get_Archipelago()
+ldnull 
+ret 
+call System.Nullable`1<Messages.Archipelago> GameManager::get_Archipelago()
+stloc.1 
+ldloca.s V_1
+call !0 System.Nullable`1<Messages.Archipelago>::get_Value()
+ldfld Messages.ArchipelagoRegionInfo[] Messages.Archipelago::IncludedRegions
+stloc.0 
+ldc.i4.0 
+stloc.2 
+br.s IL_0062: ldloc.2
+ldloc.0 
+ldloc.2 
+ldelema Messages.ArchipelagoRegionInfo
+ldfld System.String Messages.ArchipelagoRegionInfo::Id
+call Durango.Logic.Explore.Region GameManager::get_Region()
+callvirt System.String Durango.Logic.Explore.Region::get_Id()
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_005e: ldloc.2
+ldloc.2 
+ldloc.0 
+ldlen 
+conv.i4 
+ldc.i4.1 
+sub 
+bne.un.s IL_004f: ldloc.0
+ldnull 
+ret 
+ldloc.0 
+ldloc.2 
+ldc.i4.1 
+add 
+ldelema Messages.ArchipelagoRegionInfo
+ldfld System.String Messages.ArchipelagoRegionInfo::Id
+ret 
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.0 
+call System.Int32 KUtility::GetSize<Messages.ArchipelagoRegionInfo>(System.Collections.Generic.ICollection`1<T>)
+blt.s IL_0028: ldloc.0
+ldnull 
+ret 
+METHOD System.Void Durango.Logic.ArchipelagoMissionSystem::.ctor()
+ldarg.0 
+newobj System.Void Durango.Logic.ArchipelagoToDoCollection::.ctor()
+stfld Durango.Logic.ArchipelagoToDoCollection Durango.Logic.ArchipelagoMissionSystem::_collection
+ldarg.0 
+call System.Void GameSystem`1<Durango.Logic.ArchipelagoMissionSystem>::.ctor()
+ret 

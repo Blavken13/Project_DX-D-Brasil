@@ -1,0 +1,45 @@
+Durango.Logic.PlayGuide.MissionCompleteCondition : Durango.Logic.PlayGuide.FlowCondition
+FIELD System.String Durango.Logic.PlayGuide.MissionCompleteCondition::_missionId
+METHOD System.Void Durango.Logic.PlayGuide.MissionCompleteCondition::.ctor(System.String)
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.FlowCondition::.ctor()
+ldarg.0 
+ldarg.1 
+stfld System.String Durango.Logic.PlayGuide.MissionCompleteCondition::_missionId
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionCompleteCondition::OnRegister()
+call T GameSystem`1<StatisticsSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.Logic.PlayGuide.MissionCompleteCondition::StatisticsSystem_Rewarded(Messages.Rewarded)
+newobj System.Void System.Action`1<Messages.Rewarded>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void StatisticsSystem::add_Rewarded(System.Action`1<Messages.Rewarded>)
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionCompleteCondition::OnUnregister()
+call T GameSystem`1<StatisticsSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.Logic.PlayGuide.MissionCompleteCondition::StatisticsSystem_Rewarded(Messages.Rewarded)
+newobj System.Void System.Action`1<Messages.Rewarded>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void StatisticsSystem::remove_Rewarded(System.Action`1<Messages.Rewarded>)
+ret 
+METHOD System.Void Durango.Logic.PlayGuide.MissionCompleteCondition::StatisticsSystem_Rewarded(Messages.Rewarded)
+ldarg.1 
+ldfld System.Object Messages.Rewarded::Effect
+isinst Messages.MissionCompletedEffect
+brfalse.s IL_003f: ret
+ldarg.1 
+ldfld System.Object Messages.Rewarded::Effect
+unbox.any Messages.MissionCompletedEffect
+stloc.0 
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.MissionCompleteCondition::_missionId
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brtrue.s IL_0039: ldarg.0
+ldarg.0 
+ldfld System.String Durango.Logic.PlayGuide.MissionCompleteCondition::_missionId
+ldloc.0 
+ldfld System.String Messages.MissionCompletedEffect::MissionId
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_003f: ret
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.FlowCondition::Interrupt()
+ret 

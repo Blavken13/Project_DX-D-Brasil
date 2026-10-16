@@ -1,0 +1,41 @@
+OffServerLangPack/<>c__DisplayClass21_0 : System.Object
+FIELD System.String OffServerLangPack/<>c__DisplayClass21_0::dir
+FIELD System.String[] OffServerLangPack/<>c__DisplayClass21_0::names
+FIELD System.Int32 OffServerLangPack/<>c__DisplayClass21_0::i
+FIELD System.String OffServerLangPack/<>c__DisplayClass21_0::gw
+METHOD System.Void OffServerLangPack/<>c__DisplayClass21_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass21_0::<DownloadTemplateNext>b__0(System.Byte[])
+ldarg.1 
+brfalse.s IL_0032: ldarg.0
+ldarg.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass21_0::dir
+call System.IO.DirectoryInfo System.IO.Directory::CreateDirectory(System.String)
+pop 
+ldarg.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass21_0::dir
+ldarg.0 
+ldfld System.String[] OffServerLangPack/<>c__DisplayClass21_0::names
+ldarg.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass21_0::i
+ldelem.ref 
+call System.String System.IO.Path::Combine(System.String,System.String)
+ldarg.1 
+call System.Void System.IO.File::WriteAllBytes(System.String,System.Byte[])
+leave.s IL_0032: ldarg.0
+pop 
+leave.s IL_0032: ldarg.0
+ldarg.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass21_0::gw
+ldarg.0 
+ldfld System.String OffServerLangPack/<>c__DisplayClass21_0::dir
+ldarg.0 
+ldfld System.String[] OffServerLangPack/<>c__DisplayClass21_0::names
+ldarg.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass21_0::i
+ldc.i4.1 
+add 
+call System.Void OffServerLangPack::DownloadTemplateNext(System.String,System.String,System.String[],System.Int32)
+ret 

@@ -1,0 +1,3120 @@
+Durango.UI.OffServerTransition : UnityEngine.MonoBehaviour
+FIELD System.Single Durango.UI.OffServerTransition::ClawInSeconds
+FIELD System.Single Durango.UI.OffServerTransition::ClawPopSeconds
+FIELD System.Single Durango.UI.OffServerTransition::ClawOutSeconds
+FIELD System.Int32 Durango.UI.OffServerTransition::Claws
+FIELD System.Single Durango.UI.OffServerTransition::ClawTravelDeg
+FIELD System.Single Durango.UI.OffServerTransition::StrikeSeconds
+FIELD System.Single Durango.UI.OffServerTransition::ClawStagger
+FIELD System.Single Durango.UI.OffServerTransition::RipGap
+FIELD System.Single Durango.UI.OffServerTransition::HeatSeconds
+FIELD System.Int32[] Durango.UI.OffServerTransition::ClawRank
+FIELD System.Int32 Durango.UI.OffServerTransition::MaxSamples
+FIELD System.String Durango.UI.OffServerTransition::ClawSound
+FIELD UnityEngine.Color Durango.UI.OffServerTransition::ClawDark
+FIELD System.Int32[] Durango.UI.OffServerTransition::ClawFromVersion
+FIELD System.String Durango.UI.OffServerTransition::ClawPrefKey
+FIELD System.Int32 Durango.UI.OffServerTransition::_clawGate
+FIELD System.Boolean Durango.UI.OffServerTransition::_clawOnce
+FIELD System.Single[] Durango.UI.OffServerTransition::_jag
+FIELD System.Single[] Durango.UI.OffServerTransition::_ss
+FIELD System.Single[][] Durango.UI.OffServerTransition::_lo
+FIELD System.Single[][] Durango.UI.OffServerTransition::_hi
+FIELD System.Int32 Durango.UI.OffServerTransition::_samples
+FIELD UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+FIELD UnityEngine.Vector2 Durango.UI.OffServerTransition::_n
+FIELD System.Single Durango.UI.OffServerTransition::InSeconds
+FIELD System.Single Durango.UI.OffServerTransition::PopSeconds
+FIELD System.Single Durango.UI.OffServerTransition::HoldSeconds
+FIELD System.Single Durango.UI.OffServerTransition::OutSeconds
+FIELD System.Single Durango.UI.OffServerTransition::MaxCoveredSeconds
+FIELD System.Int32 Durango.UI.OffServerTransition::SmoothFramesToOpen
+FIELD System.Single Durango.UI.OffServerTransition::SmoothFrameSeconds
+FIELD System.Int32 Durango.UI.OffServerTransition::Stripes
+FIELD System.Single Durango.UI.OffServerTransition::AngleDeg
+FIELD System.Single Durango.UI.OffServerTransition::StaggerIn
+FIELD System.Single Durango.UI.OffServerTransition::StaggerOut
+FIELD UnityEngine.Color Durango.UI.OffServerTransition::StripeA
+FIELD UnityEngine.Color Durango.UI.OffServerTransition::StripeB
+FIELD Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+FIELD UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+FIELD UnityEngine.Material Durango.UI.OffServerTransition::_material
+FIELD Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+FIELD System.Single Durango.UI.OffServerTransition::_phaseTime
+FIELD System.Boolean Durango.UI.OffServerTransition::_revealRequested
+FIELD System.Boolean Durango.UI.OffServerTransition::_coveredFired
+FIELD System.Action Durango.UI.OffServerTransition::_onCovered
+FIELD System.Int32 Durango.UI.OffServerTransition::_smoothFrames
+FIELD System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+FIELD System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+FIELD System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+FIELD System.Boolean Durango.UI.OffServerTransition::_claw
+FIELD System.Int32 Durango.UI.OffServerTransition::_closeFrames
+FIELD System.Int32 Durango.UI.OffServerTransition::_openFrames
+FIELD System.Single Durango.UI.OffServerTransition::_closeWorst
+FIELD System.Single Durango.UI.OffServerTransition::_openWorst
+FIELD System.Int32 Durango.UI.OffServerTransition::_phaseFrames
+FIELD System.Single Durango.UI.OffServerTransition::_w
+FIELD System.Single Durango.UI.OffServerTransition::_h
+METHOD System.Boolean Durango.UI.OffServerTransition::get_ClawEnabled()
+ldsfld System.Int32 Durango.UI.OffServerTransition::_clawGate
+ldc.i4.0 
+bge.s IL_0015: ldsfld System.Int32 Durango.UI.OffServerTransition::_clawGate
+call System.Boolean Durango.UI.OffServerTransition::ResolveClawGate()
+ldc.i4.0 
+cgt.un 
+stsfld System.Int32 Durango.UI.OffServerTransition::_clawGate
+ldsfld System.Int32 Durango.UI.OffServerTransition::_clawGate
+ldc.i4.1 
+ceq 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Prepare()
+call System.Boolean Durango.UI.OffServerTransition::get_ClawEnabled()
+brtrue.s IL_0008: nop
+ret 
+nop 
+ldstr sabertooth_attack_claw
+ldnull 
+call System.Void SoundManager::PrepareEvent(System.String,System.Action)
+leave.s IL_001d: ret
+call System.Void UnityEngine.Debug::LogException(System.Exception)
+leave.s IL_001d: ret
+ret 
+METHOD System.Boolean Durango.UI.OffServerTransition::ResolveClawGate()
+ldloca.s V_0
+call System.Boolean Durango.UI.OffServerTransition::ResolveClawGate(System.String&)
+stloc.1 
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [OffServerTransition] 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldloc.1 
+brtrue.s IL_0022: ldstr "claw"
+ldstr D
+br.s IL_0027: stelem.ref
+ldstr claw
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  (
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.0 
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr )
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldloc.1 
+ret 
+METHOD System.Boolean Durango.UI.OffServerTransition::ResolveClawGate(System.String&)
+call System.String[] System.Environment::GetCommandLineArgs()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0046: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+ldstr -claw
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brfalse.s IL_0028: ldloc.3
+ldarg.0 
+ldstr -claw
+stind.ref 
+ldc.i4.1 
+stloc.s V_4
+leave.s IL_0070: ldloc.s V_4
+ldloc.3 
+ldstr -noclaw
+ldc.i4.5 
+call System.Boolean System.String::Equals(System.String,System.String,System.StringComparison)
+brfalse.s IL_0042: ldloc.2
+ldarg.0 
+ldstr -noclaw
+stind.ref 
+ldc.i4.0 
+stloc.s V_4
+leave.s IL_0070: ldloc.s V_4
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.1
+leave.s IL_0051: call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+pop 
+leave.s IL_0051: call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+stloc.0 
+ldarg.0 
+ldstr client 
+ldloc.0 
+call System.String System.String::Concat(System.String,System.String)
+stind.ref 
+ldloc.0 
+ldsfld System.Int32[] Durango.UI.OffServerTransition::ClawFromVersion
+call System.Boolean Durango.UI.OffServerTransition::VersionAtLeast(System.String,System.Int32[])
+ret 
+ldloc.s V_4
+ret 
+METHOD System.Boolean Durango.UI.OffServerTransition::VersionAtLeast(System.String,System.Int32[])
+ldarg.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_000a: ldarg.0
+ldc.i4.0 
+ret 
+ldarg.0 
+callvirt System.String System.String::Trim()
+ldc.i4.s 46
+ldc.i4.0 
+callvirt System.String[] System.String::Split(System.Char,System.StringSplitOptions)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0076: ldloc.1
+ldc.i4.0 
+stloc.2 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+bge.s IL_0065: ldloc.2
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_0034: ldloc.s V_4
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+callvirt System.Int32 System.String::get_Length()
+bge.s IL_004d: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+callvirt System.Char System.String::get_Chars(System.Int32)
+call System.Boolean System.Char::IsDigit(System.Char)
+brtrue.s IL_002e: ldloc.s V_4
+ldloc.s V_4
+brfalse.s IL_0063: ldc.i4.0
+ldloc.3 
+ldc.i4.0 
+ldloc.s V_4
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+ldloca.s V_2
+call System.Boolean System.Int32::TryParse(System.String,System.Int32&)
+brtrue.s IL_0065: ldloc.2
+ldc.i4.0 
+ret 
+ldloc.2 
+ldarg.1 
+ldloc.1 
+ldelem.i4 
+beq.s IL_0072: ldloc.1
+ldloc.2 
+ldarg.1 
+ldloc.1 
+ldelem.i4 
+cgt 
+ret 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.1 
+ldlen 
+conv.i4 
+blt.s IL_001d: ldc.i4.0
+ldc.i4.1 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::PlayClawSound()
+ldstr sabertooth_attack_claw
+call System.Void SoundManager::PlayEvent(System.String)
+leave.s IL_0013: ret
+call System.Void UnityEngine.Debug::LogException(System.Exception)
+leave.s IL_0013: ret
+ret 
+METHOD UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldfld System.Single UnityEngine.Vector2::x
+ldarg.1 
+mul 
+add 
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_n
+ldfld System.Single UnityEngine.Vector2::x
+ldarg.2 
+mul 
+add 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldfld System.Single UnityEngine.Vector2::y
+ldarg.1 
+mul 
+add 
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_n
+ldfld System.Single UnityEngine.Vector2::y
+ldarg.2 
+mul 
+add 
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::DrawClaw()
+ldc.r4 2,0594885
+stloc.0 
+ldarg.0 
+ldloc.0 
+call System.Single UnityEngine.Mathf::Cos(System.Single)
+ldloc.0 
+call System.Single UnityEngine.Mathf::Sin(System.Single)
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+stfld UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldarg.0 
+ldc.r4 0
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldfld System.Single UnityEngine.Vector2::y
+sub 
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldfld System.Single UnityEngine.Vector2::x
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+stfld UnityEngine.Vector2 Durango.UI.OffServerTransition::_n
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldfld System.Single UnityEngine.Vector2::x
+mul 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_u
+ldfld System.Single UnityEngine.Vector2::y
+mul 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+add 
+stloc.1 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_n
+ldfld System.Single UnityEngine.Vector2::x
+mul 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldarg.0 
+ldflda UnityEngine.Vector2 Durango.UI.OffServerTransition::_n
+ldfld System.Single UnityEngine.Vector2::y
+mul 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+add 
+stloc.2 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+stloc.3 
+ldloc.2 
+ldc.r4 4
+div 
+stloc.s V_4
+ldloc.1 
+ldc.r4 0,2
+mul 
+stloc.s V_5
+ldloc.1 
+ldc.r4 0,5
+mul 
+ldloc.s V_5
+add 
+ldc.r4 12
+add 
+stloc.s V_6
+ldloc.1 
+ldc.r4 46
+div 
+stloc.s V_7
+ldc.r4 0
+ldloc.s V_6
+sub 
+ldloc.1 
+ldc.r4 0,4
+mul 
+sub 
+ldloc.s V_6
+ldc.r4 4
+add 
+stloc.s V_8
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 Durango.UI.OffServerTransition::_samples
+stloc.s V_9
+br.s IL_012c: ldloc.s V_9
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_samples
+stloc.s V_10
+ldloc.s V_10
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerTransition::_samples
+ldloc.s V_10
+ldloc.s V_9
+stelem.r4 
+ldloc.s V_9
+ldloc.s V_7
+add 
+stloc.s V_9
+ldloc.s V_9
+ldloc.s V_8
+bge.un.s IL_013f: ldarg.0
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_samples
+ldc.i4 159
+blt.s IL_0108: ldarg.0
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_samples
+stloc.s V_10
+ldloc.s V_10
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerTransition::_samples
+ldloc.s V_10
+ldloc.s V_8
+stelem.r4 
+call System.Void Durango.UI.OffServerTransition::EnsureJag()
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+stloc.s V_11
+ldloc.s V_11
+ldc.i4.1 
+beq.s IL_017b: ldarg.0
+ldloc.s V_11
+ldc.i4.2 
+beq IL_0220: ldarg.0
+br IL_03a3: ldarg.0
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+stloc.s V_12
+ldc.i4.0 
+stloc.s V_13
+br.s IL_01b2: ldloc.s V_13
+ldarg.0 
+ldloc.s V_13
+ldloc.s V_12
+ldc.r4 0,85
+ldloc.s V_4
+ldloc.s V_5
+ldloc.s V_6
+ldloc.3 
+ldloc.s V_4
+ldc.r4 0,5
+mul 
+ldc.r4 2
+add 
+call System.Void Durango.UI.OffServerTransition::Gash(System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)
+ldloc.s V_13
+ldc.i4.1 
+add 
+stloc.s V_13
+ldloc.s V_13
+ldc.i4.4 
+blt.s IL_0188: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+call UnityEngine.Texture2D UnityEngine.Texture2D::get_whiteTexture()
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldsfld UnityEngine.Color Durango.UI.OffServerTransition::ClawDark
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldc.i4.0 
+stloc.s V_14
+br.s IL_0207: ldloc.s V_14
+ldarg.0 
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_lo
+ldloc.s V_14
+ldelem.ref 
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_hi
+ldloc.s V_14
+ldelem.ref 
+call System.Void Durango.UI.OffServerTransition::Band(System.Single[],System.Single[])
+ldloc.s V_14
+ldc.i4.1 
+add 
+stloc.s V_14
+ldloc.s V_14
+ldc.i4.4 
+blt.s IL_01e9: ldarg.0
+call System.Void UnityEngine.GL::End()
+ldarg.0 
+ldloc.s V_12
+ldloc.s V_6
+ldloc.1 
+ldloc.3 
+ldloc.s V_4
+call System.Void Durango.UI.OffServerTransition::Streaks(System.Single,System.Single,System.Single,System.Single,System.Single)
+ret 
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+call UnityEngine.Texture2D UnityEngine.Texture2D::get_whiteTexture()
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldsfld UnityEngine.Color Durango.UI.OffServerTransition::ClawDark
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldarg.0 
+ldc.r4 -2
+ldc.r4 -2
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 2
+add 
+ldc.r4 -2
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 2
+add 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 2
+add 
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldc.r4 -2
+ldc.r4 -2
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 2
+add 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 2
+add 
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldc.r4 -2
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 2
+add 
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+call System.Void UnityEngine.GL::End()
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldc.r4 0,5
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stloc.s V_15
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::LogoSize()
+ldc.r4 0,001
+ldloc.s V_15
+call System.Single Durango.UI.OffServerTransition::EaseOutBack(System.Single)
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+mul 
+stloc.s V_16
+ldloca.s V_17
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldloc.s V_16
+ldc.r4 0,5
+mul 
+sub 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+ldloc.s V_16
+ldc.r4 0,5
+mul 
+sub 
+ldloc.s V_16
+ldloc.s V_16
+call System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldloc.s V_17
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+call System.Void Durango.UI.OffServerTransition::ClipRect(UnityEngine.Rect,UnityEngine.Vector2,UnityEngine.Vector2)
+ldarg.0 
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+ldc.r4 1
+ldc.r4 1
+ldc.r4 1
+ldloc.s V_15
+ldc.r4 3
+mul 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldloc.s V_17
+call System.Void Durango.UI.OffServerTransition::DrawPolygon(UnityEngine.Texture,UnityEngine.Color,UnityEngine.Vector2,UnityEngine.Rect)
+ret 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+stloc.s V_18
+ldc.i4.0 
+stloc.s V_20
+br.s IL_03da: ldloc.s V_20
+ldarg.0 
+ldloc.s V_20
+ldloc.s V_18
+ldc.r4 1
+ldloc.s V_4
+ldloc.s V_5
+ldloc.s V_6
+ldloc.3 
+ldloc.s V_4
+ldc.r4 0,5
+mul 
+ldc.r4 1
+add 
+call System.Void Durango.UI.OffServerTransition::Gash(System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)
+ldloc.s V_20
+ldc.i4.1 
+add 
+stloc.s V_20
+ldloc.s V_20
+ldc.i4.4 
+blt.s IL_03b0: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+call UnityEngine.Texture2D UnityEngine.Texture2D::get_whiteTexture()
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldsfld UnityEngine.Color Durango.UI.OffServerTransition::ClawDark
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldc.i4.0 
+stloc.s V_21
+br.s IL_042b: ldloc.s V_21
+ldarg.0 
+ldloc.s V_21
+ldloc.2 
+ldc.i4.0 
+ldloca.s V_22
+initobj UnityEngine.Rect
+ldloc.s V_22
+call System.Void Durango.UI.OffServerTransition::Between(System.Int32,System.Single,System.Boolean,UnityEngine.Rect)
+ldloc.s V_21
+ldc.i4.1 
+add 
+stloc.s V_21
+ldloc.s V_21
+ldc.i4.4 
+ble.s IL_0411: ldarg.0
+call System.Void UnityEngine.GL::End()
+ldc.r4 1
+ldc.r4 0
+ldc.r4 1
+ldc.r4 0,45
+ldc.r4 0,75
+ldloc.s V_18
+ldc.r4 1
+div 
+call System.Single UnityEngine.Mathf::InverseLerp(System.Single,System.Single,System.Single)
+call System.Single UnityEngine.Mathf::SmoothStep(System.Single,System.Single,System.Single)
+sub 
+stloc.s V_19
+ldloc.s V_19
+ldc.r4 0,003
+ble.un IL_050c: ldarg.0
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::LogoSize()
+stloc.s V_23
+ldloca.s V_24
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldloc.s V_23
+ldc.r4 0,5
+mul 
+sub 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+ldloc.s V_23
+ldc.r4 0,5
+mul 
+sub 
+ldloc.s V_23
+ldloc.s V_23
+call System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldc.r4 1
+ldc.r4 1
+ldc.r4 1
+ldloc.s V_19
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldc.i4.0 
+stloc.s V_25
+br.s IL_0502: ldloc.s V_25
+ldarg.0 
+ldloc.s V_25
+ldloc.2 
+ldc.i4.1 
+ldloc.s V_24
+call System.Void Durango.UI.OffServerTransition::Between(System.Int32,System.Single,System.Boolean,UnityEngine.Rect)
+ldloc.s V_25
+ldc.i4.1 
+add 
+stloc.s V_25
+ldloc.s V_25
+ldc.i4.4 
+ble.s IL_04f0: ldarg.0
+call System.Void UnityEngine.GL::End()
+ldarg.0 
+ldloc.s V_18
+ldloc.s V_6
+ldloc.1 
+ldloc.3 
+ldloc.s V_4
+call System.Void Durango.UI.OffServerTransition::Streaks(System.Single,System.Single,System.Single,System.Single,System.Single)
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::EnsureJag()
+ldsfld System.Single[] Durango.UI.OffServerTransition::_jag
+brfalse.s IL_0008: ldc.i4 1280
+ret 
+ldc.i4 1280
+newarr System.Single
+stsfld System.Single[] Durango.UI.OffServerTransition::_jag
+ldc.i4 4102026
+newobj System.Void System.Random::.ctor(System.Int32)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0038: ldloc.1
+ldsfld System.Single[] Durango.UI.OffServerTransition::_jag
+ldloc.1 
+ldloc.0 
+callvirt System.Double System.Random::NextDouble()
+conv.r4 
+stelem.r4 
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldsfld System.Single[] Durango.UI.OffServerTransition::_jag
+ldlen 
+conv.i4 
+blt.s IL_0026: ldsfld System.Single[] Durango.UI.OffServerTransition::_jag
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::ClawState(System.Int32,System.Single,System.Single,System.Single,System.Single&,System.Single&,System.Single&)
+ldsfld System.Int32[] Durango.UI.OffServerTransition::ClawRank
+ldarg.1 
+ldelem.i4 
+conv.r4 
+ldc.r4 0,045
+mul 
+stloc.0 
+ldarg.2 
+ldloc.0 
+sub 
+ldc.r4 0,16
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stloc.1 
+ldarg.s sTip
+ldc.r4 0
+ldarg.s half
+sub 
+ldc.r4 2
+ldarg.s half
+mul 
+ldloc.1 
+call System.Single Durango.UI.OffServerTransition::EaseInOutQuad(System.Single)
+mul 
+add 
+stind.r4 
+ldloc.0 
+ldc.r4 0,16
+add 
+ldc.r4 0,05
+add 
+stloc.2 
+ldarg.s rip
+ldarg.2 
+ldloc.2 
+sub 
+ldc.r4 0,01
+ldarg.3 
+ldloc.2 
+sub 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stind.r4 
+ldarg.s heat
+ldc.r4 1
+ldarg.2 
+ldloc.0 
+sub 
+ldc.r4 0,16
+sub 
+ldc.r4 0,22
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+sub 
+stind.r4 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Gash(System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldarg.1 
+ldarg.2 
+ldarg.3 
+ldarg.s half
+ldloca.s V_0
+ldloca.s V_1
+ldloca.s V_2
+call System.Void Durango.UI.OffServerTransition::ClawState(System.Int32,System.Single,System.Single,System.Single,System.Single&,System.Single&,System.Single&)
+ldarg.1 
+conv.r4 
+ldc.r4 1,5
+sub 
+ldarg.s spacing
+mul 
+stloc.3 
+ldc.r4 1,5
+ldarg.s m
+ldc.r4 0,004
+mul 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+ldarg.s widthEnd
+ldloc.1 
+call System.Single Durango.UI.OffServerTransition::EaseInOutCubic(System.Single)
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+stloc.s V_4
+ldarg.s spacing
+ldc.r4 0,08
+mul 
+ldc.r4 3,1415927
+ldloc.1 
+mul 
+call System.Single UnityEngine.Mathf::Sin(System.Single)
+mul 
+ldc.r4 1,5
+ldc.r4 1
+ldloc.1 
+sub 
+mul 
+add 
+stloc.s V_5
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_lo
+ldarg.1 
+ldelem.ref 
+stloc.s V_6
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_hi
+ldarg.1 
+ldelem.ref 
+stloc.s V_7
+ldarg.1 
+ldc.i4.2 
+mul 
+ldc.i4 160
+mul 
+stloc.s V_8
+ldarg.1 
+ldc.i4.2 
+mul 
+ldc.i4.1 
+add 
+ldc.i4 160
+mul 
+stloc.s V_9
+ldc.i4.0 
+stloc.s V_10
+br IL_011b: ldloc.s V_10
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.s V_10
+ldelem.r4 
+stloc.s V_11
+ldloc.s V_11
+ldloc.0 
+ble.s IL_00ae: ldloc.s V_4
+ldc.r4 0
+br.s IL_00cc: stloc.s V_12
+ldloc.s V_4
+ldc.r4 1
+ldloc.0 
+ldloc.s V_11
+sub 
+ldarg.s tipLen
+div 
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+ldc.r4 0,6
+call System.Single UnityEngine.Mathf::Pow(System.Single,System.Single)
+mul 
+stloc.s V_12
+ldc.r4 1
+ldloc.s V_12
+ldc.r4 3
+div 
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+ldloc.s V_5
+mul 
+stloc.s V_13
+ldloc.s V_6
+ldloc.s V_10
+ldloc.3 
+ldloc.s V_12
+sub 
+ldloc.s V_13
+ldsfld System.Single[] Durango.UI.OffServerTransition::_jag
+ldloc.s V_8
+ldloc.s V_10
+add 
+ldelem.r4 
+mul 
+sub 
+stelem.r4 
+ldloc.s V_7
+ldloc.s V_10
+ldloc.3 
+ldloc.s V_12
+add 
+ldloc.s V_13
+ldsfld System.Single[] Durango.UI.OffServerTransition::_jag
+ldloc.s V_9
+ldloc.s V_10
+add 
+ldelem.r4 
+mul 
+add 
+stelem.r4 
+ldloc.s V_10
+ldc.i4.1 
+add 
+stloc.s V_10
+ldloc.s V_10
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_samples
+blt IL_0097: ldarg.0
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Band(System.Single[],System.Single[])
+ldc.i4.0 
+stloc.0 
+br IL_00a7: ldloc.0
+ldarg.2 
+ldloc.0 
+ldelem.r4 
+ldarg.1 
+ldloc.0 
+ldelem.r4 
+sub 
+ldc.r4 0,01
+bge.un.s IL_0027: ldarg.0
+ldarg.2 
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+ldarg.1 
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+sub 
+ldc.r4 0,01
+blt.s IL_00a3: ldloc.0
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldelem.r4 
+ldarg.1 
+ldloc.0 
+ldelem.r4 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.1 
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+ldarg.1 
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.2 
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+ldarg.2 
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.3 
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldelem.r4 
+ldarg.2 
+ldloc.0 
+ldelem.r4 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_4
+ldarg.0 
+ldloc.1 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.2 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.3 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.1 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.3 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_4
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_samples
+ldc.i4.1 
+sub 
+blt IL_0007: ldarg.2
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Between(System.Int32,System.Single,System.Boolean,UnityEngine.Rect)
+ldc.i4.0 
+stloc.0 
+br IL_02ab: ldloc.0
+ldarg.1 
+brfalse.s IL_0018: ldc.r4 0
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_hi
+ldarg.1 
+ldc.i4.1 
+sub 
+ldelem.ref 
+ldloc.0 
+ldelem.r4 
+br.s IL_001f: stloc.1
+ldc.r4 0
+ldarg.2 
+sub 
+stloc.1 
+ldarg.1 
+brfalse.s IL_0033: ldc.r4 0
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_hi
+ldarg.1 
+ldc.i4.1 
+sub 
+ldelem.ref 
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+br.s IL_003a: stloc.2
+ldc.r4 0
+ldarg.2 
+sub 
+stloc.2 
+ldarg.1 
+ldc.i4.4 
+beq.s IL_004b: ldarg.2
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_lo
+ldarg.1 
+ldelem.ref 
+ldloc.0 
+ldelem.r4 
+br.s IL_004c: stloc.3
+ldarg.2 
+stloc.3 
+ldarg.1 
+ldc.i4.4 
+beq.s IL_005f: ldarg.2
+ldarg.0 
+ldfld System.Single[][] Durango.UI.OffServerTransition::_lo
+ldarg.1 
+ldelem.ref 
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+br.s IL_0060: stloc.s V_4
+ldarg.2 
+stloc.s V_4
+ldloc.3 
+ldloc.1 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.3 
+ldloc.s V_4
+ldloc.2 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.s V_4
+ldloc.3 
+ldloc.1 
+sub 
+ldc.r4 0,01
+bge.un.s IL_008c: ldarg.0
+ldloc.s V_4
+ldloc.2 
+sub 
+ldc.r4 0,01
+blt IL_02a7: ldloc.0
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldelem.r4 
+ldloc.1 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_5
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+ldloc.2 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_6
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldc.i4.1 
+add 
+ldelem.r4 
+ldloc.s V_4
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_7
+ldarg.0 
+ldarg.0 
+ldfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldloc.0 
+ldelem.r4 
+ldloc.3 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_8
+ldarg.3 
+brtrue.s IL_010d: ldloc.s V_5
+ldarg.0 
+ldloc.s V_5
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_6
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_7
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_5
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_7
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_8
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+br IL_02a7: ldloc.0
+ldloc.s V_5
+ldfld System.Single UnityEngine.Vector2::x
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector2::x
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector2::x
+ldloc.s V_8
+ldfld System.Single UnityEngine.Vector2::x
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+stloc.s V_9
+ldloc.s V_5
+ldfld System.Single UnityEngine.Vector2::x
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector2::x
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector2::x
+ldloc.s V_8
+ldfld System.Single UnityEngine.Vector2::x
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+ldloc.s V_5
+ldfld System.Single UnityEngine.Vector2::y
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector2::y
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector2::y
+ldloc.s V_8
+ldfld System.Single UnityEngine.Vector2::y
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+stloc.s V_10
+ldloc.s V_5
+ldfld System.Single UnityEngine.Vector2::y
+ldloc.s V_6
+ldfld System.Single UnityEngine.Vector2::y
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+ldloc.s V_7
+ldfld System.Single UnityEngine.Vector2::y
+ldloc.s V_8
+ldfld System.Single UnityEngine.Vector2::y
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.s V_11
+ldarga.s logo
+call System.Single UnityEngine.Rect::get_xMin()
+ble IL_02a7: ldloc.0
+ldloc.s V_9
+ldarga.s logo
+call System.Single UnityEngine.Rect::get_xMax()
+bge IL_02a7: ldloc.0
+ldloc.s V_11
+ldarga.s logo
+call System.Single UnityEngine.Rect::get_yMin()
+ble IL_02a7: ldloc.0
+ldloc.s V_10
+ldarga.s logo
+call System.Single UnityEngine.Rect::get_yMax()
+bge IL_02a7: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Clear()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.s V_5
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.s V_6
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.s V_7
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.s V_8
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldarg.s logo
+call System.Void Durango.UI.OffServerTransition::ClipPolyToRect(UnityEngine.Rect)
+ldc.i4.1 
+stloc.s V_12
+br.s IL_0296: ldloc.s V_12
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldarg.s logo
+call System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.s V_12
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldarg.s logo
+call System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.s V_12
+ldc.i4.1 
+add 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldarg.s logo
+call System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldloc.s V_12
+ldc.i4.1 
+add 
+stloc.s V_12
+ldloc.s V_12
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+ldc.i4.1 
+sub 
+blt.s IL_0241: ldarg.0
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_samples
+ldc.i4.1 
+sub 
+blt IL_0007: ldarg.1
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::ClipPolyToRect(UnityEngine.Rect)
+ldc.i4.0 
+stloc.0 
+br IL_00de: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Clear()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::AddRange(System.Collections.Generic.IEnumerable`1<!0>)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Clear()
+ldc.i4.0 
+stloc.1 
+br IL_00c9: ldloc.1
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldloc.1 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+stloc.2 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldloc.1 
+ldc.i4.1 
+add 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+rem 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+stloc.3 
+ldloc.2 
+ldarg.1 
+ldloc.0 
+call System.Single Durango.UI.OffServerTransition::Inside(UnityEngine.Vector2,UnityEngine.Rect,System.Int32)
+stloc.s V_4
+ldloc.3 
+ldarg.1 
+ldloc.0 
+call System.Single Durango.UI.OffServerTransition::Inside(UnityEngine.Vector2,UnityEngine.Rect,System.Int32)
+stloc.s V_5
+ldloc.s V_4
+ldc.r4 0
+blt.un.s IL_0086: ldloc.s V_4
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.2 
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldloc.s V_4
+ldc.r4 0
+clt.un 
+ldc.i4.0 
+ceq 
+ldloc.s V_5
+ldc.r4 0
+clt.un 
+ldc.i4.0 
+ceq 
+beq.s IL_00c5: ldloc.1
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.2 
+ldloc.3 
+ldloc.2 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Subtraction(UnityEngine.Vector2,UnityEngine.Vector2)
+ldloc.s V_4
+ldloc.s V_4
+ldloc.s V_5
+sub 
+div 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Multiply(UnityEngine.Vector2,System.Single)
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Addition(UnityEngine.Vector2,UnityEngine.Vector2)
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+blt IL_0035: ldarg.0
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldc.i4.4 
+bge.s IL_00f3: ret
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+ldc.i4.3 
+bge IL_0007: ldarg.0
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::Inside(UnityEngine.Vector2,UnityEngine.Rect,System.Int32)
+ldarg.2 
+switch Mono.Cecil.Cil.Instruction[]
+br.s IL_0041: ldarga.s r
+ldarg.0 
+ldfld System.Single UnityEngine.Vector2::x
+ldarga.s r
+call System.Single UnityEngine.Rect::get_xMin()
+sub 
+ret 
+ldarga.s r
+call System.Single UnityEngine.Rect::get_xMax()
+ldarg.0 
+ldfld System.Single UnityEngine.Vector2::x
+sub 
+ret 
+ldarg.0 
+ldfld System.Single UnityEngine.Vector2::y
+ldarga.s r
+call System.Single UnityEngine.Rect::get_yMin()
+sub 
+ret 
+ldarga.s r
+call System.Single UnityEngine.Rect::get_yMax()
+ldarg.0 
+ldfld System.Single UnityEngine.Vector2::y
+sub 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Streaks(System.Single,System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.1 
+beq.s IL_0010: ldc.r4 0.85
+ldc.r4 1
+br.s IL_0015: stloc.0
+ldc.r4 0,85
+stloc.0 
+ldarg.3 
+ldc.r4 0,55
+mul 
+stloc.1 
+ldarg.s m
+ldc.r4 0,006
+mul 
+stloc.2 
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+call UnityEngine.Texture2D UnityEngine.Texture2D::get_whiteTexture()
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldc.i4.0 
+stloc.3 
+br IL_020a: ldloc.3
+ldarg.0 
+ldloc.3 
+ldarg.1 
+ldloc.0 
+ldarg.2 
+ldloca.s V_4
+ldloca.s V_5
+ldloca.s V_6
+call System.Void Durango.UI.OffServerTransition::ClawState(System.Int32,System.Single,System.Single,System.Single,System.Single&,System.Single&,System.Single&)
+ldloc.s V_6
+ldc.r4 0,01
+ble IL_0206: ldloc.3
+ldloc.s V_4
+ldc.r4 0
+ldarg.2 
+sub 
+ble IL_0206: ldloc.3
+ldloc.3 
+conv.r4 
+ldc.r4 1,5
+sub 
+ldarg.s spacing
+mul 
+stloc.s V_7
+ldc.r4 0
+ldarg.2 
+sub 
+ldloc.s V_4
+ldloc.1 
+sub 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.s V_8
+ldc.i4.0 
+stloc.s V_9
+br IL_01fe: ldloc.s V_9
+ldc.i4.0 
+stloc.s V_10
+br IL_01ef: ldloc.s V_10
+ldloc.s V_8
+ldloc.s V_4
+ldloc.s V_10
+conv.r4 
+ldc.r4 24
+div 
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+stloc.s V_11
+ldloc.s V_8
+ldloc.s V_4
+ldloc.s V_10
+ldc.i4.1 
+add 
+conv.r4 
+ldc.r4 24
+div 
+call System.Single UnityEngine.Mathf::Lerp(System.Single,System.Single,System.Single)
+stloc.s V_12
+ldloc.s V_9
+ldloc.s V_11
+ldloc.s V_4
+ldloc.1 
+ldloc.2 
+call System.Single Durango.UI.OffServerTransition::StreakWidth(System.Int32,System.Single,System.Single,System.Single,System.Single)
+stloc.s V_13
+ldloc.s V_9
+ldloc.s V_12
+ldloc.s V_4
+ldloc.1 
+ldloc.2 
+call System.Single Durango.UI.OffServerTransition::StreakWidth(System.Int32,System.Single,System.Single,System.Single,System.Single)
+stloc.s V_14
+ldloc.s V_9
+ldloc.s V_11
+ldloc.s V_8
+sub 
+ldc.r4 1
+ldloc.s V_4
+ldloc.s V_8
+sub 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+div 
+ldloc.s V_6
+call UnityEngine.Color Durango.UI.OffServerTransition::StreakColor(System.Int32,System.Single,System.Single)
+stloc.s V_15
+ldloc.s V_9
+ldloc.s V_12
+ldloc.s V_8
+sub 
+ldc.r4 1
+ldloc.s V_4
+ldloc.s V_8
+sub 
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+div 
+ldloc.s V_6
+call UnityEngine.Color Durango.UI.OffServerTransition::StreakColor(System.Int32,System.Single,System.Single)
+stloc.s V_16
+ldloc.s V_9
+brfalse.s IL_013d: ldc.r4 0
+ldc.r4 0,35
+br.s IL_0142: stloc.s V_17
+ldc.r4 0
+stloc.s V_17
+ldc.i4.m1 
+stloc.s V_18
+br IL_01e1: ldloc.s V_18
+ldarg.0 
+ldloc.s V_11
+ldloc.s V_7
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_19
+ldarg.0 
+ldloc.s V_12
+ldloc.s V_7
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_20
+ldarg.0 
+ldloc.s V_12
+ldloc.s V_7
+ldloc.s V_18
+conv.r4 
+ldloc.s V_14
+mul 
+add 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_21
+ldarg.0 
+ldloc.s V_11
+ldloc.s V_7
+ldloc.s V_18
+conv.r4 
+ldloc.s V_13
+mul 
+add 
+call UnityEngine.Vector2 Durango.UI.OffServerTransition::At(System.Single,System.Single)
+stloc.s V_22
+ldarg.0 
+ldloc.s V_19
+ldloc.s V_15
+call System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldarg.0 
+ldloc.s V_20
+ldloc.s V_16
+call System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldarg.0 
+ldloc.s V_21
+ldloc.s V_16
+ldloc.s V_17
+call UnityEngine.Color Durango.UI.OffServerTransition::Fade(UnityEngine.Color,System.Single)
+call System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldarg.0 
+ldloc.s V_19
+ldloc.s V_15
+call System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldarg.0 
+ldloc.s V_21
+ldloc.s V_16
+ldloc.s V_17
+call UnityEngine.Color Durango.UI.OffServerTransition::Fade(UnityEngine.Color,System.Single)
+call System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldarg.0 
+ldloc.s V_22
+ldloc.s V_15
+ldloc.s V_17
+call UnityEngine.Color Durango.UI.OffServerTransition::Fade(UnityEngine.Color,System.Single)
+call System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldloc.s V_18
+ldc.i4.2 
+add 
+stloc.s V_18
+ldloc.s V_18
+ldc.i4.1 
+ble IL_014c: ldarg.0
+ldloc.s V_10
+ldc.i4.1 
+add 
+stloc.s V_10
+ldloc.s V_10
+ldc.i4.s 24
+blt IL_00aa: ldloc.s V_8
+ldloc.s V_9
+ldc.i4.1 
+add 
+stloc.s V_9
+ldloc.s V_9
+ldc.i4.2 
+blt IL_00a2: ldc.i4.0
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldc.i4.4 
+blt IL_0051: ldarg.0
+call System.Void UnityEngine.GL::End()
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::StreakWidth(System.Int32,System.Single,System.Single,System.Single,System.Single)
+ldc.r4 1
+ldarg.2 
+ldarg.1 
+sub 
+ldarg.3 
+ldc.r4 0,12
+mul 
+div 
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+stloc.0 
+ldarg.0 
+brfalse.s IL_0031: ldarg.s halfW
+ldarg.s halfW
+ldc.r4 0,9
+mul 
+ldloc.0 
+call System.Single UnityEngine.Mathf::Sqrt(System.Single)
+mul 
+ldc.r4 0,6
+ldloc.0 
+mul 
+add 
+ret 
+ldarg.s halfW
+ldc.r4 3,2
+mul 
+ldloc.0 
+call System.Single UnityEngine.Mathf::Sqrt(System.Single)
+mul 
+ldc.r4 2
+ldloc.0 
+mul 
+add 
+ret 
+METHOD UnityEngine.Color Durango.UI.OffServerTransition::StreakColor(System.Int32,System.Single,System.Single)
+ldarg.0 
+ldc.i4.1 
+bne.un.s IL_0039: ldarg.1
+ldc.r4 1
+ldc.r4 0,6666667
+ldc.r4 0,3529412
+ldc.r4 0
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldc.r4 1
+ldc.r4 0,98039216
+ldc.r4 0,9254902
+ldarg.2 
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.1 
+call UnityEngine.Color UnityEngine.Color::Lerp(UnityEngine.Color,UnityEngine.Color,System.Single)
+ret 
+ldarg.1 
+ldc.r4 0,7
+bge.un.s IL_0084: ldc.r4 1
+ldc.r4 1
+ldc.r4 0,3529412
+ldc.r4 0,11764706
+ldc.r4 0,1
+ldarg.2 
+mul 
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldc.r4 1
+ldc.r4 0,5019608
+ldc.r4 0,1882353
+ldc.r4 0,55
+ldarg.2 
+mul 
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.1 
+ldc.r4 0,7
+div 
+call UnityEngine.Color UnityEngine.Color::Lerp(UnityEngine.Color,UnityEngine.Color,System.Single)
+ret 
+ldc.r4 1
+ldc.r4 0,5019608
+ldc.r4 0,1882353
+ldc.r4 0,55
+ldarg.2 
+mul 
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldc.r4 1
+ldc.r4 0,9254902
+ldc.r4 0,78431374
+ldc.r4 0,95
+ldarg.2 
+mul 
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.1 
+ldc.r4 0,7
+sub 
+ldc.r4 0,3
+div 
+call UnityEngine.Color UnityEngine.Color::Lerp(UnityEngine.Color,UnityEngine.Color,System.Single)
+ret 
+METHOD UnityEngine.Color Durango.UI.OffServerTransition::Fade(UnityEngine.Color,System.Single)
+ldarga.s c
+ldflda System.Single UnityEngine.Color::a
+dup 
+ldind.r4 
+ldarg.1 
+mul 
+stind.r4 
+ldarg.0 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Shaded(UnityEngine.Vector2,UnityEngine.Color)
+ldarg.2 
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldc.r4 0,5
+ldc.r4 0,5
+call System.Void UnityEngine.GL::TexCoord2(System.Single,System.Single)
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::x
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::y
+sub 
+ldc.r4 0
+call System.Void UnityEngine.GL::Vertex3(System.Single,System.Single,System.Single)
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::EaseInOutQuad(System.Single)
+ldarg.0 
+ldc.r4 0,5
+blt.s IL_0030: ldc.r4 2
+ldc.r4 1
+ldc.r4 -2
+ldarg.0 
+mul 
+ldc.r4 2
+add 
+ldc.r4 -2
+ldarg.0 
+mul 
+ldc.r4 2
+add 
+mul 
+ldc.r4 0,5
+mul 
+sub 
+ret 
+ldc.r4 2
+ldarg.0 
+mul 
+ldarg.0 
+mul 
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::EaseInOutCubic(System.Single)
+ldarg.0 
+ldc.r4 0,5
+bge.un.s IL_0014: ldc.r4 -2
+ldc.r4 4
+ldarg.0 
+mul 
+ldarg.0 
+mul 
+ldarg.0 
+mul 
+ret 
+ldc.r4 -2
+ldarg.0 
+mul 
+ldc.r4 2
+add 
+stloc.0 
+ldc.r4 1
+ldloc.0 
+ldloc.0 
+mul 
+ldloc.0 
+mul 
+ldc.r4 0,5
+mul 
+sub 
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::get_InLength()
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_claw
+brtrue.s IL_000e: ldc.r4 0.85
+ldc.r4 0,92
+ret 
+ldc.r4 0,85
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::get_PopLength()
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_claw
+brtrue.s IL_000e: ldc.r4 0.5
+ldc.r4 0,52
+ret 
+ldc.r4 0,5
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::get_OutLength()
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_claw
+brtrue.s IL_000e: ldc.r4 1
+ldc.r4 1,16
+ret 
+ldc.r4 1
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Bootstrap()
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000e: ldstr "OffServerTransition"
+ret 
+ldstr OffServerTransition
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<Durango.UI.OffServerTransition>()
+stsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ret 
+METHOD System.Boolean Durango.UI.OffServerTransition::get_Busy()
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001b: ldc.i4.0
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.0 
+cgt.un 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Cover(System.Action)
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0019: ldarg.0
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+callvirt System.Boolean Durango.UI.OffServerTransition::EnsureAssets()
+brtrue.s IL_0023: ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldarg.0 
+brfalse.s IL_0022: ret
+ldarg.0 
+callvirt System.Void System.Action::Invoke()
+ret 
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldarg.0 
+callvirt System.Void Durango.UI.OffServerTransition::CoverInternal(System.Action)
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Reveal()
+call System.Void Durango.UI.OffServerTransition::Cut()
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Cut()
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0019: ret
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+callvirt System.Boolean Durango.UI.OffServerTransition::EnsureAssets()
+brtrue.s IL_001a: ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+ret 
+ldsfld Durango.UI.OffServerTransition Durango.UI.OffServerTransition::_instance
+stloc.0 
+ldloc.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+brfalse.s IL_0031: ldloc.0
+ldloc.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.3 
+bne.un.s IL_0038: ldloc.0
+ldloc.0 
+ldnull 
+callvirt System.Void Durango.UI.OffServerTransition::CoverInternal(System.Action)
+ldloc.0 
+ldc.i4.1 
+stfld System.Boolean Durango.UI.OffServerTransition::_revealRequested
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::CoverInternal(System.Action)
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.2 
+bne.un.s IL_001b: ldarg.0
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_coveredFired
+brfalse.s IL_001b: ldarg.0
+ldarg.1 
+brfalse.s IL_001a: ret
+ldarg.1 
+callvirt System.Void System.Action::Invoke()
+ret 
+ldarg.0 
+ldarg.0 
+ldfld System.Action Durango.UI.OffServerTransition::_onCovered
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action
+stfld System.Action Durango.UI.OffServerTransition::_onCovered
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.2 
+bne.un.s IL_003c: ldarg.0
+ret 
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.UI.OffServerTransition::_revealRequested
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.1 
+beq.s IL_0053: ret
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.UI.OffServerTransition::SetPhase(Durango.UI.OffServerTransition/Phase)
+ret 
+METHOD System.Boolean Durango.UI.OffServerTransition::EnsureAssets()
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002c: ldarg.0
+ldarg.0 
+ldstr offserver_transition_logo
+call !!0 UnityEngine.Resources::Load<UnityEngine.Texture2D>(System.String)
+dup 
+brtrue.s IL_0027: stfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+pop 
+ldstr offserver_transition_icon
+call !!0 UnityEngine.Resources::Load<UnityEngine.Texture2D>(System.String)
+stfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0067: ldarg.0
+ldstr Sprites/Default
+call UnityEngine.Shader UnityEngine.Shader::Find(System.String)
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0067: ldarg.0
+ldarg.0 
+ldloc.0 
+newobj System.Void UnityEngine.Material::.ctor(UnityEngine.Shader)
+stfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.s 61
+callvirt System.Void UnityEngine.Object::set_hideFlags(UnityEngine.HideFlags)
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0082: ldc.i4.0
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::SetPhase(Durango.UI.OffServerTransition/Phase)
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+brtrue.s IL_002c: ldarg.1
+ldarg.1 
+brfalse.s IL_002c: ldarg.1
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+ldc.i4 -2147483648
+bne.un.s IL_002c: ldarg.1
+ldarg.0 
+call System.Int32 UnityEngine.Application::get_targetFrameRate()
+stfld System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+ldc.i4.s 60
+call System.Void UnityEngine.Application::set_targetFrameRate(System.Int32)
+br.s IL_0052: ldarg.1
+ldarg.1 
+brtrue.s IL_0052: ldarg.1
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+ldc.i4 -2147483648
+beq.s IL_0052: ldarg.1
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+call System.Void UnityEngine.Application::set_targetFrameRate(System.Int32)
+ldarg.0 
+ldc.i4 -2147483648
+stfld System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+ldarg.1 
+ldc.i4.2 
+bne.un.s IL_005d: ldarg.1
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.UI.OffServerTransition::_coveredFired
+ldarg.1 
+ldc.i4.1 
+bne.un.s IL_00a9: ldarg.1
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.1 
+beq.s IL_00a9: ldarg.1
+ldarg.0 
+ldsfld System.Boolean Durango.UI.OffServerTransition::_clawOnce
+brtrue.s IL_0079: ldc.i4.1
+call System.Boolean Durango.UI.OffServerTransition::get_ClawEnabled()
+br.s IL_007a: stfld System.Boolean Durango.UI.OffServerTransition::_claw
+ldc.i4.1 
+stfld System.Boolean Durango.UI.OffServerTransition::_claw
+ldc.i4.0 
+stsfld System.Boolean Durango.UI.OffServerTransition::_clawOnce
+ldarg.0 
+ldarg.0 
+ldc.i4.0 
+dup 
+stloc.0 
+stfld System.Int32 Durango.UI.OffServerTransition::_openFrames
+ldloc.0 
+stfld System.Int32 Durango.UI.OffServerTransition::_closeFrames
+ldarg.0 
+ldarg.0 
+ldc.r4 0
+dup 
+stloc.1 
+stfld System.Single Durango.UI.OffServerTransition::_openWorst
+ldloc.1 
+stfld System.Single Durango.UI.OffServerTransition::_closeWorst
+ldarg.1 
+brtrue IL_0135: ldarg.0
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.3 
+bne.un.s IL_0135: ldarg.0
+ldstr [OffServerTransition] {0} sting · close {1} frames worst {2:0} ms · open {3} frames worst {4:0} ms · cap {5}
+ldc.i4.6 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_claw
+brtrue.s IL_00d4: ldstr "claw"
+ldstr D
+br.s IL_00d9: stelem.ref
+ldstr claw
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_closeFrames
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.2 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_closeWorst
+ldc.r4 1000
+mul 
+box System.Single
+stelem.ref 
+dup 
+ldc.i4.3 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_openFrames
+box System.Int32
+stelem.ref 
+dup 
+ldc.i4.4 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_openWorst
+ldc.r4 1000
+mul 
+box System.Single
+stelem.ref 
+dup 
+ldc.i4.5 
+call System.Int32 UnityEngine.Application::get_targetFrameRate()
+box System.Int32
+stelem.ref 
+call System.String System.String::Format(System.String,System.Object[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldarg.0 
+ldarg.1 
+stfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldarg.0 
+ldc.r4 0
+stfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldarg.0 
+ldc.i4.0 
+stfld System.Int32 Durango.UI.OffServerTransition::_phaseFrames
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_claw
+brfalse.s IL_0163: ret
+ldarg.1 
+ldc.i4.1 
+beq.s IL_015e: call System.Void Durango.UI.OffServerTransition::PlayClawSound()
+ldarg.1 
+ldc.i4.3 
+bne.un.s IL_0163: ret
+call System.Void Durango.UI.OffServerTransition::PlayClawSound()
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Update()
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+brtrue.s IL_0009: ldarg.0
+ret 
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+call System.Single UnityEngine.Time::get_unscaledDeltaTime()
+ldc.r4 0,033333335
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+add 
+stfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldarg.0 
+call System.Single UnityEngine.Time::get_unscaledDeltaTime()
+ldc.r4 0,045
+blt.s IL_0035: ldarg.0
+ldc.i4.0 
+br.s IL_003d: stfld System.Int32 Durango.UI.OffServerTransition::_smoothFrames
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_smoothFrames
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerTransition::_smoothFrames
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_phaseFrames
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerTransition::_phaseFrames
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.1 
+bne.un.s IL_0088: ldarg.0
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_phaseFrames
+ldc.i4.1 
+ble.s IL_0088: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_closeFrames
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerTransition::_closeFrames
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_closeWorst
+call System.Single UnityEngine.Time::get_unscaledDeltaTime()
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stfld System.Single Durango.UI.OffServerTransition::_closeWorst
+br.s IL_00be: ldarg.0
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+ldc.i4.3 
+bne.un.s IL_00be: ldarg.0
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_phaseFrames
+ldc.i4.1 
+ble.s IL_00be: ldarg.0
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_openFrames
+ldc.i4.1 
+add 
+stfld System.Int32 Durango.UI.OffServerTransition::_openFrames
+ldarg.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_openWorst
+call System.Single UnityEngine.Time::get_unscaledDeltaTime()
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stfld System.Single Durango.UI.OffServerTransition::_openWorst
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+stloc.0 
+ldloc.0 
+ldc.i4.1 
+sub 
+switch Mono.Cecil.Cil.Instruction[]
+ret 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::get_InLength()
+blt.un IL_018e: ret
+ldarg.0 
+ldc.i4.2 
+call System.Void Durango.UI.OffServerTransition::SetPhase(Durango.UI.OffServerTransition/Phase)
+ret 
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_coveredFired
+brtrue.s IL_0130: ldarg.0
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::get_PopLength()
+blt.un.s IL_0130: ldarg.0
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.UI.OffServerTransition::_coveredFired
+ldarg.0 
+ldfld System.Action Durango.UI.OffServerTransition::_onCovered
+stloc.1 
+ldarg.0 
+ldnull 
+stfld System.Action Durango.UI.OffServerTransition::_onCovered
+ldloc.1 
+brfalse.s IL_0127: leave.s IL_018e
+ldloc.1 
+callvirt System.Void System.Action::Invoke()
+leave.s IL_018e: ret
+call System.Void UnityEngine.Debug::LogException(System.Exception)
+leave.s IL_018e: ret
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_coveredFired
+brfalse.s IL_018e: ret
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_revealRequested
+brfalse.s IL_015d: ldarg.0
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::get_PopLength()
+ldc.r4 0,1
+add 
+blt.un.s IL_015d: ldarg.0
+ldarg.0 
+ldfld System.Int32 Durango.UI.OffServerTransition::_smoothFrames
+ldc.i4.4 
+bge.s IL_016a: ldarg.0
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldc.r4 8
+blt.un.s IL_018e: ret
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.UI.OffServerTransition::_revealRequested
+ldarg.0 
+ldc.i4.3 
+call System.Void Durango.UI.OffServerTransition::SetPhase(Durango.UI.OffServerTransition/Phase)
+ret 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::get_OutLength()
+blt.un.s IL_018e: ret
+ldarg.0 
+ldc.i4.0 
+call System.Void Durango.UI.OffServerTransition::SetPhase(Durango.UI.OffServerTransition/Phase)
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::OnGUI()
+newobj System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_0::.ctor()
+stloc.0 
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+brfalse.s IL_0023: ret
+call UnityEngine.Event UnityEngine.Event::get_current()
+callvirt UnityEngine.EventType UnityEngine.Event::get_type()
+ldc.i4.7 
+bne.un.s IL_0023: ret
+ldarg.0 
+call System.Boolean Durango.UI.OffServerTransition::EnsureAssets()
+brtrue.s IL_0024: ldarg.0
+ret 
+ldarg.0 
+call System.Int32 UnityEngine.Screen::get_width()
+conv.r4 
+stfld System.Single Durango.UI.OffServerTransition::_w
+ldarg.0 
+call System.Int32 UnityEngine.Screen::get_height()
+conv.r4 
+stfld System.Single Durango.UI.OffServerTransition::_h
+ldarg.0 
+ldfld System.Boolean Durango.UI.OffServerTransition::_claw
+brfalse.s IL_005a: ldc.r4 0.34906584
+call System.Void UnityEngine.GL::PushMatrix()
+call System.Void UnityEngine.GL::LoadPixelMatrix()
+ldarg.0 
+call System.Void Durango.UI.OffServerTransition::DrawClaw()
+call System.Void UnityEngine.GL::PopMatrix()
+ret 
+ldc.r4 0,34906584
+stloc.1 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldloc.1 
+call System.Single UnityEngine.Mathf::Tan(System.Single)
+mul 
+stloc.2 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldloc.2 
+add 
+ldc.r4 7
+div 
+stloc.3 
+ldloc.0 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldloc.2 
+add 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 7
+div 
+add 
+stfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_0::far
+call System.Void UnityEngine.GL::PushMatrix()
+call System.Void UnityEngine.GL::LoadPixelMatrix()
+ldarg.0 
+ldfld Durango.UI.OffServerTransition/Phase Durango.UI.OffServerTransition::_phase
+stloc.s V_4
+ldloc.s V_4
+ldc.i4.1 
+beq.s IL_00b9: newobj System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_1::.ctor()
+ldloc.s V_4
+ldc.i4.2 
+beq.s IL_0106: ldarg.0
+br IL_01f6: newobj System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_2::.ctor()
+newobj System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_1::.ctor()
+stloc.s V_5
+ldloc.s V_5
+ldloc.0 
+stfld Durango.UI.OffServerTransition/<>c__DisplayClass97_0 Durango.UI.OffServerTransition/<>c__DisplayClass97_1::CS$<>8__locals1
+ldloc.s V_5
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldc.r4 0,92
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_1::p
+ldloc.s V_5
+ldc.r4 0,58
+stfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_1::dur
+ldarg.0 
+ldloc.2 
+ldloc.3 
+ldloc.s V_5
+ldftn System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_1::<OnGUI>b__0(System.Int32)
+newobj System.Void System.Func`2<System.Int32,System.Single>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.UI.OffServerTransition::DrawStripes(System.Single,System.Single,System.Func`2<System.Int32,System.Single>)
+br IL_0357: call System.Void UnityEngine.GL::PopMatrix()
+ldarg.0 
+ldloc.2 
+ldloc.3 
+ldsfld System.Func`2<System.Int32,System.Single> Durango.UI.OffServerTransition/<>c::<>9__97_1
+dup 
+brtrue.s IL_0128: call System.Void Durango.UI.OffServerTransition::DrawStripes(System.Single,System.Single,System.Func`2<System.Int32,System.Single>)
+pop 
+ldsfld Durango.UI.OffServerTransition/<>c Durango.UI.OffServerTransition/<>c::<>9
+ldftn System.Single Durango.UI.OffServerTransition/<>c::<OnGUI>b__97_1(System.Int32)
+newobj System.Void System.Func`2<System.Int32,System.Single>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld System.Func`2<System.Int32,System.Single> Durango.UI.OffServerTransition/<>c::<>9__97_1
+call System.Void Durango.UI.OffServerTransition::DrawStripes(System.Single,System.Single,System.Func`2<System.Int32,System.Single>)
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldc.r4 0,52
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stloc.s V_6
+ldc.r4 0,001
+ldloc.s V_6
+call System.Single Durango.UI.OffServerTransition::EaseOutBack(System.Single)
+call System.Single UnityEngine.Mathf::Max(System.Single,System.Single)
+stloc.s V_7
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::LogoSize()
+ldloc.s V_7
+mul 
+stloc.s V_8
+ldloca.s V_9
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldloc.s V_8
+ldc.r4 0,5
+mul 
+sub 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+ldloc.s V_8
+ldc.r4 0,5
+mul 
+sub 
+ldloc.s V_8
+ldloc.s V_8
+call System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldarg.0 
+ldloc.s V_9
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+call System.Void Durango.UI.OffServerTransition::ClipRect(UnityEngine.Rect,UnityEngine.Vector2,UnityEngine.Vector2)
+ldarg.0 
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+ldc.r4 1
+ldc.r4 1
+ldc.r4 1
+ldloc.s V_6
+ldc.r4 3
+mul 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+ldloc.s V_9
+call System.Void Durango.UI.OffServerTransition::DrawPolygon(UnityEngine.Texture,UnityEngine.Color,UnityEngine.Vector2,UnityEngine.Rect)
+br IL_0357: call System.Void UnityEngine.GL::PopMatrix()
+newobj System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_2::.ctor()
+stloc.s V_10
+ldloc.s V_10
+ldloc.0 
+stfld Durango.UI.OffServerTransition/<>c__DisplayClass97_0 Durango.UI.OffServerTransition/<>c__DisplayClass97_2::CS$<>8__locals2
+ldloc.s V_10
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_phaseTime
+ldc.r4 1,16
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+stfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::p
+ldloc.s V_10
+ldc.r4 0,64
+stfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::dur
+ldarg.0 
+ldloc.2 
+ldloc.3 
+ldloc.s V_10
+ldftn System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::<OnGUI>b__2(System.Int32)
+newobj System.Void System.Func`2<System.Int32,System.Single>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.UI.OffServerTransition::DrawStripes(System.Single,System.Single,System.Func`2<System.Int32,System.Single>)
+ldloca.s V_11
+ldloc.1 
+call System.Single UnityEngine.Mathf::Cos(System.Single)
+ldloc.1 
+call System.Single UnityEngine.Mathf::Sin(System.Single)
+call System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldloc.s V_11
+ldfld System.Single UnityEngine.Vector2::x
+mul 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldloc.s V_11
+ldfld System.Single UnityEngine.Vector2::y
+mul 
+call System.Single UnityEngine.Mathf::Abs(System.Single)
+add 
+ldc.r4 0,5
+mul 
+ldc.r4 8
+add 
+stloc.s V_12
+ldloc.s V_10
+ldfld System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_2::p
+ldc.r4 0,8
+div 
+call System.Single UnityEngine.Mathf::Clamp01(System.Single)
+call System.Single Durango.UI.OffServerTransition::EaseInCubic(System.Single)
+stloc.s V_13
+ldarg.0 
+call System.Single Durango.UI.OffServerTransition::LogoSize()
+stloc.s V_14
+ldloca.s V_15
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldloc.s V_14
+ldc.r4 0,5
+mul 
+sub 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+ldloc.s V_14
+ldc.r4 0,5
+mul 
+sub 
+ldloc.s V_14
+ldloc.s V_14
+call System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+ldloca.s V_16
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldc.r4 0,5
+mul 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldc.r4 0,5
+mul 
+call System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldc.i4.m1 
+stloc.s V_17
+br.s IL_0352: ldloc.s V_17
+ldarg.0 
+ldloc.s V_15
+ldloc.s V_16
+ldloc.s V_11
+ldloc.s V_17
+conv.r4 
+ldc.r4 0,75
+mul 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Multiply(UnityEngine.Vector2,System.Single)
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Subtraction(UnityEngine.Vector2,UnityEngine.Vector2)
+ldloc.s V_11
+ldloc.s V_17
+conv.r4 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Multiply(UnityEngine.Vector2,System.Single)
+call System.Void Durango.UI.OffServerTransition::ClipRect(UnityEngine.Rect,UnityEngine.Vector2,UnityEngine.Vector2)
+ldarg.0 
+ldarg.0 
+ldfld UnityEngine.Texture2D Durango.UI.OffServerTransition::_logo
+call UnityEngine.Color UnityEngine.Color::get_white()
+ldloc.s V_11
+ldloc.s V_17
+conv.r4 
+ldloc.s V_12
+mul 
+ldloc.s V_13
+mul 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Multiply(UnityEngine.Vector2,System.Single)
+ldloc.s V_15
+call System.Void Durango.UI.OffServerTransition::DrawPolygon(UnityEngine.Texture,UnityEngine.Color,UnityEngine.Vector2,UnityEngine.Rect)
+ldloc.s V_17
+ldc.i4.2 
+add 
+stloc.s V_17
+ldloc.s V_17
+ldc.i4.1 
+ble.s IL_0300: ldarg.0
+call System.Void UnityEngine.GL::PopMatrix()
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::LogoSize()
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_w
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+call System.Single UnityEngine.Mathf::Min(System.Single,System.Single)
+ldc.r4 0,62
+mul 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::DrawStripes(System.Single,System.Single,System.Func`2<System.Int32,System.Single>)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+call UnityEngine.Texture2D UnityEngine.Texture2D::get_whiteTexture()
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldc.i4.0 
+stloc.0 
+br IL_00cb: ldloc.0
+ldc.r4 0
+ldarg.1 
+sub 
+ldloc.0 
+conv.r4 
+ldarg.2 
+mul 
+add 
+ldarg.3 
+ldloc.0 
+callvirt !1 System.Func`2<System.Int32,System.Single>::Invoke(!0)
+add 
+stloc.1 
+ldloc.1 
+ldarg.2 
+add 
+ldc.r4 1
+add 
+stloc.2 
+ldloc.0 
+ldc.i4.2 
+rem 
+brfalse.s IL_0055: ldsfld UnityEngine.Color Durango.UI.OffServerTransition::StripeA
+ldsfld UnityEngine.Color Durango.UI.OffServerTransition::StripeB
+br.s IL_005a: call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldsfld UnityEngine.Color Durango.UI.OffServerTransition::StripeA
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldloca.s V_3
+ldloc.1 
+ldarg.1 
+add 
+ldc.r4 0
+call System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldloca.s V_4
+ldloc.2 
+ldarg.1 
+add 
+ldc.r4 0
+call System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldloca.s V_5
+ldloc.2 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+call System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldloca.s V_6
+ldloc.1 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+call System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+ldarg.0 
+ldloc.3 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_4
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_5
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.3 
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_5
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldarg.0 
+ldloc.s V_6
+call System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldc.i4.7 
+blt IL_002a: ldc.r4 0
+call System.Void UnityEngine.GL::End()
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Solid(UnityEngine.Vector2)
+ldc.r4 0,5
+ldc.r4 0,5
+call System.Void UnityEngine.GL::TexCoord2(System.Single,System.Single)
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::x
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::y
+sub 
+ldc.r4 0
+call System.Void UnityEngine.GL::Vertex3(System.Single,System.Single,System.Single)
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::ClipRect(UnityEngine.Rect,UnityEngine.Vector2,UnityEngine.Vector2)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Clear()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldarga.s r
+call System.Single UnityEngine.Rect::get_xMin()
+ldarga.s r
+call System.Single UnityEngine.Rect::get_yMin()
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldarga.s r
+call System.Single UnityEngine.Rect::get_xMax()
+ldarga.s r
+call System.Single UnityEngine.Rect::get_yMin()
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldarga.s r
+call System.Single UnityEngine.Rect::get_xMax()
+ldarga.s r
+call System.Single UnityEngine.Rect::get_yMax()
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldarga.s r
+call System.Single UnityEngine.Rect::get_xMin()
+ldarga.s r
+call System.Single UnityEngine.Rect::get_yMax()
+newobj System.Void UnityEngine.Vector2::.ctor(System.Single,System.Single)
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Clear()
+ldarg.3 
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+call System.Boolean UnityEngine.Vector2::op_Equality(UnityEngine.Vector2,UnityEngine.Vector2)
+brfalse.s IL_00ad: ldc.i4.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::AddRange(System.Collections.Generic.IEnumerable`1<!0>)
+ret 
+ldc.i4.0 
+stloc.0 
+br IL_014d: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+stloc.1 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldloc.0 
+ldc.i4.1 
+add 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+rem 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+stloc.2 
+ldloc.1 
+ldarg.2 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Subtraction(UnityEngine.Vector2,UnityEngine.Vector2)
+ldarg.3 
+call System.Single UnityEngine.Vector2::Dot(UnityEngine.Vector2,UnityEngine.Vector2)
+stloc.3 
+ldloc.2 
+ldarg.2 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Subtraction(UnityEngine.Vector2,UnityEngine.Vector2)
+ldarg.3 
+call System.Single UnityEngine.Vector2::Dot(UnityEngine.Vector2,UnityEngine.Vector2)
+stloc.s V_4
+ldloc.3 
+ldc.r4 0
+blt.un.s IL_010d: ldloc.3
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.1 
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldloc.3 
+ldc.r4 0
+clt.un 
+ldc.i4.0 
+ceq 
+ldloc.s V_4
+ldc.r4 0
+clt.un 
+ldc.i4.0 
+ceq 
+beq.s IL_0149: ldloc.0
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.1 
+ldloc.2 
+ldloc.1 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Subtraction(UnityEngine.Vector2,UnityEngine.Vector2)
+ldloc.3 
+ldloc.3 
+ldloc.s V_4
+sub 
+div 
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Multiply(UnityEngine.Vector2,System.Single)
+call UnityEngine.Vector2 UnityEngine.Vector2::op_Addition(UnityEngine.Vector2,UnityEngine.Vector2)
+callvirt System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::Add(!0)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+blt IL_00b4: ldarg.0
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::DrawPolygon(UnityEngine.Texture,UnityEngine.Color,UnityEngine.Vector2,UnityEngine.Rect)
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+ldc.i4.3 
+bge.s IL_000f: ldarg.0
+ret 
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldarg.1 
+callvirt System.Void UnityEngine.Material::set_mainTexture(UnityEngine.Texture)
+ldarg.0 
+ldfld UnityEngine.Material Durango.UI.OffServerTransition::_material
+ldc.i4.0 
+callvirt System.Boolean UnityEngine.Material::SetPass(System.Int32)
+pop 
+ldc.i4.4 
+call System.Void UnityEngine.GL::Begin(System.Int32)
+ldarg.2 
+call System.Void UnityEngine.GL::Color(UnityEngine.Color)
+ldc.i4.1 
+stloc.0 
+br.s IL_007d: ldloc.0
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldc.i4.0 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+ldarg.3 
+ldarg.s uvRect
+call System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+ldarg.3 
+ldarg.s uvRect
+call System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldarg.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldloc.0 
+ldc.i4.1 
+add 
+callvirt !0 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Item(System.Int32)
+ldarg.3 
+ldarg.s uvRect
+call System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+callvirt System.Int32 System.Collections.Generic.List`1<UnityEngine.Vector2>::get_Count()
+ldc.i4.1 
+sub 
+blt.s IL_0038: ldarg.0
+call System.Void UnityEngine.GL::End()
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::Textured(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Rect)
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::x
+ldarga.s uvRect
+call System.Single UnityEngine.Rect::get_xMin()
+sub 
+ldarga.s uvRect
+call System.Single UnityEngine.Rect::get_width()
+div 
+ldc.r4 1
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::y
+ldarga.s uvRect
+call System.Single UnityEngine.Rect::get_yMin()
+sub 
+ldarga.s uvRect
+call System.Single UnityEngine.Rect::get_height()
+div 
+sub 
+call System.Void UnityEngine.GL::TexCoord2(System.Single,System.Single)
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::x
+ldarg.2 
+ldfld System.Single UnityEngine.Vector2::x
+add 
+ldarg.0 
+ldfld System.Single Durango.UI.OffServerTransition::_h
+ldarg.1 
+ldfld System.Single UnityEngine.Vector2::y
+ldarg.2 
+ldfld System.Single UnityEngine.Vector2::y
+add 
+sub 
+ldc.r4 0
+call System.Void UnityEngine.GL::Vertex3(System.Single,System.Single,System.Single)
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::EaseOutCubic(System.Single)
+ldc.r4 1
+ldarg.0 
+sub 
+starg.s t
+ldc.r4 1
+ldarg.0 
+ldarg.0 
+mul 
+ldarg.0 
+mul 
+sub 
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::EaseInCubic(System.Single)
+ldarg.0 
+ldarg.0 
+mul 
+ldarg.0 
+mul 
+ret 
+METHOD System.Single Durango.UI.OffServerTransition::EaseOutBack(System.Single)
+ldarg.0 
+ldc.r4 1
+sub 
+stloc.0 
+ldc.r4 1
+ldc.r4 2,70158
+ldloc.0 
+mul 
+ldloc.0 
+mul 
+ldloc.0 
+mul 
+add 
+ldc.r4 1,70158
+ldloc.0 
+mul 
+ldloc.0 
+mul 
+add 
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::.ctor()
+ldarg.0 
+ldc.i4 160
+newarr System.Single
+stfld System.Single[] Durango.UI.OffServerTransition::_ss
+ldarg.0 
+ldc.i4.4 
+newarr System.Single[]
+dup 
+ldc.i4.0 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+dup 
+ldc.i4.1 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+dup 
+ldc.i4.2 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+dup 
+ldc.i4.3 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+stfld System.Single[][] Durango.UI.OffServerTransition::_lo
+ldarg.0 
+ldc.i4.4 
+newarr System.Single[]
+dup 
+ldc.i4.0 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+dup 
+ldc.i4.1 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+dup 
+ldc.i4.2 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+dup 
+ldc.i4.3 
+ldc.i4 160
+newarr System.Single
+stelem.ref 
+stfld System.Single[][] Durango.UI.OffServerTransition::_hi
+ldarg.0 
+ldc.i4 -2147483648
+stfld System.Int32 Durango.UI.OffServerTransition::_savedFrameRate
+ldarg.0 
+ldc.i4.8 
+newobj System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::.ctor(System.Int32)
+stfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_poly
+ldarg.0 
+ldc.i4.8 
+newobj System.Void System.Collections.Generic.List`1<UnityEngine.Vector2>::.ctor(System.Int32)
+stfld System.Collections.Generic.List`1<UnityEngine.Vector2> Durango.UI.OffServerTransition::_clip
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 
+METHOD System.Void Durango.UI.OffServerTransition::.cctor()
+ldc.i4.4 
+newarr System.Int32
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=16 <PrivateImplementationDetails>::7D882E1CD8F1F0B5929481976C2259C82B58ECEEE353C6F08FDF1798B65A4B18
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld System.Int32[] Durango.UI.OffServerTransition::ClawRank
+ldc.r4 0,10980392
+ldc.r4 0,105882354
+ldc.r4 0,09803922
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color Durango.UI.OffServerTransition::ClawDark
+ldc.i4.3 
+newarr System.Int32
+dup 
+ldtoken <PrivateImplementationDetails>/__StaticArrayInitTypeSize=12 <PrivateImplementationDetails>::06FE38B19506D83BB3C27BACB14825FECEFEA19B9A1C681F1FF89A6CEB84D488
+call System.Void System.Runtime.CompilerServices.RuntimeHelpers::InitializeArray(System.Array,System.RuntimeFieldHandle)
+stsfld System.Int32[] Durango.UI.OffServerTransition::ClawFromVersion
+ldc.i4.m1 
+stsfld System.Int32 Durango.UI.OffServerTransition::_clawGate
+ldc.r4 0,14901961
+ldc.r4 0,14901961
+ldc.r4 0,14117648
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color Durango.UI.OffServerTransition::StripeA
+ldc.r4 0,18039216
+ldc.r4 0,1764706
+ldc.r4 0,16470589
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+stsfld UnityEngine.Color Durango.UI.OffServerTransition::StripeB
+ret 

@@ -1,0 +1,1006 @@
+OffServerShaderRemap : System.Object
+FIELD System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_cache
+FIELD System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_done
+FIELD System.Int32 OffServerShaderRemap::_remapped
+FIELD System.Int32 OffServerShaderRemap::_missing
+FIELD System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+FIELD System.String[] OffServerShaderRemap::EngineShaderNames
+FIELD System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+FIELD System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+FIELD System.Single OffServerShaderRemap::BusySweepInterval
+FIELD System.Single OffServerShaderRemap::IdleSweepInterval
+FIELD System.Single OffServerShaderRemap::BusyWindow
+FIELD System.Int32 OffServerShaderRemap::MaterialsPerFrame
+FIELD System.Single OffServerShaderRemap::_nextSweep
+FIELD System.Single OffServerShaderRemap::_busyUntil
+FIELD UnityEngine.Material[] OffServerShaderRemap::_sweepList
+FIELD System.Int32 OffServerShaderRemap::_sweepIndex
+FIELD System.Int32 OffServerShaderRemap::_sweepsTimed
+FIELD System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_settled
+FIELD System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+FIELD System.Int32 OffServerShaderRemap::_reapplied
+METHOD System.Boolean OffServerShaderRemap::get_Enabled()
+ldc.i4.1 
+ret 
+METHOD System.Void OffServerShaderRemap::CacheEngineShaders()
+ldsfld System.String[] OffServerShaderRemap::EngineShaderNames
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br.s IL_0072: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldloc.2 
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::ContainsKey(!0)
+brtrue.s IL_006e: ldloc.1
+ldloc.2 
+call UnityEngine.Shader UnityEngine.Shader::Find(System.String)
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0033: ldloc.2
+ldloc.3 
+callvirt System.Boolean UnityEngine.Shader::get_isSupported()
+brtrue.s IL_0051: ldloc.3
+ldloc.2 
+ldstr Particles/
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_0051: ldloc.3
+ldstr Legacy Shaders/
+ldloc.2 
+call System.String System.String::Concat(System.String,System.String)
+call UnityEngine.Shader UnityEngine.Shader::Find(System.String)
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_006e: ldloc.1
+ldloc.3 
+callvirt System.Boolean UnityEngine.Shader::get_isSupported()
+brfalse.s IL_006e: ldloc.1
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldloc.2 
+ldloc.3 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::set_Item(!0,!1)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_000a: ldloc.0
+ldstr [ShaderRemap] engine shaders cached: 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::get_Count()
+stloc.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+ldstr /
+ldsfld System.String[] OffServerShaderRemap::EngineShaderNames
+ldlen 
+conv.i4 
+stloc.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void OffServerShaderRemap::Report(System.String)
+ret 
+METHOD UnityEngine.Shader OffServerShaderRemap::FindSupportedEngineShader(System.String,UnityEngine.Shader)
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::TryGetValue(!0,!1&)
+brfalse.s IL_0011: ldarg.0
+ldloc.0 
+ret 
+ldarg.0 
+ldstr Particles/
+callvirt System.Boolean System.String::StartsWith(System.String)
+brfalse.s IL_0039: ldnull
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldstr Legacy Shaders/
+ldarg.0 
+call System.String System.String::Concat(System.String,System.String)
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::TryGetValue(!0,!1&)
+brfalse.s IL_0039: ldnull
+ldloc.0 
+ret 
+ldnull 
+stloc.0 
+call !!0[] UnityEngine.Resources::FindObjectsOfTypeAll<UnityEngine.Shader>()
+stloc.1 
+ldc.i4.0 
+stloc.2 
+br.s IL_0079: ldloc.2
+ldloc.1 
+ldloc.2 
+ldelem.ref 
+stloc.3 
+ldloc.3 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0075: ldloc.2
+ldloc.3 
+ldarg.1 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0075: ldloc.2
+ldloc.3 
+callvirt System.String UnityEngine.Object::get_name()
+ldarg.0 
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0075: ldloc.2
+ldloc.3 
+callvirt System.Boolean UnityEngine.Shader::get_isSupported()
+brfalse.s IL_0075: ldloc.2
+ldloc.3 
+stloc.0 
+br.s IL_007f: ldloc.0
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0045: ldloc.1
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00b0: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldarg.0 
+call UnityEngine.Shader UnityEngine.Shader::Find(System.String)
+stloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00b0: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldloc.s V_4
+ldarg.1 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_00b0: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldloc.s V_4
+callvirt System.Boolean UnityEngine.Shader::get_isSupported()
+brfalse.s IL_00b0: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldloc.s V_4
+stloc.0 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldarg.0 
+ldloc.0 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::set_Item(!0,!1)
+ldloc.0 
+ret 
+METHOD System.Void OffServerShaderRemap::Report(System.String)
+call System.Boolean UnityEngine.Application::get_isEditor()
+brfalse.s IL_000e: ldarg.0
+ldarg.0 
+call System.Void UnityEngine.Debug::Log(System.Object)
+ret 
+ldarg.0 
+call System.Void UnityEngine.Debug::LogError(System.Object)
+ret 
+METHOD System.Void OffServerShaderRemap::Fix(UnityEngine.Object)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue.s IL_0010: ret
+call System.Boolean OffServerShaderRemap::get_Enabled()
+brtrue.s IL_0011: call System.Void OffServerShaderRemap::MarkBusy()
+ret 
+call System.Void OffServerShaderRemap::MarkBusy()
+ldarg.0 
+isinst UnityEngine.Material
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002e: ldarg.0
+ldloc.0 
+call System.Void OffServerShaderRemap::FixMaterial(UnityEngine.Material)
+leave.s IL_0069: ret
+ldarg.0 
+isinst UnityEngine.GameObject
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0044: leave.s IL_0069
+ldloc.1 
+call System.Void OffServerShaderRemap::FixGameObject(UnityEngine.GameObject)
+leave.s IL_0069: ret
+stloc.2 
+ldstr [ShaderRemap] 
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+ldstr : 
+ldloc.2 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String,System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_0069: ret
+ret 
+METHOD System.Void OffServerShaderRemap::FixGameObject(UnityEngine.GameObject)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000a: ldarg.0
+ret 
+ldarg.0 
+ldc.i4.1 
+callvirt !!0[] UnityEngine.GameObject::GetComponentsInChildren<UnityEngine.Renderer>(System.Boolean)
+stloc.0 
+ldc.i4.0 
+stloc.2 
+br.s IL_003e: ldloc.2
+ldloc.0 
+ldloc.2 
+ldelem.ref 
+callvirt UnityEngine.Material[] UnityEngine.Renderer::get_sharedMaterials()
+stloc.3 
+ldc.i4.0 
+stloc.s V_4
+br.s IL_0033: ldloc.s V_4
+ldloc.3 
+ldloc.s V_4
+ldelem.ref 
+call System.Void OffServerShaderRemap::FixMaterial(UnityEngine.Material)
+ldloc.s V_4
+ldc.i4.1 
+add 
+stloc.s V_4
+ldloc.s V_4
+ldloc.3 
+ldlen 
+conv.i4 
+blt.s IL_0024: ldloc.3
+ldloc.2 
+ldc.i4.1 
+add 
+stloc.2 
+ldloc.2 
+ldloc.0 
+ldlen 
+conv.i4 
+blt.s IL_0016: ldloc.0
+ldarg.0 
+ldc.i4.1 
+callvirt !!0[] UnityEngine.GameObject::GetComponentsInChildren<UnityEngine.Projector>(System.Boolean)
+stloc.1 
+ldc.i4.0 
+stloc.s V_5
+br.s IL_0065: ldloc.s V_5
+ldloc.1 
+ldloc.s V_5
+ldelem.ref 
+callvirt UnityEngine.Material UnityEngine.Projector::get_material()
+call System.Void OffServerShaderRemap::FixMaterial(UnityEngine.Material)
+ldloc.s V_5
+ldc.i4.1 
+add 
+stloc.s V_5
+ldloc.s V_5
+ldloc.1 
+ldlen 
+conv.i4 
+blt.s IL_0051: ldloc.1
+ret 
+METHOD System.Void OffServerShaderRemap::LoadProjectShaders()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+ldstr Shaders
+call !!0[] UnityEngine.Resources::LoadAll<UnityEngine.Shader>(System.String)
+stloc.0 
+ldc.i4.0 
+stloc.1 
+br IL_00d5: ldloc.1
+ldloc.0 
+ldloc.1 
+ldelem.ref 
+stloc.2 
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brtrue IL_00d1: ldloc.1
+ldloc.2 
+callvirt System.String UnityEngine.Object::get_name()
+ldc.i4.s 124
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.3 
+ldloc.3 
+ldc.i4.0 
+bge.s IL_006d: ldloc.2
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+ldloc.2 
+callvirt System.String UnityEngine.Object::get_name()
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::ContainsKey(!0)
+brtrue.s IL_00d1: ldloc.1
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+ldloc.2 
+callvirt System.String UnityEngine.Object::get_name()
+ldloc.2 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::set_Item(!0,!1)
+br.s IL_00d1: ldloc.1
+ldloc.2 
+callvirt System.String UnityEngine.Object::get_name()
+ldc.i4.0 
+ldloc.3 
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stloc.s V_4
+ldloc.2 
+callvirt System.String UnityEngine.Object::get_name()
+ldloc.3 
+ldc.i4.1 
+add 
+callvirt System.String System.String::Substring(System.Int32)
+ldc.i4.1 
+newarr System.Char
+dup 
+ldc.i4.0 
+ldc.i4.s 32
+stelem.i2 
+ldc.i4.1 
+callvirt System.String[] System.String::Split(System.Char[],System.StringSplitOptions)
+stloc.s V_5
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+ldloc.s V_4
+ldloca.s V_6
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>>::TryGetValue(!0,!1&)
+brtrue.s IL_00c2: ldloc.s V_6
+newobj System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>::.ctor()
+stloc.s V_6
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+ldloc.s V_4
+ldloc.s V_6
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>>::set_Item(!0,!1)
+ldloc.s V_6
+ldloc.s V_5
+ldloc.2 
+newobj System.Void System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>::.ctor(!0,!1)
+callvirt System.Void System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>::Add(!0)
+ldloc.1 
+ldc.i4.1 
+add 
+stloc.1 
+ldloc.1 
+ldloc.0 
+ldlen 
+conv.i4 
+blt IL_0026: ldloc.0
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ShaderRemap] project shaders loaded from Resources/Shaders: 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::get_Count()
+stloc.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  (+
+stelem.ref 
+dup 
+ldc.i4.3 
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+callvirt System.Int32 System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>>::get_Count()
+stloc.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  with keyword variants)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerShaderRemap::Report(System.String)
+ret 
+METHOD UnityEngine.Shader OffServerShaderRemap::FindProjectShader(System.String)
+ldarg.0 
+ldnull 
+call UnityEngine.Shader OffServerShaderRemap::FindProjectShader(System.String,System.String[])
+ret 
+METHOD UnityEngine.Shader OffServerShaderRemap::FindProjectShader(System.String,System.String[])
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+brtrue.s IL_000c: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+call System.Void OffServerShaderRemap::LoadProjectShaders()
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_projectShaders
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::TryGetValue(!0,!1&)
+pop 
+ldarg.1 
+brfalse IL_00be: ldloc.0
+ldarg.1 
+ldlen 
+brfalse IL_00be: ldloc.0
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+ldarg.0 
+ldloca.s V_1
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>>::TryGetValue(!0,!1&)
+brfalse IL_00be: ldloc.0
+ldc.i4.0 
+stloc.2 
+ldloc.1 
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>::GetEnumerator()
+stloc.3 
+br.s IL_00a5: ldloca.s V_3
+ldloca.s V_3
+call !0 System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>::get_Current()
+stloc.s V_4
+ldc.i4.1 
+stloc.s V_5
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>::get_Key()
+stloc.s V_6
+ldc.i4.0 
+stloc.s V_7
+br.s IL_007b: ldloc.s V_7
+ldloc.s V_6
+ldloc.s V_7
+ldelem.ref 
+stloc.s V_8
+ldarg.1 
+ldloc.s V_8
+call System.Int32 System.Array::IndexOf<System.String>(!!0[],!!0)
+ldc.i4.0 
+bge.s IL_0075: ldloc.s V_7
+ldc.i4.0 
+stloc.s V_5
+br.s IL_0083: ldloc.s V_5
+ldloc.s V_7
+ldc.i4.1 
+add 
+stloc.s V_7
+ldloc.s V_7
+ldloc.s V_6
+ldlen 
+conv.i4 
+blt.s IL_005e: ldloc.s V_6
+ldloc.s V_5
+brfalse.s IL_00a5: ldloca.s V_3
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>::get_Key()
+ldlen 
+conv.i4 
+ldloc.2 
+ble.s IL_00a5: ldloca.s V_3
+ldloca.s V_4
+call !0 System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>::get_Key()
+ldlen 
+conv.i4 
+stloc.2 
+ldloca.s V_4
+call !1 System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>::get_Value()
+stloc.0 
+ldloca.s V_3
+call System.Boolean System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>::MoveNext()
+brtrue.s IL_0044: ldloca.s V_3
+leave.s IL_00be: ldloc.0
+ldloca.s V_3
+constrained. System.Collections.Generic.List`1/Enumerator<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ret 
+METHOD System.Void OffServerShaderRemap::MarkBusy()
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stloc.0 
+ldloc.0 
+ldc.r4 12
+add 
+stsfld System.Single OffServerShaderRemap::_busyUntil
+ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+brtrue.s IL_0033: ret
+ldsfld System.Single OffServerShaderRemap::_nextSweep
+ldloc.0 
+ldc.r4 1,5
+add 
+ble.un.s IL_0033: ret
+ldloc.0 
+ldc.r4 1,5
+add 
+stsfld System.Single OffServerShaderRemap::_nextSweep
+ret 
+METHOD System.Void OffServerShaderRemap::SweepAll()
+call System.Boolean OffServerShaderRemap::get_Enabled()
+brtrue.s IL_0008: call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ret 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stloc.0 
+ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+brtrue IL_00e3: ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldloc.0 
+ldsfld System.Single OffServerShaderRemap::_nextSweep
+bge.un.s IL_0021: call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ret 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stloc.2 
+call !!0[] UnityEngine.Resources::FindObjectsOfTypeAll<UnityEngine.Material>()
+stsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+leave.s IL_005a: ldc.i4.0
+stloc.3 
+ldstr [ShaderRemap] sweep: 
+ldloc.3 
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+ldloc.0 
+ldc.r4 8
+add 
+stsfld System.Single OffServerShaderRemap::_nextSweep
+leave IL_016c: ret
+ldc.i4.0 
+stsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldsfld System.Int32 OffServerShaderRemap::_sweepsTimed
+ldc.i4.3 
+bge.s IL_00e3: ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldsfld System.Int32 OffServerShaderRemap::_sweepsTimed
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerShaderRemap::_sweepsTimed
+ldc.i4.6 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ShaderRemap] sweep 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+ldlen 
+conv.i4 
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  materials, FindObjectsOfTypeAll 
+stelem.ref 
+dup 
+ldc.i4.3 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldloc.2 
+sub 
+ldc.r4 1000
+mul 
+stloc.s V_5
+ldloca.s V_5
+ldstr 0.0
+call System.String System.Single::ToString(System.String)
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  ms, settled 
+stelem.ref 
+dup 
+ldc.i4.5 
+ldsfld System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_settled
+callvirt System.Int32 System.Collections.Generic.HashSet`1<UnityEngine.EntityId>::get_Count()
+stloc.s V_4
+ldloca.s V_4
+call System.String System.Int32::ToString()
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void UnityEngine.Debug::Log(System.Object)
+ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldc.i4 256
+add 
+ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+ldlen 
+conv.i4 
+call System.Int32 UnityEngine.Mathf::Min(System.Int32,System.Int32)
+stloc.1 
+br.s IL_0135: ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+dup 
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldelem.ref 
+stloc.s V_6
+ldloc.s V_6
+call System.Void OffServerShaderRemap::FixMaterial(UnityEngine.Material)
+leave.s IL_0135: ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+stloc.s V_7
+ldstr [ShaderRemap] sweep: 
+ldloc.s V_7
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::LogError(System.Object)
+leave.s IL_0135: ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldloc.1 
+blt.s IL_00fd: ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+ldsfld System.Int32 OffServerShaderRemap::_sweepIndex
+ldsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+ldlen 
+conv.i4 
+blt.s IL_016c: ret
+ldnull 
+stsfld UnityEngine.Material[] OffServerShaderRemap::_sweepList
+ldloc.0 
+ldloc.0 
+ldsfld System.Single OffServerShaderRemap::_busyUntil
+blt.s IL_0161: ldc.r4 1.5
+ldc.r4 8
+br.s IL_0166: add
+ldc.r4 1,5
+add 
+stsfld System.Single OffServerShaderRemap::_nextSweep
+ret 
+METHOD System.Void OffServerShaderRemap::FixMaterial(UnityEngine.Material)
+ldarg.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000a: ldarg.0
+ret 
+ldarg.0 
+callvirt UnityEngine.EntityId UnityEngine.Object::GetEntityId()
+stloc.0 
+ldarg.0 
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+stloc.1 
+ldloc.1 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0022: ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ret 
+ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ldloc.0 
+ldloca.s V_2
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader>::TryGetValue(!0,!1&)
+brfalse.s IL_0043: ldc.i4.0
+ldloc.2 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0043: ldc.i4.0
+ldloc.1 
+ldloc.2 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+br.s IL_0044: stloc.3
+ldc.i4.0 
+stloc.3 
+ldloc.3 
+brtrue.s IL_0056: ldstr " "
+ldsfld System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_settled
+ldloc.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<UnityEngine.EntityId>::Contains(!0)
+brfalse.s IL_0056: ldstr " "
+ret 
+ldstr  
+ldarg.0 
+callvirt System.String[] UnityEngine.Material::get_shaderKeywords()
+call System.String System.String::Join(System.String,System.String[])
+stloc.s V_4
+ldsfld System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_done
+ldloc.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<UnityEngine.EntityId>::Add(!0)
+brfalse.s IL_0084: ldloc.3
+ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+ldloc.0 
+ldloc.s V_4
+callvirt System.Void System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String>::set_Item(!0,!1)
+br.s IL_00af: ldarg.0
+ldloc.3 
+brtrue.s IL_00a2: ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+ldloc.0 
+ldloca.s V_5
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String>::TryGetValue(!0,!1&)
+brfalse.s IL_00a1: ret
+ldloc.s V_5
+ldloc.s V_4
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_00a2: ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+ret 
+ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+ldloc.0 
+ldloc.s V_4
+callvirt System.Void System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String>::set_Item(!0,!1)
+ldarg.0 
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+callvirt System.String UnityEngine.Object::get_name()
+stloc.s V_6
+ldloc.s V_6
+ldc.i4.s 124
+callvirt System.Int32 System.String::IndexOf(System.Char)
+stloc.s V_7
+ldloc.s V_7
+ldc.i4.0 
+blt.s IL_00d8: ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+ldloc.s V_6
+ldc.i4.0 
+ldloc.s V_7
+callvirt System.String System.String::Substring(System.Int32,System.Int32)
+stloc.s V_6
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+brtrue.s IL_00e4: ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+call System.Void OffServerShaderRemap::LoadProjectShaders()
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>> OffServerShaderRemap::_projectVariants
+ldloc.s V_6
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.Collections.Generic.KeyValuePair`2<System.String[],UnityEngine.Shader>>>::ContainsKey(!0)
+brtrue.s IL_010a: ldloc.s V_6
+ldsfld System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_settled
+ldloc.0 
+callvirt System.Boolean System.Collections.Generic.HashSet`1<UnityEngine.EntityId>::Add(!0)
+pop 
+ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+ldloc.0 
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String>::Remove(!0)
+pop 
+ldloc.s V_6
+ldstr |
+ldloc.s V_4
+call System.String System.String::Concat(System.String,System.String,System.String)
+stloc.s V_8
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_cache
+ldloc.s V_8
+ldloca.s V_9
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::TryGetValue(!0,!1&)
+brtrue.s IL_01a8: ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ldloc.s V_6
+ldarg.0 
+callvirt System.String[] UnityEngine.Material::get_shaderKeywords()
+call UnityEngine.Shader OffServerShaderRemap::FindProjectShader(System.String,System.String[])
+stloc.s V_9
+ldloc.s V_9
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0160: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_cache
+ldloc.s V_6
+ldstr Hidden/
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_0160: ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_cache
+ldloc.s V_6
+ldarg.0 
+callvirt UnityEngine.Shader UnityEngine.Material::get_shader()
+call UnityEngine.Shader OffServerShaderRemap::FindSupportedEngineShader(System.String,UnityEngine.Shader)
+stloc.s V_9
+ldsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_cache
+ldloc.s V_8
+ldloc.s V_9
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::set_Item(!0,!1)
+ldloc.s V_9
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_01a8: ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ldloc.s V_6
+ldstr Hidden/
+callvirt System.Boolean System.String::StartsWith(System.String)
+brtrue.s IL_01a8: ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ldsfld System.Int32 OffServerShaderRemap::_missing
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerShaderRemap::_missing
+ldstr [ShaderRemap] no project shader for '
+ldloc.s V_6
+ldstr ' (bundle copy kept)
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void OffServerShaderRemap::Report(System.String)
+ldsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ldloc.0 
+ldloc.s V_9
+callvirt System.Void System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader>::set_Item(!0,!1)
+ldloc.3 
+brfalse.s IL_0217: ldloc.s V_9
+ldsfld System.Int32 OffServerShaderRemap::_reapplied
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerShaderRemap::_reapplied
+ldsfld System.Int32 OffServerShaderRemap::_reapplied
+ldc.i4.5 
+ble.s IL_01d9: ldc.i4.5
+ldsfld System.Int32 OffServerShaderRemap::_reapplied
+ldc.i4 200
+rem 
+brtrue.s IL_0217: ldloc.s V_9
+ldc.i4.5 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ShaderRemap] 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  came back with the bundle shader -> remapped again (
+stelem.ref 
+dup 
+ldc.i4.3 
+ldsflda System.Int32 OffServerShaderRemap::_reapplied
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  so far)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerShaderRemap::Report(System.String)
+ldloc.s V_9
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_02fc: ret
+ldloc.s V_9
+ldloc.1 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse IL_02fc: ret
+ldarg.0 
+callvirt System.Int32 UnityEngine.Material::get_renderQueue()
+stloc.s V_10
+ldloc.s V_10
+ldloc.1 
+callvirt System.Int32 UnityEngine.Shader::get_renderQueue()
+beq.s IL_0262: ldc.i4.0
+ldloc.s V_10
+ldc.i4 2500
+bgt.s IL_025f: ldc.i4.1
+ldloc.s V_9
+callvirt System.Int32 UnityEngine.Shader::get_renderQueue()
+ldc.i4 2500
+cgt 
+ldc.i4.0 
+ceq 
+br.s IL_0263: stloc.s V_11
+ldc.i4.1 
+br.s IL_0263: stloc.s V_11
+ldc.i4.0 
+stloc.s V_11
+ldarg.0 
+ldloc.s V_9
+callvirt System.Void UnityEngine.Material::set_shader(UnityEngine.Shader)
+ldarg.0 
+ldloc.s V_11
+brtrue.s IL_0275: ldloc.s V_10
+ldc.i4.m1 
+br.s IL_0277: callvirt System.Void UnityEngine.Material::set_renderQueue(System.Int32)
+ldloc.s V_10
+callvirt System.Void UnityEngine.Material::set_renderQueue(System.Int32)
+ldsfld System.Int32 OffServerShaderRemap::_remapped
+ldc.i4.1 
+add 
+stsfld System.Int32 OffServerShaderRemap::_remapped
+ldsfld System.Int32 OffServerShaderRemap::_remapped
+ldc.i4.s 20
+ble.s IL_029b: ldc.i4.s 9
+ldsfld System.Int32 OffServerShaderRemap::_remapped
+ldc.i4.s 100
+rem 
+brtrue.s IL_02fc: ret
+ldc.i4.s 9
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr [ShaderRemap] 
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+callvirt System.String UnityEngine.Object::get_name()
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr  -> 
+stelem.ref 
+dup 
+ldc.i4.3 
+ldloc.s V_6
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr  (
+stelem.ref 
+dup 
+ldc.i4.5 
+ldsflda System.Int32 OffServerShaderRemap::_remapped
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr  remapped, 
+stelem.ref 
+dup 
+ldc.i4.7 
+ldsflda System.Int32 OffServerShaderRemap::_missing
+call System.String System.Int32::ToString()
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr  missing)
+stelem.ref 
+call System.String System.String::Concat(System.String[])
+call System.Void OffServerShaderRemap::Report(System.String)
+ret 
+METHOD System.Void OffServerShaderRemap::.cctor()
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_cache
+newobj System.Void System.Collections.Generic.HashSet`1<UnityEngine.EntityId>::.ctor()
+stsfld System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_done
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<System.String,UnityEngine.Shader> OffServerShaderRemap::_builtinCache
+ldc.i4.s 14
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Standard
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Sprites/Default
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Skybox/Procedural
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr Unlit/Transparent
+stelem.ref 
+dup 
+ldc.i4.4 
+ldstr Unlit/Texture
+stelem.ref 
+dup 
+ldc.i4.5 
+ldstr Legacy Shaders/Diffuse
+stelem.ref 
+dup 
+ldc.i4.6 
+ldstr Legacy Shaders/Transparent/Diffuse
+stelem.ref 
+dup 
+ldc.i4.7 
+ldstr Legacy Shaders/Transparent/VertexLit
+stelem.ref 
+dup 
+ldc.i4.8 
+ldstr Particles/Additive
+stelem.ref 
+dup 
+ldc.i4.s 9
+ldstr Particles/Additive (Soft)
+stelem.ref 
+dup 
+ldc.i4.s 10
+ldstr Particles/Alpha Blended
+stelem.ref 
+dup 
+ldc.i4.s 11
+ldstr Particles/Alpha Blended Premultiply
+stelem.ref 
+dup 
+ldc.i4.s 12
+ldstr Particles/Multiply
+stelem.ref 
+dup 
+ldc.i4.s 13
+ldstr UI/Default
+stelem.ref 
+stsfld System.String[] OffServerShaderRemap::EngineShaderNames
+newobj System.Void System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,System.String> OffServerShaderRemap::_lastKeywords
+newobj System.Void System.Collections.Generic.HashSet`1<UnityEngine.EntityId>::.ctor()
+stsfld System.Collections.Generic.HashSet`1<UnityEngine.EntityId> OffServerShaderRemap::_settled
+newobj System.Void System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader>::.ctor()
+stsfld System.Collections.Generic.Dictionary`2<UnityEngine.EntityId,UnityEngine.Shader> OffServerShaderRemap::_applied
+ret 

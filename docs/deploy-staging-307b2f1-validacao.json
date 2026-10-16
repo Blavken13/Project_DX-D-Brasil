@@ -1,0 +1,114 @@
+{
+  "commit": "307b2f180bf1016367ba255416ea91b53e2ec0c2",
+  "image": "sha256:53eebaf071931cc2ec09da5315300eddbc7a62d2ef762a64bab78e8cfb5bdb64",
+  "healthy": true,
+  "backup": "/opt/durango/backups/state-pre-307b2f1-20261014T020439Z.tar.gz",
+  "state": [
+    {
+      "cluster": "Durango Brasil",
+      "accounts_preserved": 50,
+      "characters_preserved": 61
+    },
+    {
+      "cluster": "Durango Brasil - STAGING",
+      "accounts_preserved": 9,
+      "characters_preserved": 12
+    }
+  ],
+  "admin_checks": [
+    "encontros Alfa: catalogo da release confirmado no container ativo",
+    "loja: bilhete de reset gratuito e catalogo da release confirmado",
+    "12 terrenos adicionais: SHA-256 confirmado",
+    "/admin/: arquivo da release confirmado",
+    "/admin/app.js: arquivo da release confirmado",
+    "/admin/style.css: arquivo da release confirmado",
+    "/health: acesso anônimo bloqueado",
+    "/admin/players: acesso anônimo bloqueado",
+    "/admin/premium: acesso anônimo bloqueado",
+    "/admin/mail/status: acesso anônimo bloqueado",
+    "/admin/catalog: acesso anônimo bloqueado",
+    "/admin/client-reports: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=csv: acesso anônimo bloqueado",
+    "/admin/client-reports/export?format=json: acesso anônimo bloqueado",
+    "bundle masculino original: SHA-256 confirmado"
+  ],
+  "regression_results": [
+    "[survival-continuity-check] PASS 14 verificacoes",
+    "[estate-return-check] PASS 96 verificacoes",
+    "[restored-encounters-check] PASS 166 verificacoes",
+    "[gathering-duplicate-check] PASS 57 verificacoes",
+    "[safehouse-missions-check] PASS 49 verificações. Saves temporários: /tmp/Durango-safehouse-missions-2861e4121f90451e84e8d6840e973585",
+    "[tester-check] PASS 106 verificações",
+    "[bugs-check] PASS",
+    "[polish-check] PASS 1249 verificacoes. Saves temporarios: /tmp/Durango-polish-check-2e65523349184fc0b340a3b29cae6701",
+    "[induction-check] PASS 29 verificacoes",
+    "[world-check] PASS 2795 verificacoes. Saves temporarios: /tmp/Durango-world-check-b36f78bd6c2d4c7599a1a24adab17c48",
+    "[gameplay-check] PASS 62 verificacoes. Saves temporarios: /tmp/Durango-gameplay-check-162507ea29f545b0a797f3831ce3194d",
+    "[social-check] PASS 97 verificações",
+    "[premium-check] PASS 52 verificações",
+    "[economy-check] PASS 304 verificacoes. Arquivos temporarios: /tmp/Durango-economy-check-eebbf19612924733a352148c4478c0bd",
+    "[progression-check] PASS 148 verificacoes",
+    "[fauna-check] PASS 404 verificacoes",
+    "[combat-bags] PASS 2415 verificações. Saves temporários: /tmp/Durango-combat-bags-42ee7820173c4831a4136c5c222f0f1e",
+    "[world-combat] PASS 52 verificacoes. Saves temporarios: /tmp/Durango-world-combat-ec8fc8e8677741c9b1c4368e42066dd0",
+    "[volcano-crater] PASS 210 verificacoes. Saves temporarios: /tmp/Durango-volcano-crater-6cb6129b502348a4be9d203cef03fbbe",
+    "[reported-gameplay] PASS 113 verificações",
+    "PASS 7 native Android models",
+    "[xp-coupon-check] PASS: 178 verificações",
+    "PASS: coupon regression adapted to property in isolated validation image; production image unchanged",
+    "[attributes-check] PASS 29 verificações",
+    "[pet-feeding-check] PASS 87 verificacoes",
+    "[mail-check] PASS 42 verificações"
+  ],
+  "coupon_test_validation": {
+    "passed": true,
+    "production_image": "sha256:53eebaf071931cc2ec09da5315300eddbc7a62d2ef762a64bab78e8cfb5bdb64",
+    "production_source_unchanged": true,
+    "validation_only_changes": [
+      "SkillXpCouponCheck.cs"
+    ],
+    "original_test_sha256": "c7187cc7b6d48103c1a7a6e950354aaa7bad3b171df08194e9e6f2c1759f3daa",
+    "validation_test_sha256": "d2bbc5e2efcecdb949e2cd9e5c31852f584273eaf5ebe86f5f8a7ef0deb35f07",
+    "reason": "Commit 6dd89a4 changed _lockedItemIds from field to property; the old coupon test used only GetField."
+  },
+  "private_admin_configuration_verified": true,
+  "https_verified": false,
+  "https_pending_reason": "HTTPS proxy was already stopped before this deployment; previous certificate attempts timed out during external validation",
+  "android_bundle_files": 1609,
+  "public_verification": {
+    "host": "179.197.72.129",
+    "checks": {
+      "/status": {
+        "ok": true,
+        "version": "5.2.1"
+      },
+      "/knock?platform=Android&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "/knock?platform=Windows&version=5.2.1": {
+        "ok": true,
+        "version": null
+      },
+      "tcp_8191": {
+        "ok": true
+      }
+    }
+  },
+  "herbivore_taming_food": {
+    "public_catalog_matches_committed_release": true,
+    "source_sha256": "77ea55122dad419fee5e44dd5016d58f3fb1a2911b0040aeea2430a08927b3ae",
+    "leaf_ids": [
+      "leaf",
+      "leaf_large",
+      "leaf_needle",
+      "leaf_small",
+      "lotus_leaf",
+      "leaf_herb",
+      "leaf_bud",
+      "tea_leaf",
+      "sheaf_leaf"
+    ],
+    "domestication_time_reduction_seconds": 10
+  }
+}

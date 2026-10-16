@@ -1,0 +1,331 @@
+Durango.UI.MissionAlertTargetWidget : UnityEngine.MonoBehaviour
+FIELD UISprite Durango.UI.MissionAlertTargetWidget::_icon
+FIELD UnityEngine.GameObject Durango.UI.MissionAlertTargetWidget::_idleIcon
+FIELD UISprite Durango.UI.MissionAlertTargetWidget::_border
+FIELD UISprite Durango.UI.MissionAlertTargetWidget::_arrow
+FIELD UISprite Durango.UI.MissionAlertTargetWidget::_bg
+FIELD System.String Durango.UI.MissionAlertTargetWidget::_component
+FIELD UnityEngine.Vector2 Durango.UI.MissionAlertTargetWidget::_offset
+FIELD FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+FIELD UnityEngine.Vector3 Durango.UI.MissionAlertTargetWidget::_targetPos
+FIELD Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+FIELD System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+METHOD System.String Durango.UI.MissionAlertTargetWidget::get_Component()
+ldarg.0 
+ldfld System.String Durango.UI.MissionAlertTargetWidget::_component
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Awake()
+ldarg.0 
+ldc.i4.0 
+stfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_icon
+ldsfld UnityEngine.Color PresetColor::UIYellow
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldc.i4.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::LateUpdate()
+ldarg.0 
+ldfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+brfalse IL_0098: ret
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+brfalse IL_0098: ret
+ldarg.0 
+ldfld UnityEngine.Vector3 Durango.UI.MissionAlertTargetWidget::_targetPos
+stloc.0 
+ldarg.0 
+ldfld UnityEngine.Vector2 Durango.UI.MissionAlertTargetWidget::_offset
+stloc.1 
+ldloca.s V_0
+ldflda System.Single UnityEngine.Vector3::x
+dup 
+ldind.r4 
+ldloc.1 
+ldfld System.Single UnityEngine.Vector2::x
+add 
+stind.r4 
+ldloca.s V_0
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldloc.1 
+ldfld System.Single UnityEngine.Vector2::y
+add 
+stind.r4 
+ldloc.0 
+ldnull 
+call UnityEngine.Vector3 Durango.Render.Camera.MainCamera::WorldToNGUIPos(UnityEngine.Vector3,UnityEngine.Transform)
+stloc.2 
+ldloca.s V_3
+call System.Int32 UnityEngine.Screen::get_width()
+conv.r4 
+ldc.r4 0,5
+mul 
+call System.Int32 UnityEngine.Screen::get_height()
+conv.r4 
+ldc.r4 0,5
+mul 
+call System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single)
+ldloca.s V_2
+call System.Single UnityEngine.Vector3::get_sqrMagnitude()
+ldloca.s V_3
+call System.Single UnityEngine.Vector3::get_sqrMagnitude()
+bge.un.s IL_0091: ldarg.0
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ldarg.0 
+call UnityEngine.Transform UnityEngine.Component::get_transform()
+ldloc.2 
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ret 
+ldarg.0 
+ldc.i4.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::InitArtifact(Artifact)
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+brtrue.s IL_001b: ret
+ldarg.0 
+ldarg.1 
+callvirt UnityEngine.Vector3 ImmovableBase::get_InteractionPosition()
+stfld UnityEngine.Vector3 Durango.UI.MissionAlertTargetWidget::_targetPos
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Release()
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Set(FactionSystem/MissionState)
+ldarg.0 
+ldfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+ldarg.1 
+beq.s IL_0016: ret
+ldarg.0 
+ldarg.1 
+stfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+ldarg.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::Refresh()
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Refresh()
+ldarg.0 
+ldfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+stloc.0 
+ldloc.0 
+switch Mono.Cecil.Cil.Instruction[]
+ret 
+ldarg.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::Show()
+ret 
+ldarg.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::Idle()
+ret 
+ldarg.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::Hide()
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::UpdateIndicator()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000f: ldc.i4.0
+ret 
+ldc.i4.0 
+stloc.0 
+br.s IL_0091: ldloc.0
+call System.Collections.Generic.List`1<Durango.Terrain.Indicator> Durango.Terrain.TerrainMeta::get_Indicators()
+ldloc.0 
+callvirt !0 System.Collections.Generic.List`1<Durango.Terrain.Indicator>::get_Item(System.Int32)
+stloc.1 
+call T GameSystem`1<RecipeSystem>::Instance()
+ldloc.1 
+callvirt System.Int32 Durango.Terrain.Indicator::get_EntityType()
+callvirt Building.Blueprint RecipeSystem::GetBlueprint(System.Int32)
+stloc.2 
+ldloc.2 
+brfalse.s IL_008d: ldloc.0
+ldloc.2 
+ldarg.0 
+call System.String Durango.UI.MissionAlertTargetWidget::get_Component()
+callvirt System.Boolean Building.Blueprint::HasComponent(System.String)
+brfalse.s IL_008d: ldloc.0
+ldloc.2 
+ldfld Building.ArtifactIndicatorData Building.Blueprint::Indicator
+brfalse.s IL_008d: ldloc.0
+ldloca.s V_3
+ldloc.1 
+callvirt System.Int32[] Durango.Terrain.Indicator::get_Tile()
+ldc.i4.0 
+ldelem.i4 
+ldloc.1 
+callvirt System.Int32[] Durango.Terrain.Indicator::get_Tile()
+ldc.i4.1 
+ldelem.i4 
+call System.Void Point2::.ctor(System.Int32,System.Int32)
+call T Durango.Utils.Singleton`1<Durango.UI.MapIndicators>::Instance()
+ldloca.s V_3
+constrained. Point2
+callvirt System.String System.Object::ToString()
+ldc.i4.4 
+callvirt Durango.UI.MapIndicator Durango.UI.MapIndicators::GetIndicator(System.String,Durango.Logic.Map.IndicatorType)
+stloc.s V_4
+ldloc.s V_4
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_008d: ldloc.0
+ldarg.0 
+ldloc.s V_4
+stfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+ret 
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+call System.Collections.Generic.List`1<Durango.Terrain.Indicator> Durango.Terrain.TerrainMeta::get_Indicators()
+callvirt System.Int32 System.Collections.Generic.List`1<Durango.Terrain.Indicator>::get_Count()
+blt IL_0013: call System.Collections.Generic.List`1<Durango.Terrain.Indicator> Durango.Terrain.TerrainMeta::get_Indicators()
+ret 
+METHOD System.Boolean Durango.UI.MissionAlertTargetWidget::IsInitedArtifact()
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Show()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002e: ldarg.0
+call T Durango.Utils.Singleton`1<Durango.UI.MapIndicators>::Instance()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+ldsfld UnityEngine.Color PresetColor::UIYellow
+ldc.r4 32
+ldc.r4 0
+ldc.i4.1 
+callvirt System.Void Durango.UI.MapIndicators::AddAreaEffectIndicator(Durango.UI.MapIndicator,UnityEngine.Color,System.Single,System.Single,System.Boolean)
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+brfalse.s IL_0069: ret
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_border
+ldsfld UnityEngine.Color PresetColor::UIYellow
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_arrow
+ldsfld UnityEngine.Color PresetColor::UIYellow
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Idle()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001e: ldarg.0
+call T Durango.Utils.Singleton`1<Durango.UI.MapIndicators>::Instance()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+callvirt System.Void Durango.UI.MapIndicators::RemoveAreaEffectIndicator(Durango.UI.MapIndicator)
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+brfalse.s IL_0059: ret
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_border
+ldsfld UnityEngine.Color PresetColor::UIWhite
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_arrow
+ldsfld UnityEngine.Color PresetColor::UIWhite
+callvirt System.Void UIWidget::set_color(UnityEngine.Color)
+ldarg.0 
+ldc.i4.1 
+call System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::Hide()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_001e: ldarg.0
+call T Durango.Utils.Singleton`1<Durango.UI.MapIndicators>::Instance()
+ldarg.0 
+ldfld Durango.UI.MapIndicator Durango.UI.MissionAlertTargetWidget::_indicator
+callvirt System.Void Durango.UI.MapIndicators::RemoveAreaEffectIndicator(Durango.UI.MapIndicator)
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionAlertTargetWidget::_initedArtifact
+brfalse.s IL_0039: ret
+ldarg.0 
+call UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldc.i4.0 
+call System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::UpdateSprite(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_icon
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.1 
+brfalse.s IL_0019: ldc.i4.0
+ldarg.0 
+ldfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+ldc.i4.2 
+ceq 
+br.s IL_001a: callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UnityEngine.GameObject Durango.UI.MissionAlertTargetWidget::_idleIcon
+callvirt UnityEngine.GameObject UnityEngine.GameObject::get_gameObject()
+ldarg.1 
+brfalse.s IL_0038: ldc.i4.0
+ldarg.0 
+ldfld FactionSystem/MissionState Durango.UI.MissionAlertTargetWidget::_currentState
+ldc.i4.1 
+ceq 
+br.s IL_0039: callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_border
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_arrow
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UISprite Durango.UI.MissionAlertTargetWidget::_bg
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetWidget::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

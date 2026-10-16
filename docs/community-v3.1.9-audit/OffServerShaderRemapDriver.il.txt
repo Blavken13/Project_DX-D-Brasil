@@ -1,0 +1,125 @@
+OffServerShaderRemapDriver : UnityEngine.MonoBehaviour
+FIELD System.Int32 OffServerShaderRemapDriver::WorldLightColorId
+FIELD System.Int32 OffServerShaderRemapDriver::SkyAmbientId
+FIELD System.Single OffServerShaderRemapDriver::_nextLightCheck
+FIELD System.Int32 OffServerShaderRemapDriver::_worldLightReports
+FIELD System.Int32 OffServerShaderRemapDriver::_skyAmbientReports
+METHOD System.Void OffServerShaderRemapDriver::Boot()
+call System.Boolean OffServerShaderRemap::get_Enabled()
+brtrue.s IL_0008: call System.Void OffServerShaderRemap::CacheEngineShaders()
+ret 
+call System.Void OffServerShaderRemap::CacheEngineShaders()
+ldsfld UnityEngine.Events.UnityAction`2<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode> OffServerShaderRemapDriver/<>c::<>9__0_0
+dup 
+brtrue.s IL_002c: call System.Void UnityEngine.SceneManagement.SceneManager::add_sceneLoaded(UnityEngine.Events.UnityAction`2<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode>)
+pop 
+ldsfld OffServerShaderRemapDriver/<>c OffServerShaderRemapDriver/<>c::<>9
+ldftn System.Void OffServerShaderRemapDriver/<>c::<Boot>b__0_0(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode)
+newobj System.Void UnityEngine.Events.UnityAction`2<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode>::.ctor(System.Object,System.IntPtr)
+dup 
+stsfld UnityEngine.Events.UnityAction`2<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode> OffServerShaderRemapDriver/<>c::<>9__0_0
+call System.Void UnityEngine.SceneManagement.SceneManager::add_sceneLoaded(UnityEngine.Events.UnityAction`2<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.LoadSceneMode>)
+call System.Void OffServerShaderRemap::MarkBusy()
+ldstr OffServerShaderRemapDriver
+newobj System.Void UnityEngine.GameObject::.ctor(System.String)
+dup 
+call System.Void UnityEngine.Object::DontDestroyOnLoad(UnityEngine.Object)
+callvirt !!0 UnityEngine.GameObject::AddComponent<OffServerShaderRemapDriver>()
+pop 
+ret 
+METHOD System.Void OffServerShaderRemapDriver::Update()
+call System.Void OffServerShaderRemap::SweepAll()
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldarg.0 
+ldfld System.Single OffServerShaderRemapDriver::_nextLightCheck
+blt.un IL_010e: ret
+ldarg.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+ldc.r4 2
+add 
+stfld System.Single OffServerShaderRemapDriver::_nextLightCheck
+ldsfld System.Int32 OffServerShaderRemapDriver::WorldLightColorId
+call UnityEngine.Color UnityEngine.Shader::GetGlobalColor(System.Int32)
+stloc.0 
+ldloc.0 
+ldfld System.Single UnityEngine.Color::r
+ldloc.0 
+ldfld System.Single UnityEngine.Color::g
+add 
+ldloc.0 
+ldfld System.Single UnityEngine.Color::b
+add 
+ldc.r4 0,001
+bgt.un.s IL_0090: ldsfld System.Int32 OffServerShaderRemapDriver::SkyAmbientId
+ldsfld System.Int32 OffServerShaderRemapDriver::WorldLightColorId
+call UnityEngine.Color UnityEngine.Color::get_white()
+call System.Void UnityEngine.Shader::SetGlobalColor(System.Int32,UnityEngine.Color)
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerShaderRemapDriver::_worldLightReports
+stloc.2 
+ldloc.2 
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerShaderRemapDriver::_worldLightReports
+ldloc.2 
+ldc.i4.3 
+bge.s IL_0090: ldsfld System.Int32 OffServerShaderRemapDriver::SkyAmbientId
+ldstr [ShaderRemap] _WorldLightColor was 
+ldloca.s V_0
+constrained. UnityEngine.Color
+callvirt System.String System.Object::ToString()
+ldstr  -> forced white (CustomColorCorrectionEffect not running?)
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void OffServerShaderRemap::Report(System.String)
+ldsfld System.Int32 OffServerShaderRemapDriver::SkyAmbientId
+call UnityEngine.Color UnityEngine.Shader::GetGlobalColor(System.Int32)
+stloc.1 
+ldloc.1 
+ldfld System.Single UnityEngine.Color::r
+ldloc.1 
+ldfld System.Single UnityEngine.Color::g
+add 
+ldloc.1 
+ldfld System.Single UnityEngine.Color::b
+add 
+ldc.r4 0,001
+bgt.un.s IL_010e: ret
+ldsfld System.Int32 OffServerShaderRemapDriver::SkyAmbientId
+ldc.r4 0,6
+ldc.r4 0,6
+ldc.r4 0,6
+ldc.r4 1
+newobj System.Void UnityEngine.Color::.ctor(System.Single,System.Single,System.Single,System.Single)
+call System.Void UnityEngine.Shader::SetGlobalColor(System.Int32,UnityEngine.Color)
+ldarg.0 
+ldarg.0 
+ldfld System.Int32 OffServerShaderRemapDriver::_skyAmbientReports
+stloc.2 
+ldloc.2 
+ldc.i4.1 
+add 
+stfld System.Int32 OffServerShaderRemapDriver::_skyAmbientReports
+ldloc.2 
+ldc.i4.3 
+bge.s IL_010e: ret
+ldstr [ShaderRemap] _SkyAmbient was 
+ldloca.s V_1
+constrained. UnityEngine.Color
+callvirt System.String System.Object::ToString()
+ldstr  -> forced 0.6 grey
+call System.String System.String::Concat(System.String,System.String,System.String)
+call System.Void OffServerShaderRemap::Report(System.String)
+ret 
+METHOD System.Void OffServerShaderRemapDriver::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 
+METHOD System.Void OffServerShaderRemapDriver::.cctor()
+ldstr _WorldLightColor
+call System.Int32 UnityEngine.Shader::PropertyToID(System.String)
+stsfld System.Int32 OffServerShaderRemapDriver::WorldLightColorId
+ldstr _SkyAmbient
+call System.Int32 UnityEngine.Shader::PropertyToID(System.String)
+stsfld System.Int32 OffServerShaderRemapDriver::SkyAmbientId
+ret 

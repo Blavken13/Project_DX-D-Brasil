@@ -1,0 +1,6 @@
+Durango.UI.ExploreAreaMissionMarker/MissionState : System.Enum
+FIELD System.Int32 Durango.UI.ExploreAreaMissionMarker/MissionState::value__
+FIELD Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker/MissionState::Invalid
+FIELD Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker/MissionState::Completed
+FIELD Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker/MissionState::NotInProgress
+FIELD Durango.UI.ExploreAreaMissionMarker/MissionState Durango.UI.ExploreAreaMissionMarker/MissionState::InProgress

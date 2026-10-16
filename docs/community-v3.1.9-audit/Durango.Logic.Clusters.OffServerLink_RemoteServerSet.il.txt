@@ -1,0 +1,6 @@
+Durango.Logic.Clusters.OffServerLink/RemoteServerSet : System.Object
+FIELD System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerLink/RemoteServerEntry> Durango.Logic.Clusters.OffServerLink/RemoteServerSet::Servers
+METHOD System.Void Durango.Logic.Clusters.OffServerLink/RemoteServerSet::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

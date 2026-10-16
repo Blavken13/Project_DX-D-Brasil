@@ -1,0 +1,59 @@
+{
+  "terrain_id": "arid_basin_60_v2",
+  "landmark": [
+    {
+      "id": 60000,
+      "prefab": "Models/Maps/AridBasin/AridBasinTerrain.prefab"
+    }
+  ],
+  "distinct_coastline": true,
+  "giganotosaurus_model_definition_verified": true,
+  "bundles": [
+    {
+      "platform": "windows",
+      "name": "models$maps$aridbasin$aridbasinterrain.prefab.2064853cdcdcbbeb9c2c7eb280af0a4d.bundle",
+      "bytes": 2013725,
+      "download_verified": true
+    },
+    {
+      "platform": "windows",
+      "name": "models$animals$giganotosaurus$giganotosaurusprefab.prefab.da703a298738bdcf4897ad64ceb71874.bundle",
+      "bytes": 1914454,
+      "download_verified": true
+    },
+    {
+      "platform": "windows",
+      "name": "models$animals$giganotosaurus$giganotosaurus_framework.asset.935e0505e229df9a1a12d9c7d86391cf.bundle",
+      "bytes": 18531680,
+      "download_verified": true
+    },
+    {
+      "platform": "android",
+      "name": "models$maps$aridbasin$aridbasinterrain.prefab.e2165b779de7952c87ba18c6924d90b4.bundle",
+      "bytes": 1960700,
+      "download_verified": true
+    },
+    {
+      "platform": "android",
+      "name": "models$animals$giganotosaurus$giganotosaurusprefab.prefab.e3a3e0f443a017e53e71aa3eb0b79283.bundle",
+      "bytes": 1983758,
+      "download_verified": true
+    },
+    {
+      "platform": "android",
+      "name": "models$animals$giganotosaurus$giganotosaurus_framework.asset.0d09294bfca1fd11a544783428164251.bundle",
+      "bytes": 18531680,
+      "download_verified": true
+    }
+  ],
+  "old_pid": null,
+  "new_pid": 6308,
+  "configuration": "Debug",
+  "backup": "C:\\code\\ProjectDX\\Project_DX-D-Brasil\\tools\\state-before-arid-20261015-162134.zip",
+  "backup_files_verified": 46,
+  "previous_online": null,
+  "live_giganotosaurus_spawn_logged": true,
+  "character_files_preserved": false,
+  "gameplay_save_data_preserved": true,
+  "save_audit": "save-validation.json"
+}

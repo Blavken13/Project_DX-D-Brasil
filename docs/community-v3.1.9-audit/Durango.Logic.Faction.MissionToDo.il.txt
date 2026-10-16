@@ -1,0 +1,81 @@
+Durango.Logic.Faction.MissionToDo : Durango.Logic.PlayGuide.ToDoBase
+FIELD System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+FIELD System.String Durango.Logic.Faction.MissionToDo::Id
+FIELD System.String Durango.Logic.Faction.MissionToDo::DisplayText
+FIELD UnityEngine.Vector2 Durango.Logic.Faction.MissionToDo::TargetTile
+FIELD Shared.Faction.FactionType Durango.Logic.Faction.MissionToDo::FactionType
+FIELD Shared.Faction.MissionTodoType Durango.Logic.Faction.MissionToDo::MissionType
+FIELD Shared.Faction.MissionTodoOrder Durango.Logic.Faction.MissionToDo::MissionOrder
+FIELD System.Single Durango.Logic.Faction.MissionToDo::_lastUpdatedAt
+METHOD System.Void Durango.Logic.Faction.MissionToDo::Process()
+ldarg.0 
+ldflda System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brtrue.s IL_001a: call System.Single UnityEngine.Time::get_time()
+ldarg.0 
+ldarg.0 
+ldfld System.String Durango.Logic.Faction.MissionToDo::DisplayText
+call System.Void Durango.Logic.PlayGuide.ToDoBase::set_LocalText(System.String)
+ret 
+call System.Single UnityEngine.Time::get_time()
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld System.Single Durango.Logic.Faction.MissionToDo::_lastUpdatedAt
+sub 
+ldc.r4 1
+blt.s IL_009c: ret
+ldarg.0 
+ldloc.0 
+stfld System.Single Durango.Logic.Faction.MissionToDo::_lastUpdatedAt
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+stloc.1 
+ldloc.1 
+ldarg.0 
+ldflda System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+ble.un.s IL_005c: ldarg.0
+ldarg.0 
+ldflda System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+initobj System.Nullable`1<System.Double>
+ret 
+ldarg.0 
+ldstr {0}
+남은 시간 {1}
+ldc.i4.2 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.0 
+ldfld System.String Durango.Logic.Faction.MissionToDo::DisplayText
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.0 
+ldflda System.Nullable`1<System.Double> Durango.Logic.Faction.MissionToDo::ExpiresAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+ldloc.1 
+sub 
+call System.String TimedeltaFormatter::ColonFormat(System.Double)
+stelem.ref 
+call System.String L10N.T::_(System.String,System.Object[])
+call System.Void Durango.Logic.PlayGuide.ToDoBase::set_LocalText(System.String)
+call T GameSystem`1<ToDoListSystem>::Instance()
+ldarg.0 
+ldc.i4.1 
+callvirt System.Void ToDoListSystem::SetUpdated(Durango.Logic.PlayGuide.ToDoBase,System.Boolean)
+ret 
+METHOD System.Boolean Durango.Logic.Faction.MissionToDo::HasTile()
+ldarg.0 
+ldfld UnityEngine.Vector2 Durango.Logic.Faction.MissionToDo::TargetTile
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+call System.Boolean UnityEngine.Vector2::op_Inequality(UnityEngine.Vector2,UnityEngine.Vector2)
+ret 
+METHOD System.Void Durango.Logic.Faction.MissionToDo::.ctor()
+ldarg.0 
+call UnityEngine.Vector2 UnityEngine.Vector2::get_zero()
+stfld UnityEngine.Vector2 Durango.Logic.Faction.MissionToDo::TargetTile
+ldarg.0 
+call System.Void Durango.Logic.PlayGuide.ToDoBase::.ctor()
+ret 

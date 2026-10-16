@@ -1,0 +1,656 @@
+Durango.UI.MissionInfoPopup : Durango.UI.Popup.TooltipBase
+FIELD System.String Durango.UI.MissionInfoPopup::BlurKey
+FIELD System.Int32 Durango.UI.MissionInfoPopup::SeperatorWidth
+FIELD System.Int32 Durango.UI.MissionInfoPopup::Gap
+FIELD System.Int32 Durango.UI.MissionInfoPopup::DescriptionWidth
+FIELD UnityEngine.Transform Durango.UI.MissionInfoPopup::_container
+FIELD UILabel Durango.UI.MissionInfoPopup::_titleLabel
+FIELD UILabel Durango.UI.MissionInfoPopup::_missionLabel
+FIELD UILabel Durango.UI.MissionInfoPopup::_timerLabel
+FIELD UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+FIELD UILabel Durango.UI.MissionInfoPopup::_rewardLabel
+FIELD UISprite[] Durango.UI.MissionInfoPopup::_separators
+FIELD Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+FIELD UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+FIELD Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+FIELD System.Single Durango.UI.MissionInfoPopup::_nextTimerUpdateAt
+FIELD System.Boolean Durango.UI.MissionInfoPopup::_isInit
+FIELD System.Action Durango.UI.MissionInfoPopup::Closed
+METHOD System.Boolean Durango.UI.MissionInfoPopup::get_DragLock()
+ldc.i4.1 
+ret 
+METHOD Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::get_ConfirmButton()
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::add_Closed(System.Action)
+ldarg.0 
+ldfld System.Action Durango.UI.MissionInfoPopup::Closed
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldarg.0 
+ldflda System.Action Durango.UI.MissionInfoPopup::Closed
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::remove_Closed(System.Action)
+ldarg.0 
+ldfld System.Action Durango.UI.MissionInfoPopup::Closed
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.1 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldarg.0 
+ldflda System.Action Durango.UI.MissionInfoPopup::Closed
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0007: ldloc.0
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::Init()
+ldarg.0 
+ldfld System.Boolean Durango.UI.MissionInfoPopup::_isInit
+brtrue.s IL_0040: ret
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.UI.MissionInfoPopup::_isInit
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+call UIEventListener UIEventListener::Get(UnityEngine.GameObject)
+dup 
+ldfld UIEventListener/VoidDelegate UIEventListener::onClick
+ldarg.0 
+ldftn System.Void Durango.UI.MissionInfoPopup::<Init>b__24_0(UnityEngine.GameObject)
+newobj System.Void UIEventListener/VoidDelegate::.ctor(System.Object,System.IntPtr)
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass UIEventListener/VoidDelegate
+stfld UIEventListener/VoidDelegate UIEventListener::onClick
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::Update()
+ldarg.0 
+call System.Void Durango.UI.Popup.TooltipBase::Update()
+ldarg.0 
+ldfld System.Single Durango.UI.MissionInfoPopup::_nextTimerUpdateAt
+call System.Single UnityEngine.Time::get_time()
+bge.un.s IL_0019: ret
+ldarg.0 
+call System.Void Durango.UI.MissionInfoPopup::UpdateTimerLabel()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::OnConfirm()
+call TV UIManager::FindScript<Durango.UI.MissionGroup>()
+stloc.0 
+ldloc.0 
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_002b: ldarg.0
+ldloc.0 
+callvirt System.String Durango.UI.MissionGroup::get_EntityId()
+ldloc.0 
+callvirt Point2 Durango.UI.MissionGroup::get_Tile()
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldfld System.String Durango.UI.MissionInfoPopup/Data::Id
+call System.Void FactionSystem::AcceptMission(System.String,Point2,System.String)
+ldarg.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Hide()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::OnCancel()
+call Durango.UI.MessageBox UIManager::get_MessageBox()
+ldstr 진행 중인 임무를 중단합니다.
+call System.String L10N.T::_(System.String)
+ldarg.0 
+ldftn System.Void Durango.UI.MissionInfoPopup::<OnCancel>b__27_0(System.Boolean)
+newobj System.Void System.Action`1<System.Boolean>::.ctor(System.Object,System.IntPtr)
+ldnull 
+ldnull 
+callvirt System.Void Durango.UI.MessageBox::Show(System.String,System.Action`1<System.Boolean>,System.String,System.String)
+ldarg.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Hide()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::UpdateLayout()
+ldarg.0 
+call System.Void Durango.UI.MissionInfoPopup::UpdateSize()
+ldarg.0 
+call System.Void Durango.UI.MissionInfoPopup::UpdatePositions()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::UpdatePositions()
+call UnityEngine.Rect UIManager::get_SafeArea()
+stloc.0 
+ldc.r4 1
+ldloca.s V_0
+call System.Single UnityEngine.Rect::get_xMax()
+sub 
+call System.Int32 UIManager::get_ScreenWidth()
+conv.r4 
+mul 
+conv.i4 
+stloc.1 
+ldc.r4 1
+ldloca.s V_0
+call System.Single UnityEngine.Rect::get_yMax()
+sub 
+call System.Int32 UIManager::get_ScreenHeight()
+conv.r4 
+mul 
+conv.i4 
+stloc.2 
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+ldfld UIRect/AnchorPoint UIRect::leftAnchor
+ldc.r4 1
+ldc.r4 -100
+ldloc.1 
+conv.r4 
+sub 
+callvirt System.Void UIRect/AnchorPoint::SetScreen(System.Single,System.Single)
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+ldfld UIRect/AnchorPoint UIRect::rightAnchor
+ldc.r4 1
+ldloc.1 
+neg 
+conv.r4 
+callvirt System.Void UIRect/AnchorPoint::SetScreen(System.Single,System.Single)
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+ldfld UIRect/AnchorPoint UIRect::topAnchor
+ldc.r4 1
+ldloc.2 
+neg 
+conv.r4 
+callvirt System.Void UIRect/AnchorPoint::SetScreen(System.Single,System.Single)
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+ldfld UIRect/AnchorPoint UIRect::bottomAnchor
+ldc.r4 1
+ldc.i4.s -100
+ldloc.2 
+sub 
+conv.r4 
+callvirt System.Void UIRect/AnchorPoint::SetScreen(System.Single,System.Single)
+ldarg.0 
+ldfld UIWidget Durango.UI.MissionInfoPopup::_cancelButton
+callvirt System.Void UIRect::UpdateAnchors()
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_titleLabel
+ldc.r4 0,5
+ldc.r4 0
+call UnityEngine.Vector3 UIUtility::GetPosition(UIWidget,System.Single,System.Single)
+stloc.3 
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldc.r4 22
+sub 
+stind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_missionLabel
+ldloc.3 
+ldc.r4 0,5
+ldc.r4 1
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_missionLabel
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+sub 
+stind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_timerLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_0146: ldarg.0
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldc.r4 22
+sub 
+stind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_timerLabel
+ldloc.3 
+ldc.r4 0,5
+ldc.r4 1
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_titleLabel
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+sub 
+stind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse IL_0206: ldloca.s V_3
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldc.r4 24
+sub 
+stind.r4 
+ldarg.0 
+ldfld UISprite[] Durango.UI.MissionInfoPopup::_separators
+ldc.i4.0 
+ldelem.ref 
+ldloc.3 
+ldc.r4 0,5
+ldc.r4 1
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldarg.0 
+ldfld UISprite[] Durango.UI.MissionInfoPopup::_separators
+ldc.i4.0 
+ldelem.ref 
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+ldc.r4 40
+add 
+sub 
+stind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+ldloc.3 
+ldc.r4 0,5
+ldc.r4 1
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+ldc.r4 40
+add 
+sub 
+stind.r4 
+ldarg.0 
+ldfld UISprite[] Durango.UI.MissionInfoPopup::_separators
+ldc.i4.1 
+ldelem.ref 
+ldloc.3 
+ldc.r4 0,5
+ldc.r4 1
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldarg.0 
+ldfld UISprite[] Durango.UI.MissionInfoPopup::_separators
+ldc.i4.1 
+ldelem.ref 
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+sub 
+stind.r4 
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldc.r4 34
+sub 
+stind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_rewardLabel
+ldloc.3 
+ldc.r4 0,5
+ldc.r4 1
+call System.Void UIUtility::SetPosition(UIWidget,UnityEngine.Vector3,System.Single,System.Single)
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_rewardLabel
+callvirt System.Int32 UIWidget::get_height()
+conv.r4 
+sub 
+stind.r4 
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_0298: ldloca.s V_3
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldc.r4 50
+sub 
+stind.r4 
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+stloc.s V_4
+ldloca.s V_4
+ldloc.3 
+ldfld System.Single UnityEngine.Vector3::y
+stfld System.Single UnityEngine.Vector3::y
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+ldloc.s V_4
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+br.s IL_02a8: ldarg.0
+ldloca.s V_3
+ldflda System.Single UnityEngine.Vector3::y
+dup 
+ldind.r4 
+ldc.r4 10
+add 
+stind.r4 
+ldarg.0 
+ldfld UnityEngine.Transform Durango.UI.MissionInfoPopup::_container
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+call UnityEngine.Vector3 UnityEngine.Vector3::get_up()
+ldc.r4 0
+ldloc.3 
+ldfld System.Single UnityEngine.Vector3::y
+sub 
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+ldc.r4 0,5
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::UpdateSize()
+call System.Int32 UnityEngine.Screen::get_width()
+ldc.i4.s 50
+sub 
+dup 
+ldc.i4 850
+call System.Int32 UnityEngine.Mathf::Min(System.Int32,System.Int32)
+stloc.0 
+ldc.i4.s 100
+sub 
+ldc.i4 750
+call System.Int32 UnityEngine.Mathf::Min(System.Int32,System.Int32)
+stloc.1 
+ldarg.0 
+ldfld UISprite[] Durango.UI.MissionInfoPopup::_separators
+stloc.2 
+ldc.i4.0 
+stloc.3 
+br.s IL_003a: ldloc.3
+ldloc.2 
+ldloc.3 
+ldelem.ref 
+ldloc.0 
+callvirt System.Void UIWidget::set_width(System.Int32)
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.2 
+ldlen 
+conv.i4 
+blt.s IL_002d: ldloc.2
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+ldloc.1 
+callvirt System.Void UIWidget::set_width(System.Int32)
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::Show(Durango.UI.MissionInfoPopup/Data,System.Boolean,System.Boolean)
+ldarg.0 
+call System.Void Durango.UI.MissionInfoPopup::Init()
+ldarg.0 
+ldarg.1 
+stfld Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_titleLabel
+ldarg.1 
+ldfld System.String Durango.UI.MissionInfoPopup/Data::ClientName
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_missionLabel
+ldarg.1 
+ldfld System.String Durango.UI.MissionInfoPopup/Data::Subject
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.1 
+ldfld System.String Durango.UI.MissionInfoPopup/Data::Description
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_004f: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+br.s IL_0071: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_descriptionLabel
+ldarg.1 
+ldfld System.String Durango.UI.MissionInfoPopup/Data::Description
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_rewardLabel
+ldstr 임무 성공 보상 
+call System.String L10N.T::_(System.String)
+ldarg.1 
+ldfld System.Nullable`1<Messages.RewardInfo> Durango.UI.MissionInfoPopup/Data::Reward
+call System.String FactionSystem::MissionRewardToString(System.Nullable`1<Messages.RewardInfo>)
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.2 
+brfalse.s IL_010e: ldarg.0
+ldarg.3 
+brfalse.s IL_00d6: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldc.i4.3 
+callvirt System.Void Durango.UI.Control.SelectableButton::SetStyle(Durango.UI.Control.PresetButton/Style)
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldstr 임무 중단
+call System.String L10N.T::_(System.String)
+callvirt System.Void Durango.UI.Control.SelectableButton::set_Text(System.String)
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldarg.0 
+ldftn System.Void Durango.UI.MissionInfoPopup::OnCancel()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stfld System.Action Durango.UI.Control.Selectable::Clicked
+br.s IL_010e: ldarg.0
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldc.i4.0 
+callvirt System.Void Durango.UI.Control.SelectableButton::SetStyle(Durango.UI.Control.PresetButton/Style)
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldstr 임무 시작
+call System.String L10N.T::_(System.String)
+callvirt System.Void Durango.UI.Control.SelectableButton::set_Text(System.String)
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldarg.0 
+ldftn System.Void Durango.UI.MissionInfoPopup::OnConfirm()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+stfld System.Action Durango.UI.Control.Selectable::Clicked
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldarg.2 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+call System.Void Durango.UI.MissionInfoPopup::UpdateTimerLabel()
+ldarg.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::UpdateLayout()
+ldarg.0 
+call System.Void Durango.UI.Popup.TooltipBase::Show()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::UpdateTimerLabel()
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+stloc.0 
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldflda System.Nullable`1<System.Int32> Durango.UI.MissionInfoPopup/Data::TimeLimit
+call System.Boolean System.Nullable`1<System.Int32>::get_HasValue()
+brfalse IL_00da: ldarg.0
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_timerLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.1 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldflda System.Nullable`1<System.Double> Durango.UI.MissionInfoPopup/Data::StartedAt
+call System.Boolean System.Nullable`1<System.Double>::get_HasValue()
+brfalse.s IL_009b: ldarg.0
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldflda System.Nullable`1<System.Double> Durango.UI.MissionInfoPopup/Data::StartedAt
+call !0 System.Nullable`1<System.Double>::get_Value()
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldflda System.Nullable`1<System.Int32> Durango.UI.MissionInfoPopup/Data::TimeLimit
+call !0 System.Nullable`1<System.Int32>::get_Value()
+conv.r8 
+add 
+ldloc.0 
+sub 
+stloc.1 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_timerLabel
+ldstr [icon=icon_timer2:1.1] 
+ldloc.1 
+ldc.i4.2 
+ldstr sec
+call System.String TimedeltaFormatter::Format(System.Double,System.Int32,System.String)
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+call System.Single UnityEngine.Time::get_time()
+ldc.r4 1
+add 
+stfld System.Single Durango.UI.MissionInfoPopup::_nextTimerUpdateAt
+ret 
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldflda System.Nullable`1<System.Int32> Durango.UI.MissionInfoPopup/Data::TimeLimit
+call !0 System.Nullable`1<System.Int32>::get_Value()
+conv.r8 
+stloc.2 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_timerLabel
+ldstr [icon=icon_timer2:1.1] 
+ldloc.2 
+ldc.i4.2 
+ldstr sec
+call System.String TimedeltaFormatter::Format(System.Double,System.Int32,System.String)
+call System.String System.String::Concat(System.String,System.String)
+callvirt System.Void UILabel::set_text(System.String)
+ldarg.0 
+ldc.r4 3,4028235E+38
+stfld System.Single Durango.UI.MissionInfoPopup::_nextTimerUpdateAt
+ret 
+ldarg.0 
+ldfld UILabel Durango.UI.MissionInfoPopup::_timerLabel
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+ldc.i4.0 
+callvirt System.Void UnityEngine.GameObject::SetActive(System.Boolean)
+ldarg.0 
+ldc.r4 3,4028235E+38
+stfld System.Single Durango.UI.MissionInfoPopup::_nextTimerUpdateAt
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::OnShow()
+ldarg.0 
+call System.Void Durango.UI.Popup.TooltipBase::OnShow()
+ldstr MissionInfoPopup
+ldc.i4.3 
+call System.Void Durango.UI.Control.BlurController::BlurOn(System.String,Durango.UI.Control.BlurController/Mask)
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::OnHide()
+ldarg.0 
+call System.Void Durango.UI.Popup.TooltipBase::OnHide()
+ldstr MissionInfoPopup
+call System.Void Durango.UI.Control.BlurController::BlurOff(System.String)
+ldarg.0 
+ldfld System.Action Durango.UI.MissionInfoPopup::Closed
+brfalse.s IL_0023: ret
+ldarg.0 
+ldfld System.Action Durango.UI.MissionInfoPopup::Closed
+callvirt System.Void System.Action::Invoke()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::OnTryConfirmOnModal()
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeInHierarchy()
+brfalse.s IL_002f: ret
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldfld System.Action Durango.UI.Control.Selectable::Clicked
+brfalse.s IL_002f: ret
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ldfld System.Action Durango.UI.Control.Selectable::Clicked
+callvirt System.Void System.Action::Invoke()
+ret 
+METHOD Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::GetConfirmButton(System.Boolean&)
+ldarg.1 
+ldc.i4.1 
+stind.i1 
+ldarg.0 
+ldfld Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::_confirmButton
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::.ctor()
+ldarg.0 
+call System.Void Durango.UI.Popup.TooltipBase::.ctor()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::<Init>b__24_0(UnityEngine.GameObject)
+ldarg.0 
+callvirt System.Void Durango.UI.Popup.TooltipBase::Hide()
+ret 
+METHOD System.Void Durango.UI.MissionInfoPopup::<OnCancel>b__27_0(System.Boolean)
+ldarg.1 
+brtrue.s IL_000a: ldarg.0
+ldarg.0 
+call System.Void Durango.UI.Popup.TooltipBase::Show()
+ret 
+ldarg.0 
+ldflda Durango.UI.MissionInfoPopup/Data Durango.UI.MissionInfoPopup::_mission
+ldfld System.String Durango.UI.MissionInfoPopup/Data::Id
+call System.Void FactionSystem::CancelMission(System.String)
+ret 

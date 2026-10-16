@@ -154,7 +154,12 @@ public partial class Player
         //   และถ้าตอบ OK ลอย ๆ ผู้เล่นจะเสียสสารวาร์ปฟรี ⇒ ตอบ Abort
         _connection.Recv(delegate(ParticipateAcceleration msg, PacketHeader header)
         {
-            Send(new Abort { Text = acceleratorMsg }, header.Seq);
+            var rift = _world.ArtifactManager.Get(msg.EntityId);
+            if (rift is not { } artifact || artifact.EntityType != 6282 ||
+                artifact.Tile.x != msg.Tile.x || artifact.Tile.y != msg.Tile.y ||
+                !IsWithinTiles(msg.Tile, 12) ||
+                !_world.ActivateWarpAccelerator(msg.EntityId, EntityId, Gauge.CurrentTime))
+                Send(new Abort { Text = "Esta fenda não pode ser ativada agora." }, header.Seq);
         });
 
         // ── ReceiveAcceleratorRewards (21112514) — รับรางวัลจากเครื่องเร่งวาร์ป ─────────

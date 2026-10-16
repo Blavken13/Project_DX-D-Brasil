@@ -140,6 +140,7 @@ public partial class Player
         if (info == null) return;
         if (!_context.AppearPlayer.IsAlive) return;             // ตายแล้วไม่ต้องรุมซ้ำ
         if (animal.AttackAt > 0 || animal.AttackHitAt > 0) return;
+        if (animal.StandAt > now) return; // Finish the attack clip before issuing another walking path.
         if (!string.IsNullOrEmpty(animal.AggroTargetId) && animal.AggroTargetId != EntityId)
         {
             // Não substituir o alvo de outro jogador a cada atualização de visibilidade.
@@ -151,7 +152,8 @@ public partial class Player
         if (!hunting && (animal.DefensiveOnly || !info.IsAggressive)) return;
 
         // นอกระยะเห็นเหยื่อ = ไม่สนใจ
-        if (!IsWithinTiles(animal.Tile, AnimalAggroTiles))
+        float attackReach = AnimalAttackReach(animal);
+        if (!IsWithinAnimalRange(animal, Math.Max(AnimalAggroTiles * 200f, attackReach + 200f), now))
         {
             // [7 ก.ย. 2026] หนีไปไกลนานพอแล้ว ⇒ เลิกโกรธ
             //
@@ -192,15 +194,15 @@ public partial class Player
         //
         // ⚠️ เดิมกัดได้ทันทีตั้งแต่ระยะ 4 ช่อง โดยไม่ขยับเลย ⇒ บนจอเห็นไดโนยืนนิ่งอยู่ไกล ๆ
         // แล้วเลือดผู้เล่นลดเอง (อาการที่ผู้เล่นแจ้ง) — ของจริงสัตว์ต้องวิ่งเข้ามาประชิดก่อน
-        if (!IsWithinTiles(animal.Tile, AnimalAttackTiles))
+        if (!IsWithinAnimalRange(animal, attackReach, now))
         {
             // กำลังเดินอยู่ = ปล่อยให้เดินให้จบก่อน ไม่สั่งเส้นทางใหม่ทับ (ตัวจะกระตุก)
             if (animal.StopWalkingAt > now) return;
 
-            WorldPosition target = PlayerWorldPosition();
+            WorldPosition target = PlayerWorldPosition(now);
             if (target.x == 0f && target.y == 0f) return;      // ยังไม่รู้ตำแหน่งผู้เล่น
 
-            Move chase = _world.AnimalManager?.BuildChase(animal, target, AttackStopDistance, now)
+            Move chase = _world.AnimalManager?.BuildChase(animal, target, Math.Max(AttackStopDistance, attackReach - 50f), now)
                          ?? default;
             if (chase.Movements != null)
             {
@@ -214,7 +216,7 @@ public partial class Player
         if (now < animal.NextAttackAt) return;
         if (animal.StopWalkingAt > now || animal.StandAt > now) return;
         animal.AttackAt = now + AnimalAttackWarningSeconds;
-        animal.AttackTargetPosition = PlayerWorldPosition();
+        animal.AttackTargetPosition = PlayerWorldPosition(now);
         animal.NextAttackAt = animal.AttackAt + Math.Max(0.5f, info.AttackCooltime);
         // O cliente agenda o brilho em notice_attack - 2 segundos.
         _world.BroadCast(CombatStatus(animal, AnimalStatus.Battle, lookAt: true, noticeAttack: true));
@@ -232,25 +234,26 @@ public partial class Player
         {
             if (now < animal.AttackAt) return;
             animal.AttackAt = 0;
-            animal.AttackHitAt = now + AnimalAttackImpactSeconds;
+            var timing = AnimalMotions.Of(animal.EntityType);
+            animal.AttackHitAt = now + (timing?.AttackImpact ?? AnimalAttackImpactSeconds);
 
             // A animação começa depois do aviso, voltada para a posição anunciada.
             Move attackMotion = animal.ToAttackMotionMessage(animal.AttackTargetPosition, now, AttackMotionRng);
             if (attackMotion.Movements != null)
             {
                 _world.BroadCast(attackMotion);
-                animal.StandAt = now + AnimalManager.Animal.AttackClipSeconds;
+                animal.StandAt = now + (timing?.AttackDuration ?? AnimalManager.Animal.AttackClipSeconds);
             }
             return;
         }
         if (animal.AttackHitAt <= 0 || now < animal.AttackHitAt) return;
         animal.AttackHitAt = 0;
-        var position = PlayerWorldPosition();
+        var position = PlayerWorldPosition(now);
         float aimDx = position.x - animal.AttackTargetPosition.x;
         float aimDy = position.y - animal.AttackTargetPosition.y;
         // A esquiva nativa reage ao impacto por 1,2 s. O tempo vem da ação,
         // sem confiar no timestamp enviado pelo cliente ou premiar uso sem ataque.
-        if (HasActiveDefense(now) && IsWithinTiles(animal.Tile, AnimalAttackTiles + 2))
+        if (HasActiveDefense(now) && IsWithinAnimalRange(animal, AnimalAttackReach(animal) + 400f, now))
         {
             _world.BroadCast(new Damaged
             {
@@ -268,8 +271,9 @@ public partial class Player
             return;
         }
         // O golpe não segue o jogador depois do aviso: sair do alcance/alvo permite desviar.
-        if (!IsWithinTiles(animal.Tile, AnimalAttackTiles) ||
-            aimDx * aimDx + aimDy * aimDy > AnimalAttackAimRadius * AnimalAttackAimRadius) return;
+        float aimRadius = Math.Max(AnimalAttackAimRadius, AnimalBodyRadius(animal) * .6f);
+        if (!IsWithinAnimalRange(animal, AnimalAttackReach(animal), now) ||
+            aimDx * aimDx + aimDy * aimDy > aimRadius * aimRadius) return;
 
         // ป้องกันของผู้เล่น — ใช้ค่า Derived หลังรวมสกิล (players.json → player.defense ฐานเป็น 0)
         // [7 ก.ย. 2026] แล้วคูณตัวลดดาเมจจากสกิลหมวดป้องกัน (ดู Player.SkillEffects.cs)
@@ -341,8 +345,11 @@ public partial class Player
     private static readonly Random AttackMotionRng = new();
 
     /// <summary>ตำแหน่งผู้เล่นในพิกัดโลก — ใช้เป็นปลายทางตอนสัตว์วิ่งเข้าหา</summary>
-    private WorldPosition PlayerWorldPosition()
+    private WorldPosition PlayerWorldPosition() => PlayerWorldPosition(Gauge.CurrentTime);
+
+    private WorldPosition PlayerWorldPosition(double now)
     {
+        if (TryPlayerPositionAt(now, out var current)) return current;
         Movement[] movements = _context.AppearPlayer.Move.Movements;
         if (movements == null || movements.Length == 0 ||
             movements[0].Path == null || movements[0].Path.Length == 0)
@@ -350,6 +357,23 @@ public partial class Player
             return default;
         }
         return movements[0].Path[0].Position;
+    }
+
+    private static float AnimalBodyRadius(AnimalManager.Animal animal)
+    {
+        var info = AnimalTypes.Get(animal.EntityType);
+        return (info?.BoundRadius ?? 0f) * (info?.BaseScale ?? 1f);
+    }
+
+    private static float AnimalAttackReach(AnimalManager.Animal animal) =>
+        Math.Max(AnimalAttackTiles * 200f, AnimalBodyRadius(animal) + AttackStopDistance);
+
+    private bool IsWithinAnimalRange(AnimalManager.Animal animal, float range, double now)
+    {
+        if (!TryPlayerPositionAt(now, out var player)) return false;
+        var position = animal.PositionAt(now);
+        float dx = player.x - position.x, dy = player.y - position.y;
+        return dx * dx + dy * dy <= range * range;
     }
 
     /// <summary>เลือดต่ำกว่านี้ถือว่าตาย — เผื่อความชันของหลอดที่ไต่ขึ้นระหว่างอ่านค่า</summary>
@@ -506,7 +530,8 @@ public partial class Player
         string attackerId, float power, AttackType attackType, bool wearWeapon)
     {
         int value = CombatDamage.Calculate(power, attack, animal.Defense,
-            AnimalTypes.Get(animal.EntityType)?.BodyDefenseRatios, wearWeapon ? OutgoingDamageScale() : 1);
+            AnimalTypes.Get(animal.EntityType)?.BodyDefenseRatios, wearWeapon ? OutgoingDamageScale() : 1,
+            attackType);
         if (value <= 0) return true;
 
         animal.Life = Math.Max(0f, animal.Life - value);

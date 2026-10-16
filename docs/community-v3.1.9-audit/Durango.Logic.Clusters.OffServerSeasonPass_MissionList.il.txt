@@ -1,0 +1,40 @@
+Durango.Logic.Clusters.OffServerSeasonPass/MissionList : System.Object
+FIELD System.Double Durango.Logic.Clusters.OffServerSeasonPass/MissionList::ResetAt
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/MissionList::MaxPoints
+FIELD System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+METHOD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/MissionList::get_EarnedPoints()
+ldc.i4.0 
+stloc.0 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::GetEnumerator()
+stloc.1 
+br.s IL_0029: ldloca.s V_1
+ldloca.s V_1
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::get_Current()
+stloc.2 
+ldloc.2 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+brfalse.s IL_0029: ldloca.s V_1
+ldloc.0 
+ldloc.2 
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Points
+add 
+stloc.0 
+ldloca.s V_1
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::MoveNext()
+brtrue.s IL_0010: ldloca.s V_1
+leave.s IL_0042: ldloc.0
+ldloca.s V_1
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass/MissionList::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::.ctor()
+stfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

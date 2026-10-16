@@ -249,7 +249,7 @@ public static class RegionCatalog
                 TerrainId = id,
                 TemplateId = templateId,
                 Role = template.Role,
-                Name = DisplayName(template),
+                Name = DisplayName(template, id),
                 CreatedAt = Durango.Utils.Times.UnixTimeNow()
             };
             _byId[id] = region;
@@ -276,8 +276,9 @@ public static class RegionCatalog
         return true;
     }
 
-    public static string DisplayName(TemplateInfo template)
+    public static string DisplayName(TemplateInfo template, string regionId = null)
     {
+        if ((string.Equals(regionId, "arid_basin_60", StringComparison.OrdinalIgnoreCase) || string.Equals(regionId, "arid_basin_60_v2", StringComparison.OrdinalIgnoreCase)) || template?.Id == "arid_basin_60") return "Arid Basin";
         if (template?.Role == Role.Safehouse) return "Refúgio Tropical";
         if (template?.Role == Role.Tutorial) return "Ilha de Ancora";
         if (template?.Role == Role.Personal) return "Ilha Domada";

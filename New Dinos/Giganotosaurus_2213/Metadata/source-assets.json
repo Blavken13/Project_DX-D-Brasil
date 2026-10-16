@@ -1,0 +1,22 @@
+[
+  {
+    "path": "Mesh\\Giganotosaurus_Demo.fbx",
+    "sha256": "48b9b8f900075a16f369954d5c0d9843297c150ae2bf33ab181fbbe042c22c0c",
+    "size": 42956284
+  },
+  {
+    "path": "Mesh\\Giga_LOD0_flipped.asset",
+    "sha256": "068326559c5e329be364a055620326df9318428544d7609b9261c5f80dd47b3f",
+    "size": 873584
+  },
+  {
+    "path": "Textures\\giga_d_colorized.png",
+    "sha256": "2756d7bead8e555093503bed651aebd5df8aace22cc125358c224f0989b49cb8",
+    "size": 507951
+  },
+  {
+    "path": "Textures\\gigantosaurus_N.png",
+    "sha256": "101dc2a0916e0509b7f1231b80df147ec53e94fe9cb17fe0eba16687e7a57ad8",
+    "size": 495306
+  }
+]

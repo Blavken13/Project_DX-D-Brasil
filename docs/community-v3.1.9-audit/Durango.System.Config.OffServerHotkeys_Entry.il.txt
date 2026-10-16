@@ -1,0 +1,16 @@
+Durango.System.Config.OffServerHotkeys/Entry : System.Object
+FIELD System.String Durango.System.Config.OffServerHotkeys/Entry::Id
+FIELD System.String Durango.System.Config.OffServerHotkeys/Entry::Section
+FIELD InputCommand[] Durango.System.Config.OffServerHotkeys/Entry::Commands
+FIELD UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::DefaultCode
+FIELD Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::DefaultMods
+FIELD UnityEngine.KeyCode Durango.System.Config.OffServerHotkeys/Entry::Code
+FIELD Durango.Logic.InputSystem.Modifier Durango.System.Config.OffServerHotkeys/Entry::Mods
+FIELD System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+METHOD System.Void Durango.System.Config.OffServerHotkeys/Entry::.ctor()
+ldarg.0 
+newobj System.Void System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding>::.ctor()
+stfld System.Collections.Generic.List`1<Durango.System.Config.OffServerHotkeys/Binding> Durango.System.Config.OffServerHotkeys/Entry::Bindings
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

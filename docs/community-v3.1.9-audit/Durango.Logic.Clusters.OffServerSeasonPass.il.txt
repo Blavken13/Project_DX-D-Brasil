@@ -1,0 +1,1570 @@
+Durango.Logic.Clusters.OffServerSeasonPass : System.Object
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass::StateLocked
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass::StateClaimable
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass::StateClaimed
+FIELD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass::HttpTimeoutSec
+FIELD Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+FIELD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Busy
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+FIELD System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+FIELD System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+FIELD System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerSeasonPass::Texts
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::add_Updated(System.Action)
+ldsfld System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.0 
+call System.Delegate System.Delegate::Combine(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldsflda System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0006: ldloc.0
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::remove_Updated(System.Action)
+ldsfld System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+stloc.0 
+ldloc.0 
+stloc.1 
+ldloc.1 
+ldarg.0 
+call System.Delegate System.Delegate::Remove(System.Delegate,System.Delegate)
+castclass System.Action
+stloc.2 
+ldsflda System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+ldloc.2 
+ldloc.1 
+call !!0 System.Threading.Interlocked::CompareExchange<System.Action>(!!0&,!!0,!!0)
+stloc.0 
+ldloc.0 
+ldloc.1 
+bne.un.s IL_0006: ldloc.0
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerSeasonPass::get_GatewayUrl()
+call System.String GameManager::get_GatewayUrl()
+stloc.0 
+ldloc.0 
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+brfalse.s IL_0014: ldloc.0
+call System.String Durango.Logic.Clusters.OffServerLink::get_Gateway()
+stloc.0 
+ldloc.0 
+dup 
+brtrue.s IL_001e: ldc.i4.s 47
+pop 
+ldsfld System.String System.String::Empty
+ldc.i4.s 47
+callvirt System.String System.String::TrimEnd(System.Char)
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::get_Available()
+call System.Boolean Durango.Logic.Clusters.OffServerLink::get_Active()
+brfalse.s IL_0022: ldc.i4.0
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::get_GatewayUrl()
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_0022: ldc.i4.0
+call System.String GameManager::get_SessionToken()
+call System.Boolean System.String::IsNullOrEmpty(System.String)
+ldc.i4.0 
+ceq 
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::get_HasActiveSeason()
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+brfalse.s IL_0012: ldc.i4.0
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+ret 
+ldc.i4.0 
+ret 
+METHOD System.Int32 Durango.Logic.Clusters.OffServerSeasonPass::get_ClaimableCount()
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+brfalse.s IL_0013: ldc.i4.0
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+brtrue.s IL_0015: ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldc.i4.0 
+ret 
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Claimable
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::Reset()
+ldnull 
+stsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldc.i4.0 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Busy
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::Fetch(System.Action`1<System.Boolean>)
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass25_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.Action`1<System.Boolean> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass25_0::done
+call System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::get_Available()
+brtrue.s IL_0033: ldstr "/season/pass"
+ldstr unavailable
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+ldloc.0 
+ldfld System.Action`1<System.Boolean> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass25_0::done
+brfalse.s IL_0032: ret
+ldloc.0 
+ldfld System.Action`1<System.Boolean> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass25_0::done
+ldc.i4.0 
+callvirt System.Void System.Action`1<System.Boolean>::Invoke(!0)
+ret 
+ldstr /season/pass
+ldloca.s V_1
+initobj System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>
+ldloc.1 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass25_0::<Fetch>b__0(Newtonsoft.Json.Linq.JObject,System.Int32)
+newobj System.Void System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Post(System.String,System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>,System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::Claim(System.Int32,System.Action`2<System.Boolean,System.String>)
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.1 
+stfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::done
+call System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::get_Available()
+brtrue.s IL_002e: ldstr "/season/claim"
+ldloc.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::done
+brfalse.s IL_002d: ret
+ldloc.0 
+ldfld System.Action`2<System.Boolean,System.String> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::done
+ldc.i4.0 
+ldstr unavailable
+callvirt System.Void System.Action`2<System.Boolean,System.String>::Invoke(!0,!1)
+ret 
+ldstr /season/claim
+ldstr tier
+ldc.i4.0 
+ldarg.0 
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stloc.1 
+ldloca.s V_1
+call System.String System.Int32::ToString()
+newobj System.Void System.Collections.Generic.KeyValuePair`2<System.String,System.String>::.ctor(!0,!1)
+newobj System.Void System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::.ctor(!0)
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass26_0::<Claim>b__0(Newtonsoft.Json.Linq.JObject,System.Int32)
+newobj System.Void System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>::.ctor(System.Object,System.IntPtr)
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::Post(System.String,System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>,System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>)
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::Post(System.String,System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>,System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>)
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass27_0::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass27_0::path
+ldloc.0 
+ldarg.2 
+stfld System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass27_0::done
+ldsfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Busy
+brfalse.s IL_0033: ldc.i4.1
+ldstr busy
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+ldloc.0 
+ldfld System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32> Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass27_0::done
+ldnull 
+ldc.i4.0 
+callvirt System.Void System.Action`2<Newtonsoft.Json.Linq.JObject,System.Int32>::Invoke(!0,!1)
+ret 
+ldc.i4.1 
+stsfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Busy
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::get_GatewayUrl()
+ldloc.0 
+ldfld System.String Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass27_0::path
+call System.String System.String::Concat(System.String,System.String)
+newobj System.Void System.Uri::.ctor(System.String)
+ldc.i4.2 
+ldloc.0 
+ldftn System.Void Durango.Logic.Clusters.OffServerSeasonPass/<>c__DisplayClass27_0::<Post>b__0(BestHTTP.HTTPRequest,BestHTTP.HTTPResponse)
+newobj System.Void BestHTTP.OnRequestFinishedDelegate::.ctor(System.Object,System.IntPtr)
+newobj System.Void BestHTTP.HTTPRequest::.ctor(System.Uri,BestHTTP.HTTPMethods,BestHTTP.OnRequestFinishedDelegate)
+stloc.1 
+ldloc.1 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_FormUsage(BestHTTP.Forms.HTTPFormUsage)
+ldloc.1 
+ldstr Authorization
+call System.String GameManager::get_SessionToken()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr Accept
+ldstr application/json
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr X-OffServer-Client
+call System.String Durango.Logic.Clusters.OffServerLink::get_ClientVersion()
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr X-OffServer-Caps
+ldstr nametag-emoji, item-link, server-popup, voice-chat, i18n-keys
+callvirt System.Void BestHTTP.HTTPRequest::AddHeader(System.String,System.String)
+ldloc.1 
+ldstr lang
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+ldarga.s field
+call System.Boolean System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_HasValue()
+brfalse.s IL_00e5: ldloc.1
+ldloc.1 
+ldarga.s field
+call !0 System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_Value()
+stloc.2 
+ldloca.s V_2
+call !0 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Key()
+ldarga.s field
+call !0 System.Nullable`1<System.Collections.Generic.KeyValuePair`2<System.String,System.String>>::get_Value()
+stloc.2 
+ldloca.s V_2
+call !1 System.Collections.Generic.KeyValuePair`2<System.String,System.String>::get_Value()
+callvirt System.Void BestHTTP.HTTPRequest::AddField(System.String,System.String)
+ldloc.1 
+ldc.r8 10
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_ConnectTimeout(System.TimeSpan)
+ldloc.1 
+ldc.r8 15
+call System.TimeSpan System.TimeSpan::FromSeconds(System.Double)
+callvirt System.Void BestHTTP.HTTPRequest::set_Timeout(System.TimeSpan)
+ldloc.1 
+ldc.i4.1 
+callvirt System.Void BestHTTP.HTTPRequest::set_DisableCache(System.Boolean)
+ldloc.1 
+callvirt BestHTTP.HTTPRequest BestHTTP.HTTPRequest::Send()
+pop 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::Apply(Newtonsoft.Json.Linq.JObject)
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/Status::.ctor()
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldstr active
+call System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+ldloc.0 
+ldarg.0 
+ldstr now
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Now
+ldloc.0 
+call System.Single UnityEngine.Time::get_realtimeSinceStartup()
+stfld System.Single Durango.Logic.Clusters.OffServerSeasonPass/Status::ReceivedAt
+ldloc.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+brfalse IL_01fd: ldloc.0
+ldarg.0 
+ldstr season
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+stloc.1 
+ldloc.1 
+brfalse.s IL_0096: ldloc.0
+ldloc.0 
+ldloc.1 
+ldstr id
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonId
+ldloc.0 
+ldloc.1 
+ldstr name
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Status::SeasonName
+ldloc.0 
+ldloc.1 
+ldstr since
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Since
+ldloc.0 
+ldloc.1 
+ldstr until
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.Double Durango.Logic.Clusters.OffServerSeasonPass/Status::Until
+ldloc.0 
+ldarg.0 
+ldstr points
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i8 
+stfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Status::Points
+ldloc.0 
+ldarg.0 
+ldstr tier
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Tier
+ldloc.0 
+ldarg.0 
+ldstr maxTier
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::MaxTier
+ldloc.0 
+ldc.i4.1 
+ldarg.0 
+ldstr pointsPerTier
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::PointsPerTier
+ldloc.0 
+ldarg.0 
+ldstr tierPoints
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i8 
+stfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Status::TierPoints
+ldloc.0 
+ldarg.0 
+ldstr claimable
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Status::Claimable
+ldarg.0 
+ldstr tiers
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.2 
+ldloc.2 
+brfalse IL_01c7: ldloc.0
+ldloc.2 
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Newtonsoft.Json.Linq.JToken>::GetEnumerator()
+stloc.3 
+br IL_01b0: ldloc.3
+ldloc.3 
+callvirt !0 System.Collections.Generic.IEnumerator`1<Newtonsoft.Json.Linq.JToken>::get_Current()
+isinst Newtonsoft.Json.Linq.JObject
+stloc.s V_4
+ldloc.s V_4
+brfalse.s IL_01b0: ldloc.3
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/Tier::.ctor()
+dup 
+ldloc.s V_4
+ldstr tier
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::Number
+dup 
+ldloc.s V_4
+ldstr state
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Tier::State
+stloc.s V_5
+ldloc.s V_5
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Box
+ldloc.s V_4
+ldstr box
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::FillReward(Durango.Logic.Clusters.OffServerSeasonPass/Reward,Newtonsoft.Json.Linq.JObject)
+ldloc.s V_5
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/Reward Durango.Logic.Clusters.OffServerSeasonPass/Tier::Special
+ldloc.s V_4
+ldstr special
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::FillReward(Durango.Logic.Clusters.OffServerSeasonPass/Reward,Newtonsoft.Json.Linq.JObject)
+ldloc.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier> Durango.Logic.Clusters.OffServerSeasonPass/Status::Tiers
+ldloc.s V_5
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Tier>::Add(!0)
+ldloc.3 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue IL_012b: ldloc.3
+leave.s IL_01c7: ldloc.0
+ldloc.3 
+brfalse.s IL_01c6: endfinally
+ldloc.3 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Daily
+ldarg.0 
+ldstr daily
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::FillMissions(Durango.Logic.Clusters.OffServerSeasonPass/MissionList,Newtonsoft.Json.Linq.JObject)
+ldloc.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Weekly
+ldarg.0 
+ldstr weekly
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JObject
+call System.Void Durango.Logic.Clusters.OffServerSeasonPass::FillMissions(Durango.Logic.Clusters.OffServerSeasonPass/MissionList,Newtonsoft.Json.Linq.JObject)
+ldloc.0 
+stsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+ldsfld System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+brfalse.s IL_0230: ret
+ldsfld System.Action Durango.Logic.Clusters.OffServerSeasonPass::Updated
+callvirt System.Void System.Action::Invoke()
+leave.s IL_0230: ret
+stloc.s V_6
+ldstr [OffServer] Season Pass Updated handler: 
+ldloc.s V_6
+callvirt System.String System.Exception::get_Message()
+call System.String System.String::Concat(System.String,System.String)
+call System.Void UnityEngine.Debug::Log(System.Object)
+leave.s IL_0230: ret
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::FillReward(Durango.Logic.Clusters.OffServerSeasonPass/Reward,Newtonsoft.Json.Linq.JObject)
+ldarg.1 
+brtrue.s IL_0004: ldarg.0
+ret 
+ldarg.0 
+ldarg.1 
+ldstr tstone
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i8 
+stfld System.Int64 Durango.Logic.Clusters.OffServerSeasonPass/Reward::TStone
+ldarg.1 
+ldstr items
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.0 
+ldloc.0 
+brtrue.s IL_002b: ldloc.0
+ret 
+ldloc.0 
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Newtonsoft.Json.Linq.JToken>::GetEnumerator()
+stloc.1 
+br.s IL_00b2: ldloc.1
+ldloc.1 
+callvirt !0 System.Collections.Generic.IEnumerator`1<Newtonsoft.Json.Linq.JToken>::get_Current()
+isinst Newtonsoft.Json.Linq.JObject
+stloc.2 
+ldloc.2 
+brfalse.s IL_00b2: ldloc.1
+ldloc.2 
+ldstr id
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+callvirt System.Int32 System.String::get_Length()
+ldc.i4.0 
+ble.s IL_00b2: ldloc.1
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Yaml.WarpRushReward> Durango.Logic.Clusters.OffServerSeasonPass/Reward::Items
+newobj System.Void Yaml.WarpRushReward::.ctor()
+dup 
+newobj System.Void Yaml.WarpRushReward/ItemInfo::.ctor()
+dup 
+ldloc.2 
+ldstr id
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Yaml.WarpRushReward/ItemInfo::PrototypeId
+dup 
+ldc.i4.1 
+ldloc.2 
+ldstr count
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stfld System.Int32 Yaml.WarpRushReward/ItemInfo::Count
+dup 
+ldc.i4.1 
+ldloc.2 
+ldstr level
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+call System.Int32 System.Math::Max(System.Int32,System.Int32)
+stfld System.Int32 Yaml.WarpRushReward/ItemInfo::Level
+stfld Yaml.WarpRushReward/ItemInfo Yaml.WarpRushReward::Item
+callvirt System.Void System.Collections.Generic.List`1<Yaml.WarpRushReward>::Add(!0)
+ldloc.1 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue IL_0034: ldloc.1
+leave.s IL_00c9: ret
+ldloc.1 
+brfalse.s IL_00c8: endfinally
+ldloc.1 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::FillMissions(Durango.Logic.Clusters.OffServerSeasonPass/MissionList,Newtonsoft.Json.Linq.JObject)
+ldarg.1 
+brtrue.s IL_0004: ldarg.0
+ret 
+ldarg.0 
+ldarg.1 
+ldstr resetAt
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.Double Durango.Logic.Clusters.OffServerSeasonPass/MissionList::ResetAt
+ldarg.0 
+ldarg.1 
+ldstr maxPoints
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/MissionList::MaxPoints
+ldarg.1 
+ldstr missions
+callvirt Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JArray
+stloc.0 
+ldloc.0 
+brtrue.s IL_003c: ldloc.0
+ret 
+ldloc.0 
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Newtonsoft.Json.Linq.JToken>::GetEnumerator()
+stloc.1 
+br IL_00e4: ldloc.1
+ldloc.1 
+callvirt !0 System.Collections.Generic.IEnumerator`1<Newtonsoft.Json.Linq.JToken>::get_Current()
+isinst Newtonsoft.Json.Linq.JObject
+stloc.2 
+ldloc.2 
+brfalse IL_00e4: ldloc.1
+ldarg.0 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+newobj System.Void Durango.Logic.Clusters.OffServerSeasonPass/Mission::.ctor()
+dup 
+ldloc.2 
+ldstr id
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Id
+dup 
+ldloc.2 
+ldstr name
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Name
+dup 
+ldloc.2 
+ldstr event
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Event
+dup 
+ldloc.2 
+ldstr count
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Count
+dup 
+ldloc.2 
+ldstr progress
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Progress
+dup 
+ldloc.2 
+ldstr points
+call System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+conv.i4 
+stfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Points
+dup 
+ldloc.2 
+ldstr done
+call System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+stfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+callvirt System.Void System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::Add(!0)
+ldloc.1 
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue IL_0048: ldloc.1
+leave.s IL_00fb: ret
+ldloc.1 
+brfalse.s IL_00fa: endfinally
+ldloc.1 
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ret 
+METHOD System.Boolean Durango.Logic.Clusters.OffServerSeasonPass::Bool(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0006: ldarg.0
+ldnull 
+br.s IL_000d: isinst Newtonsoft.Json.Linq.JValue
+ldarg.0 
+ldarg.1 
+call Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JValue
+stloc.0 
+ldloc.0 
+brfalse.s IL_001e: ldc.i4.0
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+brtrue.s IL_0020: ldloc.0
+ldc.i4.0 
+ret 
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+isinst System.Boolean
+brfalse.s IL_0039: ldloc.0
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+unbox.any System.Boolean
+ret 
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+callvirt System.String System.Object::ToString()
+callvirt System.String System.String::Trim()
+callvirt System.String System.String::ToLowerInvariant()
+stloc.1 
+ldloc.1 
+ldstr true
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0068: ldc.i4.1
+ldloc.1 
+ldstr 1
+call System.Boolean System.String::op_Equality(System.String,System.String)
+ret 
+ldc.i4.1 
+ret 
+METHOD System.Double Durango.Logic.Clusters.OffServerSeasonPass::Num(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0006: ldarg.0
+ldnull 
+br.s IL_000d: isinst Newtonsoft.Json.Linq.JValue
+ldarg.0 
+ldarg.1 
+call Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+isinst Newtonsoft.Json.Linq.JValue
+stloc.0 
+ldloc.0 
+brfalse.s IL_001e: ldc.r8 0
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+brtrue.s IL_0028: nop
+ldc.r8 0
+ret 
+nop 
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+isinst System.IConvertible
+brfalse.s IL_0049: leave.s IL_004e
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+call System.Double System.Convert::ToDouble(System.Object,System.IFormatProvider)
+stloc.2 
+leave.s IL_0078: ldloc.2
+leave.s IL_004e: ldloc.0
+pop 
+leave.s IL_004e: ldloc.0
+ldloc.0 
+callvirt System.Object Newtonsoft.Json.Linq.JValue::get_Value()
+callvirt System.String System.Object::ToString()
+ldc.i4 167
+call System.Globalization.CultureInfo System.Globalization.CultureInfo::get_InvariantCulture()
+ldloca.s V_1
+call System.Boolean System.Double::TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Double&)
+brtrue.s IL_0076: ldloc.1
+ldc.r8 0
+ret 
+ldloc.1 
+ret 
+ldloc.2 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerSeasonPass::Str(Newtonsoft.Json.Linq.JObject,System.String)
+ldarg.0 
+brtrue.s IL_0006: ldarg.0
+ldnull 
+br.s IL_000d: stloc.0
+ldarg.0 
+ldarg.1 
+call Newtonsoft.Json.Linq.JToken Newtonsoft.Json.Linq.JObject::get_Item(System.String)
+stloc.0 
+ldloc.0 
+brfalse.s IL_001b: ldsfld System.String System.String::Empty
+ldloc.0 
+callvirt Newtonsoft.Json.Linq.JTokenType Newtonsoft.Json.Linq.JToken::get_Type()
+ldc.i4.s 10
+bne.un.s IL_0021: ldloc.0
+ldsfld System.String System.String::Empty
+ret 
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.String[] Durango.Logic.Clusters.OffServerSeasonPass::MissionLines()
+ldsfld Durango.Logic.Clusters.OffServerSeasonPass/Status Durango.Logic.Clusters.OffServerSeasonPass::Current
+stloc.0 
+ldloc.0 
+brfalse.s IL_0011: ldc.i4.1
+ldloc.0 
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Status::Active
+brtrue.s IL_002a: call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+ldc.i4.1 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr no_season
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+stelem.ref 
+ret 
+call Durango.Network.Connection Durango.Network.Connections::get_Frontend()
+callvirt System.Double Durango.Network.Connection::GetPredictedServerTime()
+stloc.1 
+ldc.i4.2 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr daily
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldloc.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Daily
+ldloc.1 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::MissionBlock(System.String,Durango.Logic.Clusters.OffServerSeasonPass/MissionList,System.Double)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr weekly
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldloc.0 
+ldfld Durango.Logic.Clusters.OffServerSeasonPass/MissionList Durango.Logic.Clusters.OffServerSeasonPass/Status::Weekly
+ldloc.1 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::MissionBlock(System.String,Durango.Logic.Clusters.OffServerSeasonPass/MissionList,System.Double)
+stelem.ref 
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerSeasonPass::MissionBlock(System.String,Durango.Logic.Clusters.OffServerSeasonPass/MissionList,System.Double)
+newobj System.Void System.Text.StringBuilder::.ctor()
+stloc.0 
+ldloc.0 
+ldstr [b]
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldarg.0 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr [/b]  
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr earned
+ldc.i4.2 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldarg.1 
+callvirt System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/MissionList::get_EarnedPoints()
+stloc.2 
+ldloca.s V_2
+ldstr N0
+call System.String System.Int32::ToString(System.String)
+stelem.ref 
+dup 
+ldc.i4.1 
+ldarg.1 
+ldflda System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/MissionList::MaxPoints
+ldstr N0
+call System.String System.Int32::ToString(System.String)
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldarg.1 
+ldfld System.Double Durango.Logic.Clusters.OffServerSeasonPass/MissionList::ResetAt
+ldarg.2 
+sub 
+stloc.1 
+ldloc.1 
+ldc.r8 0
+ble.un.s IL_00a5: ldarg.1
+ldloc.0 
+ldstr   
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr reset_in
+ldc.i4.1 
+newarr System.Object
+dup 
+ldc.i4.0 
+ldloc.1 
+ldc.i4.1 
+ldstr min
+call System.String TimedeltaFormatter::Format(System.Double,System.Int32,System.String)
+stelem.ref 
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldarg.1 
+ldfld System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission> Durango.Logic.Clusters.OffServerSeasonPass/MissionList::Missions
+callvirt System.Collections.Generic.List`1/Enumerator<!0> System.Collections.Generic.List`1<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::GetEnumerator()
+stloc.3 
+br IL_0171: ldloca.s V_3
+ldloca.s V_3
+call !0 System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::get_Current()
+stloc.s V_4
+ldloc.0 
+ldc.i4.s 10
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+pop 
+ldloc.s V_4
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+brfalse.s IL_00dd: ldloc.0
+ldloc.0 
+ldstr [7fd67f]
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloc.0 
+ldstr - 
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_4
+ldfld System.String Durango.Logic.Clusters.OffServerSeasonPass/Mission::Name
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr   
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_4
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Progress
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Int32)
+ldc.i4.s 47
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Char)
+ldloc.s V_4
+ldfld System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Count
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.Int32)
+ldstr   +
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldloc.s V_4
+ldflda System.Int32 Durango.Logic.Clusters.OffServerSeasonPass/Mission::Points
+ldstr N0
+call System.String System.Int32::ToString(System.String)
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloc.s V_4
+ldfld System.Boolean Durango.Logic.Clusters.OffServerSeasonPass/Mission::Done
+brfalse.s IL_0171: ldloca.s V_3
+ldloc.0 
+ldstr   
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr done
+call !!0[] System.Array::Empty<System.Object>()
+call System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+ldstr [-]
+callvirt System.Text.StringBuilder System.Text.StringBuilder::Append(System.String)
+pop 
+ldloca.s V_3
+call System.Boolean System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>::MoveNext()
+brtrue IL_00b6: ldloca.s V_3
+leave.s IL_018d: ldloc.0
+ldloca.s V_3
+constrained. System.Collections.Generic.List`1/Enumerator<Durango.Logic.Clusters.OffServerSeasonPass/Mission>
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+callvirt System.String System.Object::ToString()
+ret 
+METHOD System.String Durango.Logic.Clusters.OffServerSeasonPass::Text(System.String,System.Object[])
+ldsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerSeasonPass::Texts
+ldarg.0 
+ldloca.s V_0
+callvirt System.Boolean System.Collections.Generic.Dictionary`2<System.String,System.String[]>::TryGetValue(!0,!1&)
+brtrue.s IL_0011: call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+ldarg.0 
+ret 
+call System.String Durango.Logic.Clusters.OffServerDiscordLink::get_Lang()
+stloc.2 
+ldloc.2 
+ldstr th
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0040: ldloc.0
+ldloc.2 
+ldstr id
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_0046: ldloc.0
+ldloc.2 
+ldstr ko
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004c: ldloc.0
+br.s IL_0052: ldloc.0
+ldloc.0 
+ldc.i4.0 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.2 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.3 
+ldelem.ref 
+stloc.1 
+br.s IL_0056: ldarg.1
+ldloc.0 
+ldc.i4.1 
+ldelem.ref 
+stloc.1 
+ldarg.1 
+brfalse.s IL_005d: ldloc.1
+ldarg.1 
+ldlen 
+brtrue.s IL_005f: nop
+ldloc.1 
+ret 
+nop 
+ldloc.1 
+ldarg.1 
+call System.String System.String::Format(System.String,System.Object[])
+stloc.2 
+leave.s IL_006f: ldloc.2
+pop 
+ldloc.1 
+stloc.2 
+leave.s IL_006f: ldloc.2
+ldloc.2 
+ret 
+METHOD System.Void Durango.Logic.Clusters.OffServerSeasonPass::.cctor()
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastEvent
+ldsfld System.String System.String::Empty
+stsfld System.String Durango.Logic.Clusters.OffServerSeasonPass::LastClaimed
+newobj System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::.ctor()
+stloc.0 
+ldloc.0 
+ldstr menu
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Season Pass
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Season Pass
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Season Pass
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 시즌 패스
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr Season Pass
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Season Pass
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Season Pass
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 시즌 패스
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr tab_rewards
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr รางวัล
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Rewards
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Hadiah
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 보상
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr tier_n
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ขั้น {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Tier {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tingkat {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr {0}단계
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr row_box
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กล่องเสบียง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Supply box
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kotak perbekalan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 보급 상자
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr row_special
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ของพิเศษ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Special reward
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Hadiah spesial
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 특별 보상
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr box_tooltip
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กล่องเสบียง ขั้น {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Supply box, tier {0}
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Kotak perbekalan tingkat {0}
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 보급 상자 {0}단계
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr tstone
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr T Stone {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr {0} T Stone
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr {0} T Stone
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr T스톤 {0}
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr progress
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr <em>ขั้น {0}</em> / {1}   {2} / {3} แต้ม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr <em>Tier {0}</em> / {1}   {2} / {3} pts
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr <em>Tingkat {0}</em> / {1}   {2} / {3} poin
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr <em>{0}단계</em> / {1}   {2} / {3} 포인트
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr progress_max
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr <em>ขั้นสูงสุด {0}</em>   {1} แต้ม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr <em>Max tier {0}</em>   {1} pts
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr <em>Tingkat maks {0}</em>   {1} poin
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr <em>최고 {0}단계</em>   {1} 포인트
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr claim_all
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr รับทั้งหมด ({0})
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Claim all ({0})
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Ambil semua ({0})
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 모두 받기 ({0})
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr claim_none
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไม่มีของให้รับ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Nothing to claim
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak ada hadiah
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 받을 보상 없음
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr missions
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ภารกิจ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Missions
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Misi
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 임무
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr missions_title
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ภารกิจ Season Pass
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Season Pass missions
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Misi Season Pass
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 시즌 패스 임무
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr daily
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ประจำวัน
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Daily
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Harian
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 일일
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr weekly
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ประจำสัปดาห์
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Weekly
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Mingguan
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 주간
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr earned
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ได้แล้ว {0} / {1} แต้ม
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr earned {0} / {1} pts
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr dapat {0} / {1} poin
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr {0} / {1} 포인트 획득
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr reset_in
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr (รีเซ็ตใน {0})
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr (resets in {0})
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr (reset dalam {0})
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr ({0} 후 초기화)
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr done
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr สำเร็จ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr done
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr selesai
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 완료
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr no_season
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ตอนนี้ไม่มีซีซั่นที่เปิดอยู่ — รอซีซั่นถัดไป
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr No season is running right now. Wait for the next one.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Belum ada musim yang berjalan. Tunggu musim berikutnya.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 현재 진행 중인 시즌이 없습니다. 다음 시즌을 기다려 주세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr ends_in
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เหลือ {0}
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr {0} left
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr {0} lagi
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr {0} 남음
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr unclaimed_hint
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ของที่ถึงขั้นแล้วแต่ยังไม่กดรับ จะส่งเข้าจดหมายตอนหมดซีซั่น
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Reached but unclaimed tiers are mailed to you when the season ends.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tingkat yang tercapai tapi belum diambil akan dikirim lewat surat saat musim berakhir.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 도달했지만 받지 않은 보상은 시즌 종료 시 우편으로 보내드립니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr claim_failed
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr รับของไม่สำเร็จ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't claim the reward
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Gagal mengambil hadiah
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 보상을 받지 못했습니다
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_notreached
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ยังไม่ถึงขั้นนี้
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr You haven't reached this tier yet.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tingkat ini belum tercapai.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 아직 이 단계에 도달하지 않았습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_taken
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr รับขั้นนี้ไปแล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Already claimed.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Sudah diambil.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이미 받았습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_none
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ไม่มีของให้รับ
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Nothing to claim.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak ada hadiah.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 받을 보상이 없습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_noseason
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ซีซั่นนี้จบแล้ว
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This season has ended.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Musim ini sudah berakhir.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 시즌은 종료되었습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_rate_limited
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr กดถี่เกินไป — รอสักครู่
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Too many requests. Wait a moment.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Terlalu sering. Tunggu sebentar.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 요청이 너무 많습니다. 잠시 기다려 주세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_unauthorized
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ยืนยันตัวไม่ผ่าน — กลับหน้า Title แล้วเข้าใหม่
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Session check failed. Go back to the title screen and enter again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Verifikasi sesi gagal. Kembali ke layar judul lalu masuk lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 세션 확인 실패. 타이틀 화면으로 돌아가 다시 접속하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_unsupported
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr เซิร์ฟนี้ยังไม่มี Season Pass
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr This server doesn't have Season Pass yet.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Server ini belum punya Season Pass.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 이 서버에는 아직 시즌 패스가 없습니다.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+ldstr fail_offline
+ldc.i4.4 
+newarr System.String
+dup 
+ldc.i4.0 
+ldstr ติดต่อเซิร์ฟไม่ได้ — ลองใหม่อีกครั้ง
+stelem.ref 
+dup 
+ldc.i4.1 
+ldstr Couldn't reach the server. Try again.
+stelem.ref 
+dup 
+ldc.i4.2 
+ldstr Tidak dapat menghubungi server. Coba lagi.
+stelem.ref 
+dup 
+ldc.i4.3 
+ldstr 서버에 연결할 수 없습니다. 다시 시도하세요.
+stelem.ref 
+callvirt System.Void System.Collections.Generic.Dictionary`2<System.String,System.String[]>::Add(!0,!1)
+ldloc.0 
+stsfld System.Collections.Generic.Dictionary`2<System.String,System.String[]> Durango.Logic.Clusters.OffServerSeasonPass::Texts
+ret 

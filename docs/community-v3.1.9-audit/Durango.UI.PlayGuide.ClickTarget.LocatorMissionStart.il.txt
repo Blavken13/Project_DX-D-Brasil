@@ -1,0 +1,104 @@
+Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart : Durango.UI.PlayGuide.ClickTarget.Locator
+FIELD Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+FIELD Durango.UI.MissionGroup Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_missionGroup
+FIELD System.Boolean Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_isMissionPhase
+METHOD System.Void Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::Initialize(System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.Parameter>)
+ldarg.0 
+ldfld Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+ldarg.1 
+callvirt System.Void Durango.UI.PlayGuide.ClickTarget.Locator::Initialize(System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.Parameter>)
+ldarg.0 
+ldarg.1 
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::Initialize(System.Collections.Generic.Dictionary`2<System.String,Durango.Logic.PlayGuide.Parameter>)
+ret 
+METHOD System.Void Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::OnInitialized()
+ldarg.0 
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::OnInitialized()
+ldarg.0 
+call TV UIManager::FindScript<Durango.UI.MissionGroup>()
+stfld Durango.UI.MissionGroup Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_missionGroup
+ret 
+METHOD System.String Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::SelectPhase()
+ldarg.0 
+ldfld Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+callvirt System.Void Durango.UI.PlayGuide.ClickTarget.Locator::Process()
+ldarg.0 
+ldfld Durango.UI.MissionGroup Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_missionGroup
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_004a: ldarg.0
+ldarg.0 
+ldfld Durango.UI.MissionGroup Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_missionGroup
+callvirt System.Boolean UIBase::get_IsOpened()
+brfalse.s IL_004a: ldarg.0
+ldarg.0 
+ldc.i4.1 
+stfld System.Boolean Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_isMissionPhase
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::FindTooltip<Durango.UI.MissionInfoPopup>()
+callvirt System.Boolean Durango.UI.Popup.TooltipBase::get_IsVisible()
+brfalse.s IL_0044: ldstr "start_mission"
+ldstr confirm_mission
+ret 
+ldstr start_mission
+ret 
+ldarg.0 
+ldc.i4.0 
+stfld System.Boolean Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_isMissionPhase
+ldarg.0 
+ldfld Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+callvirt System.String Durango.UI.PlayGuide.ClickTarget.Locator::get_CurrentPhase()
+ret 
+METHOD System.Void Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::UpdateTargetTransform()
+ldarg.0 
+ldfld System.Boolean Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_isMissionPhase
+brfalse.s IL_005f: ldarg.0
+ldarg.0 
+call System.String Durango.UI.PlayGuide.ClickTarget.Locator::get_CurrentPhase()
+stloc.0 
+ldloc.0 
+ldstr start_mission
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brtrue.s IL_004d: ldarg.0
+ldloc.0 
+ldstr confirm_mission
+call System.Boolean System.String::op_Equality(System.String,System.String)
+brfalse.s IL_0046: ldarg.0
+call Durango.UI.Popup.PopupGroup UIManager::get_Popup()
+callvirt T Durango.UI.Popup.PopupGroup::FindTooltip<Durango.UI.MissionInfoPopup>()
+stloc.1 
+ldarg.0 
+ldloc.1 
+callvirt Durango.UI.Control.SelectableButton Durango.UI.MissionInfoPopup::get_ConfirmButton()
+callvirt UnityEngine.Transform UnityEngine.Component::get_transform()
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::set_TargetTransform(UnityEngine.Transform)
+ret 
+ldarg.0 
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::UpdateTargetTransform()
+ret 
+ldarg.0 
+ldarg.0 
+ldfld Durango.UI.MissionGroup Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_missionGroup
+callvirt UnityEngine.Transform Durango.UI.MissionGroup::GetStartButtonTransform()
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::set_TargetTransform(UnityEngine.Transform)
+ret 
+ldarg.0 
+ldarg.0 
+ldfld Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+callvirt UnityEngine.Transform Durango.UI.PlayGuide.ClickTarget.Locator::get_TargetTransform()
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::set_TargetTransform(UnityEngine.Transform)
+ldarg.0 
+ldarg.0 
+ldfld Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+callvirt Durango.Logic.PlayGuide.Parameter Durango.UI.PlayGuide.ClickTarget.Locator::get_CurrentParameter()
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::set_CurrentParameter(Durango.Logic.PlayGuide.Parameter)
+ret 
+METHOD System.Void Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::.ctor()
+ldarg.0 
+ldnull 
+ldc.i4.0 
+newobj System.Void Durango.UI.PlayGuide.ClickTarget.LocatorInteraction::.ctor(System.Predicate`1<UnityEngine.GameObject>,System.Boolean)
+stfld Durango.UI.PlayGuide.ClickTarget.LocatorInteraction Durango.UI.PlayGuide.ClickTarget.LocatorMissionStart::_interaction
+ldarg.0 
+call System.Void Durango.UI.PlayGuide.ClickTarget.Locator::.ctor()
+ret 

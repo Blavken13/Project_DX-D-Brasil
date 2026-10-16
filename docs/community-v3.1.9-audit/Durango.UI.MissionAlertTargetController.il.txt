@@ -1,0 +1,204 @@
+Durango.UI.MissionAlertTargetController : UnityEngine.MonoBehaviour
+FIELD Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+METHOD System.Void Durango.UI.MissionAlertTargetController::Start()
+call T GameSystem`1<FactionSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MissionAlertTargetController::Faction_MissionStateUpdated(FactionSystem/MissionState)
+newobj System.Void System.Action`1<FactionSystem/MissionState>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void FactionSystem::add_MissionStateUpdated(System.Action`1<FactionSystem/MissionState>)
+call T GameSystem`1<FactionSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MissionAlertTargetController::Faction_FactionUpdated()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void FactionSystem::add_FactionsUpdated(System.Action)
+call T Durango.Utils.Singleton`1<GameManager>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MissionAlertTargetController::GameManager_PreReconnect()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void GameManager::add_PreReconnect(System.Action)
+call T Durango.Utils.Singleton`1<ArtifactManager>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MissionAlertTargetController::Artifact_Added(Artifact)
+newobj System.Void System.Action`1<Artifact>::.ctor(System.Object,System.IntPtr)
+callvirt System.Void ArtifactManager::add_Added(System.Action`1<Artifact>)
+call T GameSystem`1<MapSystem>::Instance()
+ldarg.0 
+ldftn System.Void Durango.UI.MissionAlertTargetController::MapSystemIndicatorsInitialized()
+newobj System.Void System.Action::.ctor(System.Object,System.IntPtr)
+callvirt System.Void MapSystem::add_IndicatorsInitialized(System.Action)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::Set(Durango.UI.MissionAlertTargetController/Type,FactionSystem/MissionState)
+ldarg.0 
+ldarg.1 
+call Durango.UI.MissionAlertTargetWidget Durango.UI.MissionAlertTargetController::GetWidget(Durango.UI.MissionAlertTargetController/Type)
+ldarg.2 
+callvirt System.Void Durango.UI.MissionAlertTargetWidget::Set(FactionSystem/MissionState)
+ret 
+METHOD Durango.UI.MissionAlertTargetWidget Durango.UI.MissionAlertTargetController::GetWidget(Durango.UI.MissionAlertTargetController/Type)
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldarg.1 
+ldelem.ref 
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::Artifact_Added(Artifact)
+ldc.i4.0 
+stloc.0 
+br.s IL_0039: ldloc.0
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldloc.0 
+ldelem.ref 
+stloc.1 
+ldloc.1 
+callvirt System.Boolean Durango.UI.MissionAlertTargetWidget::IsInitedArtifact()
+brtrue.s IL_0035: ldloc.0
+ldarg.1 
+callvirt Building.Blueprint Artifact::get_Blueprint()
+ldloc.1 
+callvirt System.String Durango.UI.MissionAlertTargetWidget::get_Component()
+callvirt System.Boolean Building.Blueprint::HasComponent(System.String)
+brfalse.s IL_0035: ldloc.0
+ldloc.1 
+ldarg.1 
+callvirt System.Void Durango.UI.MissionAlertTargetWidget::InitArtifact(Artifact)
+ldloc.1 
+callvirt System.Void Durango.UI.MissionAlertTargetWidget::Refresh()
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldlen 
+conv.i4 
+blt.s IL_0004: ldarg.0
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::GameManager_PreReconnect()
+ldc.i4.0 
+stloc.0 
+br.s IL_0015: ldloc.0
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldloc.0 
+ldelem.ref 
+callvirt System.Void Durango.UI.MissionAlertTargetWidget::Release()
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldlen 
+conv.i4 
+blt.s IL_0004: ldarg.0
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::MapSystemIndicatorsInitialized()
+ldc.i4.0 
+stloc.0 
+br.s IL_0015: ldloc.0
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldloc.0 
+ldelem.ref 
+callvirt System.Void Durango.UI.MissionAlertTargetWidget::UpdateIndicator()
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.0 
+ldarg.0 
+ldfld Durango.UI.MissionAlertTargetWidget[] Durango.UI.MissionAlertTargetController::_widgets
+ldlen 
+conv.i4 
+blt.s IL_0004: ldarg.0
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::Faction_MissionStateUpdated(FactionSystem/MissionState)
+ldarg.0 
+ldc.i4.0 
+ldarg.1 
+call System.Void Durango.UI.MissionAlertTargetController::Set(Durango.UI.MissionAlertTargetController/Type,FactionSystem/MissionState)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::Faction_FactionUpdated()
+ldc.i4.0 
+stloc.0 
+call T GameSystem`1<FactionSystem>::Instance()
+callvirt System.Collections.Generic.IEnumerable`1<Durango.Logic.Faction.Faction> FactionSystem::GetFactions()
+callvirt System.Collections.Generic.IEnumerator`1<!0> System.Collections.Generic.IEnumerable`1<Durango.Logic.Faction.Faction>::GetEnumerator()
+stloc.s V_4
+br.s IL_0030: ldloc.s V_4
+ldloc.s V_4
+callvirt !0 System.Collections.Generic.IEnumerator`1<Durango.Logic.Faction.Faction>::get_Current()
+callvirt System.Nullable`1<Messages.Mission> Durango.Logic.Faction.Faction::get_Mission()
+stloc.s V_5
+ldloca.s V_5
+call System.Boolean System.Nullable`1<Messages.Mission>::get_HasValue()
+brfalse.s IL_0030: ldloc.s V_4
+ldloc.0 
+ldc.i4.1 
+add 
+stloc.0 
+ldloc.s V_4
+callvirt System.Boolean System.Collections.IEnumerator::MoveNext()
+brtrue.s IL_0015: ldloc.s V_4
+leave.s IL_0047: ldloc.0
+ldloc.s V_4
+brfalse.s IL_0046: endfinally
+ldloc.s V_4
+callvirt System.Void System.IDisposable::Dispose()
+endfinally 
+ldloc.0 
+brtrue.s IL_0053: ldc.i4.1
+ldarg.0 
+ldc.i4.1 
+ldc.i4.0 
+call System.Void Durango.UI.MissionAlertTargetController::Set(Durango.UI.MissionAlertTargetController/Type,FactionSystem/MissionState)
+ret 
+ldc.i4.1 
+stloc.1 
+call T[] Durango.Utils.Enums`1<Shared.Faction.FactionType>::All()
+stloc.2 
+ldc.i4.0 
+stloc.3 
+ldloc.2 
+ldlen 
+conv.i4 
+stloc.s V_6
+br.s IL_0096: ldloc.3
+call T GameSystem`1<FactionSystem>::Instance()
+ldloc.2 
+ldloc.3 
+ldelem.i4 
+callvirt Durango.Logic.Faction.MissionToDoCollection FactionSystem::FindFactionToDoCollection(Shared.Faction.FactionType)
+stloc.s V_7
+ldloc.s V_7
+brfalse.s IL_0092: ldloc.3
+ldloc.s V_7
+callvirt Durango.Logic.Faction.MissionToDo Durango.Logic.Faction.MissionToDoCollection::GetCurrentToDo()
+stloc.s V_8
+ldloc.s V_8
+brfalse.s IL_0092: ldloc.3
+ldloc.s V_8
+ldfld Shared.Faction.MissionTodoType Durango.Logic.Faction.MissionToDo::MissionType
+ldc.i4.4 
+bne.un.s IL_0092: ldloc.3
+ldc.i4.2 
+stloc.1 
+br.s IL_009b: ldarg.0
+ldloc.3 
+ldc.i4.1 
+add 
+stloc.3 
+ldloc.3 
+ldloc.s V_6
+blt.s IL_0064: call T GameSystem`1<FactionSystem>::Instance()
+ldarg.0 
+ldc.i4.1 
+ldloc.1 
+call System.Void Durango.UI.MissionAlertTargetController::Set(Durango.UI.MissionAlertTargetController/Type,FactionSystem/MissionState)
+ret 
+METHOD System.Void Durango.UI.MissionAlertTargetController::.ctor()
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

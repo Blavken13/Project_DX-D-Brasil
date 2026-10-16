@@ -91,6 +91,8 @@ public partial class World
 
     public byte[] Biomes => _terrainData.Biomes;
 
+    public byte[] Elevations => _terrainData.Elevations;
+
     public string Weather { get; private set; }
 
     public event Action<AppearArtifact> ArtifactAppeared;
@@ -116,20 +118,22 @@ public partial class World
         _addedNatural = _context.AddedNatural;
         _removedNatural = _context.RemovedNatural;
         _terrainData = TerrainLoader.Load(context.TerrainId);
-        _terrainData.Info.global_landmarks = null;
+        if (!AridBasinContent.IsTerrain(context.TerrainId))
+            _terrainData.Info.global_landmarks = null;
         NumChunksX = _terrainData.Width / 16;
         NumChunksY = _terrainData.Height / 16;
         _chunkData = new ChunkData[NumChunksX, NumChunksY];
         AssignChunkData();
         PlaceTerrainPois();
         RestoreCraterMechanics();
+        RestoreWarpAccelerators();
         PlaceTutorialSceneArtifacts();
         PlaceSafehouseSceneArtifacts();
         PopulateSafehouseResources();
         PopulateFlowerResources();
         PopulateCraterMinerals();
         // สัตว์ป่า — เกิดหลังจากรู้ข้อมูลเกาะแล้ว เพราะต้องใช้ทั้ง herds.yml และแม่แบบของเกาะนี้
-        AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template));
+        AnimalManager = new AnimalManager(_terrainData, RegionCatalog.GetTemplate(_terrainData.Info?.region_template), _context.TerrainId);
         AnimalManager.GroggyStateChanged += animal =>
         {
             BroadCast(new Survival
@@ -415,6 +419,7 @@ public partial class World
             if (type == 9450) artifact.States.Level = 1;
 
             if (type == 7037) artifact.States.Crack = MakeClosedCrack(RegionLevel);
+            if (type == 6282) artifact.States.Warpaccelerator = MakeInactiveWarpAccelerator();
             ArtifactManager.AddArtifact(artifact);
             if (addons.HasValue)
             {
@@ -640,6 +645,7 @@ public partial class World
 
     public void Process()
     {
+        ProcessExpiredGrazedPets(Gauge.CurrentTime);
         for (int num = _players.Count - 1; num >= 0; num--)
         {
             // ⚠️ ต้องหยิบตัวผู้เล่นเก็บไว้ก่อน ห้ามอ้าง _players[num] ซ้ำ:
@@ -665,6 +671,7 @@ public partial class World
         ProcessDestructs(Gauge.CurrentTime);
         ProcessWildStructureExpirations(Gauge.CurrentTime);
         ProcessCraterStates(Gauge.CurrentTime);
+        ProcessWarpAccelerators(Gauge.CurrentTime);
 
         // สัตว์เดินเล่น — ต้องอยู่นอกลูปผู้เล่น เพราะเป็นเรื่องของสัตว์ ไม่ใช่ของใครคนใดคนหนึ่ง
         // (ถ้าไม่มีใครอยู่บนเกาะก็ไม่ต้องเดิน จะได้ไม่เปลืองแรงเปล่า)
@@ -675,6 +682,21 @@ public partial class World
             ArtifactManager?.ProcessFarming(Gauge.CurrentTime);
             ProcessRegrow(Gauge.CurrentTime);
         }
+    }
+
+    private double _nextGrazedPetExpiryCheckAt;
+
+    private void ProcessExpiredGrazedPets(double now)
+    {
+        if (now < _nextGrazedPetExpiryCheckAt) return;
+        _nextGrazedPetExpiryCheckAt = now + 60.0;
+        List<Pet> pets = _context.GrazedPetList;
+        int removed = pets.RemoveAll(pet => pet.Stat.GrazedAt.HasValue &&
+            now - pet.Stat.GrazedAt.Value >= 24.0 * 60.0 * 60.0);
+        if (removed == 0) return;
+        Console.WriteLine($"[pet] removed {removed} grazed pets older than 24 hours");
+        BroadCast(new GrazedPets { Data = pets.ToArray() });
+        Save();
     }
 
     // ── สภาพอากาศ ───────────────────────────────────────────────────────────────────
@@ -1103,6 +1125,15 @@ public partial class World
     private bool AddNaturalToGarden(Point2 tile, ushort entityType)
     {
         if (IsTutorialSceneObstruction(tile.x, tile.y, entityType)) return false;
+        if (RegionCatalog.GetTemplate(_terrainData.Info?.region_template)?.Role == Shared.Region.Role.Personal &&
+            ArtifactManager.Enumerable(_ => true).Any(a =>
+                Math.Abs(a.Tile.x - tile.x) <= Math.Max(1, a.Size.x) &&
+                Math.Abs(a.Tile.y - tile.y) <= Math.Max(1, a.Size.y)))
+        {
+            // Resources harvested before construction must not regrow inside
+            // a built structure on a tamed island.
+            return false;
+        }
         Point2 point = Util.TilePositionToChunkCoords(tile);
         if (point.x < 0 || point.x >= NumChunksX || point.y < 0 || point.y >= NumChunksY) return false;
         if (!DataHelper.IsNaturalObject(entityType)) return false;

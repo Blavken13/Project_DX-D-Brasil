@@ -1,0 +1,79 @@
+OffServerVoicePcMicPlacer : UnityEngine.MonoBehaviour
+FIELD UnityEngine.Transform OffServerVoicePcMicPlacer::Chat
+FIELD UnityEngine.Transform OffServerVoicePcMicPlacer::Emote
+FIELD UnityEngine.Vector3 OffServerVoicePcMicPlacer::_step
+METHOD System.Void OffServerVoicePcMicPlacer::LateUpdate()
+ldarg.0 
+call System.Void OffServerVoicePcMicPlacer::Place()
+ret 
+METHOD System.Void OffServerVoicePcMicPlacer::Place()
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Chat
+ldnull 
+call System.Boolean UnityEngine.Object::op_Equality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_000f: ldarg.0
+ret 
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Emote
+ldnull 
+call System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
+brfalse.s IL_0071: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Emote
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_0071: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Chat
+callvirt UnityEngine.GameObject UnityEngine.Component::get_gameObject()
+callvirt System.Boolean UnityEngine.GameObject::get_activeSelf()
+brfalse.s IL_0071: ldarg.0
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Chat
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Emote
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Subtraction(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.1 
+ldloc.1 
+ldfld System.Single UnityEngine.Vector3::y
+ldc.r4 10
+ble.un.s IL_0071: ldarg.0
+ldarg.0 
+ldloc.1 
+stfld UnityEngine.Vector3 OffServerVoicePcMicPlacer::_step
+ldarg.0 
+ldfld UnityEngine.Transform OffServerVoicePcMicPlacer::Chat
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldarg.0 
+ldfld UnityEngine.Vector3 OffServerVoicePcMicPlacer::_step
+ldc.r4 2
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Addition(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.0 
+ldarg.0 
+call UnityEngine.Transform UnityEngine.Component::get_transform()
+callvirt UnityEngine.Vector3 UnityEngine.Transform::get_localPosition()
+ldloc.0 
+call UnityEngine.Vector3 UnityEngine.Vector3::op_Subtraction(UnityEngine.Vector3,UnityEngine.Vector3)
+stloc.2 
+ldloca.s V_2
+call System.Single UnityEngine.Vector3::get_sqrMagnitude()
+ldc.r4 0,01
+ble.un.s IL_00be: ret
+ldarg.0 
+call UnityEngine.Transform UnityEngine.Component::get_transform()
+ldloc.0 
+callvirt System.Void UnityEngine.Transform::set_localPosition(UnityEngine.Vector3)
+ret 
+METHOD System.Void OffServerVoicePcMicPlacer::.ctor()
+ldarg.0 
+ldc.r4 0
+ldc.r4 42
+ldc.r4 0
+newobj System.Void UnityEngine.Vector3::.ctor(System.Single,System.Single,System.Single)
+stfld UnityEngine.Vector3 OffServerVoicePcMicPlacer::_step
+ldarg.0 
+call System.Void UnityEngine.MonoBehaviour::.ctor()
+ret 

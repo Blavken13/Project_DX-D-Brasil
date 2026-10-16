@@ -1,0 +1,6 @@
+Durango.UI.OffServerTransition/<>c__DisplayClass97_0 : System.Object
+FIELD System.Single Durango.UI.OffServerTransition/<>c__DisplayClass97_0::far
+METHOD System.Void Durango.UI.OffServerTransition/<>c__DisplayClass97_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 

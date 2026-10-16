@@ -1,0 +1,40 @@
+OffServerLangPack/<>c__DisplayClass14_0 : System.Object
+FIELD System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+FIELD System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+FIELD System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+FIELD System.Action OffServerLangPack/<>c__DisplayClass14_0::<>9__5
+METHOD System.Void OffServerLangPack/<>c__DisplayClass14_0::.ctor()
+ldarg.0 
+call System.Void System.Object::.ctor()
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass14_0::<ShowPage>b__5()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+ldarg.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+call System.Void OffServerLangPack::ShowPage(System.Collections.Generic.List`1<OffServerLangPack/Pack>,System.Int32)
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass14_0::<ShowPage>b__0()
+ldarg.0 
+ldfld System.Collections.Generic.List`1<OffServerLangPack/Pack> OffServerLangPack/<>c__DisplayClass14_0::packs
+ldarg.0 
+ldfld System.Int32 OffServerLangPack/<>c__DisplayClass14_0::page
+ldc.i4.1 
+add 
+call System.Void OffServerLangPack::ShowPage(System.Collections.Generic.List`1<OffServerLangPack/Pack>,System.Int32)
+ret 
+METHOD System.Void OffServerLangPack/<>c__DisplayClass14_0::<ShowPage>b__3(System.Int32)
+ldarg.1 
+ldc.i4.0 
+blt.s IL_0023: ret
+ldarg.1 
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+callvirt System.Int32 System.Collections.Generic.List`1<System.Action>::get_Count()
+bge.s IL_0023: ret
+ldarg.0 
+ldfld System.Collections.Generic.List`1<System.Action> OffServerLangPack/<>c__DisplayClass14_0::actions
+ldarg.1 
+callvirt !0 System.Collections.Generic.List`1<System.Action>::get_Item(System.Int32)
+callvirt System.Void System.Action::Invoke()
+ret 
