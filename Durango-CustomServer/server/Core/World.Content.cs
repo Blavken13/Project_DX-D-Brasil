@@ -185,6 +185,11 @@ public partial class World
         if (types.Length == 0) types = native.Select(Resolve).Where(Specific).ToArray();
         if (types.Length == 0) types = near.Select(Resolve).ToArray();
         if (types.Length == 0) types = native.Select(Resolve).ToArray();
+        // Generated islands may have an empty whole.garden. Their region template
+        // still lists the native collectible types available on that island.
+        if (types.Length == 0)
+            types = ((IEnumerable<ushort>)RegionCatalog.GetTemplate(_terrainData.Info?.region_template)?.CollectibleLevels.Keys
+                ?? Enumerable.Empty<ushort>()).Where(IsCraterMineral).ToArray();
         return types.Distinct().OrderBy(t => t)
             .GroupBy(t => DataHelper.GetBiomeSpriteInfo(t).CollectibleId).Select(g => g.First()).ToArray();
     }
