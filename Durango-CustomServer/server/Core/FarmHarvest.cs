@@ -37,6 +37,9 @@ internal static class FarmHarvest
         // Return the real fruit prototype from the catalog together with its seed.
         string fruitPrototype = seedPrototypeId switch
         {
+            // Cotton uses `cotton_crop` as its collectible generator id, while
+            // the inventory item itself is simply `cotton`.
+            "cotton_seed" => "cotton",
             "orange_seed" or "mango_seed" => "fruit",
             "banana_seed" => "banana",
             "persimmontree_seed" => "persimmon",

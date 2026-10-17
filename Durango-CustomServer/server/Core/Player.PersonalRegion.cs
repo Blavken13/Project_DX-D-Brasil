@@ -648,6 +648,9 @@ public partial class Player
     }
 
     private void BroadcastEstateGridsAround(Point2 cell)
+        => BroadcastEstateGridsAround(_world, cell);
+
+    private static void BroadcastEstateGridsAround(World world, Point2 cell)
     {
         int tileX = cell.x * World.EstateGridSize;
         int tileY = cell.y * World.EstateGridSize;
@@ -659,7 +662,7 @@ public partial class Player
         {
             if (x >= 0 && y >= 0) chunks.Add(new Point2(x, y));
         }
-        _world.BroadCast(_world.BuildEstateGridsForChunks(chunks));
+        world.BroadCast(world.BuildEstateGridsForChunks(chunks));
     }
 
     private void HandleDeclareEstate(DeclareEstate msg, uint seq)
@@ -711,29 +714,45 @@ public partial class Player
 
     private void HandleExpandEstate(ExpandEstate msg, uint seq)
     {
-        EstateRecord estate = _world.GetEstate(msg.EstateId);
+        World estateWorld = _world;
+        EstateRecord estate = estateWorld.GetEstate(msg.EstateId);
+        // The Android estate screen can submit the player's shared Tamed
+        // Island license while the active session is attached to another
+        // world. Resolve that owned estate before rejecting the request.
+        if (estate == null)
+        {
+            World tamedWorld = WorldForOwnedEstate(OwnerType.Player);
+            EstateRecord tamedEstate = tamedWorld?.GetEstate(msg.EstateId);
+            if (tamedEstate != null &&
+                tamedEstate.Type == (int)OwnerType.Player &&
+                string.Equals(tamedEstate.OwnerId, EntityId, StringComparison.Ordinal))
+            {
+                estateWorld = tamedWorld;
+                estate = tamedEstate;
+            }
+        }
         if (ClanEstate(estate)) { ExpandEnclave(msg, estate, seq); return; }
         string authorityOwner = EstateAuthorityOwner(estate);
-        if (!string.IsNullOrEmpty(authorityOwner) && estate.Size >= PersonalEstateMaxSize)
+        if (!string.IsNullOrEmpty(authorityOwner) && (estate.Cells?.Count ?? estate.Size) >= PersonalEstateMaxSize)
         {
             Send(new Abort { Text = "O domínio já atingiu o limite de 8 lotes. Os lotes existentes continuam disponíveis." }, seq);
             return;
         }
-        if (string.IsNullOrEmpty(authorityOwner) || !_world.CanExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize))
+        if (string.IsNullOrEmpty(authorityOwner) || !estateWorld.CanExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize))
         {
             Send(new Abort { Text = "Não foi possível expandir o território." }, seq);
             return;
         }
         EstateLicense? license = string.IsNullOrEmpty(authorityOwner)
             ? null
-            : _world.ExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize);
+            : estateWorld.ExpandEstate(msg.EstateId, authorityOwner, msg.Cell, PersonalEstateMaxSize);
         if (!license.HasValue)
         {
             Send(new Abort { Text = "Não foi possível expandir o território." }, seq);
             return;
         }
         Send(license.Value, seq);
-        BroadcastEstateGridsAround(msg.Cell);
+        BroadcastEstateGridsAround(estateWorld, msg.Cell);
         NoteQuestEvent(Shared.Quest.QuestEventType.EstateManaged, "expand", context: QuestActionContext());
         OnContextChanged();
     }

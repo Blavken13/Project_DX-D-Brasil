@@ -1552,7 +1552,10 @@ public partial class World
             ExpiresAt = rec.ExpiresAt,
             Deposit = legacyDeposit ? new Pair<int, double>(int.MaxValue, now) : null,
             DepositRunsOutAt = legacyDeposit ? rec.ExpiresAt ?? now + 365 * 86400.0 : null,
-            Size = rec.Size,
+            // Cells are the persisted source of truth; older saves can have a
+            // stale cached Size value that would make mobile show a different
+            // count from the server's expansion limit.
+            Size = rec.Cells?.Count ?? rec.Size,
             RegionId = rec.RegionId,
             Tile = new Point2(rec.TileX, rec.TileY),
             AccessRights = rec.ToAccessRights()
@@ -1603,7 +1606,7 @@ public partial class World
     {
         if (!_context.Estates.TryGetValue(estateId, out EstateRecord rec)) return null;
         if (rec.OwnerId != ownerId) return null;
-        if (rec.Size >= maxSize) return null;
+        if ((rec.Cells?.Count ?? rec.Size) >= maxSize) return null;
         string key = EstateCellKey(cell.x, cell.y);
         if (_context.EstateCells.ContainsKey(key)) return null;
         // ต้องติดกับเซลล์เดิม
@@ -1630,7 +1633,8 @@ public partial class World
 
     public bool CanExpandEstate(string estateId, string ownerId, Point2 cell, int maxSize)
     {
-        if (!_context.Estates.TryGetValue(estateId, out var estate) || estate.OwnerId != ownerId || estate.Size >= maxSize ||
+        if (!_context.Estates.TryGetValue(estateId, out var estate) || estate.OwnerId != ownerId ||
+            (estate.Cells?.Count ?? estate.Size) >= maxSize ||
             _context.EstateCells.ContainsKey(EstateCellKey(cell.x, cell.y))) return false;
         return estate.Cells.Any(existing =>
         {
