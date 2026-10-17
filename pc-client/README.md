@@ -1,5 +1,13 @@
 # Cliente PC Lost Horizon
 
+Para o cliente atual Unity 6, em `Lost-Horizon-PC/Lost Horizon Game_Data`, use
+`powershell -NoProfile -ExecutionPolicy Bypass -File pc-client/build_estate_expansion.ps1 -Install`.
+Ele porta o pedido direto extraído do `AplicarPatch.exe`, salva um backup e gera
+`pc-client/dist/LostHorizon-PC-dominio-unity6.zip`. Detalhes em
+[README-estate-unity6.md](README-estate-unity6.md).
+
+O fluxo abaixo se refere ao cliente anterior, na pasta `Durango-OffServer`.
+
 Correção da expansão gratuita do enclave: execute `python pc-client/patch_estate_expansion.py`
 para gerar `dist/LostHorizon-PC-enclave1.zip` a partir do cliente atual. Feche o jogo
 e extraia o pacote sobre `Durango-OffServer`. O patch altera somente a chamada do

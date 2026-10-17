@@ -120,6 +120,42 @@ static void authorize(void *request){
 }
 static void *send(void *request,Method info){authorize(request);return original_send(request,info);}
 
+#ifdef TESTER_ESTATE_EXPANSION
+/* Same route used by the working Unity 2017 Android estate patch. Resolve the
+ * methods in this build instead of reusing addresses from the old IL2CPP ELF. */
+typedef struct { int32_t x,y; } EstatePoint;
+static Method estate_free;
+static int estate_installed;
+static void estate_click(void *self,EstatePoint position,Method info){
+    (void)info;
+    void *args[]={&position};
+    LOG("estate_expansion_free_path");
+    call(estate_free,self,args);
+}
+static void install_estate_expansion(void){
+    if(estate_installed)return;
+    void *point=klass("","Point2");
+    int32_t (*value_size)(void *,uint32_t *)=dlsym(engine,"il2cpp_class_value_size");
+    uint32_t alignment=0;
+    if(!point||!value_size)return;
+    if(value_size(point,&alignment)!=(int32_t)sizeof(EstatePoint)){
+        estate_installed=-1;LOG("estate_expansion_unsupported_point_abi");return;
+    }
+    Method click=method("Durango.UI","EstateGridGroup","OnExpandEstateClick",1);
+    estate_free=method("Durango.UI","EstateGridGroup","ExpandPersonalEstate",1);
+    if(!click||!estate_free||!*(void *const *)click)return;
+    void *dbr=dlopen("libdbr.so",RTLD_NOW|RTLD_NOLOAD);
+    void *blob=dbr?dlsym(dbr,"thpt_blob"):NULL;
+    if(!blob){if(dbr)dlclose(dbr);return;}
+    unsigned char *base=(unsigned char *)blob-DBR_BLOB;
+    void *(*hook)(void *,void *)=(void *(*)(void *,void *))(base+DBR_HOOK);
+    void *previous=hook(*(void *const *)click,estate_click);
+    estate_installed=previous?1:-1;
+    LOG(previous?"estate_expansion_ready":"estate_expansion_hook_failed");
+    dlclose(dbr);
+}
+#endif
+
 __attribute__((visibility("default"))) void tester_before_tick(void){
     if(!installed){
         if(!engine)engine=dlopen("libil2cpp.so",RTLD_NOW|RTLD_NOLOAD);
@@ -151,6 +187,9 @@ __attribute__((visibility("default"))) void tester_before_tick(void){
         dlclose(dbr);
     }
     if(installed!=1)return;
+#ifdef TESTER_ESTATE_EXPANSION
+    install_estate_expansion();
+#endif
     pthread_mutex_lock(&lock);int pending=queued[0]!=0;if(pending){memcpy(token,queued,sizeof(token));memset(queued,0,sizeof(queued));}pthread_mutex_unlock(&lock);
     if(pending){
         has_selection=0;keep(&selected_player,NULL);
