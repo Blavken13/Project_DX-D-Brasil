@@ -93,6 +93,7 @@ public partial class Gateway
         Port = port;
         _webServer = new WebServer(port);
         RegisterRoutes();
+        RestrictAdminWriteRoutes();
     }
 
     public void Close() => _webServer?.Close();

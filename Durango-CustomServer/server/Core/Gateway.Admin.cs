@@ -19,6 +19,26 @@ public partial class Gateway
             request.Url.GetLeftPart(UriPartial.Authority), StringComparison.OrdinalIgnoreCase);
     }
 
+    // Changes to server state require an SSH session on the host followed by
+    // docker exec against 127.0.0.1 inside this container. Browser sessions
+    // and forwarded headers cannot grant write access.
+    private void RestrictAdminWriteRoutes()
+    {
+        foreach (string path in _webServer.PostRoute.Keys.Where(p =>
+            p.StartsWith("/admin/", StringComparison.Ordinal)
+            && p != "/admin/login" && p != "/admin/logout"
+            && p != "/admin/mail/preview").ToArray())
+        {
+            WebServer.RouteFunction original = _webServer.PostRoute[path];
+            _webServer.PostRoute[path] = (request, data) =>
+                request.RemoteEndPoint != null && IPAddress.IsLoopback(request.RemoteEndPoint.Address)
+                    ? original(request, data)
+                    : new WebServer.JsonResponse(
+                        "{\"error\":\"Alterações administrativas exigem acesso SSH ao servidor.\"}",
+                        HttpStatusCode.Forbidden);
+        }
+    }
+
     private void RegisterAdminRoutes()
     {
         RegisterAdminMailRoutes();

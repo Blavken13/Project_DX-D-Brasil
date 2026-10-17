@@ -3,12 +3,16 @@
 const $ = id => document.getElementById(id);
 const fmt = n => Number(n ?? 0).toLocaleString('pt-BR');
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sshOnlyAdmin = !['localhost','127.0.0.1','::1'].includes(location.hostname);
+document.body.classList.toggle('ssh-only-admin',sshOnlyAdmin);
+$('ssh-only-notice').hidden=!sshOnlyAdmin;
 let session = sessionStorage.getItem('durango-admin-session') || '';
 let page = 'overview', players = [], catalog = null, dataFile = null, islandId = null, timer = null, refreshing = false;
-let mailItems = null, mailPreview = null;
+let mailItems = null, mailPreview = null, mailItemOptions = null, mailOptionsRequest = 0;
+let selectedMailAttributes = [], selectedMailImprovements = [];
 const newMailId = () => Array.from(crypto.getRandomValues(new Uint8Array(16)),n=>n.toString(16).padStart(2,'0')).join('');
 let mailRequestId = sessionStorage.getItem('durango-mail-request-id') || newMailId();
-const mailExample = {target:'player',recipient_id:'',subject:'Sua entrega chegou',message:'Obrigado! Resgate os anexos desta mensagem para recebê-los na mochila.',type:'purchase',items:[],vouchers:[]};
+const mailExample = {target:'player',recipient_id:'',subject:'Sua entrega chegou',message:'Obrigado! Resgate os anexos desta mensagem para recebê-los na mochila.',type:'purchase',items:[],vouchers:[],money:{}};
 $('mail-json').value = sessionStorage.getItem('durango-mail-draft') || JSON.stringify(mailExample,null,2);
 const titles = {overview:'Visão geral',players:'Jogadores',economy:'Economia',config:'Configurações',islands:'Ilhas',data:'Dados do jogo',actions:'Operações'};
 function notice(message, error = false) { $('notice').hidden = false; $('notice').textContent = message; $('notice').className = error ? 'error' : ''; }
@@ -215,6 +219,8 @@ function syncMailDraftFromControls() {
 }
 function syncMailControlsOrNotice(){try{syncMailDraftFromControls();}catch(error){invalidateMailPreview();notice(error.message,true);}}
 $('mail-json').addEventListener('input',mailChanged);
+$('mail-item-customization').append($('mail-add-item'));
+renderMailChoices();
 async function loadMailTools() {
  const state=await api('/admin/mail/status');$('mail-status').textContent=`Correio ativo · ${fmt(state.messages)} mensagens · ${fmt(state.pending)} aguardando resgate.`;
  const [items,recipients]=await Promise.all([mailItems?Promise.resolve(mailItems):api('/admin/mail/items'),api('/admin/players')]);mailItems=items;
@@ -226,17 +232,49 @@ async function loadMailTools() {
 }
 function filterMailItems(){
  if(!mailItems)return;
+ const previous=$('mail-item').value;
  const query=$('mail-item-search').value.toLowerCase(),scope=$('mail-item-scope').value;
  const filtered=mailItems.filter(i=>(scope==='all'||(scope==='shop'&&i.shop)||(scope==='skins'&&i.skin))&&`${i.name} ${i.prototype_id} ${i.category||''} ${(i.shop_categories||[]).join(' ')}`.toLowerCase().includes(query));
  $('mail-item').replaceChildren(...filtered.map(i=>new Option(`${i.name} · ${i.prototype_id}${i.shop?' · Loja':''}`,i.prototype_id)));
+ if(filtered.some(i=>i.prototype_id===previous))$('mail-item').value=previous;
  $('mail-item-count').textContent=`${fmt(filtered.length)} item(ns) nesta lista · catálogo total ${fmt(mailItems.length)}.`;
+ if($('mail-item').value!==previous||!mailItemOptions)loadSelectedMailItemOptions();
+}
+function renderMailChoices(){
+ const render=(id,values,label)=>{
+  const box=$(id);box.replaceChildren();
+  if(!values.length){box.textContent='Nenhum selecionado.';return;}
+  values.forEach((value,index)=>{const row=document.createElement('span');row.className='mail-choice';row.textContent=label(value)+' ';
+   const remove=document.createElement('button');remove.type='button';remove.textContent='Remover';remove.addEventListener('click',()=>{values.splice(index,1);renderMailChoices();});row.append(remove);box.append(row);});
+ };
+ render('mail-selected-attributes',selectedMailAttributes,v=>`${v.id} nível ${v.level}`);
+ render('mail-selected-improvements',selectedMailImprovements,v=>v);
+}
+async function loadSelectedMailItemOptions(){
+ const id=$('mail-item').value,request=++mailOptionsRequest;
+ mailItemOptions=null;selectedMailAttributes=[];selectedMailImprovements=[];renderMailChoices();
+ $('mail-attribute').replaceChildren();$('mail-improvement').replaceChildren();
+ $('mail-item-options-status').textContent=id?'Carregando atributos e melhorias…':'Selecione um item.';
+ if(!id)return;
+ try{
+  const options=await api('/admin/mail/item-options?prototype_id='+encodeURIComponent(id));
+  if(request!==mailOptionsRequest)return;
+  mailItemOptions=options;
+  $('mail-attribute').replaceChildren(...options.attributes.map(a=>new Option(`${a.id} (máx. ${a.max_level})`,a.id)));
+  $('mail-improvement').replaceChildren(...options.improvements.map(i=>new Option(`${i.id}${i.effects?.length?' · '+i.effects.join(', '):''}`,i.id)));
+  $('mail-item-options-status').textContent=`${options.attributes.length} atributo(s) e ${options.improvements.length} melhoria(s) disponíveis; até ${Math.min(2,options.max_improvements)} melhoria(s) por item.`;
+ }catch(error){if(request===mailOptionsRequest)$('mail-item-options-status').textContent=error.message;}
 }
 $('mail-item-search').addEventListener('input',filterMailItems);
 $('mail-item-scope').addEventListener('change',filterMailItems);
+$('mail-item').addEventListener('change',loadSelectedMailItemOptions);
 $('mail-target').addEventListener('change',()=>{$('mail-recipient').disabled=$('mail-target').value==='all';syncMailControlsOrNotice();});
 $('mail-recipient').addEventListener('change',syncMailControlsOrNotice);
 on('mail-template',async()=>{syncMailDraftFromControls();return 'Destinatário atualizado no JSON.';});
-on('mail-add-item',async()=>{const data=JSON.parse($('mail-json').value),id=$('mail-item').value;if(!id)throw new Error('Selecione um item.');if(!Array.isArray(data.items))data.items=[];data.items.push({prototype_id:id,quantity:1,level:1});$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return 'Anexo adicionado. Ajuste quantity e level no JSON, se necessário.';});
+on('mail-add-attribute',async()=>{const id=$('mail-attribute').value,option=mailItemOptions?.attributes.find(a=>a.id===id),level=Number($('mail-attribute-level').value);if(!option)throw new Error('Selecione um atributo disponível.');if(!Number.isInteger(level)||level<1||level>option.max_level)throw new Error(`Nível do atributo: 1 a ${option.max_level}.`);if(selectedMailAttributes.some(a=>a.id===id))throw new Error('Atributo já selecionado.');if(selectedMailAttributes.length>=8)throw new Error('Use até oito atributos.');selectedMailAttributes.push({id,level});renderMailChoices();return 'Atributo selecionado para este anexo.';});
+on('mail-add-improvement',async()=>{const id=$('mail-improvement').value;if(!mailItemOptions?.improvements.some(i=>i.id===id))throw new Error('Selecione uma melhoria disponível.');if(selectedMailImprovements.includes(id))throw new Error('Melhoria já selecionada.');if(selectedMailImprovements.length>=Math.min(2,mailItemOptions.max_improvements))throw new Error('Limite de melhorias deste equipamento atingido.');selectedMailImprovements.push(id);renderMailChoices();return 'Melhoria selecionada para este anexo.';});
+on('mail-add-item',async()=>{const id=$('mail-item').value,quantity=Number($('mail-item-quantity').value),level=Number($('mail-item-level').value);if(!id||!mailItemOptions)throw new Error('Aguarde o carregamento do item.');if(!Number.isInteger(quantity)||quantity<1||quantity>100)throw new Error('Quantidade: 1 a 100.');if(!Number.isInteger(level)||level<1||level>60)throw new Error('Nível do item: 1 a 60.');const data=JSON.parse($('mail-json').value);if(!Array.isArray(data.items))data.items=[];const item={prototype_id:id,quantity,level};if(selectedMailAttributes.length)item.attributes=selectedMailAttributes.map(a=>({...a}));if(selectedMailImprovements.length)item.improvements=[...selectedMailImprovements];data.items.push(item);$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return 'Anexo configurado e adicionado ao JSON.';});
+on('mail-add-warp-gems',async()=>{const quantity=Number($('mail-warp-gems').value);if(!Number.isInteger(quantity)||quantity<1||quantity>99999999)throw new Error('Warp Gems: informe uma quantidade inteira entre 1 e 99.999.999.');const data=JSON.parse($('mail-json').value);data.money={warp_gem:quantity};$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return `${fmt(quantity)} Warp Gem(s) adicionada(s) ao email.`;});
 on('mail-add-portal-stones',async()=>{const quantity=Number($('mail-portal-stones').value);if(!Number.isInteger(quantity)||quantity<1||quantity>240)throw new Error('Pedras de Portal: informe uma quantidade inteira entre 1 e 240.');const data=JSON.parse($('mail-json').value);if(!Array.isArray(data.vouchers))data.vouchers=[];data.vouchers=data.vouchers.filter(v=>v?.voucher_id!=='voucher_resource_induced_stone');data.vouchers.push({voucher_id:'voucher_resource_induced_stone',quantity});$('mail-json').value=JSON.stringify(data,null,2);mailChanged();return `${fmt(quantity)} Pedra(s) de Portal adicionada(s) ao email.`;});
 async function validateMailPreview() {
  const json=syncMailDraftFromControls();
@@ -245,11 +283,11 @@ async function validateMailPreview() {
  mailPreview={json,data};
  $('mail-preview-result').textContent=JSON.stringify(data,null,2);
  $('mail-preview-result').hidden=false;
- $('mail-result').textContent=`Pronto para enviar a ${fmt(data.recipients)} personagem(ns), com ${fmt(data.attachments_per_player)} item(ns) e ${fmt(data.portal_stones_per_player)} Pedra(s) de Portal por personagem.`;
+ $('mail-result').textContent=`Pronto para enviar a ${fmt(data.recipients)} personagem(ns), com ${fmt(data.attachments_per_player)} item(ns), ${fmt(data.portal_stones_per_player)} Pedra(s) de Portal e ${fmt(data.warp_gems_per_player)} Warp Gem(s) por personagem.`;
  return mailPreview;
 }
 on('mail-preview',async()=>{await validateMailPreview();return 'JSON válido. Confira a prévia antes de enviar.';});
-on('mail-send',async()=>{let preview=mailPreview;if(!preview||preview.json!==$('mail-json').value)preview=await validateMailPreview();if(!confirm(`Enviar “${preview.data.subject}” para ${fmt(preview.data.recipients)} personagem(ns), com ${fmt(preview.data.attachments_per_player)} item(ns) e ${fmt(preview.data.portal_stones_per_player)} Pedra(s) de Portal para cada um?`))return 'Envio cancelado.';sessionStorage.setItem('durango-mail-request-id',mailRequestId);sessionStorage.setItem('durango-mail-draft',preview.json);const result=await api('/admin/mail/send',{json:preview.json,request_id:mailRequestId});$('mail-result').textContent=result.duplicate?'Este envio já foi registrado. Nenhuma mensagem duplicada foi criada.':`Email entregue ao correio de ${fmt(result.sent)} personagem(ns).`;await loadMailTools();return $('mail-result').textContent;});
+on('mail-send',async()=>{let preview=mailPreview;if(!preview||preview.json!==$('mail-json').value)preview=await validateMailPreview();if(!confirm(`Enviar “${preview.data.subject}” para ${fmt(preview.data.recipients)} personagem(ns), com ${fmt(preview.data.attachments_per_player)} item(ns), ${fmt(preview.data.portal_stones_per_player)} Pedra(s) de Portal e ${fmt(preview.data.warp_gems_per_player)} Warp Gem(s) para cada um?`))return 'Envio cancelado.';sessionStorage.setItem('durango-mail-request-id',mailRequestId);sessionStorage.setItem('durango-mail-draft',preview.json);const result=await api('/admin/mail/send',{json:preview.json,request_id:mailRequestId});$('mail-result').textContent=result.duplicate?'Este envio já foi registrado. Nenhuma mensagem duplicada foi criada.':`Email entregue ao correio de ${fmt(result.sent)} personagem(ns).`;await loadMailTools();return $('mail-result').textContent;});
 on('mail-new',async()=>{if(!confirm('Preparar outro envio? Enviar novamente o mesmo conteúdo criará novas mensagens.'))return 'Envio atual mantido.';mailChanged();return 'Novo envio preparado. Valide o JSON.';});
 on('announce',async()=>{const text=$('announcement').value.trim();if(!text)throw new Error('Escreva a mensagem.');const result=await api('/admin/announce',{text});$('announcement').value='';return `Anúncio enviado para ${fmt(result.sent)} jogadores.`;});
 for(const [id,onValue]of [['maintenance-on','1'],['maintenance-off','0']])on(id,async()=>{const result=await api('/admin/maintenance',{on:onValue});maintenance(result.maintenance);return result.maintenance?'Manutenção ativada.':'Servidor aberto.';});

@@ -41,3 +41,10 @@ Se o Windows bloquear a DLL com `0x800711C7`, use o WSL já instalado e o runtim
 $env:DURANGO_ADMIN_TEST_WSL = 'Ubuntu-24.04'
 node Durango-CustomServer/server/tests/admin-panel-check.mjs
 ```
+## Proteção de escrita em staging
+
+O painel acessado pela rede pública está em modo de consulta. Os `POST` administrativos que alteram jogadores, economia, premium, correio ou configuração só aceitam conexões originadas de `127.0.0.1` dentro do contêiner. Para executar uma operação dessas, entre no host por SSH e use `docker exec` para chamar a API local; a sessão administrativa ou o token configurado continuam obrigatórios. Login, logout e prévia de correio permanecem disponíveis no painel.
+
+O arquivo `admin-auth.json` é montado no contêiner como somente leitura a partir da release no host. Alterá-lo exige acesso ao host por SSH e recriação do contêiner para carregar a nova credencial. O volume `/app/AppData-nx` continua gravável pelo jogo para salvar o progresso normal dos jogadores.
+
+O login pela URL HTTP pública envia a senha sem criptografia. Para acessar o painel com credenciais, use HTTPS ou um túnel SSH.

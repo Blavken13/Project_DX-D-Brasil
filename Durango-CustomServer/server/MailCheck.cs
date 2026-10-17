@@ -6,6 +6,7 @@ using Durango.Online;
 using Durango.Utils;
 using Messages;
 using Newtonsoft.Json.Linq;
+using Shared.Economy;
 using Yaml;
 using Yaml.Util;
 
@@ -177,6 +178,50 @@ internal static class MailCheck
             link.PumpUntil(() => link.Messages.OfType<MailPut>().Any(m => m.Mail.AttachedItems?.Any(i => i.Ext is ArtifactCapsule) == true));
             Check(new MailStore(path).Inbox(alice.EntityId).First().AttachedItems.All(i => i.Ext is ArtifactCapsule),
                 "cápsulas atravessam o protocolo e preservam extensão após reinício");
+            var weaponOptions = AdminMailComposer.ItemOptions("sword_onehand_bone_03");
+            var weaponAttributes = (JArray)weaponOptions["attributes"];
+            var weaponImprovements = (JArray)weaponOptions["improvements"];
+            Check(weaponAttributes.Count > 0 && weaponImprovements.Count > 0, "armas oferecem atributos e melhorias elegíveis");
+            var armorOptions = AdminMailComposer.ItemOptions("gloves_weaponcrafting");
+            Check(((JArray)armorOptions["attributes"]).Count > 0 && ((JArray)armorOptions["improvements"]).Count > 0,
+                "armaduras oferecem atributos e melhorias elegíveis");
+            string attributeId = "attack_incr", improvementId = (string)weaponImprovements[0]["id"];
+            Check(weaponAttributes.Any(a => (string)a["id"] == attributeId), "atributo de ataque disponível para a arma");
+            var customPayload = new JObject { ["target"] = "player", ["recipient_id"] = alice.EntityId,
+                ["subject"] = "Arma configurada", ["message"] = "Teste de atributos, melhoria e Warp Gems.", ["type"] = "purchase",
+                ["items"] = new JArray(new JObject { ["prototype_id"] = "sword_onehand_bone_03", ["quantity"] = 1, ["level"] = 60,
+                    ["attributes"] = new JArray(new JObject { ["id"] = attributeId, ["level"] = 1 }),
+                    ["improvements"] = new JArray(improvementId) }), ["vouchers"] = new JArray(),
+                ["money"] = new JObject { ["warp_gem"] = 123 } };
+            var customMail = AdminMailComposer.Parse(customPayload.ToString());
+            Check(customMail.Items.Single().Tags.Any(t => t.Id == attributeId) &&
+                customMail.Items.Single().ReformSlots.Any(s => s.RecipeId == improvementId) &&
+                customMail.Money[Currency.Gem] == 123, "composição aplica atributo, melhoria e Warp Gems");
+            Check(Json.Write(customMail.Items.Single().Performance) != Json.Write(ShopCatalog.MakeItem(new JObject {
+                ["prototype_id"] = "sword_onehand_bone_03", ["level"] = 60 }).Performance),
+                "atributo e melhoria recalculam o desempenho real da arma");
+            var armorPayload = (JObject)customPayload.DeepClone();
+            var armorLine = (JObject)((JArray)armorPayload["items"])[0];
+            armorLine["prototype_id"] = "gloves_weaponcrafting";
+            armorLine["attributes"] = new JArray(new JObject { ["id"] = (string)armorOptions["attributes"][0]["id"], ["level"] = 1 });
+            armorLine["improvements"] = new JArray((string)armorOptions["improvements"][0]["id"]);
+            var armorMail = AdminMailComposer.Parse(armorPayload.ToString());
+            Check(armorMail.Items.Single().ReformSlots.Any(s => s.RecipeId == (string)armorOptions["improvements"][0]["id"]),
+                "composição também aplica melhorias em armaduras");
+            Check(mail.Dispatch("custom-mail-test", customMail.Fingerprint, new[] { alice.EntityId }, customMail.Subject,
+                customMail.Text, customMail.Type, customMail.Items, customMail.Vouchers, customMail.Money, out _, out _),
+                "correio persiste arma configurada e Warp Gems");
+            var customInbox = mail.Inbox(alice.EntityId).Single(m => m.AttachedItems.Any(i => i.Prototype == "sword_onehand_bone_03"));
+            Check(customInbox.Money[Currency.Gem] == 123 && customInbox.AttachedItems.Single().ReformSlots.Any(s => s.RecipeId == improvementId),
+                "caixa publica Warp Gems e melhoria para o cliente");
+            long gemsBefore = alice.WarpGem;
+            link.Request<AcceptMails, OK>(new AcceptMails { MailIds = new[] { customInbox.Id } });
+            Check(alice.WarpGem == gemsBefore + 123 && alice.InventoryItems.Any(i => i.Prototype == "sword_onehand_bone_03"),
+                "resgate credita Warp Gems e entrega a arma configurada");
+            Check(link.Messages.OfType<WalletUpdated>().Any(m => m.Wallet.UnpaidBalances?.GetValueOrDefault(Currency.Gem) == alice.WarpGem),
+                "cliente recebe saldo atualizado de Warp Gems");
+            Check(new MailStore(path).Inbox(alice.EntityId).Single(m => m.Id == customInbox.Id).Accepted,
+                "resgate configurado persiste após reabrir o correio");
             string blocked = Path.Combine(root, "blocked"); File.WriteAllText(blocked, "test");
             var unavailable = new MailStore(Path.Combine(blocked, "mail.json"));
             Check(!unavailable.Dispatch("disk-failure", composed.Fingerprint, new[] { alice.EntityId }, composed.Subject,

@@ -146,7 +146,7 @@ try {
     }
     for (const route of ['/admin', '/admin/', '/admin/app.js', '/admin/style.css'])
         check((await request(route)).ok, 'interface disponível: ' + route);
-    for (const route of ['/health', '/admin/players', '/admin/config', '/admin/catalog', '/admin/mail/status', '/admin/mail/items', '/admin/premium'])
+    for (const route of ['/health', '/admin/players', '/admin/config', '/admin/catalog', '/admin/mail/status', '/admin/mail/items', '/admin/mail/item-options?prototype_id=sword_onehand_bone_03', '/admin/premium'])
         check((await request(route)).status === 403, 'acesso anônimo bloqueado: ' + route);
     check((await request('/admin/login', { username: 'admin-fixture', password: 'wrong' })).status === 401, 'senha incorreta rejeitada');
     check((await request('/admin/login', { username: 'admin-fixture', password: 'integration-test-password' }, { Origin: 'https://external.example' })).status === 403, 'login de outra origem bloqueado');
@@ -183,6 +183,25 @@ try {
     check((await json('/admin/mail/send',{json:JSON.stringify(voucherEmail),request_id:'test-portal-stones'})).sent === 1, 'email com Pedras de Portal persistido');
     const aliceWithVoucher = await json('/admin/mail/inbox?entity_id=mail-alice');
     check(aliceWithVoucher.some(m => m.AttachedVouchers?.some(v => v.VoucherId === 'voucher_resource_induced_stone' && v.Count === 7)), 'caixa administrativa expõe o voucher anexado');
+    const options = await json('/admin/mail/item-options?prototype_id=sword_onehand_bone_03');
+    check(options.attributes.length > 0 && options.improvements.length > 0 && options.max_improvements >= 1,
+        'arma mostra atributos e melhorias elegíveis');
+    check((await request('/admin/mail/item-options?prototype_id=missing_item_for_test')).status === 400,
+        'item inexistente não oferece personalização');
+    const customEmail = {...email,subject:'Arma e Warp Gems',items:[{prototype_id:'sword_onehand_bone_03',quantity:1,level:60,
+        attributes:[{id:options.attributes[0].id,level:1}],improvements:[options.improvements[0].id]}],
+        vouchers:[],money:{warp_gem:123}};
+    const customPreview = await json('/admin/mail/preview',{json:JSON.stringify(customEmail)});
+    check(customPreview.warp_gems_per_player === 123 && customPreview.items[0].improvements[0] === options.improvements[0].id,
+        'prévia mostra Warp Gems e melhoria selecionada');
+    check((await request('/admin/mail/preview',{json:JSON.stringify({...customEmail,items:[],money:{warp_gem:0}})})).status === 400,
+        'quantidade inválida de Warp Gems recusada');
+    check((await json('/admin/mail/send',{json:JSON.stringify(customEmail),request_id:'test-custom-email'})).sent === 1,
+        'envio HTTP persiste item personalizado e Warp Gems');
+    const customInbox = await json('/admin/mail/inbox?entity_id=mail-alice');
+    check(customInbox.some(m => Object.values(m.Money ?? {}).includes(123) &&
+        m.AttachedItems?.some(i => i.ReformSlots?.some(s => s.RecipeId === options.improvements[0].id))),
+        'caixa administrativa inclui moeda e melhoria do item');
     const collective = {...email,target:'all',items:[],vouchers:[]};delete collective.recipient_id;
     check((await json('/admin/mail/send',{json:JSON.stringify(collective),request_id:'test-all-email'})).sent === 2, 'envio coletivo cobre personagens elegíveis existentes');
     check((await json('/admin/mail/inbox?entity_id=mail-bob')).length === 1, 'mensagem coletiva entregue ao segundo personagem');
@@ -234,9 +253,10 @@ try {
     await mobileReportRestartChecks({request,json,check,state:reportState});
     await premiumRestartChecks({json,check,state:premiumState});
     const mailbox = await json('/admin/mail/inbox?entity_id=mail-alice');
-    check(mailbox.length === 3 && mailbox.some(m => m.AttachedItems?.length === 2)
-        && mailbox.some(m => m.AttachedVouchers?.some(v => v.VoucherId === 'voucher_resource_induced_stone' && v.Count === 7)),
-        'emails, itens e Pedras de Portal preservados após reinício');
+    check(mailbox.length === 4 && mailbox.some(m => m.AttachedItems?.length === 2)
+        && mailbox.some(m => m.AttachedVouchers?.some(v => v.VoucherId === 'voucher_resource_induced_stone' && v.Count === 7))
+        && mailbox.some(m => Object.values(m.Money ?? {}).includes(123)),
+        'emails, itens, Pedras de Portal e Warp Gems preservados após reinício');
     console.log(`PASS ${checks} verificações HTTP`);
 } catch (error) { console.error(logs); throw error; }
 finally {

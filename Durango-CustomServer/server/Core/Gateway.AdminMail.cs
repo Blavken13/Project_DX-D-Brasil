@@ -15,6 +15,12 @@ public partial class Gateway
             !IsAdminAllowed(request) ? Forbidden() : new WebServer.JsonResponse(Json.Write(_host.Mail.Describe()));
         _webServer.GetRoute["/admin/mail/items"] = (request, _) =>
             !IsAdminAllowed(request) ? Forbidden() : new WebServer.JsonResponse(AdminMailComposer.ItemCatalog().ToString());
+        _webServer.GetRoute["/admin/mail/item-options"] = (request, _) =>
+        {
+            if (!IsAdminAllowed(request)) return Forbidden();
+            try { return new WebServer.JsonResponse(AdminMailComposer.ItemOptions(request.QueryString["prototype_id"]).ToString()); }
+            catch (ArgumentException error) { return new WebServer.JsonResponse(new JObject { ["error"] = error.Message }.ToString(), HttpStatusCode.BadRequest); }
+        };
         _webServer.GetRoute["/admin/mail/inbox"] = (request, _) =>
         {
             if (!IsAdminAllowed(request)) return Forbidden();
@@ -43,13 +49,14 @@ public partial class Gateway
                 ["subject"] = mail.Subject, ["message"] = mail.Text, ["recipients"] = recipients.Length,
                 ["target"] = mail.All ? "all" : "player", ["items"] = mail.ResolvedItems, ["vouchers"] = mail.ResolvedVouchers,
                 ["attachments_per_player"] = mail.Items.Length,
-                ["portal_stones_per_player"] = mail.Vouchers.Where(v => v.VoucherId == CrackTuning.VoucherId).Sum(v => v.Count)
+                ["portal_stones_per_player"] = mail.Vouchers.Where(v => v.VoucherId == CrackTuning.VoucherId).Sum(v => v.Count),
+                ["warp_gems_per_player"] = mail.Money.GetValueOrDefault(Shared.Economy.Currency.Gem)
             }.ToString());
             body.TryGetValue("request_id", out string requestId);
             if (string.IsNullOrWhiteSpace(requestId) || requestId.Length > 100
                 || !System.Text.RegularExpressions.Regex.IsMatch(requestId, "^[A-Za-z0-9_-]+$"))
                 throw new ArgumentException("Informe request_id com até 100 letras, números, hífens ou sublinhados.");
-            if (!_host.Mail.Dispatch(requestId, mail.Fingerprint, recipients, mail.Subject, mail.Text, mail.Type, mail.Items, mail.Vouchers, out var result, out string error))
+            if (!_host.Mail.Dispatch(requestId, mail.Fingerprint, recipients, mail.Subject, mail.Text, mail.Type, mail.Items, mail.Vouchers, mail.Money, out var result, out string error))
                 return new WebServer.JsonResponse(new JObject { ["error"] = error }.ToString(), HttpStatusCode.Conflict);
             return new WebServer.JsonResponse(new JObject {
                 ["sent"] = result.Recipients, ["request_id"] = result.RequestId, ["duplicate"] = result.Duplicate

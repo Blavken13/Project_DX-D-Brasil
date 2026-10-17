@@ -27,6 +27,10 @@ services:
 
     volumes:
       - durango-staging-state:/app/AppData-nx
+      - type: bind
+        source: ../../Durango-CustomServer/server/data/admin-auth.json
+        target: /app/data/admin-auth.json
+        read_only: true
       - ../../Durango-CustomServer/server/assetbundles/android:/app/assetbundles/android:ro
       - type: bind
         source: ${DURANGO_WINDOWS_BUNDLES_DIR:-../../Durango-CustomServer/server/assetbundles/windows}
