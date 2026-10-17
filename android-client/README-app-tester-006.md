@@ -1,5 +1,10 @@
 # Build tester-006: expansão de domínio
 
+**Substituída pela [tester-007](README-app-tester-007.md).** O teste no aparelho
+revelou que o instalador de hooks rejeitava a instrução `CBZ` do handler e
+registrava `estate_expansion_hook_failed`. A build 007 corrige a instalação e
+teve a expansão validada no celular.
+
 Base: `losthorizon-build-tester-005.apk`, SHA-256
 `0d5176163d78293fb131c63114d4d1992263ccb59863063f77de1b9148026dc2`.
 
