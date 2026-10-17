@@ -39,6 +39,25 @@ internal static class GameplayPolishCheck
     { new Movement { MotionName = "Stand", PlaybackRate = 1, Path = new[]
         { new Location { Position = new WorldPosition(tile.x * 200, tile.y * 200), Time = Gauge.CurrentTime } } } };
 
+    // EstateGridGroup.ExpandEstate in the shipped PC assembly and Android
+    // (0x139c108) returns before sending any request if next-day upkeep is zero.
+    // Sending ExpandEstate directly over TCP alone does not exercise this gate.
+    internal static bool LegacyClientCanConfirmExpansion(EstateLicense license,
+        Newtonsoft.Json.Linq.JToken estateCosts, double predictedServerTime)
+    {
+        if (!license.Deposit.HasValue || !license.DepositRunsOutAt.HasValue) return false;
+        string type = ((int)license.Type).ToString(System.Globalization.CultureInfo.InvariantCulture);
+        long DailyUpkeep(int size) => size * (long)StatFormula.EvalOr(
+            (string)estateCosts["extending_cost"]?[type],
+            new Dictionary<string, double> { ["size"] = size }, 0);
+        long currentUpkeep = DailyUpkeep(license.Size);
+        long expandedUpkeep = DailyUpkeep(license.Size + 1);
+        if (expandedUpkeep <= 0) return false;
+        double remainingDeposit = license.Deposit.Value.Item1 - currentUpkeep *
+            (predictedServerTime - license.Deposit.Value.Item2) / 86400.0;
+        return 86400.0 * remainingDeposit / expandedUpkeep >= 86400.0;
+    }
+
     private static void CheckStarterResources(string root, World world, int expectedLevel, string name)
     {
         var context = Player(root, name, world.TerrainId);
@@ -183,8 +202,21 @@ internal static class GameplayPolishCheck
             Check(mobileLicense.Deposit.HasValue && mobileLicense.DepositRunsOutAt.HasValue,
                 "licenca TCP fornece os dois campos exigidos antes do Android enviar expansao");
             var estateCosts = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("costs")["estate"];
-            Check((string)estateCosts["extending_cost"]["0"] == "0" && (string)estateCosts["expanding_cost"]["0"] == "0",
-                "expansao usa o caminho gratuito do cliente, com as duas tarifas reais zeradas");
+            var blockedCosts = estateCosts.DeepClone();
+            blockedCosts["extending_cost"]["0"] = "0";
+            Check(!LegacyClientCanConfirmExpansion(mobileLicense, blockedCosts, Gauge.CurrentTime),
+                "manutencao zero reproduz o clique silencioso no PC e Android antes do pedido TCP");
+            foreach (var type in new[] { OwnerType.Player, OwnerType.ClanEstate })
+            for (int size = 1; size < EstateExpansionCost.PlayerLimit; size++)
+            {
+                var clientLicense = mobileLicense;
+                clientLicense.Type = type;
+                clientLicense.Size = size;
+                Check(LegacyClientCanConfirmExpansion(clientLicense, estateCosts, Gauge.CurrentTime + 3600),
+                    $"PC e Android abrem confirmacao de {type} com {size} lotes e saldo zero");
+            }
+            Check(new[] { "0", "2", "4" }.All(type => (string)estateCosts["expanding_cost"][type] == "0"),
+                "preco de compra da expansao permanece zero para jogador, cla e ilha particular");
             var expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(11, 10) });
             Check(expanded.Deposit.HasValue && expanded.DepositRunsOutAt.HasValue,
                 "resposta da expansao preserva campos necessarios para o proximo toque no Android");
@@ -198,7 +230,11 @@ internal static class GameplayPolishCheck
             Check(allowances.LargestUrbanEstateSize == 8 && allowances.LargestPersonalEstateSize == 8,
                 "PC e Android recebem oito lotes gratuitos pelo mesmo protocolo");
             for (int x = 12; x <= 17; x++)
+            {
+                Check(LegacyClientCanConfirmExpansion(expanded, estateCosts, Gauge.CurrentTime),
+                    "licenca retornada permite o proximo clique gratis antes do oitavo lote");
                 expanded = link.Request<ExpandEstate, EstateLicense>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(x, 10) });
+            }
             link.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = highEstate.EstateId, Cell = new Point2(18, 10) });
             Check(expanded.Size == 8 && high.GetEstate(highEstate.EstateId).Cells.Count == 8 && context.TStone == 0,
                 "oitavo lote permitido e nono recusado sem cobrar");

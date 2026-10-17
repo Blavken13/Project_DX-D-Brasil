@@ -273,8 +273,9 @@ internal static class SocialCheck
                     && publicLicenses.ClanEstate.Value.Size < publicLicenses.LargestClanEstateSize,
                     "licença pública habilita caminho gratuito do cliente até o limite do clã");
                 var estateCosts = Json.ReadFromFile<Newtonsoft.Json.Linq.JObject>("costs")["estate"];
-                Check((string)estateCosts["extending_cost"]["2"] == "0" && (string)estateCosts["expanding_cost"]["2"] == "0",
-                    "tabela real do cliente tem manutenção e expansão zero; diálogo antigo não deve ser usado");
+                Check(GameplayPolishCheck.LegacyClientCanConfirmExpansion(publicLicense, estateCosts, Gauge.CurrentTime + 3600)
+                    && (string)estateCosts["expanding_cost"]["2"] == "0",
+                    "PC e Android permitem confirmar expansao gratuita do enclave com fundo e carteira zerados");
                 var publicNext = new Point2(publicCell.x + 1, publicCell.y);
                 desktop.Request<ExpandEstate, Abort>(new ExpandEstate { EstateId = publicLicense.EstateId, Cell = publicNext });
                 Check(sharedWorld.GetEstate(publicLicense.EstateId).Size == 1, "expansão pública continua recusando jogador sem permissão");
@@ -283,6 +284,8 @@ internal static class SocialCheck
                     && sharedWorld.TryGetEstateIdAtCell(publicNext, out string publicNextId) && publicNextId == publicLicense.EstateId
                     && sharedLeader.TStone == 0 && ClanStore.Find(clanId).Fund == publicFund,
                     "pedido de expansão gratuita confirma nova célula pública sem cobrar carteira ou fundo");
+                Check(GameplayPolishCheck.LegacyClientCanConfirmExpansion(publicExpanded, estateCosts, Gauge.CurrentTime),
+                    "licenca do enclave expandido permite abrir a proxima confirmacao no PC e Android");
                 object[] build = { World.TileFromCell(publicCell), new Point2(1, 1), null };
                 Check((bool)Call(mobile.Player, "CanBuildInCurrentSettlement", build), "líder pode construir no enclave público");
                 Check(!(bool)Call(desktop.Player, "CanBuildInCurrentSettlement", build), "outro jogador não pode construir no enclave público");
