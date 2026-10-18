@@ -1,0 +1,14 @@
+{
+  "SpinosaurusBody": {
+    "shader": "LitSphere/DualMode/Animal",
+    "matcap": "litsphere_dino_giant",
+    "albedo": "Spino_colorized_D",
+    "tint": {
+      "r": 0.72,
+      "g": 0.6,
+      "b": 0.38
+    },
+    "bypass_color_mask": true
+  },
+  "prefab_md5": "030cd0d801e9f6a4ca5592f7854a0250"
+}

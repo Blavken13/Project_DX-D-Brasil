@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6997d9e190c493242904429eadd95aa5, type: 3}
+  m_Name: Spinosaurus_ae
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventResource
+  AnimationEventPairs:
+  - Name: Spino-Aim-Center
+    Infos: []
+  - Name: Spino-Aim-Dwn
+    Infos: []
+  - Name: Spino-Aim-Dwn-Lft
+    Infos: []
+  - Name: Spino-Aim-Dwn-Rit
+    Infos: []
+  - Name: Spino-Aim-Lft
+    Infos: []
+  - Name: Spino-Aim-Rit
+    Infos: []
+  - Name: Spino-Aim-Up
+    Infos: []
+  - Name: Spino-Aim-Up-Lft
+    Infos: []
+  - Name: Spino-Aim-Up-Rit
+    Infos: []
+  - Name: Spino-Attack-Bite
+    Infos: []
+  - Name: Spino-Biped-Attack-Claw
+    Infos: []
+  - Name: Spino-Biped-Attack-Claw-Lft
+    Infos: []
+  - Name: Spino-Biped-Charge-Fwd
+    Infos: []
+  - Name: Spino-Biped-Charge-Lft
+    Infos: []
+  - Name: Spino-Biped-Charge-Rit
+    Infos: []
+  - Name: Spino-Biped-Idle
+    Infos: []
+  - Name: Spino-Biped-Move-Fwd
+    Infos: []
+  - Name: Spino-Biped-Move-Lft
+    Infos: []
+  - Name: Spino-Biped-Move-Rit
+    Infos: []
+  - Name: Spino-Biped-Roar
+    Infos: []
+  - Name: Spino-Biped-Roar-Charge-Additive
+    Infos: []
+  - Name: Spino-Biped-Roar-Move-Additive
+    Infos: []
+  - Name: Spino-Biped-To-Quad
+    Infos: []
+  - Name: Spino-Biped-TurnInPlace-Lft
+    Infos: []
+  - Name: Spino-Biped-TurnInPlace-Rit
+    Infos: []
+  - Name: Spino-Blink
+    Infos: []
+  - Name: Spino-Charge-Fwd
+    Infos: []
+  - Name: Spino-Charge-Lft
+    Infos: []
+  - Name: Spino-Charge-Rit
+    Infos: []
+  - Name: Spino-Cuddle
+    Infos: []
+  - Name: Spino-Eat
+    Infos: []
+  - Name: Spino-Hurt-Big-Rit
+    Infos: []
+  - Name: Spino-Idle
+    Infos: []
+  - Name: Spino-Lay-Egg
+    Infos: []
+  - Name: Spino-Move-Fwd
+    Infos: []
+  - Name: Spino-Move-Lft
+    Infos: []
+  - Name: Spino-Move-Rit
+    Infos: []
+  - Name: Spino-Quad-To-Biped
+    Infos: []
+  - Name: Spino-Roar
+    Infos: []
+  - Name: Spino-Roar-Charge-Addiitive
+    Infos: []
+  - Name: Spino-Roar-Move-Addiitive
+    Infos: []
+  - Name: Spino-Startled
+    Infos: []
+  - Name: Spino-Swim-Fwd
+    Infos: []
+  - Name: Spino-Swim-Idle
+    Infos: []
+  - Name: Spino-Torpid-Eat
+    Infos: []
+  - Name: Spino-Torpid-Idle
+    Infos: []
+  - Name: Spino-Torpid-In
+    Infos: []
+  - Name: Spino-Torpid-Out-Tamed
+    Infos: []
+  - Name: Spino-Torpid-Out-Wild
+    Infos: []

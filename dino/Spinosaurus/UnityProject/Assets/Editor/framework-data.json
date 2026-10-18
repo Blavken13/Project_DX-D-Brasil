@@ -1,0 +1,898 @@
+﻿{
+  "normal_motions": [
+    {
+      "key": "stand",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "idle",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "eat",
+      "motion": "Spino-Eat"
+    },
+    {
+      "key": "alert",
+      "motion": "Spino-Startled"
+    },
+    {
+      "key": "dead",
+      "motion": "Spino-Torpid-In"
+    }
+  ],
+  "normal_3states": [
+    {
+      "key": "sleep_motions",
+      "begin": "Spino-Torpid-In",
+      "during": "Spino-Torpid-Idle",
+      "end": "Spino-Torpid-Out-Wild"
+    }
+  ],
+  "weighted_motions": [
+    {
+      "key": "rest_motions",
+      "elems": [
+        {
+          "weight": 1.0,
+          "motion": "Spino-Idle",
+          "duration": {
+            "x": 3.0,
+            "y": 3.0
+          }
+        }
+      ]
+    }
+  ],
+  "weighted_3states": [
+    {
+      "key": "seq_rest_motions",
+      "elems": []
+    }
+  ],
+  "move_sets": [
+    {
+      "key": "move_motion_sets",
+      "elems": [
+        {
+          "name": "trex_move_set",
+          "motions": [
+            {
+              "motion": "Spino-Move-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "leg_injury",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Spino-Move-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": "<600"
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Spino-Charge-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 1176.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            }
+          ]
+        },
+        {
+          "name": "trex_move_p2_set",
+          "motions": [
+            {
+              "motion": "Spino-Move-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "leg_injury",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Spino-Move-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": "<500"
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            },
+            {
+              "motion": "Spino-Charge-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 1351.72412109375,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            }
+          ]
+        },
+        {
+          "name": "trex_pet_move_set",
+          "motions": [
+            {
+              "motion": "Spino-Move-Fwd",
+              "rot_motion_cw": "Spino-Move-Rit",
+              "rot_motion_ccw": "Spino-Move-Lft",
+              "turn_reverse_motion": "",
+              "conditions": {
+                "flag": "",
+                "enemy_distance_with_bound": ""
+              },
+              "base_move_speed": 320.0,
+              "rot_speed": 90.0,
+              "playback_rate": 1.0,
+              "rot_playback_rate": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "comabt_motions": [
+    {
+      "key": "battle_idle",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "battle_stand",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "evade",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "groggy",
+      "motion": "Spino-Torpid-Idle"
+    },
+    {
+      "key": "blow",
+      "motion": "Spino-Hurt-Big-Rit"
+    }
+  ],
+  "combat_directions": [
+    {
+      "key": "knock_back_motion_map",
+      "front": "Spino-Hurt-Big-Rit",
+      "back": "Spino-Hurt-Big-Rit",
+      "left": "Spino-Hurt-Big-Rit",
+      "right": "Spino-Hurt-Big-Rit"
+    }
+  ],
+  "combat_3states": [
+    {
+      "key": "knock_down_motions",
+      "begin": "Spino-Torpid-In",
+      "during": "Spino-Torpid-Idle",
+      "end": "Spino-Torpid-Out-Wild"
+    }
+  ],
+  "combat_attacks": [
+    {
+      "key": "trex_stamp",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 180.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_tail",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 180.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_tail_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_bite_normal",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_bite_normal_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar",
+      "meta": {
+        "motion": "Spino-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_bite",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_bite_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_wounded_tail",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_wounded_tail_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_head",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_head_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_tail_back",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_tail_back_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_stamp_right",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_right_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_stamp_left",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_left_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_stamp_foot",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_stamp_foot_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar_02",
+      "meta": {
+        "motion": "Spino-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_02_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar_04",
+      "meta": {
+        "motion": "Spino-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_04_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_roar_03",
+      "meta": {
+        "motion": "Spino-Roar",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_roar_03_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "trex_attack_turn",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0.0
+      },
+      "attack_info": [
+        {
+          "frame": 15,
+          "sub_action_id": "trex_attack_turn_0",
+          "damage_type": 1,
+          "radius": 200,
+          "radius_min": 0,
+          "angles": {
+            "x": 0,
+            "y": 0
+          },
+          "rect_half_size": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 200
+          },
+          "damage_angle": 0,
+          "use_target_origin": 0
+        }
+      ],
+      "SameAbove": 0
+    },
+    {
+      "key": "attack_normal",
+      "meta": {
+        "motion": "Spino-Attack-Bite",
+        "bound_enemy": 0,
+        "rot_speed": 0
+      },
+      "attack_info": [],
+      "SameAbove": 0
+    }
+  ],
+  "active_skills": [
+    {
+      "key": "active_default",
+      "motion": "Spino-Idle"
+    }
+  ],
+  "etc_motions": [
+    {
+      "key": "trex_idle_walk",
+      "motion": "Spino-Move-Fwd"
+    },
+    {
+      "key": "trex_run_stop",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "trex_walk_pet",
+      "motion": "Spino-Move-Fwd"
+    },
+    {
+      "key": "spinossaurus_extra_aim_center",
+      "motion": "Spino-Aim-Center"
+    },
+    {
+      "key": "spinossaurus_extra_aim_dwn",
+      "motion": "Spino-Aim-Dwn"
+    },
+    {
+      "key": "spinossaurus_extra_aim_dwn_lft",
+      "motion": "Spino-Aim-Dwn-Lft"
+    },
+    {
+      "key": "spinossaurus_extra_aim_dwn_rit",
+      "motion": "Spino-Aim-Dwn-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_aim_lft",
+      "motion": "Spino-Aim-Lft"
+    },
+    {
+      "key": "spinossaurus_extra_aim_rit",
+      "motion": "Spino-Aim-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_aim_up",
+      "motion": "Spino-Aim-Up"
+    },
+    {
+      "key": "spinossaurus_extra_aim_up_lft",
+      "motion": "Spino-Aim-Up-Lft"
+    },
+    {
+      "key": "spinossaurus_extra_aim_up_rit",
+      "motion": "Spino-Aim-Up-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_attack_bite",
+      "motion": "Spino-Attack-Bite"
+    },
+    {
+      "key": "spinossaurus_extra_attack_bite_montage",
+      "motion": "Spino-Attack-Bite"
+    },
+    {
+      "key": "spinossaurus_extra_blink",
+      "motion": "Spino-Blink"
+    },
+    {
+      "key": "spinossaurus_extra_charge_fwd",
+      "motion": "Spino-Charge-Fwd"
+    },
+    {
+      "key": "spinossaurus_extra_charge_lft",
+      "motion": "Spino-Charge-Lft"
+    },
+    {
+      "key": "spinossaurus_extra_charge_rit",
+      "motion": "Spino-Charge-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_cuddle",
+      "motion": "Spino-Cuddle"
+    },
+    {
+      "key": "spinossaurus_extra_cuddle_montage",
+      "motion": "Spino-Cuddle"
+    },
+    {
+      "key": "spinossaurus_extra_eat",
+      "motion": "Spino-Eat"
+    },
+    {
+      "key": "spinossaurus_extra_eat_montage",
+      "motion": "Spino-Eat"
+    },
+    {
+      "key": "spinossaurus_extra_hurt_small_rit",
+      "motion": "Spino-Hurt-Big-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_hurt_small_rit_montage",
+      "motion": "Spino-Hurt-Big-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_idle",
+      "motion": "Spino-Idle"
+    },
+    {
+      "key": "spinossaurus_extra_lay_egg",
+      "motion": "Spino-Lay-Egg"
+    },
+    {
+      "key": "spinossaurus_extra_lay_egg_montage",
+      "motion": "Spino-Lay-Egg"
+    },
+    {
+      "key": "spinossaurus_extra_move_fwd",
+      "motion": "Spino-Move-Fwd"
+    },
+    {
+      "key": "spinossaurus_extra_move_lft",
+      "motion": "Spino-Move-Lft"
+    },
+    {
+      "key": "spinossaurus_extra_move_rit",
+      "motion": "Spino-Move-Rit"
+    },
+    {
+      "key": "spinossaurus_extra_rage_montage",
+      "motion": "Spino-Roar"
+    },
+    {
+      "key": "spinossaurus_extra_roar",
+      "motion": "Spino-Roar"
+    },
+    {
+      "key": "spinossaurus_extra_roar_montage",
+      "motion": "Spino-Roar"
+    },
+    {
+      "key": "spinossaurus_extra_startled",
+      "motion": "Spino-Startled"
+    },
+    {
+      "key": "spinossaurus_extra_startled_montage",
+      "motion": "Spino-Startled"
+    },
+    {
+      "key": "spinossaurus_extra_swim_fwd",
+      "motion": "Spino-Swim-Fwd"
+    },
+    {
+      "key": "spinossaurus_extra_swim_idle",
+      "motion": "Spino-Swim-Idle"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_eat",
+      "motion": "Spino-Torpid-Eat"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_eat_montage",
+      "motion": "Spino-Torpid-Eat"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_idle",
+      "motion": "Spino-Torpid-Idle"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_in",
+      "motion": "Spino-Torpid-In"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_in_montage",
+      "motion": "Spino-Torpid-In"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_out_tamed",
+      "motion": "Spino-Torpid-Out-Tamed"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_out_tamed_montage",
+      "motion": "Spino-Torpid-Out-Tamed"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_out_wild",
+      "motion": "Spino-Torpid-Out-Wild"
+    },
+    {
+      "key": "spinossaurus_extra_torpid_out_wild_montage",
+      "motion": "Spino-Torpid-Out-Wild"
+    }
+  ]
+}
+
+

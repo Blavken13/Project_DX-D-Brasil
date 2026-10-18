@@ -1,0 +1,618 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d691f3f3b27e1f84f8ae1a9016a3b954, type: 3}
+  m_Name: Spinosaurus_framework
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalFrameworkResource
+  normal_motions:
+  - key: stand
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: idle
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: eat
+    motion: Spino-Eat
+    _clipObj: {fileID: 7400000, guid: e8f63ebc8dad5d84e80b01b81e171ddf, type: 2}
+  - key: alert
+    motion: Spino-Startled
+    _clipObj: {fileID: 7400000, guid: 08414402e9c2ad341a870c028818c9d5, type: 2}
+  - key: dead
+    motion: Spino-Torpid-In
+    _clipObj: {fileID: 7400000, guid: 51f5f3346e331b146bd91a5fa6843bbf, type: 2}
+  normal_3states:
+  - key: sleep_motions
+    begin: Spino-Torpid-In
+    during: Spino-Torpid-Idle
+    end: Spino-Torpid-Out-Wild
+    _clipObjBegin: {fileID: 7400000, guid: 51f5f3346e331b146bd91a5fa6843bbf, type: 2}
+    _clipObjLooping: {fileID: 7400000, guid: 9891f6c367ad1904189e3828ae4a7a51, type: 2}
+    _clipObjEnd: {fileID: 7400000, guid: d974435e14e707b41a4c22d64af80eae, type: 2}
+  weighted_motions:
+  - key: rest_motions
+    elems:
+    - weight: 1
+      motion: Spino-Idle
+      duration: {x: 3, y: 3}
+      _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  weighted_3states:
+  - key: seq_rest_motions
+    elems: []
+  move_sets:
+  - key: move_motion_sets
+    elems:
+    - name: trex_move_set
+      motions:
+      - motion: Spino-Move-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: leg_injury
+          enemy_distance_with_bound: 
+        base_move_speed: 320
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Spino-Move-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: <600
+        base_move_speed: 320
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Spino-Charge-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: 
+        base_move_speed: 1176
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: 46eee08b5b9064a4d91a97ae9a12dc20, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+    - name: trex_move_p2_set
+      motions:
+      - motion: Spino-Move-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: leg_injury
+          enemy_distance_with_bound: 
+        base_move_speed: 320
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Spino-Move-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: <500
+        base_move_speed: 320
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+      - motion: Spino-Charge-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: 
+        base_move_speed: 1351.7241
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: 46eee08b5b9064a4d91a97ae9a12dc20, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+    - name: trex_pet_move_set
+      motions:
+      - motion: Spino-Move-Fwd
+        rot_motion_cw: Spino-Move-Rit
+        rot_motion_ccw: Spino-Move-Lft
+        turn_reverse_motion: 
+        conditions:
+          flag: 
+          enemy_distance_with_bound: 
+        base_move_speed: 320
+        rot_speed: 90
+        playback_rate: 1
+        rot_playback_rate: 1
+        _clipObjMove: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+        _clipObjRotateCW: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+        _clipObjRotateCCW: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+        _clipObjTurnReverse: {fileID: 0}
+  comabt_motions:
+  - key: battle_idle
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: battle_stand
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: evade
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: groggy
+    motion: Spino-Torpid-Idle
+    _clipObj: {fileID: 7400000, guid: 9891f6c367ad1904189e3828ae4a7a51, type: 2}
+  - key: blow
+    motion: Spino-Hurt-Big-Rit
+    _clipObj: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+  combat_directions:
+  - key: knock_back_motion_map
+    front: Spino-Hurt-Big-Rit
+    back: Spino-Hurt-Big-Rit
+    left: Spino-Hurt-Big-Rit
+    right: Spino-Hurt-Big-Rit
+    _clipObjFront: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+    _clipObjBack: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+    _clipObjLeft: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+    _clipObjRight: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+  combat_3states:
+  - key: knock_down_motions
+    begin: Spino-Torpid-In
+    during: Spino-Torpid-Idle
+    end: Spino-Torpid-Out-Wild
+    _clipObjBegin: {fileID: 7400000, guid: 51f5f3346e331b146bd91a5fa6843bbf, type: 2}
+    _clipObjLooping: {fileID: 7400000, guid: 9891f6c367ad1904189e3828ae4a7a51, type: 2}
+    _clipObjEnd: {fileID: 7400000, guid: d974435e14e707b41a4c22d64af80eae, type: 2}
+  combat_attacks:
+  - key: trex_stamp
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 180
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_tail
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 180
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_tail_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_bite_normal
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_bite_normal_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar
+    meta:
+      motion: Spino-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_bite
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_bite_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_wounded_tail
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_wounded_tail_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_head
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_head_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_tail_back
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_tail_back_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_stamp_right
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_right_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_stamp_left
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_left_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_stamp_foot
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_stamp_foot_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar_02
+    meta:
+      motion: Spino-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_02_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar_04
+    meta:
+      motion: Spino-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_04_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_roar_03
+    meta:
+      motion: Spino-Roar
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_roar_03_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: trex_attack_turn
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info:
+    - frame: 15
+      sub_action_id: trex_attack_turn_0
+      damage_type: 1
+      radius: 200
+      radius_min: 0
+      angles: {x: 0, y: 0}
+      rect_half_size: {x: 0, y: 0}
+      offset: {x: 0, y: 200}
+      damage_angle: 0
+      use_target_origin: 0
+    SameAbove: 0
+  - key: attack_normal
+    meta:
+      motion: Spino-Attack-Bite
+      bound_enemy: 0
+      rot_speed: 0
+      _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+    attack_info: []
+    SameAbove: 0
+  active_skills:
+  - key: active_default
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  etc_motions:
+  - key: trex_idle_walk
+    motion: Spino-Move-Fwd
+    _clipObj: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+  - key: trex_run_stop
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: trex_walk_pet
+    motion: Spino-Move-Fwd
+    _clipObj: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+  - key: spinossaurus_extra_aim_center
+    motion: Spino-Aim-Center
+    _clipObj: {fileID: 7400000, guid: a0c4f4830aefd7a4b95c23e10bcfaccb, type: 2}
+  - key: spinossaurus_extra_aim_dwn
+    motion: Spino-Aim-Dwn
+    _clipObj: {fileID: 7400000, guid: a81dea0d2ff2095429858dbf0175beff, type: 2}
+  - key: spinossaurus_extra_aim_dwn_lft
+    motion: Spino-Aim-Dwn-Lft
+    _clipObj: {fileID: 7400000, guid: 0e45ff5a531e65745b18f5a09fddc914, type: 2}
+  - key: spinossaurus_extra_aim_dwn_rit
+    motion: Spino-Aim-Dwn-Rit
+    _clipObj: {fileID: 7400000, guid: 4aa13182eafb87c4791545d38d79fbd2, type: 2}
+  - key: spinossaurus_extra_aim_lft
+    motion: Spino-Aim-Lft
+    _clipObj: {fileID: 7400000, guid: 9e6f96a5bdc83b4499118b8d5477d5f2, type: 2}
+  - key: spinossaurus_extra_aim_rit
+    motion: Spino-Aim-Rit
+    _clipObj: {fileID: 7400000, guid: 5cbc4b5e69f013544aa661d1364807b3, type: 2}
+  - key: spinossaurus_extra_aim_up
+    motion: Spino-Aim-Up
+    _clipObj: {fileID: 7400000, guid: e9fe66ff2ef33644ca11195b9c2e58f2, type: 2}
+  - key: spinossaurus_extra_aim_up_lft
+    motion: Spino-Aim-Up-Lft
+    _clipObj: {fileID: 7400000, guid: 0a0217244541f0d46a5be832673f52f2, type: 2}
+  - key: spinossaurus_extra_aim_up_rit
+    motion: Spino-Aim-Up-Rit
+    _clipObj: {fileID: 7400000, guid: 747cf8fac6849d14f951650229af7ce4, type: 2}
+  - key: spinossaurus_extra_attack_bite
+    motion: Spino-Attack-Bite
+    _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+  - key: spinossaurus_extra_attack_bite_montage
+    motion: Spino-Attack-Bite
+    _clipObj: {fileID: 7400000, guid: 0f9d31766082ca648a00f7b03ce26813, type: 2}
+  - key: spinossaurus_extra_blink
+    motion: Spino-Blink
+    _clipObj: {fileID: 7400000, guid: 23fc502e32d888940bb14f3a5028ee26, type: 2}
+  - key: spinossaurus_extra_charge_fwd
+    motion: Spino-Charge-Fwd
+    _clipObj: {fileID: 7400000, guid: 46eee08b5b9064a4d91a97ae9a12dc20, type: 2}
+  - key: spinossaurus_extra_charge_lft
+    motion: Spino-Charge-Lft
+    _clipObj: {fileID: 7400000, guid: 90ac7f02426273647a101637dd4432c3, type: 2}
+  - key: spinossaurus_extra_charge_rit
+    motion: Spino-Charge-Rit
+    _clipObj: {fileID: 7400000, guid: 2ceaaee7e5620e94ca384edf95259968, type: 2}
+  - key: spinossaurus_extra_cuddle
+    motion: Spino-Cuddle
+    _clipObj: {fileID: 7400000, guid: 4ca23d8017509594ea3b4386e21841b2, type: 2}
+  - key: spinossaurus_extra_cuddle_montage
+    motion: Spino-Cuddle
+    _clipObj: {fileID: 7400000, guid: 4ca23d8017509594ea3b4386e21841b2, type: 2}
+  - key: spinossaurus_extra_eat
+    motion: Spino-Eat
+    _clipObj: {fileID: 7400000, guid: e8f63ebc8dad5d84e80b01b81e171ddf, type: 2}
+  - key: spinossaurus_extra_eat_montage
+    motion: Spino-Eat
+    _clipObj: {fileID: 7400000, guid: e8f63ebc8dad5d84e80b01b81e171ddf, type: 2}
+  - key: spinossaurus_extra_hurt_small_rit
+    motion: Spino-Hurt-Big-Rit
+    _clipObj: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+  - key: spinossaurus_extra_hurt_small_rit_montage
+    motion: Spino-Hurt-Big-Rit
+    _clipObj: {fileID: 7400000, guid: 37258c3b2e636754b93d3156796598fd, type: 2}
+  - key: spinossaurus_extra_idle
+    motion: Spino-Idle
+    _clipObj: {fileID: 7400000, guid: 9501358be0c7dab4a9a2f9998fc20cd2, type: 2}
+  - key: spinossaurus_extra_lay_egg
+    motion: Spino-Lay-Egg
+    _clipObj: {fileID: 7400000, guid: ac2e9803e539667469d59b63228f0806, type: 2}
+  - key: spinossaurus_extra_lay_egg_montage
+    motion: Spino-Lay-Egg
+    _clipObj: {fileID: 7400000, guid: ac2e9803e539667469d59b63228f0806, type: 2}
+  - key: spinossaurus_extra_move_fwd
+    motion: Spino-Move-Fwd
+    _clipObj: {fileID: 7400000, guid: a78f8e98dbde089418326c67a2cb7ce4, type: 2}
+  - key: spinossaurus_extra_move_lft
+    motion: Spino-Move-Lft
+    _clipObj: {fileID: 7400000, guid: c0430be7771865c4ebfd19654e91fbfa, type: 2}
+  - key: spinossaurus_extra_move_rit
+    motion: Spino-Move-Rit
+    _clipObj: {fileID: 7400000, guid: 186cad5b1322fc543b33fa699dc2bd3b, type: 2}
+  - key: spinossaurus_extra_rage_montage
+    motion: Spino-Roar
+    _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+  - key: spinossaurus_extra_roar
+    motion: Spino-Roar
+    _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+  - key: spinossaurus_extra_roar_montage
+    motion: Spino-Roar
+    _clipObj: {fileID: 7400000, guid: f2846086cba18a84bb6fedf18094b5a1, type: 2}
+  - key: spinossaurus_extra_startled
+    motion: Spino-Startled
+    _clipObj: {fileID: 7400000, guid: 08414402e9c2ad341a870c028818c9d5, type: 2}
+  - key: spinossaurus_extra_startled_montage
+    motion: Spino-Startled
+    _clipObj: {fileID: 7400000, guid: 08414402e9c2ad341a870c028818c9d5, type: 2}
+  - key: spinossaurus_extra_swim_fwd
+    motion: Spino-Swim-Fwd
+    _clipObj: {fileID: 7400000, guid: e701274641ebd3648a2fbaaaf3f984c3, type: 2}
+  - key: spinossaurus_extra_swim_idle
+    motion: Spino-Swim-Idle
+    _clipObj: {fileID: 7400000, guid: b648016e8a6291e4a9b248526a90faf7, type: 2}
+  - key: spinossaurus_extra_torpid_eat
+    motion: Spino-Torpid-Eat
+    _clipObj: {fileID: 7400000, guid: c4ba05d58a453864d9d6731fd5e86b03, type: 2}
+  - key: spinossaurus_extra_torpid_eat_montage
+    motion: Spino-Torpid-Eat
+    _clipObj: {fileID: 7400000, guid: c4ba05d58a453864d9d6731fd5e86b03, type: 2}
+  - key: spinossaurus_extra_torpid_idle
+    motion: Spino-Torpid-Idle
+    _clipObj: {fileID: 7400000, guid: 9891f6c367ad1904189e3828ae4a7a51, type: 2}
+  - key: spinossaurus_extra_torpid_in
+    motion: Spino-Torpid-In
+    _clipObj: {fileID: 7400000, guid: 51f5f3346e331b146bd91a5fa6843bbf, type: 2}
+  - key: spinossaurus_extra_torpid_in_montage
+    motion: Spino-Torpid-In
+    _clipObj: {fileID: 7400000, guid: 51f5f3346e331b146bd91a5fa6843bbf, type: 2}
+  - key: spinossaurus_extra_torpid_out_tamed
+    motion: Spino-Torpid-Out-Tamed
+    _clipObj: {fileID: 7400000, guid: f01868f9fa343cc4e9d41f5e2a3e7563, type: 2}
+  - key: spinossaurus_extra_torpid_out_tamed_montage
+    motion: Spino-Torpid-Out-Tamed
+    _clipObj: {fileID: 7400000, guid: f01868f9fa343cc4e9d41f5e2a3e7563, type: 2}
+  - key: spinossaurus_extra_torpid_out_wild
+    motion: Spino-Torpid-Out-Wild
+    _clipObj: {fileID: 7400000, guid: d974435e14e707b41a4c22d64af80eae, type: 2}
+  - key: spinossaurus_extra_torpid_out_wild_montage
+    motion: Spino-Torpid-Out-Wild
+    _clipObj: {fileID: 7400000, guid: d974435e14e707b41a4c22d64af80eae, type: 2}

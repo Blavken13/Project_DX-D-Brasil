@@ -1,0 +1,92 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.6.0f1
+CRC: 2449032025
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fef1618cb3edb5027e4d46beeea186c6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e01f5d8be84f1e2ced4f29e661e9d33e
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 7e4c8c5307a6688a90f6896459c6729f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5fd56152b4d03ba4fa8080baa94651de, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d691f3f3b27e1f84f8ae1a9016a3b954, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 34b4bcd6356f52248bca5a224e51f8c8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6997d9e190c493242904429eadd95aa5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 672a872ab55456e449c157a929e8f5a4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 25d8594a1b882bd4d9e2d7d7e0148b8b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4eebc97308119e249b0e2a9a0680ec84, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 20499ae74da58ba4192b3fd9597d5175, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: ActionMeta
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElem
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElem3State
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemAttack
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemDirectional
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemMoveSet
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemWeighted
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemWeighted3State
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationEventPair
+- AssemblyName: Assembly-CSharp
+  ClassName: AttackInfo
+- AssemblyName: Assembly-CSharp
+  ClassName: Condition
+- AssemblyName: Assembly-CSharp
+  ClassName: IntegratedEffectType
+- AssemblyName: Assembly-CSharp
+  ClassName: MoveMotionInfo
+- AssemblyName: Assembly-CSharp
+  ClassName: MoveSet
+- AssemblyName: Assembly-CSharp
+  ClassName: ParticleType
+- AssemblyName: Assembly-CSharp
+  ClassName: WeightedMotion
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Vector2
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Vector3
+Assets:
+- Assets/Models/Animals/Spinosaurus/SpinosaurusPrefab.prefab
+Dependencies:
+- C:/code/ProjectDX/Project_DX-D-Brasil/dino/Spinosaurus/AssetBundles/Windows/models$animals$spinosaurus$spinosaurus_framework.asset.bundle

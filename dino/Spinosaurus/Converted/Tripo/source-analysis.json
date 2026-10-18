@@ -1,0 +1,26 @@
+{
+  "source": "spino_rigged.glb",
+  "repaired": "spino_rigged_surface.glb",
+  "source_sha256": "e1f30971914ea219cb9d226de799b3bdf793fc7100d2d7cb6dbe7b807d1c9a5a",
+  "repaired_sha256": "6b735473bcb8d50333d6bf518ddceb8d1efea6cb2c92917099c48dfbf0959285",
+  "source_primitive_mode": "LINES",
+  "repaired_primitive_mode": "TRIANGLES",
+  "vertices": 5828679,
+  "faces": 1942893,
+  "joints": 28,
+  "animations": 0,
+  "images": 2,
+  "source_zip_preserved": true,
+  "repair": "change glTF primitive mode 1 to 4; payload and skin data unchanged",
+  "imported_meshes": 1,
+  "imported_armatures": 1,
+  "bones": 28,
+  "decimated_vertices": 38855,
+  "decimated_faces": 77714,
+  "material_names": [
+    "tripo_material_caebb6fc-54f5-4f6c-aee9-b4aeabd62c8f"
+  ],
+  "animation_compatibility": "requires retargeting; GLB has no clips and a 28-bone Tripo rig",
+  "fbx": "SpinosaurusTripoPreview.fbx",
+  "fbx_bytes": 47783644
+}

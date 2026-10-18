@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.6.0f1
+CRC: 3773256764
+HashAppended: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: models$animals$spinosaurus$spinosaurusprefab.prefab.bundle
+      Dependencies:
+        Dependency_0: models$animals$spinosaurus$spinosaurus_framework.asset.bundle
+    Info_1:
+      Name: models$animals$spinosaurus$spinosaurus_framework.asset.bundle
+      Dependencies: {}

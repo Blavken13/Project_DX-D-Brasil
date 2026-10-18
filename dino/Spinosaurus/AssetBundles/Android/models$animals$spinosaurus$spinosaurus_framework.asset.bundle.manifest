@@ -1,0 +1,53 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.6.0f1
+CRC: 848385422
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0fa201d222a9f91834c81f006b891a6b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4178ce9c72ab317c59a1573d4e15caa9
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: f3db8b1e321e00ab84e9406632177033
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: d691f3f3b27e1f84f8ae1a9016a3b954, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: ActionMeta
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElem
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElem3State
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemAttack
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemDirectional
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemMoveSet
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemWeighted
+- AssemblyName: Assembly-CSharp
+  ClassName: AnimationElemWeighted3State
+- AssemblyName: Assembly-CSharp
+  ClassName: AttackInfo
+- AssemblyName: Assembly-CSharp
+  ClassName: Condition
+- AssemblyName: Assembly-CSharp
+  ClassName: MoveMotionInfo
+- AssemblyName: Assembly-CSharp
+  ClassName: MoveSet
+- AssemblyName: Assembly-CSharp
+  ClassName: WeightedMotion
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Vector2
+Assets:
+- Assets/Models/Animals/Spinosaurus/Spinosaurus_framework.asset
+Dependencies: []
