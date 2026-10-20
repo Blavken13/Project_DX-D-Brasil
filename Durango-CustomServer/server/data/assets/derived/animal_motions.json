@@ -4846,6 +4846,22 @@
     "attack_duration": 1.25,
     "attack_impact": 0.65
   },
+  "2214": {
+    "stand": "Spino-Swim-Idle",
+    "idle": "Spino-Swim-Idle",
+    "move": "Spino-Swim-Fwd",
+    "eat": "Spino-Eat",
+    "alert": "Spino-Startled",
+    "battle_stand": "Spino-Idle",
+    "groggy": "Spino-Torpid-Idle",
+    "blow": "Spino-Hurt-Big-Rit",
+    "attack_normal": "Spino-Attack-Bite",
+    "attacks": ["Spino-Attack-Bite"],
+    "move_speed": 180.0,
+    "move_playback_rate": 1.0,
+    "attack_duration": 1.25,
+    "attack_impact": 0.65
+  },
   "2999": {
     "stand": "Raptor_Stand",
     "idle": "Raptor_Idle",

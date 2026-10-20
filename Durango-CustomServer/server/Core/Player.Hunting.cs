@@ -194,7 +194,7 @@ public partial class Player
         //
         // ⚠️ เดิมกัดได้ทันทีตั้งแต่ระยะ 4 ช่อง โดยไม่ขยับเลย ⇒ บนจอเห็นไดโนยืนนิ่งอยู่ไกล ๆ
         // แล้วเลือดผู้เล่นลดเอง (อาการที่ผู้เล่นแจ้ง) — ของจริงสัตว์ต้องวิ่งเข้ามาประชิดก่อน
-        if (!IsWithinAnimalRange(animal, attackReach, now))
+        if (!IsWithinAnimalAttackRange(animal, now))
         {
             // กำลังเดินอยู่ = ปล่อยให้เดินให้จบก่อน ไม่สั่งเส้นทางใหม่ทับ (ตัวจะกระตุก)
             if (animal.StopWalkingAt > now) return;
@@ -202,7 +202,10 @@ public partial class Player
             WorldPosition target = PlayerWorldPosition(now);
             if (target.x == 0f && target.y == 0f) return;      // ยังไม่รู้ตำแหน่งผู้เล่น
 
-            Move chase = _world.AnimalManager?.BuildChase(animal, target, Math.Max(AttackStopDistance, attackReach - 50f), now)
+            float stopDistance = AnimalBodyShapes.Get(animal.EntityType) is { } shape
+                ? Math.Max(AttackStopDistance, shape.circles.Max(c => c.z + c.radius) + shape.attack_padding - 50f)
+                : Math.Max(AttackStopDistance, attackReach - 50f);
+            Move chase = _world.AnimalManager?.BuildChase(animal, target, stopDistance, now)
                          ?? default;
             if (chase.Movements != null)
             {
@@ -271,8 +274,9 @@ public partial class Player
             return;
         }
         // O golpe não segue o jogador depois do aviso: sair do alcance/alvo permite desviar.
-        float aimRadius = Math.Max(AnimalAttackAimRadius, AnimalBodyRadius(animal) * .6f);
-        if (!IsWithinAnimalRange(animal, AnimalAttackReach(animal), now) ||
+        float aimRadius = AnimalBodyShapes.Get(animal.EntityType) != null ? AnimalAttackAimRadius
+            : Math.Max(AnimalAttackAimRadius, AnimalBodyRadius(animal) * .6f);
+        if (!IsWithinAnimalAttackRange(animal, now) ||
             aimDx * aimDx + aimDy * aimDy > aimRadius * aimRadius) return;
 
         // ป้องกันของผู้เล่น — ใช้ค่า Derived หลังรวมสกิล (players.json → player.defense ฐานเป็น 0)
@@ -361,12 +365,17 @@ public partial class Player
 
     private static float AnimalBodyRadius(AnimalManager.Animal animal)
     {
-        var info = AnimalTypes.Get(animal.EntityType);
-        return (info?.BoundRadius ?? 0f) * (info?.BaseScale ?? 1f);
+        return AnimalBodyShapes.Radius(animal);
     }
 
     private static float AnimalAttackReach(AnimalManager.Animal animal) =>
-        Math.Max(AnimalAttackTiles * 200f, AnimalBodyRadius(animal) + AttackStopDistance);
+        Math.Max(AnimalAttackTiles * 200f, AnimalBodyRadius(animal) +
+            (AnimalBodyShapes.Get(animal.EntityType)?.attack_padding ?? AttackStopDistance));
+
+    private bool IsWithinAnimalAttackRange(AnimalManager.Animal animal, double now) =>
+        AnimalBodyShapes.Get(animal.EntityType) is { } shape
+            ? TryPlayerPositionAt(now, out var position) && AnimalBodyShapes.Within(animal, position, shape.attack_padding, now)
+            : IsWithinAnimalRange(animal, AnimalAttackReach(animal), now);
 
     private bool IsWithinAnimalRange(AnimalManager.Animal animal, float range, double now)
     {

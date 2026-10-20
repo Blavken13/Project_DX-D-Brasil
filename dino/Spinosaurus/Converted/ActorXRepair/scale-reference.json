@@ -1,0 +1,16 @@
+{
+    "dimetrodonBaseScale": 1.0,
+    "spinosaurusBaseScale": 4.0,
+    "bodyVisualScale": 0.004927387461066246,
+    "sizeRatio": 2.200000047683716,
+    "dimetrodonWorldSize": {
+        "x": 966.386474609375,
+        "y": 511.48992919921875,
+        "z": 409.51763916015625
+    },
+    "spinosaurusWorldSize": {
+        "x": 402.89617919921875,
+        "y": 916.0091552734375,
+        "z": 2126.05029296875
+    }
+}

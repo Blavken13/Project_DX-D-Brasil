@@ -1,3 +1,5 @@
+param([switch]$PreviewOnly, [switch]$InspectInteraction)
+
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $sourceEditor = 'C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor'
@@ -51,12 +53,22 @@ $shadowManaged = Join-Path $shadowMono 'Managed'
 MirrorFiles $sourceManaged $shadowManaged
 $valid = Join-Path $sourcePlayback 'AndroidPlayer\Variations\mono\Managed\UnityEngine.CoreModule.dll'
 Copy-Item -LiteralPath $valid -Destination (Join-Path $shadowManaged 'UnityEngine.CoreModule.dll') -Force
+foreach ($module in @('UnityEngine.PhysicsModule.dll', 'UnityEngine.PhysicsBackendPhysXModule.dll')) {
+    $moduleSource = Join-Path $sourcePlayback ('AndroidPlayer\Variations\mono\Managed\' + $module)
+    if (Test-Path -LiteralPath $moduleSource) {
+        Copy-Item -LiteralPath $moduleSource -Destination (Join-Path $shadowManaged $module) -Force
+    }
+}
 
 $project = Join-Path $root 'dino\Spinosaurus\UnityProject'
-$log = Join-Path $root 'dino\Spinosaurus\unity-rebuild-client-fix.log'
-$arguments = '-batchmode -nographics -quit -projectPath "' + $project + '" -executeMethod BuildSpinosaurus.Run -logFile "' + $log + '"'
+$log = Join-Path $root ('dino\Spinosaurus\' + $(if($PreviewOnly){'unity-repaired-preview.log'}else{'unity-rebuild-client-fix.log'}))
+$method = if ($InspectInteraction) { 'SpinosaurusGeometry.InspectInteraction' } elseif ($PreviewOnly) { 'SpinosaurusPreview.Run' } else { 'BuildSpinosaurus.Run' }
+$graphics = if ($PreviewOnly) { '' } else { '-nographics ' }
+$arguments = '-batchmode ' + $graphics + '-quit -projectPath "' + $project + '" -executeMethod ' + $method + ' -logFile "' + $log + '"'
 $process = Start-Process -FilePath (Join-Path $shadowEditor 'Unity.exe') -ArgumentList $arguments -WindowStyle Hidden -PassThru -Wait
 if ($process.ExitCode -ne 0) { throw "Shadow Unity exited with code $($process.ExitCode). See $log" }
+if ($InspectInteraction) { Write-Output 'Native interaction structure inspected.'; exit 0 }
+if ($PreviewOnly) { Write-Output 'Spinosaurus Windows bundle preview rendered.'; exit 0 }
 $report = Get-Content -Raw -LiteralPath (Join-Path $root 'dino\Spinosaurus\Unity_conversion_report.json') | ConvertFrom-Json
 if ($report.windowsBundle -ne 'built and verified') { throw "Windows bundle check failed: $($report.windowsBundle)" }
 Write-Output 'Windows Spinosaurus bundle rebuilt with repaired shadow Unity.'

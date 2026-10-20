@@ -78,10 +78,24 @@ internal static class RestoredEncountersCheck
             var tropical = TerrainLoader.Load("op60tr_alpha");
             Check(new AnimalManager(tropical, RegionCatalog.GetTemplate(tropical.Info.region_template)).All.Any(a => a.EntityType == 2004),
                 "Braquiossauro comum continua disponivel");
+            var swamp = TerrainLoader.Load("ri55sw_alpha");
+            var swampTemplate = RegionCatalog.GetTemplate(swamp.Info.region_template);
+            Check(swampTemplate.Level == 55 && swampTemplate.Herds.Values.SelectMany(group => group)
+                .Any(spawn => spawn.EntityType == 2214), "Spinosaurus aparece na lista de descoberta do PÃ¢ntano");
+            var swampSpinos = new AnimalManager(swamp, swampTemplate).All.Where(a => a.EntityType == 2214).ToArray();
+            var expectedSwampTiles = new[]
+            {
+                new Point2(80, 117),
+                new Point2(76, 119)
+            };
+            Check(swampSpinos.Length == 2 && swampSpinos.All(a => a.CombatLevel == 55 &&
+                TerrainEcology.IsLand(swamp, a.Tile)) &&
+                swampSpinos.Select(a => a.Tile).ToHashSet().SetEquals(expectedSwampTiles),
+                "dois Spinos nível 55 em tiles de terra próximos ao ponto de coleta do Pântano");
             foreach (string path in Directory.GetFiles(TerrainLoader.TerrainDir, "*.zip"))
             {
                 string id = Path.GetFileNameWithoutExtension(path);
-                if (expected.ContainsKey(id)) continue;
+                if (expected.ContainsKey(id) || id == "ri55sw_alpha") continue;
                 var terrain = TerrainLoader.Load(id);
                 Check(RegionCatalog.GetTemplate(terrain.Info.region_template).RestoredEncounters.Count == 0,
                     id + ": sem encontros adicionais");

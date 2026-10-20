@@ -31064,6 +31064,236 @@
     "knock_back_resistance": "1125 + combat_level * 0",
     "represent_combat_level": 60
   },
+  "2214": {
+    "groggy_section": [
+      "(20.25 * ((combat_level+24) ** 2))* unstable_factor",
+      "0",
+      "0",
+      "0"
+    ],
+    "herd_collide_distance": 0,
+    "defense": "(187.5 + combat_level * 7) * unstable_factor",
+    "portrait": "target_trex",
+    "local_image": "/admin/animals/spinossaur.png",
+    "root_motions": "spinosaurus",
+    "knock_down_duration": "3 + combat_level * 0",
+    "damage_ratio_table": {
+      "front": 1.2,
+      "right": 0.9,
+      "back": 0.8,
+      "left": 0.9
+    },
+    "scale_ranges": [
+      4,
+      4
+    ],
+    "represent_scale": 4,
+    "playback_rate": 1,
+    "ai_factor_id": "trex_ai",
+    "attack_rating": "(0 + combat_level * 6) * unstable_factor",
+    "attack": "(197.86 + combat_level * 6.59) * unstable_factor",
+    "critical": "0.0",
+    "groggy_max": "(20.25 * ((combat_level+24) ** 2))* unstable_factor",
+    "preferred_food_tag": "savory_plus",
+    "type": "Carnivore",
+    "bound_radius": 50.362022399902344,
+    "drop_item": "trex",
+    "accuracy": "(0 + combat_level * 7) * unstable_factor",
+    "dodge": "(0 + combat_level * 5.4)",
+    "tamable": false,
+    "pet_aggro_ratio": 1,
+    "tension_id": "trex_tension",
+    "groggy_velocity": "0",
+    "survival": {
+      "stamina": {
+        "max": 100,
+        "type": "Gauge",
+        "velocity": 10,
+        "decr_outbound": "CLAMP",
+        "on_reset": 1
+      },
+      "life": {
+        "max": 100,
+        "type": "Gauge",
+        "velocity": 1,
+        "decr_outbound": "CLAMP",
+        "on_reset": 1
+      },
+      "groggy": {
+        "max": 100,
+        "type": "Gauge",
+        "velocity": 1,
+        "decr_outbound": "ONCE",
+        "on_reset": 1
+      },
+      "hungry": {
+        "max": 100,
+        "type": "Gauge",
+        "velocity": -0.167,
+        "decr_outbound": "CLAMP",
+        "on_reset": 1
+      }
+    },
+    "part_probability": {
+      "front": {
+        "body": 0.4,
+        "head": 0.4,
+        "leg": 0.2
+      },
+      "right": {
+        "body": 0.4,
+        "head": 0.2,
+        "tail": 0.2,
+        "leg": 0.2
+      },
+      "back": {
+        "body": 0.3,
+        "head": 0.1,
+        "tail": 0.4,
+        "leg": 0.2
+      },
+      "left": {
+        "body": 0.4,
+        "head": 0.2,
+        "tail": 0.2,
+        "leg": 0.2
+      }
+    },
+    "life_max": "22.063 * ((combat_level + 24) ** 2) * unstable_factor",
+    "stamina_max": "100",
+    "life_velocity": "22.063 * ((combat_level + 24) ** 2) * unstable_factor * 0.01",
+    "__category__": "animal",
+    "framework": "Spinosaurus",
+    "life_gauge_ratio": [
+      0.5,
+      0.2
+    ],
+    "body_parts": {
+      "body": {
+        "status_effects_on_break": [
+          {
+            "id": "body_injury",
+            "options": {
+              "level": 1
+            }
+          },
+          {
+            "id": "body_injury_default",
+            "options": {
+              "level": 6
+            }
+          }
+        ],
+        "dodge_ratio": 1,
+        "hp_ratio": 0.5,
+        "defense_ratio": {
+          "impact": 1,
+          "pierce": 1,
+          "cut": 1
+        }
+      },
+      "head": {
+        "status_effects_on_break": [
+          {
+            "id": "head_injury",
+            "options": {
+              "level": 1
+            }
+          },
+          {
+            "id": "head_injury_raptor",
+            "options": {
+              "level": 1
+            }
+          }
+        ],
+        "dodge_ratio": 1,
+        "hp_ratio": 0.2,
+        "defense_ratio": {
+          "impact": 1,
+          "pierce": 1,
+          "cut": 1
+        }
+      },
+      "tail": {
+        "status_effects_on_break": [
+          {
+            "id": "tail_injury",
+            "options": {
+              "level": 1
+            }
+          },
+          {
+            "id": "tail_injury_raptor",
+            "options": {
+              "level": 1
+            }
+          }
+        ],
+        "dodge_ratio": 1,
+        "hp_ratio": 0.1,
+        "defense_ratio": {
+          "impact": 1,
+          "pierce": 1,
+          "cut": 1
+        }
+      },
+      "leg": {
+        "status_effects_on_break": [
+          {
+            "id": "leg_injury",
+            "options": {
+              "level": 1
+            }
+          },
+          {
+            "id": "leg_injury_raptor",
+            "options": {
+              "level": 1
+            }
+          }
+        ],
+        "dodge_ratio": 1,
+        "hp_ratio": 0.3,
+        "defense_ratio": {
+          "impact": 1,
+          "pierce": 1,
+          "cut": 1
+        }
+      }
+    },
+    "combat_level_ranges": [
+      60,
+      90
+    ],
+    "blow_resistance": "1575 + combat_level * 0",
+    "color_tables": {
+      "leather": "color_table(color_leather_brown)",
+      "bone": "color_table(color_bone_basic)"
+    },
+    "name": {
+      "Spinossaurus": null
+    },
+    "difficulty": 39,
+    "exp_amount": 0,
+    "attack_cooltime": 1.9,
+    "__name__": "spinossaurus",
+    "evade": "(0.2 + combat_level * 0)",
+    "stamina_velocity": "10",
+    "damage_hurdle": 1,
+    "size_level": 5,
+    "groggy_damage_ratio_table": {
+      "front": 1,
+      "right": 1,
+      "back": 1,
+      "left": 1
+    },
+    "model_path": "Spinosaurus/SpinosaurusPrefab",
+    "groggy_duration": "5 + combat_level * 0",
+    "knock_back_resistance": "1125 + combat_level * 0",
+    "represent_combat_level": 60,
+    "spawn_aliases": ["spino", "spinosaurus"]
+  },
   "2999": {
     "groggy_section": [
       "(2.975 * ((combat_level+24) ** 2))* unstable_factor",

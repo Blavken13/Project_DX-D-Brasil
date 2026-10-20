@@ -1,24 +1,45 @@
 param(
-    [string]$Root = (Split-Path -Parent $PSScriptRoot)
+    [string]$Root = (Split-Path -Parent $PSScriptRoot),
+    [string]$AssetBundleDirectory = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $source = Join-Path $Root 'dino\Spinosaurus\AssetBundles\Windows'
-$target = Join-Path $Root 'Lost-Horizon-PC\Lost Horizon Game_Data\StreamingAssets\AssetBundles'
+if ([string]::IsNullOrWhiteSpace($AssetBundleDirectory)) {
+    $target = Join-Path $Root 'Lost-Horizon-PC\Lost Horizon Game_Data\StreamingAssets\AssetBundles'
+} else {
+    $target = (Resolve-Path -LiteralPath $AssetBundleDirectory).Path
+    foreach ($required in @('Info.5.2.1.json', 'OffServerEmbed.json')) {
+        if (-not (Test-Path -LiteralPath (Join-Path $target $required))) {
+            throw "Target AssetBundle directory is missing ${required}: $target"
+        }
+    }
+}
 $catalogPath = Join-Path $target 'Info.5.2.1.json'
 $embedPath = Join-Path $target 'OffServerEmbed.json'
 $framework = 'models$animals$spinosaurus$spinosaurus_framework.asset.bundle'
 $prefab = 'models$animals$spinosaurus$spinosaurusprefab.prefab.bundle'
-$materialReportPath = Join-Path $source 'native-material-validation.json'
-if (-not (Test-Path -LiteralPath $materialReportPath)) {
-    throw 'Finalize and validate the native Spinosaurus materials before installation.'
+$validationReportPath = Join-Path $source 'bundle-validation.json'
+if (-not (Test-Path -LiteralPath $validationReportPath)) {
+    throw 'Build and validate the repaired Spinosaurus bundle before installation.'
 }
-$materialReport = Get-Content -Raw -LiteralPath $materialReportPath | ConvertFrom-Json
+$validation = Get-Content -Raw -LiteralPath $validationReportPath | ConvertFrom-Json
 $prefabHash = (Get-FileHash -LiteralPath (Join-Path $source $prefab) -Algorithm MD5).Hash.ToLowerInvariant()
-if ($materialReport.prefab_md5 -ne $prefabHash -or
-    $materialReport.SpinosaurusBody.shader -ne 'LitSphere/DualMode/Animal' -or
-    $materialReport.SpinosaurusBody.albedo -ne 'Spino_colorized_D') {
-    throw 'Native material validation does not match the current Spinosaurus bundle.'
+if ($validation.prefab_md5 -ne $prefabHash -or
+    -not $validation.geometry_validated -or -not $validation.bind_pose_restored -or
+    -not $validation.client_motion_node_validated -or -not $validation.interaction_validated -or
+    $validation.SpinosaurusBody.shader -ne 'Spinosaurus/TexturedAnimal' -or
+    $validation.SpinosaurusBody.albedo -ne 'Spino_Albedo_Baked' -or
+    @($validation.poses).Count -ne 49 -or
+    $validation.scale.sizeRatio -lt 2.19 -or $validation.scale.sizeRatio -gt 2.21 -or
+    $validation.combat_shape.attack_padding -ne 200 -or @($validation.combat_shape.circles).Count -lt 16 -or
+    $validation.combat_shape.selection_colliders -ne 24 -or $validation.combat_shape.client_bound_radius -gt 60 -or
+    $validation.combat_shape.client_bound_radius -lt 40) {
+    throw 'Geometry, scale, or textured material validation does not match the current Spinosaurus bundle.'
+}
+$animalDefinitions = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $Root 'Durango-CustomServer\server\data\assets\entity_types\animal.json') | ConvertFrom-Json
+if ([Math]::Abs($animalDefinitions.'2214'.bound_radius - $validation.combat_shape.client_bound_radius) -gt .001) {
+    throw 'Synchronize the Spino server radius with pc-client/sync_spinosaurus_combat.py before installing this bundle.'
 }
 $manifest = Get-Content -Raw -LiteralPath (Join-Path $source ($prefab + '.manifest'))
 if (-not $manifest.Contains($framework)) {
@@ -27,6 +48,10 @@ if (-not $manifest.Contains($framework)) {
 
 $catalog = Get-Content -Raw -LiteralPath $catalogPath | ConvertFrom-Json
 $embed = Get-Content -Raw -LiteralPath $embedPath | ConvertFrom-Json
+foreach ($path in @($catalogPath, $embedPath)) {
+    $backup = $path + '.before-spino-actorx-repair.bak'
+    if (-not (Test-Path -LiteralPath $backup)) { Copy-Item -LiteralPath $path -Destination $backup }
+}
 $newEntries = @()
 foreach ($name in @($framework, $prefab)) {
     $sourceFile = Join-Path $source $name
@@ -52,7 +77,12 @@ $archive = Join-Path $Root 'pc-client\work\spino-old-body-bundles'
 $resolvedRoot = (Resolve-Path -LiteralPath $Root).Path.TrimEnd('\')
 $resolvedTarget = (Resolve-Path -LiteralPath $target).Path
 if (-not $resolvedTarget.StartsWith($resolvedRoot + '\', [StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Bundle target is outside the workspace root.'
+    $targetDataDirectory = Split-Path -Parent (Split-Path -Parent $resolvedTarget)
+    if ((Split-Path -Leaf $resolvedTarget) -ne 'AssetBundles' -or
+        (Split-Path -Leaf (Split-Path -Parent $resolvedTarget)) -ne 'StreamingAssets' -or
+        (Split-Path -Leaf $targetDataDirectory) -notmatch '_Data$') {
+        throw 'External target must be a Unity <name>_Data\StreamingAssets\AssetBundles directory.'
+    }
 }
 New-Item -ItemType Directory -Path $archive -Force | Out-Null
 $resolvedArchive = (Resolve-Path -LiteralPath $archive).Path
@@ -97,7 +127,7 @@ foreach ($name in $active) {
     if (-not (Test-Path -LiteralPath $bundlePath)) { throw "Catalog bundle missing: $name" }
     $embed.bytes += (Get-Item -LiteralPath $bundlePath).Length
 }
-$embed.patched = 'spinosaurus-2214-framework-pc-local'
+$embed.patched = 'spinosaurus-2214-actorx-textured-pc-local'
 [System.IO.File]::WriteAllText($embedPath, (($embed | ConvertTo-Json -Compress) + "`n"), $utf8)
 Write-Output "Installed Spinosaurus 2214: $($embed.files) bundles, $($embed.bytes) bytes, catalog MD5 $($embed.info_md5)"
 $newEntries | Format-Table Name,Hash,Size,Dependencies -AutoSize

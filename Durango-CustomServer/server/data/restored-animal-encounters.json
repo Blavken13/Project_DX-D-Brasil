@@ -12,5 +12,9 @@
   ],
   "ua60tr02Main01": [
     { "entity_type": 2115, "life_max": 200000 }
+  ],
+  "ri55sw171228": [
+    { "entity_type": 2214, "tile_x": 80, "tile_y": 117, "coordinate_width": 256 },
+    { "entity_type": 2214, "tile_x": 76, "tile_y": 119, "coordinate_width": 256 }
   ]
 }

@@ -47,8 +47,7 @@ public partial class Player
     private bool HitIntersectsAnimal(AnimalManager.Animal animal, PendingBattleHit pending, double now)
     {
         if (animal == null || !animal.IsAlive || animal.Captured || animal.CorpseDisposed) return false;
-        var info = AnimalTypes.Get(animal.EntityType);
-        return HitIntersectsPosition(animal.PositionAt(now), (info?.BoundRadius ?? 0) * (info?.BaseScale ?? 1), pending, now);
+        return AnimalBodyShapes.At(animal, now).Any(c => HitIntersectsPosition(c.center, c.radius, pending, now));
     }
 
     private bool HitIntersectsPosition(WorldPosition to, float radius, PendingBattleHit pending, double now)
@@ -76,12 +75,16 @@ public partial class Player
     {
         if (animal == null || !animal.IsAlive || animal.Captured || animal.CorpseDisposed) return false;
         if (!TryPlayerPositionAt(now, out var from)) return false;
-        var to = animal.PositionAt(now);
-        var info = AnimalTypes.Get(animal.EntityType);
-        double range = Math.Min(CombatTuning.MaxServerAttackRangeTiles * 200,
-            Math.Max(0, reach) + (info?.BoundRadius ?? 0) * (info?.BaseScale ?? 1));
-        double dx = from.x - to.x, dy = from.y - to.y;
-        return dx * dx + dy * dy <= range * range;
+        if (AnimalBodyShapes.Get(animal.EntityType) == null)
+        {
+            var to = animal.PositionAt(now);
+            var info = AnimalTypes.Get(animal.EntityType);
+            float range = Math.Min(CombatTuning.MaxServerAttackRangeTiles * 200,
+                Math.Max(0, reach) + (info?.BoundRadius ?? 0) * (info?.BaseScale ?? 1));
+            return MathF.Pow(from.x - to.x, 2) + MathF.Pow(from.y - to.y, 2) <= range * range;
+        }
+        return AnimalBodyShapes.Within(animal, from,
+            Math.Min(CombatTuning.MaxServerAttackRangeTiles * 200, Math.Max(0, reach)), now);
     }
 
     private bool TryPlayerPositionAt(double now, out WorldPosition position)

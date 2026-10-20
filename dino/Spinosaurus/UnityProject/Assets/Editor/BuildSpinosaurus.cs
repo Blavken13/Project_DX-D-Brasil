@@ -42,11 +42,11 @@ public static class BuildSpinosaurus
             ConfigureModel(ClassicPath, false);
             ConfigureModel(SaddlePath, false);
             ConfigureNormal(Root + "/Textures/BodyNew/Spino_N.png");
+            ConfigureAlbedo(Root + "/Textures/BodyNew/Spino_Albedo_Baked.png");
             ConfigureNormal(Root + "/Textures/BodyClassic/spino_N.png");
             ConfigureNormal(Root + "/Textures/Saddle/T_SpinoSaddle_N.png");
 
-            var bodyMaterial = MakeMaterial("SpinosaurusBody", Root + "/Textures/BodyNew/Spino_colorized_D.png", Root + "/Textures/BodyNew/Spino_N.png");
-            bodyMaterial.color = new Color(.72f, .60f, .38f, 1f);
+            var bodyMaterial = MakeMaterial("SpinosaurusBody", Root + "/Textures/BodyNew/Spino_Albedo_Baked.png", Root + "/Textures/BodyNew/Spino_N.png");
             var classicMaterial = MakeMaterial("SpinosaurusClassic", Root + "/Textures/BodyClassic/spino_Colorize_d.png", Root + "/Textures/BodyClassic/spino_N.png");
 
             var sourceClips = AssetDatabase.LoadAllAssetsAtPath(BodyPath).OfType<AnimationClip>()
@@ -99,15 +99,21 @@ public static class BuildSpinosaurus
             if (bodyPrefab == null || classicPrefab == null || saddlePrefab == null) throw new Exception("One or more FBX models failed import.");
 
             var root = new GameObject("SpinosaurusPrefab");
+            root.tag = "Enemy";
+            var visual = new GameObject("VisualScale");
+            visual.transform.SetParent(root.transform, false);
             var body = (GameObject)PrefabUtility.InstantiatePrefab(ClassicVisualTestOnly ? classicPrefab : bodyPrefab);
+            PrefabUtility.UnpackPrefabInstance(body, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
             body.name = "Body";
-            body.transform.SetParent(root.transform, false);
+            body.transform.SetParent(visual.transform, false);
             var activeRig = body.transform.Find(ClassicVisualTestOnly ? "SpinosaurusClassicRig" : "SpinosaurusRig");
             if (activeRig == null) throw new Exception("Active Spinosaurus rig root missing.");
             var bodyRenderer = SingleSkin(body, "body");
             int bodyBoneCount = bodyRenderer.bones.Length;
             bodyRenderer.sharedMaterial = ClassicVisualTestOnly ? classicMaterial : bodyMaterial;
-            bodyRenderer.updateWhenOffscreen = true;
+            SpinosaurusGeometry.RestoreBindPose(bodyRenderer);
+            SpinosaurusGeometry.CheckBindPose(bodyRenderer);
+            SpinosaurusGeometry.ConfigureScale(root, visual, body, bodyRenderer, SourceRoot);
             foreach (var clip in clips)
                 if (clip.length <= 0 || AnimationUtility.GetCurveBindings(clip).Length == 0)
                     throw new Exception("Animation has no usable curves: " + clip.name);
@@ -141,20 +147,32 @@ public static class BuildSpinosaurus
             animation.clip = clips.Single(c => c.name == "Spino-Idle");
             animation.playAutomatically = false;
             animation.cullingType = AnimationCullingType.AlwaysAnimate;
+            bodyRenderer.localBounds = SpinosaurusGeometry.SampleBounds(body, bodyRenderer, clips);
+            // updateWhenOffscreen recomputes localBounds every frame and replaces
+            // custom bounds. These clips live in an external framework asset, so
+            // preserve the sampled all-animation bounds and let normal culling
+            // use them to make the renderer visible before skinning starts.
+            bodyRenderer.updateWhenOffscreen = false;
             var animal = root.AddComponent<AnimalBehavior>();
             animal.AnimalFrameworkResource = framework;
             animal._meshObject = body;
-            animal._xRadius = 110; animal._yRadius = 200; animal._size = 1;
+            var combatShape = SpinosaurusGeometry.ConfigureCombatShape(root, bodyRenderer, SourceRoot);
+            animal._xRadius = combatShape.client_x_radius;
+            animal._yRadius = combatShape.client_y_radius;
+            animal._size = 1;
             animal._bushWhackEffectPeriod = .5f;
             animal._bushWhackEffectOffset = new Vector3(0, 120, 0);
             animal._hitEffect = new IntegratedEffectType { Path = "" };
-            animal._bodyPartBip001 = bodyRenderer.rootBone.name;
+            // All source root tracks are in-place. Use a unit-scale motion node
+            // so the client's Y-axis root-motion correction cannot rotate the
+            // imported Z-up armature root or offset a scaled mesh object.
+            animal._bodyPartBip001 = body.name;
             animal._bodyPartHead = FindBone(body, "head");
-            animal._bodyPartBody = FindBone(body, "spine");
-            animal._bodyPartArm = FindBone(body, "hand_l");
-            animal._bodyPartArmR = FindBone(body, "hand_r");
-            animal._bodyPartLeg = FindBone(body, "foot_l");
-            animal._bodyPartLegR = FindBone(body, "foot_r");
+            animal._bodyPartBody = FindBone(body, "c_back1");
+            animal._bodyPartArm = FindBone(body, "l_wrist");
+            animal._bodyPartArmR = FindBone(body, "r_wrist");
+            animal._bodyPartLeg = FindBone(body, "l_ankle");
+            animal._bodyPartLegR = FindBone(body, "r_ankle");
             animal._bodyPartTail = FindBone(body, "tail");
             animal._bodyPartBack = animal._bodyPartBody;
             animal._closedEyes = new List<Renderer>();
@@ -175,7 +193,7 @@ public static class BuildSpinosaurus
             var exporter = root.AddComponent<Durango.Model.RootMotionExporter>();
             exporter._deadband = 5; exporter._deadbandYaw = 5;
             exporter._rootMotionBoneName = animal._bodyPartBip001;
-            exporter._rootMotionForward = Vector3.forward;
+            exporter._rootMotionForward = body.transform.InverseTransformDirection(root.transform.forward).normalized;
             root.AddComponent<AnimationEventController>().AnimationEventResource =
                 AssetDatabase.LoadAssetAtPath<AnimationEventResource>(EventsPath);
             PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
@@ -215,7 +233,7 @@ public static class BuildSpinosaurus
                 warnings = ClassicVisualTestOnly ? new[] {
                     "Classic visual test mode is enabled; imported clips do not animate the Classic rig."
                 } : new[] {
-                    "The Spino_new mesh uses its matching 94-bone rig and imported PSA clips.",
+                    "ActorX mesh and PSA share original units; additive clips were baked onto complete base poses.",
                     "The wild prefab excludes the saddle mesh."
                 }
             };
@@ -248,7 +266,8 @@ public static class BuildSpinosaurus
     static string FindBone(GameObject model, string part) {
         var bone = model.GetComponentsInChildren<Transform>(true)
             .FirstOrDefault(t => t.name.IndexOf(part, StringComparison.OrdinalIgnoreCase) >= 0);
-        return bone != null ? bone.name : model.transform.name;
+        if (bone == null) throw new Exception("Required Spinosaurus body part missing: " + part);
+        return bone.name;
     }
 
     static void BindFrameworkClips(AnimalFrameworkResource fw, IEnumerable<AnimationClip> clips) {
@@ -284,6 +303,16 @@ public static class BuildSpinosaurus
         if (importer == null) throw new Exception("Model importer missing: " + path);
         importer.animationType = ModelImporterAnimationType.Legacy;
         importer.importAnimation = animations;
+        if (path == BodyPath) {
+            importer.useFileScale = false;
+            importer.globalScale = 1f;
+            importer.bakeAxisConversion = true;
+            importer.animationCompression = ModelImporterAnimationCompression.Off;
+            importer.isReadable = true;
+            importer.importTangents = ModelImporterTangents.CalculateMikk;
+            importer.skinWeights = ModelImporterSkinWeights.Standard;
+            importer.importVisibility = false;
+        }
         importer.SaveAndReimport();
     }
 
@@ -291,6 +320,19 @@ public static class BuildSpinosaurus
         var importer = AssetImporter.GetAtPath(path) as TextureImporter;
         if (importer == null) throw new Exception("Texture importer missing: " + path);
         importer.textureType = TextureImporterType.NormalMap;
+        if (path.Contains("BodyNew")) importer.flipGreenChannel = true;
+        importer.SaveAndReimport();
+    }
+
+    static void ConfigureAlbedo(string path) {
+        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null) throw new Exception("Baked albedo missing: " + path);
+        importer.textureType = TextureImporterType.Default;
+        importer.sRGBTexture = true;
+        importer.isReadable = true;
+        importer.textureCompression = TextureImporterCompression.Uncompressed;
+        importer.alphaSource = TextureImporterAlphaSource.None;
+        importer.anisoLevel = 4;
         importer.SaveAndReimport();
     }
 
@@ -298,14 +340,15 @@ public static class BuildSpinosaurus
         var diffuse = AssetDatabase.LoadAssetAtPath<Texture2D>(diffusePath);
         var normal = AssetDatabase.LoadAssetAtPath<Texture2D>(normalPath);
         if (diffuse == null || normal == null) throw new Exception("Material texture missing: " + name);
-        var shader = Shader.Find("Standard");
+        bool repairedBody = name == "SpinosaurusBody";
+        var shader = Shader.Find(repairedBody ? SpinosaurusGeometry.ShaderName : "Standard");
         if (shader == null) throw new Exception("Unity Standard shader unavailable.");
         var path = Materials + "/" + name + ".mat";
         if (AssetDatabase.LoadAssetAtPath<Material>(path) != null) AssetDatabase.DeleteAsset(path);
         var material = new Material(shader) { name = name };
-        material.SetTexture("_MainTex", diffuse);
-        material.SetTexture("_BumpMap", normal);
-        material.EnableKeyword("_NORMALMAP");
+        material.SetTexture(repairedBody ? "_SpinoAlbedo" : "_MainTex", diffuse);
+        material.SetTexture(repairedBody ? "_SpinoNormal" : "_BumpMap", normal);
+        if (!repairedBody) material.EnableKeyword("_NORMALMAP");
         AssetDatabase.CreateAsset(material, path);
         return material;
     }
@@ -319,7 +362,7 @@ public static class BuildSpinosaurus
     static void BuildBundles(BuildTarget target, string platform) {
         string dir = Source("AssetBundles/" + platform);
         Directory.CreateDirectory(dir);
-        if (BuildPipeline.BuildAssetBundles(dir, BuildAssetBundleOptions.ChunkBasedCompression, target) == null)
+        if (BuildPipeline.BuildAssetBundles(dir, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle, target) == null)
             throw new Exception("AssetBundle build failed for " + platform);
     }
 
@@ -344,50 +387,13 @@ public static class BuildSpinosaurus
                 s.sharedMesh.name == "SpinosaurusBody" &&
                 s.sharedMaterial != null && s.sharedMaterial.name == "SpinosaurusBody");
             if (bodySkin == null) throw new Exception("Animated Spino_new body mesh or material missing from Windows bundle.");
-            var bodyWorldSize = bodySkin.bounds.size;
-            if (bodySkin.sharedMesh.vertexCount < 1000 || bodyWorldSize.y < 1f ||
-                bodyWorldSize.x < .5f || bodyWorldSize.z < 1f)
-                throw new Exception("Active body is not a full 3D Spinosaurus mesh: vertices=" +
-                    bodySkin.sharedMesh.vertexCount + ", world bounds=" + bodyWorldSize + ".");
+            if (bodySkin.sharedMesh.vertexCount < 1000)
+                throw new Exception("Active Spinosaurus body mesh is empty.");
             if (prefab.GetComponentsInChildren<Transform>(true).Any(t => t.name == "Saddle"))
                 throw new Exception("Wild Spinosaurus prefab unexpectedly contains the saddle.");
-            var instance = UnityEngine.Object.Instantiate(prefab);
-            try {
-                var animatedSkin = instance.GetComponentsInChildren<SkinnedMeshRenderer>(true)
-                    .Single(s => s.sharedMesh.name == "SpinosaurusBody");
-                var animated = instance.GetComponentInChildren<Animation>(true);
-                var rest = new Mesh();
-                animatedSkin.BakeMesh(rest, false);
-                float restEdge = LongestTriangleEdge(rest);
-                foreach (var clipName in new[] { "Spino-Idle", "Spino-Move-Fwd" }) {
-                    animated.Play(clipName);
-                    animated[clipName].time = animated[clipName].length * .5f;
-                    animated.Sample();
-                    var sample = new Mesh();
-                    animatedSkin.BakeMesh(sample, false);
-                    float edge = LongestTriangleEdge(sample);
-                    if (edge > restEdge * 5f)
-                        throw new Exception(clipName + " stretches Spino_new mesh: rest edge " + restEdge + ", animated edge " + edge);
-                    if (clipName == "Spino-Move-Fwd" &&
-                        !rest.vertices.Zip(sample.vertices, (a, b) => (a - b).sqrMagnitude).Any(delta => delta > .000001f))
-                        throw new Exception("Spino-Move-Fwd does not deform the active body rig.");
-                    UnityEngine.Object.DestroyImmediate(sample);
-                }
-                UnityEngine.Object.DestroyImmediate(rest);
-            } finally { UnityEngine.Object.DestroyImmediate(instance); }
+            SpinosaurusGeometry.VerifyBundle(prefab, SourceRoot, path);
             return "built and verified";
         } finally { bundle.Unload(true); frameworkBundle.Unload(true); }
     }
 
-    static float LongestTriangleEdge(Mesh mesh) {
-        var vertices = mesh.vertices;
-        var triangles = mesh.triangles;
-        float longest = 0;
-        for (int i = 0; i < triangles.Length; i += 3)
-            longest = Mathf.Max(longest,
-                Vector3.Distance(vertices[triangles[i]], vertices[triangles[i+1]]),
-                Vector3.Distance(vertices[triangles[i+1]], vertices[triangles[i+2]]),
-                Vector3.Distance(vertices[triangles[i+2]], vertices[triangles[i]]));
-        return longest;
-    }
 }

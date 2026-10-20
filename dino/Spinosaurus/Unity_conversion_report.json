@@ -64,7 +64,7 @@
         "Spino-Torpid-Out-Wild"
     ],
     "warnings": [
-        "The Spino_new mesh uses its matching 94-bone rig and imported PSA clips.",
+        "ActorX mesh and PSA share original units; additive clips were baked onto complete base poses.",
         "The wild prefab excludes the saddle mesh."
     ]
 }

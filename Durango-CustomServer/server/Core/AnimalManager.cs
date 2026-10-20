@@ -833,9 +833,9 @@ public class AnimalManager
         if (template.Role is Shared.Region.Role.Personal or Shared.Region.Role.Tutorial) return;
 
         int resolvedWildLevel = Math.Max(1, template.Level);
-        int target = Math.Max(0, AnimalTuning.TargetAnimalsPerRegion - _animals.Count);
         var encounters = template.RestoredEncounters;
         var encounterTypes = encounters.Select(e => e.EntityType).ToHashSet();
+        var positionedEncounters = encounters.Where(e => e.TileX.HasValue && e.TileY.HasValue).ToArray();
         var definitions = template.Herds.Values.SelectMany(group => group)
             .Where(spawn => AnimalTypes.Get(spawn.EntityType) != null && !encounterTypes.Contains(spawn.EntityType)).ToList();
         if (definitions.Count == 0 && encounters.Count == 0) return;
@@ -845,6 +845,38 @@ public class AnimalManager
         bool WildPositionAllowed(Point2 tile) => TerrainEcology.IsLand(terrain, tile) &&
             !(terrain.Pois?.PortPoints.Any(p => Math.Abs(p.x - tile.x) < 8 && Math.Abs(p.y - tile.y) < 8) ?? false) &&
             !_animals.Any(a => a.IsAlive && Math.Abs(a.Tile.x - tile.x) < 8 && Math.Abs(a.Tile.y - tile.y) < 8);
+
+        int positionedCount = 0;
+        foreach (var encounter in positionedEncounters)
+        {
+            int sourceWidth = encounter.CoordinateWidth > 0 ? encounter.CoordinateWidth : terrain.Width;
+            var tile = new Point2(
+                (int)Math.Round(encounter.TileX.Value * terrain.Width / (double)sourceWidth),
+                (int)Math.Round(encounter.TileY.Value * terrain.Height / (double)sourceWidth));
+            bool positionAllowed = encounter.AllowOcean
+                ? TerrainEcology.BiomeAt(terrain, tile) is Shared.Region.Biome.ColdOcean or Shared.Region.Biome.WarmOcean &&
+                  !(terrain.Pois?.PortPoints.Any(p => Math.Abs(p.x - tile.x) < 8 && Math.Abs(p.y - tile.y) < 8) ?? false) &&
+                  !_animals.Any(a => a.IsAlive && Math.Abs(a.Tile.x - tile.x) < 8 && Math.Abs(a.Tile.y - tile.y) < 8)
+                : TerrainEcology.IsLand(terrain, tile) &&
+                  !(terrain.Pois?.PortPoints.Any(p => Math.Abs(p.x - tile.x) < 8 && Math.Abs(p.y - tile.y) < 8) ?? false) &&
+                  !_animals.Any(a => a.IsAlive && Math.Abs(a.Tile.x - tile.x) < 4 && Math.Abs(a.Tile.y - tile.y) < 4);
+            if (!positionAllowed)
+            {
+                Console.WriteLine($"[fauna] encontro fixo ignorado: entity={encounter.EntityType} tile={tile.x},{tile.y} não está em terreno válido");
+                continue;
+            }
+            Animal pinned = Create($"encounter_{template.Id}_{encounter.EntityType}_{tile.x}_{tile.y}",
+                new RegionCatalog.HerdSpawn(encounter.EntityType, resolvedWildLevel), tile, resolvedWildLevel);
+            if (pinned == null) continue;
+            pinned.IsRestoredEncounter = true;
+            if (encounter.LifeMax is { } pinnedLifeMax) pinned.Life = pinned.LifeMax = pinnedLifeMax;
+            _animals.Add(pinned);
+            _byId[pinned.EntityId] = pinned;
+            positionedCount++;
+        }
+
+        int target = Math.Max(0, AnimalTuning.TargetAnimalsPerRegion - _animals.Count);
+        var unpositionedEncounters = encounters.Where(e => !e.TileX.HasValue && !e.TileY.HasValue).ToArray();
         var anchors = new List<Point2>();
         foreach (var group in template.Herds)
         foreach (Point2 tile in terrain.Herds?.Of(group.Key) ?? Array.Empty<Point2>())
@@ -890,7 +922,7 @@ public class AnimalManager
         var species = definitions.GroupBy(s => s.EntityType).Select(g => g.ToList()).ToList();
         var quotas = new int[species.Count];
         var plan = new List<(RegionCatalog.HerdSpawn Spawn, RestoredAnimalEncounters.Encounter Encounter)>();
-        foreach (var encounter in encounters.Take(positions.Count))
+        foreach (var encounter in unpositionedEncounters.Take(positions.Count))
             plan.Add((new RegionCatalog.HerdSpawn(encounter.EntityType, resolvedWildLevel), encounter));
         for (int i = 0; i < species.Count && plan.Count < positions.Count; i++)
         {
@@ -900,7 +932,7 @@ public class AnimalManager
         while (species.Count > 0 && plan.Count < positions.Count)
         {
             int next = Enumerable.Range(0, species.Count).OrderByDescending(i =>
-                (positions.Count - encounters.Count) * (double)species[i].Count / definitions.Count - quotas[i]).First();
+            (positions.Count - unpositionedEncounters.Length) * (double)species[i].Count / definitions.Count - quotas[i]).First();
             plan.Add((species[next][quotas[next] % species[next].Count], null));
             quotas[next]++;
         }
@@ -921,7 +953,13 @@ public class AnimalManager
         }
         Console.WriteLine($"[fauna] template={template.Id} islandLv={template.Level} " +
             $"nativeAnchors={anchors.Count} total={_animals.Count}/{target} " +
-            $"species={_animals.Select(a => a.EntityType).Distinct().Count()}");
+            $"species={_animals.Select(a => a.EntityType).Distinct().Count()} fixed={positionedCount}");
+        if (positionedCount > 0)
+        {
+            string fixedSpawns = string.Join(", ", _animals.Where(a => a.IsRestoredEncounter)
+                .Select(a => $"{a.EntityType}@{a.HomeTile.x},{a.HomeTile.y}/lv{a.CombatLevel}"));
+            Console.WriteLine($"[fauna] encontros fixos: {fixedSpawns}");
+        }
     }
 
     /// <summary>สุ่มทิศตอนเกิด — แยกจาก _rng เพราะ Create เป็น static</summary>

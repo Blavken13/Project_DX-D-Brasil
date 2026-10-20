@@ -51,8 +51,7 @@ public partial class Player
         {
             if (!animal.IsAlive || animal.Captured || animal.CorpseDisposed || animal.CaptureOwnerId != null) return false;
             position = animal.PositionAt(now);
-            var info = AnimalTypes.Get(animal.EntityType);
-            radius = (info?.BoundRadius ?? 0) * (info?.BaseScale ?? 1);
+            radius = AnimalBodyShapes.Radius(animal);
             return true;
         }
         return TryResolveVictim(id) is { } victim && victim.TryPlayerPositionAt(now, out position);
@@ -101,7 +100,10 @@ public partial class Player
             if (now < battle.HitAt) return;
             battle.HitAt = 0;
             float reach = PetAttackReach + targetRadius;
-            if (DistanceSquared(body.PositionAt(now), target) <= reach * reach &&
+            bool inReach = _world.AnimalManager.Get(battle.EnemyId) is { } enemy
+                ? AnimalBodyShapes.Within(enemy, body.PositionAt(now), PetAttackReach, now)
+                : DistanceSquared(body.PositionAt(now), target) <= reach * reach;
+            if (inReach &&
                 DistanceSquared(battle.Aim, target) <= AnimalAttackAimRadius * AnimalAttackAimRadius)
             {
                 var hit = new BattleAttackInfo { damage_bonus = 1, accuracy_ratio = 1,
@@ -117,7 +119,14 @@ public partial class Player
         }
         if (now < battle.MotionUntil || now < body.StopWalkingAt) return;
         float stopAt = Math.Max(PetAttackReach, PetAttackReach + targetRadius - 25);
-        if (DistanceSquared(body.PositionAt(now), target) > stopAt * stopAt)
+        bool needsChase = DistanceSquared(body.PositionAt(now), target) > stopAt * stopAt;
+        if (_world.AnimalManager.Get(battle.EnemyId) is { } shapedEnemy && AnimalBodyShapes.Get(shapedEnemy.EntityType) != null)
+        {
+            float surface = AnimalBodyShapes.SurfaceDistance(shapedEnemy, body.PositionAt(now), now);
+            needsChase = surface > PetAttackReach - 25;
+            stopAt = Math.Max(0, MathF.Sqrt(DistanceSquared(body.PositionAt(now), target)) - surface + PetAttackReach - 25);
+        }
+        if (needsChase)
         {
             Move chase = _world.AnimalManager.BuildChase(body, target, stopAt, now);
             if (chase.Movements == null) { StopPetCombat(); return; }

@@ -1,0 +1,455 @@
+{
+    "prefab_md5": "036e7ea063775d61473f0577c755ca94",
+    "pipeline": "ActorX PSK/PSA with Unreal additive poses baked",
+    "geometry_validated": true,
+    "bind_pose_restored": true,
+    "client_motion_node_validated": true,
+    "interaction_validated": true,
+    "SpinosaurusBody": {
+        "shader": "Spinosaurus/TexturedAnimal",
+        "albedo": "Spino_Albedo_Baked",
+        "baked_color_mask": true,
+        "chromatic_pixels": 233664
+    },
+    "scale": {
+        "dimetrodonBaseScale": 1.0,
+        "spinosaurusBaseScale": 4.0,
+        "bodyVisualScale": 0.004927387461066246,
+        "sizeRatio": 2.200000047683716,
+        "dimetrodonWorldSize": {
+            "x": 966.386474609375,
+            "y": 511.48992919921875,
+            "z": 409.51763916015625
+        },
+        "spinosaurusWorldSize": {
+            "x": 402.89617919921875,
+            "y": 916.0091552734375,
+            "z": 2126.05029296875
+        }
+    },
+    "combat_shape": {
+        "attack_padding": 200.0,
+        "client_x_radius": 78.70648956298828,
+        "client_y_radius": 264.0,
+        "client_bound_radius": 50.362022399902344,
+        "selection_colliders": 24,
+        "circles": [
+            {
+                "x": 0.000041961669921875,
+                "z": -1190.8729248046875,
+                "radius": 59.4757194519043
+            },
+            {
+                "x": 0.00003814697265625,
+                "z": -1102.2874755859375,
+                "radius": 65.88761901855469
+            },
+            {
+                "x": 0.0000362396240234375,
+                "z": -1013.7020263671875,
+                "radius": 63.766387939453125
+            },
+            {
+                "x": 0.000034332275390625,
+                "z": -925.1166381835938,
+                "radius": 55.65825271606445
+            },
+            {
+                "x": 0.0000286102294921875,
+                "z": -836.53125,
+                "radius": 51.4598388671875
+            },
+            {
+                "x": 3.262044906616211,
+                "z": -747.94580078125,
+                "radius": 52.96668243408203
+            },
+            {
+                "x": 0.00002288818359375,
+                "z": -659.3603515625,
+                "radius": 61.38923263549805
+            },
+            {
+                "x": 0.8087348937988281,
+                "z": -570.7749633789063,
+                "radius": 77.24523162841797
+            },
+            {
+                "x": 0.0000152587890625,
+                "z": -482.18951416015625,
+                "radius": 90.83547973632813
+            },
+            {
+                "x": 0.000011444091796875,
+                "z": -393.6040954589844,
+                "radius": 104.56305694580078
+            },
+            {
+                "x": 0.00000762939453125,
+                "z": -305.0186767578125,
+                "radius": 106.75371551513672
+            },
+            {
+                "x": -1.0923423767089844,
+                "z": -216.43324279785156,
+                "radius": 131.3441619873047
+            },
+            {
+                "x": 0.0000152587890625,
+                "z": -127.84782409667969,
+                "radius": 180.0231170654297
+            },
+            {
+                "x": 0.0000152587890625,
+                "z": -39.262393951416016,
+                "radius": 201.45077514648438
+            },
+            {
+                "x": -0.00000762939453125,
+                "z": 49.32303237915039,
+                "radius": 158.1485595703125
+            },
+            {
+                "x": -0.7579193115234375,
+                "z": 137.90846252441406,
+                "radius": 142.2511749267578
+            },
+            {
+                "x": -0.0000152587890625,
+                "z": 226.49388122558594,
+                "radius": 147.3634033203125
+            },
+            {
+                "x": 0.5490036010742188,
+                "z": 315.0793151855469,
+                "radius": 147.03656005859375
+            },
+            {
+                "x": -0.00005340576171875,
+                "z": 403.66473388671875,
+                "radius": 138.75540161132813
+            },
+            {
+                "x": -0.00003814697265625,
+                "z": 492.25018310546875,
+                "radius": 91.36503601074219
+            },
+            {
+                "x": -0.000030517578125,
+                "z": 580.8355712890625,
+                "radius": 80.37884521484375
+            },
+            {
+                "x": -0.000030517578125,
+                "z": 669.4210205078125,
+                "radius": 87.82568359375
+            },
+            {
+                "x": 0.17914772033691406,
+                "z": 758.0064697265625,
+                "radius": 65.15511322021484
+            },
+            {
+                "x": -0.00003814697265625,
+                "z": 846.5918579101563,
+                "radius": 49.429073333740234
+            }
+        ]
+    },
+    "poses": [
+        {
+            "clip": "Spino-Aim-Center",
+            "maximumEdgeStretch": 2.6000003814697266,
+            "p99EdgeStretch": 1.215915560722351,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Dwn",
+            "maximumEdgeStretch": 2.4500489234924316,
+            "p99EdgeStretch": 1.2286796569824219,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Dwn-Lft",
+            "maximumEdgeStretch": 2.4545958042144775,
+            "p99EdgeStretch": 1.2393985986709595,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Dwn-Rit",
+            "maximumEdgeStretch": 2.38195538520813,
+            "p99EdgeStretch": 1.24888014793396,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Lft",
+            "maximumEdgeStretch": 2.77497935295105,
+            "p99EdgeStretch": 1.2436368465423584,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Rit",
+            "maximumEdgeStretch": 2.835719347000122,
+            "p99EdgeStretch": 1.2568000555038452,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Up",
+            "maximumEdgeStretch": 3.3138184547424316,
+            "p99EdgeStretch": 1.2435534000396729,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Up-Lft",
+            "maximumEdgeStretch": 3.3149445056915283,
+            "p99EdgeStretch": 1.2629520893096924,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Aim-Up-Rit",
+            "maximumEdgeStretch": 3.347189426422119,
+            "p99EdgeStretch": 1.2660393714904785,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Attack-Bite",
+            "maximumEdgeStretch": 3.9243409633636475,
+            "p99EdgeStretch": 1.3848007917404175,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Attack-Claw",
+            "maximumEdgeStretch": 4.005275249481201,
+            "p99EdgeStretch": 1.5583924055099487,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Attack-Claw-Lft",
+            "maximumEdgeStretch": 4.05173921585083,
+            "p99EdgeStretch": 1.4864530563354492,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Charge-Fwd",
+            "maximumEdgeStretch": 3.886056900024414,
+            "p99EdgeStretch": 1.5130422115325928,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Charge-Lft",
+            "maximumEdgeStretch": 3.6612303256988525,
+            "p99EdgeStretch": 1.5345755815505981,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Charge-Rit",
+            "maximumEdgeStretch": 4.192055702209473,
+            "p99EdgeStretch": 1.518257975578308,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Idle",
+            "maximumEdgeStretch": 3.129589080810547,
+            "p99EdgeStretch": 1.4013017416000366,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Move-Fwd",
+            "maximumEdgeStretch": 6.08133602142334,
+            "p99EdgeStretch": 1.460640788078308,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Move-Lft",
+            "maximumEdgeStretch": 6.085061550140381,
+            "p99EdgeStretch": 1.4617136716842651,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Move-Rit",
+            "maximumEdgeStretch": 6.165579319000244,
+            "p99EdgeStretch": 1.4677780866622925,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Roar",
+            "maximumEdgeStretch": 3.9045181274414063,
+            "p99EdgeStretch": 1.4663292169570923,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Roar-Charge-Additive",
+            "maximumEdgeStretch": 3.623389482498169,
+            "p99EdgeStretch": 1.5310266017913818,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-Roar-Move-Additive",
+            "maximumEdgeStretch": 3.4934580326080322,
+            "p99EdgeStretch": 1.4910030364990234,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-To-Quad",
+            "maximumEdgeStretch": 3.0560073852539063,
+            "p99EdgeStretch": 1.3999991416931152,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-TurnInPlace-Lft",
+            "maximumEdgeStretch": 4.180441379547119,
+            "p99EdgeStretch": 1.4401229619979858,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Biped-TurnInPlace-Rit",
+            "maximumEdgeStretch": 3.135129451751709,
+            "p99EdgeStretch": 1.4244186878204346,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Blink",
+            "maximumEdgeStretch": 2.5999979972839355,
+            "p99EdgeStretch": 1.2159117460250854,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Charge-Fwd",
+            "maximumEdgeStretch": 5.233423233032227,
+            "p99EdgeStretch": 1.5689643621444702,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Charge-Lft",
+            "maximumEdgeStretch": 5.4479899406433105,
+            "p99EdgeStretch": 1.612858533859253,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Charge-Rit",
+            "maximumEdgeStretch": 5.678044319152832,
+            "p99EdgeStretch": 1.575371503829956,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Cuddle",
+            "maximumEdgeStretch": 3.885549545288086,
+            "p99EdgeStretch": 1.654695987701416,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Eat",
+            "maximumEdgeStretch": 4.218005180358887,
+            "p99EdgeStretch": 1.2573425769805908,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Hurt-Big-Rit",
+            "maximumEdgeStretch": 4.303675651550293,
+            "p99EdgeStretch": 1.3415013551712036,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Idle",
+            "maximumEdgeStretch": 2.6123037338256836,
+            "p99EdgeStretch": 1.23623526096344,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Lay-Egg",
+            "maximumEdgeStretch": 2.6730434894561768,
+            "p99EdgeStretch": 1.3494532108306885,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Move-Fwd",
+            "maximumEdgeStretch": 3.1852540969848633,
+            "p99EdgeStretch": 1.4546544551849365,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Move-Lft",
+            "maximumEdgeStretch": 3.461749315261841,
+            "p99EdgeStretch": 1.4561442136764526,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Move-Rit",
+            "maximumEdgeStretch": 3.414031982421875,
+            "p99EdgeStretch": 1.474223017692566,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Quad-To-Biped",
+            "maximumEdgeStretch": 3.0560126304626465,
+            "p99EdgeStretch": 1.3999969959259033,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Roar",
+            "maximumEdgeStretch": 3.3706183433532715,
+            "p99EdgeStretch": 1.3979827165603638,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Roar-Charge-Addiitive",
+            "maximumEdgeStretch": 4.734300136566162,
+            "p99EdgeStretch": 1.6008940935134888,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Roar-Move-Addiitive",
+            "maximumEdgeStretch": 4.137557029724121,
+            "p99EdgeStretch": 1.5684541463851929,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Startled",
+            "maximumEdgeStretch": 2.9698216915130615,
+            "p99EdgeStretch": 1.2802287340164185,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Swim-Fwd",
+            "maximumEdgeStretch": 3.730515241622925,
+            "p99EdgeStretch": 1.4253934621810913,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Swim-Idle",
+            "maximumEdgeStretch": 2.7371273040771484,
+            "p99EdgeStretch": 1.3509422540664673,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Torpid-Eat",
+            "maximumEdgeStretch": 5.795215606689453,
+            "p99EdgeStretch": 1.6157292127609253,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Torpid-Idle",
+            "maximumEdgeStretch": 5.795215606689453,
+            "p99EdgeStretch": 1.6152210235595703,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Torpid-In",
+            "maximumEdgeStretch": 7.594151496887207,
+            "p99EdgeStretch": 1.61250638961792,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Torpid-Out-Tamed",
+            "maximumEdgeStretch": 5.754830360412598,
+            "p99EdgeStretch": 1.6152210235595703,
+            "samples": 9
+        },
+        {
+            "clip": "Spino-Torpid-Out-Wild",
+            "maximumEdgeStretch": 5.754830360412598,
+            "p99EdgeStretch": 1.6152210235595703,
+            "samples": 9
+        }
+    ]
+}
