@@ -147,6 +147,7 @@ def launcher():
     runtime=PROJECT/'Durango-CustomServer/server/bin/test-runtime-linux/dotnet';patched=WORK/'Assembly-CSharp.auth.dll'
     stdout=run('wsl','--distribution','Ubuntu-24.04','--exec',linux(runtime),linux(PROJECT/'pc-client/CommunityPatcher/bin/Release/net9.0/CommunityPatcher.dll'),linux(SOURCE/'DurangoV2_Data/Managed/Assembly-CSharp.dll'),linux(DATA/'Managed/LostHorizon.PC.dll'),linux(patched))
     shutil.copy2(patched,DATA/'Managed/Assembly-CSharp.dll')
+    run('powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', PROJECT/'pc-client/fix_world_map_pin.ps1')
     shutil.copy2(WORK/'LostHorizon.Localization.Overrides.dll',DATA/'Managed/LostHorizon.Localization.Overrides.dll')
     (DATA/'Managed/Durango.Localization.Overrides.dll').unlink()
     return json.loads(stdout.splitlines()[-1])
